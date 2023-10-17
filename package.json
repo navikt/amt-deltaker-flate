@@ -1,14 +1,21 @@
 {
-  "name": "vite-project",
-  "private": true,
+  "name": "amt-pamelding-flate",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "test:no-watch": "vitest run",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
+    "preview": "vite preview",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint -c .eslintrc.pre-commit.cjs --fix"
+    ]
   },
   "dependencies": {
     "@navikt/ds-css": "^5.7.2",
@@ -30,7 +37,9 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "husky": "^8.0.0",
     "jsdom": "^22.1.0",
+    "lint-staged": "^15.0.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
     "vite-plugin-mock": "^3.0.0",
