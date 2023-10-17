@@ -2,7 +2,7 @@
 const Mikrofrontend = () => {
   return (
     <>
-      <h1>Påmelidng</h1>
+      <h1>Påmelding</h1>
     </>
   )
 }
