@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      - CORS_ALLOWED_ORIGINS=localhost
