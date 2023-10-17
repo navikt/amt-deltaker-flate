@@ -5,6 +5,6 @@ import Mikrofrontend from './Mikrofrontend'
 describe('Simple working test for Mikrofrontend', () => {
   it('has a text', () => {
     render(<Mikrofrontend />)
-    expect(screen.getByText('Påmelidng')).toBeDefined()
+    expect(screen.getByText('Påmelding')).toBeDefined()
   })
 })
