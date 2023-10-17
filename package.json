@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "start": "vite --port 3000",
     "build": "tsc && vite build",
     "test": "vitest",
     "test:no-watch": "vitest run",
@@ -20,9 +20,11 @@
   "dependencies": {
     "@navikt/ds-css": "^5.7.2",
     "@navikt/ds-react": "^5.7.2",
+    "mockjs": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",
@@ -44,7 +46,7 @@
     "rollup-plugin-import-map": "^3.0.0",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
-    "vite-plugin-mock": "^3.0.0",
+    "vite-plugin-mock": "2.9.6",
     "vitest": "^0.34.6"
   }
 }

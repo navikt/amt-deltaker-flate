@@ -1,18 +1,23 @@
-import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react-swc'
 import { rollupImportMapPlugin } from 'rollup-plugin-import-map'
 import { resolve } from 'path'
 import importmap from './importmap.json'
+import {viteMockServe} from "vite-plugin-mock";
+import {ConfigEnv, UserConfigExport} from "vite";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default ({ command }: ConfigEnv): UserConfigExport => ({
 	plugins: [
 		react(),
 		{
 			...rollupImportMapPlugin([importmap]),
 			enforce: 'pre',
 			apply: 'build'
-		}
+		},
+        viteMockServe({
+            mockPath: "mock",
+            localEnabled: command === "serve",
+        }),
 	],
 	build: {
 		manifest: true,
