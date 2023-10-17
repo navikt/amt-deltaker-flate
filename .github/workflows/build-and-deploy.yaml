@@ -1,0 +1,74 @@
+name: "Build and deploy"
+on:
+  push:
+    branches:
+      - "main"
+      - "dev-*"
+env:
+  "IMAGE": "ghcr.io/${{ github.repository }}/amt-pamelding-flate:${{ github.sha }}"
+jobs:
+  build:
+    name: "build"
+    runs-on: "ubuntu-latest"
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+      packages: "write"
+
+    steps:
+      - name: Checkout
+        uses: "actions/checkout@v3"
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: "Install dependencies"
+        run: "pnpm install --frozen-lockfile"
+
+      - name: "Run tests"
+        run: "pnpm test"
+
+      - name: "Build application"
+        run: "pnpm build"
+
+      - name: cdn-upload
+        uses: navikt/frontend/actions/cdn-upload/v1@main
+        with:
+          cdn-team-name: amt
+          source: ./dist/
+          destination: "amt-pamelding-flate"
+
+      - name: "Build and publish Docker image"
+        run: "docker build --pull --tag ${IMAGE} . && echo $GITHUB_TOKEN | docker login\
+          \ --username $GITHUB_REPOSITORY --password-stdin https://ghcr.io\
+          \ && docker push ${IMAGE}"
+        env:
+          "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
+  deploy-dev:
+    runs-on: "ubuntu-latest"
+    needs: "build"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Deploy to dev"
+        uses: "nais/deploy/actions/deploy@v1"
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-dev.yaml
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: "ubuntu-latest"
+    needs: "build"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Deploy to prod"
+        uses: "nais/deploy/actions/deploy@v1"
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/nais-prod.yaml

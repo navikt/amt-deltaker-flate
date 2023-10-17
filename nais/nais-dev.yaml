@@ -1,0 +1,34 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: amt-pamelding-flate
+  namespace: amt
+  labels:
+    team: amt
+spec:
+  env:
+  - name: CORS_ALLOWED_ORIGINS
+    value: "https://www.intern.dev.nav.no,https://mulighetsrommet-admin-flate.intern.dev.nav.no"
+  image: {{ image }}
+  port: 8080
+  liveness:
+    path: /amt/amt-pamelding-flate/internal/isAlive
+    initialDelay: 10
+  readiness:
+    path: /amt/amt-pamelding-flate/internal/isReady
+    initialDelay: 10
+  prometheus:
+    enabled: true
+    path: /amt/amt-pamelding-flate/internal/metrics
+  replicas:
+    min: 2
+    max: 4
+  ingresses:
+    - "https://www.intern.dev.nav.no/amt/amt-pamelding-flate"
+  resources:
+    limits:
+      cpu: "3"
+      memory: 768Mi
+    requests:
+      cpu: "500m"
+      memory: 512Mi
