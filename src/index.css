@@ -1,4 +1,12 @@
 html,
 body {
   height: 100%;
+  background:  var(--a-surface-subtle);
+}
+
+main {
+  background-color: white;
+  padding: 1rem;
+  width: 80%;
+  margin: auto;
 }

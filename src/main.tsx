@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Mikrofrontend from './Mikrofrontend'
 import '@navikt/ds-css'
 import './index.css'
+import Mikrofrontend from './Mikrofrontend'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Mikrofrontend />
+    <main>
+      <Mikrofrontend />
+    </main>
   </React.StrictMode>
 )
