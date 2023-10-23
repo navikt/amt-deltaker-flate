@@ -9,8 +9,8 @@ dependencies:
     specifier: ^5.7.2
     version: 5.7.2
   '@navikt/ds-react':
-    specifier: ^5.7.2
-    version: 5.7.2(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.7.6
+    version: 5.7.6(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
   mockjs:
     specifier: ^1.1.0
     version: 1.1.0
@@ -438,26 +438,23 @@ packages:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
     dev: true
 
-  /@navikt/aksel-icons@5.7.2:
-    resolution: {integrity: sha512-n46qhpW+KxhNTRGOkidSDOaa2AancHEPUPJe2y5zwXicrXMWz9F97rsPogEqblX7zt0ltl1Kqw5oAIZTl8aXog==}
+  /@navikt/aksel-icons@5.7.6:
+    resolution: {integrity: sha512-GAQvvfVrS4n6qYIB9dCnzoVf5ZboWVDU8e9gfzQitVqysNFt8X2In9/BPX1eGZa44MCE5tr0mtnzkzLMkHpSHg==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/5.7.6/0c3fc6f5044f60eb47358df7412be01365b82622}
     dev: false
 
   /@navikt/ds-css@5.7.2:
     resolution: {integrity: sha512-Tr+5ZREbXUJwEWpNXUe/6cx0B91NLRHYVwoKFJ1Do50FjEYscfAxhWgrFwrl/RFxcjMF9mIaI9MwC+CibzukWA==}
     dev: false
 
-  /@navikt/ds-react@5.7.2(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-O5k5vQNSC8S4rH1pJunS583hcCYdGcpKOvgUWiD4Fb6CpCCNAjgzQoiutJCGzd1m+yy95lsUePYHRofMtlxV8Q==}
+  /@navikt/ds-react@5.7.6(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-C+DAX2fl2jZX73lBgrMZCkHbIj8laOHjoZEOg6XAUIJEQgySIbeYv5Mtl5BnyOonZ7YOIvNAYhgG67gp+Fum7w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/5.7.6/efba043f4e215f4724e122f19698431904529d71}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.7.2
-      '@navikt/ds-tokens': 5.7.2
+      '@navikt/aksel-icons': 5.7.6
+      '@navikt/ds-tokens': 5.7.6
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.28
@@ -469,8 +466,8 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tokens@5.7.2:
-    resolution: {integrity: sha512-jRPyyb2I/9efxscrFbsVJ9o0wHwqtqya02xtcukmVkhyrc3CgCy3Ac1CJmKLxXmCALAdQ4B0a/qXohYlyS0Y5A==}
+  /@navikt/ds-tokens@5.7.6:
+    resolution: {integrity: sha512-0zDth/bhegFthLK9FJPLAZayVAgGb+D4uFpfVRPKcu6fq2nBpcLttytoBhC6kPFe5pnBQmI6cgin4sZIbW5H/g==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/5.7.6/fbe6fee9d2df3add79e38162a491972814a4d625}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
