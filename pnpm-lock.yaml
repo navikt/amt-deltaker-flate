@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@navikt/ds-css':
-    specifier: ^5.7.6
-    version: 5.7.6
+    specifier: ^5.9.2
+    version: 5.9.2
   '@navikt/ds-react':
     specifier: ^5.7.6
     version: 5.7.6(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)
@@ -442,8 +442,8 @@ packages:
     resolution: {integrity: sha512-GAQvvfVrS4n6qYIB9dCnzoVf5ZboWVDU8e9gfzQitVqysNFt8X2In9/BPX1eGZa44MCE5tr0mtnzkzLMkHpSHg==}
     dev: false
 
-  /@navikt/ds-css@5.7.6:
-    resolution: {integrity: sha512-9sIffX+1nK8kkYemSJJ29urioEPI4vOqE5l1zpVtMrfmqcc8A5RWTV31V+7Rybj/fOO0F83HHP9oNJESTlsG6Q==}
+  /@navikt/ds-css@5.9.2:
+    resolution: {integrity: sha512-uzXl4qgzJ934XGRG29rU3Te6jJ5pEiQEsgqOMKKuPMV8RBB2NP1x125bocvDfwEx5CVvr3WzCvxFnlYfFStDVw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/5.9.2/1ec33efe65cd9a20d1a5e9e5a119702626c568d7}
     dev: false
 
   /@navikt/ds-react@5.7.6(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0):
