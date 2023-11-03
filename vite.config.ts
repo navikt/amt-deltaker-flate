@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 import { rollupImportMapPlugin } from 'rollup-plugin-import-map'
 import { resolve } from 'path'
 import importmap from './importmap.json'
-import { viteMockServe } from 'vite-plugin-mock'
 import { ConfigEnv, UserConfigExport } from 'vite'
+// import mockServer from 'vite-plugin-mock-server'
 
 // https://vitejs.dev/config/
 export default ({ command }: ConfigEnv): UserConfigExport => ({
@@ -15,10 +15,10 @@ export default ({ command }: ConfigEnv): UserConfigExport => ({
       enforce: 'pre',
       apply: 'build'
     },
-    viteMockServe({
-      mockPath: 'mock',
-      localEnabled: command === 'serve'
-    })
+    // mockServer({
+    //   logLevel: 'info',
+    //
+    // })
   ],
   build: {
     manifest: true,

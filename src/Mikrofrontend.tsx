@@ -9,6 +9,7 @@ const Mikrofrontend = () => {
 
   return (
     <div>
+        data: {data}
       <h1>Påmelding {data && data?.emoji}</h1>
       <Pamelding
         deltakerlisteNavn="Oppfølging"
