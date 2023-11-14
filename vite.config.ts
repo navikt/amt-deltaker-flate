@@ -1,10 +1,9 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc'
-import { rollupImportMapPlugin } from 'rollup-plugin-import-map'
-import { resolve } from 'path'
+import {rollupImportMapPlugin} from 'rollup-plugin-import-map'
+import {resolve} from 'path'
 import importmap from './importmap.json'
-import { ConfigEnv, UserConfigExport } from 'vite'
-// import mockServer from 'vite-plugin-mock-server'
+import {ConfigEnv, UserConfigExport} from 'vite'
 
 // https://vitejs.dev/config/
 export default ({ command }: ConfigEnv): UserConfigExport => ({
@@ -14,11 +13,7 @@ export default ({ command }: ConfigEnv): UserConfigExport => ({
       ...rollupImportMapPlugin([importmap]),
       enforce: 'pre',
       apply: 'build'
-    },
-    // mockServer({
-    //   logLevel: 'info',
-    //
-    // })
+    }
   ],
   build: {
     manifest: true,
