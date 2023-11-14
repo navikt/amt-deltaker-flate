@@ -12,13 +12,13 @@ export interface PameldingSkjemaProps {
 
 export const PameldingSkjema = ({ mal, bakgrunnsinformasjon }: PameldingSkjemaProps) => {
   const [beskrivelse, setBeskrivelse] = useState<string>(
-    mal.find((e) => e.kode === MAL_TYPE_ANNET)?.beskrivelse ?? ''
+    mal.find((e) => e.type === MAL_TYPE_ANNET)?.beskrivelse ?? ''
   )
   const [nyBakgrunnsinformasjon, settBakgrunnsinformasjon] = useState<string>(
     bakgrunnsinformasjon ?? ''
   )
   const [valgteMal, setValgteMal] = useState<Array<string>>(
-    mal.filter((e) => e.valgt).map((e) => e.kode)
+    mal.filter((e) => e.valgt).map((e) => e.type)
   )
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
@@ -31,7 +31,7 @@ export const PameldingSkjema = ({ mal, bakgrunnsinformasjon }: PameldingSkjemaPr
         value={valgteMal}
       >
         {mal.map((e) => (
-          <Checkbox key={e.kode} value={e.kode}>
+          <Checkbox key={e.type} value={e.type}>
             {e.visningsTekst}
           </Checkbox>
         ))}
