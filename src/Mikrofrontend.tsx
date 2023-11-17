@@ -5,7 +5,7 @@ import {createPamelding} from './api/api.ts'
 import {PameldingResponse} from './api/data/pamelding.ts'
 
 const Mikrofrontend = () => {
-  const [info, setInfo] = useState<PameldingResponse | null>(null)
+  const [info, setInfo] = useState<PameldingResponse | undefined>(undefined)
 
   useEffect(() => {
     createPamelding({
