@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@navikt/ds-css':
-    specifier: ^5.10.1
-    version: 5.10.1
+    specifier: ^5.10.2
+    version: 5.10.2
   '@navikt/ds-react':
-    specifier: ^5.10.1
-    version: 5.10.1(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.10.2
+    version: 5.10.2(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   mockjs:
     specifier: ^1.1.0
     version: 1.1.0
@@ -50,8 +50,8 @@ devDependencies:
     specifier: ^6.11.0
     version: 6.11.0(eslint@8.53.0)(typescript@5.2.2)
   '@vitejs/plugin-react-swc':
-    specifier: ^3.4.1
-    version: 3.4.1(vite@4.5.0)
+    specifier: ^3.5.0
+    version: 3.5.0(vite@4.5.0)
   eslint:
     specifier: ^8.53.0
     version: 8.53.0
@@ -438,16 +438,16 @@ packages:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
     dev: true
 
-  /@navikt/aksel-icons@5.10.1:
-    resolution: {integrity: sha512-VOwshZoNAOCrmfWyfTkKHwKdUpF9a77zOAuonM3zkrluo66NRwa1p9rqas6ZrAZjGUjtxQ7dXg+reLdqsxfUWw==}
+  /@navikt/aksel-icons@5.10.2:
+    resolution: {integrity: sha512-C9sMkOxusQ9JrpjmJaD5WR4uUK4qIniQbOKmpPneUG490Qv+g3GFD/0FyHeFSr7t49gItaHtmKvGAckXX2Qkmw==}
     dev: false
 
-  /@navikt/ds-css@5.10.1:
-    resolution: {integrity: sha512-+PheVLcMgFz7V/o3LNDOfT2A/pmh57IbTVc4XHedY6y1fmA6YoQ6DeqPKryb1OYrC+hdagMjrA0J/snKsWH2xw==}
+  /@navikt/ds-css@5.10.2:
+    resolution: {integrity: sha512-0m1bvv7sCTJqyHsNChVb7R8bfqvZrjON/c3a5tRrsamezFNmLzXaNo8c95N+jS+HfxyNELCJDphWcuH1czpgcQ==}
     dev: false
 
-  /@navikt/ds-react@5.10.1(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-60y6aovWVdycRI6WczBnvjzAbRSK0wa6XAwx53NULmBM/KnqLurYlg61P8twx+HE959LDlZ2x/R6+oSYGWBRBA==}
+  /@navikt/ds-react@5.10.2(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-r8+Kp0LANLqwXu7DmvSCYjcsiBWLB0kGDIBxhhpoBfYycSPgcbSFogXa+Eyek6AnSn5ZT0/Gp0VeGKNkIibx3Q==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -456,8 +456,8 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.10.1
-      '@navikt/ds-tokens': 5.10.1
+      '@navikt/aksel-icons': 5.10.2
+      '@navikt/ds-tokens': 5.10.2
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.37
@@ -469,8 +469,8 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tokens@5.10.1:
-    resolution: {integrity: sha512-7M6sUuuoS4aY/xPbTJNsrer2zFXq7hzkQ5Ccv6WjpLh3wZ51Hy+fqSeyMZrsEo4/IPdVvErndDWMyDKmfoGThQ==}
+  /@navikt/ds-tokens@5.10.2:
+    resolution: {integrity: sha512-2GpYEtJU5p2GiD73pQYQpTASqClBxjHufFNk7FufyV5kWsnPg8K4YyV5LKAPBKmyJmCxPNOXWsdGamGcllmt5A==}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -1107,10 +1107,10 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vitejs/plugin-react-swc@3.4.1(vite@4.5.0):
-    resolution: {integrity: sha512-7YQOQcVV5x1luD8nkbCDdyYygFvn1hjqJk68UvNAzY2QG4o4N5EwAhLLFNOcd1HrdMwDl0VElP8VutoWf9IvJg==}
+  /@vitejs/plugin-react-swc@3.5.0(vite@4.5.0):
+    resolution: {integrity: sha512-1PrOvAaDpqlCV+Up8RkAh9qaiUjoDUcjtttyhXDKw53XA6Ve16SOp6cCOpRs8Dj8DqUQs6eTW5YkLcLJjrXAig==}
     peerDependencies:
-      vite: ^4
+      vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.3.96
       vite: 4.5.0(@types/node@20.9.0)
