@@ -28,3 +28,7 @@ export class Deltaker extends HTMLElement {
     root.render(<App />)
   }
 }
+
+// Repoer for inspirasjon:
+// https://github.com/navikt/aktivitetsplan/tree/main
+// https://github.com/navikt/mulighetsrommet/tree/main/frontend/mulighetsrommet-veileder-flate

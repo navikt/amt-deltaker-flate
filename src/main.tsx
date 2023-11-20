@@ -28,7 +28,7 @@ const demoContainer = document.getElementById(APPLICATION_NAME)
 if (import.meta.env.DEV && demoContainer) {
   renderAsRootApp(demoContainer)
   /*
-  TESTE WEB COMPONENT:
+  TESTE WEB COMPONENT LOKALT:
   exportAsWebcomponent()
   const root = ReactDOM.createRoot(demoContainer)
   root.render(React.createElement(APPLICATION_WEB_COMPONENT_NAME))
