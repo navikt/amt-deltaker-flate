@@ -18,8 +18,8 @@
     ]
   },
   "dependencies": {
-    "@navikt/ds-css": "^5.10.1",
-    "@navikt/ds-react": "^5.10.1",
+    "@navikt/ds-css": "^5.10.3",
+    "@navikt/ds-react": "^5.10.3",
     "mockjs": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,14 +28,14 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.1.0",
+    "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
-    "@vitejs/plugin-react-swc": "^3.4.1",
-    "eslint": "^8.53.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.54.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
