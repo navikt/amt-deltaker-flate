@@ -1,8 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
-const basePath = '/amt/amt-pamelding-flate'
-const buildPath = path.resolve(__dirname, '../dist')
+const basePath = '/amt/amt-deltaker-flate'
+const buildPath = path.resolve(__dirname, '../build')
 const server = express()
 const corsAllowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(',')
 

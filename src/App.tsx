@@ -4,7 +4,7 @@ import { apiUrl } from './api/urls'
 import { Pamelding } from './pamelding/Pamelding'
 import { MAL_TYPE_ANNET } from './utils'
 
-const Mikrofrontend = () => {
+const App = () => {
   const { data } = useSWRImmutable(apiUrl, fetcher)
 
   return (
@@ -39,4 +39,4 @@ const Mikrofrontend = () => {
   )
 }
 
-export default Mikrofrontend
+export default App

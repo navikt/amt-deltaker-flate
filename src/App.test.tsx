@@ -1,6 +1,6 @@
 import { describe, expect, it, afterEach } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import Mikrofrontend from './Mikrofrontend'
+import App from './App'
 
 describe('Simple working test for Mikrofrontend', () => {
   afterEach(() => {
@@ -8,7 +8,7 @@ describe('Simple working test for Mikrofrontend', () => {
   })
 
   it('has a text', () => {
-    render(<Mikrofrontend />)
+    render(<App />)
     expect(screen.getByText('Påmelding')).toBeDefined()
   })
 })

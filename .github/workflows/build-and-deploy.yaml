@@ -5,7 +5,7 @@ on:
       - "main"
       - "dev-*"
 env:
-  "IMAGE": "ghcr.io/${{ github.repository }}/amt-pamelding-flate:${{ github.sha }}"
+  "IMAGE": "ghcr.io/${{ github.repository }}/amt-deltaker-flate:${{ github.sha }}"
 jobs:
   build:
     name: "build"
@@ -40,8 +40,8 @@ jobs:
         uses: navikt/frontend/actions/cdn-upload/v1@main
         with:
           cdn-team-name: amt
-          source: ./dist/
-          destination: "amt-pamelding-flate"
+          source: ./build/
+          destination: "amt-deltaker-flate"
 
       - name: "Build and publish Docker image"
         run: "docker build --pull --tag ${IMAGE} . && echo $GITHUB_TOKEN | docker login\
