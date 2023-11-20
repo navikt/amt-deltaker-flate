@@ -3,7 +3,7 @@ ENV NODE_ENV production
 
 WORKDIR usr/src/app
 COPY server server/
-COPY dist dist/
+COPY build build/
 
 RUN npm install -g pnpm
 
