@@ -9,7 +9,12 @@ export const createPamelding = (request: PameldingRequest): Promise<PameldingRes
     credentials: 'include',
     body: JSON.stringify(request)
   })
-    .then(response => response.json())
+    .then(response => {
+      if(response.status !== 200) {
+        throw new Error(response.statusText) // TODO Handle errors
+      }
+      return response.json()
+    })
     .then(json => pameldingSchema.parse(json))
 }
 

@@ -1,5 +1,5 @@
 import {setupWorker} from 'msw/browser'
-import {http} from 'msw'
+import {http, HttpResponse} from 'msw'
 import {MockHandler} from './MockHandler.ts'
 import {pameldingRequestSchema} from '../api/data/pamelding-request.ts'
 import {sendInnPameldingRequestSchema} from '../api/data/send-inn-pamelding-request.ts'
@@ -7,7 +7,9 @@ import {sendInnPameldingUtenGodkjenningRequestSchema} from '../api/data/send-inn
 
 const handler = new MockHandler()
 
-export const endpoints = (
+export const worker = setupWorker(
+  http.get('/test', () => HttpResponse.json({id: 'abc'})),
+
   http.post('/api/pamelding', async ({request}) => {
     const response = await request.json()
       .then(json => pameldingRequestSchema.parse(json))
@@ -41,5 +43,3 @@ export const endpoints = (
     return response
   })
 )
-
-export const worker = setupWorker(endpoints)
