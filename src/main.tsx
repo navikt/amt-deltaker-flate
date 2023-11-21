@@ -1,4 +1,5 @@
 import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants'
+import { worker } from './mocks/setupMocks.ts'
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
@@ -7,9 +8,18 @@ const exportAsWebcomponent = () => {
   })
 }
 
+export async function enableMocking() {
+  // if (process.env.NODE_ENV !== 'development') { // TODO Enable mocking only for specific environments
+  //     return
+  // }
+  return worker.start()
+}
+
 const renderAsRootApp = (appElement: HTMLElement) => {
   import('./rootWrapper').then(({ renderAsReactRoot }) => {
-    renderAsReactRoot(appElement)
+    enableMocking().then(() => {
+      renderAsReactRoot(appElement)
+    })
   })
 }
 
