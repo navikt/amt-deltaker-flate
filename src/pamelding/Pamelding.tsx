@@ -19,7 +19,7 @@ export const Pamelding = ({
   bakgrunnsinformasjon
 }: PameldingProps) => {
   return (
-    <VStack gap="8">
+    <VStack gap="8" className="p-6 bg-white">
       <Heading level="1" size="medium">
         Meld på {deltakerlisteNavn} hos {arrangorNavn}
       </Heading>

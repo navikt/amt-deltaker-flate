@@ -1,51 +1,39 @@
 import { Pamelding } from './pamelding/Pamelding'
-import { MAL_TYPE_ANNET } from './utils'
 import { useEffect, useState } from 'react'
 import { PameldingResponse } from './api/data/pamelding.ts'
-import { createPamelding } from './api/api.ts'
+import { createPamelding, deletePamelding } from './api/api.ts'
+import { Button } from '@navikt/ds-react'
 
 const App = () => {
-  const [info, setInfo] = useState<PameldingResponse | undefined>(undefined)
+  const [pamelidng, setPamelding] = useState<PameldingResponse | undefined>(undefined)
 
   useEffect(() => {
     createPamelding({
       deltakerlisteId: '6b6578eb-eae0-4ad7-8a69-79db3cea4f64',
       personident: '12345678901'
-    })
-      .then(data => setInfo(data))
+    }).then((data) => setPamelding(data))
   }, [])
 
-  if (info === undefined) return (<div>Ikke lastet</div>)
+  if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
+
+  const avbrytPamelding = () => {
+    // Hvis vi autolagerer i fremtiden vil vi ikke slette ved avbryt!
+    deletePamelding(pamelidng.deltakerId).then(() => setPamelding(undefined))
+    // .then() Naviger tilbake?
+  }
 
   return (
-    <div>
-      <h1>Påmelding</h1>
+    <>
       <Pamelding
-        deltakerlisteNavn="Oppfølging"
-        arrangorNavn="Muligheter as"
-        oppstartsType="Løpende"
-        mal={[
-          {
-            visningsTekst: 'Intervjutrening',
-            type: '1',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            visningsTekst: 'Arbeidspraksis',
-            type: '2',
-            valgt: true,
-            beskrivelse: null
-          },
-          {
-            visningsTekst: 'Annet:',
-            type: MAL_TYPE_ANNET,
-            valgt: false,
-            beskrivelse: null
-          }
-        ]}
+        deltakerlisteNavn={pamelidng.deltakerliste.deltakerlisteNavn}
+        arrangorNavn={pamelidng.deltakerliste.arrangorNavn}
+        oppstartsType={pamelidng.deltakerliste.oppstartstype}
+        mal={pamelidng.deltakerliste.mal}
       />
-    </div>
+      <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
+        Avbryt påmelding
+      </Button>
+    </>
   )
 }
 
