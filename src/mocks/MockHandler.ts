@@ -4,6 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 import {HttpResponse} from 'msw'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { MAL_TYPE_ANNET } from '../utils.ts'
 
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
@@ -28,8 +29,14 @@ export class MockHandler {
           {
             visningsTekst: 'Mål 2',
             type: 'type2',
-            valgt: true,
-            beskrivelse: 'dette er en beskrivelse'
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            visningsTekst: 'Annet',
+            type: MAL_TYPE_ANNET,
+            valgt: false,
+            beskrivelse: 'Beskrivelse av annet mål'
           }
         ]
       }
@@ -41,26 +48,29 @@ export class MockHandler {
 
   deletePamelding(deltakerId: string): HttpResponse {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
-      return new HttpResponse(null, {status: 400})
+      return new HttpResponse(null, { status: 400 })
     }
 
     if (this.pameldinger.find((it) => it.deltakerId === deltakerId)) {
-      this.pameldinger = this.pameldinger.filter(obj => obj.deltakerId !== deltakerId)
-      return new HttpResponse(null, {status: 200})
+      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
+      return new HttpResponse(null, { status: 200 })
     }
 
-    return new HttpResponse(null, {status: 404})
+    return new HttpResponse(null, { status: 404 })
   }
 
   sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, {status: 200})
+    return new HttpResponse(null, { status: 200 })
   }
 
-  sendInnPameldingUtenGodkjenning(deltakerId: string, request: SendInnPameldingUtenGodkjenningRequest): HttpResponse {
+  sendInnPameldingUtenGodkjenning(
+    deltakerId: string,
+    request: SendInnPameldingUtenGodkjenningRequest
+  ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, {status: 200})
+    return new HttpResponse(null, { status: 200 })
   }
 }
