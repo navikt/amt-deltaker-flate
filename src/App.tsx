@@ -1,7 +1,7 @@
 import { Pamelding } from './pamelding/Pamelding'
 import { useEffect, useState } from 'react'
 import { PameldingResponse } from './api/data/pamelding.ts'
-import { createPamelding } from './api/api.ts'
+import { createPamelding, deletePamelding } from './api/api.ts'
 import { Button } from '@navikt/ds-react'
 
 const App = () => {
@@ -14,7 +14,13 @@ const App = () => {
     }).then((data) => setPamelding(data))
   }, [])
 
-  if (pamelidng === undefined) return <div>Ikke lastet</div>
+  if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
+
+  const avbrytPamelding = () => {
+    // Hvis vi autolagerer i fremtiden vil vil ikke slette ved avbryt!
+    deletePamelding(pamelidng.deltakerId).then(() => setPamelding(undefined))
+    // .then() Naviger tilbake?
+  }
 
   return (
     <>
@@ -24,7 +30,7 @@ const App = () => {
         oppstartsType={pamelidng.deltakerliste.oppstartstype}
         mal={pamelidng.deltakerliste.mal}
       />
-      <Button variant="tertiary" size="small">
+      <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
         Avbryt påmelding
       </Button>
     </>
