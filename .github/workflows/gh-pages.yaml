@@ -1,6 +1,6 @@
 name: Update GitHub Pages
 on:
-  workflow_dispatch:
+  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-tiltaksarrangor-flate/actions/workflows/gh-pages.yaml
   push:
     branches:
       - main
@@ -35,7 +35,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build mock application
-        run: "NODE_ENV=development pnpm build --base=/amt-deltaker-flate/ && cpy --cwd=build --rename=404.html index.html .",
+        run: pnpm build:gh-pages
       - name: Update GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
