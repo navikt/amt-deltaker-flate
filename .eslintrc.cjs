@@ -13,6 +13,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.*',
     '**/dist/*.js',
+    '**/build/*.js',
     'vite.config.ts',
     '/server/server.js',
     'plugin:react/recommended'

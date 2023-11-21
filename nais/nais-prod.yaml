@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: amt-pamelding-flate
+  name: amt-deltaker-flate
   namespace: amt
   labels:
     team: amt
@@ -12,19 +12,29 @@ spec:
   image: {{ image }}
   port: 8080
   liveness:
-    path: /amt/amt-pamelding-flate/internal/isAlive
+    path: /amt/amt-deltaker-flate/internal/isAlive
     initialDelay: 10
   readiness:
-    path: /amt/amt-pamelding-flate/internal/isReady
+    path: /amt/amt-deltaker-flate/internal/isReady
     initialDelay: 10
   prometheus:
     enabled: true
-    path: /amt/amt-pamelding-flate/internal/metrics
+    path: /amt/amt-deltaker-flate/internal/metrics
   replicas:
     min: 2
     max: 4
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /assets/*
+        - /asset-manifest.json
   ingresses:
-    - "https://www.nav.no/amt/amt-pamelding-flate"
+    - "https://www.nav.no/amt/amt-deltaker-flate"
   resources:
     limits:
       cpu: "3"

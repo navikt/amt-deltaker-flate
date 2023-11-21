@@ -1,10 +1,10 @@
-import {Pamelding} from './pamelding/Pamelding'
-import {MAL_TYPE_ANNET} from './utils'
-import {useEffect, useState} from 'react'
-import {createPamelding} from './api/api.ts'
-import {PameldingResponse} from './api/data/pamelding.ts'
+import { Pamelding } from './pamelding/Pamelding'
+import { MAL_TYPE_ANNET } from './utils'
+import { useEffect, useState } from 'react'
+import { PameldingResponse } from './api/data/pamelding.ts'
+import { createPamelding } from './api/api.ts'
 
-const Mikrofrontend = () => {
+const App = () => {
   const [info, setInfo] = useState<PameldingResponse | undefined>(undefined)
 
   useEffect(() => {
@@ -49,4 +49,4 @@ const Mikrofrontend = () => {
   )
 }
 
-export default Mikrofrontend
+export default App
