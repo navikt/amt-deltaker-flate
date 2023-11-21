@@ -1,2 +1,0 @@
-import{a as t,j as e,R as o,A as a}from"./client-jy5tnyrZ.js";import"./index-cR_w1sDY.js";const s=r=>{t.createRoot(r).render(e.jsxDEV(o.StrictMode,{children:e.jsxDEV(a,{},void 0,!1,{fileName:"/home/runner/work/amt-deltaker-flate/amt-deltaker-flate/src/rootWrapper.tsx",lineNumber:12,columnNumber:7},void 0)},void 0,!1,{fileName:"/home/runner/work/amt-deltaker-flate/amt-deltaker-flate/src/rootWrapper.tsx",lineNumber:11,columnNumber:5},void 0))};export{s as renderAsReactRoot};
-//# sourceMappingURL=rootWrapper-NWbKrtWh.js.map
