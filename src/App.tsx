@@ -17,7 +17,7 @@ const App = () => {
   if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
 
   const avbrytPamelding = () => {
-    // Hvis vi autolagerer i fremtiden vil vil ikke slette ved avbryt!
+    // Hvis vi autolagerer i fremtiden vil vi ikke slette ved avbryt!
     deletePamelding(pamelidng.deltakerId).then(() => setPamelding(undefined))
     // .then() Naviger tilbake?
   }
