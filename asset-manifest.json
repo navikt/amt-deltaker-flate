@@ -1,0 +1,18 @@
+{
+  "index.html": {
+    "dynamicImports": [
+      "src/webComponentWrapper.tsx"
+    ],
+    "file": "assets/index-cca09d18.js",
+    "isEntry": true,
+    "src": "index.html"
+  },
+  "src/webComponentWrapper.tsx": {
+    "file": "assets/webComponentWrapper-a5434a12.js",
+    "imports": [
+      "index.html"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/webComponentWrapper.tsx"
+  }
+}
