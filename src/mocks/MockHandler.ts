@@ -1,5 +1,5 @@
 import {PameldingRequest} from '../api/data/pamelding-request.ts'
-import {PameldingResponse} from '../api/data/pamelding.ts'
+import { PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
 import {v4 as uuidv4} from 'uuid'
 import {HttpResponse} from 'msw'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
@@ -16,7 +16,7 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: request.deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: 'VTA',
+        tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'løpende',
         mal: [

@@ -24,12 +24,7 @@ const App = () => {
 
   return (
     <>
-      <Pamelding
-        deltakerlisteNavn={pamelidng.deltakerliste.deltakerlisteNavn}
-        arrangorNavn={pamelidng.deltakerliste.arrangorNavn}
-        oppstartsType={pamelidng.deltakerliste.oppstartstype}
-        mal={pamelidng.deltakerliste.mal}
-      />
+      <Pamelding deltakerliste={pamelidng.deltakerliste} />
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
         Avbryt påmelding
       </Button>
