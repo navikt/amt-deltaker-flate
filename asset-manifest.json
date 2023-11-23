@@ -1,6 +1,6 @@
 {
-  "_client-uFw2lK-v.js": {
-    "file": "assets/client-uFw2lK-v.js",
+  "_client-FpQ5KuHX.js": {
+    "file": "assets/client-FpQ5KuHX.js",
     "imports": [
       "index.html"
     ]
@@ -10,26 +10,26 @@
       "src/webComponentWrapper.tsx",
       "src/rootWrapper.tsx"
     ],
-    "file": "assets/index-hJqb8sp1.js",
+    "file": "assets/index-6ztYExPg.js",
     "isEntry": true,
     "src": "index.html"
   },
   "src/rootWrapper.tsx": {
     "css": [
-      "assets/rootWrapper-tTMvrn-g.css"
+      "assets/rootWrapper-wf1hm4iy.css"
     ],
-    "file": "assets/rootWrapper-6dkFD_V6.js",
+    "file": "assets/rootWrapper-IDw0lxT_.js",
     "imports": [
-      "_client-uFw2lK-v.js",
+      "_client-FpQ5KuHX.js",
       "index.html"
     ],
     "isDynamicEntry": true,
     "src": "src/rootWrapper.tsx"
   },
   "src/webComponentWrapper.tsx": {
-    "file": "assets/webComponentWrapper-WhW5ve-1.js",
+    "file": "assets/webComponentWrapper-y3rK-eWO.js",
     "imports": [
-      "_client-uFw2lK-v.js",
+      "_client-FpQ5KuHX.js",
       "index.html"
     ],
     "isDynamicEntry": true,
