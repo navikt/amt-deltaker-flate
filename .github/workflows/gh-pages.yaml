@@ -1,6 +1,6 @@
 name: Update GitHub Pages
 on:
-  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-tiltaksarrangor-flate/actions/workflows/gh-pages.yaml
+  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/gh-pages.yaml
   push:
     branches:
       - main
@@ -28,7 +28,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

@@ -3,15 +3,14 @@ import { useEffect, useState } from 'react'
 import { PameldingResponse } from './api/data/pamelding.ts'
 import { createPamelding, deletePamelding } from './api/api.ts'
 import { Button } from '@navikt/ds-react'
+import { useDeltakerIdent } from './hooks/useDeltakerIdent.ts'
 
 const App = () => {
   const [pamelidng, setPamelding] = useState<PameldingResponse | undefined>(undefined)
+  const deltakerIdent = useDeltakerIdent()
 
   useEffect(() => {
-    createPamelding({
-      deltakerlisteId: '6b6578eb-eae0-4ad7-8a69-79db3cea4f64',
-      personident: '12345678901'
-    }).then((data) => setPamelding(data))
+    createPamelding(deltakerIdent).then((data) => setPamelding(data))
   }, [])
 
   if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
