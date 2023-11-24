@@ -37,11 +37,17 @@ const demoContainer = document.getElementById(APPLICATION_NAME)
 // Lokalt:
 if (import.meta.env.DEV && demoContainer) {
   renderAsRootApp(demoContainer)
+
   /*
   // TESTE WEB COMPONENT LOKALT:
   enableMocking().then(() => exportAsWebcomponent())
   const root = ReactDOM.createRoot(demoContainer)
-  root.render(React.createElement(APPLICATION_WEB_COMPONENT_NAME))
+  root.render(
+    React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
+      personident: '12345678910',
+      deltakerlisteId: '6b6578eb-eae0-4ad7-8a69-79db3cea4f64'
+    })
+  )
   */
 } else {
   exportAsWebcomponent()
