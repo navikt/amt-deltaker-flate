@@ -35,7 +35,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build mock application
-        run: pnpm build:gh-pages
+        run: pnpm build
       - name: Update GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
