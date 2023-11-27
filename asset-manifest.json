@@ -3,12 +3,12 @@
     "dynamicImports": [
       "src/webComponentWrapper.tsx"
     ],
-    "file": "assets/index-1OmGiSK0.js",
+    "file": "assets/index-Y-dg4cdz.js",
     "isEntry": true,
     "src": "index.html"
   },
   "src/webComponentWrapper.tsx": {
-    "file": "assets/webComponentWrapper-kSwkzJlx.js",
+    "file": "assets/webComponentWrapper-4g8qlo0R.js",
     "imports": [
       "index.html"
     ],
