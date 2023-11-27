@@ -12,9 +12,13 @@ jobs:
 
   update-gh-pages:
     permissions:
-      contents: "write"
+      contents: "read"
       id-token: "write"
-      packages: "write"
+      pages: "write"
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
 
     name: Update GitHub pages
     runs-on: ubuntu-latest
@@ -36,9 +40,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build mock application
         run: pnpm build
-      - name: Update GitHub pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: gh-pages
+          # Upload dist repository
+          path: './build'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
