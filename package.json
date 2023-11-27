@@ -22,12 +22,12 @@
     "@navikt/ds-css": "^5.11.2",
     "@navikt/ds-react": "^5.11.2",
     "mockjs": "^1.1.0",
+    "msw": "^2.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "swr": "^2.2.4",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4",
-    "msw": "^2.0.9"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",
