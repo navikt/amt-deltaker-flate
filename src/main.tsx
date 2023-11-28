@@ -12,7 +12,11 @@ export async function enableMocking() {
   // if (process.env.NODE_ENV !== 'development') { // TODO Enable mocking only for specific environments
   //     return
   // }
-  return worker.start()
+  return worker.start({
+    serviceWorker: {
+      url: '/amt-deltaker-flate/mockServiceWorker.js'
+    }
+  })
 }
 
 const renderAsRootApp = (appElement: HTMLElement) => {
