@@ -16,7 +16,7 @@ export const getEnvironment = () => {
 type EnvUrl = { development: string; production: string; local: string };
 
 const API_URL: EnvUrl = {
-  local: 'http://localhost:3000/api/endpoint',
+  local: 'http://localhost:8080',
   development: 'https://www.dev.nav.no/api/endpoint',
   production: 'https://www.nav.no/api/endpoint',
 }

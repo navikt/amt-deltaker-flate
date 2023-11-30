@@ -1,26 +1,29 @@
-import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants'
-import { worker } from './mocks/setupMocks.ts'
+import {APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME} from './constants'
+import {worker} from './mocks/setupMocks.ts'
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
-  import('./webComponentWrapper').then(({ Deltaker }) => {
+  import('./webComponentWrapper').then(({Deltaker}) => {
     customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
   })
 }
 
 export async function enableMocking() {
-  // if (process.env.NODE_ENV !== 'development') { // TODO Enable mocking only for specific environments
-  //     return
-  // }
+  let serviceWorkerUrl = '/amt-deltaker-flate/mockServiceWorker.js'
+
+  if (process.env.NODE_ENV === 'local') {
+    serviceWorkerUrl = './mockServiceWorker.js'
+  }
+
   return worker.start({
     serviceWorker: {
-      url: '/amt-deltaker-flate/mockServiceWorker.js'
+      url: serviceWorkerUrl
     }
   })
 }
 
 const renderAsRootApp = (appElement: HTMLElement) => {
-  import('./rootWrapper').then(({ renderAsReactRoot }) => {
+  import('./rootWrapper').then(({renderAsReactRoot}) => {
     enableMocking().then(() => {
       renderAsReactRoot(appElement)
     })
