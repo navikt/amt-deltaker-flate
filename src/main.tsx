@@ -9,15 +9,10 @@ const exportAsWebcomponent = () => {
 }
 
 export async function enableMocking() {
-  let serviceWorkerUrl = '/amt-deltaker-flate/mockServiceWorker.js'
-
-  if (process.env.NODE_ENV === 'local') {
-    serviceWorkerUrl = './mockServiceWorker.js'
-  }
-
+  const url = `${import.meta.env.BASE_URL}mockServiceWorker.js`
   return worker.start({
     serviceWorker: {
-      url: serviceWorkerUrl
+      url: url
     }
   })
 }
