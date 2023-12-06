@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=local vite --port 3000",
     "build": "tsc && vite build",
-    "build:gh-pages": "NODE_ENV=development vite build --base=/amt-deltaker-flate/ && cpy --cwd=build --rename=404.html index.html .",
+    "build:gh-pages": "NODE_ENV=development vite build --base=/amt-deltaker-flate/",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
