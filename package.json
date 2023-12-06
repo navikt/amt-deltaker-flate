@@ -19,8 +19,8 @@
     ]
   },
   "dependencies": {
-    "@navikt/ds-css": "^5.11.3",
-    "@navikt/ds-react": "^5.11.3",
+    "@navikt/ds-css": "^5.11.4",
+    "@navikt/ds-react": "^5.11.4",
     "mockjs": "^1.1.0",
     "msw": "^2.0.10",
     "react": "^18.2.0",
