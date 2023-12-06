@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@navikt/ds-css':
-    specifier: ^5.11.3
-    version: 5.11.3
+    specifier: ^5.11.4
+    version: 5.11.4
   '@navikt/ds-react':
-    specifier: ^5.11.3
-    version: 5.11.3(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.11.4
+    version: 5.11.4(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   mockjs:
     specifier: ^1.1.0
     version: 1.1.0
@@ -529,16 +529,16 @@ packages:
       strict-event-emitter: 0.5.1
     dev: false
 
-  /@navikt/aksel-icons@5.11.3:
-    resolution: {integrity: sha512-Xe9f66aEN4XyZuyq6eIVtP8TweeX2BAKRJUi9k6K7DwUDzfgNL8/AZ0CsXzPjNzyQpRmXoA8atCO3GK+oPAh1g==}
+  /@navikt/aksel-icons@5.11.4:
+    resolution: {integrity: sha512-QhiM3Y2OQuaF3Dsq0pgESHSo9k2ffwN3S8wN9ik9P2eq9rZMe1jSDhkGeSeo1ungVqIdnUX4p62gO+cwQumPcA==}
     dev: false
 
-  /@navikt/ds-css@5.11.3:
-    resolution: {integrity: sha512-rgSiLalhGW0+yYIgwbNlGvi2moEsrTRMBdvCTISk6iuElqr0ncC18IeqqYRdL6krhd8E48lhazQOFBxz0DEljQ==}
+  /@navikt/ds-css@5.11.4:
+    resolution: {integrity: sha512-7iRniSsoQAijBA9Bj3OzBDS8dX/ANI8kEImJlaIuR8hssxd3h1NXeZAG2+sbOkqJYq+xG7PCRFDHwTXf/PLL3A==}
     dev: false
 
-  /@navikt/ds-react@5.11.3(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-JoAU8SRl9aQQUU8y+iJOWfVRkgs5dqHH0iPWPJVPizNIwrVB8eGqBg+zci+HUzPWuKbzacCmI07i5bhFfcSbMQ==}
+  /@navikt/ds-react@5.11.4(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Drhm3yzS5hpRcePR9ZW7rs97FTz7IXHQwaVTKAg5vZtIfYFkgQ+JbuW1h44guYoccV2XmGFOAVayb4dT/qJh/A==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -547,8 +547,8 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.11.3
-      '@navikt/ds-tokens': 5.11.3
+      '@navikt/aksel-icons': 5.11.4
+      '@navikt/ds-tokens': 5.11.4
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.37
@@ -560,8 +560,8 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tokens@5.11.3:
-    resolution: {integrity: sha512-tUoWAd1otecxdG8XuR0NRmq4Rsxvd0TqyRBXAXeDMpyX54JADyMY+LjqBhBxvieWmjnB541gaQxz02p9VTmrLQ==}
+  /@navikt/ds-tokens@5.11.4:
+    resolution: {integrity: sha512-tPItY1DAhtPA35/geBAza2I8Nw9kAgVvT220K+dI0ejWSuMdGTkwBwmtRCfi7O9JJ2hHMnVtAWQJ/TyjtwBKJg==}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
