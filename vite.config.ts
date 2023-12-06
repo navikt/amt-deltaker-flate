@@ -4,14 +4,17 @@ import { ConfigEnv, UserConfigExport } from 'vite'
 
 // https://vitejs.dev/config/
 export default ({ command }: ConfigEnv): UserConfigExport => ({
-  plugins: [
-    react()
-  ],
+  plugins: [react()],
   build: {
     manifest: 'asset-manifest.json',
     outDir: 'build',
     chunkSizeWarningLimit: 1400,
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name].[hash].js'
+      }
+    }
   },
   test: {
     globals: true,
