@@ -1,5 +1,6 @@
 name: Deploy NAIS poao-frontend to dev
 on:
+  workflow_dispatch:
   push:
     paths:
       - ".nais/nais-dev.yaml"
