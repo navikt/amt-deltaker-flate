@@ -6,23 +6,27 @@ metadata:
   labels:
     team: amt
 spec:
-  env:
-  - name: CORS_ALLOWED_ORIGINS
-    value: "https://www.intern.dev.nav.no,https://mulighetsrommet-admin-flate.intern.dev.nav.no"
-  image: {{ image }}
+  image: ghcr.io/navikt/poao-frontend/poao-frontend:2023.01.13_08.09-36c09678654f
   port: 8080
+  ingresses:
+    - https://www.intern.dev.nav.no/amt/amt-deltaker-flate
   liveness:
-    path: /amt/amt-deltaker-flate/internal/isAlive
+    path: /internal/alive
     initialDelay: 10
   readiness:
-    path: /amt/amt-deltaker-flate/internal/isReady
+    path: /internal/ready
     initialDelay: 10
-  prometheus:
-    enabled: true
-    path: /amt/amt-deltaker-flate/internal/metrics
   replicas:
-    min: 2
-    max: 4
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 75
+  resources:
+    limits:
+      cpu: "1"
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
   azure:
     application:
       enabled: true
@@ -33,12 +37,29 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-  ingresses:
-    - "https://www.intern.dev.nav.no/amt/amt-deltaker-flate"
-  resources:
-    limits:
-      cpu: "3"
-      memory: 768Mi
-    requests:
-      cpu: "500m"
-      memory: 512Mi
+  gcp:
+    buckets:
+      - name: amt-deltaker-flate-dev
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      rules:
+        - application: amt-deltaker-bff
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "amt-deltaker-flate-dev"
+          },
+          "auth": {
+            "loginProvider": "AZURE_AD"
+          },
+          "proxies": [
+            {
+              "fromPath": "/amt-deltaker-bff", "toUrl": "http://amt-deltaker-bff",
+              "toApp": { "name": "amt-deltaker-bff", "namespace": "amt", "cluster": "dev-gcp" }
+            }
+          ]
+        }
