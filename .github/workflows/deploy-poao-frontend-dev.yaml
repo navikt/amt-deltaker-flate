@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".nais/nais-dev.yaml"
+      - "nais/nais-dev.yaml"
 
 jobs:
   deploy-dev:
