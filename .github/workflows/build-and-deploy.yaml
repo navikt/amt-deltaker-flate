@@ -56,7 +56,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltakerflate-flate-dev
+        run: gsutil -m rsync -r build gs://amt-deltakerflate-dev
 
 #  deploy-prod:
 #    name: Deploy application to prod
