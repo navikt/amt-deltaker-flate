@@ -9,7 +9,7 @@ spec:
   image: ghcr.io/navikt/poao-frontend/poao-frontend:2023.01.13_08.09-36c09678654f
   port: 8080
   ingresses:
-    - https://www.nav.no/amt/amt-deltaker-flate
+    - https://www.nav.no/amt/deltaker
   liveness:
     path: /internal/alive
     initialDelay: 10
