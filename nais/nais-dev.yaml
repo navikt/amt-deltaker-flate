@@ -54,9 +54,16 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
+          "header": {
+            "csp": {
+              "scriptSrc": ["'self'", "'unsafe-inline'", "*.intern.dev.nav.no", "*.nav.no"],
+              "connectSrc": ["'self'", "'unsafe-inline'", "*.nav.no", "login.microsoftonline.com"]
+          }
           "proxies": [
             {
-              "fromPath": "/amt-deltaker-bff", "toUrl": "http://amt-deltaker-bff",
+              "fromPath": "/amt-deltaker-bff", 
+              "toUrl": "http://amt-deltaker-bff",
+              "preserveFromPath": false,
               "toApp": { "name": "amt-deltaker-bff", "namespace": "amt", "cluster": "dev-gcp" }
             }
           ]
