@@ -16,7 +16,7 @@ export function apiUrl(): string {
   case EndpointHandler.PROXY:
     return 'http://localhost:58080/'
   default:
-    return import.meta.env.BASE_URL
+    return 'https://amt.intern.dev.nav.no/deltaker/'
   }
 }
 
