@@ -5,7 +5,7 @@ import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-
 import {apiUrl} from '../utils/environment-utils.ts'
 
 export const createPamelding = async (request: PameldingRequest): Promise<PameldingResponse> => {
-  return fetch(`${apiUrl()}/amt-deltaker-bff/deltaker`, {
+  return fetch(`${apiUrl()}amt-deltaker-bff/deltaker`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(request)

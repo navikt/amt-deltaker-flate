@@ -12,9 +12,9 @@ export function getEndpointHandlerType(): EndpointHandler {
 export function apiUrl(): string {
   switch (getEndpointHandlerType()) {
   case EndpointHandler.MOCK:
-    return 'http://localhost:3000/api'
+    return 'http://localhost:3000/api/'
   case EndpointHandler.PROXY:
-    return 'http://localhost:58080'
+    return 'http://localhost:58080/'
   default:
     return import.meta.env.BASE_URL
   }
