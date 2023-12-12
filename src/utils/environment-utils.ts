@@ -15,10 +15,8 @@ export function apiUrl(): string {
     return 'http://localhost:3000/api'
   case EndpointHandler.PROXY:
     return 'http://localhost:58080'
-  case EndpointHandler.DEV:
-    return 'https://amt-deltaker-bff.intern.dev.nav.no'
   default:
-    return 'PROD_NOT_UP'
+    return import.meta.env.BASE_URL
   }
 }
 

@@ -18,8 +18,8 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
   const [personident, setPersonident] = useState<string>('')
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>('')
   const changehandler = () => {
-    personidentHandler('12345678910')
-    deltakerlisteIdHandler('6b6578eb-eae0-4ad7-8a69-79db3cea4f64')
+    personidentHandler(personident)
+    deltakerlisteIdHandler(deltakerlisteId)
   }
 
   return (
