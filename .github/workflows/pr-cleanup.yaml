@@ -1,0 +1,24 @@
+name: Rydd applikasjon for PR
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+jobs:
+  cleanup-pr:
+    if: github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
+    name: Rydd applikasjon for PR
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: 'write' # Used to authenticate with Google Cloud
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+      - name: Delete files on GCS
+        run: gsutil rm -r gs://amt-deltaker-flate-dev/pr-${{ github.event.number }}
