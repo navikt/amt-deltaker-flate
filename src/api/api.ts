@@ -2,10 +2,9 @@ import {PameldingRequest} from './data/pamelding-request.ts'
 import {PameldingResponse, pameldingSchema} from './data/pamelding.ts'
 import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {apiUrl} from '../utils/environment-utils.ts'
 
 export const checkBackend = async () => {
-  return fetch(`${apiUrl()}amt-deltaker-bff/internal/health/liveness`)
+  return fetch('/amt-deltaker-bff/internal/health/liveness')
     .then(response => {
       if (response.status !== 200) {
         throw new Error(response.statusText) // TODO Handle errors
@@ -16,7 +15,7 @@ export const checkBackend = async () => {
 }
 
 export const createPamelding = async (request: PameldingRequest): Promise<PameldingResponse> => {
-  return fetch(`${apiUrl()}amt-deltaker-bff/deltaker`, {
+  return fetch('/amt-deltaker-bff/deltaker', {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(request)
