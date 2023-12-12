@@ -4,6 +4,17 @@ import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {apiUrl} from '../utils/environment-utils.ts'
 
+export const checkBackend = async () => {
+  return fetch(`${apiUrl()}internal/health/liveness`)
+    .then(response => {
+      if (response.status !== 200) {
+        throw new Error(response.statusText) // TODO Handle errors
+      }
+
+      return response.text()
+    })
+}
+
 export const createPamelding = async (request: PameldingRequest): Promise<PameldingResponse> => {
   return fetch(`${apiUrl()}amt-deltaker-bff/deltaker`, {
     method: 'POST',
