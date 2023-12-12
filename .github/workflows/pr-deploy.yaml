@@ -32,7 +32,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build Pull Request Application
-        run: NODE_ENV=development VITE_MOCK_REQUEST_HANDLER=PULL_REQUEST BASE=/deltaker/pr-${{ github.event.number }}/ pnpm build
+        run: NODE_ENV=development --base=/deltaker/pr-${{ github.event.number }}/ pnpm build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -54,4 +54,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            URL for testing: https://amt.intern.dev.nav.no/deltakeroversikt/pr-${{ github.event.number }}/index.html
+            URL for testing: https://amt.intern.dev.nav.no/deltaker/pr-${{ github.event.number }}/index.html
