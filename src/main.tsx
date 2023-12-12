@@ -1,5 +1,6 @@
 import {APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME} from './constants'
 import {worker} from './mocks/setupMocks.ts'
+import {EndpointHandler, getEndpointHandlerType} from './utils/environment-utils.ts'
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
@@ -9,12 +10,16 @@ const exportAsWebcomponent = () => {
 }
 
 export async function enableMocking() {
-  const url = `${import.meta.env.BASE_URL}mockServiceWorker.js`
-  return worker.start({
-    serviceWorker: {
-      url: url
-    }
-  })
+  const enpointHandlerType = getEndpointHandlerType()
+
+  if (enpointHandlerType === EndpointHandler.MOCK) {
+    const url = `${import.meta.env.BASE_URL}mockServiceWorker.js`
+    return worker.start({
+      serviceWorker: {
+        url: url
+      }
+    })
+  }
 }
 
 const renderAsRootApp = (appElement: HTMLElement) => {
