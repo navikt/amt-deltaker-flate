@@ -46,7 +46,6 @@ spec:
     - name: JSON_CONFIG
       value: >
         {
-          "contextPath": "/deltaker",
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
             "bucketName": "amt-deltaker-flate-dev"
