@@ -46,29 +46,12 @@ spec:
     - name: JSON_CONFIG
       value: >
         {
-          "contextPath": "/deltaker",
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
             "bucketName": "amt-deltaker-flate-dev"
           },
           "auth": {
             "loginProvider": "AZURE_AD"
-          },
-          "header": {
-            "csp": {
-              "scriptSrc": [
-                "'self'",
-                "'unsafe-inline'",
-                "*.intern.dev.nav.no",
-                "*.nav.no"
-              ],
-              "connectSrc": [
-                "'self'",
-                "'unsafe-inline'",
-                "*.nav.no",
-                "login.microsoftonline.com"
-              ]
-            }
           },
           "proxies": [
             {
