@@ -53,9 +53,6 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
-          "cors": {
-            "origin": "https://veilarbpersonflate.intern.dev.nav.no"
-          },
           "proxies": [
             {
               "fromPath": "/amt-deltaker-bff",
