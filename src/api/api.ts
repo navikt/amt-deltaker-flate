@@ -5,7 +5,7 @@ import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-
 import {apiUrl} from '../utils/environment-utils.ts'
 
 export const checkBackend = async () => {
-  return fetch(`${apiUrl()}deltaker/amt-deltaker-bff/internal/health/liveness`)
+  return fetch(`${apiUrl()}amt-deltaker-bff/internal/health/liveness`)
     .then(response => {
       if (response.status !== 200) {
         throw new Error(response.statusText) // TODO Handle errors
