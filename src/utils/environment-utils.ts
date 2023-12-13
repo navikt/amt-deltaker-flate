@@ -16,7 +16,7 @@ export function apiUrl(): string {
   case EndpointHandler.PROXY:
     return 'http://localhost:58080/'
   default:
-    return 'https://amt.intern.dev.nav.no/'
+    return 'https://amt-deltaker-flate.intern.dev.nav.no/'
   }
 }
 
