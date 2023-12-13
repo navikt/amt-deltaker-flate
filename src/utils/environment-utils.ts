@@ -10,16 +10,11 @@ export function getEndpointHandlerType(): EndpointHandler {
 }
 
 export function apiUrl(): string {
-  switch (getEndpointHandlerType()) {
-  case EndpointHandler.MOCK:
-    return 'http://localhost:3000/api/'
-  case EndpointHandler.PROXY:
-    return 'http://localhost:58080/'
-  default:
-    return 'https://amt-deltaker-flate.intern.dev.nav.no/'
-  }
-}
+  const baseUrl = import.meta.env.VITE_ENDPOINT_HANDLER
 
-export function getRequestCookie(): string {
-  return import.meta.env.VITE_MOCK_REQUEST_COOKIE || ''
+  if(!baseUrl || baseUrl === '') {
+    throw new Error('BaseUrl is not defined, or empty')
+  }
+  
+  return baseUrl
 }

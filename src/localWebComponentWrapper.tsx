@@ -15,8 +15,8 @@ interface WebComponentInputHandlerProps {
 }
 
 const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: WebComponentInputHandlerProps) => {
-  const [personident, setPersonident] = useState<string>('')
-  const [deltakerlisteId, setDeltakerlisteId] = useState<string>('')
+  const [personident, setPersonident] = useState<string>('01127315562')
+  const [deltakerlisteId, setDeltakerlisteId] = useState<string>('3fcac2a6-68cf-464e-8dd1-62ccec5933df')
 
   const changehandler = () => {
     personidentHandler(personident)
