@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {APPLICATION_WEB_COMPONENT_NAME} from './constants.ts'
 import {Button, TextField} from '@navikt/ds-react'
-import {checkBackend} from './api/api.ts'
 
 const webComponent = (personident: string, deltakerlisteId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
@@ -18,11 +17,6 @@ interface WebComponentInputHandlerProps {
 const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: WebComponentInputHandlerProps) => {
   const [personident, setPersonident] = useState<string>('')
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>('')
-  const [backendStatus, setBackendStatus] = useState<string>('waiting...')
-
-  useEffect(() => {
-    checkBackend().then((data) => setBackendStatus(data))
-  }, [])
 
   const changehandler = () => {
     personidentHandler(personident)
@@ -34,7 +28,6 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
       <div className="m-auto flex-col">
         <section className="border-2 p-6 space-y-4">
           <h1 className="font-bold text-2xl">Dette er en testside for amt-deltaker-flate.</h1>
-          <p>Backend: {backendStatus}</p>
           <TextField
             label="Personident"
             description="Legg inn en personident (fødselsnummer etc)"
