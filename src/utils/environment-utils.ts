@@ -13,7 +13,7 @@ export function apiUrl(): string {
   const baseUrl = import.meta.env.VITE_ENDPOINT_HANDLER
 
   if(!baseUrl || baseUrl === '') {
-    throw new Error('BaseUrl is not defined, or empty')
+    return import.meta.env.BASE_URL
   }
   
   return baseUrl
