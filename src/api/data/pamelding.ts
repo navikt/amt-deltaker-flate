@@ -33,17 +33,17 @@ export const pameldingStatusSchema = z.object({
   id: z.string().uuid(),
   type: z.string(),
   aarsak: z.string().nullable(),
-  gyldigFra: z.date(),
-  gyldigTil: z.date().nullable(),
-  opprettet: z.date()
+  gyldigFra: z.string(),
+  gyldigTil: z.string().nullable(),
+  opprettet: z.string()
 })
 
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
   deltakerliste: deltakerlisteSchema,
   status: pameldingStatusSchema,
-  startdato: z.date().nullable(),
-  sluttdato: z.date().nullable(),
+  startdato: z.string().nullable(),
+  sluttdato: z.string().nullable(),
   dagerPerUke: z.number().nullable(),
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
