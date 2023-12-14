@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <>
-      <Pamelding deltakerliste={pamelidng.deltakerliste} />
+      <Pamelding deltakerliste={pamelidng.deltakerliste} mal={pamelidng.mal}/>
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
         Avbryt påmelding
       </Button>

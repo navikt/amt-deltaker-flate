@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=local vite --port 3000",
-    "build": "tsc && vite build --base=/deltaker/",
-    "build:gh-pages": "NODE_ENV=development vite build --base=/amt-deltaker-flate/",
+    "start": "NODE_ENV=local vite --port 3000 --mode=local-dev",
+    "build": "tsc && vite build",
+    "build:gh-pages": "NODE_ENV=development vite build --mode=gh-pages",
+    "build:pull-request": "NODE_ENV=development vite build --mode=pull-request",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

@@ -43,7 +43,7 @@ export const PameldingSkjema = ({
       >
         {mal.map((e) => (
           <Checkbox key={e.type} value={e.type}>
-            {e.visningsTekst}
+            {e.visningstekst}
           </Checkbox>
         ))}
         {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (

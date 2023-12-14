@@ -19,27 +19,41 @@ export class MockHandler {
         tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'løpende',
-        mal: [
-          {
-            visningsTekst: 'Mål 1',
-            type: 'type1',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            visningsTekst: 'Mål 2',
-            type: 'type2',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            visningsTekst: 'Annet',
-            type: MAL_TYPE_ANNET,
-            valgt: false,
-            beskrivelse: 'Beskrivelse av annet mål'
-          }
-        ]
-      }
+      },
+      status: {
+        id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
+        type: 'KLADD',
+        aarsak: null,
+        gyldigFra: '2023-12-14T13:17:52.362471',
+        gyldigTil: null,
+        opprettet: '2023-12-14T13:17:52.366581'
+      },
+      startdato: null,
+      sluttdato: null,
+      dagerPerUke: null,
+      deltakelsesprosent : null,
+      bakgrunnsinformasjon : null,
+      mal: [
+        {
+          visningstekst: 'Mål 1',
+          type: 'type1',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Mål 2',
+          type: 'type2',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Annet',
+          type: MAL_TYPE_ANNET,
+          valgt: false,
+          beskrivelse: 'Beskrivelse av annet mål'
+        }
+      ],
+      sistEndretAv : 'Z994409',
     }
 
     this.pameldinger.push(nyPamelding)

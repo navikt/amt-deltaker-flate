@@ -2,16 +2,20 @@ import {PameldingRequest} from './data/pamelding-request.ts'
 import {PameldingResponse, pameldingSchema} from './data/pamelding.ts'
 import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {apiUrl} from './urls.ts'
+import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 
-export const createPamelding = (request: PameldingRequest): Promise<PameldingResponse> => {
-  return fetch(`${apiUrl}/deltaker`, {
+export const createPamelding = async (request: PameldingRequest): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker`, {
     method: 'POST',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
     body: JSON.stringify(request)
   })
     .then(response => {
-      if(response.status !== 200) {
+      if (response.status !== 200) {
         throw new Error(response.statusText) // TODO Handle errors
       }
       return response.json()

@@ -15,7 +15,7 @@ export enum Tiltakstype {
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 
 export const malSchema = z.object({
-  visningsTekst: z.string(), // kommer fra valp
+  visningstekst: z.string(), // kommer fra valp
   type: z.string(), // Enum/String, kommer fra valp
   valgt: z.boolean(),
   beskrivelse: z.string().nullable()
@@ -26,13 +26,29 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.string(),
-  mal: z.array(malSchema)
+  oppstartstype: z.string()
+})
+
+export const pameldingStatusSchema = z.object({
+  id: z.string().uuid(),
+  type: z.string(),
+  aarsak: z.string().nullable(),
+  gyldigFra: z.string(),
+  gyldigTil: z.string().nullable(),
+  opprettet: z.string()
 })
 
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
-  deltakerliste: deltakerlisteSchema
+  deltakerliste: deltakerlisteSchema,
+  status: pameldingStatusSchema,
+  startdato: z.string().nullable(),
+  sluttdato: z.string().nullable(),
+  dagerPerUke: z.number().nullable(),
+  deltakelsesprosent: z.number().nullable(),
+  bakgrunnsinformasjon: z.string().nullable(),
+  mal: z.array(malSchema),
+  sistEndretAv: z.string()
 })
 
 export type Mal = z.infer<typeof malSchema>
