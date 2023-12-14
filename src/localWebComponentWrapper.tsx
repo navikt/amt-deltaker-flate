@@ -18,6 +18,9 @@ interface WebComponentInputHandlerProps {
 const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: WebComponentInputHandlerProps) => {
   const [personident, setPersonident] = useState<string>('01127315562')
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>('3fcac2a6-68cf-464e-8dd1-62ccec5933df')
+  const url = 'https://amt-deltaker-flate.intern.dev.nav.no/pr-79/amt-deltaker-bff/deltaker'
+
+  const modifiedUrl = url.replace(/\/pr-\d+\//, '/')
 
   const changehandler = () => {
     personidentHandler(personident)
@@ -30,6 +33,7 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
         <section className="border-2 p-6 space-y-4">
           <h1 className="font-bold text-2xl">Dette er en testside for amt-deltaker-flate.</h1>
           <p>Denne versjonen kjører i {getCurrentMode()} modus</p>
+          <p>{modifiedUrl}</p>
           <TextField
             label="Personident"
             description="Legg inn en personident (fødselsnummer etc)"
