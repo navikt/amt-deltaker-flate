@@ -7,8 +7,8 @@ import { AppContext } from './AppContext'
 
 export class Deltaker extends HTMLElement {
   private readonly root: HTMLDivElement
-  static PERSONIDENT_PROP = 'personident'
-  static DELTAKERLISTE_ID_PROP = 'deltakerlisteId'
+  static PERSONIDENT_PROP = 'data-personident'
+  static DELTAKERLISTE_ID_PROP = 'data-deltakerlisteId'
 
   setPersonident?: (personident: string) => void
   setDeltakelisteId?: (fndeltakerlisteIdr: string) => void
