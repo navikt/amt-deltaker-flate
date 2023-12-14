@@ -35,6 +35,7 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
           <p>Denne versjonen kjører i {getCurrentMode()} modus</p>
           <p>{url}</p>
           <p>{modifiedUrl}</p>
+          <>{window.location.hostname}</>
           <TextField
             label="Personident"
             description="Legg inn en personident (fødselsnummer etc)"
