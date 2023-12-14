@@ -16,8 +16,16 @@ export const deltakerBffApiBasePath = (): string => {
   case EndpointHandler.PROXY:
     return 'http://localhost:58080'
   default:
-    return `https://${window.location.hostname}/amt-deltaker-bff`
+    if(isDev()) {
+      return 'https://amt-deltaker-flate.intern.dev.nav.no/amt-deltaker-bff'
+    }
+
+    return 'PROD_LINK'
   }
+}
+
+const isDev = (): boolean => {
+  return window.location.hostname.includes('intern.dev.nav.no')
 }
 
 export const getCurrentMode = () => {
