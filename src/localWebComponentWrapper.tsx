@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {APPLICATION_WEB_COMPONENT_NAME} from './constants.ts'
 import {Button, TextField} from '@navikt/ds-react'
+import {getCurrentMode} from './utils/environment-utils.ts'
 
 const webComponent = (personident: string, deltakerlisteId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
@@ -28,6 +29,7 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
       <div className="m-auto flex-col">
         <section className="border-2 p-6 space-y-4">
           <h1 className="font-bold text-2xl">Dette er en testside for amt-deltaker-flate.</h1>
+          <p>Denne versjonen kjører i {getCurrentMode()} modus</p>
           <TextField
             label="Personident"
             description="Legg inn en personident (fødselsnummer etc)"

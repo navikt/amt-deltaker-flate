@@ -10,7 +10,7 @@ const handler = new MockHandler()
 export const worker = setupWorker(
   http.get('/test', () => HttpResponse.json({ id: 'abc' })),
 
-  http.post('/api/deltaker', async ({ request }) => {
+  http.post('/mock/deltaker', async ({ request }) => {
     const response = await request
       .json()
       .then((json) => pameldingRequestSchema.parse(json))
@@ -19,12 +19,12 @@ export const worker = setupWorker(
     return response
   }),
 
-  http.delete('/api/pamelding/:deltakerId', async ({ params }) => {
+  http.delete('/mock/pamelding/:deltakerId', async ({ params }) => {
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
   }),
 
-  http.post('/api/pamelding/:deltakerId', async ({ request, params }) => {
+  http.post('/mock/pamelding/:deltakerId', async ({ request, params }) => {
     const { deltakerId } = params
 
     const response = await request
@@ -34,7 +34,7 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/api/pamelding/:deltakerId/utenGodkjenning', async ({ request, params }) => {
+  http.post('/mock/pamelding/:deltakerId/utenGodkjenning', async ({ request, params }) => {
     const { deltakerId } = params
 
     const response = await request
