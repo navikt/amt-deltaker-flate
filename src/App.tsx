@@ -13,7 +13,7 @@ const App = () => {
     createPamelding(deltakerIdent).then((data) => setPamelding(data))
   }, [])
 
-  if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
+  if (pamelidng === undefined) return <div>Vi kunne ikke opprette påmelding.</div>
 
   const avbrytPamelding = () => {
     // Hvis vi autolagerer i fremtiden vil vi ikke slette ved avbryt!
