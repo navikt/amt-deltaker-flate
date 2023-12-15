@@ -5,8 +5,8 @@ import {getCurrentMode} from './utils/environment-utils.ts'
 
 const webComponent = (personident: string, deltakerlisteId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
-    personident: personident,
-    deltakerlisteId: deltakerlisteId
+    'data-personident': personident,
+    'data-deltakerlisteId': deltakerlisteId
   })
 }
 
