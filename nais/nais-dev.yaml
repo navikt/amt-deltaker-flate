@@ -37,7 +37,7 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-#        - /amt-deltaker-bff/**
+        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-deltaker-flate-dev
