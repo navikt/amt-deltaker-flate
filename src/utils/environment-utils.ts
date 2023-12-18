@@ -17,7 +17,7 @@ export const deltakerBffApiBasePath = (): string => {
     return 'http://localhost:58080'
   default:
     if(isDev()) {
-      return 'https://amt-deltaker-flate.intern.dev.nav.no/amt-deltaker-bff'
+      return '/amt-deltaker-bff'
     }
 
     return 'PROD_LINK'
