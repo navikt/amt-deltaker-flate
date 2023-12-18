@@ -12,7 +12,24 @@ export enum Tiltakstype {
   VASV = 'VASV' // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
 }
 
+export enum DeltakerStatusType {
+  KLADD = 'KLADD',
+  UTKAST_TIL_PAMELDING = 'UTKAST_TIL_PAMELDING',
+  VENTER_PA_OPPSTART = 'VENTER_PA_OPPSTART',
+  DELTAR = 'DELTAR',
+  HAR_SLUTTET = 'HAR_SLUTTET',
+  IKKE_AKTUELL = 'IKKE_AKTUELL',
+  FEILREGISTRERT = 'FEILREGISTRERT',
+  SOKT_INN = 'SOKT_INN',
+  VURDERES = 'VURDERES',
+  VENTELISTE = 'VENTELISTE',
+  AVBRUTT = 'AVBRUTT',
+  FULLFORT = 'FULLFORT',
+  PABEGYNT_REGISTRERING = 'PABEGYNT_REGISTRERING'
+}
+
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
+export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
 
 export const malSchema = z.object({
   visningstekst: z.string(), // kommer fra valp
@@ -31,7 +48,7 @@ export const deltakerlisteSchema = z.object({
 
 export const pameldingStatusSchema = z.object({
   id: z.string().uuid(),
-  type: z.string(),
+  type: deltakerStaturTypeSchema,
   aarsak: z.string().nullable(),
   gyldigFra: z.string(),
   gyldigTil: z.string().nullable(),

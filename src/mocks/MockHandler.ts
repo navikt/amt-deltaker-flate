@@ -1,5 +1,5 @@
 import {PameldingRequest} from '../api/data/pamelding-request.ts'
-import { PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
 import {v4 as uuidv4} from 'uuid'
 import {HttpResponse} from 'msw'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
@@ -18,11 +18,11 @@ export class MockHandler {
         deltakerlisteNavn: 'Testliste',
         tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
-        oppstartstype: 'løpende',
+        oppstartstype: 'løpende'
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: 'KLADD',
+        type: DeltakerStatusType.KLADD,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
         gyldigTil: null,
@@ -31,8 +31,8 @@ export class MockHandler {
       startdato: null,
       sluttdato: null,
       dagerPerUke: null,
-      deltakelsesprosent : null,
-      bakgrunnsinformasjon : null,
+      deltakelsesprosent: null,
+      bakgrunnsinformasjon: null,
       mal: [
         {
           visningstekst: 'Mål 1',
@@ -53,7 +53,7 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
-      sistEndretAv : 'Z994409',
+      sistEndretAv: 'Z994409'
     }
 
     this.pameldinger.push(nyPamelding)
