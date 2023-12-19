@@ -33,7 +33,7 @@ export const PameldingSkjema = ({
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   return (
-    <VStack gap="8" as={'form'}>
+    <VStack gap="8">
       <CheckboxGroup
         legend="Hva er målet med deltakelsen?"
         onChange={setValgteMal}
