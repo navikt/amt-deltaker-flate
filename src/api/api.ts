@@ -4,13 +4,19 @@ import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 
-export const createPamelding = async (request: PameldingRequest): Promise<PameldingResponse> => {
+export const createPamelding = async (personident: string, deltakerlisteId: string, enhetId: string): Promise<PameldingResponse> => {
+  const request: PameldingRequest = {
+    personident: personident,
+    deltakerlisteId: deltakerlisteId
+  }
+
   return fetch(`${deltakerBffApiBasePath()}/deltaker`, {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'aktiv-enhet': enhetId
     },
     body: JSON.stringify(request)
   })

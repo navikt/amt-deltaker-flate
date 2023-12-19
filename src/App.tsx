@@ -1,16 +1,16 @@
-import { Pamelding } from './pamelding/Pamelding'
-import { useEffect, useState } from 'react'
-import { PameldingResponse } from './api/data/pamelding.ts'
-import { createPamelding, deletePamelding } from './api/api.ts'
-import { Button } from '@navikt/ds-react'
-import { useDeltakerIdent } from './hooks/useDeltakerIdent.ts'
+import {Pamelding} from './pamelding/Pamelding'
+import {useEffect, useState} from 'react'
+import {PameldingResponse} from './api/data/pamelding.ts'
+import {createPamelding, deletePamelding} from './api/api.ts'
+import {Button} from '@navikt/ds-react'
+import {useAppContext} from './AppContext.tsx'
 
 const App = () => {
   const [pamelidng, setPamelding] = useState<PameldingResponse | undefined>(undefined)
-  const deltakerIdent = useDeltakerIdent()
+  const {personident, deltakerlisteId, enhetId} = useAppContext()
 
   useEffect(() => {
-    createPamelding(deltakerIdent).then((data) => setPamelding(data))
+    createPamelding(personident, deltakerlisteId, enhetId).then((data) => setPamelding(data))
   }, [])
 
   if (pamelidng === undefined) return <div>Vi kunne opprette påmelding</div>
@@ -25,7 +25,7 @@ const App = () => {
     <>
       <Pamelding deltakerliste={pamelidng.deltakerliste} mal={pamelidng.mal}/>
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
-        Avbryt påmelding
+          Avbryt påmelding
       </Button>
     </>
   )
