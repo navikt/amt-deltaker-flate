@@ -22,7 +22,9 @@ export const createPamelding = async (personident: string, deltakerlisteId: stri
   })
     .then(response => {
       if (response.status !== 200) {
-        throw new Error(response.statusText) // TODO Handle errors
+        throw new Error(
+          'Noe gikk galt! Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere'
+        )
       }
       return response.json()
     })
