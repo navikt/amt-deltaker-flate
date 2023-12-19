@@ -5,7 +5,7 @@ export interface ArrangørInfoProps {
   oppstartsType: string
 }
 
-export const ArrangørInfo = ({ arrangorNavn, oppstartsType }: ArrangørInfoProps) => {
+export const ArrangorInfo = ({ arrangorNavn, oppstartsType }: ArrangørInfoProps) => {
   return (
     <Box padding="4" background="surface-subtle" borderRadius="large">
       <HStack gap="6">

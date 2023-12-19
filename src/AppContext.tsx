@@ -1,30 +1,46 @@
-import { DeltakerIdentContext } from './hooks/useDeltakerIdent'
-import { Dispatch, ReactNode, useEffect, useState } from 'react'
+import {createContext, useContext, useState} from 'react'
 
 export interface AppContextProps {
-  personident: string
-  deltakerlisteId: string
-  setPersonidentRef?: (setPersonident: Dispatch<string>) => void
-  setDeltakelisteIdRef?: (setDeltakelisteId: Dispatch<string>) => void
-  children: ReactNode
+    personident: string
+    deltakerlisteId: string
+    enhetId: string
+    setPersonident: React.Dispatch<React.SetStateAction<string>>
+    setDeltakelisteId: React.Dispatch<React.SetStateAction<string>>
+    setEnhetId: React.Dispatch<React.SetStateAction<string>>
 }
 
-export function AppContext(props: AppContextProps) {
-  const [personident, setPersonident] = useState(props.personident)
-  const [deltakerlisteId, setDeltakelisteId] = useState(props.deltakerlisteId)
+const AppContext = createContext<AppContextProps | undefined>(undefined)
 
-  useEffect(() => {
-    if (props.setPersonidentRef) {
-      props.setPersonidentRef(setPersonident)
-    }
-    if (props.setDeltakelisteIdRef) {
-      props.setDeltakelisteIdRef(setDeltakelisteId)
-    }
-  }, [])
+const useAppContext = () => {
+  const context = useContext(AppContext)
 
-  return (
-    <DeltakerIdentContext.Provider value={{ personident, deltakerlisteId }}>
-      {props.children}
-    </DeltakerIdentContext.Provider>
-  )
+  if (!context) {
+    throw new Error('useAppContext must be used within an AppContextProvider')
+  }
+
+  return context
 }
+
+const AppContextProvider = ({initialPersonident, initialDeltakerlisteId, initialEnhetId, children}: {
+    initialPersonident: string,
+    initialDeltakerlisteId: string,
+    initialEnhetId: string,
+    children: React.ReactNode
+}) => {
+  const [personident, setPersonident] = useState(initialPersonident)
+  const [deltakerlisteId, setDeltakelisteId] = useState(initialDeltakerlisteId)
+  const [enhetId, setEnhetId] = useState(initialEnhetId)
+
+  const contextValue: AppContextProps = {
+    personident,
+    setPersonident,
+    deltakerlisteId,
+    setDeltakelisteId,
+    enhetId,
+    setEnhetId
+  }
+
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+}
+
+export {AppContext, useAppContext, AppContextProvider}

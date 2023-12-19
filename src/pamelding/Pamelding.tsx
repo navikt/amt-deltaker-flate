@@ -1,6 +1,6 @@
 import {Heading, VStack} from '@navikt/ds-react'
 import {Deltakerliste, Mal} from '../api/data/pamelding'
-import {ArrangørInfo} from './ArrangørInfo'
+import {ArrangorInfo} from './ArrangorInfo.tsx'
 import {PameldingSkjema} from './PameldingSkjema'
 
 export interface PameldingProps {
@@ -14,7 +14,7 @@ export const Pamelding = ({deltakerliste, mal}: PameldingProps) => {
       <Heading level="1" size="medium">
                 Meld på {deltakerliste.deltakerlisteNavn} hos {deltakerliste.arrangorNavn}
       </Heading>
-      <ArrangørInfo
+      <ArrangorInfo
         arrangorNavn={deltakerliste.arrangorNavn}
         oppstartsType={deltakerliste.oppstartstype}
       />

@@ -3,25 +3,29 @@ import {APPLICATION_WEB_COMPONENT_NAME} from './constants.ts'
 import {Button, TextField} from '@navikt/ds-react'
 import {getCurrentMode} from './utils/environment-utils.ts'
 
-const webComponent = (personident: string, deltakerlisteId: string) => {
+const webComponent = (personident: string, deltakerlisteId: string, enhetId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
     'data-personident': personident,
-    'data-deltakerlisteId': deltakerlisteId
+    'data-deltakerlisteId': deltakerlisteId,
+    'data-enhetId': enhetId
   })
 }
 
 interface WebComponentInputHandlerProps {
     personidentHandler: (newPersonident: string) => void,
     deltakerlisteIdHandler: (newDeltakerlisteId: string) => void,
+    enhetIdHandler: (newEnhetId: string) => void
 }
 
-const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: WebComponentInputHandlerProps) => {
+const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler, enhetIdHandler}: WebComponentInputHandlerProps) => {
   const [personident, setPersonident] = useState<string>('29418716256')
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>('3fcac2a6-68cf-464e-8dd1-62ccec5933df')
+  const [enhetId, setEnhetId] = useState<string>('Enhet1')
 
   const changehandler = () => {
     personidentHandler(personident)
     deltakerlisteIdHandler(deltakerlisteId)
+    enhetIdHandler(enhetId)
   }
 
   return (
@@ -45,11 +49,18 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
             onChange={e => setDeltakerlisteId(e.target.value)}
           />
 
+          <TextField
+            label="Enhet id"
+            description="Legg inn enhetsid"
+            value={enhetId}
+            onChange={e => setEnhetId(e.target.value)}
+          />
+
           <Button
             className="justify-self-end border-2"
             onClick={changehandler}
             disabled={personident === '' || deltakerlisteId === ''}
-          >Gå til deltaker</Button>
+          > Gå til deltaker</Button>
         </section>
       </div>
     </div>
@@ -59,16 +70,19 @@ const WebComponentInputHandler = ({personidentHandler, deltakerlisteIdHandler}: 
 const LocalWebComponentWrapper = () => {
   const [personident, setPersonident] = useState<string | undefined>(undefined)
   const [deltakerlisteId, setDeltakerlisteId] = useState<string | undefined>(undefined)
+  const [enhetId, setEnhetId] = useState<string | undefined>(undefined)
 
   return (
     <>
-      {(!personident || !deltakerlisteId) &&
+      {(!personident || !deltakerlisteId || !enhetId) &&
                 <WebComponentInputHandler
                   personidentHandler={setPersonident}
-                  deltakerlisteIdHandler={setDeltakerlisteId}/>
+                  deltakerlisteIdHandler={setDeltakerlisteId}
+                  enhetIdHandler={setEnhetId}
+                />
       }
 
-      {(personident && deltakerlisteId) && webComponent(personident, deltakerlisteId)}
+      {(personident && deltakerlisteId && enhetId) && webComponent(personident, deltakerlisteId, enhetId)}
     </>
   )
 }
