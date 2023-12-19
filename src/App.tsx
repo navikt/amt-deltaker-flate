@@ -14,8 +14,16 @@ const App = () => {
     createPamelding(personident, deltakerlisteId, enhetId).then((data) => setPamelding(data))
   }, [])
 
+<<<<<<< HEAD
   if (!pamelidng) {
     return <Alert variant="error">FEIL</Alert>
+=======
+  if (hentPameldingFeil) {
+    return <Alert variant="error">{hentPameldingFeil}</Alert>
+>>>>>>> a5d79e0 (forskjell på feil og laster)
+  }
+  if (!pamelidng) {
+    return <div>Laster todo</div>
   }
 
   const avbrytPamelding = () => {
