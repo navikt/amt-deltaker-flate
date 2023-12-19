@@ -13,9 +13,10 @@ export async function enableMocking() {
   const enpointHandlerType = getEndpointHandlerType()
 
   if (enpointHandlerType === EndpointHandler.MOCK) {
+    const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
     return worker.start({
       serviceWorker: {
-        url: '/mockServiceWorker.js'
+        url: url
       }
     })
   }
