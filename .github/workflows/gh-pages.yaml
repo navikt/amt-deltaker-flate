@@ -43,7 +43,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build mock application
-        run: pnpm run build:gh-pages
+        run: pnpm run build:gh-pages --base amt-deltaker-flate
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
