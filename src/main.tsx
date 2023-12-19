@@ -13,10 +13,9 @@ export async function enableMocking() {
   const enpointHandlerType = getEndpointHandlerType()
 
   if (enpointHandlerType === EndpointHandler.MOCK) {
-    const url = `${import.meta.env.BASE_URL}mockServiceWorker.js`
     return worker.start({
       serviceWorker: {
-        url: url
+        url: '/mockServiceWorker.js'
       }
     })
   }
