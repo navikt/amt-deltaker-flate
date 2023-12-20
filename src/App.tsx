@@ -3,8 +3,7 @@ import {createPamelding, deletePamelding} from './api/api.ts'
 import {Alert, Button, Heading, Loader} from '@navikt/ds-react'
 import {useAppContext} from './AppContext.tsx'
 import useFetch from './hooks/useFetch.ts'
-import {Link} from 'react-router-dom'
-import {PAGE_1, PAGE_2} from './Routes.tsx'
+import {AppLink} from './components/AppLink.tsx'
 
 const App = () => {
   const {personident, deltakerlisteId, enhetId} = useAppContext()
@@ -46,8 +45,8 @@ const App = () => {
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
                 Avbryt påmelding
       </Button>
-      <Link to={PAGE_1}>Page 1</Link>
-      <Link to={PAGE_2}>Page 2</Link>
+      <AppLink path="page1">Page 1</AppLink>
+      <AppLink path="page2">Page 2</AppLink>
     </>
   )
 }

@@ -4,9 +4,6 @@ import {Page2} from './pages/Page2.tsx'
 import App from './App.tsx'
 
 const base = 'arbeidsmarkedstiltak/tiltak/:id/deltaker'
-export const APP = `/${base}`
-export const PAGE_1 = `/${base}/page1`
-export const PAGE_2 = `/${base}/page2`
 
 export const AppRoutes = () => {
 
