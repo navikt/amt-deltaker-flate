@@ -4,6 +4,7 @@ import {Alert, Button, Heading, Loader} from '@navikt/ds-react'
 import {useAppContext} from './AppContext.tsx'
 import useFetch from './hooks/useFetch.ts'
 import {AppLink} from './components/AppLink.tsx'
+import {DELTAKELSE_PAGE, PAMELDING_PAGE} from './Routes.tsx'
 
 const App = () => {
   const {personident, deltakerlisteId, enhetId} = useAppContext()
@@ -45,8 +46,8 @@ const App = () => {
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
                 Avbryt påmelding
       </Button>
-      <AppLink path="page1">Page 1</AppLink>
-      <AppLink path="page2">Page 2</AppLink>
+      <AppLink path={PAMELDING_PAGE}>Påmelding</AppLink>
+      <AppLink path={DELTAKELSE_PAGE}>Deltakelse</AppLink>
     </>
   )
 }
