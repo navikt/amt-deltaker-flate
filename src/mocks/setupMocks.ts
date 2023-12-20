@@ -1,9 +1,9 @@
 import {setupWorker} from 'msw/browser'
-import {http, HttpResponse} from 'msw'
-import {MockHandler} from './MockHandler.ts'
-import {pameldingRequestSchema} from '../api/data/pamelding-request.ts'
-import {sendInnPameldingRequestSchema} from '../api/data/send-inn-pamelding-request.ts'
-import {sendInnPameldingUtenGodkjenningRequestSchema} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { delay, http, HttpResponse } from 'msw'
+import { MockHandler } from './MockHandler.ts'
+import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
+import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
+import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 const handler = new MockHandler()
 
@@ -11,6 +11,7 @@ export const worker = setupWorker(
   http.get('/test', () => HttpResponse.json({ id: 'abc' })),
 
   http.post('/mock/deltaker', async ({ request }) => {
+    await delay(1000)
     const response = await request
       .json()
       .then((json) => pameldingRequestSchema.parse(json))
