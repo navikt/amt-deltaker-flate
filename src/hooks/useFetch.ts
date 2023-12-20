@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-import { useState } from 'react'
-
-type ApiFunction<T> = () => Promise<T>
+import { useEffect, useState } from 'react'
 
 interface UseFetchResult<T> {
   data: T | null
@@ -9,7 +6,11 @@ interface UseFetchResult<T> {
   error: string | null
 }
 
-const useFetch = <T>(apiFunction: ApiFunction<T>): UseFetchResult<T> => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ApiFunction<T> = (...args: any[]) => Promise<T>
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const useFetch = <T>(apiFunction: ApiFunction<T>, ...args: any[]): UseFetchResult<T> => {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -17,7 +18,7 @@ const useFetch = <T>(apiFunction: ApiFunction<T>): UseFetchResult<T> => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await apiFunction()
+        const result = await apiFunction(...args)
         setData(result)
       } catch (error) {
         setError('An error occurred while fetching the data.')
@@ -27,7 +28,7 @@ const useFetch = <T>(apiFunction: ApiFunction<T>): UseFetchResult<T> => {
     }
 
     fetchData()
-  }, [apiFunction])
+  }, [apiFunction, ...args])
 
   return { data, loading, error }
 }

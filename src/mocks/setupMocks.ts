@@ -11,7 +11,7 @@ export const worker = setupWorker(
   http.get('/test', () => HttpResponse.json({ id: 'abc' })),
 
   http.post('/mock/deltaker', async ({ request }) => {
-    await delay(3000)
+    await delay(1000)
     const response = await request
       .json()
       .then((json) => pameldingRequestSchema.parse(json))
