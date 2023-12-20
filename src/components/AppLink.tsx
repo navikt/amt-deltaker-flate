@@ -10,7 +10,7 @@ interface Props {
 export const AppLink = ({path, children}: Props) => {
   const {deltakerlisteId} = useAppContext()
 
-  const to = `arbeidsmarkedstiltak/tiltak/${deltakerlisteId}/deltaker/${path}`
+  const to = `/arbeidsmarkedstiltak/tiltak/${deltakerlisteId}/deltaker/${path}`
 
   return (
     <Link to={to}>
