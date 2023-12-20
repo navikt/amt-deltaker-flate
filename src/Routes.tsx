@@ -4,7 +4,7 @@ import {Page2} from './pages/Page2.tsx'
 import App from './App.tsx'
 
 export const AppRoutes = () => {
-  const base = 'deltaker'
+  const base = 'arbeidsmarkedstiltak/tiltak/:id/deltaker'
 
   return (
     <Routes>
