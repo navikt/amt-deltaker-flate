@@ -8,10 +8,10 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path={`${base}/`} element={<App/>}/>
+      <Route path={`${base}`} element={<App/>}/>
       <Route path={`${base}/page1`} element={<Page1/>}/>
       <Route path={`${base}/page2`} element={<Page2/>}/>
-      <Route path={`${base}/*`} element={<Navigate replace to="/"/>}/>
+      <Route path={`${base}/*`} element={<Navigate replace to={`${base}`}/>}/>
     </Routes>
   )
 }
