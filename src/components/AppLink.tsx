@@ -11,7 +11,7 @@ interface Props {
 export const AppLink = ({ path, children }: Props) => {
   const { deltakerlisteId } = useAppContext()
 
-  const to = `${base.replace(':id', deltakerlisteId)}/${path}`
+  const to = `/${base.replace(':id', deltakerlisteId)}/${path}`
 
   return <Link to={to}>{children}</Link>
 }

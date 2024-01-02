@@ -1,13 +1,14 @@
 import ReactDOM from 'react-dom/client'
-import React, { useState } from 'react'
-import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
-import { Button, TextField } from '@navikt/ds-react'
-import { getCurrentMode } from './utils/environment-utils.ts'
+import React, {useState} from 'react'
+import {APPLICATION_WEB_COMPONENT_NAME} from './constants.ts'
+import {Button, TextField} from '@navikt/ds-react'
+import {getCurrentMode} from './utils/environment-utils.ts'
 import '@navikt/ds-css'
 import './tailwind.css'
 import './index.css'
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 
-const rederWebComponent = (personident: string, deltakerlisteId: string, enhetId: string) => {
+const renderWebComponent = (personident: string, deltakerlisteId: string, enhetId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
     'data-personident': personident,
     'data-deltakerlisteId': deltakerlisteId,
@@ -16,9 +17,25 @@ const rederWebComponent = (personident: string, deltakerlisteId: string, enhetId
 }
 
 interface WebComponentInputHandlerProps {
-  personidentHandler: (newPersonident: string) => void
-  deltakerlisteIdHandler: (newDeltakerlisteId: string) => void
-  enhetIdHandler: (newEnhetId: string) => void
+    personidentHandler: (newPersonident: string) => void
+    deltakerlisteIdHandler: (newDeltakerlisteId: string) => void
+    enhetIdHandler: (newEnhetId: string) => void
+}
+
+const LocalAppWapperRoutes = ({
+  personidentHandler,
+  deltakerlisteIdHandler,
+  enhetIdHandler
+}: WebComponentInputHandlerProps) => {
+  return (
+    <Routes>
+      <Route path={'/'}
+        element={<WebComponentInputHandler personidentHandler={personidentHandler}
+          deltakerlisteIdHandler={deltakerlisteIdHandler}
+          enhetIdHandler={enhetIdHandler}/>}/>
+      <Route path={'*'} element={<Navigate replace to={'/'}/>}/>
+    </Routes>
+  )
 }
 
 const WebComponentInputHandler = ({
@@ -26,6 +43,7 @@ const WebComponentInputHandler = ({
   deltakerlisteIdHandler,
   enhetIdHandler
 }: WebComponentInputHandlerProps) => {
+
   const [personident, setPersonident] = useState<string>('29418716256')
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>(
     '3fcac2a6-68cf-464e-8dd1-62ccec5933df'
@@ -71,7 +89,7 @@ const WebComponentInputHandler = ({
             onClick={changehandler}
             disabled={personident === '' || deltakerlisteId === ''}
           >
-            Gå til deltaker
+                        Gå til deltaker
           </Button>
         </section>
       </div>
@@ -87,17 +105,18 @@ const LocalAppWrapper = () => {
   return (
     <>
       {(!personident || !deltakerlisteId || !enhetId) && (
-        <WebComponentInputHandler
-          personidentHandler={setPersonident}
-          deltakerlisteIdHandler={setDeltakerlisteId}
-          enhetIdHandler={setEnhetId}
-        />
+        <BrowserRouter>
+          <LocalAppWapperRoutes
+            personidentHandler={setPersonident}
+            deltakerlisteIdHandler={setDeltakerlisteId}
+            enhetIdHandler={setEnhetId}/>
+        </BrowserRouter>
       )}
 
       {personident &&
-        deltakerlisteId &&
-        enhetId &&
-        rederWebComponent(personident, deltakerlisteId, enhetId)}
+                deltakerlisteId &&
+                enhetId &&
+                renderWebComponent(personident, deltakerlisteId, enhetId)}
     </>
   )
 }
@@ -105,5 +124,5 @@ const LocalAppWrapper = () => {
 export const renderAsReactRoot = (appElement: HTMLElement) => {
   const rootElement = ReactDOM.createRoot(appElement)
 
-  rootElement.render(<LocalAppWrapper />)
+  rootElement.render(<LocalAppWrapper/>)
 }
