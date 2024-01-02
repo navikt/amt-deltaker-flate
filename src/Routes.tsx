@@ -6,7 +6,7 @@ import { useAppContext } from './AppContext.tsx'
 
 const appUrl = (path: string): string => {
   const strippedPath = path.startsWith('/') ? path.substring(1) : path
-  return `${import.meta.env.BASE_URL}${strippedPath}`
+  return `${import.meta.env.BASE_URL.replace(/^\//, '')}${strippedPath}`
 }
 
 export const base = appUrl('arbeidsmarkedstiltak/tiltak/:id/deltaker')

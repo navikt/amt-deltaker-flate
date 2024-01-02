@@ -37,9 +37,6 @@ export async function enableMocking() {
  * (men ikke i `veilarbpersonflate`).
  */
 
-// eslint-disable-next-line no-console
-console.log('BASE_URL', import.meta.env.BASE_URL)
-
 if (import.meta.env.DEV) {
   const demoContainer = document.getElementById(APPLICATION_NAME)
   if (!demoContainer) {
