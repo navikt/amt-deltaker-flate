@@ -27,7 +27,7 @@ const App = () => {
     return (
       <Alert variant="error">
         <Heading spacing size="small" level="3">
-                    Vi beklager, men noe gikk galt
+          Vi beklager, men noe gikk galt
         </Heading>
         {error}
       </Alert>
@@ -42,9 +42,9 @@ const App = () => {
 
   return (
     <>
-      <Pamelding deltakerliste={pamelding.deltakerliste} mal={pamelding.mal}/>
+      <Pamelding deltakerliste={pamelding.deltakerliste} mal={pamelding.mal} />
       <Button variant="tertiary" size="small" className="my-2" onClick={avbrytPamelding}>
-                Avbryt påmelding
+        Avbryt påmelding
       </Button>
       <AppLink path={PAMELDING_PAGE}>Påmelding</AppLink>
       <AppLink path={DELTAKELSE_PAGE}>Deltakelse</AppLink>

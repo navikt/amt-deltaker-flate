@@ -12,10 +12,11 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path={`${base}`} element={<App/>}/>
-      <Route path={`${base}/${PAMELDING_PAGE}`} element={<Pamelding/>}/>
-      <Route path={`${base}/${DELTAKELSE_PAGE}`} element={<Delakelse/>}/>
-      <Route path={`${base}/*`} element={<Navigate replace to={`${base}`}/>}/>
+      <Route path={`${base}`} element={<App />} />
+      <Route path={`${base}/${PAMELDING_PAGE}`} element={<Pamelding />} />
+      <Route path={`${base}/${DELTAKELSE_PAGE}`} element={<Delakelse />} />
+      <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
+      {import.meta.env.DEV && <Route path={'/'} element={<Navigate replace to={`${base}`} />} />}
     </Routes>
   )
 }
