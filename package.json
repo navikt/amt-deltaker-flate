@@ -22,10 +22,12 @@
   "dependencies": {
     "@navikt/ds-css": "^5.12.2",
     "@navikt/ds-react": "^5.12.2",
+    "@types/react-router-dom": "^5.3.3",
     "mockjs": "^1.1.0",
     "msw": "^2.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.1",
     "swr": "^2.2.4",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"

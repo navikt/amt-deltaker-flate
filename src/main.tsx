@@ -9,6 +9,14 @@ const exportAsWebcomponent = () => {
   })
 }
 
+/**
+ * Applikasjonen blir lastet inn i 'mulighetsrommet-veileder-flate' i `veilarbpersonflate` i dev og prod ved at vi definerer et
+ * custom HTMLElement med navnet `APPLICATION_WEB_COMPONENT_NAME` (Web Component).
+ * Dette lar oss enkapsulere stylingen til applikasjonen slik at vi slipper css-bleed på
+ * tvers av applikasjoner i `veilarbpersonflate`.
+ */
+exportAsWebcomponent()
+
 export async function enableMocking() {
   const enpointHandlerType = getEndpointHandlerType()
 
@@ -22,33 +30,22 @@ export async function enableMocking() {
   }
 }
 
-const renderAsRootApp = (appElement: HTMLElement) => {
-  import('./rootWrapper').then(({renderAsReactRoot}) => {
-    enableMocking().then(() => {
-      renderAsReactRoot(appElement)
-    })
-  })
-}
-
+// Lokalt:
 /**
- * Applikasjonen blir lastet inn i 'mulighetsrommet-veileder-flate' i `veilarbpersonflate` i dev og prod ved at vi definerer et
- * custom HTMLElement med navnet `APPLICATION_WEB_COMPONENT_NAME` (Web Component).
- * Dette lar oss enkapsulere stylingen til applikasjonen slik at vi slipper css-bleed på
- * tvers av applikasjoner i `veilarbpersonflate`.
- *
- * Når vi kjører applikasjonen lokalt sjekker vi eksplisitt om det finnes et html element med navnet
+ * Når vi kjører applikasjonen lokalt, demo-app eller pr-deploy sjekker vi eksplisitt om det finnes et html element med navnet
  * `APPLICATION_NAME` før vi rendrer applikasjonen fordi dette elementet er definert i `index.html`
  * (men ikke i `veilarbpersonflate`).
  */
 
-exportAsWebcomponent()
-
-// Lokalt:
 if (import.meta.env.DEV) {
   const demoContainer = document.getElementById(APPLICATION_NAME)
   if (!demoContainer) {
     throw new Error('Root Element not found')
   }
-  renderAsRootApp(demoContainer)
 
+  import('./LocalAppWrapper.tsx').then(({ renderAsReactRoot }) => {
+    enableMocking().then(() => {
+      renderAsReactRoot(demoContainer)
+    })
+  })
 }

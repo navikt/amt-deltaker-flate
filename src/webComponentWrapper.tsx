@@ -1,9 +1,10 @@
 import dsStyles from '@navikt/ds-css/dist/index.css?inline'
 import tailwindCss from './tailwind.css?inline'
-import App from './App'
 import {createRoot} from 'react-dom/client'
 import {APPLICATION_WEB_COMPONENT_NAME} from './constants'
 import {AppContextProvider} from './AppContext'
+import {AppRoutes} from './Routes.tsx'
+import {BrowserRouter} from 'react-router-dom'
 
 export class Deltaker extends HTMLElement {
   private readonly root: HTMLDivElement
@@ -46,7 +47,9 @@ export class Deltaker extends HTMLElement {
         initialDeltakerlisteId={initialDeltakerlisteId}
         initialEnhetId={initialEnhetId}
       >
-        <App/>
+        <BrowserRouter>
+          <AppRoutes/>
+        </BrowserRouter>
       </AppContextProvider>
     )
   }
