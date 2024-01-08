@@ -11,7 +11,7 @@ export class MockHandler {
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
 
   createPamelding(request: PameldingRequest): HttpResponse {
-    const nyPamelding = {
+    const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
       deltakerliste: {
         deltakerlisteId: request.deltakerlisteId,
