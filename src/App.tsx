@@ -1,13 +1,13 @@
-import {Pamelding} from './pamelding/Pamelding'
-import {createPamelding, deletePamelding} from './api/api.ts'
-import {Alert, Button, Heading, Loader} from '@navikt/ds-react'
-import {useAppContext} from './AppContext.tsx'
+import { Pamelding } from './pages/pamelding/Pamelding.tsx'
+import { createPamelding, deletePamelding } from './api/api.ts'
+import { Alert, Button, Heading, Loader } from '@navikt/ds-react'
+import { useAppContext } from './AppContext.tsx'
 import useFetch from './hooks/useFetch.ts'
-import {AppLink} from './components/AppLink.tsx'
-import {DELTAKELSE_PAGE, PAMELDING_PAGE} from './Routes.tsx'
+import { AppLink } from './components/AppLink.tsx'
+import { DELTAKELSE_PAGE, PAMELDING_PAGE } from './Routes.tsx'
 
 const App = () => {
-  const {personident, deltakerlisteId, enhetId} = useAppContext()
+  const { personident, deltakerlisteId, enhetId } = useAppContext()
 
   const {
     data: pamelding,
@@ -18,7 +18,7 @@ const App = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader size="3xlarge" title="Venter..."/>
+        <Loader size="3xlarge" title="Venter..." />
       </div>
     )
   }

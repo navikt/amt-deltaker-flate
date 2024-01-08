@@ -3,8 +3,10 @@ export const BAKGRUNNSINFO_MAX_TEGN = 500
 
 export const MAL_TYPE_ANNET = 'ANNET' // Fix når vi vet dette fra valp
 
-export const DELTAKELSESPROSENT_VALG_JA = 'Ja'
-export const DELTAKELSESPROSENT_VALG_NEI = 'Nei'
+export enum DeltakelsesprosentValg {
+  JA = 'JA',
+  NEI = 'NEI'
+}
 
 export const isValidFloatInRange = (value: string, from: number, to: number) => {
   const valueCorrected = value.replace(',', '.')
