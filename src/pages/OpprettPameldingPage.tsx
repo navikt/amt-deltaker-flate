@@ -1,28 +1,57 @@
 import {OpprettPameldingHeader} from '../components/opprett-pamelding/OpprettPameldingHeader.tsx'
-import {PameldingResponse} from '../api/data/pamelding.ts'
+import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
 import {OpprettPameldingForm} from '../components/opprett-pamelding/OpprettPameldingForm.tsx'
-import {useState} from 'react'
 import {PameldingFormValues} from '../model/PameldingFormValues.ts'
+import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts'
+import {sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
+import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
+import {useAppContext} from '../AppContext.tsx'
+import {Alert} from '@navikt/ds-react'
 
 export interface OpprettPameldingPageProps {
     pamelding: PameldingResponse
 }
 
 export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
-  const [disableSubmit, setDisableSubmit] = useState<boolean>(false)
-  const [sendSomForslagLoading, setSendSomForslagLoading] = useState<boolean>(false)
-  const [sendDirekteLoading, setSendDirekteLoading] = useState<boolean>(false)
+  const {deltakerlisteId, enhetId} = useAppContext()
 
-  const onSendSomForslagHandler = (data: PameldingFormValues) => {
-    setDisableSubmit(true)
-    setSendSomForslagLoading(true)
-    // console.log('SendSomForslag', data)
+  const {state: sendSomForslagState, doFetch: doFetchSendSomForslag} = useDeferredFetch(sendInnPamelding)
+  const {state: sendDirekteState} = useDeferredFetch(sendInnPameldingUtenGodkjenning)
+
+  const generateMal = (selectedMal: string[]): Mal[] => {
+    return pamelding.mal.map(mal => {
+      return {
+        type: mal.type,
+        visningstekst: mal.visningstekst,
+        beskrivelse: mal.beskrivelse,
+        valgt: selectedMal.find((i) => i === mal.type) !== undefined
+      }
+    })
   }
 
-  const onSendDirekteHandler = (data: PameldingFormValues) => {
-    setDisableSubmit(true)
-    setSendDirekteLoading(true)
+  const generateRequest = (data: PameldingFormValues): SendInnPameldingRequest => {
+    return {
+      deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
+      dagerPerUke: data.dagerPerUke,
+      deltakelsesprosent: data.deltakelsesprosent,
+      bakgrunnsinformasjon: data.bakgrunnsinformasjon,
+      mal: generateMal(data.valgteMal)
+    }
+  }
+
+  const onSendSomForslagHandler = (data: PameldingFormValues) => {
+    doFetchSendSomForslag(deltakerlisteId, enhetId, generateRequest(data))
+  }
+
+  const onSendDirekteHandler = (/*data: PameldingFormValues*/) => {
     // console.log('SendDirekte', data)
+  }
+
+  const disableSubmit = () => {
+    return sendSomForslagState === DeferredFetchState.LOADING
+            || sendDirekteState === DeferredFetchState.LOADING
+            || sendSomForslagState === DeferredFetchState.RESOLVED
+            || sendDirekteState === DeferredFetchState.RESOLVED
   }
 
   return (
@@ -33,14 +62,19 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         oppstartstype={pamelding.deltakerliste.oppstartstype}
       />
       <OpprettPameldingForm
-        disableSubmit={disableSubmit}
+        disableSubmit={disableSubmit()}
         onSendSomForslag={onSendSomForslagHandler}
-        sendSomForslagLoading={sendSomForslagLoading}
+        sendSomForslagLoading={sendSomForslagState === DeferredFetchState.LOADING}
         onSendDirekte={onSendDirekteHandler}
-        sendDirekteLoading={sendDirekteLoading}
+        sendDirekteLoading={sendDirekteState === DeferredFetchState.LOADING}
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         mal={pamelding.mal}
       />
+
+      {sendSomForslagState === DeferredFetchState.RESOLVED && (
+        <Alert variant="success">Forslag er sendt til backenden!</Alert>
+      )}
+
     </div>
   )
 

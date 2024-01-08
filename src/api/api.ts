@@ -37,17 +37,28 @@ export const deletePamelding = (deltakerId: string): Promise<number> => {
     .then(response => response.status)
 }
 
-export const sendInnPamelding = (deltakerId: string, request: SendInnPameldingRequest): Promise<number> => {
-  return fetch(`/api/pamelding/${deltakerId}`, {
+export const sendInnPamelding = async (deltakerId: string, enhetId: string, request: SendInnPameldingRequest): Promise<number> => {
+  return fetch(`${deltakerBffApiBasePath()}/api/pamelding/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'aktiv-enhet': enhetId
+    },
     body: JSON.stringify(request)
   })
-    .then(response => response.status)
+    .then(response => {
+      if(response.status !== 200) {
+        throw new Error(`Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`)
+      }
+
+      return response.status
+    })
 }
 
 export const sendInnPameldingUtenGodkjenning = (deltakerId: string, request: SendInnPameldingUtenGodkjenningRequest): Promise<number> => {
-  return fetch(`/api/pamelding/${deltakerId}/utenGodkjenning`, {
+  return fetch(`${deltakerBffApiBasePath()}/api/pamelding/${deltakerId}/utenGodkjenning`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(request)

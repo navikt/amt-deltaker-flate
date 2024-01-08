@@ -40,8 +40,8 @@ export const OpprettPameldingForm = ({
     malAnnetBeskrivelse: '',
     bakgrunnsinformasjon: bakgrunnsinformasjon ?? '',
     deltakelsesprosentValg: deltakelsesprosent ? DeltakelsesprosentValg.JA : undefined,
-    deltakelsesprosent: deltakelsesprosent?.toString(),
-    dagerPerUke: dagerPerUke?.toString()
+    deltakelsesprosent: deltakelsesprosent,
+    dagerPerUke: dagerPerUke
   }
 
   const methods = useForm<PameldingFormValues>({

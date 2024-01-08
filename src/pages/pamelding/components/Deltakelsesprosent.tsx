@@ -5,8 +5,8 @@ import {PameldingFormValues} from '../PameldingSkjema'
 
 export interface DeltakelsesprosentProps {
   deltakelsesprosentValg?: DeltakelsesprosentValg
-  deltakelsesprosent?: string
-  dagerPerUke?: string
+  deltakelsesprosent?: number
+  dagerPerUke?: number
 }
 
 export const Deltakelsesprosent = ({
@@ -52,8 +52,10 @@ export const Deltakelsesprosent = ({
               <TextField
                 label="Deltakelsesprosent:"
                 size="small"
-                type="text"
-                {...register('deltakelsesprosent')}
+                type="number"
+                {...register('deltakelsesprosent', {
+                  valueAsNumber: true
+                })}
                 defaultValue={deltakelsesprosent}
                 error={errors.deltakelsesprosent?.message}
                 aria-required
@@ -63,8 +65,10 @@ export const Deltakelsesprosent = ({
               <TextField
                 label="Hvor mange dager i uka? (valgfritt)"
                 size="small"
-                type="text"
-                {...register('dagerPerUke')}
+                type="number"
+                {...register('dagerPerUke', {
+                  valueAsNumber: true
+                })}
                 defaultValue={dagerPerUke}
                 error={errors.dagerPerUke?.message}
                 className="[&>input]:w-16"

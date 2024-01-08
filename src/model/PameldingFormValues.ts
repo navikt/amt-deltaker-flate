@@ -7,8 +7,8 @@ export const pameldingFormSchema = z.object({
   bakgrunnsinformasjon: z.string()
     .max(500, 'Kan ikke være mer enn 500 tegn'),
   deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
-  deltakelsesprosent: z.string().optional(),
-  dagerPerUke: z.string().optional()
+  deltakelsesprosent: z.number().optional(),
+  dagerPerUke: z.number().optional()
 })
 
 export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
