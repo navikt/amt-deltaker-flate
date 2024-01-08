@@ -63,7 +63,7 @@ export const pameldingStatusSchema = z.object({
 
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
-  deltakernavn: navnSchema,
+  deltakernavn: navnSchema.optional(),
   deltakerliste: deltakerlisteSchema,
   status: pameldingStatusSchema,
   startdato: z.string().nullable(),
