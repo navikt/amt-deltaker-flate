@@ -2,6 +2,7 @@ import {OpprettPameldingHeader} from '../components/opprett-pamelding/OpprettPam
 import {PameldingResponse} from '../api/data/pamelding.ts'
 import {OpprettPameldingForm} from '../components/opprett-pamelding/OpprettPameldingForm.tsx'
 import {useState} from 'react'
+import {PameldingFormValues} from '../model/PameldingFormValues.ts'
 
 export interface OpprettPameldingPageProps {
     pamelding: PameldingResponse
@@ -12,16 +13,16 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
   const [sendSomForslagLoading, setSendSomForslagLoading] = useState<boolean>(false)
   const [sendDirekteLoading, setSendDirekteLoading] = useState<boolean>(false)
 
-  const onSendSomForslagHandler = () => {
+  const onSendSomForslagHandler = (data: PameldingFormValues) => {
     setDisableSubmit(true)
     setSendSomForslagLoading(true)
-    // console.log('SendSomForslag')
+    // console.log('SendSomForslag', data)
   }
 
-  const onSendDirekteHandler = () => {
+  const onSendDirekteHandler = (data: PameldingFormValues) => {
     setDisableSubmit(true)
     setSendDirekteLoading(true)
-    // console.log('SendDirekte')
+    // console.log('SendDirekte', data)
   }
 
   return (
@@ -37,6 +38,8 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         sendSomForslagLoading={sendSomForslagLoading}
         onSendDirekte={onSendDirekteHandler}
         sendDirekteLoading={sendDirekteLoading}
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        mal={pamelding.mal}
       />
     </div>
   )
