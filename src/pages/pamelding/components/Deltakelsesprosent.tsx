@@ -1,7 +1,7 @@
 import {Radio, RadioGroup, TextField} from '@navikt/ds-react'
 import {Controller, useFormContext} from 'react-hook-form'
 import {DeltakelsesprosentValg} from '../../../utils'
-import {PameldingFormValues} from '../PameldingSkjema'
+import {PameldingFormValues} from '../../../model/PameldingFormValues.ts'
 
 export interface DeltakelsesprosentProps {
   deltakelsesprosentValg?: DeltakelsesprosentValg

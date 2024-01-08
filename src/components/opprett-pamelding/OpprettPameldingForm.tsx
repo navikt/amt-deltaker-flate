@@ -24,7 +24,6 @@ export const OpprettPameldingForm = ({
   onSendSomForslag,
   sendSomForslagLoading,
   onSendDirekte,
-  sendDirekteLoading,
   tiltakstype,
   mal,
   bakgrunnsinformasjon,
@@ -131,15 +130,15 @@ export const OpprettPameldingForm = ({
                         Send som forslag
           </Button>
 
-          <Button size="small"
-            variant="secondary"
-            loading={sendDirekteLoading}
-            disabled={disableSubmit}
-            type="button"
-            onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}
-          >
-                        Meld på uten å sende forslag
-          </Button>
+          {/*<Button size="small"*/}
+          {/*  variant="secondary"*/}
+          {/*  loading={sendDirekteLoading}*/}
+          {/*  disabled={disableSubmit}*/}
+          {/*  type="button"*/}
+          {/*  onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}*/}
+          {/*>*/}
+          {/*              Meld på uten å sende forslag*/}
+          {/*</Button>*/}
 
         </HStack>
       </FormProvider>

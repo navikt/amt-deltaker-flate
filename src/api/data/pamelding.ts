@@ -38,6 +38,12 @@ export const malSchema = z.object({
   beskrivelse: z.string().nullable()
 })
 
+export const navnSchema = z.object({
+  fornavn: z.string(),
+  mellomnavn: z.string().optional(),
+  etternavn: z.string()
+})
+
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   deltakerlisteNavn: z.string(),
@@ -57,6 +63,7 @@ export const pameldingStatusSchema = z.object({
 
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
+  deltakernavn: navnSchema,
   deltakerliste: deltakerlisteSchema,
   status: pameldingStatusSchema,
   startdato: z.string().nullable(),
