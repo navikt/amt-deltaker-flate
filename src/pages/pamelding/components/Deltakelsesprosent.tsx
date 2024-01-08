@@ -1,7 +1,7 @@
-import { Radio, RadioGroup, TextField } from '@navikt/ds-react'
-import { useFormContext, Controller } from 'react-hook-form'
-import { DeltakelsesprosentValg, erGyldigProsent, erGyldigDagerPerUke } from '../../../utils'
-import { PameldingFormValues } from '../PameldingSkjema'
+import {Radio, RadioGroup, TextField} from '@navikt/ds-react'
+import {Controller, useFormContext} from 'react-hook-form'
+import {DeltakelsesprosentValg} from '../../../utils'
+import {PameldingFormValues} from '../PameldingSkjema'
 
 export interface DeltakelsesprosentProps {
   deltakelsesprosentValg?: DeltakelsesprosentValg
@@ -53,16 +53,10 @@ export const Deltakelsesprosent = ({
                 label="Deltakelsesprosent:"
                 size="small"
                 type="text"
-                {...register('deltakelsesprosent', {
-                  required: 'Deltakelsesprosent må fylles ut',
-                  validate: (value) =>
-                    (value && erGyldigProsent(value)) ||
-                    'Deltakelsesprosent må være et tall fra og med 0 til og med 100'
-                })}
+                {...register('deltakelsesprosent')}
                 defaultValue={deltakelsesprosent}
                 error={errors.deltakelsesprosent?.message}
                 aria-required
-                required
                 id="deltakelsesprosent"
                 className="[&>input]:w-16"
               />
@@ -70,11 +64,7 @@ export const Deltakelsesprosent = ({
                 label="Hvor mange dager i uka? (valgfritt)"
                 size="small"
                 type="text"
-                {...register('dagerPerUke', {
-                  validate: (value) =>
-                    (value && erGyldigDagerPerUke(value)) ||
-                    'Antall dager per uke må være et tall fra og med 0 til og med 7'
-                })}
+                {...register('dagerPerUke')}
                 defaultValue={dagerPerUke}
                 error={errors.dagerPerUke?.message}
                 className="[&>input]:w-16"
