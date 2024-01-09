@@ -29,13 +29,12 @@ export const useDeferredFetch = <T>(apiFunction: ApiFunction<T>): UseDeferredFet
       setState(DeferredFetchState.LOADING)
       const result = await apiFunction(...args)
       setData(result)
+      setState(DeferredFetchState.RESOLVED)
       return result
     } catch (error) {
       setState(DeferredFetchState.ERROR)
-      setError('An error occurred while fetching the data.')
+      setError(`Skjedde en feil ved henting av data: ${error}`)
       throw error
-    } finally {
-      setState(DeferredFetchState.RESOLVED)
     }
   }
 

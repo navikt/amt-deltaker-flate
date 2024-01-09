@@ -24,9 +24,14 @@ export const worker = setupWorker(
     return handler.deletePamelding(deltakerId as string)
   }),
 
-  http.post('/mock/api/pamelding/:deltakerId', async ({ request, params }) => {
+  http.post('/mock/pamelding/:deltakerId', async ({ request, params }) => {
     await delay(1000)
-      
+
+    return new Response(null, {
+      status: 404,
+      statusText: 'wololo'
+    })
+
     const { deltakerId } = params
 
     const response = await request

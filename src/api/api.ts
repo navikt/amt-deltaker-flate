@@ -30,7 +30,7 @@ export const createPamelding = async (personident: string, deltakerlisteId: stri
 }
 
 export const deletePamelding = (deltakerId: string): Promise<number> => {
-  return fetch(`/api/pamelding/${deltakerId}`, {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}`, {
     method: 'DELETE',
     credentials: 'include',
   })
@@ -38,7 +38,7 @@ export const deletePamelding = (deltakerId: string): Promise<number> => {
 }
 
 export const sendInnPamelding = async (deltakerId: string, enhetId: string, request: SendInnPameldingRequest): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/api/pamelding/${deltakerId}`, {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -58,7 +58,7 @@ export const sendInnPamelding = async (deltakerId: string, enhetId: string, requ
 }
 
 export const sendInnPameldingUtenGodkjenning = (deltakerId: string, request: SendInnPameldingUtenGodkjenningRequest): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/api/pamelding/${deltakerId}/utenGodkjenning`, {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/utenGodkjenning`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(request)

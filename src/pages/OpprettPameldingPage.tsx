@@ -6,7 +6,7 @@ import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts
 import {sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
 import {useAppContext} from '../AppContext.tsx'
-import {Alert} from '@navikt/ds-react'
+import {Alert, Heading} from '@navikt/ds-react'
 
 export interface OpprettPameldingPageProps {
     pamelding: PameldingResponse
@@ -15,7 +15,7 @@ export interface OpprettPameldingPageProps {
 export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
   const {deltakerlisteId, enhetId} = useAppContext()
 
-  const {state: sendSomForslagState, doFetch: doFetchSendSomForslag} = useDeferredFetch(sendInnPamelding)
+  const {state: sendSomForslagState, error: sendSomForslagError, doFetch: doFetchSendSomForslag} = useDeferredFetch(sendInnPamelding)
   const {state: sendDirekteState} = useDeferredFetch(sendInnPameldingUtenGodkjenning)
 
   const generateMal = (selectedMal: string[]): Mal[] => {
@@ -70,6 +70,15 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         mal={pamelding.mal}
       />
+
+      {sendSomForslagState === DeferredFetchState.ERROR && (
+        <Alert variant="error">
+          <Heading size="small" spacing level="3">
+              Det skjedde en feil.
+          </Heading>
+          {sendSomForslagError}
+        </Alert>
+      )}
 
       {sendSomForslagState === DeferredFetchState.RESOLVED && (
         <Alert variant="success">Forslag er sendt til backenden!</Alert>
