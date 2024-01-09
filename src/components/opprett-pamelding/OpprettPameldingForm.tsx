@@ -1,4 +1,4 @@
-import {Button, Checkbox, CheckboxGroup, HStack, Textarea} from '@navikt/ds-react'
+import {Button, Checkbox, CheckboxGroup, HelpText, Textarea, VStack} from '@navikt/ds-react'
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
@@ -7,7 +7,7 @@ import {Deltakelsesprosent} from '../../pages/pamelding/components/Deltakelsespr
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
 
 interface Props {
-    disableSubmit: boolean
+    disableButtonsAndForm: boolean
     onSendSomForslag: (data: PameldingFormValues) => void
     sendSomForslagLoading: boolean
     onSendDirekte: (data: PameldingFormValues) => void
@@ -20,10 +20,11 @@ interface Props {
 }
 
 export const OpprettPameldingForm = ({
-  disableSubmit,
+  disableButtonsAndForm,
   onSendSomForslag,
   sendSomForslagLoading,
   onSendDirekte,
+  sendDirekteLoading,
   tiltakstype,
   mal,
   bakgrunnsinformasjon,
@@ -69,79 +70,106 @@ export const OpprettPameldingForm = ({
   const valgteMal = watch('valgteMal')
 
   return (
-    <form>
-      <FormProvider {...methods}>
-        <CheckboxGroup
-          defaultValue={defaultValues.valgteMal}
-          legend="Hva er målet med deltakelsen?"
-          error={errors.valgteMal?.message}
-          size="small"
-          aria-required
-          id="valgteMal"
-        >
-          {mal.map((e) => (
-            <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
-              {e.visningstekst}
-            </Checkbox>
-          ))}
-          {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
-            <Textarea
-              minRows={1}
-              rows={1}
+    <VStack gap="8" className="p-6 bg-white">
+      <form>
+        <FormProvider {...methods}>
+          <section className="mb-4">
+            <CheckboxGroup
+              defaultValue={defaultValues.valgteMal}
+              legend="Hva er målet med deltakelsen?"
+              error={errors.valgteMal?.message}
               size="small"
-              label={null}
-              {...register('malAnnetBeskrivelse')}
-              defaultValue={defaultValues.malAnnetBeskrivelse}
-              error={errors.malAnnetBeskrivelse?.message}
-              aria-label={'Beskrivelse av mål "Annet"'}
+              disabled={disableButtonsAndForm}
               aria-required
-              id="malAnnetBeskrivelse"
+              id="valgteMal"
+            >
+              {mal.map((e) => (
+                <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
+                  {e.visningstekst}
+                </Checkbox>
+              ))}
+              {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
+                <Textarea
+                  label={null}
+                  {...register('malAnnetBeskrivelse')}
+                  defaultValue={defaultValues.malAnnetBeskrivelse}
+                  error={errors.malAnnetBeskrivelse?.message}
+                  disabled={disableButtonsAndForm}
+                  aria-label={'Beskrivelse av mål "Annet"'}
+                  aria-required
+                  id="malAnnetBeskrivelse"
+                />
+              )}
+            </CheckboxGroup>
+          </section>
+
+          <section className="mb-4">
+
+            <Textarea
+              label="Bakgrunnsinformasjon (valgfritt)"
+              description="Hvis det er noe viktig med brukers livssituasjon som kommer til å påvirke deltakelsen på tiltaket kan du skrive dette her. Dette vises til bruker og tiltaksarrangør."
+              {...register('bakgrunnsinformasjon')}
+              value={watch('bakgrunnsinformasjon')}
+              error={errors.bakgrunnsinformasjon?.message}
+              disabled={disableButtonsAndForm}
+              maxLength={500}
+              id="bakgrunnsinformasjon"
+            />
+          </section>
+
+          {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
+            <Deltakelsesprosent
+              disableForm={disableButtonsAndForm}
+              deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
+              deltakelsesprosent={defaultValues.deltakelsesprosent}
+              dagerPerUke={defaultValues.dagerPerUke}
             />
           )}
-        </CheckboxGroup>
 
-        <Textarea
-          label="Bakgrunnsinformasjon (valgfritt)"
-          description="Hvis det er noe viktig med brukers livssituasjon som kommer til å påvirke deltakelsen på tiltaket kan du skrive dette her. Dette vises til bruker og tiltaksarrangør."
-          {...register('bakgrunnsinformasjon')}
-          defaultValue={defaultValues.bakgrunnsinformasjon}
-          error={errors.bakgrunnsinformasjon?.message}
-          size="small"
-          id="bakgrunnsinformasjon"
-          minRows={1}
-          rows={1}
-        />
+          <VStack gap="4" className="mt-4">
+            <div className="flex items-center">
+              <Button size="small"
+                loading={sendSomForslagLoading}
+                disabled={disableButtonsAndForm}
+                type="button"
+                onClick={handleSubmit(handleFormSubmit(FORSLAG_BTN_ID))}
+              >
+                                Del utkast og gjør klar vedtaket
+              </Button>
+              <div className="ml-4">
+                <HelpText>
+                                    Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
+                                    arrangøren.
+                                    Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
+                                    aktivitetsplanen.
+                                    Når bruker godtar så blir vedtaket satt.
+                </HelpText>
+              </div>
 
-        {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
-          <Deltakelsesprosent
-            deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
-            deltakelsesprosent={defaultValues.deltakelsesprosent}
-            dagerPerUke={defaultValues.dagerPerUke}
-          />
-        )}
+            </div>
 
-        <HStack gap="4">
-          <Button size="small"
-            loading={sendSomForslagLoading}
-            disabled={disableSubmit}
-            type="button"
-            onClick={handleSubmit(handleFormSubmit(FORSLAG_BTN_ID))}
-          >
-                        Send som forslag
-          </Button>
+            <div className="flex items-center">
+              <Button size="small"
+                variant="secondary"
+                loading={sendDirekteLoading}
+                disabled={disableButtonsAndForm}
+                type="button"
+                onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}
+              >
+                                Fortsett uten å dele utkastet
+              </Button>
+              <div className="ml-4">
+                <HelpText>
+                                    Utkastet deles ikke til brukeren.
+                                    Brukeren skal allerede vite hvilke opplysninger som blir delt med tiltaksarrangør.
+                </HelpText>
+              </div>
 
-          {/*<Button size="small"*/}
-          {/*  variant="secondary"*/}
-          {/*  loading={sendDirekteLoading}*/}
-          {/*  disabled={disableSubmit}*/}
-          {/*  type="button"*/}
-          {/*  onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}*/}
-          {/*>*/}
-          {/*              Meld på uten å sende forslag*/}
-          {/*</Button>*/}
+            </div>
 
-        </HStack>
-      </FormProvider>
-    </form>
+          </VStack>
+        </FormProvider>
+      </form>
+    </VStack>
   )
 }

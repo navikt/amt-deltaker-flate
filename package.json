@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@navikt/aksel-icons": "^5.12.4",
     "@navikt/ds-css": "^5.12.4",
     "@navikt/ds-react": "^5.12.4",
     "@types/react-router-dom": "^5.3.3",

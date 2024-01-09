@@ -76,5 +76,6 @@ export const pameldingSchema = z.object({
 })
 
 export type Mal = z.infer<typeof malSchema>
+export type Navn = z.infer<typeof navnSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type PameldingResponse = z.infer<typeof pameldingSchema>

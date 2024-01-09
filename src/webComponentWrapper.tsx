@@ -33,7 +33,7 @@ export class Deltaker extends HTMLElement {
 
     // Load styles under this shadowDom-node, not root element
     const styleElem = document.createElement('style')
-    styleElem.innerHTML = dsStyles + tailwindCss
+    styleElem.innerHTML =  tailwindCss + dsStyles
     shadowRoot.appendChild(styleElem)
 
     const initialPersonident = this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''

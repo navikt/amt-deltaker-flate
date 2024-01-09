@@ -20,6 +20,7 @@ export const worker = setupWorker(
   }),
 
   http.delete('/mock/pamelding/:deltakerId', async ({ params }) => {
+    await delay(1000)
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
   }),

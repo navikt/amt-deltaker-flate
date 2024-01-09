@@ -4,12 +4,14 @@ import {DeltakelsesprosentValg} from '../../../utils'
 import {PameldingFormValues} from '../../../model/PameldingFormValues.ts'
 
 export interface DeltakelsesprosentProps {
+  disableForm: boolean
   deltakelsesprosentValg?: DeltakelsesprosentValg
   deltakelsesprosent?: number
   dagerPerUke?: number
 }
 
 export const Deltakelsesprosent = ({
+  disableForm,
   deltakelsesprosentValg,
   deltakelsesprosent,
   dagerPerUke
@@ -39,6 +41,7 @@ export const Deltakelsesprosent = ({
             error={errors.deltakelsesprosentValg?.message}
             defaultValue={deltakelsesprosentValg}
             size="small"
+            disabled={disableForm}
             aria-required
             id="deltakelsesprosentValg"
             onChange={onChangeDeltakelsesprosentValg}
@@ -52,6 +55,7 @@ export const Deltakelsesprosent = ({
               <TextField
                 label="Deltakelsesprosent:"
                 size="small"
+                disabled={disableForm}
                 type="number"
                 {...register('deltakelsesprosent', {
                   valueAsNumber: true
@@ -66,6 +70,7 @@ export const Deltakelsesprosent = ({
                 label="Hvor mange dager i uka? (valgfritt)"
                 size="small"
                 type="number"
+                disabled={disableForm}
                 {...register('dagerPerUke', {
                   valueAsNumber: true
                 })}
