@@ -13,7 +13,7 @@ export interface OpprettPameldingPageProps {
 }
 
 export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
-  const {deltakerlisteId, enhetId} = useAppContext()
+  const {enhetId} = useAppContext()
 
   const {state: sendSomForslagState, error: sendSomForslagError, doFetch: doFetchSendSomForslag} = useDeferredFetch(sendInnPamelding)
   const {state: sendDirekteState} = useDeferredFetch(sendInnPameldingUtenGodkjenning)
@@ -40,7 +40,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
   }
 
   const onSendSomForslagHandler = (data: PameldingFormValues) => {
-    doFetchSendSomForslag(deltakerlisteId, enhetId, generateRequest(data))
+    doFetchSendSomForslag(pamelding.deltakerId, enhetId, generateRequest(data))
   }
 
   const onSendDirekteHandler = (/*data: PameldingFormValues*/) => {

@@ -27,11 +27,6 @@ export const worker = setupWorker(
   http.post('/mock/pamelding/:deltakerId', async ({ request, params }) => {
     await delay(1000)
 
-    return new Response(null, {
-      status: 404,
-      statusText: 'wololo'
-    })
-
     const { deltakerId } = params
 
     const response = await request
