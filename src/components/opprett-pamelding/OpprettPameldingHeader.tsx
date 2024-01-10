@@ -1,5 +1,5 @@
 import {Heading, VStack} from '@navikt/ds-react'
-import {ArrangorInfo} from '../../pages/pamelding/components/ArrangorInfo.tsx'
+import {ArrangorInfo} from './ArrangorInfo.tsx'
 
 interface Props {
     deltakerlisteNavn: string;

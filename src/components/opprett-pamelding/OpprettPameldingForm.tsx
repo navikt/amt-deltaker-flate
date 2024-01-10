@@ -1,10 +1,10 @@
-import {Button, Checkbox, CheckboxGroup, HelpText, Textarea, VStack} from '@navikt/ds-react'
+import {Button, Checkbox, CheckboxGroup, Heading, HelpText, Textarea, VStack} from '@navikt/ds-react'
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
 import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../../utils.ts'
-import {Deltakelsesprosent} from '../../pages/pamelding/components/Deltakelsesprosent.tsx'
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
+import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
 
 interface Props {
     disableButtonsAndForm: boolean
@@ -71,6 +71,17 @@ export const OpprettPameldingForm = ({
 
   return (
     <VStack gap="8" className="p-6 bg-white">
+      <section className="space-y-4">
+        <Heading size="small" level="3">Hva er innholdet?</Heading>
+        <p>
+          (TODO: Her skal det vel være en tekst til veileder?)
+          <br/>
+          Du får tett oppfølging og støtte av en veileder. Sammen
+          Kartlegger dere hvordan din kompetanse , interesser og ferdigheter påvirker
+          muligheten din til å jobbe.
+        </p>
+      </section>
+
       <form>
         <FormProvider {...methods}>
           <section className="mb-4">

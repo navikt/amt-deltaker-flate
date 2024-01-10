@@ -1,4 +1,3 @@
-import {OpprettPameldingHeader} from '../components/opprett-pamelding/OpprettPameldingHeader.tsx'
 import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
 import {OpprettPameldingForm} from '../components/opprett-pamelding/OpprettPameldingForm.tsx'
 import {PameldingFormValues} from '../model/PameldingFormValues.ts'
@@ -13,6 +12,7 @@ import {useState} from 'react'
 import {useAppRedirection} from '../hooks/useAppRedirection.ts'
 import {TILBAKE_PAGE} from '../Routes.tsx'
 import {DelUtkastModal} from '../components/opprett-pamelding/modal/DelUtkastModal.tsx'
+import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
 
 export interface OpprettPameldingPageProps {
   pamelding: PameldingResponse
@@ -26,13 +26,13 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState<boolean>(false)
   const [formData, setFormData] = useState<PameldingFormValues>()
 
-  const successfulTilbake = () => {doRedirect(TILBAKE_PAGE)}
+  const returnToFrontpage = () => {doRedirect(TILBAKE_PAGE)}
 
   const {
     state: sendSomForslagState,
     error: sendSomForslagError,
     doFetch: doFetchSendSomForslag
-  } = useDeferredFetch(sendInnPamelding, successfulTilbake)
+  } = useDeferredFetch(sendInnPamelding, returnToFrontpage)
 
   const {
     state: sendDirekteState
@@ -41,7 +41,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
   const {
     state: avbrytUtkastState,
     doFetch: fetchAvbrytUtkast,
-  } = useDeferredFetch(deletePamelding, successfulTilbake)
+  } = useDeferredFetch(deletePamelding, returnToFrontpage)
 
   const generateMal = (selectedMal: string[]): Mal[] => {
     return pamelding.mal.map(mal => {
@@ -86,11 +86,11 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
 
   return (
     <div className="m-4">
-      <OpprettPameldingHeader
-        deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
+      <PameldingHeader
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
       />
+
       <OpprettPameldingForm
         disableButtonsAndForm={disableButtonsAndForm()}
         onSendSomForslag={onSendSomForslagHandler}
