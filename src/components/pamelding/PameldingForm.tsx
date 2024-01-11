@@ -37,15 +37,24 @@ export const PameldingForm = ({
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
 
   const showProsentValg = (): DeltakelsesprosentValg => {
-    if(deltakelsesprosent && deltakelsesprosent < 100) {
+    if (deltakelsesprosent && deltakelsesprosent < 100) {
       return DeltakelsesprosentValg.NEI
     }
     return DeltakelsesprosentValg.JA
   }
 
+  const getMalAnnetBeskrivelse = (): string | undefined => {
+    const annetCheckbox = mal.find((m: Mal) => m.type === MAL_TYPE_ANNET)
+
+    if (annetCheckbox && annetCheckbox.valgt) {
+      return annetCheckbox.beskrivelse ?? undefined
+    }
+    return undefined
+  }
+
   const defaultValues: PameldingFormValues = {
     valgteMal: mal.filter((e) => e.valgt).map((e) => e.type),
-    malAnnetBeskrivelse: '',
+    malAnnetBeskrivelse: getMalAnnetBeskrivelse(),
     bakgrunnsinformasjon: bakgrunnsinformasjon ?? '',
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: deltakelsesprosent,
@@ -82,11 +91,11 @@ export const PameldingForm = ({
       <section className="space-y-4">
         <Heading size="small" level="3">Hva er innholdet?</Heading>
         <p>
-          (<Todo/>: Her skal det vel være en tekst til veileder?)
+                    (<Todo/>: Her skal det vel være en tekst til veileder?)
           <br/>
-          Du får tett oppfølging og støtte av en veileder. Sammen
-          Kartlegger dere hvordan din kompetanse , interesser og ferdigheter påvirker
-          muligheten din til å jobbe.
+                    Du får tett oppfølging og støtte av en veileder. Sammen
+                    Kartlegger dere hvordan din kompetanse , interesser og ferdigheter påvirker
+                    muligheten din til å jobbe.
         </p>
       </section>
 
@@ -111,11 +120,12 @@ export const PameldingForm = ({
                 <Textarea
                   label={null}
                   {...register('malAnnetBeskrivelse')}
-                  defaultValue={defaultValues.malAnnetBeskrivelse}
+                  value={watch('malAnnetBeskrivelse')}
                   error={errors.malAnnetBeskrivelse?.message}
                   disabled={disableButtonsAndForm}
                   aria-label={'Beskrivelse av mål "Annet"'}
                   aria-required
+                  maxLength={50}
                   id="malAnnetBeskrivelse"
                 />
               )}
