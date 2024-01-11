@@ -1,5 +1,5 @@
 import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
-import {PameldingFormValues} from '../model/PameldingFormValues.ts'
+import {generateFormDefaultValues, PameldingFormValues} from '../model/PameldingFormValues.ts'
 import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts'
 import {deletePamelding, sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
@@ -99,6 +99,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         sendDirekteLoading={sendDirekteState === DeferredFetchState.LOADING}
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         mal={pamelding.mal}
+        defaultValues={generateFormDefaultValues(pamelding)}
       />
 
       {sendSomForslagState === DeferredFetchState.ERROR && (

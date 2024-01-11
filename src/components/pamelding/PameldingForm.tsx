@@ -2,7 +2,7 @@ import {Button, Checkbox, CheckboxGroup, Heading, HelpText, Textarea, VStack} fr
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
-import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../../utils.ts'
+import {MAL_TYPE_ANNET} from '../../utils.ts'
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
 import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
 import {Todo} from '../Todo.tsx'
@@ -14,6 +14,7 @@ interface Props {
     onSendDirekte: (data: PameldingFormValues) => void
     sendDirekteLoading: boolean
     tiltakstype: Tiltakstype
+    defaultValues: PameldingFormValues
     mal: Array<Mal>
     bakgrunnsinformasjon?: string
     deltakelsesprosent?: number
@@ -28,38 +29,11 @@ export const PameldingForm = ({
   sendDirekteLoading,
   tiltakstype,
   mal,
-  bakgrunnsinformasjon,
-  deltakelsesprosent,
-  dagerPerUke
+  defaultValues
 }: Props) => {
 
   const FORSLAG_BTN_ID = 'sendSomForslagBtn'
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
-
-  const showProsentValg = (): DeltakelsesprosentValg => {
-    if (deltakelsesprosent && deltakelsesprosent < 100) {
-      return DeltakelsesprosentValg.NEI
-    }
-    return DeltakelsesprosentValg.JA
-  }
-
-  const getMalAnnetBeskrivelse = (): string | undefined => {
-    const annetCheckbox = mal.find((m: Mal) => m.type === MAL_TYPE_ANNET)
-
-    if (annetCheckbox && annetCheckbox.valgt) {
-      return annetCheckbox.beskrivelse ?? undefined
-    }
-    return undefined
-  }
-
-  const defaultValues: PameldingFormValues = {
-    valgteMal: mal.filter((e) => e.valgt).map((e) => e.type),
-    malAnnetBeskrivelse: getMalAnnetBeskrivelse(),
-    bakgrunnsinformasjon: bakgrunnsinformasjon ?? '',
-    deltakelsesprosentValg: showProsentValg(),
-    deltakelsesprosent: deltakelsesprosent,
-    dagerPerUke: dagerPerUke
-  }
 
   const methods = useForm<PameldingFormValues>({
     defaultValues,

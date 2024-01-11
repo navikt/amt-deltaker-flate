@@ -2,6 +2,7 @@ import {PameldingResponse} from '../api/data/pamelding.ts'
 import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
 import {RedigerPameldingHeader} from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
 import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
+import {generateFormDefaultValues} from '../model/PameldingFormValues.ts'
 
 export interface RedigerPameldingPageProps {
     pamelding: PameldingResponse
@@ -32,6 +33,7 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
           sendDirekteLoading={false}
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           mal={pamelding.mal}
+          defaultValues={generateFormDefaultValues(pamelding)}
           bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon ?? undefined}
           deltakelsesprosent={pamelding.deltakelsesprosent ?? undefined}
           dagerPerUke={pamelding.dagerPerUke ?? undefined}
