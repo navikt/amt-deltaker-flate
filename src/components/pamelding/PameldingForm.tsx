@@ -5,6 +5,7 @@ import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
 import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../../utils.ts'
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
 import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
+import {Todo} from '../Todo.tsx'
 
 interface Props {
     disableButtonsAndForm: boolean
@@ -19,7 +20,7 @@ interface Props {
     dagerPerUke?: number
 }
 
-export const OpprettPameldingForm = ({
+export const PameldingForm = ({
   disableButtonsAndForm,
   onSendSomForslag,
   sendSomForslagLoading,
@@ -35,11 +36,18 @@ export const OpprettPameldingForm = ({
   const FORSLAG_BTN_ID = 'sendSomForslagBtn'
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
 
+  const showProsentValg = (): DeltakelsesprosentValg => {
+    if(deltakelsesprosent && deltakelsesprosent < 100) {
+      return DeltakelsesprosentValg.NEI
+    }
+    return DeltakelsesprosentValg.JA
+  }
+
   const defaultValues: PameldingFormValues = {
     valgteMal: mal.filter((e) => e.valgt).map((e) => e.type),
     malAnnetBeskrivelse: '',
     bakgrunnsinformasjon: bakgrunnsinformasjon ?? '',
-    deltakelsesprosentValg: deltakelsesprosent ? DeltakelsesprosentValg.JA : undefined,
+    deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: deltakelsesprosent,
     dagerPerUke: dagerPerUke
   }
@@ -47,7 +55,7 @@ export const OpprettPameldingForm = ({
   const methods = useForm<PameldingFormValues>({
     defaultValues,
     resolver: zodResolver(pameldingFormSchema),
-    shouldFocusError: false
+    shouldFocusError: false,
   })
 
   const {
@@ -74,7 +82,7 @@ export const OpprettPameldingForm = ({
       <section className="space-y-4">
         <Heading size="small" level="3">Hva er innholdet?</Heading>
         <p>
-          (TODO: Her skal det vel være en tekst til veileder?)
+          (<Todo/>: Her skal det vel være en tekst til veileder?)
           <br/>
           Du får tett oppfølging og støtte av en veileder. Sammen
           Kartlegger dere hvordan din kompetanse , interesser og ferdigheter påvirker

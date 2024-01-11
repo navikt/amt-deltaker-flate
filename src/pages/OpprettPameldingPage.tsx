@@ -1,5 +1,4 @@
 import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
-import {OpprettPameldingForm} from '../components/opprett-pamelding/OpprettPameldingForm.tsx'
 import {PameldingFormValues} from '../model/PameldingFormValues.ts'
 import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts'
 import {deletePamelding, sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
@@ -13,6 +12,7 @@ import {useAppRedirection} from '../hooks/useAppRedirection.ts'
 import {TILBAKE_PAGE} from '../Routes.tsx'
 import {DelUtkastModal} from '../components/opprett-pamelding/modal/DelUtkastModal.tsx'
 import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
+import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
 
 export interface OpprettPameldingPageProps {
   pamelding: PameldingResponse
@@ -91,7 +91,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
 
-      <OpprettPameldingForm
+      <PameldingForm
         disableButtonsAndForm={disableButtonsAndForm()}
         onSendSomForslag={onSendSomForslagHandler}
         sendSomForslagLoading={sendSomForslagState === DeferredFetchState.LOADING}
