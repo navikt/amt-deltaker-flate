@@ -3,8 +3,7 @@ import React, {useState} from 'react'
 import {APPLICATION_WEB_COMPONENT_NAME} from './constants.ts'
 import {Button, TextField} from '@navikt/ds-react'
 import {getCurrentMode} from './utils/environment-utils.ts'
-import '@navikt/ds-css'
-import './tailwind.css'
+import './app.css'
 import './index.css'
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 
@@ -48,7 +47,7 @@ const WebComponentInputHandler = ({
   const [deltakerlisteId, setDeltakerlisteId] = useState<string>(
     '3fcac2a6-68cf-464e-8dd1-62ccec5933df'
   )
-  const [enhetId, setEnhetId] = useState<string>('Enhet1')
+  const [enhetId, setEnhetId] = useState<string>('0106')
 
   const changehandler = () => {
     personidentHandler(personident)

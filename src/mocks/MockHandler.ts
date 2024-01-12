@@ -22,7 +22,7 @@ export class MockHandler {
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: DeltakerStatusType.KLADD,
+        type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
         gyldigTil: null,
@@ -30,9 +30,9 @@ export class MockHandler {
       },
       startdato: null,
       sluttdato: null,
-      dagerPerUke: null,
-      deltakelsesprosent: null,
-      bakgrunnsinformasjon: null,
+      dagerPerUke: 4.5,
+      deltakelsesprosent: 95,
+      bakgrunnsinformasjon: 'Dette er en test',
       mal: [
         {
           visningstekst: 'Mål 1',
@@ -43,13 +43,13 @@ export class MockHandler {
         {
           visningstekst: 'Mål 2',
           type: 'type2',
-          valgt: false,
+          valgt: true,
           beskrivelse: null
         },
         {
           visningstekst: 'Annet',
           type: MAL_TYPE_ANNET,
-          valgt: false,
+          valgt: true,
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],

@@ -1,10 +1,11 @@
-import {Button, Checkbox, CheckboxGroup, HelpText, Textarea, VStack} from '@navikt/ds-react'
+import {Button, Checkbox, CheckboxGroup, Heading, HelpText, Textarea, VStack} from '@navikt/ds-react'
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
-import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../../utils.ts'
-import {Deltakelsesprosent} from '../../pages/pamelding/components/Deltakelsesprosent.tsx'
+import {MAL_TYPE_ANNET} from '../../utils.ts'
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
+import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
+import {Todo} from '../Todo.tsx'
 
 interface Props {
     disableButtonsAndForm: boolean
@@ -13,13 +14,14 @@ interface Props {
     onSendDirekte: (data: PameldingFormValues) => void
     sendDirekteLoading: boolean
     tiltakstype: Tiltakstype
+    defaultValues: PameldingFormValues
     mal: Array<Mal>
     bakgrunnsinformasjon?: string
     deltakelsesprosent?: number
     dagerPerUke?: number
 }
 
-export const OpprettPameldingForm = ({
+export const PameldingForm = ({
   disableButtonsAndForm,
   onSendSomForslag,
   sendSomForslagLoading,
@@ -27,27 +29,16 @@ export const OpprettPameldingForm = ({
   sendDirekteLoading,
   tiltakstype,
   mal,
-  bakgrunnsinformasjon,
-  deltakelsesprosent,
-  dagerPerUke
+  defaultValues
 }: Props) => {
 
   const FORSLAG_BTN_ID = 'sendSomForslagBtn'
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
 
-  const defaultValues: PameldingFormValues = {
-    valgteMal: mal.filter((e) => e.valgt).map((e) => e.type),
-    malAnnetBeskrivelse: '',
-    bakgrunnsinformasjon: bakgrunnsinformasjon ?? '',
-    deltakelsesprosentValg: deltakelsesprosent ? DeltakelsesprosentValg.JA : undefined,
-    deltakelsesprosent: deltakelsesprosent,
-    dagerPerUke: dagerPerUke
-  }
-
   const methods = useForm<PameldingFormValues>({
     defaultValues,
     resolver: zodResolver(pameldingFormSchema),
-    shouldFocusError: false
+    shouldFocusError: false,
   })
 
   const {
@@ -71,6 +62,17 @@ export const OpprettPameldingForm = ({
 
   return (
     <VStack gap="8" className="p-6 bg-white">
+      <section className="space-y-4">
+        <Heading size="small" level="3">Hva er innholdet?</Heading>
+        <p>
+                    (<Todo/>: Her skal det vel være en tekst til veileder?)
+          <br/>
+                    Du får tett oppfølging og støtte av en veileder. Sammen
+                    Kartlegger dere hvordan din kompetanse , interesser og ferdigheter påvirker
+                    muligheten din til å jobbe.
+        </p>
+      </section>
+
       <form>
         <FormProvider {...methods}>
           <section className="mb-4">
@@ -92,11 +94,12 @@ export const OpprettPameldingForm = ({
                 <Textarea
                   label={null}
                   {...register('malAnnetBeskrivelse')}
-                  defaultValue={defaultValues.malAnnetBeskrivelse}
+                  value={watch('malAnnetBeskrivelse')}
                   error={errors.malAnnetBeskrivelse?.message}
                   disabled={disableButtonsAndForm}
                   aria-label={'Beskrivelse av mål "Annet"'}
                   aria-required
+                  maxLength={50}
                   id="malAnnetBeskrivelse"
                 />
               )}

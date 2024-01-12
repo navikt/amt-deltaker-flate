@@ -1,5 +1,5 @@
 import {BodyLong, Button, HStack, Modal} from '@navikt/ds-react'
-import {Navn} from '../../../api/data/pamelding.ts'
+import {Navn} from '../../api/data/pamelding.ts'
 
 interface Props {
     open: boolean

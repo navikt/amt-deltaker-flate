@@ -1,8 +1,6 @@
 import {Navigate, Route, Routes} from 'react-router-dom'
-import {Pamelding} from './pages/Pamelding.tsx'
-import {Delakelse} from './pages/Delakelse.tsx'
 import App from './App.tsx'
-import { useAppContext } from './AppContext.tsx'
+import {useAppContext} from './AppContext.tsx'
 import {SendTilbakePage} from './pages/SendTilbakePage.tsx'
 
 const appUrl = (path: string): string => {
@@ -22,8 +20,6 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={`${base}`} element={<App />} />
-      <Route path={`${base}/${PAMELDING_PAGE}`} element={<Pamelding />} />
-      <Route path={`${base}/${DELTAKELSE_PAGE}`} element={<Delakelse />} />
       <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage/>} />
       <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
       {import.meta.env.DEV && (
