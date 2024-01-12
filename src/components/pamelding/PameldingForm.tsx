@@ -77,35 +77,37 @@ export const PameldingForm = ({
       <form>
         <FormProvider {...methods}>
           <section className="mb-4">
-            <CheckboxGroup
-              defaultValue={defaultValues.valgteMal}
-              legend="Hva er målet med deltakelsen?"
-              error={errors.valgteMal?.message}
-              size="small"
-              disabled={disableButtonsAndForm}
-              aria-required
-              id="valgteMal"
-            >
-              {mal.map((e) => (
-                <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
-                  {e.visningstekst}
-                </Checkbox>
-              ))}
-              {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
-                <Textarea
-                  label={null}
-                  {...register('malAnnetBeskrivelse')}
-                  value={watch('malAnnetBeskrivelse')}
-                  defaultValue={defaultValues.malAnnetBeskrivelse}
-                  error={errors.malAnnetBeskrivelse?.message}
-                  disabled={disableButtonsAndForm}
-                  aria-label={'Beskrivelse av mål "Annet"'}
-                  aria-required
-                  maxLength={50}
-                  id="malAnnetBeskrivelse"
-                />
-              )}
-            </CheckboxGroup>
+            {mal.length > 0 && (
+              <CheckboxGroup
+                defaultValue={defaultValues.valgteMal}
+                legend="Hva er målet med deltakelsen?"
+                error={errors.valgteMal?.message}
+                size="small"
+                disabled={disableButtonsAndForm}
+                aria-required
+                id="valgteMal"
+              >
+                {mal.map((e) => (
+                  <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
+                    {e.visningstekst}
+                  </Checkbox>
+                ))}
+                {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
+                  <Textarea
+                    label={null}
+                    {...register('malAnnetBeskrivelse')}
+                    value={watch('malAnnetBeskrivelse')}
+                    defaultValue={defaultValues.malAnnetBeskrivelse}
+                    error={errors.malAnnetBeskrivelse?.message}
+                    disabled={disableButtonsAndForm}
+                    aria-label={'Beskrivelse av mål "Annet"'}
+                    aria-required
+                    maxLength={50}
+                    id="malAnnetBeskrivelse"
+                  />
+                )}
+              </CheckboxGroup>
+            )}
           </section>
 
           <section className="mb-4">
