@@ -2,13 +2,12 @@ import {BodyLong, Button, HStack, Modal} from '@navikt/ds-react'
 import {Navn} from '../../api/data/pamelding.ts'
 
 interface Props {
-    open: boolean
-    onConfirm: () => void
-    onCancel: () => void
-    navn: Navn
-    gjennomforingTypeText: string
-    arrangorNavn: string
-
+  open: boolean
+  onConfirm: () => void
+  onCancel: () => void
+  navn: Navn
+  gjennomforingTypeText: string
+  arrangorNavn: string
 }
 
 export const DelUtkastModal = (
@@ -31,11 +30,7 @@ export const DelUtkastModal = (
   }
 
   return (
-    <Modal
-      open={open}
-      header={{heading: 'Del utkast og gjør klar vedtak'}}
-      onClose={onCancel}
-    >
+    <Modal open={open} header={{ heading: 'Del utkast og gjør klar vedtak' }} onClose={onCancel}>
       <Modal.Body>
         <div className="flex flex-col space-y-4">
           <BodyLong weight="semibold">
@@ -43,23 +38,24 @@ export const DelUtkastModal = (
           </BodyLong>
 
           <BodyLong>
-              Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til arrangøren.
-              Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom aktivitetsplanen.
+            Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
+            arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
+            aktivitetsplanen.
           </BodyLong>
 
           <BodyLong>
-              Når bruker godtar så meldes bruker på og vedtaket fattes.
-              Arrangør mottar informasjon i verktøyet Deltakeroversikt på nav.no.
+            Når bruker godtar så meldes bruker på og vedtaket fattes. Arrangør mottar informasjon i
+            verktøyet Deltakeroversikt på nav.no.
           </BodyLong>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <HStack gap="4">
           <Button type="button" variant="secondary" onClick={onCancel}>
-              Avbryt
+            Avbryt
           </Button>
           <Button type="button" onClick={onConfirm}>
-              Del utkast og gjør klar vedtak
+            Del utkast og gjør klar vedtak
           </Button>
         </HStack>
       </Modal.Footer>
