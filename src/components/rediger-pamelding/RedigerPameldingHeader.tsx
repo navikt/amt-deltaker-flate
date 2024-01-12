@@ -10,7 +10,7 @@ interface Props {
 
 export const RedigerPameldingHeader = ({ status, endretAv }: Props) => {
   return (
-    <div>
+    <div className="space-y-2">
       <p>Utkast til påmelding sendt til deltaker</p>
       <Tag variant="info">{getDeltakerStatusDisplayText(status)}</Tag>
       <p>Sist endret: <Todo/> {endretAv}</p>

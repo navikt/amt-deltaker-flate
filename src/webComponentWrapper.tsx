@@ -1,5 +1,4 @@
-import dsStyles from '@navikt/ds-css/dist/index.css?inline'
-import tailwindCss from './tailwind.css?inline'
+import appCss from './app.css?inline'
 import {createRoot} from 'react-dom/client'
 import {APPLICATION_WEB_COMPONENT_NAME} from './constants'
 import {AppContextProvider} from './AppContext'
@@ -33,7 +32,7 @@ export class Deltaker extends HTMLElement {
 
     // Load styles under this shadowDom-node, not root element
     const styleElem = document.createElement('style')
-    styleElem.innerHTML =  tailwindCss + dsStyles
+    styleElem.innerHTML = appCss
     shadowRoot.appendChild(styleElem)
 
     const initialPersonident = this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''

@@ -6,13 +6,13 @@ import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts
 import {useAppContext} from '../AppContext.tsx'
 import {TrashIcon} from '@navikt/aksel-icons'
 import {Alert, Button, Heading} from '@navikt/ds-react'
-import {AvbrytUtkastModal} from '../components/opprett-pamelding/modal/AvbrytUtkastModal.tsx'
 import {useState} from 'react'
 import {useAppRedirection} from '../hooks/useAppRedirection.ts'
 import {TILBAKE_PAGE} from '../Routes.tsx'
-import {DelUtkastModal} from '../components/opprett-pamelding/modal/DelUtkastModal.tsx'
 import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
 import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
+import {AvbrytUtkastModal} from '../components/opprett-pamelding/AvbrytUtkastModal.tsx'
+import {DelUtkastModal} from '../components/opprett-pamelding/DelUtkastModal.tsx'
 
 export interface OpprettPameldingPageProps {
   pamelding: PameldingResponse

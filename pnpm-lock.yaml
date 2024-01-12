@@ -17,6 +17,9 @@ dependencies:
   '@navikt/ds-react':
     specifier: ^5.12.4
     version: 5.12.4(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+  '@navikt/ds-tailwind':
+    specifier: ^5.13.0
+    version: 5.13.0
   '@types/react-router-dom':
     specifier: ^5.3.3
     version: 5.3.3
@@ -607,6 +610,10 @@ packages:
       react-day-picker: 8.3.4(date-fns@2.30.0)(react@18.2.0)
     transitivePeerDependencies:
       - react-dom
+    dev: false
+
+  /@navikt/ds-tailwind@5.13.0:
+    resolution: {integrity: sha512-PW3BL9/GuahV/JkaDBS5d3tLSmSK8ueXeS9gpIyvl0oc2v9obZNaNkovO5Q/a3KIj/RLmRHgvdC/0a7SoGDNLA==}
     dev: false
 
   /@navikt/ds-tokens@5.12.4:

@@ -5,8 +5,8 @@ import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
 import {generateFormDefaultValues} from '../model/PameldingFormValues.ts'
 import {Button} from '@navikt/ds-react'
 import {TrashIcon} from '@navikt/aksel-icons'
-import {AvbrytUtkastDeltMedBrukerModal} from '../components/rediger-pamelding/modal/AvbrytUtkastDeltMedBrukerModal.tsx'
 import {useState} from 'react'
+import {AvbrytUtkastDeltMedBrukerModal} from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
 
 export interface RedigerPameldingPageProps {
     pamelding: PameldingResponse

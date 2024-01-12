@@ -24,6 +24,7 @@
     "@navikt/aksel-icons": "^5.12.4",
     "@navikt/ds-css": "^5.12.4",
     "@navikt/ds-react": "^5.12.4",
+    "@navikt/ds-tailwind": "^5.13.0",
     "@types/react-router-dom": "^5.3.3",
     "mockjs": "^1.1.0",
     "msw": "^2.0.12",
