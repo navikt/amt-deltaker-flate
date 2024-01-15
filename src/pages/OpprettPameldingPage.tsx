@@ -12,7 +12,7 @@ import {TILBAKE_PAGE} from '../Routes.tsx'
 
 import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
 import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
-import {AvbrytUtkastModal} from '../components/opprett-pamelding/AvbrytUtkastModal.tsx'
+import { AvbrytKladdModal } from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
 import { DelUtkastModal } from '../components/opprett-pamelding/DelUtkastModal.tsx'
 import { MeldPaDirekteModal } from '../components/opprett-pamelding/MeldPaDirekteModal.tsx'
 
@@ -30,7 +30,9 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
 
   const [formData, setFormData] = useState<PameldingFormValues>()
 
-  const returnToFrontpage = () => {doRedirect(TILBAKE_PAGE)}
+  const returnToFrontpage = () => {
+    doRedirect(TILBAKE_PAGE)
+  }
 
   const {
     state: sendSomForslagState,
@@ -44,10 +46,10 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(sendInnPameldingUtenGodkjenning, returnToFrontpage)
 
-  const {
-    state: avbrytUtkastState,
-    doFetch: fetchAvbrytUtkast,
-  } = useDeferredFetch(deletePamelding, returnToFrontpage)
+  const { state: avbrytUtkastState, doFetch: fetchAvbrytUtkast } = useDeferredFetch(
+    deletePamelding,
+    returnToFrontpage
+  )
 
   const generateMal = (selectedMal: string[]): Mal[] => {
     return pamelding.mal.map((mal) => {
@@ -138,19 +140,18 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
         <Alert variant="success">Pmeldingen er sendt</Alert>
       )}
 
-      <div className="mt-4">
-        <Button
-          type="button"
-          variant="tertiary"
-          disabled={disableButtonsAndForm()}
-          onClick={() => setAvbrytModalOpen(true)}
-          icon={<TrashIcon />}
-        >
-          Avbryt utkast
-        </Button>
-      </div>
+      <Button
+        size="small"
+        variant="tertiary"
+        className="mt-2"
+        disabled={disableButtonsAndForm()}
+        onClick={() => setAvbrytModalOpen(true)}
+        icon={<TrashIcon />}
+      >
+        Avbryt
+      </Button>
 
-      <AvbrytUtkastModal
+      <AvbrytKladdModal
         open={avbrytModalOpen}
         onConfirm={() => {
           fetchAvbrytUtkast(pamelding.deltakerId)

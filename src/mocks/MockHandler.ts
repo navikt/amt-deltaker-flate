@@ -35,15 +35,63 @@ export class MockHandler {
       bakgrunnsinformasjon: 'Dette er en test',
       mal: [
         {
-          visningstekst: 'Mål 1',
+          visningstekst: 'Støtte til jobbsøking',
           type: 'type1',
           valgt: false,
           beskrivelse: null
         },
         {
-          visningstekst: 'Mål 2',
+          visningstekst: 'Karriereveiledning',
           type: 'type2',
           valgt: true,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          type: 'type3',
+          valgt: true,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+          type: 'type4',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Kartlegge dine forventninger til å jobbe',
+          type: 'type5',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Veiledning i sosial mestring',
+          type: 'type6',
+          valgt: true,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+          type: 'type7',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Veiledning til arbeidsgiver',
+          type: 'type8',
+          valgt: false,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Oppfølging på arbeidsplassen',
+          type: 'type9',
+          valgt: true,
+          beskrivelse: null
+        },
+        {
+          visningstekst: 'Arbeidspraksis',
+          type: 'type10',
+          valgt: false,
           beskrivelse: null
         },
         {

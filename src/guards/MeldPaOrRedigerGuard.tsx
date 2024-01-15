@@ -27,7 +27,7 @@ export const MeldPaOrRedigerGuard = () => {
     return (
       <Alert variant="error">
         <Heading spacing size="small" level="3">
-                    Vi beklager, men noe gikk galt
+          Vi beklager, men noe gikk galt
         </Heading>
         {error}
       </Alert>
@@ -45,10 +45,8 @@ export const MeldPaOrRedigerGuard = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <Alert variant="error">
-        <Heading size="small">
-                    Side ikke implementert
-        </Heading>
-                Side for å håndtere påmeldinger med status {pamelding.status.type} er ikke implementert
+        <Heading size="small">Side ikke implementert</Heading>
+        Side for å håndtere påmeldinger med status {pamelding.status.type} er ikke implementert
       </Alert>
     </div>
   )

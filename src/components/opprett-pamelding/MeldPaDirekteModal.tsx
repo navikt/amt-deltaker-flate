@@ -24,7 +24,7 @@ export const MeldPaDirekteModal = ({ open, onConfirm, onCancel }: MeldPaDirekteM
   return (
     <Modal open={open} header={{ heading: 'Meld på uten å dele utkast' }} onClose={onCancel}>
       <Modal.Body>
-        <BodyLong>
+        <BodyLong size="small" className="mb-6">
           Du skal allerede ha avtalt med bruker at det er ok at denne informasjonen nå deles med
           arrangøren, og dette skal være dokumentert. Det du svarer her vises til personen.
         </BodyLong>
@@ -44,10 +44,10 @@ export const MeldPaDirekteModal = ({ open, onConfirm, onCancel }: MeldPaDirekteM
       </Modal.Body>
       <Modal.Footer>
         <HStack gap="4">
-          <Button type="button" variant="secondary" onClick={onCancel}>
+          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
             Avbryt
           </Button>
-          <Button type="button" onClick={handleMeldPåDirekte}>
+          <Button type="button" size="small" onClick={handleMeldPåDirekte}>
             Meld på og fatt vedtak
           </Button>
         </HStack>
