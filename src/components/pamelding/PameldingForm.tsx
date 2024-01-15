@@ -1,24 +1,33 @@
-import {Button, Checkbox, CheckboxGroup, Heading, HelpText, Textarea, VStack} from '@navikt/ds-react'
-import {FormProvider, useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
-import {MAL_TYPE_ANNET} from '../../utils.ts'
-import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
-import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
-import {Todo} from '../Todo.tsx'
+import {
+  BodyLong,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Heading,
+  HelpText,
+  Textarea,
+  VStack
+} from '@navikt/ds-react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { type Mal, Tiltakstype } from '../../api/data/pamelding.ts'
+import { MAL_TYPE_ANNET } from '../../utils.ts'
+import { pameldingFormSchema, PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
+import { Todo } from '../Todo.tsx'
 
 interface Props {
-    disableButtonsAndForm: boolean
-    onSendSomForslag: (data: PameldingFormValues) => void
-    sendSomForslagLoading: boolean
-    onSendDirekte: (data: PameldingFormValues) => void
-    sendDirekteLoading: boolean
-    tiltakstype: Tiltakstype
-    defaultValues: PameldingFormValues
-    mal: Array<Mal>
-    bakgrunnsinformasjon?: string
-    deltakelsesprosent?: number
-    dagerPerUke?: number
+  disableButtonsAndForm: boolean
+  onSendSomForslag: (data: PameldingFormValues) => void
+  sendSomForslagLoading: boolean
+  onSendDirekte: (data: PameldingFormValues) => void
+  sendDirekteLoading: boolean
+  tiltakstype: Tiltakstype
+  defaultValues: PameldingFormValues
+  mal: Array<Mal>
+  bakgrunnsinformasjon?: string
+  deltakelsesprosent?: number
+  dagerPerUke?: number
 }
 
 export const PameldingForm = ({
@@ -37,7 +46,7 @@ export const PameldingForm = ({
   const methods = useForm<PameldingFormValues>({
     defaultValues,
     resolver: zodResolver(pameldingFormSchema),
-    shouldFocusError: false,
+    shouldFocusError: false
   })
 
   const {
@@ -61,26 +70,26 @@ export const PameldingForm = ({
   const valgteMal = watch('valgteMal')
 
   return (
-    <VStack gap="8" className="p-6 bg-white">
+    <VStack gap="4" className="p-8 bg-white">
       <section className="space-y-4">
-        <Heading size="small" level="3">
+        <Heading size="medium" level="3">
           Hva er innholdet?
         </Heading>
-        <p>
+        <BodyLong size="small">
           (<Todo />: Her skal det vel være en tekst til veileder?)
           <br />
           Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
           kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
-        </p>
+        </BodyLong>
       </section>
 
       <form>
         <FormProvider {...methods}>
-          <section className="mb-4">
+          <section className="mb-8">
             {mal.length > 0 && (
               <CheckboxGroup
                 defaultValue={defaultValues.valgteMal}
-                legend="Hva er målet med deltakelsen?"
+                legend="Hva mer skal tiltaket inneholde?"
                 error={errors.valgteMal?.message}
                 size="small"
                 disabled={disableButtonsAndForm}
@@ -103,6 +112,7 @@ export const PameldingForm = ({
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
                     maxLength={50}
+                    size="small"
                     id="malAnnetBeskrivelse"
                   />
                 )}
@@ -110,16 +120,20 @@ export const PameldingForm = ({
             )}
           </section>
 
-          <section className="mb-4">
+          <section className="mb-8">
+            <Heading size="medium" level="3" className="mb-4">
+              Bakgrunnsinformasjon
+            </Heading>
             <Textarea
-              label="Bakgrunnsinformasjon (valgfritt)"
-              description="Hvis det er noe viktig med brukers livssituasjon som kommer til å påvirke deltakelsen på tiltaket kan du skrive dette her. Dette vises til bruker og tiltaksarrangør."
+              label="Er det noe mer dere ønsker å informere arrangøren om?"
+              description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
               disabled={disableButtonsAndForm}
               maxLength={500}
               id="bakgrunnsinformasjon"
+              size="small"
             />
           </section>
 
@@ -132,7 +146,7 @@ export const PameldingForm = ({
             />
           )}
 
-          <VStack gap="4" className="mt-4">
+          <VStack gap="4" className="mt-8">
             <div className="flex items-center">
               <Button
                 size="small"

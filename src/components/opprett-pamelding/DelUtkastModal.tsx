@@ -33,17 +33,17 @@ export const DelUtkastModal = (
     <Modal open={open} header={{ heading: 'Del utkast og gjør klar vedtak' }} onClose={onCancel}>
       <Modal.Body>
         <div className="flex flex-col space-y-4">
-          <BodyLong weight="semibold">
+          <BodyLong weight="semibold" size="small">
             {getNavn()} meldes på {gjennomforingTypeText} hos {arrangorNavn}
           </BodyLong>
 
-          <BodyLong>
+          <BodyLong size="small">
             Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
             arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
             aktivitetsplanen.
           </BodyLong>
 
-          <BodyLong>
+          <BodyLong size="small">
             Når bruker godtar så meldes bruker på og vedtaket fattes. Arrangør mottar informasjon i
             verktøyet Deltakeroversikt på nav.no.
           </BodyLong>
@@ -51,10 +51,10 @@ export const DelUtkastModal = (
       </Modal.Body>
       <Modal.Footer>
         <HStack gap="4">
-          <Button type="button" variant="secondary" onClick={onCancel}>
+          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
             Avbryt
           </Button>
-          <Button type="button" onClick={onConfirm}>
+          <Button type="button" size="small" onClick={onConfirm}>
             Del utkast og gjør klar vedtak
           </Button>
         </HStack>

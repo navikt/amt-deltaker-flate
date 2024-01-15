@@ -29,40 +29,40 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
           />
         </div>
 
-        <div>
-          <PameldingForm
-            disableButtonsAndForm={false}
-            onSendSomForslag={() => {
-            }}
-            sendSomForslagLoading={false}
-            onSendDirekte={() => {
-            }}
-            sendDirekteLoading={false}
-            tiltakstype={pamelding.deltakerliste.tiltakstype}
-            mal={pamelding.mal}
-            defaultValues={generateFormDefaultValues(pamelding)}
-            bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon ?? undefined}
-            deltakelsesprosent={pamelding.deltakelsesprosent ?? undefined}
-            dagerPerUke={pamelding.dagerPerUke ?? undefined}
-          />
-        </div>
-
-        <div className="mt-4">
-          <Button type="button"
-            variant="tertiary"
-            disabled={false}
-            onClick={() => {setAvbrytModalOpen(true)}}
-            icon={<TrashIcon/>}
-          >
-                  Avbryt utkast
-          </Button>
-        </div>
+        <PameldingForm
+          disableButtonsAndForm={false}
+          onSendSomForslag={() => {}}
+          sendSomForslagLoading={false}
+          onSendDirekte={() => {}}
+          sendDirekteLoading={false}
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          mal={pamelding.mal}
+          defaultValues={generateFormDefaultValues(pamelding)}
+          bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon ?? undefined}
+          deltakelsesprosent={pamelding.deltakelsesprosent ?? undefined}
+          dagerPerUke={pamelding.dagerPerUke ?? undefined}
+        />
       </div>
+
+      <Button
+        size="small"
+        variant="tertiary"
+        disabled={false}
+        className="mt-2"
+        onClick={() => {
+          setAvbrytModalOpen(true)
+        }}
+        icon={<TrashIcon />}
+      >
+        Avbryt utkast
+      </Button>
 
       <AvbrytUtkastDeltMedBrukerModal
         open={avbrytModalOpen}
         onConfirm={() => {}}
-        onCancel={() => {setAvbrytModalOpen(false)}}
+        onCancel={() => {
+          setAvbrytModalOpen(false)
+        }}
       />
     </>
   )
