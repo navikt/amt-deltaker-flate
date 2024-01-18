@@ -1,8 +1,7 @@
-import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
+import {PameldingResponse} from '../api/data/pamelding.ts'
 import {generateFormDefaultValues, PameldingFormValues} from '../model/PameldingFormValues.ts'
 import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts'
 import {deletePamelding, sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
 import {useAppContext} from '../AppContext.tsx'
 import {TrashIcon} from '@navikt/aksel-icons'
 import {Alert, Button, Heading} from '@navikt/ds-react'
@@ -12,17 +11,18 @@ import {TILBAKE_PAGE} from '../Routes.tsx'
 
 import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
 import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
-import { AvbrytKladdModal } from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
-import { DelUtkastModal } from '../components/opprett-pamelding/DelUtkastModal.tsx'
-import { MeldPaDirekteModal } from '../components/opprett-pamelding/MeldPaDirekteModal.tsx'
+import {AvbrytKladdModal} from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
+import {DelUtkastModal} from '../components/opprett-pamelding/DelUtkastModal.tsx'
+import {MeldPaDirekteModal} from '../components/opprett-pamelding/MeldPaDirekteModal.tsx'
+import {generatePameldingRequestFromForm} from '../utils/pamelding-form-utils.ts'
 
 export interface OpprettPameldingPageProps {
-  pamelding: PameldingResponse
+    pamelding: PameldingResponse
 }
 
-export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) => {
-  const { enhetId } = useAppContext()
-  const { doRedirect } = useAppRedirection()
+export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
+  const {enhetId} = useAppContext()
+  const {doRedirect} = useAppRedirection()
 
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState<boolean>(false)
@@ -46,35 +46,10 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(sendInnPameldingUtenGodkjenning, returnToFrontpage)
 
-  const { state: avbrytUtkastState, doFetch: fetchAvbrytUtkast } = useDeferredFetch(
+  const {state: avbrytUtkastState, doFetch: fetchAvbrytUtkast} = useDeferredFetch(
     deletePamelding,
     returnToFrontpage
   )
-
-  const generateMal = (selectedMal: string[]): Mal[] => {
-    return pamelding.mal.map((mal) => {
-      return {
-        type: mal.type,
-        visningstekst: mal.visningstekst,
-        beskrivelse: mal.beskrivelse,
-        valgt: selectedMal.find((i) => i === mal.type) !== undefined
-      }
-    })
-  }
-
-  const generateRequest = (data: PameldingFormValues | undefined): SendInnPameldingRequest => {
-    if (!data) {
-      throw new Error('data should not be undefined')
-    }
-
-    return {
-      deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
-      dagerPerUke: data.dagerPerUke,
-      deltakelsesprosent: data.deltakelsesprosent,
-      bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-      mal: generateMal(data.valgteMal)
-    }
-  }
 
   const onSendSomForslagHandler = (data: PameldingFormValues) => {
     setFormData(data)
@@ -89,11 +64,11 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
   const disableButtonsAndForm = () => {
     return (
       sendSomForslagState === DeferredFetchState.LOADING ||
-      sendDirekteState === DeferredFetchState.LOADING ||
-      avbrytUtkastState === DeferredFetchState.LOADING ||
-      sendSomForslagState === DeferredFetchState.RESOLVED ||
-      sendDirekteState === DeferredFetchState.RESOLVED ||
-      avbrytUtkastState == DeferredFetchState.RESOLVED
+            sendDirekteState === DeferredFetchState.LOADING ||
+            avbrytUtkastState === DeferredFetchState.LOADING ||
+            sendSomForslagState === DeferredFetchState.RESOLVED ||
+            sendDirekteState === DeferredFetchState.RESOLVED ||
+            avbrytUtkastState == DeferredFetchState.RESOLVED
     )
   }
 
@@ -118,7 +93,7 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
       {sendSomForslagState === DeferredFetchState.ERROR && (
         <Alert variant="error">
           <Heading size="small" spacing level="3">
-            Det skjedde en feil.
+                        Det skjedde en feil.
           </Heading>
           {sendSomForslagError}
         </Alert>
@@ -127,7 +102,7 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
       {meldPaDirekteError === DeferredFetchState.ERROR && (
         <Alert variant="error">
           <Heading size="small" spacing level="3">
-            Det skjedde en feil.
+                        Det skjedde en feil.
           </Heading>
           {meldPaDirekteError}
         </Alert>
@@ -146,9 +121,9 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
         className="mt-2"
         disabled={disableButtonsAndForm()}
         onClick={() => setAvbrytModalOpen(true)}
-        icon={<TrashIcon />}
+        icon={<TrashIcon/>}
       >
-        Avbryt
+                Avbryt
       </Button>
 
       <AvbrytKladdModal
@@ -165,13 +140,13 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
       <DelUtkastModal
         open={delUtkastModalOpen}
         onConfirm={() => {
-          doFetchSendSomForslag(pamelding.deltakerId, enhetId, generateRequest(formData))
+          doFetchSendSomForslag(pamelding.deltakerId, enhetId, generatePameldingRequestFromForm(pamelding, formData))
           setDelUtkastModalOpen(false)
         }}
         onCancel={() => {
           setDelUtkastModalOpen(false)
         }}
-        navn={{ fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen' }}
+        navn={{fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen'}}
         gjennomforingTypeText={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
@@ -179,7 +154,7 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
       <MeldPaDirekteModal
         open={meldPaDirekteModalOpen}
         onConfirm={() => {
-          doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, generateRequest(formData))
+          doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, generatePameldingRequestFromForm(pamelding, formData))
           setMeldPaDirekteModalOpen(false)
         }}
         onCancel={() => {

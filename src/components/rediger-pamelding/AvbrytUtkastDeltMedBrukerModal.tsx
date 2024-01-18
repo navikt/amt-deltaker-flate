@@ -66,6 +66,7 @@ export const AvbrytUtkastDeltMedBrukerModal = (
         )}
       </Modal.Body>
       <Modal.Footer>
+        <p className="font-bold">Endepunkt for å avbryte påbegynt utkast er ikke implementert</p>
         <HStack gap="4">
           <Button variant="secondary" size="small" onClick={onCancel}>
             Nei, ikke avbryt utkastet
