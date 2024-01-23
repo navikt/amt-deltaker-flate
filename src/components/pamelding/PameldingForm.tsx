@@ -1,30 +1,22 @@
 import {BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack} from '@navikt/ds-react'
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
-import {type Mal, PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
+import {PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
 import {MAL_TYPE_ANNET} from '../../utils.ts'
-import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
+import {generateFormDefaultValues, pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
 import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
 import {Todo} from '../Todo.tsx'
 import {PameldingFormButtons} from './PameldingFormButtons.tsx'
 import {useState} from 'react'
 
 interface Props {
-  pamelding: PameldingResponse
-  tiltakstype: Tiltakstype
-  defaultValues: PameldingFormValues
-  mal: Array<Mal>
-  bakgrunnsinformasjon?: string
-  deltakelsesprosent?: number
-  dagerPerUke?: number
+    pamelding: PameldingResponse
 }
 
-export const PameldingForm = ({
-  pamelding,
-  tiltakstype,
-  mal,
-  defaultValues
-}: Props) => {
+export const PameldingForm = ({pamelding}: Props) => {
+  const mal = pamelding.mal
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const defaultValues = generateFormDefaultValues(pamelding)
 
   const [disableForm, setDisableForm] = useState<boolean>(false)
 
@@ -46,13 +38,13 @@ export const PameldingForm = ({
     <VStack gap="4" className="p-8 bg-white">
       <section className="space-y-4">
         <Heading size="medium" level="3">
-            Hva er innholdet?
+                    Hva er innholdet?
         </Heading>
         <BodyLong size="small">
-            (<Todo/>: Her skal det vel være en tekst til veileder?)
+                    (<Todo/>: Her skal det vel være en tekst til veileder?)
           <br/>
-            Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
-            kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
+                    Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
+                    kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
         </BodyLong>
       </section>
 
@@ -94,7 +86,7 @@ export const PameldingForm = ({
 
           <section className="mb-8">
             <Heading size="medium" level="3" className="mb-4">
-                Bakgrunnsinformasjon
+                            Bakgrunnsinformasjon
             </Heading>
             <Textarea
               label="Er det noe mer dere ønsker å informere arrangøren om?"

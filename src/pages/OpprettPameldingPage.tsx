@@ -1,5 +1,4 @@
 import {PameldingResponse} from '../api/data/pamelding.ts'
-import {generateFormDefaultValues} from '../model/PameldingFormValues.ts'
 import {useDeferredFetch} from '../hooks/useDeferredFetch.ts'
 import {deletePamelding} from '../api/api.ts'
 import {TrashIcon} from '@navikt/aksel-icons'
@@ -37,12 +36,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
 
-      <PameldingForm
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
-        pamelding={pamelding}
-        mal={pamelding.mal}
-        defaultValues={generateFormDefaultValues(pamelding)}
-      />
+      <PameldingForm pamelding={pamelding}/>
 
       <Button
         size="small"
