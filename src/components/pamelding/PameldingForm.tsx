@@ -7,11 +7,9 @@ import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFor
 import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
 import {Todo} from '../Todo.tsx'
 import {PameldingFormButtons} from './PameldingFormButtons.tsx'
+import {useState} from 'react'
 
 interface Props {
-  disableButtonsAndForm: boolean
-  onSendSomForslag: (data: PameldingFormValues) => void
-  sendSomForslagLoading: boolean
   pamelding: PameldingResponse
   tiltakstype: Tiltakstype
   defaultValues: PameldingFormValues
@@ -22,14 +20,13 @@ interface Props {
 }
 
 export const PameldingForm = ({
-  disableButtonsAndForm,
-  onSendSomForslag,
-  sendSomForslagLoading,
   pamelding,
   tiltakstype,
   mal,
   defaultValues
 }: Props) => {
+
+  const [disableForm, setDisableForm] = useState<boolean>(false)
 
   const methods = useForm<PameldingFormValues>({
     defaultValues,
@@ -68,7 +65,7 @@ export const PameldingForm = ({
                 legend="Hva mer skal tiltaket inneholde?"
                 error={errors.valgteMal?.message}
                 size="small"
-                disabled={disableButtonsAndForm}
+                disabled={disableForm}
                 aria-required
                 id="valgteMal"
               >
@@ -82,9 +79,8 @@ export const PameldingForm = ({
                     label={null}
                     {...register('malAnnetBeskrivelse')}
                     value={watch('malAnnetBeskrivelse')}
-                    defaultValue={defaultValues.malAnnetBeskrivelse}
                     error={errors.malAnnetBeskrivelse?.message}
-                    disabled={disableButtonsAndForm}
+                    disabled={disableForm}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
                     maxLength={50}
@@ -106,7 +102,7 @@ export const PameldingForm = ({
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
-              disabled={disableButtonsAndForm}
+              disabled={disableForm}
               maxLength={500}
               id="bakgrunnsinformasjon"
               size="small"
@@ -115,7 +111,7 @@ export const PameldingForm = ({
 
           {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
             <Deltakelsesprosent
-              disableForm={disableButtonsAndForm}
+              disableForm={disableForm}
               deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
               deltakelsesprosent={defaultValues.deltakelsesprosent}
               dagerPerUke={defaultValues.dagerPerUke}
@@ -124,8 +120,7 @@ export const PameldingForm = ({
 
           <PameldingFormButtons
             pamelding={pamelding}
-            sendSomForslagLoading={sendSomForslagLoading}
-            onSendSomForslag={onSendSomForslag}
+            disableForm={(disabled) => setDisableForm(disabled)}
           />
 
         </FormProvider>
