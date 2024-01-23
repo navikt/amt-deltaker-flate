@@ -10,9 +10,11 @@ export const sendInnPameldingUtenGodkjenningRequestSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   mal: z.array(malSchema),
   bakgrunnsinformasjon: z.string().nullable(),
-  deltakelsesprosent: z.number().nullable(),
-  dagerPerUke: z.number().nullable(),
+  deltakelsesprosent: z.number().optional(),
+  dagerPerUke: z.number().optional(),
   begrunnelse: begrunnelseSchema
 })
+
+export type Begrunnelse = z.infer<typeof begrunnelseSchema>
 
 export type SendInnPameldingUtenGodkjenningRequest = z.infer<typeof sendInnPameldingUtenGodkjenningRequestSchema>

@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 export interface MeldPaDirekteModalProps {
   open: boolean
-  onConfirm: () => void
+  onConfirm: (type: string) => void
   onCancel: () => void
 }
 
@@ -16,8 +16,8 @@ export const MeldPaDirekteModal = ({ open, onConfirm, onCancel }: MeldPaDirekteM
   const [stedDokumetert, setStedDokumentert] = useState<DokumentertValg | null>(null)
   const [hasError, setHasError] = useState<boolean>(false)
 
-  const handleMeldPåDirekte = () => {
-    if (stedDokumetert) onConfirm()
+  const handleMeldPaDirekte = () => {
+    if (stedDokumetert) onConfirm(stedDokumetert)
     else setHasError(true)
   }
 
@@ -47,7 +47,7 @@ export const MeldPaDirekteModal = ({ open, onConfirm, onCancel }: MeldPaDirekteM
           <Button type="button" variant="secondary" size="small" onClick={onCancel}>
             Avbryt
           </Button>
-          <Button type="button" size="small" onClick={handleMeldPåDirekte}>
+          <Button type="button" size="small" onClick={handleMeldPaDirekte}>
             Meld på og fatt vedtak
           </Button>
         </HStack>

@@ -13,7 +13,7 @@ import {DelUtkastModal} from '../components/opprett-pamelding/DelUtkastModal.tsx
 import {DeferredFetchState, useDeferredFetch} from '../hooks/useDeferredFetch.ts'
 import {sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
 import {TILBAKE_PAGE} from '../Routes.tsx'
-import {generatePameldingRequestFromForm} from '../utils/pamelding-form-utils.ts'
+import {generateDirektePameldingRequestForm, generatePameldingRequestFromForm} from '../utils/pamelding-form-utils.ts'
 import {MeldPaDirekteModal} from '../components/opprett-pamelding/MeldPaDirekteModal.tsx'
 
 export interface RedigerPameldingPageProps {
@@ -156,8 +156,15 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
 
       <MeldPaDirekteModal
         open={meldPaDirekteModalOpen}
-        onConfirm={() => {
-          doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, generatePameldingRequestFromForm(pamelding, formData))
+        onConfirm={(type: string) => {
+          doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, generateDirektePameldingRequestForm(
+            pamelding,
+            formData,
+            {
+              type: type,
+              beskrivelse: null
+            }
+          ))
           setMeldPaDirekteModalOpen(false)
         }}
         onCancel={() => {
