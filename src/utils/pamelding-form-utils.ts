@@ -42,7 +42,6 @@ export const generateDirektePameldingRequestForm = (
   if (!data) {
     throw new Error('data should not be undefined')
   }
-
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,

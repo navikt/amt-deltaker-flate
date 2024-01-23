@@ -15,6 +15,7 @@ import {sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../api/api.ts'
 import {TILBAKE_PAGE} from '../Routes.tsx'
 import {generateDirektePameldingRequestForm, generatePameldingRequestFromForm} from '../utils/pamelding-form-utils.ts'
 import {MeldPaDirekteModal} from '../components/opprett-pamelding/MeldPaDirekteModal.tsx'
+import {Begrunnelse} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 export interface RedigerPameldingPageProps {
     pamelding: PameldingResponse
@@ -61,6 +62,18 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
       sendSomForslagState === DeferredFetchState.LOADING ||
             sendSomForslagState === DeferredFetchState.RESOLVED
     )
+  }
+
+  const sendDirekteModalConfirm = (begrunnelseType: string) => {
+    const begrunnelse: Begrunnelse = {
+      type: begrunnelseType,
+      beskrivelse: null
+    }
+
+    const request = generateDirektePameldingRequestForm(pamelding, formData, begrunnelse)
+
+    doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, request)
+    setMeldPaDirekteModalOpen(false)
   }
 
   return (
@@ -156,17 +169,7 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
 
       <MeldPaDirekteModal
         open={meldPaDirekteModalOpen}
-        onConfirm={(type: string) => {
-          doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, generateDirektePameldingRequestForm(
-            pamelding,
-            formData,
-            {
-              type: type,
-              beskrivelse: null
-            }
-          ))
-          setMeldPaDirekteModalOpen(false)
-        }}
+        onConfirm={sendDirekteModalConfirm}
         onCancel={() => {
           setMeldPaDirekteModalOpen(false)
         }}
