@@ -22,7 +22,7 @@ export class MockHandler {
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
+        type: DeltakerStatusType.VENTER_PA_OPPSTART,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
         gyldigTil: null,
