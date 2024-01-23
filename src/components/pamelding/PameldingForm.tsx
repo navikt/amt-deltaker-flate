@@ -1,13 +1,13 @@
-import {BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack} from '@navikt/ds-react'
-import {FormProvider, useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
-import {MAL_TYPE_ANNET} from '../../utils.ts'
-import {generateFormDefaultValues, pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
-import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
-import {Todo} from '../Todo.tsx'
-import {PameldingFormButtons} from './PameldingFormButtons.tsx'
-import {useState} from 'react'
+import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@navikt/ds-react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import { MAL_TYPE_ANNET } from '../../utils.ts'
+import { generateFormDefaultValues, pameldingFormSchema, PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
+import { Todo } from '../Todo.tsx'
+import { PameldingFormButtons } from './PameldingFormButtons.tsx'
+import { useState } from 'react'
 
 interface Props {
     pamelding: PameldingResponse

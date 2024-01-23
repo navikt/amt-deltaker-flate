@@ -1,6 +1,6 @@
-import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
-import {PameldingFormValues} from '../model/PameldingFormValues.ts'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
+import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
+import { PameldingFormValues } from '../model/PameldingFormValues.ts'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import {
   Begrunnelse,
   SendInnPameldingUtenGodkjenningRequest

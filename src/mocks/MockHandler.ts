@@ -1,9 +1,9 @@
-import {PameldingRequest} from '../api/data/pamelding-request.ts'
+import { PameldingRequest } from '../api/data/pamelding-request.ts'
 import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
-import {v4 as uuidv4} from 'uuid'
-import {HttpResponse} from 'msw'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
-import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { v4 as uuidv4 } from 'uuid'
+import { HttpResponse } from 'msw'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
 
 export class MockHandler {
@@ -110,21 +110,21 @@ export class MockHandler {
 
   deletePamelding(deltakerId: string): HttpResponse {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
-      return new HttpResponse(null, { status: 400 })
+      return new HttpResponse(null, {status: 400})
     }
 
     if (this.pameldinger.find((it) => it.deltakerId === deltakerId)) {
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      return new HttpResponse(null, { status: 200 })
+      return new HttpResponse(null, {status: 200})
     }
 
-    return new HttpResponse(null, { status: 404 })
+    return new HttpResponse(null, {status: 404})
   }
 
   sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
+    return new HttpResponse(null, {status: 200})
   }
 
   sendInnPameldingUtenGodkjenning(
@@ -133,6 +133,6 @@ export class MockHandler {
   ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
+    return new HttpResponse(null, {status: 200})
   }
 }

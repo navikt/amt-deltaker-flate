@@ -1,20 +1,20 @@
-import {Alert, Button, Heading, HelpText, VStack} from '@navikt/ds-react'
-import {useFormContext} from 'react-hook-form'
-import {PameldingFormValues} from '../../model/PameldingFormValues.ts'
-import {useEffect, useState} from 'react'
-import {TILBAKE_PAGE} from '../../Routes.tsx'
-import {useAppRedirection} from '../../hooks/useAppRedirection.ts'
-import {useAppContext} from '../../AppContext.tsx'
-import {DeferredFetchState, useDeferredFetch} from '../../hooks/useDeferredFetch.ts'
-import {sendInnPamelding, sendInnPameldingUtenGodkjenning} from '../../api/api.ts'
-import {MeldPaDirekteModal} from '../opprett-pamelding/MeldPaDirekteModal.tsx'
-import {Begrunnelse} from '../../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { Alert, Button, Heading, HelpText, VStack } from '@navikt/ds-react'
+import { useFormContext } from 'react-hook-form'
+import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { useEffect, useState } from 'react'
+import { TILBAKE_PAGE } from '../../Routes.tsx'
+import { useAppRedirection } from '../../hooks/useAppRedirection.ts'
+import { useAppContext } from '../../AppContext.tsx'
+import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
+import { sendInnPamelding, sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
+import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
+import { Begrunnelse } from '../../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {
   generateDirektePameldingRequestForm,
   generatePameldingRequestFromForm
 } from '../../utils/pamelding-form-utils.ts'
-import {PameldingResponse} from '../../api/data/pamelding.ts'
-import {DelUtkastModal} from '../opprett-pamelding/DelUtkastModal.tsx'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 
 interface Props {
     pamelding: PameldingResponse,

@@ -1,15 +1,15 @@
-import {PameldingResponse} from '../api/data/pamelding.ts'
-import {useDeferredFetch} from '../hooks/useDeferredFetch.ts'
-import {deletePamelding} from '../api/api.ts'
-import {TrashIcon} from '@navikt/aksel-icons'
-import {Button} from '@navikt/ds-react'
-import {useState} from 'react'
-import {useAppRedirection} from '../hooks/useAppRedirection.ts'
-import {TILBAKE_PAGE} from '../Routes.tsx'
+import { PameldingResponse } from '../api/data/pamelding.ts'
+import { useDeferredFetch } from '../hooks/useDeferredFetch.ts'
+import { deletePamelding } from '../api/api.ts'
+import { TrashIcon } from '@navikt/aksel-icons'
+import { Button } from '@navikt/ds-react'
+import { useState } from 'react'
+import { useAppRedirection } from '../hooks/useAppRedirection.ts'
+import { TILBAKE_PAGE } from '../Routes.tsx'
 
-import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
-import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
-import {AvbrytKladdModal} from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
+import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
+import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { AvbrytKladdModal } from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
 
 export interface OpprettPameldingPageProps {
     pamelding: PameldingResponse

@@ -1,11 +1,11 @@
-import {PameldingResponse} from '../api/data/pamelding.ts'
-import {PameldingHeader} from '../components/pamelding/PameldingHeader.tsx'
-import {RedigerPameldingHeader} from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
-import {PameldingForm} from '../components/pamelding/PameldingForm.tsx'
-import {Button} from '@navikt/ds-react'
-import {TrashIcon} from '@navikt/aksel-icons'
-import {useState} from 'react'
-import {AvbrytUtkastDeltMedBrukerModal} from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
+import { PameldingResponse } from '../api/data/pamelding.ts'
+import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
+import { RedigerPameldingHeader } from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
+import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { Button } from '@navikt/ds-react'
+import { TrashIcon } from '@navikt/aksel-icons'
+import { useState } from 'react'
+import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
 
 export interface RedigerPameldingPageProps {
     pamelding: PameldingResponse
