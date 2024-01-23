@@ -1,7 +1,7 @@
 import {BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack} from '@navikt/ds-react'
 import {FormProvider, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
-import {type Mal, Tiltakstype} from '../../api/data/pamelding.ts'
+import {type Mal, PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
 import {MAL_TYPE_ANNET} from '../../utils.ts'
 import {pameldingFormSchema, PameldingFormValues} from '../../model/PameldingFormValues.ts'
 import {Deltakelsesprosent} from './Deltakelsesprosent.tsx'
@@ -12,8 +12,7 @@ interface Props {
   disableButtonsAndForm: boolean
   onSendSomForslag: (data: PameldingFormValues) => void
   sendSomForslagLoading: boolean
-  onSendDirekte: (data: PameldingFormValues) => void
-  sendDirekteLoading: boolean
+  pamelding: PameldingResponse
   tiltakstype: Tiltakstype
   defaultValues: PameldingFormValues
   mal: Array<Mal>
@@ -26,8 +25,7 @@ export const PameldingForm = ({
   disableButtonsAndForm,
   onSendSomForslag,
   sendSomForslagLoading,
-  onSendDirekte,
-  sendDirekteLoading,
+  pamelding,
   tiltakstype,
   mal,
   defaultValues
@@ -125,10 +123,8 @@ export const PameldingForm = ({
           )}
 
           <PameldingFormButtons
+            pamelding={pamelding}
             sendSomForslagLoading={sendSomForslagLoading}
-            disableButtons={disableButtonsAndForm}
-            sendDirekteLoading={sendDirekteLoading}
-            onSendDirekte={onSendDirekte}
             onSendSomForslag={onSendSomForslag}
           />
 

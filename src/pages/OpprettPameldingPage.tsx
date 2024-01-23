@@ -56,11 +56,6 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
     setDelUtkastModalOpen(true)
   }
 
-  const onSendDirekteHandler = (data: PameldingFormValues) => {
-    setFormData(data)
-    setMeldPaDirekteModalOpen(true)
-  }
-
   const disableButtonsAndForm = () => {
     return (
       sendSomForslagState === DeferredFetchState.LOADING ||
@@ -83,9 +78,8 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         disableButtonsAndForm={disableButtonsAndForm()}
         onSendSomForslag={onSendSomForslagHandler}
         sendSomForslagLoading={sendSomForslagState === DeferredFetchState.LOADING}
-        onSendDirekte={onSendDirekteHandler}
-        sendDirekteLoading={sendDirekteState === DeferredFetchState.LOADING}
         tiltakstype={pamelding.deltakerliste.tiltakstype}
+        pamelding={pamelding}
         mal={pamelding.mal}
         defaultValues={generateFormDefaultValues(pamelding)}
       />
