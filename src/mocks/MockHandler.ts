@@ -1,9 +1,9 @@
-import {PameldingRequest} from '../api/data/pamelding-request.ts'
+import { PameldingRequest } from '../api/data/pamelding-request.ts'
 import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
-import {v4 as uuidv4} from 'uuid'
-import {HttpResponse} from 'msw'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
-import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { v4 as uuidv4 } from 'uuid'
+import { HttpResponse } from 'msw'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
 
 export class MockHandler {
@@ -13,6 +13,9 @@ export class MockHandler {
   createPamelding(request: PameldingRequest): HttpResponse {
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
+      fornavn: 'Nav',
+      mellomnavn: null,
+      etternavn: 'Naversen',
       deltakerliste: {
         deltakerlisteId: request.deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
