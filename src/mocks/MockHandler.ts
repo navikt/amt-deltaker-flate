@@ -6,8 +6,6 @@ import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
 
-// eslint-disable-next-line prefer-const
-
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
