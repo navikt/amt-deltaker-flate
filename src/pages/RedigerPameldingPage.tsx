@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
 
 export interface RedigerPameldingPageProps {
-    pamelding: PameldingResponse
+  pamelding: PameldingResponse
 }
 
 export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => {
@@ -43,7 +43,7 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
         }}
         icon={<TrashIcon/>}
       >
-                Avbryt utkast
+        Avbryt utkast
       </Button>
 
       <AvbrytUtkastDeltMedBrukerModal

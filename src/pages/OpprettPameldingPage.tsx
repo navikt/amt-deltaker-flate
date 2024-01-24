@@ -12,7 +12,7 @@ import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
 import { AvbrytKladdModal } from '../components/opprett-pamelding/AvbrytKladdModal.tsx'
 
 export interface OpprettPameldingPageProps {
-    pamelding: PameldingResponse
+  pamelding: PameldingResponse
 }
 
 export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
@@ -45,7 +45,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         onClick={() => setAvbrytModalOpen(true)}
         icon={<TrashIcon/>}
       >
-                Avbryt
+        Avbryt
       </Button>
 
       <AvbrytKladdModal

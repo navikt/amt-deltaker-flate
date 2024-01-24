@@ -17,8 +17,8 @@ import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 
 interface Props {
-    pamelding: PameldingResponse,
-    disableForm: (disable: boolean) => void
+  pamelding: PameldingResponse,
+  disableForm: (disable: boolean) => void
 }
 
 export const PameldingFormButtons = (
@@ -57,17 +57,17 @@ export const PameldingFormButtons = (
   } = useDeferredFetch(sendInnPameldingUtenGodkjenning, returnToFrontpage)
 
   const handleFormSubmit =
-        (submitType: 'sendSomForslagBtn' | 'sendDirekteBtn') => (data: PameldingFormValues) => {
-          if (submitType === FORSLAG_BTN_ID) {
-            setFormData(data)
-            setDelUtkastModalOpen(true)
-          } else if (submitType === DIREKTE_BTN_ID) {
-            setFormData(data)
-            setMeldPaDirekteModalOpen(true)
-          } else {
-            throw new Error(`no handler for ${submitType}`)
-          }
-        }
+    (submitType: 'sendSomForslagBtn' | 'sendDirekteBtn') => (data: PameldingFormValues) => {
+      if (submitType === FORSLAG_BTN_ID) {
+        setFormData(data)
+        setDelUtkastModalOpen(true)
+      } else if (submitType === DIREKTE_BTN_ID) {
+        setFormData(data)
+        setMeldPaDirekteModalOpen(true)
+      } else {
+        throw new Error(`no handler for ${submitType}`)
+      }
+    }
 
   const sendDirekteModalConfirm = (begrunnelseType: string) => {
     const begrunnelse: Begrunnelse = {
@@ -84,9 +84,9 @@ export const PameldingFormButtons = (
   const disableButtons = () => {
     return (
       sendDirekteState === DeferredFetchState.LOADING
-            || sendDirekteState === DeferredFetchState.RESOLVED
-            || sendSomForslagState === DeferredFetchState.LOADING
-            || sendSomForslagState === DeferredFetchState.RESOLVED
+      || sendDirekteState === DeferredFetchState.RESOLVED
+      || sendSomForslagState === DeferredFetchState.LOADING
+      || sendSomForslagState === DeferredFetchState.RESOLVED
     )
   }
 
@@ -99,7 +99,7 @@ export const PameldingFormButtons = (
       {sendSomForslagState === DeferredFetchState.ERROR && (
         <Alert variant="error">
           <Heading size="small" spacing level="3">
-                        Det skjedde en feil.
+            Det skjedde en feil.
           </Heading>
           {sendSomForslagError}
         </Alert>
@@ -112,7 +112,7 @@ export const PameldingFormButtons = (
       {meldPaDirekteError === DeferredFetchState.ERROR && (
         <Alert variant="error">
           <Heading size="small" spacing level="3">
-                        Det skjedde en feil.
+            Det skjedde en feil.
           </Heading>
           {meldPaDirekteError}
         </Alert>
@@ -131,13 +131,13 @@ export const PameldingFormButtons = (
             type="button"
             onClick={handleSubmit(handleFormSubmit(FORSLAG_BTN_ID))}
           >
-                        Del utkast og gjør klar vedtaket
+            Del utkast og gjør klar vedtaket
           </Button>
           <div className="ml-4">
             <HelpText>
-                            Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
-                            arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
-                            aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
+              Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
+              arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
+              aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
             </HelpText>
           </div>
         </div>
@@ -151,12 +151,12 @@ export const PameldingFormButtons = (
             type="button"
             onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}
           >
-                        Fortsett uten å dele utkastet
+            Fortsett uten å dele utkastet
           </Button>
           <div className="ml-4">
             <HelpText>
-                            Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger
-                            som blir delt med tiltaksarrangør.
+              Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger
+              som blir delt med tiltaksarrangør.
             </HelpText>
           </div>
         </div>
