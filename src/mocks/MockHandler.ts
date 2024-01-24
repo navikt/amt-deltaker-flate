@@ -6,9 +6,12 @@ import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
 
+// eslint-disable-next-line prefer-const
+
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
+  statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
     const nyPamelding: PameldingResponse = {
@@ -22,7 +25,7 @@ export class MockHandler {
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
+        type: this.statusType,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
         gyldigTil: null,
@@ -134,5 +137,9 @@ export class MockHandler {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
     return new HttpResponse(null, {status: 200})
+  }
+
+  setStatus(status: DeltakerStatusType) {
+    this.statusType = status
   }
 }
