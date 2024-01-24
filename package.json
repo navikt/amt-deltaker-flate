@@ -12,7 +12,9 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --config .prettierrc.cjs -c src/**/*",
+    "format:fix": "prettier --config .prettierrc.cjs -w src/**/*"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -57,6 +59,7 @@
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
     "rollup-plugin-import-map": "^3.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
