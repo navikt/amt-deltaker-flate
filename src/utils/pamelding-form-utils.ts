@@ -1,6 +1,6 @@
-import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
-import {PameldingFormValues} from '../model/PameldingFormValues.ts'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
+import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
+import { PameldingFormValues } from '../model/PameldingFormValues.ts'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import {
   Begrunnelse,
   SendInnPameldingUtenGodkjenningRequest
@@ -42,7 +42,6 @@ export const generateDirektePameldingRequestForm = (
   if (!data) {
     throw new Error('data should not be undefined')
   }
-
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,

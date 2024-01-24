@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 export enum DeferredFetchState {
     NOT_STARTED = 'NOT_STARTED',
@@ -30,7 +30,7 @@ export const useDeferredFetch = <T>(apiFunction: ApiFunction<T>, onResolved: (()
       const result = await apiFunction(...args)
       setData(result)
       setState(DeferredFetchState.RESOLVED)
-      if(onResolved) onResolved()
+      if (onResolved) onResolved()
       return result
     } catch (error) {
       setState(DeferredFetchState.ERROR)

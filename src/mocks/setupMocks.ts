@@ -1,13 +1,23 @@
 import {setupWorker} from 'msw/browser'
-import { delay, http } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 import { MockHandler } from './MockHandler.ts'
 import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { DeltakerStatusType } from '../api/data/pamelding.ts'
 
 const handler = new MockHandler()
 
 export const worker = setupWorker(
+
+  http.post('/mock/setup/status/:status', async ({params}) => {
+    const {status} = params
+    handler.setStatus(status as DeltakerStatusType)
+
+    return new HttpResponse(null, {
+      status: 200
+    })
+  }),
 
   http.post('/mock/deltaker', async ({ request }) => {
     await delay(1000)

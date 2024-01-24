@@ -1,47 +1,24 @@
-import {
-  BodyLong,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Heading,
-  HelpText,
-  Textarea,
-  VStack
-} from '@navikt/ds-react'
+import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type Mal, Tiltakstype } from '../../api/data/pamelding.ts'
+import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
 import { MAL_TYPE_ANNET } from '../../utils.ts'
-import { pameldingFormSchema, PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { generateFormDefaultValues, pameldingFormSchema, PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Todo } from '../Todo.tsx'
+import { PameldingFormButtons } from './PameldingFormButtons.tsx'
+import { useState } from 'react'
 
 interface Props {
-  disableButtonsAndForm: boolean
-  onSendSomForslag: (data: PameldingFormValues) => void
-  sendSomForslagLoading: boolean
-  onSendDirekte: (data: PameldingFormValues) => void
-  sendDirekteLoading: boolean
-  tiltakstype: Tiltakstype
-  defaultValues: PameldingFormValues
-  mal: Array<Mal>
-  bakgrunnsinformasjon?: string
-  deltakelsesprosent?: number
-  dagerPerUke?: number
+    pamelding: PameldingResponse
 }
 
-export const PameldingForm = ({
-  disableButtonsAndForm,
-  onSendSomForslag,
-  sendSomForslagLoading,
-  onSendDirekte,
-  sendDirekteLoading,
-  tiltakstype,
-  mal,
-  defaultValues
-}: Props) => {
-  const FORSLAG_BTN_ID = 'sendSomForslagBtn'
-  const DIREKTE_BTN_ID = 'sendDirekteBtn'
+export const PameldingForm = ({pamelding}: Props) => {
+  const mal = pamelding.mal
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const defaultValues = generateFormDefaultValues(pamelding)
+
+  const [disableForm, setDisableForm] = useState<boolean>(false)
 
   const methods = useForm<PameldingFormValues>({
     defaultValues,
@@ -51,21 +28,9 @@ export const PameldingForm = ({
 
   const {
     register,
-    handleSubmit,
     watch,
-    formState: { errors }
+    formState: {errors}
   } = methods
-
-  const handleFormSubmit =
-    (submitType: 'sendSomForslagBtn' | 'sendDirekteBtn') => (data: PameldingFormValues) => {
-      if (submitType === FORSLAG_BTN_ID) {
-        onSendSomForslag(data)
-      } else if (submitType === DIREKTE_BTN_ID) {
-        onSendDirekte(data)
-      } else {
-        throw new Error(`no handler for ${submitType}`)
-      }
-    }
 
   const valgteMal = watch('valgteMal')
 
@@ -73,13 +38,13 @@ export const PameldingForm = ({
     <VStack gap="4" className="p-8 bg-white">
       <section className="space-y-4">
         <Heading size="medium" level="3">
-          Hva er innholdet?
+                    Hva er innholdet?
         </Heading>
         <BodyLong size="small">
-          (<Todo />: Her skal det vel være en tekst til veileder?)
-          <br />
-          Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
-          kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
+                    (<Todo/>: Her skal det vel være en tekst til veileder?)
+          <br/>
+                    Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
+                    kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
         </BodyLong>
       </section>
 
@@ -92,7 +57,7 @@ export const PameldingForm = ({
                 legend="Hva mer skal tiltaket inneholde?"
                 error={errors.valgteMal?.message}
                 size="small"
-                disabled={disableButtonsAndForm}
+                disabled={disableForm}
                 aria-required
                 id="valgteMal"
               >
@@ -106,9 +71,8 @@ export const PameldingForm = ({
                     label={null}
                     {...register('malAnnetBeskrivelse')}
                     value={watch('malAnnetBeskrivelse')}
-                    defaultValue={defaultValues.malAnnetBeskrivelse}
                     error={errors.malAnnetBeskrivelse?.message}
-                    disabled={disableButtonsAndForm}
+                    disabled={disableForm}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
                     maxLength={50}
@@ -122,7 +86,7 @@ export const PameldingForm = ({
 
           <section className="mb-8">
             <Heading size="medium" level="3" className="mb-4">
-              Bakgrunnsinformasjon
+                            Bakgrunnsinformasjon
             </Heading>
             <Textarea
               label="Er det noe mer dere ønsker å informere arrangøren om?"
@@ -130,7 +94,7 @@ export const PameldingForm = ({
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
-              disabled={disableButtonsAndForm}
+              disabled={disableForm}
               maxLength={500}
               id="bakgrunnsinformasjon"
               size="small"
@@ -139,52 +103,18 @@ export const PameldingForm = ({
 
           {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
             <Deltakelsesprosent
-              disableForm={disableButtonsAndForm}
+              disableForm={disableForm}
               deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
               deltakelsesprosent={defaultValues.deltakelsesprosent}
               dagerPerUke={defaultValues.dagerPerUke}
             />
           )}
 
-          <VStack gap="4" className="mt-8">
-            <div className="flex items-center">
-              <Button
-                size="small"
-                loading={sendSomForslagLoading}
-                disabled={disableButtonsAndForm}
-                type="button"
-                onClick={handleSubmit(handleFormSubmit(FORSLAG_BTN_ID))}
-              >
-                Del utkast og gjør klar vedtaket
-              </Button>
-              <div className="ml-4">
-                <HelpText>
-                  Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
-                  arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
-                  aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
-                </HelpText>
-              </div>
-            </div>
+          <PameldingFormButtons
+            pamelding={pamelding}
+            disableForm={(disabled) => setDisableForm(disabled)}
+          />
 
-            <div className="flex items-center">
-              <Button
-                size="small"
-                variant="secondary"
-                loading={sendDirekteLoading}
-                disabled={disableButtonsAndForm}
-                type="button"
-                onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}
-              >
-                Fortsett uten å dele utkastet
-              </Button>
-              <div className="ml-4">
-                <HelpText>
-                  Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger
-                  som blir delt med tiltaksarrangør.
-                </HelpText>
-              </div>
-            </div>
-          </VStack>
         </FormProvider>
       </form>
     </VStack>

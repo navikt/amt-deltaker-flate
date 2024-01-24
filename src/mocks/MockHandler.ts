@@ -1,14 +1,15 @@
-import {PameldingRequest} from '../api/data/pamelding-request.ts'
+import { PameldingRequest } from '../api/data/pamelding-request.ts'
 import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
-import {v4 as uuidv4} from 'uuid'
-import {HttpResponse} from 'msw'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
-import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { v4 as uuidv4 } from 'uuid'
+import { HttpResponse } from 'msw'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
 
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
+  statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
     const nyPamelding: PameldingResponse = {
@@ -22,7 +23,7 @@ export class MockHandler {
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: DeltakerStatusType.VENTER_PA_OPPSTART,
+        type: this.statusType,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
         gyldigTil: null,
@@ -110,21 +111,21 @@ export class MockHandler {
 
   deletePamelding(deltakerId: string): HttpResponse {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
-      return new HttpResponse(null, { status: 400 })
+      return new HttpResponse(null, {status: 400})
     }
 
     if (this.pameldinger.find((it) => it.deltakerId === deltakerId)) {
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      return new HttpResponse(null, { status: 200 })
+      return new HttpResponse(null, {status: 200})
     }
 
-    return new HttpResponse(null, { status: 404 })
+    return new HttpResponse(null, {status: 404})
   }
 
   sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
+    return new HttpResponse(null, {status: 200})
   }
 
   sendInnPameldingUtenGodkjenning(
@@ -133,6 +134,10 @@ export class MockHandler {
   ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
+    return new HttpResponse(null, {status: 200})
+  }
+
+  setStatus(status: DeltakerStatusType) {
+    this.statusType = status
   }
 }
