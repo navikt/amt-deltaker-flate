@@ -1,4 +1,4 @@
-import {z} from 'zod'
+import { z } from 'zod'
 
 export enum Tiltakstype {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
@@ -28,8 +28,19 @@ export enum DeltakerStatusType {
   PABEGYNT_REGISTRERING = 'PABEGYNT_REGISTRERING'
 }
 
+export enum DeltakerStatusAarsakType {
+  SYK = 'SYK',
+  FATT_JOBB = 'FATT_JOBB',
+  TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
+  FIKK_IKKE_PLASS = 'FIKK_IKKE_PLASS',
+  IKKE_MOTT = 'IKKE_MOTT',
+  ANNET = 'ANNET',
+  AVLYST_KONTRAKT = 'AVLYST_KONTRAKT'
+}
+
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
+export const deltakerStatusAarsakTypeSchema = z.nativeEnum(DeltakerStatusAarsakType)
 
 export const malSchema = z.object({
   visningstekst: z.string(), // kommer fra valp
@@ -52,10 +63,15 @@ export const deltakerlisteSchema = z.object({
   oppstartstype: z.string()
 })
 
+export const deltakerStatusAarsakSchema = z.object({
+  type: deltakerStatusAarsakTypeSchema,
+  beskrivelse: z.string().nullable()
+})
+
 export const pameldingStatusSchema = z.object({
   id: z.string().uuid(),
   type: deltakerStaturTypeSchema,
-  aarsak: z.string().nullable(),
+  aarsak: deltakerStatusAarsakSchema.nullable(),
   gyldigFra: z.string(),
   gyldigTil: z.string().nullable(),
   opprettet: z.string()
@@ -63,7 +79,9 @@ export const pameldingStatusSchema = z.object({
 
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
-  deltakernavn: navnSchema.optional(),
+  fornavn: z.string(),
+  mellomnavn: z.string().nullable(),
+  etternavn: z.string(),
   deltakerliste: deltakerlisteSchema,
   status: pameldingStatusSchema,
   startdato: z.string().nullable(),

@@ -14,6 +14,9 @@ export class MockHandler {
   createPamelding(request: PameldingRequest): HttpResponse {
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
+      fornavn: 'Nav',
+      mellomnavn: null,
+      etternavn: 'Naversen',
       deltakerliste: {
         deltakerlisteId: request.deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
