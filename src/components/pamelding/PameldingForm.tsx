@@ -29,7 +29,7 @@ export const PameldingForm = ({pamelding}: Props) => {
   const {
     register,
     watch,
-    formState: {errors}
+    formState: { errors }
   } = methods
 
   const valgteMal = watch('valgteMal')
@@ -38,17 +38,17 @@ export const PameldingForm = ({pamelding}: Props) => {
     <VStack gap="4" className="p-8 bg-white">
       <section className="space-y-4">
         <Heading size="medium" level="3">
-                    Hva er innholdet?
+          Hva er innholdet?
         </Heading>
         <BodyLong size="small">
-                    (<Todo/>: Her skal det vel være en tekst til veileder?)
-          <br/>
-                    Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
-                    kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
+          (<Todo />: Her skal det vel være en tekst til veileder?)
+          <br />
+          Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
+          kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
         </BodyLong>
       </section>
 
-      <form>
+      <form autoComplete="off">
         <FormProvider {...methods}>
           <section className="mb-8">
             {mal.length > 0 && (
@@ -75,7 +75,7 @@ export const PameldingForm = ({pamelding}: Props) => {
                     disabled={disableForm}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
-                    maxLength={50}
+                    maxLength={250}
                     size="small"
                     id="malAnnetBeskrivelse"
                   />
@@ -86,7 +86,7 @@ export const PameldingForm = ({pamelding}: Props) => {
 
           <section className="mb-8">
             <Heading size="medium" level="3" className="mb-4">
-                            Bakgrunnsinformasjon
+              Bakgrunnsinformasjon
             </Heading>
             <Textarea
               label="Er det noe mer dere ønsker å informere arrangøren om?"
@@ -95,7 +95,7 @@ export const PameldingForm = ({pamelding}: Props) => {
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
               disabled={disableForm}
-              maxLength={500}
+              maxLength={1000}
               id="bakgrunnsinformasjon"
               size="small"
             />
@@ -114,7 +114,6 @@ export const PameldingForm = ({pamelding}: Props) => {
             pamelding={pamelding}
             disableForm={(disabled) => setDisableForm(disabled)}
           />
-
         </FormProvider>
       </form>
     </VStack>
