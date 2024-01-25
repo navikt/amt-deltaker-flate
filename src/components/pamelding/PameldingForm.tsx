@@ -2,18 +2,22 @@ import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@n
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
-import { MAL_TYPE_ANNET } from '../../utils.ts'
-import { generateFormDefaultValues, pameldingFormSchema, PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { BESKRIVELSE_MAX_TEGN, MAL_TYPE_ANNET } from '../../utils.ts'
+import {
+  generateFormDefaultValues,
+  pameldingFormSchema,
+  PameldingFormValues
+} from '../../model/PameldingFormValues.ts'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useState } from 'react'
 
 interface Props {
-    pamelding: PameldingResponse
+  pamelding: PameldingResponse
 }
 
-export const PameldingForm = ({pamelding}: Props) => {
+export const PameldingForm = ({ pamelding }: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const defaultValues = generateFormDefaultValues(pamelding)
@@ -75,7 +79,7 @@ export const PameldingForm = ({pamelding}: Props) => {
                     disabled={disableForm}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
-                    maxLength={250}
+                    maxLength={BESKRIVELSE_MAX_TEGN}
                     size="small"
                     id="malAnnetBeskrivelse"
                   />
@@ -95,7 +99,7 @@ export const PameldingForm = ({pamelding}: Props) => {
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
               disabled={disableForm}
-              maxLength={1000}
+              maxLength={BESKRIVELSE_MAX_TEGN}
               id="bakgrunnsinformasjon"
               size="small"
             />

@@ -2,16 +2,25 @@ import {z} from 'zod'
 import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../utils.ts'
 import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
 
+export const BESKRIVELSE_MAX_TEGN = 250
+export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
+
 export const pameldingFormSchema = z
   .object({
     valgteMal: z.string().array().nonempty('Du må velge innhold'),
     malAnnetBeskrivelse: z
       .string()
-      .max(250, 'Beskrivelse for mål Annet kan ikke være mer enn 250 tegn'),
+      .max(
+        BESKRIVELSE_MAX_TEGN,
+        `Beskrivelse for mål Annet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn`
+      ),
     bakgrunnsinformasjon: z
       .string()
       .min(1, { message: 'Du må skrive noe for mål Annet' })
-      .max(1000, 'Bakgrunnsinformasjon kan ikke være mer enn 1000 tegn'),
+      .max(
+        1000,
+        `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn`
+      ),
     deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
