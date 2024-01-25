@@ -29,6 +29,7 @@ export const Deltakelsesprosent = ({
     setValue('deltakelsesprosentValg', value, { shouldValidate: true })
     if (value === DeltakelsesprosentValg.JA) {
       setValue('deltakelsesprosent', undefined)
+      setValue('dagerPerUke', undefined)
     }
   }
 
