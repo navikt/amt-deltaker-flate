@@ -64,6 +64,8 @@ export const Deltakelsesprosent = ({
                     size="small"
                     disabled={disableForm}
                     defaultValue={deltakelsesprosent}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={({ target }) => {
                       const value = target.value.replace(',', '.')
                       onChange(parseFloat(value))
@@ -84,6 +86,9 @@ export const Deltakelsesprosent = ({
                     size="small"
                     defaultValue={dagerPerUke}
                     disabled={disableForm}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={({ target }) => {
                       const value = target.value.replace(',', '.')
                       onChange(parseFloat(value))

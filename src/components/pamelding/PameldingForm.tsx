@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
 import { BESKRIVELSE_MAX_TEGN, MAL_TYPE_ANNET } from '../../utils.ts'
 import {
+  BAKGRUNNSINFORMASJON_MAKS_TEGN,
   generateFormDefaultValues,
   pameldingFormSchema,
   PameldingFormValues
@@ -99,7 +100,7 @@ export const PameldingForm = ({ pamelding }: Props) => {
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
               disabled={disableForm}
-              maxLength={BESKRIVELSE_MAX_TEGN}
+              maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
               id="bakgrunnsinformasjon"
               size="small"
             />
