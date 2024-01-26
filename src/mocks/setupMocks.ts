@@ -5,6 +5,7 @@ import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import { ikkeAktuellSchema } from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()
 
@@ -54,6 +55,16 @@ export const worker = setupWorker(
       .json()
       .then((json) => sendInnPameldingUtenGodkjenningRequestSchema.parse(json))
       .then((body) => handler.sendInnPameldingUtenGodkjenning(deltakerId as string, body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request, params }) => {
+    const { deltakerId } = params
+
+    const response = await request
+      .json()
+      .then((json) => ikkeAktuellSchema.parse(json))
+      .then((body) => handler.endreDeltakelseIkkeAktuell(deltakerId as string, body))
 
     return response
   })

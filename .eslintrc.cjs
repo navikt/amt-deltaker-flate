@@ -35,7 +35,7 @@ module.exports = {
     'no-console': 'error',
     'no-fallthrough': 0,
     'no-useless-escape': 0,
-    indent: ['error', 2],
+    indent: ['error', 2, { SwitchCase: 1 }],
     'no-tabs': 0,
     'array-bracket-spacing': [0, 'always'],
     'object-curly-spacing': [0, 'always'],

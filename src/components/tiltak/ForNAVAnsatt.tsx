@@ -1,6 +1,6 @@
-import { Button, Heading, LinkPanel } from '@navikt/ds-react'
+import { Heading, LinkPanel } from '@navikt/ds-react'
 import { Todo } from '../Todo.tsx'
-import { PencilIcon } from '@navikt/aksel-icons'
+import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 
 export const ForNAVAnsatt = () => {
   return (
@@ -8,17 +8,14 @@ export const ForNAVAnsatt = () => {
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>
-      <Button icon={<PencilIcon />} size="small" variant="secondary" className="mb-4 ">
-        Endre deltakelse
-      </Button>
-      <div>
-        <LinkPanel href="#" border>
-          <LinkPanel.Title>Gå til tiltaksgjennomføringen</LinkPanel.Title>
-          <LinkPanel.Description>
-            <Todo /> tekst
-          </LinkPanel.Description>
-        </LinkPanel>
-      </div>
+      <EndreDeltakelseKnapp />
+
+      <LinkPanel href="#" border className="mt-4 ">
+        <LinkPanel.Title>Gå til tiltaksgjennomføringen</LinkPanel.Title>
+        <LinkPanel.Description>
+          <Todo /> tekst
+        </LinkPanel.Description>
+      </LinkPanel>
     </div>
   )
 }

@@ -11,16 +11,16 @@ export const getEndpointHandlerType = (): EndpointHandler => {
 
 export const deltakerBffApiBasePath = (): string => {
   switch (getEndpointHandlerType()) {
-  case EndpointHandler.MOCK:
-    return '/mock'
-  case EndpointHandler.PROXY:
-    return 'http://localhost:58080'
-  default:
-    if(isDev()) {
-      return '/amt-deltaker-bff'
-    }
+    case EndpointHandler.MOCK:
+      return '/mock'
+    case EndpointHandler.PROXY:
+      return 'http://localhost:58080'
+    default:
+      if(isDev()) {
+        return '/amt-deltaker-bff'
+      }
 
-    return 'PROD_LINK'
+      return 'PROD_LINK'
   }
 }
 

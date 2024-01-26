@@ -34,7 +34,7 @@ export const useDeferredFetch = <T>(apiFunction: ApiFunction<T>, onResolved: (()
       return result
     } catch (error) {
       setState(DeferredFetchState.ERROR)
-      setError(`Skjedde en feil ved henting av data: ${error}`)
+      setError(`Det skjedde en feil ved henting av data: ${error}`)
       throw error
     }
   }
