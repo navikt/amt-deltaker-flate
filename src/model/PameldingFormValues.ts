@@ -27,14 +27,16 @@ export const pameldingFormSchema = z
         invalid_type_error: 'Deltakelsesprosent må være ett tall mellom 0 og 100.'
       })
       .int({ message: 'Deltakelsesprosent må være et heltall' })
-      .gte(0, { message: 'Deltakelsesprosent må være større enn 0' })
-      .lte(100, { message: 'Deltakelsesprosent må være mindre enn 100' })
+      .gte(1, { message: 'Deltakelsesprosent må være større enn 0' })
+      .lte(99, { message: 'Deltakelsesprosent må være mindre enn 100%' })
       .optional(),
     dagerPerUke: z
-      .number()
+      .number({
+        invalid_type_error: 'Dager per uke må være ett tall mellom 0 og 5.'
+      })
       .int({ message: 'Dager per uke må være et heltall' })
-      .gte(0, { message: 'Dager per uke må være større enn 0' })
-      .lte(5, { message: 'Dager per uke må være mindre enn 5' })
+      .gte(1, { message: 'Dager per uke må være større enn 0' })
+      .lte(5, { message: 'Dager per uke må være mindre enn 6' })
       .optional()
   })
   .refine(
