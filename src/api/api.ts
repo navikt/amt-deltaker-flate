@@ -15,7 +15,7 @@ export const createPamelding = async (
     deltakerlisteId: deltakerlisteId
   }
 
-  return fetch(`${deltakerBffApiBasePath()}/deltaker`, {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding`, {
     method: 'POST',
     credentials: 'include',
     headers: {
