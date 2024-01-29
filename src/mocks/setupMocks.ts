@@ -19,7 +19,7 @@ export const worker = setupWorker(
     })
   }),
 
-  http.post('/mock/deltaker', async ({ request }) => {
+  http.post('/mock/pamelding', async ({ request }) => {
     await delay(1000)
     const response = await request
       .json()
