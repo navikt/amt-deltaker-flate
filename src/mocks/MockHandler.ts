@@ -5,6 +5,7 @@ import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from '../utils.ts'
+import { IkkeAktuellRequest } from '../api/data/endre-deltakelse-request.ts'
 
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
@@ -114,21 +115,21 @@ export class MockHandler {
 
   deletePamelding(deltakerId: string): HttpResponse {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
-      return new HttpResponse(null, {status: 400})
+      return new HttpResponse(null, { status: 400 })
     }
 
     if (this.pameldinger.find((it) => it.deltakerId === deltakerId)) {
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      return new HttpResponse(null, {status: 200})
+      return new HttpResponse(null, { status: 200 })
     }
 
-    return new HttpResponse(null, {status: 404})
+    return new HttpResponse(null, { status: 404 })
   }
 
   sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, {status: 200})
+    return new HttpResponse(null, { status: 200 })
   }
 
   sendInnPameldingUtenGodkjenning(
@@ -137,10 +138,24 @@ export class MockHandler {
   ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, {status: 200})
+    return new HttpResponse(null, { status: 200 })
   }
 
   setStatus(status: DeltakerStatusType) {
     this.statusType = status
+  }
+
+  endreDeltakelseIkkeAktuell(deltakerId: string, request: IkkeAktuellRequest) {
+    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
+      oppdatertPamelding.status.aarsak = request.arsak
+      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
+      this.pameldinger.push(oppdatertPamelding)
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
   }
 }

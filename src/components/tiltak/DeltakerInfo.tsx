@@ -1,26 +1,24 @@
-import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { BodyLong, Detail, HStack, Heading, Link, List, Tag } from '@navikt/ds-react'
 import { getDeltakerStatusDisplayText, getTiltakstypeDisplayText } from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { MAL_TYPE_ANNET } from '../../utils.ts'
 import { DeltakerLenker } from './DeltakerLenker.tsx'
+import { usePameldingCOntext } from './PameldingContext.tsx'
 
-export interface DeltakerInfoProps {
-  pamelding: PameldingResponse
-}
-
-export const DeltakerInfo = ({ pamelding }: DeltakerInfoProps) => {
+export const DeltakerInfo = () => {
+  const { pamelding } = usePameldingCOntext()
   const tiltaOgSted = `${getTiltakstypeDisplayText(pamelding.deltakerliste.tiltakstype)} hos ${
     pamelding.deltakerliste.arrangorNavn
   }`
+
   return (
     <div className="space-y-4 bg-white px-12 py-4">
       <Heading level="1" size="large">
         {tiltaOgSted}
       </Heading>
       <HStack gap="2">
-        <Detail weight="semibold">Sist endret:</Detail>
+        <Detail weight="semibold">Status:</Detail>
         <Tag variant="info" size="small">
           {getDeltakerStatusDisplayText(pamelding.status.type)}
         </Tag>
