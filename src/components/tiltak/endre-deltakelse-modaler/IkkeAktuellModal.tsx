@@ -43,7 +43,7 @@ export const IkkeAktuellModal = ({
 
   const sendEndring = () => {
     doFetchEndreDeltakelseIkkeAktuell(deltakerId, enhetId, {
-      arsak: {
+      aarsak: {
         type: valgtArsak,
         beskrivelse: beskrivelse
       }
