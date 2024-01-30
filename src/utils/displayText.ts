@@ -61,10 +61,8 @@ export const getDeltakerStatusAarsakTypeText = (type: DeltakerStatusAarsakType) 
       return 'Annet - fyll ut'
     case DeltakerStatusAarsakType.FATT_JOBB:
       return 'Fått jobb'
-    case DeltakerStatusAarsakType.AVLYST_KONTRAKT:
-      return 'Avlyst kontrakt'
-    case DeltakerStatusAarsakType.FIKK_IKKE_PLASS:
-      return 'Fikk ikke plass'
+    case DeltakerStatusAarsakType.UTDANNING:
+      return 'Utdanning'
     case DeltakerStatusAarsakType.IKKE_MOTT:
       return 'Møter ikke opp'
     case DeltakerStatusAarsakType.SYK:
@@ -72,7 +70,7 @@ export const getDeltakerStatusAarsakTypeText = (type: DeltakerStatusAarsakType) 
     case DeltakerStatusAarsakType.TRENGER_ANNEN_STOTTE:
       return 'Trenger annen hjelp og støtte'
 
-    // TODO skissene viser Utdanning og Feilregistrert i tillegg
+    // TODO skissene viser Feilregistrert i tillegg
   }
 }
 

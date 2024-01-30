@@ -12,13 +12,13 @@ export enum EndreDeltakelseType {
   AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE'
 }
 
-export const arsakSchema = z.object({
+export const aarsakSchema = z.object({
   type: z.nativeEnum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
 })
 
 export const ikkeAktuellSchema = z.object({
-  arsak: arsakSchema
+  aarsak: aarsakSchema
 })
 
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
