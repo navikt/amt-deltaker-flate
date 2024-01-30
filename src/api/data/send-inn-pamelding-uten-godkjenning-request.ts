@@ -3,13 +3,13 @@ import {malSchema} from './pamelding.ts'
 
 export const begrunnelseSchema = z.object({
   type: z.string(),
-  beskrivelse: z.string().nullable()
+  beskrivelse: z.string().optional()
 })
 
 export const sendInnPameldingUtenGodkjenningRequestSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   mal: z.array(malSchema),
-  bakgrunnsinformasjon: z.string().nullable(),
+  bakgrunnsinformasjon: z.string().optional(),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional(),
   begrunnelse: begrunnelseSchema

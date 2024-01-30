@@ -17,21 +17,16 @@ import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 
 interface Props {
-  pamelding: PameldingResponse,
+  pamelding: PameldingResponse
   disableForm: (disable: boolean) => void
 }
 
-export const PameldingFormButtons = (
-  {
-    pamelding,
-    disableForm
-  }: Props
-) => {
+export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
   const FORSLAG_BTN_ID = 'sendSomForslagBtn'
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
 
-  const {doRedirect} = useAppRedirection()
-  const {enhetId} = useAppContext()
+  const { doRedirect } = useAppRedirection()
+  const { enhetId } = useAppContext()
 
   const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState<boolean>(false)
@@ -72,7 +67,7 @@ export const PameldingFormButtons = (
   const sendDirekteModalConfirm = (begrunnelseType: string) => {
     const begrunnelse: Begrunnelse = {
       type: begrunnelseType,
-      beskrivelse: null
+      beskrivelse: undefined
     }
 
     const request = generateDirektePameldingRequestForm(pamelding, formData, begrunnelse)

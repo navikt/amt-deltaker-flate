@@ -7,20 +7,21 @@ export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 
 export const pameldingFormSchema = z
   .object({
-    valgteMal: z.string().array().nonempty('Du må velge innhold'),
+    valgteMal: z.string().array(),
     malAnnetBeskrivelse: z
       .string()
       .max(
         BESKRIVELSE_MAX_TEGN,
         `Beskrivelse for mål Annet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn`
-      ),
+      )
+      .optional(),
     bakgrunnsinformasjon: z
       .string()
-      .min(1, { message: 'Du må skrive noe for mål Annet' })
       .max(
-        1000,
+        BAKGRUNNSINFORMASJON_MAKS_TEGN,
         `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn`
-      ),
+      )
+      .optional(),
     deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
@@ -42,7 +43,7 @@ export const pameldingFormSchema = z
   .refine(
     (schema) => {
       if (schema.valgteMal?.find((valgtMal) => valgtMal === MAL_TYPE_ANNET)) {
-        return schema.malAnnetBeskrivelse.length > 0
+        return schema.malAnnetBeskrivelse ? schema.malAnnetBeskrivelse?.length > 0 : false
       } else return true
     },
     {
@@ -84,7 +85,7 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse) => {
   return {
     valgteMal: pamelding.mal.filter((e) => e.valgt).map((e) => e.type),
     malAnnetBeskrivelse: getMalAnnetBeskrivelse(),
-    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? '',
+    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,
     dagerPerUke: pamelding.dagerPerUke ?? undefined

@@ -90,7 +90,8 @@ export const pameldingSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
   mal: z.array(malSchema),
-  sistEndretAv: z.string()
+  sistEndretAv: z.string(),
+  sistEndretAvEnhet: z.string()
 })
 
 export type Mal = z.infer<typeof malSchema>
