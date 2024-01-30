@@ -13,7 +13,7 @@ export class MockHandler {
   statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
-    const testPamelding: PameldingResponse = {
+    const pameldingIngenMal: PameldingResponse = {
       deltakerId: uuidv4(),
       fornavn: 'Pequeño',
       mellomnavn: null,
@@ -141,6 +141,7 @@ export class MockHandler {
     }
 
     this.pameldinger.push(nyPamelding)
+    this.pameldinger.push(pameldingIngenMal)
     return HttpResponse.json(nyPamelding)
   }
 
