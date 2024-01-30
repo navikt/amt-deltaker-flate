@@ -1,5 +1,5 @@
 import { Alert, Button, Heading, HelpText, VStack } from '@navikt/ds-react'
-import { FieldErrors, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
 import { TILBAKE_PAGE } from '../../Routes.tsx'
@@ -15,7 +15,6 @@ import {
 } from '../../utils/pamelding-form-utils.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
-import { DeltakelsesprosentValg } from '../../utils.ts'
 
 interface Props {
   pamelding: PameldingResponse
