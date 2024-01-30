@@ -35,8 +35,8 @@ export class MockHandler {
       },
       startdato: null,
       sluttdato: null,
-      dagerPerUke: 4.5,
-      deltakelsesprosent: 95,
+      dagerPerUke: null,
+      deltakelsesprosent: null,
       bakgrunnsinformasjon: 'Dette er en test',
       mal: [
         {

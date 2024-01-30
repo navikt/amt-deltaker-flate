@@ -38,7 +38,7 @@ export const PameldingFormButtons = (
 
   const [formData, setFormData] = useState<PameldingFormValues>()
 
-  const {handleSubmit} = useFormContext<PameldingFormValues>()
+  const { handleSubmit } = useFormContext<PameldingFormValues>()
 
   const returnToFrontpage = () => {
     doRedirect(TILBAKE_PAGE)
@@ -83,10 +83,10 @@ export const PameldingFormButtons = (
 
   const disableButtons = () => {
     return (
-      sendDirekteState === DeferredFetchState.LOADING
-      || sendDirekteState === DeferredFetchState.RESOLVED
-      || sendSomForslagState === DeferredFetchState.LOADING
-      || sendSomForslagState === DeferredFetchState.RESOLVED
+      sendDirekteState === DeferredFetchState.LOADING ||
+      sendDirekteState === DeferredFetchState.RESOLVED ||
+      sendSomForslagState === DeferredFetchState.LOADING ||
+      sendSomForslagState === DeferredFetchState.RESOLVED
     )
   }
 
@@ -155,8 +155,8 @@ export const PameldingFormButtons = (
           </Button>
           <div className="ml-4">
             <HelpText>
-              Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger
-              som blir delt med tiltaksarrangør.
+              Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger som
+              blir delt med tiltaksarrangør.
             </HelpText>
           </div>
         </div>
@@ -165,13 +165,17 @@ export const PameldingFormButtons = (
       <DelUtkastModal
         open={delUtkastModalOpen}
         onConfirm={() => {
-          doFetchSendSomForslag(pamelding.deltakerId, enhetId, generatePameldingRequestFromForm(pamelding, formData))
+          doFetchSendSomForslag(
+            pamelding.deltakerId,
+            enhetId,
+            generatePameldingRequestFromForm(pamelding, formData)
+          )
           setDelUtkastModalOpen(false)
         }}
         onCancel={() => {
           setDelUtkastModalOpen(false)
         }}
-        navn={{fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen'}}
+        navn={{ fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen' }}
         gjennomforingTypeText={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />

@@ -15,8 +15,8 @@ export interface OpprettPameldingPageProps {
   pamelding: PameldingResponse
 }
 
-export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => {
-  const {doRedirect} = useAppRedirection()
+export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) => {
+  const { doRedirect } = useAppRedirection()
 
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
 
@@ -24,10 +24,7 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
     doRedirect(TILBAKE_PAGE)
   }
 
-  const {doFetch: fetchAvbrytUtkast} = useDeferredFetch(
-    deletePamelding,
-    returnToFrontpage
-  )
+  const { doFetch: fetchAvbrytUtkast } = useDeferredFetch(deletePamelding, returnToFrontpage)
 
   return (
     <div className="m-4">
@@ -36,14 +33,14 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
 
-      <PameldingForm pamelding={pamelding}/>
+      <PameldingForm pamelding={pamelding} />
 
       <Button
         size="small"
         variant="tertiary"
         className="mt-2"
         onClick={() => setAvbrytModalOpen(true)}
-        icon={<TrashIcon/>}
+        icon={<TrashIcon />}
       >
         Avbryt
       </Button>
@@ -58,7 +55,6 @@ export const OpprettPameldingPage = ({pamelding}: OpprettPameldingPageProps) => 
           setAvbrytModalOpen(false)
         }}
       />
-
     </div>
   )
 }

@@ -17,7 +17,6 @@ export const Deltakelsesprosent = ({
   dagerPerUke
 }: DeltakelsesprosentProps) => {
   const {
-    register,
     control,
     watch,
     setValue,
@@ -28,6 +27,10 @@ export const Deltakelsesprosent = ({
 
   const onChangeDeltakelsesprosentValg = (value: DeltakelsesprosentValg) => {
     setValue('deltakelsesprosentValg', value, { shouldValidate: true })
+    if (value === DeltakelsesprosentValg.JA) {
+      setValue('deltakelsesprosent', undefined)
+      setValue('dagerPerUke', undefined)
+    }
   }
 
   return (
@@ -52,32 +55,49 @@ export const Deltakelsesprosent = ({
 
           {nyDeltakelsesprosentValg === DeltakelsesprosentValg.NEI && (
             <>
-              <TextField
-                label="Deltakelsesprosent:"
-                size="small"
-                disabled={disableForm}
-                type="number"
-                {...register('deltakelsesprosent', {
-                  valueAsNumber: true
-                })}
-                defaultValue={deltakelsesprosent}
-                error={errors.deltakelsesprosent?.message}
-                aria-required
-                id="deltakelsesprosent"
-                className="[&>input]:w-16"
+              <Controller
+                name={'deltakelsesprosent'}
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <TextField
+                    label="Deltakelsesprosent:"
+                    size="small"
+                    disabled={disableForm}
+                    defaultValue={deltakelsesprosent}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={({ target }) => {
+                      const value = target.value.replace(',', '.')
+                      onChange(parseFloat(value))
+                    }}
+                    error={errors.deltakelsesprosent?.message}
+                    aria-required
+                    id="deltakelsesprosent"
+                    className="[&>input]:w-16"
+                  />
+                )}
               />
-              <TextField
-                label="Hvor mange dager i uka? (valgfritt)"
-                size="small"
-                type="number"
-                disabled={disableForm}
-                {...register('dagerPerUke', {
-                  valueAsNumber: true
-                })}
-                defaultValue={dagerPerUke}
-                error={errors.dagerPerUke?.message}
-                className="[&>input]:w-16"
-                id="dagerPerUke"
+              <Controller
+                name={'dagerPerUke'}
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <TextField
+                    label="Hvor mange dager i uka? (valgfritt)"
+                    size="small"
+                    defaultValue={dagerPerUke}
+                    disabled={disableForm}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={({ target }) => {
+                      const value = target.value.replace(',', '.')
+                      onChange(parseFloat(value))
+                    }}
+                    error={errors.dagerPerUke?.message}
+                    className="[&>input]:w-16"
+                    id="dagerPerUke"
+                  />
+                )}
               />
             </>
           )}
