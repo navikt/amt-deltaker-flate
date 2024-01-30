@@ -67,7 +67,7 @@ export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
   const sendDirekteModalConfirm = (begrunnelseType: string) => {
     const begrunnelse: Begrunnelse = {
       type: begrunnelseType,
-      beskrivelse: null
+      beskrivelse: undefined
     }
 
     const request = generateDirektePameldingRequestForm(pamelding, formData, begrunnelse)
