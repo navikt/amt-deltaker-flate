@@ -13,6 +13,36 @@ export class MockHandler {
   statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
+    const testPamelding: PameldingResponse = {
+      deltakerId: uuidv4(),
+      fornavn: 'Pequeño',
+      mellomnavn: null,
+      etternavn: 'Plass',
+      deltakerliste: {
+        deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
+        deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
+        tiltakstype: Tiltakstype.AVKLARAG,
+        arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
+        oppstartstype: 'LOPENDE'
+      },
+      status: {
+        id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
+        type: DeltakerStatusType.KLADD,
+        aarsak: null,
+        gyldigFra: '2024-01-30T08:56:20.576553',
+        gyldigTil: null,
+        opprettet: '2024-01-30T08:56:21.286768'
+      },
+      startdato: null,
+      sluttdato: null,
+      dagerPerUke: null,
+      deltakelsesprosent: null,
+      bakgrunnsinformasjon: null,
+      mal: [],
+      sistEndretAv: 'F_Z991100 E_Z991100',
+      sistEndretAvEnhet: 'NAV Fredrikstad'
+    }
+
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
       fornavn: 'Nav',
@@ -106,7 +136,8 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
-      sistEndretAv: 'Z994409'
+      sistEndretAv: 'Z994409',
+      sistEndretAvEnhet: 'NAV Fredrikstad'
     }
 
     this.pameldinger.push(nyPamelding)

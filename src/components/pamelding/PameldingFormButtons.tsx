@@ -1,5 +1,5 @@
 import { Alert, Button, Heading, HelpText, VStack } from '@navikt/ds-react'
-import { useFormContext } from 'react-hook-form'
+import { FieldErrors, useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
 import { TILBAKE_PAGE } from '../../Routes.tsx'
@@ -15,23 +15,19 @@ import {
 } from '../../utils/pamelding-form-utils.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
+import { DeltakelsesprosentValg } from '../../utils.ts'
 
 interface Props {
-  pamelding: PameldingResponse,
+  pamelding: PameldingResponse
   disableForm: (disable: boolean) => void
 }
 
-export const PameldingFormButtons = (
-  {
-    pamelding,
-    disableForm
-  }: Props
-) => {
+export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
   const FORSLAG_BTN_ID = 'sendSomForslagBtn'
   const DIREKTE_BTN_ID = 'sendDirekteBtn'
 
-  const {doRedirect} = useAppRedirection()
-  const {enhetId} = useAppContext()
+  const { doRedirect } = useAppRedirection()
+  const { enhetId } = useAppContext()
 
   const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState<boolean>(false)
