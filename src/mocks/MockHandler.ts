@@ -182,7 +182,7 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
-      oppdatertPamelding.status.aarsak = request.arsak
+      oppdatertPamelding.status.aarsak = request.aarsak
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
       this.pameldinger.push(oppdatertPamelding)
       return HttpResponse.json(oppdatertPamelding)
