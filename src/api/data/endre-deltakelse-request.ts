@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { AvbrytUtkastGrunn } from './avbryt-utkast-request.ts'
+import { DeltakerStatusAarsakType } from './pamelding.ts'
 
 export enum EndreDeltakelseType {
   IKKE_AKTUELL = 'IKKE_AKTUELL',
@@ -13,7 +13,7 @@ export enum EndreDeltakelseType {
 }
 
 export const aarsakSchema = z.object({
-  type: z.nativeEnum(AvbrytUtkastGrunn),
+  type: z.nativeEnum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
 })
 
