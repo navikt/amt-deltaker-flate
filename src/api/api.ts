@@ -4,6 +4,7 @@ import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 import { IkkeAktuellRequest } from './data/endre-deltakelse-request.ts'
+import { AvbrytUtkastRequest } from './data/avbryt-utkast-request.ts'
 
 export const createPamelding = async (
   personident: string,
@@ -112,6 +113,31 @@ export const endreDeltakelseIkkeAktuell = (
     })
     .then((json) => {
       return pameldingSchema.parse(json)
+    })
+}
+
+export const avbrytUtkast = (
+  deltakerId: string,
+  enhetId: string,
+  request: AvbrytUtkastRequest
+): Promise<number> => {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/avbryt`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.status
     })
 }
 

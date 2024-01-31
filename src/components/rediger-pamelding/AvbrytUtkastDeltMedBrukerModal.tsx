@@ -1,19 +1,12 @@
-import {BodyLong, Button, HStack, Modal, Radio, RadioGroup, Textarea} from '@navikt/ds-react'
-import {useState} from 'react'
-
-export enum AvbrytUtkastGrunn {
-    FATT_JOBB = 'FATT_JOBB',
-    SYK = 'SYK',
-    TRENGER_ANNEN_HJELP_STOTTE = 'TRENGER_ANNEN_HJELP_STOTTE',
-    UTDANNING = 'UTDANNING',
-    FEILREGISTRERT = 'FEILREGISTRERT',
-    ANNET = 'ANNET'
-}
+import { BodyLong, Button, HStack, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { useState } from 'react'
+import { AvbrytUtkastGrunn, AvbrytUtkastRequest } from '../../api/data/avbryt-utkast-request.ts'
+import { IkkeAktuellRequest } from '../../api/data/endre-deltakelse-request.ts'
 
 interface Props {
-    open: boolean
-    onConfirm: (grunn: AvbrytUtkastGrunn, annetTekst: string | undefined) => void
-    onCancel: () => void
+  open: boolean
+  onConfirm: (request: AvbrytUtkastRequest) => void
+  onCancel: () => void
 }
 
 export const AvbrytUtkastDeltMedBrukerModal = (
@@ -33,7 +26,7 @@ export const AvbrytUtkastDeltMedBrukerModal = (
   }
 
   return (
-    <Modal open={open} header={{ heading: 'Vil du avbryte utkastet?' }} onClose={onCancel}>
+    <Modal open={open} header={{heading: 'Vil du avbryte utkastet?'}} onClose={onCancel}>
       <Modal.Body>
         <BodyLong className="mb-4" size="small">
           Når du avbryter utkastet så får personen beskjed. Aktiviteten i aktivitetsplanen blir
@@ -66,7 +59,6 @@ export const AvbrytUtkastDeltMedBrukerModal = (
         )}
       </Modal.Body>
       <Modal.Footer>
-        <p className="font-bold">Endepunkt for å avbryte påbegynt utkast er ikke implementert</p>
         <HStack gap="4">
           <Button variant="secondary" size="small" onClick={onCancel}>
             Nei, ikke avbryt utkastet
@@ -75,7 +67,13 @@ export const AvbrytUtkastDeltMedBrukerModal = (
             size="small"
             onClick={() => {
               if (!grunn) throw new Error('Grunn kan ikke være undefined')
-              onConfirm(grunn, annetTekst)
+              const request: IkkeAktuellRequest = {
+                aarsak: {
+                  type: grunn,
+                  beskrivelse: annetTekst ?? null
+                }
+              }
+              onConfirm(request)
             }}
             disabled={confirmDisabled()}
           >
