@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { MAL_TYPE_ANNET } from '../utils.ts'
 import { IkkeAktuellRequest } from '../api/data/endre-deltakelse-request.ts'
+import { EMDASH, MAL_TYPE_ANNET } from '../utils/utils.ts'
 
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
@@ -13,6 +13,9 @@ export class MockHandler {
   statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+
     const pameldingIngenMal: PameldingResponse = {
       deltakerId: uuidv4(),
       fornavn: 'Pequeño',
@@ -30,17 +33,18 @@ export class MockHandler {
         type: DeltakerStatusType.KLADD,
         aarsak: null,
         gyldigFra: '2024-01-30T08:56:20.576553',
-        gyldigTil: null,
+        gyldigTil: EMDASH,
         opprettet: '2024-01-30T08:56:21.286768'
       },
-      startdato: null,
-      sluttdato: null,
+      startdato: EMDASH,
+      sluttdato: EMDASH,
       dagerPerUke: null,
       deltakelsesprosent: null,
       bakgrunnsinformasjon: null,
       mal: [],
-      sistEndretAv: 'F_Z991100 E_Z991100',
-      sistEndretAvEnhet: 'NAV Fredrikstad'
+      sistEndretAv: 'Veilder',
+      sistEndretAvEnhet: 'NAV Fredrikstad',
+      sistEndret: yesterday.toString()
     }
 
     const nyPamelding: PameldingResponse = {
@@ -60,11 +64,11 @@ export class MockHandler {
         type: this.statusType,
         aarsak: null,
         gyldigFra: '2023-12-14T13:17:52.362471',
-        gyldigTil: null,
+        gyldigTil: EMDASH,
         opprettet: '2023-12-14T13:17:52.366581'
       },
-      startdato: null,
-      sluttdato: null,
+      startdato: EMDASH,
+      sluttdato: EMDASH,
       dagerPerUke: null,
       deltakelsesprosent: null,
       bakgrunnsinformasjon: 'Dette er en test',
@@ -136,7 +140,8 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
-      sistEndretAv: 'Z994409',
+      sistEndretAv: 'Veilder',
+      sistEndret: yesterday.toString(),
       sistEndretAvEnhet: 'NAV Fredrikstad'
     }
 

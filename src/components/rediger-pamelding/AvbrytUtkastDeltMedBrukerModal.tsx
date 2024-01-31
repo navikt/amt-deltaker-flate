@@ -1,6 +1,9 @@
 import { BodyLong, Button, HStack, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { useState } from 'react'
-import { AvbrytUtkastGrunn, AvbrytUtkastRequest } from '../../api/data/avbryt-utkast-request.ts'
+import { AvbrytUtkastRequest } from '../../api/data/avbryt-utkast-request.ts'
+import { DeltakerStatusAarsakType } from '../../api/data/pamelding'
+import { getDeltakerStatusAarsakTyperAsList } from '../../utils/utils'
+import { getDeltakerStatusAarsakTypeText } from '../../utils/displayText'
 
 interface Props {
   open: boolean
@@ -8,16 +11,14 @@ interface Props {
   onCancel: () => void
 }
 
-export const AvbrytUtkastDeltMedBrukerModal = (
-  {open, onConfirm, onCancel}: Props
-) => {
-  const [grunn, setGrunn] = useState<AvbrytUtkastGrunn | undefined>(undefined)
+export const AvbrytUtkastDeltMedBrukerModal = ({ open, onConfirm, onCancel }: Props) => {
+  const [aarsak, setAarsak] = useState<DeltakerStatusAarsakType | undefined>(undefined)
   const [annetTekst, setAnnetTekst] = useState<string | undefined>(undefined)
   const confirmDisabled = () => {
-    if (grunn === AvbrytUtkastGrunn.ANNET) {
+    if (aarsak === DeltakerStatusAarsakType.ANNET) {
       return !(annetTekst && annetTekst.length > 0)
     }
-    if (grunn !== undefined) {
+    if (aarsak !== undefined) {
       return false
     } else {
       return true
@@ -35,19 +36,16 @@ export const AvbrytUtkastDeltMedBrukerModal = (
         <RadioGroup
           legend="Hva er årsaken til at brukeren ikke skal meldes på?"
           size="small"
-          onChange={(value: AvbrytUtkastGrunn) => setGrunn(value)}
+          onChange={(value: DeltakerStatusAarsakType) => setAarsak(value)}
         >
-          <Radio value={AvbrytUtkastGrunn.FATT_JOBB}>Fått jobb</Radio>
-          <Radio value={AvbrytUtkastGrunn.SYK}>Syk</Radio>
-          <Radio value={AvbrytUtkastGrunn.TRENGER_ANNEN_HJELP_STOTTE}>
-            Trenger annen hjelp og støtte
-          </Radio>
-          <Radio value={AvbrytUtkastGrunn.UTDANNING}>Utdanning</Radio>
-          <Radio value={AvbrytUtkastGrunn.FEILREGISTRERT}>Feilregistrert</Radio>
-          <Radio value={AvbrytUtkastGrunn.ANNET}>Annet - fyll ut</Radio>
+          {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
+            <Radio value={arsakType} key={arsakType}>
+              {getDeltakerStatusAarsakTypeText(arsakType)}
+            </Radio>
+          ))}
         </RadioGroup>
 
-        {grunn === AvbrytUtkastGrunn.ANNET && (
+        {aarsak === DeltakerStatusAarsakType.ANNET && (
           <Textarea
             label={null}
             value={annetTekst}
@@ -65,10 +63,10 @@ export const AvbrytUtkastDeltMedBrukerModal = (
           <Button
             size="small"
             onClick={() => {
-              if (!grunn) throw new Error('Grunn kan ikke være undefined')
+              if (!aarsak) throw new Error('Grunn kan ikke være undefined')
               const request: AvbrytUtkastRequest = {
                 aarsak: {
-                  type: grunn,
+                  type: aarsak,
                   beskrivelse: annetTekst ?? null
                 }
               }

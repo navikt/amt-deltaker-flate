@@ -2,9 +2,9 @@ import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@n
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
-import { BESKRIVELSE_MAX_TEGN, MAL_TYPE_ANNET } from '../../utils.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
+  BESKRIVELSE_ANNET_MAX_TEGN,
   generateFormDefaultValues,
   pameldingFormSchema,
   PameldingFormValues
@@ -13,6 +13,7 @@ import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useState } from 'react'
+import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -80,7 +81,7 @@ export const PameldingForm = ({ pamelding }: Props) => {
                     disabled={disableForm}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
-                    maxLength={BESKRIVELSE_MAX_TEGN}
+                    maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                     size="small"
                     id="malAnnetBeskrivelse"
                   />

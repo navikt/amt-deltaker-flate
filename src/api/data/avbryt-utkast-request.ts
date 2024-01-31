@@ -1,16 +1,8 @@
 import { z } from 'zod'
-
-export enum AvbrytUtkastGrunn {
-  FATT_JOBB = 'FATT_JOBB',
-  SYK = 'SYK',
-  TRENGER_ANNEN_HJELP_STOTTE = 'TRENGER_ANNEN_HJELP_STOTTE',
-  UTDANNING = 'UTDANNING',
-  FEILREGISTRERT = 'FEILREGISTRERT',
-  ANNET = 'ANNET'
-}
+import { DeltakerStatusAarsakType } from './pamelding'
 
 export const avbrytGrunnSchema = z.object({
-  type: z.nativeEnum(AvbrytUtkastGrunn),
+  type: z.nativeEnum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
 })
 

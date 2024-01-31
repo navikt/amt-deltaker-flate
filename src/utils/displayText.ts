@@ -52,6 +52,8 @@ export const getDeltakerStatusDisplayText = (type: DeltakerStatusType): string =
       return 'Fullført'
     case DeltakerStatusType.PABEGYNT_REGISTRERING:
       return 'Påbegynt Registrering'
+    case DeltakerStatusType.AVBRUTT_UTKAST:
+      return 'Avbrutt utkast'
   }
 }
 
@@ -61,8 +63,6 @@ export const getDeltakerStatusAarsakTypeText = (type: DeltakerStatusAarsakType) 
       return 'Annet - fyll ut'
     case DeltakerStatusAarsakType.FATT_JOBB:
       return 'Fått jobb'
-    case DeltakerStatusAarsakType.UTDANNING:
-      return 'Utdanning'
     case DeltakerStatusAarsakType.IKKE_MOTT:
       return 'Møter ikke opp'
     case DeltakerStatusAarsakType.SYK:

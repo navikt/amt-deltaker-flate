@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { erGyldigProsent, isValidFloatInRange, erGyldigDagerPerUke } from './utils'
+import {
+  erGyldigProsent,
+  isValidFloatInRange,
+  erGyldigDagerPerUke,
+  formatDateFromString,
+  EMDASH
+} from './utils'
 
 describe('isValidFloatInRange', () => {
   it('Returenere true for gyldig float 100', () =>
@@ -64,4 +70,14 @@ describe('erGyldigDagerPerUke', () => {
     expect(erGyldigDagerPerUke('a1')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med spesialtegn foran &12', () =>
     expect(erGyldigDagerPerUke('&1')).toBeFalsy())
+})
+
+describe('formatDateFromString', () => {
+  it('Formates valid date string', () =>
+    expect(formatDateFromString('11.11.2021')).toBe('11.11.2021'))
+  it('Formates valid datetime string', () =>
+    expect(formatDateFromString('2024-01-30T08:56:20.576553')).toBe('30.01.2024'))
+  it('Formates unvalid date string to —', () => expect(formatDateFromString('')).toBe(EMDASH))
+  it('Formates unvalid date string to —', () => expect(formatDateFromString('aa')).toBe(EMDASH))
+  it('Formates null date to —', () => expect(formatDateFromString('aa')).toBe(EMDASH))
 })

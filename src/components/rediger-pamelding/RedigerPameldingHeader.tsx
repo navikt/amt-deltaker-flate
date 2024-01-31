@@ -1,26 +1,24 @@
 import { Heading, Tag, Detail, HStack } from '@navikt/ds-react'
-import { getDeltakerStatusDisplayText } from '../../utils/displayText.ts'
-import { DeltakerStatusType } from '../../api/data/pamelding.ts'
-import { Todo } from '../Todo.tsx'
+import { formatDateStrWithMonthName } from '../../utils/utils'
 
 interface Props {
-  status: DeltakerStatusType
   endretAv: string
+  sistEndret: string
 }
 
-export const RedigerPameldingHeader = ({ status, endretAv }: Props) => {
+export const RedigerPameldingHeader = ({ endretAv, sistEndret }: Props) => {
   return (
     <div className="space-y-2">
       <Heading size="small" level="3">
         Utkast til påmelding sendt
       </Heading>
       <Tag variant="info" size="small">
-        {getDeltakerStatusDisplayText(status)}
+        Venter på godkjenning fra bruker
       </Tag>
       <HStack gap="2">
-        <Detail weight="semibold">Sist endret:</Detail>
+        <Detail weight="semibold">Sendt:</Detail>
         <Detail>
-          <Todo /> {endretAv}
+          {formatDateStrWithMonthName(sistEndret)} {endretAv}
         </Detail>
       </HStack>
     </div>

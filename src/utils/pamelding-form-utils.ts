@@ -5,14 +5,22 @@ import {
   Begrunnelse,
   SendInnPameldingUtenGodkjenningRequest
 } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { MAL_TYPE_ANNET } from './utils.ts'
 
-const generateMalFromResponse = (pamelding: PameldingResponse, selectedMal: string[]): Mal[] => {
+const generateMalFromResponse = (
+  pamelding: PameldingResponse,
+  valgteMal: string[],
+  malAnnetBeskrivelse: string | null
+): Mal[] => {
   return pamelding.mal.map((mal) => {
+    const erMalValgt = !!valgteMal.find((valgtMal) => mal.type === valgtMal)
+    const erMalAnnet = mal.type === MAL_TYPE_ANNET
+
     return {
       type: mal.type,
       visningstekst: mal.visningstekst,
-      beskrivelse: mal.beskrivelse,
-      valgt: selectedMal.find((i) => i === mal.type) !== undefined
+      beskrivelse: erMalAnnet && erMalValgt ? malAnnetBeskrivelse : null,
+      valgt: erMalValgt
     }
   })
 }
@@ -30,7 +38,7 @@ export const generatePameldingRequestFromForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    mal: generateMalFromResponse(pamelding, data.valgteMal)
+    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse)
   }
 }
 
@@ -47,7 +55,7 @@ export const generateDirektePameldingRequestForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    mal: generateMalFromResponse(pamelding, data.valgteMal),
+    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse),
     begrunnelse: begrunnelse
   }
 }
