@@ -1,7 +1,6 @@
 import { BodyLong, Button, HStack, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { useState } from 'react'
 import { AvbrytUtkastGrunn, AvbrytUtkastRequest } from '../../api/data/avbryt-utkast-request.ts'
-import { IkkeAktuellRequest } from '../../api/data/endre-deltakelse-request.ts'
 
 interface Props {
   open: boolean
@@ -67,7 +66,7 @@ export const AvbrytUtkastDeltMedBrukerModal = (
             size="small"
             onClick={() => {
               if (!grunn) throw new Error('Grunn kan ikke være undefined')
-              const request: IkkeAktuellRequest = {
+              const request: AvbrytUtkastRequest = {
                 aarsak: {
                   type: grunn,
                   beskrivelse: annetTekst ?? null
