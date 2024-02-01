@@ -18,7 +18,6 @@ export const pameldingFormSchema = z
       ),
     bakgrunnsinformasjon: z
       .string()
-      .min(1, 'Bakgrunnsinformasjon må fylles ut')
       .max(
         BAKGRUNNSINFORMASJON_MAKS_TEGN,
         `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn`
@@ -49,7 +48,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må velge minst ett innhold',
+      message: 'Velg minst ett innhold',
       path: ['valgteMal']
     }
   )
