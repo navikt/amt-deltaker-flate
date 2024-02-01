@@ -6,14 +6,28 @@ import { Button } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { useState } from 'react'
 import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
+import { useAppRedirection } from '../hooks/useAppRedirection.ts'
+import { TILBAKE_PAGE } from '../Routes.tsx'
+import { useDeferredFetch } from '../hooks/useDeferredFetch.ts'
+import { avbrytUtkast } from '../api/api.ts'
+import { useAppContext } from '../AppContext.tsx'
+import { AvbrytUtkastRequest } from '../api/data/avbryt-utkast-request.ts'
 
 export interface RedigerPameldingPageProps {
   pamelding: PameldingResponse
 }
 
 export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => {
+  const { doRedirect } = useAppRedirection()
+  const { enhetId } = useAppContext()
 
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
+
+  const returnToFrontpage = () => {
+    doRedirect(TILBAKE_PAGE)
+  }
+
+  const { doFetch: fetchAvbrytUtkast } = useDeferredFetch(avbrytUtkast, returnToFrontpage)
 
   return (
     <div>
@@ -48,7 +62,9 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
 
       <AvbrytUtkastDeltMedBrukerModal
         open={avbrytModalOpen}
-        onConfirm={() => {
+        onConfirm={(request: AvbrytUtkastRequest) => {
+          fetchAvbrytUtkast(pamelding.deltakerId, enhetId, request)
+          setAvbrytModalOpen(false)
         }}
         onCancel={() => {
           setAvbrytModalOpen(false)
