@@ -1,11 +1,12 @@
 import { Alert, Button, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding'
 import { useState } from 'react'
-import { BESKRIVELSE_MAX_TEGN } from '../../../utils'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
+import { BESKRIVELSE_MAX_TEGN } from '../../../model/PameldingFormValues'
+import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils'
 
 interface IkkeAktuellModalProps {
   deltakerId: string
@@ -23,17 +24,6 @@ export const IkkeAktuellModal = ({
   const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
   const { enhetId } = useAppContext()
-
-  const getDeltakerStatusAarsakTyper = () => {
-    const arsakstyper = Object.keys(DeltakerStatusAarsakType)
-      .filter((type) => type !== DeltakerStatusAarsakType.ANNET)
-      .map((typeString) => {
-        // @ts-expect-error: arsakType is made from DeltakerStatusAarsakType keys
-        const typeKey: keyof typeof DeltakerStatusAarsakType = typeString
-        return DeltakerStatusAarsakType[typeKey]
-      })
-    return arsakstyper.concat(DeltakerStatusAarsakType.ANNET)
-  }
 
   const {
     state: endreDeltakelseState,
@@ -55,6 +45,14 @@ export const IkkeAktuellModal = ({
   return (
     <Modal open={open} header={{ heading: 'Er ikke aktuell' }} onClose={onClose}>
       <Modal.Body>
+        {endreDeltakelseState === DeferredFetchState.ERROR && (
+          <Alert variant="error">
+            <Heading size="small" spacing level="3">
+              Det skjedde en feil.
+            </Heading>
+            {endreDeltakelseError}
+          </Alert>
+        )}
         <RadioGroup
           legend="Hva er årsaken til at deltakeren ikke er aktuell?"
           size="small"
@@ -62,22 +60,11 @@ export const IkkeAktuellModal = ({
           value={valgtArsak}
         >
           <>
-            {endreDeltakelseState === DeferredFetchState.ERROR && (
-              <Alert variant="error">
-                <Heading size="small" spacing level="3">
-                  Det skjedde en feil.
-                </Heading>
-                {endreDeltakelseError}
-              </Alert>
-            )}
-
-            {getDeltakerStatusAarsakTyper().map((arsakType) => {
-              return (
-                <Radio value={arsakType} key={arsakType}>
-                  {getDeltakerStatusAarsakTypeText(arsakType)}
-                </Radio>
-              )
-            })}
+            {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
+              <Radio value={arsakType} key={arsakType}>
+                {getDeltakerStatusAarsakTypeText(arsakType)}
+              </Radio>
+            ))}
             {valgtArsak === DeltakerStatusAarsakType.ANNET && (
               <Textarea
                 onChange={(e) => setBeskrivelse(e.target.value)}

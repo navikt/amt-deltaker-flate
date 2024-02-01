@@ -17,11 +17,10 @@ export interface RedigerPameldingPageProps {
   pamelding: PameldingResponse
 }
 
-export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => {
+export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) => {
+  const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
   const { doRedirect } = useAppRedirection()
   const { enhetId } = useAppContext()
-
-  const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
 
   const returnToFrontpage = () => {
     doRedirect(TILBAKE_PAGE)
@@ -38,13 +37,12 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
             arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           />
           <RedigerPameldingHeader
-            status={pamelding.status.type}
             endretAv={pamelding.sistEndretAv}
+            sistEndret={pamelding.sistEndret}
           />
         </div>
 
-        <PameldingForm pamelding={pamelding}/>
-
+        <PameldingForm pamelding={pamelding} />
       </div>
 
       <Button
@@ -55,7 +53,7 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
         onClick={() => {
           setAvbrytModalOpen(true)
         }}
-        icon={<TrashIcon/>}
+        icon={<TrashIcon />}
       >
         Avbryt utkast
       </Button>
@@ -70,7 +68,6 @@ export const RedigerPameldingPage = ({pamelding}: RedigerPameldingPageProps) => 
           setAvbrytModalOpen(false)
         }}
       />
-
     </div>
   )
 }

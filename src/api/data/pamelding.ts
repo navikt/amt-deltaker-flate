@@ -15,6 +15,7 @@ export enum Tiltakstype {
 export enum DeltakerStatusType {
   KLADD = 'KLADD',
   UTKAST_TIL_PAMELDING = 'UTKAST_TIL_PAMELDING',
+  AVBRUTT_UTKAST = 'AVBRUTT_UTKAST',
   VENTER_PA_OPPSTART = 'VENTER_PA_OPPSTART',
   DELTAR = 'DELTAR',
   HAR_SLUTTET = 'HAR_SLUTTET',
@@ -32,9 +33,10 @@ export enum DeltakerStatusAarsakType {
   SYK = 'SYK',
   FATT_JOBB = 'FATT_JOBB',
   TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
-  UTDANNING = 'UTDANNING',
+  // UTDANNING = 'UTDANNING', TODO denne er ny og ikke støttet av backend enda
   IKKE_MOTT = 'IKKE_MOTT',
   ANNET = 'ANNET'
+  // TODO Feilregistrert
 }
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
@@ -90,7 +92,8 @@ export const pameldingSchema = z.object({
   bakgrunnsinformasjon: z.string().nullable(),
   mal: z.array(malSchema),
   sistEndretAv: z.string(),
-  sistEndretAvEnhet: z.string()
+  sistEndretAvEnhet: z.string().nullable(),
+  sistEndret: z.string()
 })
 
 export type Mal = z.infer<typeof malSchema>

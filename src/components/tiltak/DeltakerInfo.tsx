@@ -1,10 +1,12 @@
-import { BodyLong, Detail, HStack, Heading, Link, List, Tag } from '@navikt/ds-react'
-import { getDeltakerStatusDisplayText, getTiltakstypeDisplayText } from '../../utils/displayText.ts'
+import { BodyLong, Detail, HStack, Heading, List } from '@navikt/ds-react'
+import { getTiltakstypeDisplayText } from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
-import { MAL_TYPE_ANNET } from '../../utils.ts'
 import { DeltakerLenker } from './DeltakerLenker.tsx'
 import { usePameldingCOntext } from './PameldingContext.tsx'
+import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
+import { Link } from 'react-router-dom'
+import { EMDASH, MAL_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
 
 export const DeltakerInfo = () => {
   const { pamelding } = usePameldingCOntext()
@@ -19,13 +21,11 @@ export const DeltakerInfo = () => {
       </Heading>
       <HStack gap="2">
         <Detail weight="semibold">Status:</Detail>
-        <Tag variant="info" size="small">
-          {getDeltakerStatusDisplayText(pamelding.status.type)}
-        </Tag>
+        <DeltakerIStatusTag statusType={pamelding.status.type} />
       </HStack>
       <HStack gap="2">
         <Detail weight="semibold">Dato:</Detail>
-        <Detail>{pamelding.startdato || '—'}</Detail>
+        <Detail>{pamelding.startdato || EMDASH}</Detail>
       </HStack>
       <BodyLong size="small">{`Du er meldt på arbeidsmarkedstiltaket: ${tiltaOgSted}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}</BodyLong>
       <Detail textColor="subtle">
@@ -48,17 +48,47 @@ export const DeltakerInfo = () => {
             </List.Item>
           ))}
       </List>
-      <Heading level="2" size="medium">
-        Bakgrunnsinformasjon
-      </Heading>
-      <BodyLong size="small">{pamelding.bakgrunnsinformasjon}</BodyLong>
-      <Link href="#">
+      <div>
+        <Heading level="2" size="medium">
+          Bakgrunnsinformasjon
+        </Heading>
+        <BodyLong size="small">{pamelding.bakgrunnsinformasjon}</BodyLong>
+      </div>
+      <Link to="#">
         <Todo /> Se endringer
-        <ChevronRightIcon title="Gå til side for endringer" />
+        <span>
+          <ChevronRightIcon title="Gå til side for endringer" />
+        </span>
       </Link>{' '}
-      <Heading level="2" size="medium">
-        Hva er dette?
-      </Heading>
+      <div>
+        <Heading level="2" size="medium">
+          Hva er dette?
+        </Heading>
+        <BodyLong size="small">
+          Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om arbeidsmarkedstiltak
+          kapittel 4.
+        </BodyLong>
+        <Detail
+          size="small"
+          className="mt-2"
+        >{`Meldt på: ${formatDateStrWithMonthName(pamelding.sistEndret)} av ${pamelding.sistEndretAv} ${pamelding.sistEndretAvEnhet}`}</Detail>
+      </div>
+      <div>
+        <Heading level="2" size="medium">
+          Du har rett til å klage
+        </Heading>
+        <BodyLong>
+          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på deltakelsen eller du
+          ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
+          informasjonen. Les mer om
+          {
+            <Link to="#">
+              <Todo />
+              retten til å klage her.
+            </Link>
+          }
+        </BodyLong>
+      </div>
       <DeltakerLenker />
     </div>
   )

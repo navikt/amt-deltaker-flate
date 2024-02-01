@@ -1,20 +1,21 @@
-import {z} from 'zod'
-import {DeltakelsesprosentValg, MAL_TYPE_ANNET} from '../utils.ts'
-import {Mal, PameldingResponse} from '../api/data/pamelding.ts'
+import { z } from 'zod'
+import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakelsesprosentValg, MAL_TYPE_ANNET } from '../utils/utils.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
+export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
 export const pameldingFormSchema = z
   .object({
+    tilgjengeligeMal: z.string().array(),
     valgteMal: z.string().array(),
     malAnnetBeskrivelse: z
       .string()
       .max(
         BESKRIVELSE_MAX_TEGN,
         `Beskrivelse for mål Annet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn`
-      )
-      .optional(),
+      ),
     bakgrunnsinformasjon: z
       .string()
       .max(
@@ -40,6 +41,17 @@ export const pameldingFormSchema = z
       .lte(5, { message: 'Dager per uke må være mindre enn 6' })
       .optional()
   })
+  .refine(
+    (schema) => {
+      if (schema.tilgjengeligeMal.length > 0) {
+        return schema.valgteMal.length > 0
+      } else return true
+    },
+    {
+      message: 'Velg minst ett innhold',
+      path: ['valgteMal']
+    }
+  )
   .refine(
     (schema) => {
       if (schema.valgteMal?.find((valgtMal) => valgtMal === MAL_TYPE_ANNET)) {
@@ -83,6 +95,7 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse) => {
   }
 
   return {
+    tilgjengeligeMal: pamelding.mal.map((e) => e.type),
     valgteMal: pamelding.mal.filter((e) => e.valgt).map((e) => e.type),
     malAnnetBeskrivelse: getMalAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
