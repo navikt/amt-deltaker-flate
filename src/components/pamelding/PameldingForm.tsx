@@ -14,17 +14,28 @@ import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
+import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 
 interface Props {
   pamelding: PameldingResponse
+  className?: string
+  disabled?: boolean
+  disableForm?: (disable: boolean) => void
+  onCancelUtkast?: () => void
 }
 
-export const PameldingForm = ({ pamelding }: Props) => {
+export const PameldingForm = ({
+  pamelding,
+  className,
+  disabled,
+  disableForm,
+  onCancelUtkast
+}: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const defaultValues = generateFormDefaultValues(pamelding)
 
-  const [disableForm, setDisableForm] = useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = useState<boolean>(!!disabled)
 
   const methods = useForm<PameldingFormValues>({
     defaultValues,
@@ -40,30 +51,35 @@ export const PameldingForm = ({ pamelding }: Props) => {
 
   const valgteMal = watch('valgteMal')
 
-  return (
-    <VStack gap="4" className="p-8 bg-white">
-      <section className="space-y-4">
-        <Heading size="medium" level="3">
-          Hva er innholdet?
-        </Heading>
-        <BodyLong size="small">
-          (<Todo />: Her skal det vel være en tekst til veileder?)
-          <br />
-          Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
-          kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
-        </BodyLong>
-      </section>
+  const handleDiableForm = (disable: boolean) => {
+    setIsDisabled(disable)
+    disableForm && disableForm(disable)
+  }
 
-      <form autoComplete="off">
-        <FormProvider {...methods}>
-          <section className="mb-8">
+  return (
+    <form autoComplete="off" className={className}>
+      <FormProvider {...methods}>
+        <VStack className="p-4 border rounded border-[var(--a-surface-alt-3)] mb-4">
+          <section className="space-y-4">
+            <Heading size="medium" level="3">
+              Hva er innholdet?
+            </Heading>
+            <BodyLong size="small">
+              (<Todo />: Her skal det vel være en tekst til veileder?)
+              <br />
+              Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
+              kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
+            </BodyLong>
+          </section>
+
+          <section className="mb-8 mt-4">
             {mal.length > 0 && (
               <CheckboxGroup
                 defaultValue={defaultValues.valgteMal}
                 legend="Hva mer skal tiltaket inneholde?"
                 error={errors.valgteMal?.message}
                 size="small"
-                disabled={disableForm}
+                disabled={isDisabled}
                 aria-required
                 id="valgteMal"
               >
@@ -78,7 +94,7 @@ export const PameldingForm = ({ pamelding }: Props) => {
                     {...register('malAnnetBeskrivelse')}
                     value={watch('malAnnetBeskrivelse')}
                     error={errors.malAnnetBeskrivelse?.message}
-                    disabled={disableForm}
+                    disabled={isDisabled}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
                     maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
@@ -100,7 +116,7 @@ export const PameldingForm = ({ pamelding }: Props) => {
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
               error={errors.bakgrunnsinformasjon?.message}
-              disabled={disableForm}
+              disabled={isDisabled}
               maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
               id="bakgrunnsinformasjon"
               size="small"
@@ -109,7 +125,7 @@ export const PameldingForm = ({ pamelding }: Props) => {
 
           {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
             <Deltakelsesprosent
-              disableForm={disableForm}
+              disabled={isDisabled}
               deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
               deltakelsesprosent={defaultValues.deltakelsesprosent}
               dagerPerUke={defaultValues.dagerPerUke}
@@ -118,10 +134,18 @@ export const PameldingForm = ({ pamelding }: Props) => {
 
           <PameldingFormButtons
             pamelding={pamelding}
-            disableForm={(disabled) => setDisableForm(disabled)}
+            disabled={isDisabled}
+            disableForm={handleDiableForm}
+            onCancelUtkast={onCancelUtkast}
           />
-        </FormProvider>
-      </form>
-    </VStack>
+        </VStack>
+
+        <MeldPaDirekteButton
+          pamelding={pamelding}
+          disabled={isDisabled}
+          disableForm={handleDiableForm}
+        />
+      </FormProvider>
+    </form>
   )
 }
