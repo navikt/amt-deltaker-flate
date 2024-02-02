@@ -10,7 +10,7 @@ import { MAL_TYPE_ANNET } from './utils.ts'
 const generateMalFromResponse = (
   pamelding: PameldingResponse,
   valgteMal: string[],
-  malAnnetBeskrivelse: string | null
+  malAnnetBeskrivelse?: string | null
 ): Mal[] => {
   return pamelding.mal.map((mal) => {
     const erMalValgt = !!valgteMal.find((valgtMal) => mal.type === valgtMal)
@@ -19,7 +19,7 @@ const generateMalFromResponse = (
     return {
       type: mal.type,
       visningstekst: mal.visningstekst,
-      beskrivelse: erMalAnnet && erMalValgt ? malAnnetBeskrivelse : null,
+      beskrivelse: erMalAnnet && erMalValgt ? malAnnetBeskrivelse || null : null,
       valgt: erMalValgt
     }
   })
