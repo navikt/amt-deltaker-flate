@@ -15,6 +15,12 @@ export const formatDateStrWithMonthName = (dateStr: string | null): string => {
   return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
 }
 
+export const dateStrToNullableDate = (dateStr: string | null) : Date | null => {
+  if(dateStr == null || dateStr == EMDASH) return null
+  const date = dayjs(dateStr, 'DD.MM.YYYY')
+  return date.isValid() ? date.toDate() : null
+}
+
 export const MAL_TYPE_ANNET = 'ANNET' // Fix når vi vet dette fra valp
 
 export enum DeltakelsesprosentValg {

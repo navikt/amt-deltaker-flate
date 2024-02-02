@@ -1,11 +1,12 @@
-import { PameldingRequest } from '../api/data/pamelding-request.ts'
-import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
-import { v4 as uuidv4 } from 'uuid'
-import { HttpResponse } from 'msw'
-import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { IkkeAktuellRequest } from '../api/data/endre-deltakelse-request.ts'
-import { EMDASH, MAL_TYPE_ANNET } from '../utils/utils.ts'
+import {PameldingRequest} from '../api/data/pamelding-request.ts'
+import {DeltakerStatusType, PameldingResponse, Tiltakstype} from '../api/data/pamelding.ts'
+import {v4 as uuidv4} from 'uuid'
+import {HttpResponse} from 'msw'
+import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
+import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import {ForlengDeltakelseRequest, IkkeAktuellRequest} from '../api/data/endre-deltakelse-request.ts'
+import {EMDASH, MAL_TYPE_ANNET} from '../utils/utils.ts'
+import dayjs from 'dayjs'
 
 export class MockHandler {
   pameldinger: PameldingResponse[] = []
@@ -15,6 +16,9 @@ export class MockHandler {
   createPamelding(request: PameldingRequest): HttpResponse {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
+
+    const startdato = this.statusType === DeltakerStatusType.DELTAR || this.statusType === DeltakerStatusType.HAR_SLUTTET
+      ? '2023-12-01' : EMDASH
 
     const pameldingIngenMal: PameldingResponse = {
       deltakerId: uuidv4(),
@@ -26,7 +30,9 @@ export class MockHandler {
         deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
         tiltakstype: Tiltakstype.AVKLARAG,
         arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
-        oppstartstype: 'LOPENDE'
+        oppstartstype: 'LOPENDE',
+        startdato: '2022-10-28',
+        sluttdato: '2027-12-20'
       },
       status: {
         id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -57,7 +63,9 @@ export class MockHandler {
         deltakerlisteNavn: 'Testliste',
         tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
-        oppstartstype: 'løpende'
+        oppstartstype: 'løpende',
+        startdato: '2022-10-28',
+        sluttdato: null
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -67,8 +75,8 @@ export class MockHandler {
         gyldigTil: EMDASH,
         opprettet: '2023-12-14T13:17:52.366581'
       },
-      startdato: EMDASH,
-      sluttdato: EMDASH,
+      startdato: startdato,
+      sluttdato: this.getSluttdato(),
       dagerPerUke: null,
       deltakelsesprosent: null,
       bakgrunnsinformasjon: 'Dette er en test',
@@ -150,6 +158,20 @@ export class MockHandler {
     return HttpResponse.json(nyPamelding)
   }
 
+  getSluttdato(): string {
+    if (this.statusType === DeltakerStatusType.DELTAR) {
+      const fremtidigDato = new Date()
+      fremtidigDato.setDate(fremtidigDato.getDate() + 10)
+      return dayjs(fremtidigDato).format('YYYY-MM-DD')
+    }
+    if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+      const passertDato = new Date()
+      passertDato.setDate(passertDato.getDate() - 10)
+      return dayjs(passertDato).format('YYYY-MM-DD')
+    }
+    return EMDASH
+  }
+
   deletePamelding(deltakerId: string): HttpResponse {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
       return new HttpResponse(null, { status: 400 })
@@ -188,6 +210,19 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
       oppdatertPamelding.status.aarsak = request.aarsak
+      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
+      this.pameldinger.push(oppdatertPamelding)
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseForleng(deltakerId: string, request: ForlengDeltakelseRequest) {
+    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.sluttdato = request.sluttdato
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
       this.pameldinger.push(oppdatertPamelding)
       return HttpResponse.json(oppdatertPamelding)

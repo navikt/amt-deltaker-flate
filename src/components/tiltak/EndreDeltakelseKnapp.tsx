@@ -7,6 +7,7 @@ import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request'
 import { usePameldingCOntext } from './PameldingContext'
 import { ModalController } from './endre-deltakelse-modaler/ModalController'
 import { getEndreDeltakelseTypeText } from '../../utils/displayText'
+import {dateStrToNullableDate} from '../../utils/utils.ts'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,
@@ -42,6 +43,9 @@ export const EndreDeltakelseKnapp = () => {
     }
   }
 
+  const skalViseForlengKnapp = dateStrToNullableDate(pamelding.sluttdato) &&
+      (pamelding.status.type === DeltakerStatusType.DELTAR || pamelding.status.type === DeltakerStatusType.HAR_SLUTTET)
+
   return (
     <>
       <Dropdown>
@@ -58,6 +62,8 @@ export const EndreDeltakelseKnapp = () => {
           <Dropdown.Menu.List>
             {pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.IKKE_AKTUELL, openModal)}
+            {skalViseForlengKnapp &&
+                hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
@@ -68,6 +74,7 @@ export const EndreDeltakelseKnapp = () => {
         deltakerId={pamelding.deltakerId}
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
+        pamelding={pamelding}
       />
     </>
   )
