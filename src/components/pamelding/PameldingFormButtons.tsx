@@ -1,4 +1,4 @@
-import { Alert, Button, Heading, HelpText, VStack } from '@navikt/ds-react'
+import { Alert, Button, HStack, Heading, HelpText } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
@@ -6,93 +6,72 @@ import { TILBAKE_PAGE } from '../../Routes.tsx'
 import { useAppRedirection } from '../../hooks/useAppRedirection.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
-import { sendInnPamelding, sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
-import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
-import { Begrunnelse } from '../../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {
-  generateDirektePameldingRequestForm,
-  generatePameldingRequestFromForm
-} from '../../utils/pamelding-form-utils.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
+import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
+import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
+import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
+import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
 
 interface Props {
   pamelding: PameldingResponse
+  disabled: boolean
   disableForm: (disable: boolean) => void
+  onCancelUtkast?: () => void
 }
 
-export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
-  const FORSLAG_BTN_ID = 'sendSomForslagBtn'
-  const DIREKTE_BTN_ID = 'sendDirekteBtn'
+export const PameldingFormButtons = ({
+  pamelding,
+  disabled,
+  disableForm,
+  onCancelUtkast
+}: Props) => {
+  const erUtkast = pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
+  const erKladd = !erUtkast
 
   const { doRedirect } = useAppRedirection()
   const { enhetId } = useAppContext()
-
-  const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
-  const [delUtkastModalOpen, setDelUtkastModalOpen] = useState<boolean>(false)
-
-  const [formData, setFormData] = useState<PameldingFormValues>()
-
-  const { handleSubmit } = useFormContext<PameldingFormValues>()
-
   const returnToFrontpage = () => {
     doRedirect(TILBAKE_PAGE)
   }
+
+  const [delUtkastModalOpen, setDelUtkastModalOpen] = useState(false)
+  const [formData, setFormData] = useState<PameldingFormValues>()
+  const [slettKladdModalOpen, setSlettKladdModalOpen] = useState(false)
+  const [forkastUtkastEndringModalOpen, setForkastUtkastEndringModalOpen] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(disabled)
+
+  const { handleSubmit } = useFormContext<PameldingFormValues>()
 
   const {
     state: sendSomForslagState,
     error: sendSomForslagError,
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(sendInnPamelding, returnToFrontpage)
-
   const {
-    state: sendDirekteState,
-    error: meldPaDirekteError,
-    doFetch: doFetchMeldPaDirekte
-  } = useDeferredFetch(sendInnPameldingUtenGodkjenning, returnToFrontpage)
+    state: slettKladdState,
+    error: slettKladdError,
+    doFetch: doFetchSlettKladd
+  } = useDeferredFetch(deletePamelding, returnToFrontpage)
 
-  const handleFormSubmit =
-    (submitType: 'sendSomForslagBtn' | 'sendDirekteBtn') => (data: PameldingFormValues) => {
-      if (submitType === FORSLAG_BTN_ID) {
-        setFormData(data)
-        setDelUtkastModalOpen(true)
-      } else if (submitType === DIREKTE_BTN_ID) {
-        setFormData(data)
-        setMeldPaDirekteModalOpen(true)
-      } else {
-        throw new Error(`no handler for ${submitType}`)
-      }
-    }
-
-  const sendDirekteModalConfirm = (begrunnelseType: string) => {
-    const begrunnelse: Begrunnelse = {
-      type: begrunnelseType,
-      beskrivelse: undefined
-    }
-
-    const request = generateDirektePameldingRequestForm(pamelding, formData, begrunnelse)
-
-    doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, request)
-    setMeldPaDirekteModalOpen(false)
-  }
-
-  const disableButtons = () => {
-    return (
-      sendDirekteState === DeferredFetchState.LOADING ||
-      sendDirekteState === DeferredFetchState.RESOLVED ||
-      sendSomForslagState === DeferredFetchState.LOADING ||
-      sendSomForslagState === DeferredFetchState.RESOLVED
-    )
+  const handleFormSubmit = (data: PameldingFormValues) => {
+    setFormData(data)
+    setDelUtkastModalOpen(true)
   }
 
   useEffect(() => {
-    disableForm(disableButtons())
-  }, [sendDirekteState, sendSomForslagState, disableButtons])
+    const isLoading =
+      sendSomForslagState === DeferredFetchState.LOADING ||
+      slettKladdState === DeferredFetchState.LOADING
+
+    setIsDisabled(isLoading || disabled)
+    disableForm(isLoading || disabled)
+  }, [sendSomForslagState, slettKladdState, disabled])
 
   return (
     <>
       {sendSomForslagState === DeferredFetchState.ERROR && (
-        <Alert variant="error">
+        <Alert variant="error" className="mt-4 mb-4">
           <Heading size="small" spacing level="3">
             Det skjedde en feil.
           </Heading>
@@ -100,62 +79,95 @@ export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
         </Alert>
       )}
 
-      {sendSomForslagState === DeferredFetchState.RESOLVED && (
-        <Alert variant="success">Forslag er sendt til brukeren!</Alert>
-      )}
-
-      {meldPaDirekteError === DeferredFetchState.ERROR && (
-        <Alert variant="error">
+      {slettKladdError === DeferredFetchState.ERROR && (
+        <Alert variant="error" className="mt-4 mb-4">
           <Heading size="small" spacing level="3">
             Det skjedde en feil.
           </Heading>
-          {meldPaDirekteError}
+          {slettKladdError}
         </Alert>
       )}
 
-      {sendDirekteState === DeferredFetchState.RESOLVED && (
-        <Alert variant="success">Påmeldingen er sendt</Alert>
+      {sendSomForslagState === DeferredFetchState.RESOLVED && (
+        <Alert variant="success" className="mt-4 mb-4">
+          Forslag er sendt til brukeren!
+        </Alert>
       )}
 
-      <VStack gap="4" className="mt-8">
+      {slettKladdState === DeferredFetchState.RESOLVED && (
+        <Alert variant="success" className="mt-4 mb-4">
+          Kladden har blitt slettet
+        </Alert>
+      )}
+
+      <HStack gap="8" className="mt-8">
         <div className="flex items-center">
           <Button
             size="small"
-            loading={sendSomForslagState === DeferredFetchState.LOADING}
-            disabled={disableButtons()}
+            disabled={isDisabled}
             type="button"
-            onClick={handleSubmit(handleFormSubmit(FORSLAG_BTN_ID))}
+            onClick={handleSubmit(handleFormSubmit)}
+            loading={sendSomForslagState === DeferredFetchState.LOADING}
           >
-            Del utkast og gjør klar vedtaket
+            {erUtkast ? 'Del endring' : 'Del utkast og gjør klar påmelding'}
           </Button>
-          <div className="ml-4">
-            <HelpText>
-              Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
-              arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
-              aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
-            </HelpText>
-          </div>
+          {erKladd && (
+            <div className="ml-2">
+              <HelpText>
+                Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
+                arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
+                aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
+              </HelpText>
+            </div>
+          )}
         </div>
 
-        <div className="flex items-center">
+        {erKladd && (
           <Button
-            size="small"
             variant="secondary"
-            loading={sendDirekteState === DeferredFetchState.LOADING}
-            disabled={disableButtons()}
+            size="small"
             type="button"
-            onClick={handleSubmit(handleFormSubmit(DIREKTE_BTN_ID))}
+            disabled={isDisabled}
+            onClick={() => setSlettKladdModalOpen(true)}
+            loading={slettKladdState === DeferredFetchState.LOADING}
           >
-            Fortsett uten å dele utkastet
+            Slett kladd
           </Button>
-          <div className="ml-4">
-            <HelpText>
-              Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger som
-              blir delt med tiltaksarrangør.
-            </HelpText>
-          </div>
-        </div>
-      </VStack>
+        )}
+        {erUtkast && (
+          <Button
+            variant="secondary"
+            size="small"
+            type="button"
+            disabled={isDisabled}
+            onClick={() => setForkastUtkastEndringModalOpen(true)}
+          >
+            Forkast Endring
+          </Button>
+        )}
+      </HStack>
+
+      <ForkastUtkastEndringModal
+        open={forkastUtkastEndringModalOpen}
+        onConfirm={() => {
+          setForkastUtkastEndringModalOpen(false)
+          if (onCancelUtkast) onCancelUtkast()
+        }}
+        onCancel={() => {
+          setForkastUtkastEndringModalOpen(false)
+        }}
+      />
+
+      <SlettKladdModal
+        open={slettKladdModalOpen}
+        onConfirm={() => {
+          doFetchSlettKladd(pamelding.deltakerId)
+          setSlettKladdModalOpen(false)
+        }}
+        onCancel={() => {
+          setSlettKladdModalOpen(false)
+        }}
+      />
 
       <DelUtkastModal
         open={delUtkastModalOpen}
@@ -173,14 +185,6 @@ export const PameldingFormButtons = ({ pamelding, disableForm }: Props) => {
         navn={{ fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen' }}
         gjennomforingTypeText={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-      />
-
-      <MeldPaDirekteModal
-        open={meldPaDirekteModalOpen}
-        onConfirm={sendDirekteModalConfirm}
-        onCancel={() => {
-          setMeldPaDirekteModalOpen(false)
-        }}
       />
     </>
   )

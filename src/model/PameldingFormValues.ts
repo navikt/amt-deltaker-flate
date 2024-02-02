@@ -15,7 +15,8 @@ export const pameldingFormSchema = z
       .max(
         BESKRIVELSE_MAX_TEGN,
         `Beskrivelse for mål Annet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn`
-      ),
+      )
+      .optional(),
     bakgrunnsinformasjon: z
       .string()
       .max(
@@ -77,7 +78,7 @@ export const pameldingFormSchema = z
 
 export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
 
-export const generateFormDefaultValues = (pamelding: PameldingResponse) => {
+export const generateFormDefaultValues = (pamelding: PameldingResponse): PameldingFormValues => {
   const showProsentValg = (): DeltakelsesprosentValg => {
     if (pamelding.deltakelsesprosent && pamelding.deltakelsesprosent < 100) {
       return DeltakelsesprosentValg.NEI

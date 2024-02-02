@@ -82,13 +82,13 @@ export class MockHandler {
         {
           visningstekst: 'Karriereveiledning',
           type: 'type2',
-          valgt: true,
+          valgt: false,
           beskrivelse: null
         },
         {
           visningstekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
           type: 'type3',
-          valgt: true,
+          valgt: false,
           beskrivelse: null
         },
         {
@@ -106,7 +106,7 @@ export class MockHandler {
         {
           visningstekst: 'Veiledning i sosial mestring',
           type: 'type6',
-          valgt: true,
+          valgt: false,
           beskrivelse: null
         },
         {
