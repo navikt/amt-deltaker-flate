@@ -1,5 +1,10 @@
 import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request.ts'
-import { DeltakerStatusAarsakType, DeltakerStatusType, Tiltakstype } from '../api/data/pamelding.ts'
+import {
+  DeltakerStatusAarsak,
+  DeltakerStatusAarsakType,
+  DeltakerStatusType,
+  Tiltakstype
+} from '../api/data/pamelding.ts'
 
 export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   switch (type) {
@@ -54,6 +59,23 @@ export const getDeltakerStatusDisplayText = (type: DeltakerStatusType): string =
       return 'Påbegynt Registrering'
     case DeltakerStatusType.AVBRUTT_UTKAST:
       return 'Avbrutt utkast'
+  }
+}
+
+export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
+  switch (aarsak.type) {
+    case DeltakerStatusAarsakType.ANNET:
+      return `Annet - ${aarsak.beskrivelse}`
+    case DeltakerStatusAarsakType.FATT_JOBB:
+      return 'Fått jobb'
+    case DeltakerStatusAarsakType.IKKE_MOTT:
+      return 'Møter ikke opp'
+    case DeltakerStatusAarsakType.SYK:
+      return 'Syk'
+    case DeltakerStatusAarsakType.TRENGER_ANNEN_STOTTE:
+      return 'Trenger annen hjelp og støtte'
+
+    // TODO skissene viser Feilregistrert i tillegg
   }
 }
 

@@ -96,6 +96,7 @@ export const pameldingSchema = z.object({
   sistEndret: z.string()
 })
 
+export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Mal = z.infer<typeof malSchema>
 export type Navn = z.infer<typeof navnSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
