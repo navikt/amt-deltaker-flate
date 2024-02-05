@@ -6,7 +6,7 @@ import {useState} from 'react'
 import {Alert, BodyLong, Button, DatePicker, Heading, Modal, Radio, RadioGroup, useDatepicker} from '@navikt/ds-react'
 import {Varighet, varigheter, VarighetValg, varighetValgForType} from '../../../utils/varighet.ts'
 import dayjs from 'dayjs'
-import {dateStrToNullableDate} from '../../../utils/utils.ts'
+import {dateStrToNullableDate, formatDateToDateInputStr} from '../../../utils/utils.ts'
 
 interface ForlengDeltakelseModalProps {
     deltakerId: string
@@ -40,8 +40,11 @@ export const ForlengDeltakelseModal = ({
   } = useDeferredFetch(endreDeltakelseForleng)
 
   const sendEndring = () => {
+    if (!nySluttDato) {
+      return Promise.reject('Kan ikke sende forlenge deltakelse uten ny sluttdato')
+    }
     doFetchEndreDeltakelseForleng(deltakerId, enhetId, {
-      sluttdato: nySluttDato
+      sluttdato: formatDateToDateInputStr(nySluttDato)
     }).then((data) => {
       onSuccess(data)
     })

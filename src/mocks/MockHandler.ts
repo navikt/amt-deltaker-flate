@@ -17,9 +17,6 @@ export class MockHandler {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
 
-    const startdato = this.statusType === DeltakerStatusType.DELTAR || this.statusType === DeltakerStatusType.HAR_SLUTTET
-      ? '2023-12-01' : EMDASH
-
     const pameldingIngenMal: PameldingResponse = {
       deltakerId: uuidv4(),
       fornavn: 'Pequeño',
@@ -38,9 +35,9 @@ export class MockHandler {
         id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
         type: DeltakerStatusType.KLADD,
         aarsak: null,
-        gyldigFra: '2024-01-30T08:56:20.576553',
+        gyldigFra: yesterday.toString(),
         gyldigTil: EMDASH,
-        opprettet: '2024-01-30T08:56:21.286768'
+        opprettet: yesterday.toString()
       },
       startdato: EMDASH,
       sluttdato: EMDASH,
@@ -48,7 +45,7 @@ export class MockHandler {
       deltakelsesprosent: null,
       bakgrunnsinformasjon: null,
       mal: [],
-      sistEndretAv: 'Veilder',
+      sistEndretAv: 'Veileder',
       sistEndretAvEnhet: 'NAV Fredrikstad',
       sistEndret: yesterday.toString()
     }
@@ -65,17 +62,17 @@ export class MockHandler {
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'løpende',
         startdato: '2022-10-28',
-        sluttdato: null
+        sluttdato: '2027-12-20'
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
         type: this.statusType,
         aarsak: null,
-        gyldigFra: '2023-12-14T13:17:52.362471',
+        gyldigFra: yesterday.toString(),
         gyldigTil: EMDASH,
-        opprettet: '2023-12-14T13:17:52.366581'
+        opprettet: yesterday.toString()
       },
-      startdato: startdato,
+      startdato: this.getStartdato(),
       sluttdato: this.getSluttdato(),
       dagerPerUke: null,
       deltakelsesprosent: null,
@@ -148,7 +145,7 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
-      sistEndretAv: 'Veilder',
+      sistEndretAv: 'Veileder',
       sistEndret: yesterday.toString(),
       sistEndretAvEnhet: 'NAV Fredrikstad'
     }
@@ -156,6 +153,15 @@ export class MockHandler {
     this.pameldinger.push(nyPamelding)
     this.pameldinger.push(pameldingIngenMal)
     return HttpResponse.json(nyPamelding)
+  }
+
+  getStartdato(): string {
+    if (this.statusType === DeltakerStatusType.DELTAR || this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+      const passertDato = new Date()
+      passertDato.setDate(passertDato.getDate() - 15)
+      return dayjs(passertDato).format('YYYY-MM-DD')
+    }
+    return EMDASH
   }
 
   getSluttdato(): string {

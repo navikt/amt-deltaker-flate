@@ -15,6 +15,10 @@ export const formatDateStrWithMonthName = (dateStr: string | null): string => {
   return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
 }
 
+export const formatDateToDateInputStr = (date: Date): string => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+
 export const dateStrToNullableDate = (dateStr: string | null) : Date | null => {
   if(dateStr == null || dateStr == EMDASH) return null
   const date = dayjs(dateStr, 'DD.MM.YYYY')
