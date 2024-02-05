@@ -42,6 +42,7 @@ export const PameldingFormButtons = ({
   const [isDisabled, setIsDisabled] = useState(disabled)
 
   const { handleSubmit } = useFormContext<PameldingFormValues>()
+  const delEndringKappTekst = erUtkast ? 'Del endring' : 'Del utkast og gjør klar påmelding'
 
   const {
     state: sendSomForslagState,
@@ -100,7 +101,7 @@ export const PameldingFormButtons = ({
         </Alert>
       )}
 
-      <HStack gap="8" className="mt-8">
+      <HStack gap="4" className="mt-8">
         <div className="flex items-center">
           <Button
             size="small"
@@ -109,11 +110,11 @@ export const PameldingFormButtons = ({
             onClick={handleSubmit(handleFormSubmit)}
             loading={sendSomForslagState === DeferredFetchState.LOADING}
           >
-            {erUtkast ? 'Del endring' : 'Del utkast og gjør klar påmelding'}
+            {delEndringKappTekst}
           </Button>
           {erKladd && (
             <div className="ml-2">
-              <HelpText>
+              <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
                 Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
                 arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
                 aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
@@ -124,7 +125,7 @@ export const PameldingFormButtons = ({
 
         {erKladd && (
           <Button
-            variant="secondary"
+            variant="tertiary"
             size="small"
             type="button"
             disabled={isDisabled}
@@ -136,13 +137,13 @@ export const PameldingFormButtons = ({
         )}
         {erUtkast && (
           <Button
-            variant="secondary"
+            variant="tertiary"
             size="small"
             type="button"
             disabled={isDisabled}
             onClick={() => setForkastUtkastEndringModalOpen(true)}
           >
-            Forkast Endring
+            Forkast endring
           </Button>
         )}
       </HStack>

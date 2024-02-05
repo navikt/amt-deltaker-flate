@@ -9,17 +9,17 @@ dependencies:
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.50.0)
   '@navikt/aksel-icons':
-    specifier: ^5.17.3
-    version: 5.17.3
+    specifier: ^5.17.4
+    version: 5.17.4
   '@navikt/ds-css':
-    specifier: ^5.17.3
-    version: 5.17.3
+    specifier: ^5.17.4
+    version: 5.17.4
   '@navikt/ds-react':
-    specifier: ^5.17.3
-    version: 5.17.3(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.17.4
+    version: 5.17.4(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
   '@navikt/ds-tailwind':
-    specifier: ^5.17.3
-    version: 5.17.3
+    specifier: ^5.17.4
+    version: 5.17.4
   '@types/react-router-dom':
     specifier: ^5.3.3
     version: 5.3.3
@@ -116,8 +116,8 @@ devDependencies:
     specifier: ^8.4.33
     version: 8.4.33
   prettier:
-    specifier: ^3.2.4
-    version: 3.2.4
+    specifier: ^3.2.5
+    version: 3.2.5
   rollup-plugin-import-map:
     specifier: ^3.0.0
     version: 3.0.0
@@ -580,16 +580,16 @@ packages:
       strict-event-emitter: 0.5.1
     dev: false
 
-  /@navikt/aksel-icons@5.17.3:
-    resolution: {integrity: sha512-brmC707F9xx/ZEt8AltobF1/JtkNZwF0cFpKxv0LLfYStuzlU6Q8j8+C40xFwfHu4p9ZNzoBw5IDrbjJqHtpQA==}
+  /@navikt/aksel-icons@5.17.4:
+    resolution: {integrity: sha512-PDyFCPwx9efNsvnOpBrG6sl9/KKhE95svOVzka4aGtp6qlujAviKGmwTF1aG6xUVCyrEpypVbN+57sl5R/pG6Q==}
     dev: false
 
-  /@navikt/ds-css@5.17.3:
-    resolution: {integrity: sha512-cBxfWOv/UMQ+cxq+ZUe6hIBtRJFNCSR+2Ylawp+GzqY99OLPHX7PngnRz/Qjr++TIlS0hqoT6Y4Bq+PbEhjsPA==}
+  /@navikt/ds-css@5.17.4:
+    resolution: {integrity: sha512-ODJ1IaSFR/VIIuEqLE326TMQd4QlwPL/WE1wwv6U5cglit9EUwJ4aQZM1SEvyul2K00qN64kl0iuMOMY5t++FA==}
     dev: false
 
-  /@navikt/ds-react@5.17.3(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-JiCB+4z3ZdkFUAqtJbURrAo1PIvxVjFsothAHD+v3AB9NBmmX+pcYUp9bJW2lQyLpvnG/XmKL3IALgtjq2W5nw==}
+  /@navikt/ds-react@5.17.4(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-bVhrOhb2IVVodHJMrdEWXBPKNsyzD+O9YOXD8tmE9wgPctDUXSSx/pjdiHOPa/LWklNaStSKlVy3OQdpcsnyLQ==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -598,8 +598,8 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.17.3
-      '@navikt/ds-tokens': 5.17.3
+      '@navikt/aksel-icons': 5.17.4
+      '@navikt/ds-tokens': 5.17.4
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.46
@@ -611,12 +611,12 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tailwind@5.17.3:
-    resolution: {integrity: sha512-Lh0qbP8MGkT72uAtIlvOMHivSIxgGczclOQ0qVLgK/SZWaA5Xw1BL3At9TS4qb3quXRvHo90Co5UtQCBkVNFQw==}
+  /@navikt/ds-tailwind@5.17.4:
+    resolution: {integrity: sha512-BwQXrro7MfdWzROjk4UO9UTkDwDUF7rAO2Z6RBWATsMDDD+VubebvAaWXWbjaSJl3apHZzFYjB9vS/9zrGbrqQ==}
     dev: false
 
-  /@navikt/ds-tokens@5.17.3:
-    resolution: {integrity: sha512-Hzhub4WSuYfJkiqv/Jj5U/EQV/2oQ4unLGoqadnOd+rjCHLg5aCRKDj0dpwCrGLAfE5/6HAv5rq98OVJ4fW4Qw==}
+  /@navikt/ds-tokens@5.17.4:
+    resolution: {integrity: sha512-W17JANoQ5zbJ175at4C4uh1iW0IzBWn7XXX+96CbBVdXtrEnyl9AKNnLJ+LXp5Brl8qzUB+meihhYSCgV1Q7KA==}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -3894,8 +3894,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier@3.2.4:
-    resolution: {integrity: sha512-FWu1oLHKCrtpO1ypU6J0SbK2d9Ckwysq6bHj/uaCP26DxrPpppCLQRGVuqAxSTvhF00AcvDRyYrLNW7ocBhFFQ==}
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true

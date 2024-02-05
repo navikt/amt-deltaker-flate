@@ -1,11 +1,9 @@
-import { BodyLong, Detail, HStack, Heading, List } from '@navikt/ds-react'
-import { getTiltakstypeDisplayText } from '../../utils/displayText.ts'
+import { BodyLong, Detail, HStack, Heading, List, Link } from '@navikt/ds-react'
+import { getDeltakerStatusAarsakText, getTiltakstypeDisplayText } from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
-import { DeltakerLenker } from './DeltakerLenker.tsx'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
-import { Link } from 'react-router-dom'
 import { EMDASH, MAL_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
 
 export const DeltakerInfo = () => {
@@ -23,6 +21,12 @@ export const DeltakerInfo = () => {
         <Detail weight="semibold">Status:</Detail>
         <DeltakerIStatusTag statusType={pamelding.status.type} />
       </HStack>
+      {pamelding.status.aarsak && (
+        <HStack gap="2">
+          <Detail weight="semibold">Årsak:</Detail>
+          <Detail>{getDeltakerStatusAarsakText(pamelding.status.aarsak)}</Detail>
+        </HStack>
+      )}
       <HStack gap="2">
         <Detail weight="semibold">Dato:</Detail>
         <Detail>{pamelding.startdato || EMDASH}</Detail>
@@ -54,7 +58,7 @@ export const DeltakerInfo = () => {
         </Heading>
         <BodyLong size="small">{pamelding.bakgrunnsinformasjon}</BodyLong>
       </div>
-      <Link to="#">
+      <Link href="#">
         <Todo /> Se endringer
         <span>
           <ChevronRightIcon title="Gå til side for endringer" />
@@ -82,14 +86,13 @@ export const DeltakerInfo = () => {
           ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
           informasjonen. Les mer om
           {
-            <Link to="#">
+            <Link href="#">
               <Todo />
               retten til å klage her.
             </Link>
           }
         </BodyLong>
       </div>
-      <DeltakerLenker />
     </div>
   )
 }

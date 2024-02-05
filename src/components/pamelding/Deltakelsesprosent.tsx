@@ -68,7 +68,7 @@ export const Deltakelsesprosent = ({
                     pattern="[0-9]*"
                     onChange={({ target }) => {
                       const value = target.value.replace(',', '.')
-                      onChange(parseFloat(value))
+                      onChange(value.length > 0 ? parseFloat(value) : undefined)
                     }}
                     error={errors.deltakelsesprosent?.message}
                     aria-required
@@ -91,7 +91,7 @@ export const Deltakelsesprosent = ({
                     pattern="[0-9]*"
                     onChange={({ target }) => {
                       const value = target.value.replace(',', '.')
-                      onChange(parseFloat(value))
+                      onChange(value.length > 0 ? parseFloat(value) : undefined)
                     }}
                     error={errors.dagerPerUke?.message}
                     className="[&>input]:w-16"

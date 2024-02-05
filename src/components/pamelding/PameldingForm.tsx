@@ -12,7 +12,7 @@ import {
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 
@@ -20,6 +20,7 @@ interface Props {
   pamelding: PameldingResponse
   className?: string
   disabled?: boolean
+  focusOnOpen?: boolean
   disableForm?: (disable: boolean) => void
   onCancelUtkast?: () => void
 }
@@ -28,13 +29,14 @@ export const PameldingForm = ({
   pamelding,
   className,
   disabled,
+  focusOnOpen,
   disableForm,
   onCancelUtkast
 }: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const defaultValues = generateFormDefaultValues(pamelding)
-
+  const formRef = useRef<HTMLFormElement>(null)
   const [isDisabled, setIsDisabled] = useState<boolean>(!!disabled)
 
   const methods = useForm<PameldingFormValues>({
@@ -56,8 +58,18 @@ export const PameldingForm = ({
     disableForm && disableForm(disable)
   }
 
+  useEffect(() => {
+    if (focusOnOpen && formRef?.current) formRef.current.focus()
+  }, [])
+
   return (
-    <form autoComplete="off" className={className}>
+    <form
+      autoComplete="off"
+      className={className}
+      ref={formRef}
+      tabIndex={-1}
+      aria-label="Skjema for påmelding"
+    >
       <FormProvider {...methods}>
         <VStack className="p-4 border rounded border-[var(--a-surface-alt-3)] mb-4">
           <section className="space-y-4">
