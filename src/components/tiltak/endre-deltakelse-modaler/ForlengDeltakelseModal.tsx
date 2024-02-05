@@ -77,7 +77,7 @@ export const ForlengDeltakelseModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE} />,
+        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE}/>,
         heading: 'Forleng deltakelse'
       }}
       onClose={onClose}
@@ -86,26 +86,28 @@ export const ForlengDeltakelseModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error">
             <Heading size="small" spacing level="3">
-                        Det skjedde en feil.
+                  Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
         )}
         <BodyLong size="small">
-              Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+            Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
-            
-        <RadioGroup
-          legend="Hvor lenge skal deltakelsen forlenges?"
-          size="small"
-          onChange={handleChangeVarighet}
-          value={valgtVarighet}
-        >
-          <>
-            {varighetValgForType(pamelding.deltakerliste.tiltakstype).map(v => <Radio value={v} key={v}>{varigheter[v].navn}</Radio>)}
-            <Radio value={VarighetValg.ANNET}>
+
+        <section className="mt-4">
+          <RadioGroup
+            legend="Hvor lenge skal deltakelsen forlenges?"
+            size="small"
+            onChange={handleChangeVarighet}
+            value={valgtVarighet}
+          >
+            <>
+              {varighetValgForType(pamelding.deltakerliste.tiltakstype).map(v => <Radio value={v}
+                key={v}>{varigheter[v].navn}</Radio>)}
+              <Radio value={VarighetValg.ANNET}>
                   Annet - velg dato
-              {visDatovelger &&
+                {visDatovelger &&
                       <DatePicker {...datepickerProps}>
                         <DatePicker.Input
                           {...inputProps}
@@ -114,22 +116,25 @@ export const ForlengDeltakelseModal = ({
                           error={hasError && 'Ny dato må være senere enn sluttdato'}
                         />
                       </DatePicker>
-              }
-            </Radio>
-          </>
-        </RadioGroup>
+                }
+              </Radio>
+            </>
+          </RadioGroup>
+        </section>
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="button"
-          size="small"
-          loading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-          onClick={sendEndring}
-        >
+      <div className="flex items-center">
+        <Modal.Footer>
+          <Button
+            type="button"
+            size="small"
+            loading={endreDeltakelseState === DeferredFetchState.LOADING}
+            disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+            onClick={sendEndring}
+          >
                 Lagre
-        </Button>
-      </Modal.Footer>
+          </Button>
+        </Modal.Footer>
+      </div>
     </Modal>
   )
 }
