@@ -24,7 +24,7 @@ export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) =
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
   const [redigerUtkast, setRedigerUtkast] = useState<boolean>(false)
   const [idDisabled, setIsDisabled] = useState<boolean>(false)
-  // TODO sette fokus på PameldingForm når den vises, scrolle helt opp?
+
   const { doRedirect } = useAppRedirection()
   const { enhetId } = useAppContext()
 
@@ -59,6 +59,7 @@ export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) =
         <VStack gap="2" align="start" className="p-8 bg-white">
           {redigerUtkast && (
             <PameldingForm
+              focusOnOpen
               pamelding={pamelding}
               disabled={idDisabled}
               disableForm={(disabled) => setIsDisabled(disabled)}

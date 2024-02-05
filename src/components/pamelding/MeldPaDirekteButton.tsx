@@ -38,6 +38,10 @@ export const MeldPaDirekteButton = ({
   )
 
   const methods = useFormContext<PameldingFormValues>()
+  const meldPaDirekteTekst =
+    pamelding.status.type === DeltakerStatusType.KLADD
+      ? 'Meld på uten å dele utkast'
+      : 'Meld på uten godkjent utkast'
 
   const returnToFrontpage = () => {
     doRedirect(TILBAKE_PAGE)
@@ -111,12 +115,10 @@ export const MeldPaDirekteButton = ({
             useOldPamelding ? handleSendOldPamelding : methods?.handleSubmit(handleFormSubmit)
           }
         >
-          {pamelding.status.type === DeltakerStatusType.KLADD
-            ? 'Meld på uten å dele utkast'
-            : 'Meld på uten godkjent utkast'}
+          {meldPaDirekteTekst}
         </Button>
         <div className="ml-2">
-          <HelpText>
+          <HelpText aria-label={`Hjelpetekst: ${meldPaDirekteTekst}`}>
             Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger som
             blir delt med tiltaksarrangør.
           </HelpText>
