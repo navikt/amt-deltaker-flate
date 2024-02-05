@@ -100,7 +100,7 @@ export const PameldingFormButtons = ({
         </Alert>
       )}
 
-      <HStack gap="8" className="mt-8">
+      <HStack gap="4" className="mt-8">
         <div className="flex items-center">
           <Button
             size="small"
@@ -124,7 +124,7 @@ export const PameldingFormButtons = ({
 
         {erKladd && (
           <Button
-            variant="secondary"
+            variant="tertiary"
             size="small"
             type="button"
             disabled={isDisabled}
@@ -136,13 +136,13 @@ export const PameldingFormButtons = ({
         )}
         {erUtkast && (
           <Button
-            variant="secondary"
+            variant="tertiary"
             size="small"
             type="button"
             disabled={isDisabled}
             onClick={() => setForkastUtkastEndringModalOpen(true)}
           >
-            Forkast Endring
+            Forkast endring
           </Button>
         )}
       </HStack>
