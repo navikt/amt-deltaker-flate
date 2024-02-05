@@ -50,12 +50,6 @@ export const malSchema = z.object({
   beskrivelse: z.string().nullable()
 })
 
-export const navnSchema = z.object({
-  fornavn: z.string(),
-  mellomnavn: z.string().optional(),
-  etternavn: z.string()
-})
-
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   deltakerlisteNavn: z.string(),
@@ -98,6 +92,5 @@ export const pameldingSchema = z.object({
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Mal = z.infer<typeof malSchema>
-export type Navn = z.infer<typeof navnSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type PameldingResponse = z.infer<typeof pameldingSchema>

@@ -3,8 +3,13 @@ import {
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
+  PameldingResponse,
   Tiltakstype
 } from '../api/data/pamelding.ts'
+
+export const getDeltakerNavn = (pamelding: PameldingResponse) => {
+  return `${pamelding.fornavn} ${pamelding.mellomnavn ? pamelding.mellomnavn + ' ' : ''}${pamelding.etternavn}`
+}
 
 export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   switch (type) {

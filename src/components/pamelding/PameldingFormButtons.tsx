@@ -12,6 +12,7 @@ import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
+import { getDeltakerNavn } from '../../utils/displayText.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -183,8 +184,8 @@ export const PameldingFormButtons = ({
         onCancel={() => {
           setDelUtkastModalOpen(false)
         }}
-        navn={{ fornavn: 'Test', mellomnavn: 'Mellom', etternavn: 'Testersen' }}
-        gjennomforingTypeText={pamelding.deltakerliste.tiltakstype}
+        deltakerNavn={getDeltakerNavn(pamelding)}
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
     </>
