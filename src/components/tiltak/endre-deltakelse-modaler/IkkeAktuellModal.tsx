@@ -46,7 +46,7 @@ export const IkkeAktuellModal = ({
     <Modal open={open} header={{ heading: 'Er ikke aktuell' }} onClose={onClose}>
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error">
+          <Alert variant="error" className="mt-4 mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -79,7 +79,7 @@ export const IkkeAktuellModal = ({
             )}
           </>
         </RadioGroup>
-        <Alert variant="info" className="mt-4">
+        <Alert variant="info" className="mt-4 mb-4">
           Når du lagrer så blir det sendt varsel til bruker. Har personen registrert seg i KRR så
           blri det sendt brev. Arrangør og bruker ser endringen.
         </Alert>

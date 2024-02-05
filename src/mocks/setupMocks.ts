@@ -37,7 +37,6 @@ export const worker = setupWorker(
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
   }),
-
   http.post('/mock/pamelding/:deltakerId', async ({ request, params }) => {
     await delay(1000)
 
@@ -63,7 +62,7 @@ export const worker = setupWorker(
     return response
   }),
   http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request, params }) => {
-    await delay(1000)
+    await delay(100)
 
     const { deltakerId } = params
 
@@ -86,17 +85,15 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/pamelding/:deltakerId/avbryt', async ({request, params}) => {
+  http.post('/mock/pamelding/:deltakerId/avbryt', async ({ request, params }) => {
     await delay(1000)
 
     const { deltakerId } = params
 
-    const response = await request
-      .json()
-      .then((json) => ikkeAktuellSchema.parse(json))
+    const response = await request.json().then((json) => ikkeAktuellSchema.parse(json))
 
     // eslint-disable-next-line no-console
-    console.log('Deltaker ' + {deltakerId} + ':', response)
+    console.log('Deltaker ' + { deltakerId } + ':', response)
 
     return new HttpResponse(null, {
       status: 200
