@@ -1,4 +1,5 @@
 import {Tiltakstype} from '../api/data/pamelding.ts'
+import dayjs from 'dayjs'
 
 export enum VarighetValg {
 	IKKE_VALGT,
@@ -68,4 +69,8 @@ export const varighetValgForType = (tiltakstype: Tiltakstype): VarighetValg[] =>
       VarighetValg.TRE_MANEDER,
     ]
   }
+}
+
+export const kalkulerSluttdato = (sluttdato: Date, varighet: Varighet): Date => {
+  return dayjs(sluttdato).add(varighet.antall, varighet.tidsenhet).toDate()
 }

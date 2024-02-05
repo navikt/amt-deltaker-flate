@@ -5,7 +5,6 @@ import {ForlengDeltakelseModal} from './ForlengDeltakelseModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
-  deltakerId: string,
   pamelding: PameldingResponse,
   endringsType: EndreDeltakelseType | null
   onClose: () => void

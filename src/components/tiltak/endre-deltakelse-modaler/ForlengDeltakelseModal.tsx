@@ -4,14 +4,12 @@ import {DeferredFetchState, useDeferredFetch} from '../../../hooks/useDeferredFe
 import {endreDeltakelseForleng} from '../../../api/api.ts'
 import {useState} from 'react'
 import {Alert, BodyLong, Button, DatePicker, Heading, Modal, Radio, RadioGroup, useDatepicker} from '@navikt/ds-react'
-import {Varighet, varigheter, VarighetValg, varighetValgForType} from '../../../utils/varighet.ts'
-import dayjs from 'dayjs'
+import {kalkulerSluttdato, varigheter, VarighetValg, varighetValgForType} from '../../../utils/varighet.ts'
 import {dateStrToNullableDate, formatDateToDateInputStr} from '../../../utils/utils.ts'
 import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
 import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 
 interface ForlengDeltakelseModalProps {
-    deltakerId: string
     pamelding: PameldingResponse
     open: boolean
     onClose: () => void
@@ -19,7 +17,6 @@ interface ForlengDeltakelseModalProps {
 }
 
 export const ForlengDeltakelseModal = ({
-  deltakerId,
   pamelding,
   open,
   onClose,
@@ -30,10 +27,6 @@ export const ForlengDeltakelseModal = ({
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
   const { enhetId } = useAppContext()
-    
-  const kalkulerSluttdato = (sluttdato: Date | null, varighet: Varighet): Date => {
-    return dayjs(sluttdato).add(varighet.antall, varighet.tidsenhet).toDate()
-  }
 
   const {
     state: endreDeltakelseState,
@@ -45,7 +38,7 @@ export const ForlengDeltakelseModal = ({
     if (!nySluttDato) {
       return Promise.reject('Kan ikke sende forlenge deltakelse uten ny sluttdato')
     }
-    doFetchEndreDeltakelseForleng(deltakerId, enhetId, {
+    doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
       sluttdato: formatDateToDateInputStr(nySluttDato)
     }).then((data) => {
       onSuccess(data)
@@ -67,7 +60,7 @@ export const ForlengDeltakelseModal = ({
   const handleChangeVarighet = (valgtVarighet: VarighetValg) => {
     settValgtVarighet(valgtVarighet)
     const varighet = varigheter[valgtVarighet]
-    if (varighet) {
+    if (varighet && sluttdato) {
       settNySluttDato(kalkulerSluttdato(sluttdato, varighet))
     }
     else settNySluttDato(null)

@@ -11,14 +11,14 @@ import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
 import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 
 interface IkkeAktuellModalProps {
-  deltakerId: string
+  pamelding: PameldingResponse
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
 export const IkkeAktuellModal = ({
-  deltakerId,
+  pamelding,
   open,
   onClose,
   onSuccess
@@ -34,7 +34,7 @@ export const IkkeAktuellModal = ({
   } = useDeferredFetch(endreDeltakelseIkkeAktuell)
 
   const sendEndring = () => {
-    doFetchEndreDeltakelseIkkeAktuell(deltakerId, enhetId, {
+    doFetchEndreDeltakelseIkkeAktuell(pamelding.deltakerId, enhetId, {
       aarsak: {
         type: valgtArsak,
         beskrivelse: beskrivelse

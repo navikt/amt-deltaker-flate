@@ -43,8 +43,13 @@ export const EndreDeltakelseKnapp = () => {
     }
   }
 
-  const skalViseForlengKnapp = dateStrToNullableDate(pamelding.sluttdato) &&
-      (pamelding.status.type === DeltakerStatusType.DELTAR || pamelding.status.type === DeltakerStatusType.HAR_SLUTTET)
+  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const toMndSiden = new Date()
+  toMndSiden.setMonth(toMndSiden.getMonth() - 2)
+
+  const skalViseForlengKnapp = sluttdato &&
+      (pamelding.status.type === DeltakerStatusType.DELTAR ||
+          (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
 
   return (
     <>
@@ -71,7 +76,6 @@ export const EndreDeltakelseKnapp = () => {
       <ModalController
         endringsType={modalType}
         open={modalOpen}
-        deltakerId={pamelding.deltakerId}
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
         pamelding={pamelding}
