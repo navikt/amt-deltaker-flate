@@ -7,6 +7,8 @@ import {Alert, BodyLong, Button, DatePicker, Heading, Modal, Radio, RadioGroup, 
 import {Varighet, varigheter, VarighetValg, varighetValgForType} from '../../../utils/varighet.ts'
 import dayjs from 'dayjs'
 import {dateStrToNullableDate, formatDateToDateInputStr} from '../../../utils/utils.ts'
+import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
+import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 
 interface ForlengDeltakelseModalProps {
     deltakerId: string
@@ -72,8 +74,14 @@ export const ForlengDeltakelseModal = ({
   }
 
   return (
-  // mangler ikon
-    <Modal open={open} header={{ heading: 'Forleng deltakelse' }} onClose={onClose}>
+    <Modal
+      open={open}
+      header={{
+        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE} />,
+        heading: 'Forleng deltakelse'
+      }}
+      onClose={onClose}
+    >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error">
