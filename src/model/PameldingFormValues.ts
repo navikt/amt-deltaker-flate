@@ -71,7 +71,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må skrive inn deltakelsesprosent.',
+      message: deltakelsesprosentFeilmelding,
       path: ['deltakelsesprosent']
     }
   )

@@ -4,8 +4,12 @@ import {v4 as uuidv4} from 'uuid'
 import {HttpResponse} from 'msw'
 import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {ForlengDeltakelseRequest, IkkeAktuellRequest} from '../api/data/endre-deltakelse-request.ts'
-import {EMDASH, MAL_TYPE_ANNET} from '../utils/utils.ts'
+import {
+  EndreStartdatoRequest,
+  ForlengDeltakelseRequest,
+  IkkeAktuellRequest
+} from '../api/data/endre-deltakelse-request.ts'
+import { EMDASH, MAL_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
 export class MockHandler {
@@ -156,7 +160,10 @@ export class MockHandler {
   }
 
   getStartdato(): string {
-    if (this.statusType === DeltakerStatusType.DELTAR || this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+    if (
+      this.statusType === DeltakerStatusType.DELTAR ||
+      this.statusType === DeltakerStatusType.HAR_SLUTTET
+    ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
       return dayjs(passertDato).format('YYYY-MM-DD')
@@ -229,6 +236,19 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
+      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
+      this.pameldinger.push(oppdatertPamelding)
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseStartdato(deltakerId: string, request: EndreStartdatoRequest) {
+    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.startdato = request.startdato
       this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
       this.pameldinger.push(oppdatertPamelding)
       return HttpResponse.json(oppdatertPamelding)

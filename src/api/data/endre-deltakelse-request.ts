@@ -28,3 +28,9 @@ export const forlengDeltakelseSchema = z.object({
 })
 
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
+
+export const endreStartdatoSchema = z.object({
+  startdato: z.string()
+})
+
+export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
