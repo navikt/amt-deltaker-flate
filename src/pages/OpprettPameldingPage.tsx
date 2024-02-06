@@ -20,7 +20,6 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
 
   const {
     state: saveKladdState,
-    // error: saveKladdError,
     doFetch: fetchSaveKladd
   } = useDeferredFetch(oppdaterKladd)
 
