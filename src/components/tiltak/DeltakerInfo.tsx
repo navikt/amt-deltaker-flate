@@ -4,7 +4,7 @@ import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
-import { EMDASH, MAL_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
+import { EMDASH, INNHOLD_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
 import { DeltakerStatusType } from '../../api/data/pamelding.ts'
 
 export const DeltakerInfo = () => {
@@ -52,11 +52,11 @@ export const DeltakerInfo = () => {
         kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.
       </BodyLong>
       <List as="ul" size="small">
-        {pamelding.mal
-          .filter((mal) => mal.valgt)
-          .map((mal) => (
-            <List.Item key={mal.type}>
-              {mal.type === MAL_TYPE_ANNET ? mal.beskrivelse : mal.visningstekst}
+        {pamelding.innhold
+          .filter((i) => i.valgt)
+          .map((i) => (
+            <List.Item key={i.type}>
+              {i.type === INNHOLD_TYPE_ANNET ? i.beskrivelse : i.visningstekst}
             </List.Item>
           ))}
       </List>

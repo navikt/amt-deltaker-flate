@@ -13,7 +13,7 @@ import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useEffect, useRef, useState } from 'react'
-import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
+import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
 
@@ -32,9 +32,9 @@ export const PameldingForm = ({
   disabled,
   focusOnOpen,
   disableForm,
-  onCancelUtkast,
+  onCancelUtkast
 }: Props) => {
-  const mal = pamelding.mal
+  const innhold = pamelding.innhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
 
@@ -51,10 +51,10 @@ export const PameldingForm = ({
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = methods
 
-  const valgteMal = watch('valgteMal')
+  const valgteInnhold = watch('valgteInnhold')
 
   const handleDiableForm = (disable: boolean) => {
     setIsDisabled(disable)
@@ -80,7 +80,7 @@ export const PameldingForm = ({
               Hva er innholdet?
             </Heading>
             <BodyLong size="small">
-              (<Todo />: Tekst fra valp?)
+              (<Todo />: Tekst fra valp)
               <br />
               Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
               kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
@@ -88,37 +88,37 @@ export const PameldingForm = ({
           </section>
 
           <section className="mb-8 mt-4">
-            {mal.length > 0 && (
+            {innhold.length > 0 && (
               <CheckboxGroup
-                defaultValue={defaultValues.valgteMal}
+                defaultValue={defaultValues.valgteInnhold}
                 legend="Hva mer skal tiltaket inneholde?"
-                error={errors.valgteMal?.message}
+                error={errors.valgteInnhold?.message}
                 size="small"
                 disabled={isDisabled}
                 aria-required
-                id="valgteMal"
+                id="valgteInnhold"
               >
-                {mal.map((e) => (
-                  <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
-                    {e.type === MAL_TYPE_ANNET ? 'Annet - fyll ut' : e.visningstekst}
+                {innhold.map((e) => (
+                  <Checkbox key={e.type} value={e.type} {...register('valgteInnhold')}>
+                    {e.type === INNHOLD_TYPE_ANNET ? 'Annet - fyll ut' : e.visningstekst}
                   </Checkbox>
                 ))}
-                {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
+                {valgteInnhold.find((e) => e === INNHOLD_TYPE_ANNET) && (
                   <Textarea
                     label={null}
-                    {...register('malAnnetBeskrivelse')}
-                    value={watch('malAnnetBeskrivelse')}
+                    {...register('innholdAnnetBeskrivelse')}
+                    value={watch('innholdAnnetBeskrivelse')}
                     error={
-                      (errors.malAnnetBeskrivelse?.type === 'custom' &&
-                        errors.malAnnetBeskrivelse?.message) ||
-                      !!errors.malAnnetBeskrivelse
+                      (errors.innholdAnnetBeskrivelse?.type === 'custom' &&
+                        errors.innholdAnnetBeskrivelse?.message) ||
+                      !!errors.innholdAnnetBeskrivelse
                     }
                     disabled={isDisabled}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
                     maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                     size="small"
-                    id="malAnnetBeskrivelse"
+                    id="innholdAnnetBeskrivelse"
                   />
                 )}
               </CheckboxGroup>
@@ -154,16 +154,15 @@ export const PameldingForm = ({
           />
         </VStack>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <MeldPaDirekteButton
             pamelding={pamelding}
             disabled={isDisabled}
             disableForm={handleDiableForm}
           />
 
-          {status === DeltakerStatusType.KLADD && <PameldingLagring pamelding={pamelding}/>}
+          {status === DeltakerStatusType.KLADD && <PameldingLagring pamelding={pamelding} />}
         </div>
-
       </FormProvider>
     </form>
   )

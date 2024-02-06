@@ -1,23 +1,23 @@
-import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
+import { Innhold, PameldingResponse } from '../api/data/pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { MAL_TYPE_ANNET } from './utils.ts'
+import { INNHOLD_TYPE_ANNET } from './utils.ts'
 
-export const generateMalFromResponse = (
+export const generateInnholdFromResponse = (
   pamelding: PameldingResponse,
-  valgteMal: string[],
-  malAnnetBeskrivelse?: string | null
-): Mal[] => {
-  return pamelding.mal.map((mal) => {
-    const erMalValgt = !!valgteMal.find((valgtMal) => mal.type === valgtMal)
-    const erMalAnnet = mal.type === MAL_TYPE_ANNET
+  valgteInnhold: string[],
+  innholdAnnetBeskrivelse?: string | null
+): Innhold[] => {
+  return pamelding.innhold.map((i) => {
+    const erInnholdValgt = !!valgteInnhold.find((valgtInnhold) => i.type === valgtInnhold)
+    const erInnholdAnnet = i.type === INNHOLD_TYPE_ANNET
 
     return {
-      type: mal.type,
-      visningstekst: mal.visningstekst,
-      beskrivelse: erMalAnnet && erMalValgt ? malAnnetBeskrivelse || null : null,
-      valgt: erMalValgt
+      type: i.type,
+      visningstekst: i.visningstekst,
+      beskrivelse: erInnholdAnnet && erInnholdValgt ? innholdAnnetBeskrivelse || null : null,
+      valgt: erInnholdValgt
     }
   })
 }
@@ -35,7 +35,11 @@ export const generatePameldingRequestFromForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse)
+    innhold: generateInnholdFromResponse(
+      pamelding,
+      data.valgteInnhold,
+      data.innholdAnnetBeskrivelse
+    )
   }
 }
 
@@ -51,6 +55,10 @@ export const generateDirektePameldingRequestForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse)
+    innhold: generateInnholdFromResponse(
+      pamelding,
+      data.valgteInnhold,
+      data.innholdAnnetBeskrivelse
+    )
   }
 }

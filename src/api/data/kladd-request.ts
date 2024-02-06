@@ -1,8 +1,8 @@
 import {z} from 'zod'
-import { malSchema } from './pamelding.ts'
+import { innholdSchema } from './pamelding.ts'
 
 export const kladdSchema = z.object({
-  mal: z.array(malSchema),
+  innhold: z.array(innholdSchema),
   bakgrunnsinformasjon: z.string().optional(),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional()
