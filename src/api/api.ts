@@ -5,6 +5,7 @@ import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 import { IkkeAktuellRequest } from './data/endre-deltakelse-request.ts'
 import { AvbrytUtkastRequest } from './data/avbryt-utkast-request.ts'
+import { KladdRequest } from './data/kladd-request.ts'
 
 export const createPamelding = async (
   personident: string,
@@ -139,5 +140,22 @@ export const avbrytUtkast = (
       }
       return response.status
     })
+}
+
+export const oppdaterKladd = async (
+  deltakerId: string,
+  enhetId: string,
+  request: KladdRequest
+): Promise<number> => {
+  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/kladd`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  }).then((response) => response.status)
 }
 

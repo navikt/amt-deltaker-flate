@@ -15,6 +15,7 @@ import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useEffect, useRef, useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
+import { debounce } from '../../utils/debounce.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -22,6 +23,7 @@ interface Props {
   disabled?: boolean
   focusOnOpen?: boolean
   disableForm?: (disable: boolean) => void
+  onFormChanged?: (values: PameldingFormValues) => void
   onCancelUtkast?: () => void
 }
 
@@ -31,6 +33,7 @@ export const PameldingForm = ({
   disabled,
   focusOnOpen,
   disableForm,
+  onFormChanged,
   onCancelUtkast
 }: Props) => {
   const mal = pamelding.mal
@@ -48,9 +51,11 @@ export const PameldingForm = ({
   const {
     register,
     watch,
-    formState: { errors }
+    formState: { errors },
+    getValues
   } = methods
 
+  const watchedFields = watch()
   const valgteMal = watch('valgteMal')
 
   const handleDiableForm = (disable: boolean) => {
@@ -61,6 +66,14 @@ export const PameldingForm = ({
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
+
+  useEffect(() => {
+    debounce(() => {
+      if(onFormChanged) {
+        onFormChanged(getValues())
+      }
+    }, 2000)
+  }, [watchedFields])
 
   return (
     <form

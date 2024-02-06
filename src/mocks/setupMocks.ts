@@ -86,5 +86,18 @@ export const worker = setupWorker(
     return new HttpResponse(null, {
       status: 200
     })
+  }),
+  http.post('/mock/pamelding/:deltakerId/kladd', async ({request, params}) => {
+    await delay(1000)
+    const { deltakerId } = params
+    const requestBody = await request.json()
+
+    // eslint-disable-next-line no-console
+    console.log('Kladd stored', deltakerId, requestBody)
+
+    return new HttpResponse(null, {
+      status: 200
+    })
+
   })
 )
