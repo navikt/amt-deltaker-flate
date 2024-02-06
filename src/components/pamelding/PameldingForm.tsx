@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { debounce } from '../../utils/debounce.ts'
+import { DeferredFetchState } from '../../hooks/useDeferredFetch.ts'
+import { PameldingLagringsstatus } from './PameldingLagringsstatus.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -25,6 +27,7 @@ interface Props {
   disableForm?: (disable: boolean) => void
   onFormChanged?: (values: PameldingFormValues) => void
   onCancelUtkast?: () => void
+  lagringsstatus?: DeferredFetchState
 }
 
 export const PameldingForm = ({
@@ -34,7 +37,8 @@ export const PameldingForm = ({
   focusOnOpen,
   disableForm,
   onFormChanged,
-  onCancelUtkast
+  onCancelUtkast,
+  lagringsstatus
 }: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
@@ -165,11 +169,16 @@ export const PameldingForm = ({
           />
         </VStack>
 
-        <MeldPaDirekteButton
-          pamelding={pamelding}
-          disabled={isDisabled}
-          disableForm={handleDiableForm}
-        />
+        <div className="flex justify-between">
+          <MeldPaDirekteButton
+            pamelding={pamelding}
+            disabled={isDisabled}
+            disableForm={handleDiableForm}
+          />
+
+          {lagringsstatus && <PameldingLagringsstatus saveState={lagringsstatus}/>}
+        </div>
+
       </FormProvider>
     </form>
   )

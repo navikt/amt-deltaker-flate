@@ -156,6 +156,13 @@ export const oppdaterKladd = async (
       'aktiv-enhet': enhetId
     },
     body: JSON.stringify(request)
-  }).then((response) => response.status)
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw new Error(
+        `Kunne ikke lagre kladd. Prøv igjen senere. (${response.status})`
+      )
+    }
+    return response.status
+  })
 }
 
