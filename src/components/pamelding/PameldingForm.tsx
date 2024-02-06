@@ -97,7 +97,7 @@ export const PameldingForm = ({
               >
                 {mal.map((e) => (
                   <Checkbox key={e.type} value={e.type} {...register('valgteMal')}>
-                    {e.visningstekst}
+                    {e.type === MAL_TYPE_ANNET ? 'Annet - fyll ut' : e.visningstekst}
                   </Checkbox>
                 ))}
                 {valgteMal.find((e) => e === MAL_TYPE_ANNET) && (
@@ -105,7 +105,11 @@ export const PameldingForm = ({
                     label={null}
                     {...register('malAnnetBeskrivelse')}
                     value={watch('malAnnetBeskrivelse')}
-                    error={errors.malAnnetBeskrivelse?.message}
+                    error={
+                      (errors.malAnnetBeskrivelse?.type === 'custom' &&
+                        errors.malAnnetBeskrivelse?.message) ||
+                      !!errors.malAnnetBeskrivelse
+                    }
                     disabled={isDisabled}
                     aria-label={'Beskrivelse av mål "Annet"'}
                     aria-required
@@ -127,7 +131,7 @@ export const PameldingForm = ({
               description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
-              error={errors.bakgrunnsinformasjon?.message}
+              error={!!errors.bakgrunnsinformasjon}
               disabled={isDisabled}
               maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
               id="bakgrunnsinformasjon"
@@ -136,12 +140,7 @@ export const PameldingForm = ({
           </section>
 
           {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
-            <Deltakelsesprosent
-              disabled={isDisabled}
-              deltakelsesprosentValg={defaultValues.deltakelsesprosentValg}
-              deltakelsesprosent={defaultValues.deltakelsesprosent}
-              dagerPerUke={defaultValues.dagerPerUke}
-            />
+            <Deltakelsesprosent disabled={isDisabled} />
           )}
 
           <PameldingFormButtons

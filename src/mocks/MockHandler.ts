@@ -74,8 +74,8 @@ export class MockHandler {
       },
       startdato: this.getStartdato(),
       sluttdato: this.getSluttdato(),
-      dagerPerUke: null,
-      deltakelsesprosent: null,
+      dagerPerUke: 1,
+      deltakelsesprosent: 10,
       bakgrunnsinformasjon: 'Dette er en test',
       mal: [
         {
