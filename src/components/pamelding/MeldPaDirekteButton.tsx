@@ -7,7 +7,6 @@ import { useAppContext } from '../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
 import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
 import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
-import { Begrunnelse } from '../../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
 import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
 import { ArrowForwardIcon } from '@navikt/aksel-icons'
@@ -62,17 +61,9 @@ export const MeldPaDirekteButton = ({
     setMeldPaDirekteModalOpen(true)
   }
 
-  const sendDirekteModalConfirm = (begrunnelseType: string) => {
-    const begrunnelse: Begrunnelse = {
-      type: begrunnelseType,
-      beskrivelse: undefined
-    }
+  const sendDirekteModalConfirm = () => {
     if (newPameldingValues) {
-      const request = generateDirektePameldingRequestForm(
-        pamelding,
-        newPameldingValues,
-        begrunnelse
-      )
+      const request = generateDirektePameldingRequestForm(pamelding, newPameldingValues)
       doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, request)
     }
     setMeldPaDirekteModalOpen(false)
@@ -126,6 +117,7 @@ export const MeldPaDirekteButton = ({
       </div>
 
       <MeldPaDirekteModal
+        pamelding={pamelding}
         open={meldPaDirekteModalOpen}
         onConfirm={sendDirekteModalConfirm}
         onCancel={() => {

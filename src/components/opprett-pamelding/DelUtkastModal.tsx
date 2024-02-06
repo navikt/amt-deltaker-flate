@@ -1,53 +1,41 @@
-import {BodyLong, Button, HStack, Modal} from '@navikt/ds-react'
-import {Navn} from '../../api/data/pamelding.ts'
+import { BodyLong, Button, HStack, Modal } from '@navikt/ds-react'
+import { getTiltakstypeDisplayText } from '../../utils/displayText'
+import { Tiltakstype } from '../../api/data/pamelding'
 
 interface Props {
   open: boolean
   onConfirm: () => void
   onCancel: () => void
-  navn: Navn
-  gjennomforingTypeText: string
+  deltakerNavn: string
+  tiltakstype: Tiltakstype
   arrangorNavn: string
 }
 
-export const DelUtkastModal = (
-  {
-    open,
-    onConfirm,
-    onCancel,
-    navn,
-    gjennomforingTypeText,
-    arrangorNavn
-  }: Props
-) => {
-
-  const getNavn = () => {
-    if (navn.mellomnavn !== undefined) {
-      return `${navn.fornavn} ${navn.mellomnavn} ${navn.etternavn}`
-    } else {
-      return `${navn.fornavn} ${navn.etternavn}`
-    }
-  }
-
+export const DelUtkastModal = ({
+  open,
+  onConfirm,
+  onCancel,
+  deltakerNavn,
+  tiltakstype,
+  arrangorNavn
+}: Props) => {
   return (
     <Modal open={open} header={{ heading: 'Del utkast og gjør klar vedtak' }} onClose={onCancel}>
       <Modal.Body>
-        <div className="flex flex-col space-y-4">
-          <BodyLong weight="semibold" size="small">
-            {getNavn()} meldes på {gjennomforingTypeText} hos {arrangorNavn}
-          </BodyLong>
+        <BodyLong size="small">
+          Bruker blir varslet og kan finne lenke til utkastet på innlogget nav.no og i
+          aktivitetsplanen. Bruker får lest gjennom hva du foreslår å sende til arrangøren.
+        </BodyLong>
 
-          <BodyLong size="small">
-            Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
-            arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
-            aktivitetsplanen.
-          </BodyLong>
+        <BodyLong size="small" className="mt-6 mb-6">
+          Når brukeren godtar utkastet så fattes vedtaket. Da mottar arrangør påmeldingen,
+          kontaktinformasjonen til brukeren og til tildelt veileder. Dette ser arrangøren i
+          verktøyet Deltakeroversikt på nav.no.
+        </BodyLong>
 
-          <BodyLong size="small">
-            Når bruker godtar så meldes bruker på og vedtaket fattes. Arrangør mottar informasjon i
-            verktøyet Deltakeroversikt på nav.no.
-          </BodyLong>
-        </div>
+        <BodyLong weight="semibold">
+          {deltakerNavn} meldes på {getTiltakstypeDisplayText(tiltakstype)} hos {arrangorNavn}
+        </BodyLong>
       </Modal.Body>
       <Modal.Footer>
         <HStack gap="4">
@@ -61,5 +49,4 @@ export const DelUtkastModal = (
       </Modal.Footer>
     </Modal>
   )
-
 }

@@ -1,10 +1,7 @@
 import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
-import {
-  Begrunnelse,
-  SendInnPameldingUtenGodkjenningRequest
-} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from './utils.ts'
 
 const generateMalFromResponse = (
@@ -44,8 +41,7 @@ export const generatePameldingRequestFromForm = (
 
 export const generateDirektePameldingRequestForm = (
   pamelding: PameldingResponse,
-  data: PameldingFormValues | undefined,
-  begrunnelse: Begrunnelse
+  data: PameldingFormValues | undefined
 ): SendInnPameldingUtenGodkjenningRequest => {
   if (!data) {
     throw new Error('data should not be undefined')
@@ -55,7 +51,6 @@ export const generateDirektePameldingRequestForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse),
-    begrunnelse: begrunnelse
+    mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse)
   }
 }
