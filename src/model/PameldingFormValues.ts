@@ -6,40 +6,40 @@ export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
+const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 100.'
+const dagerPerUkeFeilmelding = 'Dager per uke må være et helt tall fra 1 til 5.'
+
 export const pameldingFormSchema = z
   .object({
     tilgjengeligeMal: z.string().array(),
     valgteMal: z.string().array(),
     malAnnetBeskrivelse: z
       .string()
-      .max(
-        BESKRIVELSE_MAX_TEGN,
-        `Beskrivelse for mål Annet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn`
-      )
+      .max(BESKRIVELSE_MAX_TEGN, `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`)
       .optional(),
     bakgrunnsinformasjon: z
       .string()
       .max(
         BAKGRUNNSINFORMASJON_MAKS_TEGN,
-        `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn`
+        `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
       )
       .optional(),
     deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
-        invalid_type_error: 'Deltakelsesprosent må være ett tall mellom 0 og 100.'
+        invalid_type_error: deltakelsesprosentFeilmelding
       })
-      .int({ message: 'Deltakelsesprosent må være et heltall' })
-      .gte(1, { message: 'Deltakelsesprosent må være større enn 0' })
-      .lte(99, { message: 'Deltakelsesprosent må være mindre enn 100%' })
+      .int({ message: deltakelsesprosentFeilmelding })
+      .gte(1, { message: deltakelsesprosentFeilmelding })
+      .lte(99, { message: deltakelsesprosentFeilmelding })
       .optional(),
     dagerPerUke: z
       .number({
-        invalid_type_error: 'Dager per uke må være ett tall mellom 0 og 5.'
+        invalid_type_error: dagerPerUkeFeilmelding
       })
-      .int({ message: 'Dager per uke må være et heltall' })
-      .gte(1, { message: 'Dager per uke må være større enn 0' })
-      .lte(5, { message: 'Dager per uke må være mindre enn 6' })
+      .int({ message: dagerPerUkeFeilmelding })
+      .gte(1, { message: dagerPerUkeFeilmelding })
+      .lte(5, { message: dagerPerUkeFeilmelding })
       .optional()
   })
   .refine(
@@ -49,7 +49,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Velg minst ett innhold',
+      message: 'Velg minst ett innhold.',
       path: ['valgteMal']
     }
   )
@@ -60,7 +60,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må skrive noe for mål Annet',
+      message: 'Du må skrive noe for "Annet" innhold.',
       path: ['malAnnetBeskrivelse']
     }
   )
@@ -71,7 +71,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må skrive inn deltakelsesprosent',
+      message: 'Du må skrive inn deltakelsesprosent.',
       path: ['deltakelsesprosent']
     }
   )

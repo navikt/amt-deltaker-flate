@@ -1,21 +1,14 @@
-import {Radio, RadioGroup, TextField} from '@navikt/ds-react'
+import { Radio, RadioGroup } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import {PameldingFormValues} from '../../model/PameldingFormValues.ts'
+import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from '../../utils/utils.ts'
+import { NumberTextField } from '../NumberTextField.tsx'
 
 export interface DeltakelsesprosentProps {
   disabled: boolean
-  deltakelsesprosentValg?: DeltakelsesprosentValg
-  deltakelsesprosent?: number
-  dagerPerUke?: number
 }
 
-export const Deltakelsesprosent = ({
-  disabled,
-  deltakelsesprosentValg,
-  deltakelsesprosent,
-  dagerPerUke
-}: DeltakelsesprosentProps) => {
+export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
   const {
     control,
     watch,
@@ -23,7 +16,9 @@ export const Deltakelsesprosent = ({
     formState: { errors }
   } = useFormContext<PameldingFormValues>()
 
-  const nyDeltakelsesprosentValg = watch('deltakelsesprosentValg')
+  const deltakelsesprosentValg = watch('deltakelsesprosentValg')
+  const deltakelsesprosent = watch('deltakelsesprosent')
+  const dagerPerUke = watch('dagerPerUke')
 
   const onChangeDeltakelsesprosentValg = (value: DeltakelsesprosentValg) => {
     setValue('deltakelsesprosentValg', value, { shouldValidate: true })
@@ -53,27 +48,21 @@ export const Deltakelsesprosent = ({
             <Radio value={DeltakelsesprosentValg.NEI}>Nei</Radio>
           </RadioGroup>
 
-          {nyDeltakelsesprosentValg === DeltakelsesprosentValg.NEI && (
+          {deltakelsesprosentValg === DeltakelsesprosentValg.NEI && (
             <>
               <Controller
                 name={'deltakelsesprosent'}
                 control={control}
                 render={({ field: { onChange } }) => (
-                  <TextField
+                  <NumberTextField
                     label="Deltakelsesprosent:"
-                    size="small"
                     disabled={disabled}
-                    defaultValue={deltakelsesprosent}
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    onChange={({ target }) => {
-                      const value = target.value.replace(',', '.')
-                      onChange(value.length > 0 ? parseFloat(value) : undefined)
-                    }}
+                    value={deltakelsesprosent}
+                    onChange={onChange}
                     error={errors.deltakelsesprosent?.message}
-                    aria-required
+                    required
                     id="deltakelsesprosent"
-                    className="[&>input]:w-16"
+                    className="[&>input]:w-16 mt-4"
                   />
                 )}
               />
@@ -81,20 +70,13 @@ export const Deltakelsesprosent = ({
                 name={'dagerPerUke'}
                 control={control}
                 render={({ field: { onChange } }) => (
-                  <TextField
+                  <NumberTextField
                     label="Hvor mange dager i uka? (valgfritt)"
-                    size="small"
-                    defaultValue={dagerPerUke}
                     disabled={disabled}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    onChange={({ target }) => {
-                      const value = target.value.replace(',', '.')
-                      onChange(value.length > 0 ? parseFloat(value) : undefined)
-                    }}
+                    value={dagerPerUke}
+                    onChange={onChange}
                     error={errors.dagerPerUke?.message}
-                    className="[&>input]:w-16"
+                    className="[&>input]:w-16 mt-4"
                     id="dagerPerUke"
                   />
                 )}
