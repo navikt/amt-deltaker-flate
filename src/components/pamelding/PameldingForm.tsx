@@ -1,7 +1,7 @@
 import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
@@ -15,9 +15,7 @@ import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useEffect, useRef, useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
-import { debounce } from '../../utils/debounce.ts'
-import { DeferredFetchState } from '../../hooks/useDeferredFetch.ts'
-import { PameldingLagringsstatus } from './PameldingLagringsstatus.tsx'
+import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -25,9 +23,7 @@ interface Props {
   disabled?: boolean
   focusOnOpen?: boolean
   disableForm?: (disable: boolean) => void
-  onFormChanged?: (values: PameldingFormValues) => void
   onCancelUtkast?: () => void
-  lagringsstatus?: DeferredFetchState
 }
 
 export const PameldingForm = ({
@@ -36,12 +32,12 @@ export const PameldingForm = ({
   disabled,
   focusOnOpen,
   disableForm,
-  onFormChanged,
   onCancelUtkast,
-  lagringsstatus
 }: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const status = pamelding.status.type
+
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
   const [isDisabled, setIsDisabled] = useState<boolean>(!!disabled)
@@ -56,10 +52,8 @@ export const PameldingForm = ({
     register,
     watch,
     formState: { errors },
-    getValues
   } = methods
 
-  const watchedFields = watch()
   const valgteMal = watch('valgteMal')
 
   const handleDiableForm = (disable: boolean) => {
@@ -70,14 +64,6 @@ export const PameldingForm = ({
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
-
-  useEffect(() => {
-    debounce(() => {
-      if(onFormChanged) {
-        onFormChanged(getValues())
-      }
-    }, 2000)
-  }, [watchedFields])
 
   return (
     <form
@@ -176,7 +162,7 @@ export const PameldingForm = ({
             disableForm={handleDiableForm}
           />
 
-          {lagringsstatus && <PameldingLagringsstatus saveState={lagringsstatus}/>}
+          {status === DeltakerStatusType.KLADD && <PameldingLagring pamelding={pamelding}/>}
         </div>
 
       </FormProvider>
