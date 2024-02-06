@@ -8,6 +8,7 @@ export interface OpprettPameldingPageProps {
 }
 
 export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) => {
+
   return (
     <div className="m-4">
       <PameldingHeader
@@ -15,7 +16,10 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
 
-      <PameldingForm pamelding={pamelding} className="p-8 bg-white" />
+      <PameldingForm
+        className="p-8 bg-white"
+        pamelding={pamelding}
+      />
     </div>
   )
 }

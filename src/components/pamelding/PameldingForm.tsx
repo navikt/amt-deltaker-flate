@@ -1,7 +1,7 @@
 import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
@@ -15,6 +15,7 @@ import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useEffect, useRef, useState } from 'react'
 import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
+import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -31,10 +32,12 @@ export const PameldingForm = ({
   disabled,
   focusOnOpen,
   disableForm,
-  onCancelUtkast
+  onCancelUtkast,
 }: Props) => {
   const mal = pamelding.mal
   const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const status = pamelding.status.type
+
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
   const [isDisabled, setIsDisabled] = useState<boolean>(!!disabled)
@@ -48,7 +51,7 @@ export const PameldingForm = ({
   const {
     register,
     watch,
-    formState: { errors }
+    formState: { errors },
   } = methods
 
   const valgteMal = watch('valgteMal')
@@ -151,11 +154,16 @@ export const PameldingForm = ({
           />
         </VStack>
 
-        <MeldPaDirekteButton
-          pamelding={pamelding}
-          disabled={isDisabled}
-          disableForm={handleDiableForm}
-        />
+        <div className="flex justify-between">
+          <MeldPaDirekteButton
+            pamelding={pamelding}
+            disabled={isDisabled}
+            disableForm={handleDiableForm}
+          />
+
+          {status === DeltakerStatusType.KLADD && <PameldingLagring pamelding={pamelding}/>}
+        </div>
+
       </FormProvider>
     </form>
   )

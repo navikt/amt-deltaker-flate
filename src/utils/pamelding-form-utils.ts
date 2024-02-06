@@ -4,7 +4,7 @@ import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MAL_TYPE_ANNET } from './utils.ts'
 
-const generateMalFromResponse = (
+export const generateMalFromResponse = (
   pamelding: PameldingResponse,
   valgteMal: string[],
   malAnnetBeskrivelse?: string | null
