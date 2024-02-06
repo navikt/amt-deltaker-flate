@@ -102,6 +102,8 @@ const WebComponentInputHandler = ({
               <option value={DeltakerStatusType.KLADD}>KLADD</option>
               <option value={DeltakerStatusType.UTKAST_TIL_PAMELDING}>UTKAST_TIL_PAMELDING</option>
               <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>VENTER_PA_OPPSTART</option>
+              <option value={DeltakerStatusType.DELTAR}>DELTAR</option>
+              <option value={DeltakerStatusType.HAR_SLUTTET}>HAR_SLUTTET</option>
             </Select>
           )}
 

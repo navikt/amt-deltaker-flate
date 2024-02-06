@@ -7,16 +7,18 @@ import { useAppContext } from '../../../AppContext'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
 import { BESKRIVELSE_MAX_TEGN } from '../../../model/PameldingFormValues'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils'
+import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
+import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 
 interface IkkeAktuellModalProps {
-  deltakerId: string
+  pamelding: PameldingResponse
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
 export const IkkeAktuellModal = ({
-  deltakerId,
+  pamelding,
   open,
   onClose,
   onSuccess
@@ -32,7 +34,7 @@ export const IkkeAktuellModal = ({
   } = useDeferredFetch(endreDeltakelseIkkeAktuell)
 
   const sendEndring = () => {
-    doFetchEndreDeltakelseIkkeAktuell(deltakerId, enhetId, {
+    doFetchEndreDeltakelseIkkeAktuell(pamelding.deltakerId, enhetId, {
       aarsak: {
         type: valgtArsak,
         beskrivelse: beskrivelse
@@ -43,7 +45,14 @@ export const IkkeAktuellModal = ({
   }
 
   return (
-    <Modal open={open} header={{ heading: 'Er ikke aktuell' }} onClose={onClose}>
+    <Modal 
+      open={open}
+      header={{
+        icon: <EndringTypeIkon type={EndreDeltakelseType.IKKE_AKTUELL} />,
+        heading: 'Er ikke aktuell' 
+      }} 
+      onClose={onClose}
+    >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error" className="mt-4 mb-4">
@@ -81,7 +90,7 @@ export const IkkeAktuellModal = ({
         </RadioGroup>
         <Alert variant="info" className="mt-4 mb-4">
           Når du lagrer så blir det sendt varsel til bruker. Har personen registrert seg i KRR så
-          blri det sendt brev. Arrangør og bruker ser endringen.
+          blir det sendt brev. Arrangør og bruker ser endringen.
         </Alert>
       </Modal.Body>
       <Modal.Footer>

@@ -61,7 +61,9 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.string()
+  oppstartstype: z.string(),
+  startdato: z.string(),
+  sluttdato: z.string().nullable()
 })
 
 export const deltakerStatusAarsakSchema = z.object({

@@ -7,7 +7,7 @@ import {
   sendInnPameldingUtenGodkjenningRequestSchema
 } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
-import { ikkeAktuellSchema } from '../api/data/endre-deltakelse-request.ts'
+import {forlengDeltakelseSchema, ikkeAktuellSchema} from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()
 
@@ -70,6 +70,18 @@ export const worker = setupWorker(
       .json()
       .then((json) => ikkeAktuellSchema.parse(json))
       .then((body) => handler.endreDeltakelseIkkeAktuell(deltakerId as string, body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/forleng', async ({ request, params }) => {
+    await delay(1000)
+
+    const { deltakerId } = params
+
+    const response = await request
+      .json()
+      .then((json) => forlengDeltakelseSchema.parse(json))
+      .then((body) => handler.endreDeltakelseForleng(deltakerId as string, body))
 
     return response
   }),
