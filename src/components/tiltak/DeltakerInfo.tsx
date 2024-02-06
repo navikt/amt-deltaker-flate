@@ -5,12 +5,16 @@ import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { EMDASH, MAL_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
+import { DeltakerStatusType } from '../../api/data/pamelding.ts'
 
 export const DeltakerInfo = () => {
   const { pamelding } = usePameldingCOntext()
   const tiltaOgSted = `${getTiltakstypeDisplayText(pamelding.deltakerliste.tiltakstype)} hos ${
     pamelding.deltakerliste.arrangorNavn
   }`
+  const skalViseDato =
+    pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
+    pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
 
   return (
     <div className="space-y-4 bg-white px-12 py-4">
@@ -27,11 +31,15 @@ export const DeltakerInfo = () => {
           <Detail>{getDeltakerStatusAarsakText(pamelding.status.aarsak)}</Detail>
         </HStack>
       )}
-      <HStack gap="2">
-        <Detail weight="semibold">Dato:</Detail>
-        <Detail>{pamelding.startdato || EMDASH}</Detail>
-      </HStack>
-      <BodyLong size="small">{`Du er meldt på arbeidsmarkedstiltaket: ${tiltaOgSted}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}</BodyLong>
+      {skalViseDato && (
+        <HStack gap="2">
+          <Detail weight="semibold">Dato:</Detail>
+          <Detail>{formatDateStrWithMonthName(pamelding.startdato) || EMDASH}</Detail>
+        </HStack>
+      )}
+      <BodyLong size="small">
+        {`Du er meldt på arbeidsmarkedstiltaket: ${tiltaOgSted}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
+      </BodyLong>
       <Detail textColor="subtle">
         <Todo />
         {`Meldt på: ${'TODO når meldt på'} av ${'TODO veileders navn'} ${'TODO navkontor'}`}

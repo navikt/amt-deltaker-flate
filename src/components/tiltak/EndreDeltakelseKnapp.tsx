@@ -50,6 +50,9 @@ export const EndreDeltakelseKnapp = () => {
   const skalViseForlengKnapp = sluttdato &&
       (pamelding.status.type === DeltakerStatusType.DELTAR ||
           (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
+  const skalViseEndreOppstartsdato =
+    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
+    pamelding.status.type === DeltakerStatusType.DELTAR
 
   return (
     <>
@@ -68,7 +71,9 @@ export const EndreDeltakelseKnapp = () => {
             {pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.IKKE_AKTUELL, openModal)}
             {skalViseForlengKnapp &&
-                hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
+            {skalViseEndreOppstartsdato &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

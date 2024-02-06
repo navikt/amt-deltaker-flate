@@ -77,7 +77,7 @@ export const PameldingForm = ({
               Hva er innholdet?
             </Heading>
             <BodyLong size="small">
-              (<Todo />: Her skal det vel være en tekst til veileder?)
+              (<Todo />: Tekst fra valp?)
               <br />
               Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
               kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.

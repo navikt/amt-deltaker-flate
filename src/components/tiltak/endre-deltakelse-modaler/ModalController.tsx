@@ -2,10 +2,11 @@ import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request'
 import {PameldingResponse} from '../../../api/data/pamelding'
 import {IkkeAktuellModal} from './IkkeAktuellModal'
 import {ForlengDeltakelseModal} from './ForlengDeltakelseModal.tsx'
+import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
-  pamelding: PameldingResponse,
+  pamelding: PameldingResponse
   endringsType: EndreDeltakelseType | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
@@ -16,7 +17,9 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.IKKE_AKTUELL:
       return <IkkeAktuellModal {...props} />
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
-      return <ForlengDeltakelseModal  {...props} />
+      return <ForlengDeltakelseModal {...props} />
+    case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
+      return <EndreOppstartsdatoModal {...props} />
     default:
       return null
   }

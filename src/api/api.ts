@@ -3,7 +3,11 @@ import {PameldingResponse, pameldingSchema} from './data/pamelding.ts'
 import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
-import {ForlengDeltakelseRequest, IkkeAktuellRequest} from './data/endre-deltakelse-request.ts'
+import {
+  EndreStartdatoRequest,
+  ForlengDeltakelseRequest,
+  IkkeAktuellRequest
+} from './data/endre-deltakelse-request.ts'
 import { AvbrytUtkastRequest } from './data/avbryt-utkast-request.ts'
 
 export const createPamelding = async (
@@ -133,9 +137,33 @@ export const endreDeltakelseForleng = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke forlenge deltakelsen. Prøv igjen senere. (${response.status})`
-        )
+        throw new Error(`Kunne ikke forlenge deltakelsen. Prøv igjen senere. (${response.status})`)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      return pameldingSchema.parse(json)
+    })
+}
+
+export const endreDeltakelseStartdato = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreStartdatoRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/startdato`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`Kunne ikke endre startdato. Prøv igjen senere. (${response.status})`)
       }
       return response.json()
     })
