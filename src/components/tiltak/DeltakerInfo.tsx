@@ -6,6 +6,7 @@ import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { EMDASH, INNHOLD_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
 import { DeltakerStatusType } from '../../api/data/pamelding.ts'
+import { HvaErDette } from './HvaErDette.tsx'
 
 export const DeltakerInfo = () => {
   const { pamelding } = usePameldingCOntext()
@@ -71,20 +72,8 @@ export const DeltakerInfo = () => {
         <span>
           <ChevronRightIcon title="Gå til side for endringer" />
         </span>
-      </Link>{' '}
-      <div>
-        <Heading level="2" size="medium">
-          Hva er dette?
-        </Heading>
-        <BodyLong size="small">
-          Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om arbeidsmarkedstiltak
-          kapittel 4.
-        </BodyLong>
-        <Detail
-          size="small"
-          className="mt-2"
-        >{`Meldt på: ${formatDateStrWithMonthName(pamelding.sistEndret)} av ${pamelding.sistEndretAv} ${pamelding.sistEndretAvEnhet}`}</Detail>
-      </div>
+      </Link>
+      <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} />
       <div>
         <Heading level="2" size="medium">
           Du har rett til å klage
