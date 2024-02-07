@@ -1,13 +1,13 @@
 import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
-import { Mal } from '../../api/data/pamelding.ts'
-import { MAL_TYPE_ANNET } from '../../utils/utils.ts'
+import { Innhold } from '../../api/data/pamelding.ts'
+import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
-  mal: Mal[]
+  innhold: Innhold[]
   bakgrunnsinformasjon: string | null
 }
 
-export const Utkast = ({ mal, bakgrunnsinformasjon }: Props) => {
+export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
   return (
     <VStack gap="4">
       <Heading level="2" size="medium">
@@ -18,11 +18,11 @@ export const Utkast = ({ mal, bakgrunnsinformasjon }: Props) => {
         kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.
       </BodyLong>
       <List as="ul" size="small">
-        {mal
+        {innhold
           .filter((i) => i.valgt)
           .map((i) => (
             <List.Item key={i.type}>
-              {`${i.visningstekst}${i.type === MAL_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
+              {`${i.visningstekst}${i.type === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
             </List.Item>
           ))}
       </List>

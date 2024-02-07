@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { Mal, PameldingResponse } from '../api/data/pamelding.ts'
-import { DeltakelsesprosentValg, MAL_TYPE_ANNET } from '../utils/utils.ts'
+import { Innhold, PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakelsesprosentValg, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
@@ -11,9 +11,9 @@ const dagerPerUkeFeilmelding = 'Dager per uke må være et helt tall fra 1 til 5
 
 export const pameldingFormSchema = z
   .object({
-    tilgjengeligeMal: z.string().array(),
-    valgteMal: z.string().array(),
-    malAnnetBeskrivelse: z
+    tilgjengeligInnhold: z.string().array(),
+    valgteInnhold: z.string().array(),
+    innholdAnnetBeskrivelse: z
       .string()
       .max(BESKRIVELSE_MAX_TEGN, `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`)
       .optional(),
@@ -44,24 +44,24 @@ export const pameldingFormSchema = z
   })
   .refine(
     (schema) => {
-      if (schema.tilgjengeligeMal.length > 0) {
-        return schema.valgteMal.length > 0
+      if (schema.tilgjengeligInnhold.length > 0) {
+        return schema.valgteInnhold.length > 0
       } else return true
     },
     {
       message: 'Velg minst ett innhold.',
-      path: ['valgteMal']
+      path: ['valgteInnhold']
     }
   )
   .refine(
     (schema) => {
-      if (schema.valgteMal?.find((valgtMal) => valgtMal === MAL_TYPE_ANNET)) {
-        return schema.malAnnetBeskrivelse ? schema.malAnnetBeskrivelse?.length > 0 : false
+      if (schema.valgteInnhold?.find((valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET)) {
+        return schema.innholdAnnetBeskrivelse ? schema.innholdAnnetBeskrivelse?.length > 0 : false
       } else return true
     },
     {
       message: 'Du må skrive noe for "Annet" innhold.',
-      path: ['malAnnetBeskrivelse']
+      path: ['innholdAnnetBeskrivelse']
     }
   )
   .refine(
@@ -86,8 +86,8 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse): Pameldi
     return DeltakelsesprosentValg.JA
   }
 
-  const getMalAnnetBeskrivelse = (): string | undefined => {
-    const annetCheckbox = pamelding.mal.find((m: Mal) => m.type === MAL_TYPE_ANNET)
+  const getInnholdAnnetBeskrivelse = (): string | undefined => {
+    const annetCheckbox = pamelding.innhold.find((i: Innhold) => i.type === INNHOLD_TYPE_ANNET)
 
     if (annetCheckbox?.valgt) {
       return annetCheckbox.beskrivelse ?? undefined
@@ -96,9 +96,9 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse): Pameldi
   }
 
   return {
-    tilgjengeligeMal: pamelding.mal.map((e) => e.type),
-    valgteMal: pamelding.mal.filter((e) => e.valgt).map((e) => e.type),
-    malAnnetBeskrivelse: getMalAnnetBeskrivelse(),
+    tilgjengeligInnhold: pamelding.innhold.map((i) => i.type),
+    valgteInnhold: pamelding.innhold.filter((i) => i.valgt).map((i) => i.type),
+    innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,

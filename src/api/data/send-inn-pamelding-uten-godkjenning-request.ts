@@ -1,9 +1,9 @@
 import {z} from 'zod'
-import {malSchema} from './pamelding.ts'
+import { innholdSchema } from './pamelding.ts'
 
 export const sendInnPameldingUtenGodkjenningRequestSchema = z.object({
   deltakerlisteId: z.string().uuid(),
-  mal: z.array(malSchema),
+  innhold: z.array(innholdSchema),
   bakgrunnsinformasjon: z.string().optional(),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional()

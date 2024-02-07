@@ -9,7 +9,7 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { EMDASH, MAL_TYPE_ANNET } from '../utils/utils.ts'
+import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
 export class MockHandler {
@@ -21,7 +21,7 @@ export class MockHandler {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
 
-    const pameldingIngenMal: PameldingResponse = {
+    const pameldingIngenInnhold: PameldingResponse = {
       deltakerId: uuidv4(),
       fornavn: 'Pequeño',
       mellomnavn: null,
@@ -48,7 +48,7 @@ export class MockHandler {
       dagerPerUke: null,
       deltakelsesprosent: null,
       bakgrunnsinformasjon: null,
-      mal: [],
+      innhold: [],
       sistEndretAv: 'Veileder',
       sistEndretAvEnhet: 'NAV Fredrikstad',
       sistEndret: yesterday.toString()
@@ -81,7 +81,7 @@ export class MockHandler {
       dagerPerUke: 1,
       deltakelsesprosent: 10,
       bakgrunnsinformasjon: 'Dette er en test',
-      mal: [
+      innhold: [
         {
           visningstekst: 'Støtte til jobbsøking',
           type: 'type1',
@@ -144,7 +144,7 @@ export class MockHandler {
         },
         {
           visningstekst: 'Annet',
-          type: MAL_TYPE_ANNET,
+          type: INNHOLD_TYPE_ANNET,
           valgt: true,
           beskrivelse: 'Beskrivelse av annet mål'
         }
@@ -155,7 +155,7 @@ export class MockHandler {
     }
 
     this.pameldinger.push(nyPamelding)
-    this.pameldinger.push(pameldingIngenMal)
+    this.pameldinger.push(pameldingIngenInnhold)
     return HttpResponse.json(nyPamelding)
   }
 

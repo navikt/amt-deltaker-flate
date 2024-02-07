@@ -25,7 +25,7 @@ export const dateStrToNullableDate = (dateStr: string | null) : Date | null => {
   return date.isValid() ? date.toDate() : null
 }
 
-export const MAL_TYPE_ANNET = 'ANNET' // Fix når vi vet dette fra valp
+export const INNHOLD_TYPE_ANNET = 'ANNET' // Fix når vi vet dette fra valp
 
 export enum DeltakelsesprosentValg {
   JA = 'JA',

@@ -69,7 +69,10 @@ export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) =
 
           {!redigerUtkast && (
             <>
-              <Utkast mal={pamelding.mal} bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon} />
+              <Utkast
+                innhold={pamelding.innhold}
+                bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
+              />
               <Button
                 size="small"
                 variant="secondary"

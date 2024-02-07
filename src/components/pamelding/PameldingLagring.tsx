@@ -6,30 +6,30 @@ import { debounce } from '../../utils/debounce.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import { KladdRequest } from '../../api/data/kladd-request.ts'
 import { oppdaterKladd } from '../../api/api.ts'
-import { generateMalFromResponse } from '../../utils/pamelding-form-utils.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { Loader } from '@navikt/ds-react'
+import { Loader, Detail } from '@navikt/ds-react'
+import { generateInnholdFromResponse } from '../../utils/pamelding-form-utils.ts'
 
 interface Props {
   pamelding: PameldingResponse
 }
 
-export const PameldingLagring = ({pamelding}: Props) => {
-
+export const PameldingLagring = ({ pamelding }: Props) => {
   const { enhetId } = useAppContext()
   const [storedKladd, setStoredKladd] = useState<KladdRequest>()
   const { watch, getValues } = useFormContext<PameldingFormValues>()
 
-  const {
-    state: saveKladdState,
-    doFetch: fetchSaveKladd
-  } = useDeferredFetch(oppdaterKladd)
+  const { state: saveKladdState, doFetch: fetchSaveKladd } = useDeferredFetch(oppdaterKladd)
 
   const watchedFields = watch()
 
   const formToKladdRequest = (data: PameldingFormValues): KladdRequest => {
     return {
-      mal: generateMalFromResponse(pamelding, data.valgteMal, data.malAnnetBeskrivelse),
+      innhold: generateInnholdFromResponse(
+        pamelding,
+        data.valgteInnhold,
+        data.innholdAnnetBeskrivelse
+      ),
       bakgrunnsinformasjon: data.bakgrunnsinformasjon,
       deltakelsesprosent: data.deltakelsesprosent,
       dagerPerUke: data.dagerPerUke
@@ -39,13 +39,9 @@ export const PameldingLagring = ({pamelding}: Props) => {
   const onFormChanged = (values: PameldingFormValues) => {
     const newKladd = formToKladdRequest(values)
 
-    if(JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
+    if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
       setStoredKladd(newKladd)
-      fetchSaveKladd(
-        pamelding.deltakerId,
-        enhetId,
-        formToKladdRequest(values)
-      )
+      fetchSaveKladd(pamelding.deltakerId, enhetId, formToKladdRequest(values))
     }
   }
 
@@ -55,16 +51,18 @@ export const PameldingLagring = ({pamelding}: Props) => {
     }, 2000)
   }, [watchedFields])
 
-  if(saveKladdState === DeferredFetchState.LOADING) {
-    return <div>
-      <Loader size="small" title="Saving" /> Lagrer kladd...
-    </div>
+  if (saveKladdState === DeferredFetchState.LOADING) {
+    return (
+      <Detail>
+        <Loader size="small" title="Lagrer" /> Lagrer kladd...
+      </Detail>
+    )
   }
-  if(saveKladdState === DeferredFetchState.RESOLVED) {
-    return <div>Kladd lagret</div>
+  if (saveKladdState === DeferredFetchState.RESOLVED) {
+    return <Detail>Kladd lagret</Detail>
   }
   if (saveKladdState === DeferredFetchState.ERROR) {
-    return <div>Kunne ikke autolagre kladd</div>
+    return <Detail>Kunne ikke autolagre kladd</Detail>
   }
 
   return <></>
