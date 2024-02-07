@@ -74,6 +74,15 @@ export const pameldingStatusSchema = z.object({
   opprettet: z.string()
 })
 
+export const vedtaksinformasjonSchema = z.object({
+  fattet: z.string().nullable(),
+  fattetAvNavVeileder: z.string().nullable(),
+  opprettet: z.string(),
+  opprettetAv: z.string(),
+  sistEndret: z.string(),
+  sistEndretAv: z.string()
+})
+
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
   fornavn: z.string(),
@@ -87,11 +96,13 @@ export const pameldingSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
   innhold: z.array(innholdSchema),
+  vedtaksinformasjon: vedtaksinformasjonSchema,
   sistEndretAv: z.string(),
   sistEndretAvEnhet: z.string().nullable(),
   sistEndret: z.string()
 })
 
+export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

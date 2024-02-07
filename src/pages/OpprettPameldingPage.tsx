@@ -16,10 +16,7 @@ export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) =
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />
 
-      <PameldingForm
-        className="p-8 bg-white"
-        pamelding={pamelding}
-      />
+      <PameldingForm className="mt-4 p-8 bg-white" pamelding={pamelding} />
     </div>
   )
 }

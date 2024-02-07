@@ -18,8 +18,8 @@ export class MockHandler {
   statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
+    const yesterday = dayjs().subtract(1, 'day')
+    const today = dayjs()
 
     const pameldingIngenInnhold: PameldingResponse = {
       deltakerId: uuidv4(),
@@ -49,6 +49,14 @@ export class MockHandler {
       deltakelsesprosent: null,
       bakgrunnsinformasjon: null,
       innhold: [],
+      vedtaksinformasjon: {
+        fattet: null,
+        fattetAvNavVeileder: null,
+        opprettet: yesterday.toString(),
+        opprettetAv: 'Navn navnesen',
+        sistEndret: yesterday.toString(),
+        sistEndretAv: 'Navn navnesen'
+      },
       sistEndretAv: 'Veileder',
       sistEndretAvEnhet: 'NAV Fredrikstad',
       sistEndret: yesterday.toString()
@@ -149,6 +157,14 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
+      vedtaksinformasjon: {
+        fattet: null,
+        fattetAvNavVeileder: null,
+        opprettet: yesterday.toString(),
+        opprettetAv: 'Navn navnesen',
+        sistEndret: today.toString(),
+        sistEndretAv: 'Navn navnesen'
+      },
       sistEndretAv: 'Veileder',
       sistEndret: yesterday.toString(),
       sistEndretAvEnhet: 'NAV Fredrikstad'
