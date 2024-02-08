@@ -75,8 +75,8 @@ export const pameldingStatusSchema = z.object({
 })
 
 export const vedtaksinformasjonSchema = z.object({
-  fattet: z.string().nullable(),
-  fattetAvNavVeileder: z.string().nullable(),
+  fattet: z.string().nullable(), // LocalDateTime
+  fattetAvNavVeileder: z.string().nullable(), // Navn / navvident
   opprettet: z.string(),
   opprettetAv: z.string(),
   sistEndret: z.string(),
