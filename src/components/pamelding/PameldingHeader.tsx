@@ -9,7 +9,7 @@ interface Props {
 
 export const PameldingHeader = ({tiltakstype, arrangorNavn}: Props) => {
   return (
-    <div className="space-y-2 mb-2">
+    <div className="space-y-2">
       <Heading level="1" size="large">
         Påmelding
       </Heading>

@@ -18,8 +18,12 @@ export class MockHandler {
   statusType = DeltakerStatusType.KLADD
 
   createPamelding(request: PameldingRequest): HttpResponse {
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
+    const yesterday = dayjs().subtract(1, 'day')
+    const today = dayjs()
+    const harVedak =
+      this.statusType !== DeltakerStatusType.KLADD &&
+      this.statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
+      this.statusType !== DeltakerStatusType.AVBRUTT_UTKAST
 
     const pameldingIngenInnhold: PameldingResponse = {
       deltakerId: uuidv4(),
@@ -37,7 +41,7 @@ export class MockHandler {
       },
       status: {
         id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
-        type: DeltakerStatusType.KLADD,
+        type: this.statusType,
         aarsak: null,
         gyldigFra: yesterday.toString(),
         gyldigTil: EMDASH,
@@ -49,6 +53,14 @@ export class MockHandler {
       deltakelsesprosent: null,
       bakgrunnsinformasjon: null,
       innhold: [],
+      vedtaksinformasjon: {
+        fattet: null,
+        fattetAvNavVeileder: harVedak ? 'Navn Navnesen' : null,
+        opprettet: yesterday.toString(),
+        opprettetAv: 'Navn Navnesen',
+        sistEndret: yesterday.toString(),
+        sistEndretAv: 'Navn Navnesen'
+      },
       sistEndretAv: 'Veileder',
       sistEndretAvEnhet: 'NAV Fredrikstad',
       sistEndret: yesterday.toString()
@@ -149,6 +161,14 @@ export class MockHandler {
           beskrivelse: 'Beskrivelse av annet mål'
         }
       ],
+      vedtaksinformasjon: {
+        fattet: harVedak ? yesterday.toString() : null,
+        fattetAvNavVeileder: null,
+        opprettet: yesterday.toString(),
+        opprettetAv: 'Navn Navnesen',
+        sistEndret: today.toString(),
+        sistEndretAv: 'Navn Navnesen'
+      },
       sistEndretAv: 'Veileder',
       sistEndret: yesterday.toString(),
       sistEndretAvEnhet: 'NAV Fredrikstad'

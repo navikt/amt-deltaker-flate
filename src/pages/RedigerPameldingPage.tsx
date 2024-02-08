@@ -50,10 +50,7 @@ export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) =
             tiltakstype={pamelding.deltakerliste.tiltakstype}
             arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           />
-          <RedigerPameldingHeader
-            endretAv={pamelding.sistEndretAv}
-            sistEndret={pamelding.sistEndret}
-          />
+          <RedigerPameldingHeader {...pamelding.vedtaksinformasjon} />
         </div>
 
         <VStack gap="2" align="start" className="p-8 bg-white">
