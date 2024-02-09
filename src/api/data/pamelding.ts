@@ -96,7 +96,7 @@ export const pameldingSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
   innhold: z.array(innholdSchema),
-  vedtaksinformasjon: vedtaksinformasjonSchema,
+  vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   sistEndretAv: z.string(),
   sistEndretAvEnhet: z.string().nullable(),
   sistEndret: z.string()
