@@ -37,7 +37,14 @@ export const createPamelding = async (
       }
       return response.json()
     })
-    .then((json) => pameldingSchema.parse(json))
+    .then((json) => {
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
+    })
 }
 
 export const deletePamelding = (deltakerId: string): Promise<number> => {
@@ -117,7 +124,12 @@ export const endreDeltakelseIkkeAktuell = (
       return response.json()
     })
     .then((json) => {
-      return pameldingSchema.parse(json)
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
     })
 }
 
@@ -143,7 +155,12 @@ export const endreDeltakelseForleng = (
       return response.json()
     })
     .then((json) => {
-      return pameldingSchema.parse(json)
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
     })
 }
 
@@ -169,7 +186,12 @@ export const endreDeltakelseStartdato = (
       return response.json()
     })
     .then((json) => {
-      return pameldingSchema.parse(json)
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
     })
 }
 
