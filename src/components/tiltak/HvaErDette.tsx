@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const HvaErDette = ({ vedtaksinformasjon }: Props) => {
-  const harNavMeldtPaDirekte = vedtaksinformasjon?.fattetAvNavVeileder
+  const harNavMeldtPaDirekte = vedtaksinformasjon?.fattetAvNav
 
   return (
     <div>
@@ -21,10 +21,15 @@ export const HvaErDette = ({ vedtaksinformasjon }: Props) => {
       {vedtaksinformasjon && (
         <Detail className="mt-2">
           {harNavMeldtPaDirekte
-            ? `Meldt på: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)} av ${vedtaksinformasjon.fattetAvNavVeileder}.`
-            : `Utkast delt av: ${vedtaksinformasjon.sistEndretAv}. Du godkjente ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}.`}
+            ? `Meldt på: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)} av ${vedtakEndretAv(vedtaksinformasjon)}.`
+            : `Utkast delt av: ${vedtakEndretAv(vedtaksinformasjon)}. Du godkjente ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}.`}
         </Detail>
       )}
     </div>
   )
+}
+
+const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
+  if (vedtaksinformasjon.sistEndretAvEnhet === null) return vedtaksinformasjon.sistEndretAv
+  return `${vedtaksinformasjon.sistEndretAv} ${vedtaksinformasjon.sistEndretAvEnhet}`
 }
