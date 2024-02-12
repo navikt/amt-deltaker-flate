@@ -5,6 +5,7 @@ import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
 import { useAppContext } from '../../AppContext'
 import { usePameldingCOntext } from '../tiltak/PameldingContext'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
+import { getDeltakerStatusDisplayText } from '../../utils/displayText'
 
 interface Props {
   className: string
@@ -55,48 +56,63 @@ const DemoDeltakerInstillinger = ({ className }: Props) => {
   }
 
   return (
-    <ReadMore className={className} size="small" header="Velg instillinger for deltaker">
-      <TextField
-        label="Personident (fødselsnummer etc)"
-        type="number"
-        size="small"
-        className="mt-2"
-        value={personident}
-        onChange={(e) => setPersonident(e.target.value)}
-      />
-
-      <TextField
-        label="Deltakerliste id (uuid)"
-        size="small"
-        className="mt-2"
-        value={deltakerlisteId}
-        onChange={(e) => setDeltakelisteId(e.target.value)}
-      />
-
-      <TextField
-        label="Enhet id"
-        size="small"
-        className="mt-2"
-        value={enhetId}
-        onChange={(e) => setEnhetId(e.target.value)}
-      />
-
+    <>
       {useMock && (
         <Select
           value={pameldingStatus}
           label="Hvilken status skal påmeldingen ha?"
           size="small"
-          className="mt-2"
+          className="mt-2 w-64"
           onChange={(e) => handlePameldingStatusChange(e.target.value as DeltakerStatusType)}
         >
-          <option value={DeltakerStatusType.KLADD}>KLADD</option>
-          <option value={DeltakerStatusType.UTKAST_TIL_PAMELDING}>UTKAST_TIL_PAMELDING</option>
-          <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>VENTER_PA_OPPSTART</option>
-          <option value={DeltakerStatusType.DELTAR}>DELTAR</option>
-          <option value={DeltakerStatusType.HAR_SLUTTET}>HAR_SLUTTET</option>
+          <option value={DeltakerStatusType.KLADD}>
+            {getDeltakerStatusDisplayText(DeltakerStatusType.KLADD)}
+          </option>
+          <option value={DeltakerStatusType.UTKAST_TIL_PAMELDING}>
+            {getDeltakerStatusDisplayText(DeltakerStatusType.UTKAST_TIL_PAMELDING)}
+          </option>
+          <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>
+            {getDeltakerStatusDisplayText(DeltakerStatusType.VENTER_PA_OPPSTART)}
+          </option>
+          <option value={DeltakerStatusType.DELTAR}>
+            {getDeltakerStatusDisplayText(DeltakerStatusType.DELTAR)}
+          </option>
+          <option value={DeltakerStatusType.HAR_SLUTTET}>
+            {getDeltakerStatusDisplayText(DeltakerStatusType.HAR_SLUTTET)}
+          </option>
         </Select>
+      )}{' '}
+      {!useMock && (
+        <ReadMore className={className} size="small" header="Velg instillinger for deltaker">
+          <>
+            <TextField
+              label="Personident (fødselsnummer etc)"
+              type="number"
+              size="small"
+              className="mt-2"
+              value={personident}
+              onChange={(e) => setPersonident(e.target.value)}
+            />
+
+            <TextField
+              label="Deltakerliste id (uuid)"
+              size="small"
+              className="mt-2"
+              value={deltakerlisteId}
+              onChange={(e) => setDeltakelisteId(e.target.value)}
+            />
+
+            <TextField
+              label="Enhet id"
+              size="small"
+              className="mt-2"
+              value={enhetId}
+              onChange={(e) => setEnhetId(e.target.value)}
+            />
+          </>
+        </ReadMore>
       )}
-    </ReadMore>
+    </>
   )
 }
 
