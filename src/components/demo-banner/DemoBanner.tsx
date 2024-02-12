@@ -12,7 +12,7 @@ const DemoBanner = () => {
         Demoen inneholder ikke ekte data og kan til tider være ustabil.
       </BodyLong>
 
-      <DemoDeltakerInstillinger className="mt-1" />
+      <DemoDeltakerInstillinger />
     </Alert>
   )
 }

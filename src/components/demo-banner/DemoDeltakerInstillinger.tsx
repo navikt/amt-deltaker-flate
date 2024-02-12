@@ -7,10 +7,6 @@ import { usePameldingCOntext } from '../tiltak/PameldingContext'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
 import { getDeltakerStatusDisplayText } from '../../utils/displayText'
 
-interface Props {
-  className: string
-}
-
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType
 ): Promise<PameldingResponse> => {
@@ -33,7 +29,7 @@ export const endreMockDeltakelseStatus = (
     })
 }
 
-const DemoDeltakerInstillinger = ({ className }: Props) => {
+const DemoDeltakerInstillinger = () => {
   const { enhetId, personident, deltakerlisteId, setEnhetId, setPersonident, setDeltakelisteId } =
     useAppContext()
   const { setPamelding } = usePameldingCOntext()
@@ -83,7 +79,7 @@ const DemoDeltakerInstillinger = ({ className }: Props) => {
         </Select>
       )}{' '}
       {!useMock && (
-        <ReadMore className={className} size="small" header="Velg instillinger for deltaker">
+        <ReadMore className="mt-2" size="small" header="Velg instillinger for deltaker">
           <>
             <TextField
               label="Personident (fødselsnummer etc)"
