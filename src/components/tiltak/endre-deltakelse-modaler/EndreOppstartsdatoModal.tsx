@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { dateStrToNullableDate } from '../../../utils/utils.ts'
+import {dateStrToNullableDate, formatDateToDateInputStr} from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 
@@ -55,7 +55,7 @@ export const EndreOppstartsdatoModal = ({
     if (!startdato) setErrorMessage('Du må velge startdato')
     else {
       doFetchEndreDeltakelseSTartdato(pamelding.deltakerId, enhetId, {
-        startdato
+        startdato: formatDateToDateInputStr(startdato)
       }).then((data) => {
         onSuccess(data)
       })
