@@ -24,10 +24,13 @@ export const AppRoutes = () => {
       <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
       <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
       {isEnvLocalDemoOrPr && (
-        <Route
-          path={'/'}
-          element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
-        />
+        <>
+          <Route
+            path={'/'}
+            element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
+          />
+          <Route path={'*'} element={<Navigate replace to={'/'} />} />
+        </>
       )}
     </Routes>
   )
