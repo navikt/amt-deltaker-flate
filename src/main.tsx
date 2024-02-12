@@ -1,10 +1,14 @@
-import {APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME} from './constants'
-import {worker} from './mocks/setupMocks.ts'
-import {EndpointHandler, getEndpointHandlerType} from './utils/environment-utils.ts'
+import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants'
+import { worker } from './mocks/setupMocks.ts'
+import {
+  EndpointHandler,
+  getEndpointHandlerType,
+  isEnvLocalDemoOrPr
+} from './utils/environment-utils.ts'
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
-  import('./webComponentWrapper').then(({Deltaker}) => {
+  import('./webComponentWrapper').then(({ Deltaker }) => {
     customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
   })
 }
@@ -37,7 +41,7 @@ export async function enableMocking() {
  * (men ikke i `veilarbpersonflate`).
  */
 
-if (import.meta.env.DEV) {
+if (isEnvLocalDemoOrPr) {
   const demoContainer = document.getElementById(APPLICATION_NAME)
   if (!demoContainer) {
     throw new Error('Root Element not found')

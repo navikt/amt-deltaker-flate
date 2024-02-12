@@ -12,8 +12,58 @@ import {
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
+export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): PameldingResponse => {
+  const yesterday = dayjs().subtract(1, 'day')
+  const harVedak =
+    statusType !== DeltakerStatusType.KLADD &&
+    statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
+    statusType !== DeltakerStatusType.AVBRUTT_UTKAST
+
+  return {
+    deltakerId: uuidv4(),
+    fornavn: 'Pequeño',
+    mellomnavn: null,
+    etternavn: 'Plass',
+    deltakerliste: {
+      deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
+      deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
+      tiltakstype: Tiltakstype.AVKLARAG,
+      arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
+      oppstartstype: 'LOPENDE',
+      startdato: '2022-10-28',
+      sluttdato: '2027-12-20'
+    },
+    status: {
+      id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
+      type: statusType,
+      aarsak: null,
+      gyldigFra: yesterday.toString(),
+      gyldigTil: EMDASH,
+      opprettet: yesterday.toString()
+    },
+    startdato: EMDASH,
+    sluttdato: EMDASH,
+    dagerPerUke: null,
+    deltakelsesprosent: null,
+    bakgrunnsinformasjon: null,
+    innhold: [],
+    vedtaksinformasjon: {
+      fattet: harVedak ? yesterday.toString() : null,
+      fattetAvNav: false,
+      opprettet: yesterday.toString(),
+      opprettetAv: 'Navn Navnesen',
+      sistEndret: dayjs().toString(),
+      sistEndretAv: 'Navn Navnesen',
+      sistEndretAvEnhet: 'NAV Fredrikstad'
+    },
+    sistEndretAv: 'Veileder',
+    sistEndretAvEnhet: 'NAV Fredrikstad',
+    sistEndret: yesterday.toString()
+  }
+}
+
 export class MockHandler {
-  pameldinger: PameldingResponse[] = []
+  pamelding: PameldingResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
 
@@ -24,48 +74,6 @@ export class MockHandler {
       this.statusType !== DeltakerStatusType.KLADD &&
       this.statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
       this.statusType !== DeltakerStatusType.AVBRUTT_UTKAST
-
-    const pameldingIngenInnhold: PameldingResponse = {
-      deltakerId: uuidv4(),
-      fornavn: 'Pequeño',
-      mellomnavn: null,
-      etternavn: 'Plass',
-      deltakerliste: {
-        deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
-        deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
-        tiltakstype: Tiltakstype.AVKLARAG,
-        arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
-        oppstartstype: 'LOPENDE',
-        startdato: '2022-10-28',
-        sluttdato: '2027-12-20'
-      },
-      status: {
-        id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
-        type: this.statusType,
-        aarsak: null,
-        gyldigFra: yesterday.toString(),
-        gyldigTil: EMDASH,
-        opprettet: yesterday.toString()
-      },
-      startdato: EMDASH,
-      sluttdato: EMDASH,
-      dagerPerUke: null,
-      deltakelsesprosent: null,
-      bakgrunnsinformasjon: null,
-      innhold: [],
-      vedtaksinformasjon: {
-        fattet: null,
-        fattetAvNav: harVedak ? true : false,
-        opprettet: yesterday.toString(),
-        opprettetAv: 'Navn Navnesen',
-        sistEndret: yesterday.toString(),
-        sistEndretAv: 'Navn Navnesen',
-        sistEndretAvEnhet: 'Nav Fredrikstad'
-      },
-      sistEndretAv: 'Veileder',
-      sistEndretAvEnhet: 'NAV Fredrikstad',
-      sistEndret: yesterday.toString()
-    }
 
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
@@ -176,8 +184,7 @@ export class MockHandler {
       sistEndretAvEnhet: 'NAV Fredrikstad'
     }
 
-    this.pameldinger.push(nyPamelding)
-    this.pameldinger.push(pameldingIngenInnhold)
+    this.pamelding = nyPamelding
     return HttpResponse.json(nyPamelding)
   }
 
@@ -212,8 +219,8 @@ export class MockHandler {
       return new HttpResponse(null, { status: 400 })
     }
 
-    if (this.pameldinger.find((it) => it.deltakerId === deltakerId)) {
-      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
+    if (this.pamelding?.deltakerId === deltakerId) {
+      this.pamelding = null
       return new HttpResponse(null, { status: 200 })
     }
 
@@ -237,42 +244,47 @@ export class MockHandler {
 
   setStatus(status: DeltakerStatusType) {
     this.statusType = status
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.status.type = status
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+    return HttpResponse.json(this.pamelding)
   }
 
-  endreDeltakelseIkkeAktuell(deltakerId: string, request: IkkeAktuellRequest) {
-    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+  endreDeltakelseIkkeAktuell(request: IkkeAktuellRequest) {
+    const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
       oppdatertPamelding.status.aarsak = request.aarsak
-      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      this.pameldinger.push(oppdatertPamelding)
+      this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
-  endreDeltakelseForleng(deltakerId: string, request: ForlengDeltakelseRequest) {
-    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+  endreDeltakelseForleng(request: ForlengDeltakelseRequest) {
+    const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
-      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      this.pameldinger.push(oppdatertPamelding)
+      this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
-  endreDeltakelseStartdato(deltakerId: string, request: EndreStartdatoRequest) {
-    const oppdatertPamelding = this.pameldinger.find((it) => it.deltakerId === deltakerId)
+  endreDeltakelseStartdato(request: EndreStartdatoRequest) {
+    const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
       oppdatertPamelding.startdato = request.startdato
-      this.pameldinger = this.pameldinger.filter((obj) => obj.deltakerId !== deltakerId)
-      this.pameldinger.push(oppdatertPamelding)
+      this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
 
