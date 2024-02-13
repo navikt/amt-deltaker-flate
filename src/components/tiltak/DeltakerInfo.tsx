@@ -41,10 +41,6 @@ export const DeltakerInfo = () => {
       <BodyLong size="small">
         {`Du er meldt på arbeidsmarkedstiltaket: ${tiltaOgSted}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
       </BodyLong>
-      <Detail textColor="subtle">
-        <Todo />
-        {`Meldt på: ${'TODO når meldt på'} av ${'TODO veileders navn'} ${'TODO navkontor'}`}
-      </Detail>
       <Heading level="2" size="medium">
         Hva er innholdet?
       </Heading>

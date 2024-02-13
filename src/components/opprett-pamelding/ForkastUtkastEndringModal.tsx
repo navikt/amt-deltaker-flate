@@ -1,4 +1,5 @@
-import { BodyLong, Button, HStack, Modal } from '@navikt/ds-react'
+import { BodyLong, Modal } from '@navikt/ds-react'
+import { ModalFooter } from '../ModalFooter'
 
 interface Props {
   open: boolean
@@ -16,16 +17,12 @@ export const ForkastUtkastEndringModal = ({ open, onConfirm, onCancel }: Props) 
       <Modal.Body>
         <BodyLong>Endringene dine vil bli borte.</BodyLong>
       </Modal.Body>
-      <Modal.Footer>
-        <HStack gap="4">
-          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
-            Nei, ikke forkast
-          </Button>
-          <Button type="button" onClick={onConfirm} size="small">
-            Forkast endringer
-          </Button>
-        </HStack>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Forkast endringer"
+        cancelButtonText="Nei, ikke forkast"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
     </Modal>
   )
 }

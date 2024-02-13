@@ -1,4 +1,5 @@
-import { BodyLong, Button, HStack, Modal } from '@navikt/ds-react'
+import { BodyLong, Modal } from '@navikt/ds-react'
+import { ModalFooter } from '../ModalFooter'
 
 interface Props {
   open: boolean
@@ -12,16 +13,12 @@ export const SlettKladdModal = ({ open, onConfirm, onCancel }: Props) => {
       <Modal.Body>
         <BodyLong>Påmeldingen og det du har skrevet vil bli borte.</BodyLong>
       </Modal.Body>
-      <Modal.Footer>
-        <HStack gap="4">
-          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
-            Nei, ikke slett
-          </Button>
-          <Button type="button" onClick={onConfirm} size="small">
-            Slett kladd
-          </Button>
-        </HStack>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Slett kladd"
+        cancelButtonText="Nei, ikke slett"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
     </Modal>
   )
 }

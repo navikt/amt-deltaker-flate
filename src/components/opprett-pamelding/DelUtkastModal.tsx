@@ -1,6 +1,7 @@
-import { BodyLong, Button, HStack, Modal } from '@navikt/ds-react'
+import { BodyLong, Modal } from '@navikt/ds-react'
 import { getTiltakstypeDisplayText } from '../../utils/displayText'
 import { Tiltakstype } from '../../api/data/pamelding'
+import { ModalFooter } from '../ModalFooter'
 
 interface Props {
   open: boolean
@@ -37,16 +38,12 @@ export const DelUtkastModal = ({
           {deltakerNavn} meldes på {getTiltakstypeDisplayText(tiltakstype)} hos {arrangorNavn}
         </BodyLong>
       </Modal.Body>
-      <Modal.Footer>
-        <HStack gap="4">
-          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
-            Avbryt
-          </Button>
-          <Button type="button" size="small" onClick={onConfirm}>
-            Del utkast og gjør klar vedtak
-          </Button>
-        </HStack>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Del utkast og gjør klar vedtak"
+        cancelButtonText="Avbryt"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
     </Modal>
   )
 }
