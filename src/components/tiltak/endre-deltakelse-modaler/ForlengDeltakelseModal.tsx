@@ -3,17 +3,32 @@ import {useAppContext} from '../../../AppContext.tsx'
 import {DeferredFetchState, useDeferredFetch} from '../../../hooks/useDeferredFetch.ts'
 import {endreDeltakelseForleng} from '../../../api/api.ts'
 import {useState} from 'react'
-import {Alert, BodyLong, Button, DatePicker, Heading, Modal, Radio, RadioGroup, useDatepicker} from '@navikt/ds-react'
-import {kalkulerSluttdato, varigheter, VarighetValg, varighetValgForType} from '../../../utils/varighet.ts'
-import {dateStrToNullableDate, formatDateToDateInputStr} from '../../../utils/utils.ts'
-import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
-import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
+import {
+  Alert,
+  BodyLong,
+  DatePicker,
+  Heading,
+  Modal,
+  Radio,
+  RadioGroup,
+  useDatepicker
+} from '@navikt/ds-react'
+import {
+  kalkulerSluttdato,
+  varigheter,
+  VarighetValg,
+  varighetValgForType
+} from '../../../utils/varighet.ts'
+import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { ModalFooter } from '../../ModalFooter.tsx'
 
 interface ForlengDeltakelseModalProps {
-    pamelding: PameldingResponse
-    open: boolean
-    onClose: () => void
-    onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  pamelding: PameldingResponse
+  open: boolean
+  onClose: () => void
+  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
 export const ForlengDeltakelseModal = ({
@@ -22,8 +37,8 @@ export const ForlengDeltakelseModal = ({
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const [ valgtVarighet, settValgtVarighet ] = useState(VarighetValg.IKKE_VALGT)
-  const [ nySluttDato, settNySluttDato ] = useState<Date | null>()
+  const [valgtVarighet, settValgtVarighet] = useState(VarighetValg.IKKE_VALGT)
+  const [nySluttDato, settNySluttDato] = useState<Date | null>()
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
   const { enhetId } = useAppContext()
@@ -54,7 +69,7 @@ export const ForlengDeltakelseModal = ({
     },
     onDateChange: (date) => {
       settNySluttDato(date)
-    },
+    }
   })
 
   const handleChangeVarighet = (valgtVarighet: VarighetValg) => {
@@ -62,15 +77,14 @@ export const ForlengDeltakelseModal = ({
     const varighet = varigheter[valgtVarighet]
     if (varighet && sluttdato) {
       settNySluttDato(kalkulerSluttdato(sluttdato, varighet))
-    }
-    else settNySluttDato(null)
+    } else settNySluttDato(null)
   }
 
   return (
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE}/>,
+        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE} />,
         heading: 'Forleng deltakelse'
       }}
       onClose={onClose}
@@ -79,13 +93,13 @@ export const ForlengDeltakelseModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error">
             <Heading size="small" spacing level="3">
-                  Det skjedde en feil.
+              Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
         )}
         <BodyLong size="small">
-            Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
 
         <section className="mt-4">
@@ -96,38 +110,34 @@ export const ForlengDeltakelseModal = ({
             value={valgtVarighet}
           >
             <>
-              {varighetValgForType(pamelding.deltakerliste.tiltakstype).map(v => <Radio value={v}
-                key={v}>{varigheter[v].navn}</Radio>)}
+              {varighetValgForType(pamelding.deltakerliste.tiltakstype).map((v) => (
+                <Radio value={v} key={v}>
+                  {varigheter[v].navn}
+                </Radio>
+              ))}
               <Radio value={VarighetValg.ANNET}>
-                  Annet - velg dato
-                {visDatovelger &&
-                      <DatePicker {...datepickerProps}>
-                        <DatePicker.Input
-                          {...inputProps}
-                          label="Annet - velg dato"
-                          hideLabel={true}
-                          error={hasError && 'Ny dato må være senere enn sluttdato'}
-                        />
-                      </DatePicker>
-                }
+                Annet - velg dato
+                {visDatovelger && (
+                  <DatePicker {...datepickerProps}>
+                    <DatePicker.Input
+                      {...inputProps}
+                      label="Annet - velg dato"
+                      hideLabel={true}
+                      error={hasError && 'Ny dato må være senere enn sluttdato'}
+                    />
+                  </DatePicker>
+                )}
               </Radio>
             </>
           </RadioGroup>
         </section>
       </Modal.Body>
-      <div className="flex items-center">
-        <Modal.Footer>
-          <Button
-            type="button"
-            size="small"
-            loading={endreDeltakelseState === DeferredFetchState.LOADING}
-            disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-            onClick={sendEndring}
-          >
-                Lagre
-          </Button>
-        </Modal.Footer>
-      </div>
+      <ModalFooter
+        confirmButtonText="Lagre"
+        onConfirm={sendEndring}
+        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+      />
     </Modal>
   )
 }
