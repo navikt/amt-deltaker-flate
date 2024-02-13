@@ -1,9 +1,9 @@
-import {PameldingRequest} from '../api/data/pamelding-request.ts'
-import {DeltakerStatusType, PameldingResponse, Tiltakstype} from '../api/data/pamelding.ts'
-import {v4 as uuidv4} from 'uuid'
-import {HttpResponse} from 'msw'
-import {SendInnPameldingRequest} from '../api/data/send-inn-pamelding-request.ts'
-import {SendInnPameldingUtenGodkjenningRequest} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { PameldingRequest } from '../api/data/pamelding-request.ts'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
+import { v4 as uuidv4 } from 'uuid'
+import { HttpResponse } from 'msw'
+import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
@@ -55,11 +55,12 @@ export class MockHandler {
       innhold: [],
       vedtaksinformasjon: {
         fattet: null,
-        fattetAvNavVeileder: harVedak ? 'Navn Navnesen' : null,
+        fattetAvNav: harVedak ? true : false,
         opprettet: yesterday.toString(),
         opprettetAv: 'Navn Navnesen',
         sistEndret: yesterday.toString(),
-        sistEndretAv: 'Navn Navnesen'
+        sistEndretAv: 'Navn Navnesen',
+        sistEndretAvEnhet: 'Nav Fredrikstad'
       },
       sistEndretAv: 'Veileder',
       sistEndretAvEnhet: 'NAV Fredrikstad',
@@ -163,11 +164,12 @@ export class MockHandler {
       ],
       vedtaksinformasjon: {
         fattet: harVedak ? yesterday.toString() : null,
-        fattetAvNavVeileder: null,
+        fattetAvNav: false,
         opprettet: yesterday.toString(),
         opprettetAv: 'Navn Navnesen',
         sistEndret: today.toString(),
-        sistEndretAv: 'Navn Navnesen'
+        sistEndretAv: 'Navn Navnesen',
+        sistEndretAvEnhet: 'NAV Fredrikstad'
       },
       sistEndretAv: 'Veileder',
       sistEndret: yesterday.toString(),
