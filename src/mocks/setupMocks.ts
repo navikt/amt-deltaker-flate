@@ -18,13 +18,10 @@ const handler = new MockHandler()
 export const worker = setupWorker(
   http.post('/mock/setup/status/:status', async ({ params }) => {
     const { status } = params
-    handler.setStatus(status as DeltakerStatusType)
 
-    return new HttpResponse(null, {
-      status: 200
-    })
+    const response = handler.setStatus(status as DeltakerStatusType)
+    return response
   }),
-
   http.post('/mock/pamelding', async ({ request }) => {
     await delay(1000)
     const response = await request
@@ -34,7 +31,6 @@ export const worker = setupWorker(
 
     return response
   }),
-
   http.delete('/mock/pamelding/:deltakerId', async ({ params }) => {
     await delay(1000)
     const { deltakerId } = params
@@ -64,39 +60,33 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request, params }) => {
+  http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request }) => {
     await delay(100)
-
-    const { deltakerId } = params
 
     const response = await request
       .json()
       .then((json) => ikkeAktuellSchema.parse(json))
-      .then((body) => handler.endreDeltakelseIkkeAktuell(deltakerId as string, body))
+      .then((body) => handler.endreDeltakelseIkkeAktuell(body))
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/forleng', async ({ request, params }) => {
+  http.post('/mock/deltaker/:deltakerId/forleng', async ({ request }) => {
     await delay(1000)
-
-    const { deltakerId } = params
 
     const response = await request
       .json()
       .then((json) => forlengDeltakelseSchema.parse(json))
-      .then((body) => handler.endreDeltakelseForleng(deltakerId as string, body))
+      .then((body) => handler.endreDeltakelseForleng(body))
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/startdato', async ({ request, params }) => {
+  http.post('/mock/deltaker/:deltakerId/startdato', async ({ request }) => {
     await delay(1000)
-
-    const { deltakerId } = params
 
     const response = await request
       .json()
       .then((json) => endreStartdatoSchema.parse(json))
-      .then((body) => handler.endreDeltakelseStartdato(deltakerId as string, body))
+      .then((body) => handler.endreDeltakelseStartdato(body))
 
     return response
   }),
@@ -114,7 +104,7 @@ export const worker = setupWorker(
       status: 200
     })
   }),
-  http.post('/mock/pamelding/:deltakerId/kladd', async ({request, params}) => {
+  http.post('/mock/pamelding/:deltakerId/kladd', async ({ request, params }) => {
     await delay(1000)
     const { deltakerId } = params
     const requestBody = await request.json()
@@ -125,6 +115,5 @@ export const worker = setupWorker(
     return new HttpResponse(null, {
       status: 200
     })
-
   })
 )

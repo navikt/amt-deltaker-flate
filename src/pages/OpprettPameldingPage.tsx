@@ -1,13 +1,9 @@
-import { PameldingResponse } from '../api/data/pamelding.ts'
-
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
 
-export interface OpprettPameldingPageProps {
-  pamelding: PameldingResponse
-}
-
-export const OpprettPameldingPage = ({ pamelding }: OpprettPameldingPageProps) => {
+export const OpprettPameldingPage = () => {
+  const { pamelding } = usePameldingCOntext()
 
   return (
     <div className="m-4">

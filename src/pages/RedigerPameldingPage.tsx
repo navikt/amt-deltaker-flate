@@ -1,4 +1,3 @@
-import { PameldingResponse } from '../api/data/pamelding.ts'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { RedigerPameldingHeader } from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
@@ -15,15 +14,13 @@ import { AvbrytUtkastRequest } from '../api/data/avbryt-utkast-request.ts'
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
+import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
 
-export interface RedigerPameldingPageProps {
-  pamelding: PameldingResponse
-}
-
-export const RedigerPameldingPage = ({ pamelding }: RedigerPameldingPageProps) => {
+export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
   const [redigerUtkast, setRedigerUtkast] = useState<boolean>(false)
   const [idDisabled, setIsDisabled] = useState<boolean>(false)
+  const { pamelding } = usePameldingCOntext()
 
   const { doRedirect } = useAppRedirection()
   const { enhetId } = useAppContext()
