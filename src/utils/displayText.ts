@@ -34,6 +34,9 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   }
 }
 
+export const hentTiltakNavnHosArrangør = (tiltakstype: Tiltakstype, arrangorNavn: string) =>
+  `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
+
 export const getDeltakerStatusDisplayText = (type: DeltakerStatusType): string => {
   switch (type) {
     case DeltakerStatusType.KLADD:
