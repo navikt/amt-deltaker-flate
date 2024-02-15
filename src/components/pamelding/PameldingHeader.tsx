@@ -1,6 +1,6 @@
 import {Tiltakstype} from '../../api/data/pamelding.ts'
 import {Heading} from '@navikt/ds-react'
-import { hentTiltakNavnHosArrangør } from '../../utils/displayText.ts'
+import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 
 interface Props {
   tiltakstype: Tiltakstype
@@ -14,7 +14,7 @@ export const PameldingHeader = ({ tiltakstype, arrangorNavn }: Props) => {
         Påmelding
       </Heading>
       <Heading level="2" size="medium">
-        {hentTiltakNavnHosArrangør(tiltakstype, arrangorNavn)}
+        {hentTiltakNavnHosArrangørTekst(tiltakstype, arrangorNavn)}
       </Heading>
     </div>
   )

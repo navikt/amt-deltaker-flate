@@ -1,5 +1,8 @@
 import { BodyLong, HStack, Heading, List, Link, Label, BodyShort } from '@navikt/ds-react'
-import { getDeltakerStatusAarsakText, getTiltakstypeDisplayText } from '../../utils/displayText.ts'
+import {
+  getDeltakerStatusAarsakText,
+  hentTiltakNavnHosArrangørTekst
+} from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
@@ -10,9 +13,10 @@ import { HvaErDette } from './HvaErDette.tsx'
 
 export const DeltakerInfo = () => {
   const { pamelding } = usePameldingCOntext()
-  const tiltaOgSted = `${getTiltakstypeDisplayText(pamelding.deltakerliste.tiltakstype)} hos ${
+  const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
+    pamelding.deltakerliste.tiltakstype,
     pamelding.deltakerliste.arrangorNavn
-  }`
+  )
   const skalViseDato =
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
@@ -24,7 +28,7 @@ export const DeltakerInfo = () => {
   return (
     <div className="bg-white px-12 py-4">
       <Heading level="1" size="large">
-        {tiltaOgSted}
+        {tiltakOgStedTekst}
       </Heading>
 
       <HStack gap="2" className="mt-8">
@@ -44,7 +48,7 @@ export const DeltakerInfo = () => {
         </HStack>
       )}
       <BodyLong size="small" className="mt-4">
-        {`Du er meldt på arbeidsmarkedstiltaket: ${tiltaOgSted}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
+        {`Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
       </BodyLong>
 
       <Heading level="2" size="medium" className="mt-8">

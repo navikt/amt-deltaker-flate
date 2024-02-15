@@ -1,5 +1,5 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
-import { getTiltakstypeDisplayText } from '../../utils/displayText'
+import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText'
 import { Tiltakstype } from '../../api/data/pamelding'
 import { ModalFooter } from '../ModalFooter'
 
@@ -35,7 +35,7 @@ export const DelUtkastModal = ({
         </BodyLong>
 
         <BodyLong weight="semibold">
-          {deltakerNavn} meldes på {getTiltakstypeDisplayText(tiltakstype)} hos {arrangorNavn}
+          {deltakerNavn} meldes på {hentTiltakNavnHosArrangørTekst(tiltakstype, arrangorNavn)}
         </BodyLong>
       </Modal.Body>
       <ModalFooter

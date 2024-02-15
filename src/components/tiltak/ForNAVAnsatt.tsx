@@ -1,7 +1,7 @@
 import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
 import { Todo } from '../Todo.tsx'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
-import { hentTiltakNavnHosArrangør } from '../../utils/displayText.ts'
+import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 
 export const ForNAVAnsatt = () => {
@@ -24,7 +24,7 @@ export const ForNAVAnsatt = () => {
         </LinkPanel.Title>
         <LinkPanel.Description>
           <BodyShort size="small">
-            {hentTiltakNavnHosArrangør(
+            {hentTiltakNavnHosArrangørTekst(
               pamelding.deltakerliste.tiltakstype,
               pamelding.deltakerliste.arrangorNavn
             )}
