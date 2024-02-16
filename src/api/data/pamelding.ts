@@ -104,7 +104,6 @@ export const pameldingSchema = z.object({
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   sistEndretAv: z.string(),
-  sistEndretAvEnhet: z.string().nullable(),
   sistEndret: z.string()
 })
 

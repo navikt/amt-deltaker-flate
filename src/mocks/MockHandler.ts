@@ -57,7 +57,6 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
     sistEndretAv: 'Veileder',
-    sistEndretAvEnhet: 'NAV Fredrikstad',
     sistEndret: yesterday.toString()
   }
 }
@@ -184,8 +183,7 @@ export class MockHandler {
         sistEndretAvEnhet: 'NAV Fredrikstad'
       },
       sistEndretAv: 'Veileder',
-      sistEndret: yesterday.toString(),
-      sistEndretAvEnhet: 'NAV Fredrikstad'
+      sistEndret: yesterday.toString()
     }
 
     this.pamelding = nyPamelding
