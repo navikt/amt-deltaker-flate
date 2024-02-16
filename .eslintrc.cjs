@@ -32,7 +32,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     'no-unused-vars': 'off',
-    'no-console': 'error',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-fallthrough': 0,
     'no-useless-escape': 0,
     indent: ['error', 2, { SwitchCase: 1 }],

@@ -1,20 +1,13 @@
-import {
-  Alert,
-  BodyLong,
-  Button,
-  DatePicker,
-  Heading,
-  Modal,
-  useDatepicker
-} from '@navikt/ds-react'
+import { Alert, BodyLong, DatePicker, Heading, Modal, useDatepicker } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { dateStrToNullableDate } from '../../../utils/utils.ts'
+import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { ModalFooter } from '../../ModalFooter.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -55,7 +48,7 @@ export const EndreOppstartsdatoModal = ({
     if (!startdato) setErrorMessage('Du må velge startdato')
     else {
       doFetchEndreDeltakelseSTartdato(pamelding.deltakerId, enhetId, {
-        startdato
+        startdato: formatDateToDateInputStr(startdato)
       }).then((data) => {
         onSuccess(data)
       })
@@ -87,17 +80,12 @@ export const EndreOppstartsdatoModal = ({
           <DatePicker.Input {...inputProps} label="Ny oppstartsdato" error={errorMessage} />
         </DatePicker>
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="button"
-          size="small"
-          loading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-          onClick={sendEndring}
-        >
-          Lagre
-        </Button>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Lagre"
+        onConfirm={sendEndring}
+        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+      />
     </Modal>
   )
 }

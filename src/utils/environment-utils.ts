@@ -31,3 +31,9 @@ const isDev = (): boolean => {
 export const getCurrentMode = () => {
   return import.meta.env.VITE_MODE
 }
+
+export const useMock = getEndpointHandlerType() === EndpointHandler.MOCK
+/**
+ * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
+ */
+export const isEnvLocalDemoOrPr = import.meta.env.DEV

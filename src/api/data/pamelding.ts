@@ -76,11 +76,12 @@ export const pameldingStatusSchema = z.object({
 
 export const vedtaksinformasjonSchema = z.object({
   fattet: z.string().nullable(), // LocalDateTime
-  fattetAvNavVeileder: z.string().nullable(), // Navn / navvident
+  fattetAvNav: z.boolean(),
   opprettet: z.string(),
   opprettetAv: z.string(),
   sistEndret: z.string(),
-  sistEndretAv: z.string()
+  sistEndretAv: z.string(),
+  sistEndretAvEnhet: z.string().nullable()
 })
 
 export const pameldingSchema = z.object({
@@ -96,7 +97,7 @@ export const pameldingSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
   innhold: z.array(innholdSchema),
-  vedtaksinformasjon: vedtaksinformasjonSchema,
+  vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   sistEndretAv: z.string(),
   sistEndretAvEnhet: z.string().nullable(),
   sistEndret: z.string()

@@ -1,9 +1,10 @@
-import { BodyLong, Button, HStack, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { BodyLong, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { useState } from 'react'
 import { AvbrytUtkastRequest } from '../../api/data/avbryt-utkast-request.ts'
 import { DeltakerStatusAarsakType } from '../../api/data/pamelding'
 import { getDeltakerStatusAarsakTyperAsList } from '../../utils/utils'
 import { getDeltakerStatusAarsakTypeText } from '../../utils/displayText'
+import { ModalFooter } from '../ModalFooter.tsx'
 
 interface Props {
   open: boolean
@@ -14,19 +15,27 @@ interface Props {
 export const AvbrytUtkastDeltMedBrukerModal = ({ open, onConfirm, onCancel }: Props) => {
   const [aarsak, setAarsak] = useState<DeltakerStatusAarsakType | undefined>(undefined)
   const [annetTekst, setAnnetTekst] = useState<string | undefined>(undefined)
-  const confirmDisabled = () => {
-    if (aarsak === DeltakerStatusAarsakType.ANNET) {
-      return !(annetTekst && annetTekst.length > 0)
-    }
-    if (aarsak !== undefined) {
-      return false
-    } else {
-      return true
-    }
+  const [hasError, setHasError] = useState<boolean>(false)
+
+  const aarsakErAnnet = aarsak === DeltakerStatusAarsakType.ANNET
+  const harAnnetText = annetTekst && annetTekst.length > 0
+
+  const handleAvbrytUtkast = () => {
+    if (aarsak) {
+      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetText)) {
+        const request: AvbrytUtkastRequest = {
+          aarsak: {
+            type: aarsak,
+            beskrivelse: annetTekst ?? null
+          }
+        }
+        onConfirm(request)
+      } else setHasError(true)
+    } else setHasError(true)
   }
 
   return (
-    <Modal open={open} header={{heading: 'Vil du avbryte utkastet?'}} onClose={onCancel}>
+    <Modal open={open} header={{ heading: 'Vil du avbryte utkastet?' }} onClose={onCancel}>
       <Modal.Body>
         <BodyLong className="mb-4" size="small">
           Når du avbryter utkastet så får personen beskjed. Aktiviteten i aktivitetsplanen blir
@@ -36,7 +45,11 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onConfirm, onCancel }: Pr
         <RadioGroup
           legend="Hva er årsaken til at brukeren ikke skal meldes på?"
           size="small"
-          onChange={(value: DeltakerStatusAarsakType) => setAarsak(value)}
+          onChange={(value: DeltakerStatusAarsakType) => {
+            setAarsak(value)
+            setHasError(false)
+          }}
+          error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
         >
           {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
             <Radio value={arsakType} key={arsakType}>
@@ -50,34 +63,23 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onConfirm, onCancel }: Pr
             label={null}
             value={annetTekst}
             size="small"
-            onChange={(e) => setAnnetTekst(e.target.value)}
+            error={
+              hasError && aarsakErAnnet && 'Du må fylle ut for årsak "annet" før du kan fortsette.'
+            }
+            onChange={(e) => {
+              setAnnetTekst(e.target.value)
+              setHasError(false)
+            }}
             maxLength={50}
           />
         )}
       </Modal.Body>
-      <Modal.Footer>
-        <HStack gap="4">
-          <Button variant="secondary" size="small" onClick={onCancel}>
-            Nei, ikke avbryt utkastet
-          </Button>
-          <Button
-            size="small"
-            onClick={() => {
-              if (!aarsak) throw new Error('Grunn kan ikke være undefined')
-              const request: AvbrytUtkastRequest = {
-                aarsak: {
-                  type: aarsak,
-                  beskrivelse: annetTekst ?? null
-                }
-              }
-              onConfirm(request)
-            }}
-            disabled={confirmDisabled()}
-          >
-            Avbryt utkast
-          </Button>
-        </HStack>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Avbryt utkast"
+        cancelButtonText="Nei, ikke avbryt utkastet"
+        onConfirm={handleAvbrytUtkast}
+        onCancel={onCancel}
+      />
     </Modal>
   )
 }

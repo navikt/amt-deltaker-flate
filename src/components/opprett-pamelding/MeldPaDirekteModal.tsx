@@ -1,7 +1,8 @@
-import { BodyLong, BodyShort, Button, ConfirmationPanel, HStack, Modal } from '@navikt/ds-react'
+import { BodyLong, BodyShort, ConfirmationPanel, Modal } from '@navikt/ds-react'
 import { useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
-import { getDeltakerNavn, getTiltakstypeDisplayText } from '../../utils/displayText'
+import { getDeltakerNavn, hentTiltakNavnHosArrangørTekst } from '../../utils/displayText'
+import { ModalFooter } from '../ModalFooter'
 
 export interface MeldPaDirekteModalProps {
   pamelding: PameldingResponse
@@ -60,19 +61,15 @@ export const MeldPaDirekteModal = ({
           arrangøren i verktøyet Deltakeroversikt på nav.no.
         </BodyLong>
         <BodyShort weight="semibold">
-          {`${getDeltakerNavn(pamelding)} meldes på ${getTiltakstypeDisplayText(pamelding.deltakerliste.tiltakstype)} hos ${pamelding.deltakerliste.arrangorNavn}`}
+          {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangørTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyShort>
       </Modal.Body>
-      <Modal.Footer>
-        <HStack gap="4">
-          <Button type="button" variant="secondary" size="small" onClick={onCancel}>
-            Avbryt
-          </Button>
-          <Button type="button" size="small" onClick={handleMeldPaDirekte}>
-            Meld på og fatt vedtak
-          </Button>
-        </HStack>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Meld på og fatt vedtak"
+        cancelButtonText="Avbryt"
+        onConfirm={handleMeldPaDirekte}
+        onCancel={onCancel}
+      />
     </Modal>
   )
 }

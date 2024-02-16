@@ -2,6 +2,7 @@ import {Navigate, Route, Routes} from 'react-router-dom'
 import App from './App.tsx'
 import {useAppContext} from './AppContext.tsx'
 import {SendTilbakePage} from './pages/SendTilbakePage.tsx'
+import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 
 const appUrl = (path: string): string => {
   const strippedPath = path.startsWith('/') ? path.substring(1) : path
@@ -20,13 +21,16 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={`${base}`} element={<App />} />
-      <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage/>} />
+      <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
       <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
-      {import.meta.env.DEV && (
-        <Route
-          path={'/'}
-          element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
-        />
+      {isEnvLocalDemoOrPr && (
+        <>
+          <Route
+            path={'/'}
+            element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
+          />
+          <Route path={'*'} element={<Navigate replace to={'/'} />} />
+        </>
       )}
     </Routes>
   )

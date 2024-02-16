@@ -35,14 +35,14 @@ export const PameldingFormButtons = ({
   const returnToFrontpage = () => {
     doRedirect(TILBAKE_PAGE)
   }
+  const { handleSubmit, getValues } = useFormContext<PameldingFormValues>()
 
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState(false)
-  const [formData, setFormData] = useState<PameldingFormValues>()
+  const [formData, setFormData] = useState(getValues())
   const [slettKladdModalOpen, setSlettKladdModalOpen] = useState(false)
   const [forkastUtkastEndringModalOpen, setForkastUtkastEndringModalOpen] = useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
 
-  const { handleSubmit } = useFormContext<PameldingFormValues>()
   const delEndringKappTekst = erUtkast ? 'Del endring' : 'Del utkast og gjør klar påmelding'
 
   const {
@@ -56,9 +56,19 @@ export const PameldingFormButtons = ({
     doFetch: doFetchSlettKladd
   } = useDeferredFetch(deletePamelding, returnToFrontpage)
 
-  const handleFormSubmit = (data: PameldingFormValues) => {
-    setFormData(data)
-    setDelUtkastModalOpen(true)
+  const delUtkast = (newFormData: PameldingFormValues) => {
+    doFetchSendSomForslag(
+      pamelding.deltakerId,
+      enhetId,
+      generatePameldingRequestFromForm(pamelding, newFormData)
+    )
+  }
+
+  const handleFormSubmit = (newFormData: PameldingFormValues) => {
+    setFormData(newFormData)
+    if (pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
+      delUtkast(newFormData)
+    } else setDelUtkastModalOpen(true)
   }
 
   useEffect(() => {
@@ -174,11 +184,7 @@ export const PameldingFormButtons = ({
       <DelUtkastModal
         open={delUtkastModalOpen}
         onConfirm={() => {
-          doFetchSendSomForslag(
-            pamelding.deltakerId,
-            enhetId,
-            generatePameldingRequestFromForm(pamelding, formData)
-          )
+          delUtkast(formData)
           setDelUtkastModalOpen(false)
         }}
         onCancel={() => {

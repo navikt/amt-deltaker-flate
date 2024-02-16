@@ -1,49 +1,48 @@
 import { Tag, Detail, HStack } from '@navikt/ds-react'
 import { formatDateStrWithMonthName } from '../../utils/utils'
+import { Vedtaksinformasjon } from '../../api/data/pamelding'
 
 interface Props {
-  opprettet: string
-  opprettetAv: string
-  sistEndret: string
-  sistEndretAv: string
+  vedtaksinformasjon: Vedtaksinformasjon | null
 }
 
-export const RedigerPameldingHeader = ({
-  opprettet,
-  opprettetAv,
-  sistEndret,
-  sistEndretAv
-}: Props) => {
-  const erEndret = sistEndret !== opprettet || sistEndretAv !== opprettetAv
+export const RedigerPameldingHeader = ({ vedtaksinformasjon }: Props) => {
+  const erEndret =
+    vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
+    vedtaksinformasjon?.sistEndretAv !== vedtaksinformasjon?.opprettetAv
 
   return (
     <div className="space-y-2">
       <Tag variant="info" size="small" className="mb-3 mt-4">
         Venter på godkjenning fra bruker
       </Tag>
-      {erEndret ? (
-        <>
-          <HStack className="mt-0" gap="2">
-            <Detail weight="semibold">Første utkast delt:</Detail>
-            <Detail>
-              {formatDateStrWithMonthName(opprettet)} {opprettetAv}
-            </Detail>
-          </HStack>
+      {vedtaksinformasjon &&
+        (erEndret ? (
+          <>
+            <HStack className="mt-0" gap="2">
+              <Detail weight="semibold">Første utkast delt:</Detail>
+              <Detail>
+                {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
+                {vedtaksinformasjon.opprettetAv}
+              </Detail>
+            </HStack>
+            <HStack gap="2">
+              <Detail weight="semibold">Sist endret:</Detail>
+              <Detail>
+                {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
+                {vedtaksinformasjon.sistEndretAv}
+              </Detail>
+            </HStack>
+          </>
+        ) : (
           <HStack gap="2">
-            <Detail weight="semibold">Sist endret:</Detail>
+            <Detail weight="semibold">Delt:</Detail>
             <Detail>
-              {formatDateStrWithMonthName(sistEndret)} {sistEndretAv}
+              {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
+              {vedtaksinformasjon.opprettetAv}
             </Detail>
           </HStack>
-        </>
-      ) : (
-        <HStack gap="2">
-          <Detail weight="semibold">Delt:</Detail>
-          <Detail>
-            {formatDateStrWithMonthName(opprettet)} {opprettetAv}
-          </Detail>
-        </HStack>
-      )}
+        ))}
     </div>
   )
 }
