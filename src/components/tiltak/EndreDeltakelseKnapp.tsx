@@ -74,6 +74,8 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
             {skalViseEndreOppstartsdato &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
+            {skalViseEndreOppstartsdato &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

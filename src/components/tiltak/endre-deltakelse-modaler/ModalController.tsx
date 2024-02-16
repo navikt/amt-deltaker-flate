@@ -3,6 +3,7 @@ import {PameldingResponse} from '../../../api/data/pamelding'
 import {IkkeAktuellModal} from './IkkeAktuellModal'
 import {ForlengDeltakelseModal} from './ForlengDeltakelseModal.tsx'
 import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
+import {EndreBakgrunnsinfoModal} from './EndreBakgrunnsinfoModal'
 
 interface ModalControllerProps {
   open: boolean
@@ -20,6 +21,8 @@ export const ModalController = (props: ModalControllerProps) => {
       return <ForlengDeltakelseModal {...props} />
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return <EndreOppstartsdatoModal {...props} />
+    case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
+      return <EndreBakgrunnsinfoModal {...props} />
     default:
       return null
   }
