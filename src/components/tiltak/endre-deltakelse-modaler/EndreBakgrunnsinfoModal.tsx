@@ -75,11 +75,11 @@ export const EndreBakgrunnsinfoModal = ({
           }}
           label="Er det noe mer dere ønsker å informere arrangøren om?"
           description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
-          {...register('bakgrunnsinformasjon')}
-          value={watch('bakgrunnsinformasjon')}
+          value={bakgrunnsinformasjon ?? ''}
           maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
           id="bakgrunnsinformasjon"
           size="small"
+          aria-label={'Bagrunnsinformasjon'}
         />
       </Modal.Body>
       <Modal.Footer>
