@@ -4,6 +4,7 @@ import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 import {
+  EndreBakgrunnsinfoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
@@ -165,6 +166,32 @@ export const endreDeltakelseStartdato = (
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(`Kunne ikke endre startdato. Prøv igjen senere. (${response.status})`)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      return pameldingSchema.parse(json)
+    })
+}
+
+export const endreDeltakelseBakgrunnsinfo = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreBakgrunnsinfoRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/bakgrunnsinformasjon`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`Kunne ikke endre bakgrunnsinfo. Prøv igjen senere. (${response.status})`)
       }
       return response.json()
     })
