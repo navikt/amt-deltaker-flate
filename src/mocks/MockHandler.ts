@@ -101,7 +101,7 @@ export class MockHandler {
       sluttdato: this.getSluttdato(),
       dagerPerUke: 1,
       deltakelsesprosent: 10,
-      bakgrunnsinformasjon: 'Dette er en test',
+      bakgrunnsinformasjon: null,
       innhold: [
         {
           visningstekst: 'Støtte til jobbsøking',

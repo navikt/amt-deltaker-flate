@@ -4,13 +4,14 @@ import { Vedtaksinformasjon } from '../../api/data/pamelding.ts'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
+  className: string
 }
 
-export const HvaErDette = ({ vedtaksinformasjon }: Props) => {
+export const HvaErDette = ({ vedtaksinformasjon, className }: Props) => {
   const harNavMeldtPaDirekte = vedtaksinformasjon?.fattetAvNav
 
   return (
-    <div>
+    <div className={className}>
       <Heading level="2" size="medium">
         Hva er dette?
       </Heading>

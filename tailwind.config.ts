@@ -3,13 +3,10 @@ import type {Config} from 'tailwindcss'
 import generated from '@navikt/ds-tailwind'
 
 const config: Config = {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   presets: [generated],
   theme: {
-    'colors': {
+    colors: {
       'bg-default': 'rgba(255, 255, 255, 1)',
       'bg-subtle': 'rgba(236, 238, 240, 1)',
       'border-subtle-hover': 'rgba(5, 23, 51, 0.34)',
@@ -138,8 +135,8 @@ const config: Config = {
       'data-border-4': 'rgba(54, 141, 168, 1)',
       'data-border-5': 'rgba(51, 170, 95, 1)',
       'data-border-6': 'rgba(130, 105, 162, 1)',
-      'transparent': 'rgba(255, 255, 255, 0)',
-      'white': 'rgba(255, 255, 255, 1)',
+      transparent: 'rgba(255, 255, 255, 0)',
+      white: 'rgba(255, 255, 255, 1)',
       'nav-red': 'rgba(195, 0, 0, 1)',
       'gray-50': 'rgba(242, 243, 245, 1)',
       'gray-100': 'rgba(236, 238, 240, 1)',
@@ -242,14 +239,14 @@ const config: Config = {
       'purple-800': 'rgba(48, 31, 70, 1)',
       'purple-900': 'rgba(31, 20, 47, 1)'
     },
-    'screen': {
-      'sm': '480px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px'
+    screen: {
+      sm: '480px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px'
     },
-    'extend': {
-      'spacing': {
+    extend: {
+      spacing: {
         '0': '0',
         '1': '0.25rem',
         '2': '0.5rem',
@@ -272,70 +269,77 @@ const config: Config = {
         '05': '0.125rem',
         '1-alt': '0.375rem'
       },
-      'zIndex': {
-        'modal': 2000,
-        'popover': 1000,
-        'focus': 10,
-        'tooltip': 3000
+      zIndex: {
+        modal: 2000,
+        popover: 1000,
+        focus: 10,
+        tooltip: 3000
       },
-      'boxShadow': {
-        'focus': '0 0 0 3px rgba(0, 52, 125, 1)',
+      boxShadow: {
+        focus: '0 0 0 3px rgba(0, 52, 125, 1)',
         'focus-inverted': '0 0 0 3px rgba(153, 195, 255, 1)',
-        'xsmall': '0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 1px 0px rgba(0, 0, 0, 0.20)',
-        'small': '0px 3px 8px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 0px 1px 0px rgba(0, 0, 0, 0.18)',
-        'medium': '0px 5px 12px 0px rgba(0, 0, 0, 0.13), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 0px 1px 0px rgba(0, 0, 0, 0.15)',
-        'large': '0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 16px 0px rgba(0, 0, 0, 0.12), 0px 0px 1px 0px rgba(0, 0, 0, 0.12)',
-        'xlarge': '0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 24px 0px rgba(0, 0, 0, 0.18), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
+        xsmall: '0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 1px 0px rgba(0, 0, 0, 0.20)',
+        small:
+          '0px 3px 8px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 0px 1px 0px rgba(0, 0, 0, 0.18)',
+        medium:
+          '0px 5px 12px 0px rgba(0, 0, 0, 0.13), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 0px 1px 0px rgba(0, 0, 0, 0.15)',
+        large:
+          '0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 16px 0px rgba(0, 0, 0, 0.12), 0px 0px 1px 0px rgba(0, 0, 0, 0.12)',
+        xlarge:
+          '0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 24px 0px rgba(0, 0, 0, 0.18), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
       },
-      'fontWeight': {
-        'bold': '600',
-        'regular': '400'
+      fontWeight: {
+        bold: '600',
+        regular: '400'
       },
-      'fontSize': {
+      fontSize: {
         'heading-2xlarge': '2.5rem',
         'heading-xlarge': '2rem',
         'heading-large': '1.75rem',
         'heading-medium': '1.5rem',
         'heading-small': '1.25rem',
         'heading-xsmall': '1.125rem',
-        'xlarge': '1.25rem',
-        'large': '1.125rem',
-        'medium': '1rem',
-        'small': '0.875rem'
+        xlarge: '1.25rem',
+        large: '1.125rem',
+        medium: '1rem',
+        small: '0.875rem'
       },
-      'lineHeight': {
+      lineHeight: {
         'heading-2xlarge': '3.25rem',
         'heading-xlarge': '2.5rem',
         'heading-large': '2.25rem',
         'heading-medium': '2rem',
         'heading-small': '1.75rem',
         'heading-xsmall': '1.5rem',
-        'xlarge': '1.75rem',
-        'large': '1.5rem',
-        'medium': '1.25rem'
+        xlarge: '1.75rem',
+        large: '1.5rem',
+        medium: '1.25rem'
       },
-      'fontFamily': {
+      fontFamily: {
         'font-family': "'Source Sans Pro', Arial, sans-serif"
       },
-      'borderRadius': {
-        'small': '2px',
-        'medium': '4px',
-        'large': '8px',
-        'xlarge': '12px',
-        'full': '9999px'
+      borderRadius: {
+        small: '2px',
+        medium: '4px',
+        large: '8px',
+        xlarge: '12px',
+        full: '9999px'
+      },
+      screens: {
+        xl: '1200px'
+        // => @media (min-width: 992px) { ... }
       }
     }
-  }
-  ,
+  },
   screens: {
     xs: '480px',
     ss: '620px',
     sm: '768px',
     md: '1024px',
-    lg: '1279px',
-    xl: '1700px',
+    lg: '1280px',
+    xl: '1700px'
   },
-  plugins: [],
+  plugins: []
 }
 
 export default config
