@@ -29,8 +29,7 @@ export const EndreBakgrunnsinfoModal = ({
   onSuccess
 }: EndreBakgrunnsinfoModalProps) => {
   const { enhetId } = useAppContext()
-  const [bakgrunnsinfo, settNyBakgrunnsinfo] = useState<Date | null>()
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<string | null>()
 
   const {
     state: endreDeltakelseState,
@@ -40,7 +39,7 @@ export const EndreBakgrunnsinfoModal = ({
 
   const sendEndring = () => {
     doFetchEndreDeltakelseBakgrunnsinfo(pamelding.deltakerId, enhetId, {
-      bakgrunnsinfo
+      bakgrunnsinformasjon
     }).then((data) => {
       onSuccess(data)
     })
@@ -71,12 +70,13 @@ export const EndreBakgrunnsinfoModal = ({
           Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?
         </BodyLong>
         <Textarea
+          onChange={(e) => {
+            setBakgrunnsinformasjon(e.target.value)
+          }}
           label="Er det noe mer dere ønsker å informere arrangøren om?"
           description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
           {...register('bakgrunnsinformasjon')}
           value={watch('bakgrunnsinformasjon')}
-          error={!!errors.bakgrunnsinformasjon}
-          disabled={isDisabled}
           maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
           id="bakgrunnsinformasjon"
           size="small"
