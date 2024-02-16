@@ -9,16 +9,20 @@ export const generateInnholdFromResponse = (
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null
 ): Innhold[] => {
-  return pamelding.innhold.map((i) => {
-    const erInnholdValgt = !!valgteInnhold.find((valgtInnhold) => i.type === valgtInnhold)
-    const erInnholdAnnet = i.type === INNHOLD_TYPE_ANNET
+  if (pamelding?.deltakelsesinnhold === null) {
+    return []
+  }
+  return pamelding?.deltakelsesinnhold?.innhold.flatMap((i) => {
+    const valgtInnhold = valgteInnhold.find((valgtInnhold) => i.innholdskode === valgtInnhold)
+    if (valgtInnhold === undefined) return []
 
-    return {
-      type: i.type,
-      visningstekst: i.visningstekst,
-      beskrivelse: erInnholdAnnet && erInnholdValgt ? innholdAnnetBeskrivelse || null : null,
-      valgt: erInnholdValgt
-    }
+    return [
+      {
+        ...i,
+        beskrivelse: i.innholdskode === INNHOLD_TYPE_ANNET ? innholdAnnetBeskrivelse || null : null,
+        valgt: true
+      }
+    ]
   })
 }
 

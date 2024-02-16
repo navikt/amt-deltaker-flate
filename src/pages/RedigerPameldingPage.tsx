@@ -64,7 +64,7 @@ export const RedigerPameldingPage = () => {
           {!redigerUtkast && (
             <>
               <Utkast
-                innhold={pamelding.innhold}
+                innhold={pamelding.deltakelsesinnhold}
                 bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
               />
               <Button
