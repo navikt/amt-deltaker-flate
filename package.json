@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "format": "prettier --config .prettierrc.cjs -c src/**/*",
-    "format:fix": "prettier --config .prettierrc.cjs -w src/**/*"
+    "format:fix": "prettier --config .prettierrc.cjs -w src/**/*",
+    "format:staged": "git diff --name-only --cached | xargs prettier --config .prettierrc.cjs -w"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

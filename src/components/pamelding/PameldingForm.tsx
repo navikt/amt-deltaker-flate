@@ -10,7 +10,6 @@ import {
   PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
-import { Todo } from '../Todo.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { useEffect, useRef, useState } from 'react'
 import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
@@ -34,7 +33,7 @@ export const PameldingForm = ({
   disableForm,
   onCancelUtkast
 }: Props) => {
-  const innhold = pamelding.innhold
+  const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
 
@@ -79,12 +78,7 @@ export const PameldingForm = ({
             <Heading size="medium" level="3">
               Hva er innholdet?
             </Heading>
-            <BodyLong size="small">
-              (<Todo />: Tekst fra valp)
-              <br />
-              Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din
-              kompetanse , interesser og ferdigheter påvirker muligheten din til å jobbe.
-            </BodyLong>
+            <BodyLong size="small">{pamelding.deltakelsesinnhold?.ledetekst ?? ''}</BodyLong>
           </section>
 
           <section className="mb-8 mt-4">
@@ -99,28 +93,35 @@ export const PameldingForm = ({
                 id="valgteInnhold"
               >
                 {innhold.map((e) => (
-                  <Checkbox key={e.type} value={e.type} {...register('valgteInnhold')}>
-                    {e.type === INNHOLD_TYPE_ANNET ? 'Annet - fyll ut' : e.visningstekst}
-                  </Checkbox>
+                  <>
+                    <Checkbox
+                      key={e.innholdskode}
+                      value={e.innholdskode}
+                      {...register('valgteInnhold')}
+                    >
+                      {e.innholdskode === INNHOLD_TYPE_ANNET ? 'Annet - fyll ut' : e.tekst}
+                    </Checkbox>
+                    {e.innholdskode === INNHOLD_TYPE_ANNET &&
+                      valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined && (
+                      <Textarea
+                        label={null}
+                        {...register('innholdAnnetBeskrivelse')}
+                        value={watch('innholdAnnetBeskrivelse')}
+                        error={
+                          (errors.innholdAnnetBeskrivelse?.type === 'custom' &&
+                              errors.innholdAnnetBeskrivelse?.message) ||
+                            !!errors.innholdAnnetBeskrivelse
+                        }
+                        disabled={isDisabled}
+                        aria-label={'Beskrivelse av mål "Annet"'}
+                        aria-required
+                        maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                        size="small"
+                        id="innholdAnnetBeskrivelse"
+                      />
+                    )}
+                  </>
                 ))}
-                {valgteInnhold.find((e) => e === INNHOLD_TYPE_ANNET) && (
-                  <Textarea
-                    label={null}
-                    {...register('innholdAnnetBeskrivelse')}
-                    value={watch('innholdAnnetBeskrivelse')}
-                    error={
-                      (errors.innholdAnnetBeskrivelse?.type === 'custom' &&
-                        errors.innholdAnnetBeskrivelse?.message) ||
-                      !!errors.innholdAnnetBeskrivelse
-                    }
-                    disabled={isDisabled}
-                    aria-label={'Beskrivelse av mål "Annet"'}
-                    aria-required
-                    maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                    size="small"
-                    id="innholdAnnetBeskrivelse"
-                  />
-                )}
               </CheckboxGroup>
             )}
           </section>

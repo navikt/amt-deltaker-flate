@@ -46,7 +46,7 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
     dagerPerUke: null,
     deltakelsesprosent: null,
     bakgrunnsinformasjon: null,
-    innhold: [],
+    deltakelsesinnhold: null,
     vedtaksinformasjon: {
       fattet: harVedak ? yesterday.toString() : null,
       fattetAvNav: false,
@@ -57,7 +57,6 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
     sistEndretAv: 'Veileder',
-    sistEndretAvEnhet: 'NAV Fredrikstad',
     sistEndret: yesterday.toString()
   }
 }
@@ -101,75 +100,79 @@ export class MockHandler {
       sluttdato: this.getSluttdato(),
       dagerPerUke: 1,
       deltakelsesprosent: 10,
-      bakgrunnsinformasjon: null,
-      innhold: [
-        {
-          visningstekst: 'Støtte til jobbsøking',
-          type: 'type1',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Karriereveiledning',
-          type: 'type2',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
-          type: 'type3',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
-          type: 'type4',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Kartlegge dine forventninger til å jobbe',
-          type: 'type5',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Veiledning i sosial mestring',
-          type: 'type6',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
-          type: 'type7',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Veiledning til arbeidsgiver',
-          type: 'type8',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Oppfølging på arbeidsplassen',
-          type: 'type9',
-          valgt: true,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Arbeidspraksis',
-          type: 'type10',
-          valgt: false,
-          beskrivelse: null
-        },
-        {
-          visningstekst: 'Annet',
-          type: INNHOLD_TYPE_ANNET,
-          valgt: true,
-          beskrivelse: 'Beskrivelse av annet mål'
-        }
-      ],
+      bakgrunnsinformasjon: 'Dette er en test',
+      deltakelsesinnhold: {
+        ledetekst:
+          'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        innhold: [
+          {
+            tekst: 'Støtte til jobbsøking',
+            innholdskode: 'type1',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Karriereveiledning',
+            innholdskode: 'type2',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+            innholdskode: 'type3',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+            innholdskode: 'type4',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Kartlegge dine forventninger til å jobbe',
+            innholdskode: 'type5',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Veiledning i sosial mestring',
+            innholdskode: 'type6',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+            innholdskode: 'type7',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Veiledning til arbeidsgiver',
+            innholdskode: 'type8',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Oppfølging på arbeidsplassen',
+            innholdskode: 'type9',
+            valgt: true,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Arbeidspraksis',
+            innholdskode: 'type10',
+            valgt: false,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Annet',
+            innholdskode: INNHOLD_TYPE_ANNET,
+            valgt: true,
+            beskrivelse: 'Beskrivelse av annet mål'
+          }
+        ]
+      },
       vedtaksinformasjon: {
         fattet: harVedak ? yesterday.toString() : null,
         fattetAvNav: false,
@@ -180,8 +183,7 @@ export class MockHandler {
         sistEndretAvEnhet: 'NAV Fredrikstad'
       },
       sistEndretAv: 'Veileder',
-      sistEndret: yesterday.toString(),
-      sistEndretAvEnhet: 'NAV Fredrikstad'
+      sistEndret: yesterday.toString()
     }
 
     this.pamelding = nyPamelding

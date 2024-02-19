@@ -1,9 +1,9 @@
 import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
-import { Innhold } from '../../api/data/pamelding.ts'
+import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
 import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
-  innhold: Innhold[]
+  innhold: Deltakelsesinnhold | null
   bakgrunnsinformasjon: string | null
 }
 
@@ -13,19 +13,18 @@ export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
       <Heading level="2" size="medium">
         Hva er innholdet?
       </Heading>
-      <BodyLong size="small">
-        Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din
-        kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.
-      </BodyLong>
-      <List as="ul" size="small">
-        {innhold
-          .filter((i) => i.valgt)
-          .map((i) => (
-            <List.Item key={i.type}>
-              {`${i.visningstekst}${i.type === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
-            </List.Item>
-          ))}
-      </List>
+      <BodyLong size="small">{innhold?.ledetekst ?? ''}</BodyLong>
+      {innhold?.innhold && (
+        <List as="ul" size="small">
+          {innhold.innhold
+            .filter((i) => i.valgt)
+            .map((i) => (
+              <List.Item key={i.innholdskode}>
+                {`${i.tekst}${i.innholdskode === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
+              </List.Item>
+            ))}
+        </List>
+      )}
       <div className="mt-4">
         <Heading level="2" size="medium">
           Bakgrunnsinformasjon
