@@ -11,7 +11,11 @@ import { EMDASH, INNHOLD_TYPE_ANNET, formatDateStrWithMonthName } from '../../ut
 import { DeltakerStatusType } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 
-export const DeltakerInfo = () => {
+interface Props {
+  className: string
+}
+
+export const DeltakerInfo = ({ className }: Props) => {
   const { pamelding } = usePameldingCOntext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
     pamelding.deltakerliste.tiltakstype,
@@ -26,7 +30,7 @@ export const DeltakerInfo = () => {
       : EMDASH
 
   return (
-    <div className="bg-white px-12 py-4 w-full xl:w-[65%]">
+    <div className={`bg-white px-12 py-4 ${className}`}>
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
