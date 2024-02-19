@@ -1,6 +1,6 @@
-import { Innhold, PameldingResponse } from '../api/data/pamelding.ts'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
-import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { InnholdDto, SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { INNHOLD_TYPE_ANNET } from './utils.ts'
 
@@ -8,7 +8,7 @@ export const generateInnholdFromResponse = (
   pamelding: PameldingResponse,
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null
-): Innhold[] => {
+): InnholdDto[] => {
   if (pamelding?.deltakelsesinnhold === null) {
     return []
   }
@@ -18,9 +18,8 @@ export const generateInnholdFromResponse = (
 
     return [
       {
-        ...i,
-        beskrivelse: i.innholdskode === INNHOLD_TYPE_ANNET ? innholdAnnetBeskrivelse || null : null,
-        valgt: true
+        innholdskode: i.innholdskode,
+        beskrivelse: i.innholdskode === INNHOLD_TYPE_ANNET ? innholdAnnetBeskrivelse || null : null
       }
     ]
   })
