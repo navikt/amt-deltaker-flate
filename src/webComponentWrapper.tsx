@@ -41,15 +41,17 @@ export class Deltaker extends HTMLElement {
 
     const root = createRoot(this.root)
     root.render(
-      <AppContextProvider
-        initialPersonident={initialPersonident}
-        initialDeltakerlisteId={initialDeltakerlisteId}
-        initialEnhetId={initialEnhetId}
-      >
-        <BrowserRouter>
-          <AppRoutes/>
-        </BrowserRouter>
-      </AppContextProvider>
+      <div className="max-w-[1252px] m-auto">
+        <AppContextProvider
+          initialPersonident={initialPersonident}
+          initialDeltakerlisteId={initialDeltakerlisteId}
+          initialEnhetId={initialEnhetId}
+        >
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AppContextProvider>
+      </div>
     )
   }
 
