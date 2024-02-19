@@ -26,7 +26,7 @@ export const DeltakerInfo = () => {
       : EMDASH
 
   return (
-    <div className="bg-white px-12 py-4">
+    <div className="bg-white px-12 py-4 w-full xl:w-[65%]">
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>

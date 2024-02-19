@@ -7,7 +7,7 @@ import { usePameldingCOntext } from './PameldingContext.tsx'
 export const ForNAVAnsatt = () => {
   const { pamelding } = usePameldingCOntext()
   return (
-    <div className="bg-white p-4 h-fit w-fit">
+    <div className="bg-white p-4 h-fit w-fit xl:grow">
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>
