@@ -18,8 +18,8 @@ dependencies:
     specifier: ^5.18.1
     version: 5.18.1(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
   '@navikt/ds-tailwind':
-    specifier: ^5.18.1
-    version: 5.18.1
+    specifier: ^6.0.0
+    version: 6.0.0
   '@types/react-router-dom':
     specifier: ^5.3.3
     version: 5.3.3
@@ -644,8 +644,8 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tailwind@5.18.1:
-    resolution: {integrity: sha512-Sx95oFjDMW0iQMAwceh2yg0NudGj2NNTiDluk1e8w1Az3t5ZT9tss0VARjiI15Vzdt8M1w9rzerJfGFf0J7TUA==}
+  /@navikt/ds-tailwind@6.0.0:
+    resolution: {integrity: sha512-n8MsJ0d9RIvHcF4CC4Kvxd0AQ2ENcZOKntZanRXqImqp6+2buu3MEpwJuqzlu70ktxy7S2iDlMZweHktrnLiZQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.0.0/e427fa265f40d8201da40dd2151eb6c3c94aba4d}
     dev: false
 
   /@navikt/ds-tokens@5.18.1:
