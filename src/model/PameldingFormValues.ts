@@ -6,7 +6,7 @@ export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
-const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 100.'
+const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 99.'
 const dagerPerUkeFeilmelding = 'Dager per uke må være et helt tall fra 1 til 5.'
 
 export const pameldingFormSchema = z
