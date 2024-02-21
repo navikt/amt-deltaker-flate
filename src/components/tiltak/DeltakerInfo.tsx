@@ -11,7 +11,11 @@ import { EMDASH, INNHOLD_TYPE_ANNET, formatDateStrWithMonthName } from '../../ut
 import { DeltakerStatusType } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 
-export const DeltakerInfo = () => {
+interface Props {
+  className: string
+}
+
+export const DeltakerInfo = ({ className }: Props) => {
   const { pamelding } = usePameldingCOntext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
     pamelding.deltakerliste.tiltakstype,
@@ -26,7 +30,7 @@ export const DeltakerInfo = () => {
       : EMDASH
 
   return (
-    <div className="bg-white px-12 py-4">
+    <div className={`bg-white px-12 py-4 ${className}`}>
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
@@ -55,54 +59,56 @@ export const DeltakerInfo = () => {
         Hva er innholdet?
       </Heading>
       <BodyLong className="mt-4" size="small">
-        Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din
-        kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.
+        {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
-      <List as="ul" size="small" className="mt-4">
-        {pamelding.innhold
-          .filter((i) => i.valgt)
-          .map((i) => (
-            <List.Item key={i.type}>
-              {i.type === INNHOLD_TYPE_ANNET ? i.beskrivelse : i.visningstekst}
-            </List.Item>
-          ))}
-      </List>
+      {pamelding.deltakelsesinnhold && (
+        <List as="ul" size="small" className="mt-4">
+          {pamelding.deltakelsesinnhold.innhold
+            .filter((i) => i.valgt)
+            .map((i) => (
+              <List.Item key={i.innholdskode}>
+                {i.innholdskode === INNHOLD_TYPE_ANNET ? i.beskrivelse : i.tekst}
+              </List.Item>
+            ))}
+        </List>
+      )}
+      <div>
+        <Heading level="2" size="medium" className="mt-8">
+          Bakgrunnsinformasjon
+        </Heading>
+        <BodyLong size="small" className="mt-2">
+          {bakgrunsinformasjon}
+        </BodyLong>
 
-      <Heading level="2" size="medium" className="mt-8">
-        Bakgrunnsinformasjon
-      </Heading>
-      <BodyLong size="small" className="mt-2">
-        {bakgrunsinformasjon}
-      </BodyLong>
+        <Link href="#" className="mt-8">
+          <Todo /> Se endringer
+          <span>
+            <ChevronRightIcon title="Gå til side for endringer" />
+          </span>
+        </Link>
 
-      <Link href="#" className="mt-8">
-        <Todo /> Se endringer
-        <span>
-          <ChevronRightIcon title="Gå til side for endringer" />
-        </span>
-      </Link>
+        <div className="mt-8">
+          <Todo />
+          Send en melding her til NAV-veilederen din hvis noe skal endres.
+        </div>
 
-      <div className="mt-8">
-        <Todo />
-        Send en melding her til NAV-veilederen din hvis noe skal endres.
+        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
+
+        <Heading level="2" size="medium" className="mt-8">
+          Du har rett til å klage
+        </Heading>
+        <BodyLong size="small" className="mt-1">
+          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på deltakelsen eller du
+          ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
+          informasjonen. Les mer om
+          {
+            <Link href="#">
+              <Todo />
+              retten til å klage her.
+            </Link>
+          }
+        </BodyLong>
       </div>
-
-      <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
-
-      <Heading level="2" size="medium" className="mt-8">
-        Du har rett til å klage
-      </Heading>
-      <BodyLong size="small" className="mt-1">
-        Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på deltakelsen eller du
-        ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
-        informasjonen. Les mer om
-        {
-          <Link href="#">
-            <Todo />
-            retten til å klage her.
-          </Link>
-        }
-      </BodyLong>
     </div>
   )
 }

@@ -19,13 +19,13 @@ export const formatDateToDateInputStr = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-export const dateStrToNullableDate = (dateStr: string | null) : Date | null => {
-  if(dateStr == null || dateStr == EMDASH) return null
+export const dateStrToNullableDate = (dateStr: string | null): Date | null => {
+  if (dateStr == null || dateStr == EMDASH) return null
   const date = dayjs(dateStr, 'DD.MM.YYYY')
   return date.isValid() ? date.toDate() : null
 }
 
-export const INNHOLD_TYPE_ANNET = 'ANNET' // Fix når vi vet dette fra valp
+export const INNHOLD_TYPE_ANNET = 'annet'
 
 export enum DeltakelsesprosentValg {
   JA = 'JA',

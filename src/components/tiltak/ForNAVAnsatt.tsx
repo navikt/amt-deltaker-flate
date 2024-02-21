@@ -4,10 +4,14 @@ import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 
-export const ForNAVAnsatt = () => {
+interface Props {
+  className: string
+}
+
+export const ForNAVAnsatt = ({ className }: Props) => {
   const { pamelding } = usePameldingCOntext()
   return (
-    <div className="bg-white p-4 h-fit w-fit">
+    <div className={`bg-white p-4 h-fit ${className}`}>
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>

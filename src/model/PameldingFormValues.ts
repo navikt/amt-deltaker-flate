@@ -1,18 +1,18 @@
-import { z } from 'zod'
-import { Innhold, PameldingResponse } from '../api/data/pamelding.ts'
+import { string, z } from 'zod'
+import { PameldingResponse, innholdSchema } from '../api/data/pamelding.ts'
 import { DeltakelsesprosentValg, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
-const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 100.'
+const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 99.'
 const dagerPerUkeFeilmelding = 'Dager per uke må være et helt tall fra 1 til 5.'
 
 export const pameldingFormSchema = z
   .object({
-    tilgjengeligInnhold: z.string().array(),
-    valgteInnhold: z.string().array(),
+    tilgjengeligInnhold: innholdSchema.array(),
+    valgteInnhold: string().array(),
     innholdAnnetBeskrivelse: z
       .string()
       .max(BESKRIVELSE_MAX_TEGN, `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`)
@@ -87,7 +87,9 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse): Pameldi
   }
 
   const getInnholdAnnetBeskrivelse = (): string | undefined => {
-    const annetCheckbox = pamelding.innhold.find((i: Innhold) => i.type === INNHOLD_TYPE_ANNET)
+    const annetCheckbox = pamelding.deltakelsesinnhold?.innhold.find(
+      (i) => i.innholdskode === INNHOLD_TYPE_ANNET
+    )
 
     if (annetCheckbox?.valgt) {
       return annetCheckbox.beskrivelse ?? undefined
@@ -96,8 +98,9 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse): Pameldi
   }
 
   return {
-    tilgjengeligInnhold: pamelding.innhold.map((i) => i.type),
-    valgteInnhold: pamelding.innhold.filter((i) => i.valgt).map((i) => i.type),
+    tilgjengeligInnhold: pamelding.deltakelsesinnhold?.innhold ?? [],
+    valgteInnhold:
+      pamelding.deltakelsesinnhold?.innhold.filter((i) => i.valgt).map((i) => i.innholdskode) ?? [],
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),

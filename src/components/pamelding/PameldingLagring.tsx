@@ -7,8 +7,9 @@ import { useAppContext } from '../../AppContext.tsx'
 import { KladdRequest } from '../../api/data/kladd-request.ts'
 import { oppdaterKladd } from '../../api/api.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { Loader, Detail } from '@navikt/ds-react'
+import { Loader, Detail, ErrorMessage } from '@navikt/ds-react'
 import { generateInnholdFromResponse } from '../../utils/pamelding-form-utils.ts'
+import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -24,12 +25,24 @@ export const PameldingLagring = ({ pamelding }: Props) => {
   const watchedFields = watch()
 
   const formToKladdRequest = (data: PameldingFormValues): KladdRequest => {
+    const innhold = generateInnholdFromResponse(
+      pamelding,
+      data.valgteInnhold,
+      data.innholdAnnetBeskrivelse
+    )
+
+    const innholdAnnet = innhold.find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)
+    const korrigertInnhold = [...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)]
+
+    if (innholdAnnet) {
+      korrigertInnhold.push({
+        innholdskode: INNHOLD_TYPE_ANNET,
+        beskrivelse: innholdAnnet.beskrivelse || ''
+      })
+    }
+
     return {
-      innhold: generateInnholdFromResponse(
-        pamelding,
-        data.valgteInnhold,
-        data.innholdAnnetBeskrivelse
-      ),
+      innhold: korrigertInnhold,
       bakgrunnsinformasjon: data.bakgrunnsinformasjon,
       deltakelsesprosent: data.deltakelsesprosent,
       dagerPerUke: data.dagerPerUke
@@ -41,7 +54,7 @@ export const PameldingLagring = ({ pamelding }: Props) => {
 
     if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
       setStoredKladd(newKladd)
-      fetchSaveKladd(pamelding.deltakerId, enhetId, formToKladdRequest(values))
+      fetchSaveKladd(pamelding.deltakerId, enhetId, newKladd)
     }
   }
 
@@ -62,7 +75,7 @@ export const PameldingLagring = ({ pamelding }: Props) => {
     return <Detail>Kladd lagret</Detail>
   }
   if (saveKladdState === DeferredFetchState.ERROR) {
-    return <Detail>Kunne ikke autolagre kladd</Detail>
+    return <ErrorMessage size="small">Lagring feilet</ErrorMessage>
   }
 
   return <></>
