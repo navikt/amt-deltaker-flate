@@ -29,7 +29,7 @@ export const EndreBakgrunnsinfoModal = ({
   onSuccess
 }: EndreBakgrunnsinfoModalProps) => {
   const { enhetId } = useAppContext()
-  const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<string | null>()
+  const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<string | null>(pamelding.bakgrunnsinformasjon)
 
   const {
     state: endreDeltakelseState,
