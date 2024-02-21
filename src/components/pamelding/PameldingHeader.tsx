@@ -3,15 +3,16 @@ import {Heading} from '@navikt/ds-react'
 import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 
 interface Props {
+  title: string
   tiltakstype: Tiltakstype
   arrangorNavn: string
 }
 
-export const PameldingHeader = ({ tiltakstype, arrangorNavn }: Props) => {
+export const PameldingHeader = ({ title, tiltakstype, arrangorNavn }: Props) => {
   return (
     <div className="space-y-2">
       <Heading level="1" size="large">
-        Utkast til påmelding
+        {title}
       </Heading>
       <Heading level="2" size="medium">
         {hentTiltakNavnHosArrangørTekst(tiltakstype, arrangorNavn)}

@@ -42,6 +42,7 @@ export const RedigerPameldingPage = () => {
     <div className="space-y-4 max-w-[47.5rem] m-auto">
       <div>
         <PameldingHeader
+          title="Utkast til påmelding"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
         />
