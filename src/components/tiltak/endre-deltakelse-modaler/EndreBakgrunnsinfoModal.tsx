@@ -64,10 +64,7 @@ export const EndreBakgrunnsinfoModal = ({
           </Alert>
         )}
         <BodyLong size="small" className="mb-4">
-          Er det noe mer dere ønsker å informere arrangøren om?
-        </BodyLong>
-        <BodyLong size="small" className="mb-4">
-          Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
         <Textarea
           onChange={(e) => {

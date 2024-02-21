@@ -91,7 +91,7 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/bakgrunnsinfobakgrunnsinformasjon', async ({ request }) => {
+  http.post('/mock/deltaker/:deltakerId/bakgrunnsinformasjon', async ({ request }) => {
     await delay(1000)
 
     const response = await request
