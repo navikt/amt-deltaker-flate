@@ -11,7 +11,7 @@ export const PameldingHeader = ({ tiltakstype, arrangorNavn }: Props) => {
   return (
     <div className="space-y-2">
       <Heading level="1" size="large">
-        Påmelding
+        Utkast til påmelding
       </Heading>
       <Heading level="2" size="medium">
         {hentTiltakNavnHosArrangørTekst(tiltakstype, arrangorNavn)}
