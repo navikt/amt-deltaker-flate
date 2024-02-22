@@ -100,7 +100,7 @@ export class MockHandler {
       sluttdato: this.getSluttdato(),
       dagerPerUke: 1,
       deltakelsesprosent: 10,
-      bakgrunnsinformasjon: 'Dette er en test',
+      bakgrunnsinformasjon: null,
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',

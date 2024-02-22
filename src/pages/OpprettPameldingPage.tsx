@@ -6,8 +6,9 @@ export const OpprettPameldingPage = () => {
   const { pamelding } = usePameldingCOntext()
 
   return (
-    <div className="m-4">
+    <div className="m-4 max-w-[47.5rem] mx-auto">
       <PameldingHeader
+        title="Kladd til påmelding"
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
       />

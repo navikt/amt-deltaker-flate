@@ -10,7 +10,6 @@ import { TILBAKE_PAGE } from '../Routes.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch.ts'
 import { avbrytUtkast } from '../api/api.ts'
 import { useAppContext } from '../AppContext.tsx'
-import { AvbrytUtkastRequest } from '../api/data/avbryt-utkast-request.ts'
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
@@ -40,80 +39,78 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div>
-      <div className="space-y-4">
-        <div>
-          <PameldingHeader
-            tiltakstype={pamelding.deltakerliste.tiltakstype}
-            arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          />
-          <RedigerPameldingHeader vedtaksinformasjon={pamelding.vedtaksinformasjon} />
-        </div>
-
-        <VStack gap="2" align="start" className="p-8 bg-white">
-          {redigerUtkast && (
-            <PameldingForm
-              focusOnOpen
-              pamelding={pamelding}
-              disabled={idDisabled}
-              disableForm={(disabled) => setIsDisabled(disabled)}
-              onCancelUtkast={() => setRedigerUtkast(false)}
-            />
-          )}
-
-          {!redigerUtkast && (
-            <>
-              <Utkast
-                innhold={pamelding.deltakelsesinnhold}
-                bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
-              />
-              <Button
-                size="small"
-                variant="secondary"
-                icon={<PencilIcon />}
-                disabled={idDisabled}
-                onClick={() => setRedigerUtkast(true)}
-                className="mt-8"
-              >
-                Endre utkastet
-              </Button>
-              <HorisontalLine className="mt-8 mb-8" />
-              <MeldPaDirekteButton
-                className="mb-2"
-                pamelding={pamelding}
-                disabled={idDisabled}
-                useOldPamelding
-                disableForm={(disabled) => setIsDisabled(disabled)}
-              />
-              {avbrytUtkastState === DeferredFetchState.ERROR && (
-                <Alert variant="error" className="mt-4 mb-4">
-                  <Heading size="small" spacing level="3">
-                    Det skjedde en feil.
-                  </Heading>
-                  {avbrytUtkastError}
-                </Alert>
-              )}
-              <Button
-                size="small"
-                variant="secondary"
-                disabled={idDisabled}
-                onClick={() => {
-                  setAvbrytModalOpen(true)
-                }}
-                loading={avbrytUtkastState === DeferredFetchState.LOADING}
-                icon={<XMarkIcon />}
-              >
-                Avbryt utkast til påmelding
-              </Button>
-            </>
-          )}
-        </VStack>
+    <div className="space-y-4 max-w-[47.5rem] m-auto">
+      <div>
+        <PameldingHeader
+          title="Utkast til påmelding"
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
+        />
+        <RedigerPameldingHeader vedtaksinformasjon={pamelding.vedtaksinformasjon} />
       </div>
 
+      <VStack gap="2" align="start" className="p-8 bg-white">
+        {redigerUtkast && (
+          <PameldingForm
+            focusOnOpen
+            pamelding={pamelding}
+            disabled={idDisabled}
+            disableForm={(disabled) => setIsDisabled(disabled)}
+            onCancelUtkast={() => setRedigerUtkast(false)}
+          />
+        )}
+
+        {!redigerUtkast && (
+          <>
+            <Utkast
+              innhold={pamelding.deltakelsesinnhold}
+              bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
+            />
+            <Button
+              size="small"
+              variant="secondary"
+              icon={<PencilIcon />}
+              disabled={idDisabled}
+              onClick={() => setRedigerUtkast(true)}
+              className="mt-8"
+            >
+              Endre utkastet
+            </Button>
+            <HorisontalLine className="mt-8 mb-8" />
+            <MeldPaDirekteButton
+              className="mb-2"
+              pamelding={pamelding}
+              disabled={idDisabled}
+              useOldPamelding
+              disableForm={(disabled) => setIsDisabled(disabled)}
+            />
+            {avbrytUtkastState === DeferredFetchState.ERROR && (
+              <Alert variant="error" className="mt-4 mb-4">
+                <Heading size="small" spacing level="3">
+                  Det skjedde en feil.
+                </Heading>
+                {avbrytUtkastError}
+              </Alert>
+            )}
+            <Button
+              size="small"
+              variant="secondary"
+              disabled={idDisabled}
+              onClick={() => {
+                setAvbrytModalOpen(true)
+              }}
+              loading={avbrytUtkastState === DeferredFetchState.LOADING}
+              icon={<XMarkIcon />}
+            >
+              Avbryt utkast til påmelding
+            </Button>
+          </>
+        )}
+      </VStack>
       <AvbrytUtkastDeltMedBrukerModal
         open={avbrytModalOpen}
-        onConfirm={(request: AvbrytUtkastRequest) => {
-          fetchAvbrytUtkast(pamelding.deltakerId, enhetId, request)
+        onConfirm={() => {
+          fetchAvbrytUtkast(pamelding.deltakerId, enhetId)
           setAvbrytModalOpen(false)
         }}
         onCancel={() => {

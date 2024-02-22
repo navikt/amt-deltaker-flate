@@ -8,7 +8,6 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from './data/endre-deltakelse-request.ts'
-import { AvbrytUtkastRequest } from './data/avbryt-utkast-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
 
 export const createPamelding = async (
@@ -195,11 +194,7 @@ export const endreDeltakelseStartdato = (
     })
 }
 
-export const avbrytUtkast = (
-  deltakerId: string,
-  enhetId: string,
-  request: AvbrytUtkastRequest
-): Promise<number> => {
+export const avbrytUtkast = (deltakerId: string, enhetId: string): Promise<number> => {
   return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/avbryt`, {
     method: 'POST',
     credentials: 'include',
@@ -207,17 +202,13 @@ export const avbrytUtkast = (
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
+    }
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw new Error(`Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`)
+    }
+    return response.status
   })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`
-        )
-      }
-      return response.status
-    })
 }
 
 export const oppdaterKladd = async (
