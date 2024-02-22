@@ -9,8 +9,8 @@ dependencies:
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.50.1)
   '@navikt/aksel-icons':
-    specifier: ^5.18.1
-    version: 5.18.1
+    specifier: ^6.1.0
+    version: 6.1.0
   '@navikt/ds-css':
     specifier: ^5.18.1
     version: 5.18.1
@@ -614,7 +614,11 @@ packages:
     dev: false
 
   /@navikt/aksel-icons@5.18.1:
-    resolution: {integrity: sha512-5gxw5FvdVY6CG5ObD8SRTeEFk6Uc8/FfsYNQue5a0Qes3yyzZsob56vL30pqKiEbIp+WXadXtmtdU5oI3JtK4Q==}
+    resolution: {integrity: sha512-5gxw5FvdVY6CG5ObD8SRTeEFk6Uc8/FfsYNQue5a0Qes3yyzZsob56vL30pqKiEbIp+WXadXtmtdU5oI3JtK4Q==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/5.18.1/9442e7fd4b4bdce1dc574ce5b699f1ab6debcd65}
+    dev: false
+
+  /@navikt/aksel-icons@6.1.0:
+    resolution: {integrity: sha512-M7l2CNyURpB7mwMLbOc4/pDSOOjlIf6QwuS6xUOFfaduJR8AOqzJxcTnats+RUnzONSq7zUJsl0RaC8gp5aHDQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/6.1.0/d50695626c571791ab356885fb6856afa386e06d}
     dev: false
 
   /@navikt/ds-css@5.18.1:
