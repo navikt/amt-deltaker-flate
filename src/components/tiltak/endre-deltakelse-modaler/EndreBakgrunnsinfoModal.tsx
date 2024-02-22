@@ -1,7 +1,6 @@
 import {
   Alert,
   BodyLong,
-  Button,
   Heading,
   Modal,
   Textarea,
@@ -14,6 +13,7 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import {BAKGRUNNSINFORMASJON_MAKS_TEGN} from '../../../model/PameldingFormValues'
+import {ModalFooter} from '../../ModalFooter'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -79,17 +79,12 @@ export const EndreBakgrunnsinfoModal = ({
           aria-label={'Bagrunnsinformasjon'}
         />
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="button"
-          size="small"
-          loading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-          onClick={sendEndring}
-        >
-          Oppdater
-        </Button>
-      </Modal.Footer>
+      <ModalFooter
+        confirmButtonText="Oppdater"
+        onConfirm={sendEndring}
+        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+      />
     </Modal>
   )
 }
