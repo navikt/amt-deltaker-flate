@@ -1,6 +1,6 @@
 import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
 import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
-import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
+import { EMDASH, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
   innhold: Deltakelsesinnhold | null
@@ -8,6 +8,9 @@ interface Props {
 }
 
 export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
+  const bakgrunnsinfoVisningstekst =
+    bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 ? bakgrunnsinformasjon : EMDASH
+
   return (
     <VStack gap="4">
       <Heading level="2" size="medium">
@@ -30,7 +33,7 @@ export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
           Bakgrunnsinformasjon
         </Heading>
         <BodyLong size="small" className="mt-2">
-          {bakgrunnsinformasjon}
+          {bakgrunnsinfoVisningstekst}
         </BodyLong>
       </div>
     </VStack>
