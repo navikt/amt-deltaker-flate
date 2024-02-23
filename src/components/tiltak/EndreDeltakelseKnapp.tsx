@@ -74,6 +74,8 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
             {skalViseEndreOppstartsdato &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
+            {pamelding.status.type === DeltakerStatusType.DELTAR &&
+                hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

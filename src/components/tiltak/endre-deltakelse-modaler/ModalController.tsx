@@ -2,7 +2,8 @@ import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request'
 import {PameldingResponse} from '../../../api/data/pamelding'
 import {IkkeAktuellModal} from './IkkeAktuellModal'
 import {ForlengDeltakelseModal} from './ForlengDeltakelseModal.tsx'
-import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
+import {EndreOppstartsdatoModal} from './EndreOppstartsdatoModal.tsx'
+import {AvsluttDeltakelseModal} from './AvsluttDeltakelseModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
@@ -20,6 +21,8 @@ export const ModalController = (props: ModalControllerProps) => {
       return <ForlengDeltakelseModal {...props} />
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return <EndreOppstartsdatoModal {...props} />
+    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
+      return <AvsluttDeltakelseModal  {...props} />
     default:
       return null
   }
