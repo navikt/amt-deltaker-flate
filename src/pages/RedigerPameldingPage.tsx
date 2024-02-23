@@ -106,17 +106,17 @@ export const RedigerPameldingPage = () => {
             </Button>
           </>
         )}
+        <AvbrytUtkastDeltMedBrukerModal
+          open={avbrytModalOpen}
+          onConfirm={() => {
+            fetchAvbrytUtkast(pamelding.deltakerId, enhetId)
+            setAvbrytModalOpen(false)
+          }}
+          onCancel={() => {
+            setAvbrytModalOpen(false)
+          }}
+        />
       </VStack>
-      <AvbrytUtkastDeltMedBrukerModal
-        open={avbrytModalOpen}
-        onConfirm={() => {
-          fetchAvbrytUtkast(pamelding.deltakerId, enhetId)
-          setAvbrytModalOpen(false)
-        }}
-        onCancel={() => {
-          setAvbrytModalOpen(false)
-        }}
-      />
     </div>
   )
 }
