@@ -21,7 +21,6 @@ export const ForNAVAnsatt = ({ className }: Props) => {
         href="#"
         border
         className="mt-4 rounded border-2 border-[var(--a-border-selected)]"
-        size="small"
       >
         <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
           Gå til tiltaksgjennomføringen
