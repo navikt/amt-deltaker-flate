@@ -5,6 +5,7 @@ import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
+  EndreBakgrunnsinfoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
@@ -225,6 +226,32 @@ export const avsluttDeltakelse = (
         console.error('Kunne ikke parse pameldingSchema:', error)
         throw error
       }
+    })
+}
+
+export const endreDeltakelseBakgrunnsinfo = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreBakgrunnsinfoRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/bakgrunnsinformasjon`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`Kunne ikke endre bakgrunnsinfo. Prøv igjen senere. (${response.status})`)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      return pameldingSchema.parse(json)
     })
 }
 
