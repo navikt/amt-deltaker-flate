@@ -50,7 +50,7 @@ export const EndreBakgrunnsinfoModal = ({
       open={open}
       header={{
         icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO} />,
-        heading: 'Endre Bakgrunnsinfo'
+        heading: 'Endre bakgrunnsinformasjon'
       }}
       onClose={onClose}
     >
