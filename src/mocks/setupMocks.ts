@@ -8,7 +8,9 @@ import {
 } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
 import {
-  avsluttDeltakelseSchema, endreSluttdatoSchema,
+  avsluttDeltakelseSchema,
+  endreSluttdatoSchema,
+  endreBakgrunnsinfoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
   ikkeAktuellSchema
@@ -88,6 +90,16 @@ export const worker = setupWorker(
       .json()
       .then((json) => endreStartdatoSchema.parse(json))
       .then((body) => handler.endreDeltakelseStartdato(body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/bakgrunnsinformasjon', async ({ request }) => {
+    await delay(1000)
+
+    const response = await request
+      .json()
+      .then((json) => endreBakgrunnsinfoSchema.parse(json))
+      .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
 
     return response
   }),

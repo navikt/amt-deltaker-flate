@@ -5,7 +5,9 @@ import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {
-  AvsluttDeltakelseRequest, EndreSluttdatoRequest,
+  AvsluttDeltakelseRequest,
+  EndreSluttdatoRequest,
+  EndreBakgrunnsinfoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
@@ -287,6 +289,18 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.startdato = request.startdato
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseBakgrunnsinfo(request: EndreBakgrunnsinfoRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
