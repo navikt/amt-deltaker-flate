@@ -5,7 +5,7 @@ import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {
-  AvsluttDeltakelseRequest,
+  AvsluttDeltakelseRequest, EndreSluttdatoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
@@ -287,6 +287,18 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.startdato = request.startdato
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseSluttdato(request: EndreSluttdatoRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.sluttdato = request.sluttdato
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

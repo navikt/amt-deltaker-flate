@@ -35,6 +35,12 @@ export const endreStartdatoSchema = z.object({
 
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
 
+export const endreSluttdatoSchema = z.object({
+  sluttdato: z.string()
+})
+
+export type EndreSluttdatoRequest = z.infer<typeof endreSluttdatoSchema>
+
 export const avsluttDeltakelseSchema = z.object({
   aarsak: aarsakSchema,
   sluttdato: z.string()

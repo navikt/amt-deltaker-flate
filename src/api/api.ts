@@ -4,7 +4,7 @@ import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
 import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
 import {
-  AvsluttDeltakelseRequest,
+  AvsluttDeltakelseRequest, EndreSluttdatoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
@@ -182,6 +182,37 @@ export const endreDeltakelseStartdato = (
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(`Kunne ikke endre startdato. Prøv igjen senere. (${response.status})`)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
+    })
+}
+
+export const endreDeltakelseSluttdato = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreSluttdatoRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/sluttdato`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`Kunne ikke endre sluttdato. Prøv igjen senere. (${response.status})`)
       }
       return response.json()
     })
