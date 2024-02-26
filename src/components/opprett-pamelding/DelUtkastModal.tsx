@@ -24,14 +24,11 @@ export const DelUtkastModal = ({
     <Modal open={open} header={{ heading: 'Del utkast og gjør klar vedtak' }} onClose={onCancel}>
       <Modal.Body>
         <BodyLong size="small">
-          Bruker blir varslet og kan finne lenke til utkastet på innlogget nav.no og i
-          aktivitetsplanen. Bruker får lest gjennom hva du foreslår å sende til arrangøren.
+          Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. Bruker får lest gjennom hva du foreslår å sende til arrangøren. Bruker ser innhold, bakgrunnsinformasjon og navnet ditt.
         </BodyLong>
 
         <BodyLong size="small" className="mt-6 mb-6">
-          Når brukeren godtar utkastet så fattes vedtaket. Da mottar arrangør påmeldingen,
-          kontaktinformasjonen til brukeren og til tildelt veileder. Dette ser arrangøren i
-          verktøyet Deltakeroversikt på nav.no.
+          Når brukeren godtar utkastet, så fattes vedtaket. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.
         </BodyLong>
 
         <BodyLong weight="semibold">
