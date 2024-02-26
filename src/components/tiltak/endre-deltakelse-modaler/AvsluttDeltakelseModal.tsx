@@ -52,7 +52,9 @@ export const AvsluttDeltakelseModal = ({
   } = useDeferredFetch(avsluttDeltakelse)
 
   const sendEndring = () => {
-    if (valgtArsak && sluttdato) {
+    if (!sluttdato) {
+      setErrorMessage('Du må velge en sluttdato')
+    } else if (valgtArsak) {
       if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse)) {
         doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
           aarsak: {
