@@ -1,28 +1,28 @@
-import { Alert, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import {Alert, BodyLong, Heading, Modal, Radio, RadioGroup, Textarea} from '@navikt/ds-react'
 import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
-import { endreDeltakelseIkkeAktuell } from '../../../api/api'
+import {endreDeltakelseSluttarsak} from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
-import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils'
+import {getDeltakerStatusAarsakTyperAsList} from '../../../utils/utils'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 
-interface IkkeAktuellModalProps {
+interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-export const IkkeAktuellModal = ({
+export const EndreSluttarsakModal = ({
   pamelding,
   open,
   onClose,
   onSuccess
-}: IkkeAktuellModalProps) => {
+}: EndreSluttarsakModalProps) => {
   const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
   const [hasError, setHasError] = useState<boolean>(false)
@@ -34,13 +34,13 @@ export const IkkeAktuellModal = ({
   const {
     state: endreDeltakelseState,
     error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseIkkeAktuell
-  } = useDeferredFetch(endreDeltakelseIkkeAktuell)
+    doFetch: doFetchEndreSluttarsak
+  } = useDeferredFetch(endreDeltakelseSluttarsak)
 
   const sendEndring = () => {
     if (valgtArsak) {
       if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse)) {
-        doFetchEndreDeltakelseIkkeAktuell(pamelding.deltakerId, enhetId, {
+        doFetchEndreSluttarsak(pamelding.deltakerId, enhetId, {
           aarsak: {
             type: valgtArsak,
             beskrivelse: beskrivelse
@@ -56,8 +56,8 @@ export const IkkeAktuellModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.IKKE_AKTUELL} />,
-        heading: 'Er ikke aktuell'
+        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_SLUTTARSAK} />,
+        heading: 'Endre sluttårsak'
       }}
       onClose={onClose}
     >
@@ -65,13 +65,16 @@ export const IkkeAktuellModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error" className="mt-4 mb-4">
             <Heading size="small" spacing level="3">
-              Det skjedde en feil.
+                Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
         )}
+        <BodyLong size="small" className="mb-4">
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+        </BodyLong>
         <RadioGroup
-          legend="Hva er årsaken til at deltakeren ikke er aktuell?"
+          legend="Hva er årsaken til avslutning?"
           size="small"
           error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
           onChange={(value: DeltakerStatusAarsakType) => {
@@ -99,8 +102,8 @@ export const IkkeAktuellModal = ({
                 label={null}
                 error={
                   hasError &&
-                  aarsakErAnnet &&
-                  'Du må fylle ut for årsak "annet" før du kan fortsette.'
+                        aarsakErAnnet &&
+                        'Du må fylle ut for årsak "annet" før du kan fortsette.'
                 }
                 maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}
@@ -108,10 +111,6 @@ export const IkkeAktuellModal = ({
             )}
           </>
         </RadioGroup>
-        <Alert variant="info" className="mt-4">
-          Når du lagrer så blir det sendt varsel til bruker. Har personen registrert seg i KRR så
-          blir det sendt brev. Arrangør og bruker ser endringen.
-        </Alert>
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"

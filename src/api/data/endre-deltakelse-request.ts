@@ -12,6 +12,8 @@ export enum EndreDeltakelseType {
   AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE'
 }
 
+export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
+
 export const aarsakSchema = z.object({
   type: z.nativeEnum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
@@ -53,3 +55,9 @@ export const avsluttDeltakelseSchema = z.object({
 })
 
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
+
+export const endreSluttarsakSchema = z.object({
+  aarsak: aarsakSchema
+})
+
+export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
