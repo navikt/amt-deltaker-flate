@@ -40,7 +40,7 @@ export const EndreSluttarsakModal = ({
 
   const sendEndring = () => {
     if (valgtArsak) {
-      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse && beskrivelse?.length <= 40)) {
+      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse && !harForLangAnnetBeskrivelse)) {
         doFetchEndreSluttarsak(pamelding.deltakerId, enhetId, {
           aarsak: {
             type: valgtArsak,
