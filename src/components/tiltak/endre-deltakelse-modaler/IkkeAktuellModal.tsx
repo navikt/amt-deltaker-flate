@@ -5,10 +5,9 @@ import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferred
 import { endreDeltakelseIkkeAktuell } from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
-import { BESKRIVELSE_MAX_TEGN } from '../../../model/PameldingFormValues'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import {BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 
 interface IkkeAktuellModalProps {
@@ -103,7 +102,7 @@ export const IkkeAktuellModal = ({
                   aarsakErAnnet &&
                   'Du må fylle ut for årsak "annet" før du kan fortsette.'
                 }
-                maxLength={BESKRIVELSE_MAX_TEGN}
+                maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}
               />
             )}
