@@ -53,3 +53,9 @@ export const avsluttDeltakelseSchema = z.object({
 })
 
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
+
+export const endreSluttarsakSchema = z.object({
+  aarsak: aarsakSchema
+})
+
+export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>

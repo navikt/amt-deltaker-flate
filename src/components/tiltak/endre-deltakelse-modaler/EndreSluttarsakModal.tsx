@@ -1,0 +1,124 @@
+import {Alert, BodyLong, Heading, Modal, Radio, RadioGroup, Textarea} from '@navikt/ds-react'
+import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding'
+import { useState } from 'react'
+import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
+import {endreDeltakelseSluttarsak} from '../../../api/api'
+import { useAppContext } from '../../../AppContext'
+import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
+import { BESKRIVELSE_MAX_TEGN } from '../../../model/PameldingFormValues'
+import {getDeltakerStatusAarsakTyperAsList} from '../../../utils/utils'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
+import { ModalFooter } from '../../ModalFooter.tsx'
+
+interface EndreSluttarsakModalProps {
+  pamelding: PameldingResponse
+  open: boolean
+  onClose: () => void
+  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+}
+
+export const EndreSluttarsakModal = ({
+  pamelding,
+  open,
+  onClose,
+  onSuccess
+}: EndreSluttarsakModalProps) => {
+  const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
+  const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
+  const [hasError, setHasError] = useState<boolean>(false)
+
+  const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
+  const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
+  const { enhetId } = useAppContext()
+
+  const {
+    state: endreDeltakelseState,
+    error: endreDeltakelseError,
+    doFetch: doFetchEndreSluttarsak
+  } = useDeferredFetch(endreDeltakelseSluttarsak)
+
+  const sendEndring = () => {
+    if (valgtArsak) {
+      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse)) {
+        doFetchEndreSluttarsak(pamelding.deltakerId, enhetId, {
+          aarsak: {
+            type: valgtArsak,
+            beskrivelse: beskrivelse
+          }
+        }).then((data) => {
+          onSuccess(data)
+        })
+      } else setHasError(true)
+    } else setHasError(true)
+  }
+
+  return (
+    <Modal
+      open={open}
+      header={{
+        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_SLUTTARSAK} />,
+        heading: 'Endre sluttårsak'
+      }}
+      onClose={onClose}
+    >
+      <Modal.Body>
+        {endreDeltakelseState === DeferredFetchState.ERROR && (
+          <Alert variant="error" className="mt-4 mb-4">
+            <Heading size="small" spacing level="3">
+                Det skjedde en feil.
+            </Heading>
+            {endreDeltakelseError}
+          </Alert>
+        )}
+        <BodyLong size="small" className="mb-4">
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+        </BodyLong>
+        <RadioGroup
+          legend="Hva er årsaken til avslutning?"
+          size="small"
+          error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
+          onChange={(value: DeltakerStatusAarsakType) => {
+            setValgtArsak(value)
+            setHasError(false)
+          }}
+          value={valgtArsak}
+        >
+          <>
+            {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
+              <Radio value={arsakType} key={arsakType}>
+                {getDeltakerStatusAarsakTypeText(arsakType)}
+              </Radio>
+            ))}
+            {valgtArsak === DeltakerStatusAarsakType.ANNET && (
+              <Textarea
+                onChange={(e) => {
+                  setBeskrivelse(e.target.value)
+                  setHasError(false)
+                }}
+                value={beskrivelse ?? ''}
+                minRows={1}
+                rows={1}
+                size="small"
+                label={null}
+                error={
+                  hasError &&
+                        aarsakErAnnet &&
+                        'Du må fylle ut for årsak "annet" før du kan fortsette.'
+                }
+                maxLength={BESKRIVELSE_MAX_TEGN}
+                aria-label={'Beskrivelse for Annet'}
+              />
+            )}
+          </>
+        </RadioGroup>
+      </Modal.Body>
+      <ModalFooter
+        confirmButtonText="Lagre"
+        onConfirm={sendEndring}
+        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+      />
+    </Modal>
+  )
+}

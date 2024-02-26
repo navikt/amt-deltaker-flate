@@ -10,7 +10,7 @@ import {
   EndreBakgrunnsinfoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
-  IkkeAktuellRequest
+  IkkeAktuellRequest, EndreSluttarsakRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
@@ -327,6 +327,19 @@ export class MockHandler {
       oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
       oppdatertPamelding.status.aarsak = request.aarsak
       oppdatertPamelding.sluttdato = request.sluttdato
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseSluttarsak(request: EndreSluttarsakRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
+      oppdatertPamelding.status.aarsak = request.aarsak
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

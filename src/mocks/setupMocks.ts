@@ -13,7 +13,7 @@ import {
   endreBakgrunnsinfoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
-  ikkeAktuellSchema
+  ikkeAktuellSchema, endreSluttarsakSchema
 } from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()
@@ -110,6 +110,16 @@ export const worker = setupWorker(
       .json()
       .then((json) => endreSluttdatoSchema.parse(json))
       .then((body) => handler.endreDeltakelseSluttdato(body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/sluttarsak', async ({ request }) => {
+    await delay(100)
+
+    const response = await request
+      .json()
+      .then((json) => endreSluttarsakSchema.parse(json))
+      .then((body) => handler.endreDeltakelseSluttarsak(body))
 
     return response
   }),
