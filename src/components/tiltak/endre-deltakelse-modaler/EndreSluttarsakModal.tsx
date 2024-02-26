@@ -29,6 +29,7 @@ export const EndreSluttarsakModal = ({
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
+  const harForLangAnnetBeskrivelse = harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
   const { enhetId } = useAppContext()
 
   const {
@@ -39,7 +40,7 @@ export const EndreSluttarsakModal = ({
 
   const sendEndring = () => {
     if (valgtArsak) {
-      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse)) {
+      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse && !harForLangAnnetBeskrivelse)) {
         doFetchEndreSluttarsak(pamelding.deltakerId, enhetId, {
           aarsak: {
             type: valgtArsak,
@@ -101,9 +102,11 @@ export const EndreSluttarsakModal = ({
                 size="small"
                 label={null}
                 error={
-                  hasError &&
-                        aarsakErAnnet &&
-                        'Du må fylle ut for årsak "annet" før du kan fortsette.'
+                  (hasError &&
+                      (aarsakErAnnet && !harForLangAnnetBeskrivelse &&
+                        'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
+                      (harForLangAnnetBeskrivelse && `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
+                  )
                 }
                 maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}
