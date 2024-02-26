@@ -9,6 +9,7 @@ import {
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
 import {
   avsluttDeltakelseSchema,
+  endreSluttdatoSchema,
   endreBakgrunnsinfoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
@@ -99,6 +100,16 @@ export const worker = setupWorker(
       .json()
       .then((json) => endreBakgrunnsinfoSchema.parse(json))
       .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/sluttdato', async ({ request }) => {
+    await delay(1000)
+
+    const response = await request
+      .json()
+      .then((json) => endreSluttdatoSchema.parse(json))
+      .then((body) => handler.endreDeltakelseSluttdato(body))
 
     return response
   }),

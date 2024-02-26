@@ -1,12 +1,12 @@
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, Dropdown } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
-import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding'
-import { EndringTypeIkon } from './EndringTypeIkon'
-import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request'
-import { usePameldingCOntext } from './PameldingContext'
-import { ModalController } from './endre-deltakelse-modaler/ModalController'
-import { getEndreDeltakelseTypeText } from '../../utils/displayText'
+import {PencilIcon} from '@navikt/aksel-icons'
+import {Button, Dropdown} from '@navikt/ds-react'
+import {useRef, useState} from 'react'
+import {DeltakerStatusType, PameldingResponse} from '../../api/data/pamelding'
+import {EndringTypeIkon} from './EndringTypeIkon'
+import {EndreDeltakelseType} from '../../api/data/endre-deltakelse-request'
+import {usePameldingCOntext} from './PameldingContext'
+import {ModalController} from './endre-deltakelse-modaler/ModalController'
+import {getEndreDeltakelseTypeText} from '../../utils/displayText'
 import {dateStrToNullableDate} from '../../utils/utils.ts'
 
 const hentEndreDeltakelseKnappValg = (
@@ -54,6 +54,11 @@ export const EndreDeltakelseKnapp = () => {
     pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
     pamelding.status.type === DeltakerStatusType.DELTAR
 
+  const deltakerHarSluttetEllerFullfort =
+      pamelding.status.type === DeltakerStatusType.HAR_SLUTTET ||
+      pamelding.status.type === DeltakerStatusType.FULLFORT ||
+      pamelding.status.type === DeltakerStatusType.AVBRUTT
+
   return (
     <>
       <Dropdown>
@@ -78,6 +83,8 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
             {pamelding.status.type === DeltakerStatusType.DELTAR &&
                 hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
+            {deltakerHarSluttetEllerFullfort &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTDATO, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
