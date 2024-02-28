@@ -1,8 +1,6 @@
 import { Alert, Button, Heading, HelpText } from '@navikt/ds-react'
-import { PameldingFormValues, generateFormDefaultValues } from '../../model/PameldingFormValues.ts'
+import { generateFormDefaultValues, PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
-import { TILBAKE_PAGE } from '../../Routes.tsx'
-import { useAppRedirection } from '../../hooks/useAppRedirection.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
 import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
@@ -11,6 +9,7 @@ import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-
 import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
 import { ArrowForwardIcon } from '@navikt/aksel-icons'
 import { useFormContext } from 'react-hook-form'
+import { TabId, useModiaLink } from '../../hooks/useModiaLink.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -27,8 +26,9 @@ export const MeldPaDirekteButton = ({
   className,
   disableForm
 }: Props) => {
-  const { doRedirect } = useAppRedirection()
-  const { enhetId } = useAppContext()
+
+  const { doRedirect } = useModiaLink()
+  const { enhetId, deltakerlisteId } = useAppContext()
 
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled)
   const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
@@ -43,7 +43,7 @@ export const MeldPaDirekteButton = ({
       : 'Meld på uten godkjent utkast'
 
   const returnToFrontpage = () => {
-    doRedirect(TILBAKE_PAGE)
+    doRedirect(TabId.AKTIVITETSPLAN, `/arbeidsmarkedstiltak/tiltak/${deltakerlisteId}`)
   }
 
   const {
