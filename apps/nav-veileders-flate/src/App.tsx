@@ -36,6 +36,7 @@ const App = () => {
             Vi beklager, men noe gikk galt
           </Heading>
           {error}
+          <div></div>
         </Alert>
       </>
     )

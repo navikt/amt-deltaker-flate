@@ -1,20 +1,45 @@
-# amt-deltaker-flate
+# amt-deltaker
 
-## Teste i dev
-For å teste i dev på nais-device, sørg for at den er grønn og gå inn på veilarbpersonflate: https://veilarbpersonflate.intern.dev.nav.no/
+Dett er et monorepo for amt deltaker flater for NAV-veileder og innbygger.
 
+## monorepo
 
-Web component blir lastet inn i team VALP sin web-component 'mulighetsrommet-veileder-flate' i `veilarbpersonflate` under fanen Arbeidsmarkedstiltak.
+Vi bruker turborepo med pnpm.
+apps har flatene, shared-cinfig har oppsett for typescript og eslint.
 
-## Kom i gang
+- `nav-veileders-falte`: react app som webcomponent.
+- `shared-config`: another [Next.js](https://nextjs.org/) app
+- `@repo/eslint-config`: `eslint` config
+- `@repo/typescript-config`: `tsconfig.json` delt gjennom hele monorepoet
 
-1. Intstaller amt-deltaker-flate:  `pnpm i`
-2. Start appen lokalt: `pnpm start`
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-# Henvendelser
+### Utilities
 
-Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på github.
+Turborepo er satt opp med:
 
-## For NAV-ansatte
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
 
-Interne henvendelser kan sendes via Slack i kanalen #team_komet.
+### Build
+
+Bygg alt ved å stå i rot:
+
+```
+cd amt-deltaker
+pnpm build
+```
+
+### Kjør appper lokalt
+
+```
+cd amt-deltaker
+pnpm start
+```
+
+## tips
+
+`turbo.json` inneholder oppgaver / tasks som turbo kan kjøre. Når vi i `package.json` har scripts som sier `turbo test` er det test-oppgaven i `turbo.json` som kalles. Nye scripts som skal kjøres fra rot må deifneres der. Oppgavene må ha navn som samsvarer med scripts i de ulike appenes `package.json`
+
+nye workspaces må defineres i `pnpm-workspace.yaml`

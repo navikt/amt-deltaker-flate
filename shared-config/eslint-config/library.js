@@ -1,5 +1,10 @@
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   root: true,
+  globals: {
+    React: true,
+    JSX: true
+  },
   env: {
     browser: true,
     es2021: true
@@ -12,15 +17,18 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   ignorePatterns: [
     '.eslintrc.*',
-    '**/dist/*.js',
     '**/build/*.js',
     'vite.config.ts',
     '/server/server.js',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'node_modules/',
+    'build/'
   ],
   plugins: ['@typescript-eslint', 'jsx-a11y', 'react'],
   extends: [
     'eslint:recommended',
+    'prettier',
+    'eslint-config-turbo',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:jsx-a11y/recommended',

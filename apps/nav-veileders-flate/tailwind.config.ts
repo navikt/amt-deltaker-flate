@@ -270,10 +270,10 @@ const config: Config = {
         '1-alt': '0.375rem'
       },
       zIndex: {
-        modal: 2000,
-        popover: 1000,
-        focus: 10,
-        tooltip: 3000
+        modal: '2000',
+        popover: '1000',
+        focus: '10',
+        tooltip: '3000'
       },
       boxShadow: {
         focus: '0 0 0 3px rgba(0, 52, 125, 1)',
