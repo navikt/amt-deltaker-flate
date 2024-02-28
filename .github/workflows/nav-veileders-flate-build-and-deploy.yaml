@@ -1,7 +1,13 @@
-name: Deploy application
+name: Deploy application nav-veileders-flate
 on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   push:
+    paths:
+      - .github/workflows/nav-veileders-flate-build-and-deploy.yaml
+      - package.json
+      - package-lock.json
+      - turbo.json
+      - apps/nav-veileders-flate/**
     branches:
       - main
 env:
@@ -17,23 +23,31 @@ jobs:
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 8.13.1
+          version: 8.15.4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '21'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/turbo
+          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turborepo-${{ github.ref_name }}-
+            turborepo-
       - name: Run tests
-        run: pnpm test
+        run: pnpm test:no-watch --filter=nav-veileders-flate
       - name: Build application
-        run: pnpm build
+        run: pnpm build --filter=nav-veileders-flate
       - name: Upload frontend asset files
         uses: actions/upload-artifact@v4
         with:
           name: frontend-assets
-          path: build
+          path: apps/nav-veileders-flate/build
           retention-days: 1
 
   deploy-dev:
@@ -47,7 +61,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-assets
-          path: build
+          path: apps/nav-veileders-flate/build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -56,7 +70,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltaker-flate-dev
+        run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev
 
   deploy-prod:
     name: Deploy application to prod
@@ -71,7 +85,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-assets
-          path: build
+          path: apps/nav-veileders-flate/build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -80,7 +94,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltaker-flate-prod
+        run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-prod
       - name: Create release
         uses: actions/create-release@v1
         env:

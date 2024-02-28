@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:pull-request": "turbo build:pull-request",
     "start": "turbo start --parallel",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",

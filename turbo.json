@@ -6,6 +6,10 @@
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
     },
+    "build:pull-request": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**"]
+    },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
