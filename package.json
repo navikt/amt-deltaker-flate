@@ -1,5 +1,5 @@
 {
-  "name": "amt-deltaker",
+  "name": "amt-deltaker-flate",
   "private": true,
   "scripts": {
     "build": "turbo build",
