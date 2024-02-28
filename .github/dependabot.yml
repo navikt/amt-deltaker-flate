@@ -14,9 +14,16 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
     groups:
-      minor-and-patch:
+      nav-designsystem:
         patterns:
-          - "*"
+          - "@navikt/aksel-*"
+          - "@navikt/ds-*"
+      minor-and-patch:
+        exclude-patterns:
+          - "react"
+          - "react-dom"
+          - "@navikt/aksel-*"
+          - "@navikt/ds-*"
         update-types:
           - "minor"
           - "patch"

@@ -18,9 +18,9 @@
     "prettier": "^3.1.1",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.9.0",
+  "packageManager": "pnpm@8.15.4",
   "engines": {
-    "node": ">=20"
+    "node": ">=21"
   },
   "lint-staged": {
     "apps/**/*.{js,jsx,ts,tsx}": [
