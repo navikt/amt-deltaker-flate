@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+        uses: ./.github/actions/setup-frontend.yaml
       - name: Run tests
         run: pnpm test:no-watch --filter=nav-veileders-flate
       - name: Build application

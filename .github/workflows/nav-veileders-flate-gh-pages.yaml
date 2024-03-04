@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+        uses: ./.github/actions/setup-frontend.yaml
       - name: Build mock application
         run: pnpm build:gh-pages --base amt-deltaker-flate
       - name: Setup Pages

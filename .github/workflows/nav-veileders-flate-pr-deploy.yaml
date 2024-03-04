@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+        uses: ./.github/actions/setup-frontend.yaml
       - name: Build Pull Request Application
         run: pnpm build:pull-request --base=/pr-${{ github.event.number }}/ --filter=nav-veileders-flate
       - name: Authenticate to Google Cloud

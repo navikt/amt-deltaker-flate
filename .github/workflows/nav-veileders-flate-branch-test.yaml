@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+        uses: ./.github/actions/setup-frontend.yaml
       - name: Lint
         run: pnpm lint --filter=nav-veileders-flate
       - name: Run tests
