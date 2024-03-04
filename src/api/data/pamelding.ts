@@ -102,9 +102,7 @@ export const pameldingSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   bakgrunnsinformasjon: z.string().nullable(),
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
-  vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
-  sistEndretAv: z.string(),
-  sistEndret: z.string()
+  vedtaksinformasjon: vedtaksinformasjonSchema.nullable()
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
