@@ -1,6 +1,13 @@
-name: Update GitHub Pages
+name: Update GitHub Pages for nav-veileders-flate
 on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/gh-pages.yaml
+  paths:
+      - .github/actions/**
+      - .github/workflows/nav-veileders-flate-gh-pages.yaml
+      - package.json
+      - package-lock.json
+      - turbo.json
+      - apps/nav-veileders-flate/**
   push:
     branches:
       - main
@@ -30,27 +37,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 8.13.1
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
       - name: Build mock application
-        run: pnpm run build:gh-pages --base amt-deltaker-flate
+        run: pnpm build:gh-pages --base amt-deltaker-flate
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist repository
-          path: './build'
+          # Upload build repository
+          path: apps/nav-veileders-flate/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
