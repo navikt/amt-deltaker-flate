@@ -1,10 +1,10 @@
-name: Deploy NAIS poao-frontend to prod for nav-veileders-flate
+name: Deploy NAIS poao-frontend to prod
 on:
   workflow_dispatch:
   push:
     paths:
-      - apps/nav-veileders-flate/nais/nais-prod.yaml
-      - ".github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml"
+      - "nais/nais-prod.yaml"
+      - ".github/workflows/deploy-poao-frontend-prod.yaml"
 
 jobs:
   deploy-prod:
@@ -20,5 +20,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: apps/nav-veileders-flate/nais/nais-prod.yaml
+          RESOURCE: nais/nais-prod.yaml
           PRINT_PAYLOAD: true
