@@ -10,7 +10,8 @@ import {
   EndreBakgrunnsinfoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
-  IkkeAktuellRequest, EndreSluttarsakRequest
+  IkkeAktuellRequest,
+  EndreSluttarsakRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
@@ -58,9 +59,7 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
       sistEndret: dayjs().toString(),
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'NAV Fredrikstad'
-    },
-    sistEndretAv: 'Veileder',
-    sistEndret: yesterday.toString()
+    }
   }
 }
 
@@ -184,9 +183,7 @@ export class MockHandler {
         sistEndret: today.toString(),
         sistEndretAv: 'Navn Navnesen',
         sistEndretAvEnhet: 'NAV Fredrikstad'
-      },
-      sistEndretAv: 'Veileder',
-      sistEndret: yesterday.toString()
+      }
     }
 
     this.pamelding = nyPamelding
