@@ -2,6 +2,7 @@ name: Branch Lint and Test for nav-veileders-flate
 on:
   push:
     paths:
+      - .github/actions/**
       - .github/workflows/nav-veileders-flate-branch-test.yaml
       - package.json
       - package-lock.json

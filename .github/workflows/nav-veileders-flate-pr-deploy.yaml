@@ -3,6 +3,7 @@ on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   pull_request:
     paths:
+      - .github/actions/**
       - .github/workflows/nav-veileders-flate-pr-deploy.yaml
       - package.json
       - package-lock.json
