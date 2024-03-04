@@ -6,15 +6,14 @@ runs:
   steps:
     - uses: pnpm/action-setup@v3
       with:
-        version: 8.15.4
+        version: 8.13.1
     - name: Setup node
       uses: actions/setup-node@v4
       with:
-        node-version: '21'
+        node-version: '20'
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
-      shell: bash
       env:
         NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
     - name: Cache Turborepo
