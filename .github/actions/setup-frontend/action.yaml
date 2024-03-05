@@ -1,6 +1,12 @@
 name: Setup frontend
 description: Steps for setup of the frontend modules
 
+on:
+  workflow_call:  # Indicates that this is a reusable workflow
+    secrets:
+      NODE_AUTH_TOKEN:
+        required: true
+
 runs:
   using: composite
   steps:
@@ -17,7 +23,7 @@ runs:
       run: pnpm install --frozen-lockfile
       shell: bash
       env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
     - name: Cache Turborepo
       uses: actions/cache@v4
       with:
