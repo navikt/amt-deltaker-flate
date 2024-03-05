@@ -1,0 +1,42 @@
+name: Setup frontend
+description: Steps for setup of the frontend modules
+
+on:
+  workflow_call:  # Indicates that this is a reusable workflow
+    secrets:
+      NODE_AUTH_TOKEN:
+        required: true
+
+jobs:
+  setup-frontend:
+    name: Set up frontend and install dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: "read"
+      packages: "write"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8.15.4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+          registry-url: "https://npm.pkg.github.com"
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/turbo
+          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turborepo-${{ github.ref_name }}-
+            turborepo-
