@@ -48,7 +48,7 @@ jobs:
             turborepo-${{ github.ref_name }}-
             turborepo-
       - name: Build Pull Request Application
-        run: pnpm build:pull-request --base=/pr-${{ github.event.number }}/ --filter=nav-veileders-flate
+        run: pnpm build:pull-request -- --base=/pr-${{ github.event.number }}/ --filter=nav-veileders-flate
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
