@@ -12,8 +12,6 @@ apps har flatene, shared-cinfig har oppsett for typescript og eslint.
 - `@repo/eslint-config`: `eslint` config
 - `@repo/typescript-config`: `tsconfig.json` delt gjennom hele monorepoet
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
 ### Utilities
 
 Turborepo er satt opp med:
@@ -27,14 +25,14 @@ Turborepo er satt opp med:
 Bygg alt ved å stå i rot:
 
 ```
-cd amt-deltaker
+cd amt-deltaker-flate
 pnpm build
 ```
 
 ### Kjør appper lokalt
 
 ```
-cd amt-deltaker
+cd amt-deltaker-flate
 pnpm start
 ```
 
