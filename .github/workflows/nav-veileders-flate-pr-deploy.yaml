@@ -20,15 +20,33 @@ jobs:
     if: github.event.pull_request.head.repo.fork != true
     name: Deploy Pull Request Branch - nav-veileders-flate
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
-      contents: "read"
-      packages: "write"
       id-token: 'write' # Used to authenticate with Google Cloud
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8.15.4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+          registry-url: "https://npm.pkg.github.com"
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/turbo
+          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turborepo-${{ github.ref_name }}-
+            turborepo-
       - name: Build Pull Request Application
         run: pnpm build:pull-request --base=/pr-${{ github.event.number }}/ --filter=nav-veileders-flate
       - name: Authenticate to Google Cloud
