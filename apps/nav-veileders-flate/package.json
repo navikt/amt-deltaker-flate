@@ -47,7 +47,7 @@
     "autoprefixer": "^10.4.17",
     "cpy-cli": "^5.0.0",
     "eslint": "^8.56.0",
-    "@repo/eslint-config": "workspace:*",
+    "@repo/eslint-config": "*",
     "jsdom": "^24.0.0",
     "postcss": "^8.4.35",
     "rollup-plugin-import-map": "^3.0.0",

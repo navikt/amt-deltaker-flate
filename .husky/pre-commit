@@ -1,2 +1,2 @@
 npx lint-staged
-pnpm test:no-watch
+npm run test:no-watch
