@@ -11,7 +11,6 @@ on:
       - apps/nav-veileders-flate/**
     branches:
       - main
-      - oppsett_av_turborepo_monorepo
 env:
   CI: true
   TZ: Europe/Oslo
