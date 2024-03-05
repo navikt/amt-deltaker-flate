@@ -1,10 +1,6 @@
 {
   "name": "amt-deltaker-flate",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "shared-config/*"
-  ],
   "scripts": {
     "build": "turbo build",
     "build:pull-request": "turbo build:pull-request",
@@ -16,8 +12,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "^3.1.1",
