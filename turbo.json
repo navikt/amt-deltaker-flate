@@ -10,6 +10,10 @@
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
     },
+    "build:gh-pages": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**"]
+    },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
