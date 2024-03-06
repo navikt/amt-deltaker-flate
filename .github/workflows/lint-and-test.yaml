@@ -1,13 +1,6 @@
 name: Branch Lint and Test
 on:
   push:
-    paths:
-      - .github/actions/**
-      - .github/workflows/nav-veileders-flate-branch-test.yaml
-      - package.json
-      - package-lock.json
-      - turbo.json
-      - apps/nav-veileders-flate/**
     branches-ignore:
       - main
 env:

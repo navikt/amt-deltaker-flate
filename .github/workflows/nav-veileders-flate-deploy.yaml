@@ -2,13 +2,9 @@ name: Deploy application
 on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   push:
-    paths:
-      - .github/actions/**
-      - .github/workflows/nav-veileders-flate-deploy.yaml
-      - package.json
-      - package-lock.json
-      - turbo.json
-      - apps/nav-veileders-flate/**
+    # paths-ignore:
+      # - .github/workflows/nav-veileders-flate-deploy.yaml
+      # - apps/nav-veileders-flate/**
     branches:
       - main
 env:
