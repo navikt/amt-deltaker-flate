@@ -1,4 +1,4 @@
-import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants'
+import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { worker } from './mocks/setupMocks.ts'
 import {
   EndpointHandler,
@@ -8,7 +8,7 @@ import {
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
-  import('./webComponentWrapper').then(({ Deltaker }) => {
+  import('./webComponentWrapper.tsx').then(({ Deltaker }) => {
     customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
   })
 }

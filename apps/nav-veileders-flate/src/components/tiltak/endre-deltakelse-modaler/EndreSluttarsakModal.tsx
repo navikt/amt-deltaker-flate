@@ -1,13 +1,16 @@
-import {Alert, BodyLong, Heading, Modal, Radio, RadioGroup, Textarea} from '@navikt/ds-react'
-import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding'
+import { Alert, BodyLong, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
-import {endreDeltakelseSluttarsak} from '../../../api/api'
-import { useAppContext } from '../../../AppContext'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
-import {getDeltakerStatusAarsakTyperAsList} from '../../../utils/utils'
+import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
+import { useAppContext } from '../../../AppContext.tsx'
+import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
+import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import {BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
+import {
+  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
+  EndreDeltakelseType
+} from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 
 interface EndreSluttarsakModalProps {
@@ -29,7 +32,8 @@ export const EndreSluttarsakModal = ({
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
-  const harForLangAnnetBeskrivelse = harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
+  const harForLangAnnetBeskrivelse =
+    harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
   const { enhetId } = useAppContext()
 
   const {
@@ -66,7 +70,7 @@ export const EndreSluttarsakModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <Alert variant="error" className="mt-4 mb-4">
             <Heading size="small" spacing level="3">
-                Det skjedde en feil.
+              Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
@@ -103,10 +107,11 @@ export const EndreSluttarsakModal = ({
                 label={null}
                 error={
                   (hasError &&
-                      (aarsakErAnnet && !harForLangAnnetBeskrivelse &&
-                        'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
-                      (harForLangAnnetBeskrivelse && `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
-                  )
+                    aarsakErAnnet &&
+                    !harForLangAnnetBeskrivelse &&
+                    'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
+                  (harForLangAnnetBeskrivelse &&
+                    `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
                 }
                 maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}

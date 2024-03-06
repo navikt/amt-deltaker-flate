@@ -23,19 +23,28 @@ jobs:
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 8.13.1
+          version: 8.15.4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '21'
+          registry-url: "https://npm.pkg.github.com"
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/turbo
+          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turborepo-${{ github.ref_name }}-
+            turborepo-
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint --filter=nav-veileders-flate
       - name: Run tests
-        run: pnpm test
+        run: pnpm test:no-watch --filter=nav-veileders-flate
       - name: Build
-        run: pnpm build
+        run: pnpm build --filter=nav-veileders-flate

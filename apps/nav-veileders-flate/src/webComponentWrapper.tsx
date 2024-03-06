@@ -1,9 +1,9 @@
 import appCss from './app.css?inline'
-import {createRoot} from 'react-dom/client'
-import {APPLICATION_WEB_COMPONENT_NAME} from './constants'
-import {AppContextProvider} from './AppContext'
-import {AppRoutes} from './Routes.tsx'
-import {BrowserRouter} from 'react-router-dom'
+import { createRoot } from 'react-dom/client'
+import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
+import { AppContextProvider } from './AppContext.tsx'
+import { AppRoutes } from './Routes.tsx'
+import { BrowserRouter } from 'react-router-dom'
 
 export class Deltaker extends HTMLElement {
   private readonly root: HTMLDivElement
@@ -27,7 +27,7 @@ export class Deltaker extends HTMLElement {
   // Invoked each time after the element is attached to the DOM
   connectedCallback() {
     // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and Javascript code with it,
-    const shadowRoot = this.attachShadow({mode: 'closed'})
+    const shadowRoot = this.attachShadow({ mode: 'closed' })
     shadowRoot.appendChild(this.root)
 
     // Load styles under this shadowDom-node, not root element

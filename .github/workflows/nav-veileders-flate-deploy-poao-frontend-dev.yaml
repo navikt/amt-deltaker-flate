@@ -1,17 +1,17 @@
-name: Deploy NAIS poao-frontend to dev
+name: Deploy NAIS poao-frontend to dev for nav-veileders-flate
 on:
   workflow_dispatch:
   push:
     paths:
-      - "nais/nais-dev.yaml"
-      - ".github/workflows/deploy-poao-frontend-dev.yaml"
+      - ".github/workflows/.github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml"
+      - apps/nav-veileders-flate/nais/nais-dev.yaml
 
 jobs:
   deploy-dev:
     name: Deploy poao-frontend to dev
     runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
+      id-token: "write" # Needed for `nais/deploy/actions/deploy`
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,5 +19,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-dev.yaml
+          RESOURCE: apps/nav-veileders-flate/nais/nais-dev.yaml
           PRINT_PAYLOAD: true

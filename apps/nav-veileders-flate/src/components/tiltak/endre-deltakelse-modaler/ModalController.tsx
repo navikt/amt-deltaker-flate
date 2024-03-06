@@ -1,12 +1,12 @@
-import {EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request'
-import {PameldingResponse} from '../../../api/data/pamelding'
-import {IkkeAktuellModal} from './IkkeAktuellModal'
-import {ForlengDeltakelseModal} from './ForlengDeltakelseModal.tsx'
-import {EndreOppstartsdatoModal} from './EndreOppstartsdatoModal.tsx'
-import {EndreBakgrunnsinfoModal} from './EndreBakgrunnsinfoModal'
-import {AvsluttDeltakelseModal} from './AvsluttDeltakelseModal.tsx'
-import {EndreSluttdatoModal} from './EndreSluttdatoModal.tsx'
-import {EndreSluttarsakModal} from './EndreSluttarsakModal.tsx'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
+import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
+import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
+import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
+import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
+import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
+import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
@@ -27,7 +27,7 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return <EndreBakgrunnsinfoModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
-      return <AvsluttDeltakelseModal  {...props} />
+      return <AvsluttDeltakelseModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return <EndreSluttdatoModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:

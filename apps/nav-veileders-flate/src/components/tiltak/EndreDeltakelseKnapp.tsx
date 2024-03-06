@@ -1,13 +1,13 @@
-import {PencilIcon} from '@navikt/aksel-icons'
-import {Button, Dropdown} from '@navikt/ds-react'
-import {useRef, useState} from 'react'
-import {DeltakerStatusType, PameldingResponse} from '../../api/data/pamelding'
-import {EndringTypeIkon} from './EndringTypeIkon'
-import {EndreDeltakelseType} from '../../api/data/endre-deltakelse-request'
-import {usePameldingCOntext} from './PameldingContext'
-import {ModalController} from './endre-deltakelse-modaler/ModalController'
-import {getEndreDeltakelseTypeText} from '../../utils/displayText'
-import {dateStrToNullableDate} from '../../utils/utils.ts'
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Button, Dropdown } from '@navikt/ds-react'
+import { useRef, useState } from 'react'
+import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
+import { EndringTypeIkon } from './EndringTypeIkon.tsx'
+import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
+import { usePameldingCOntext } from './PameldingContext.tsx'
+import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
+import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
+import { dateStrToNullableDate } from '../../utils/utils.ts'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,
@@ -47,17 +47,18 @@ export const EndreDeltakelseKnapp = () => {
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 
-  const skalViseForlengKnapp = sluttdato &&
-      (pamelding.status.type === DeltakerStatusType.DELTAR ||
-          (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
+  const skalViseForlengKnapp =
+    sluttdato &&
+    (pamelding.status.type === DeltakerStatusType.DELTAR ||
+      (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
   const statusErVenterPaOppstartEllerDeltar =
     pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
     pamelding.status.type === DeltakerStatusType.DELTAR
 
   const deltakerHarSluttetEllerFullfort =
-      pamelding.status.type === DeltakerStatusType.HAR_SLUTTET ||
-      pamelding.status.type === DeltakerStatusType.FULLFORT ||
-      pamelding.status.type === DeltakerStatusType.AVBRUTT
+    pamelding.status.type === DeltakerStatusType.HAR_SLUTTET ||
+    pamelding.status.type === DeltakerStatusType.FULLFORT ||
+    pamelding.status.type === DeltakerStatusType.AVBRUTT
 
   return (
     <>
@@ -82,11 +83,11 @@ export const EndreDeltakelseKnapp = () => {
             {statusErVenterPaOppstartEllerDeltar &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
             {pamelding.status.type === DeltakerStatusType.DELTAR &&
-                hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
             {deltakerHarSluttetEllerFullfort &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTDATO, openModal)}
             {pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
-                hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTARSAK, openModal)}
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTARSAK, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
