@@ -9,8 +9,8 @@ apps har flatene, shared-cinfig har oppsett for typescript og eslint.
 
 - `nav-veileders-falte`: react app som webcomponent.
 - `shared-config`: another [Next.js](https://nextjs.org/) app
-- `@repo/eslint-config`: `eslint` config
-- `@repo/typescript-config`: `tsconfig.json` delt gjennom hele monorepoet
+- `@amt-deltaker-flate/eslint-config`: `eslint` config
+- `@amt-deltaker-flate/typescript-config`: `tsconfig.json` delt gjennom hele monorepoet
 
 ### Utilities
 
@@ -41,3 +41,11 @@ pnpm start
 `turbo.json` inneholder oppgaver / tasks som turbo kan kjøre. Når vi i `package.json` har scripts som sier `turbo test` er det test-oppgaven i `turbo.json` som kalles. Nye scripts som skal kjøres fra rot må deifneres der. Oppgavene må ha navn som samsvarer med scripts i de ulike appenes `package.json`
 
 nye workspaces må defineres i `pnpm-workspace.yaml`
+
+# Henvendelser
+
+Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på github.
+
+## For NAV-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen #team_komet.

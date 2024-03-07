@@ -2,13 +2,13 @@
 import react from '@vitejs/plugin-react-swc'
 
 // https://vitejs.dev/config/
-export default UserConfigExport => ({
+export default () => ({
   plugins: [react()],
   build: {
     manifest: 'asset-manifest.json',
     outDir: 'build',
     chunkSizeWarningLimit: 1400,
-    sourcemap: true,
+    sourcemap: true
   },
   test: {
     globals: true,
