@@ -4,8 +4,8 @@
   "private": true,
   "license": "MIT",
   "files": [
-    "tailwind.config.js",
-    "postcss.config.js"
+    "postcss.config.js",
+    "tailwind.config.ts"
   ],
   "devDependencies": {
     "@navikt/ds-tailwind": "^6.1.0",
