@@ -1,4 +1,4 @@
-name: Deploy Pull Request Branch - nav-veileders-flate
+name: Deploy Pull Request Branch - innbyggers-flate
 on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   pull_request:
@@ -38,4 +38,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-dev/pr-${{ github.event.number }}
+        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev/pr-${{ github.event.number }}
