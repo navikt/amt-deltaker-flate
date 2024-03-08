@@ -3,11 +3,12 @@ on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   pull_request:
     paths-ignore:
-      - .github/workflows/innbyggers-flate-deploy.yaml
-      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev
-      - .github/workflows/innbyggers-flate-pr-deploy.yaml
-      - .github/workflows/innbyggers-flate-pr-comment-link.yaml
-      - apps/innbyggers-flate/**
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
+      - apps/nav-veileders-flate/**
     branches:
       - main
 env:
@@ -17,7 +18,7 @@ env:
 jobs:
   deploy-pull-request-branch:
     if: github.event.pull_request.head.repo.fork != true
-    name: Deploy Pull Request Branch - nav-veileders-flate
+    name: Deploy Pull Request Branch - innbyggers-flate
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -28,13 +29,13 @@ jobs:
       - name: Setup frontend
         uses: ./.github/actions/setup-frontend
       - name: Build Pull Request Application
-        run: pnpm build:pull-request -- --base=/pr-${{ github.event.number }}/ --filter=nav-veileders-flate
+        run: pnpm build:pull-request -- --base=/pr-${{ github.event.number }}/ --filter=innbyggers-flate
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+          service_account: amt-deltaker-innbyggers-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev/pr-${{ github.event.number }}
+        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev/pr-${{ github.event.number }}

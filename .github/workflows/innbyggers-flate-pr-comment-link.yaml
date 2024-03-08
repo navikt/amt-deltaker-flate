@@ -1,0 +1,26 @@
+name: Opprett lenke til test applikasjon for PR
+on:
+  pull_request:
+    paths-ignore:
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
+      - apps/nav-veileders-flate/**
+    branches:
+      - main
+    types:
+      - opened
+jobs:
+  create-link-to-app:
+    permissions:
+      pull-requests: "write"
+    name: Opprett lenke til test applikasjon for PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Opprett lenke til test applikasjon for PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            URL for testing: https://amt.intern.dev.nav.no/arbeidsmarkedstiltak/pr-${{ github.event.number }}/index.html

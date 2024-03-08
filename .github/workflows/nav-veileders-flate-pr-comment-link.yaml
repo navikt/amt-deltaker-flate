@@ -1,6 +1,12 @@
 name: Opprett lenke til test applikasjon for PR
 on:
   pull_request:
+    paths-ignore:
+      - .github/workflows/innbyggers-flate-deploy.yaml
+      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev
+      - .github/workflows/innbyggers-flate-pr-deploy.yaml
+      - .github/workflows/innbyggers-flate-pr-comment-link.yaml
+      - apps/innbyggers-flate/**
     branches:
       - main
     types:
