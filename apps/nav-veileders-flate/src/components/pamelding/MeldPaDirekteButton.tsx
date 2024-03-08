@@ -26,8 +26,8 @@ export const MeldPaDirekteButton = ({
   className,
   disableForm
 }: Props) => {
-  const { doRedirect } = useModiaLink()
-  const { enhetId, deltakerlisteId } = useAppContext()
+  const {doRedirect} = useModiaLink()
+  const {enhetId, deltakerlisteId} = useAppContext()
 
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled)
   const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
@@ -42,7 +42,7 @@ export const MeldPaDirekteButton = ({
       : 'Meld på uten godkjent utkast'
 
   const returnToFrontpage = () => {
-    doRedirect(TabId.AKTIVITETSPLAN, `/arbeidsmarkedstiltak/tiltak/${deltakerlisteId}`)
+    doRedirect(TabId.ARBEIDSMARKEDSTILTAK, `/arbeidsmarkedstiltak/tiltak/${deltakerlisteId}`)
   }
 
   const {
@@ -97,7 +97,7 @@ export const MeldPaDirekteButton = ({
         <Button
           size="small"
           variant="secondary"
-          icon={<ArrowForwardIcon />}
+          icon={<ArrowForwardIcon/>}
           loading={sendDirekteState === DeferredFetchState.LOADING}
           disabled={isDisabled}
           type="button"

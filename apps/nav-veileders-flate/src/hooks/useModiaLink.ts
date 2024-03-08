@@ -12,6 +12,26 @@ const TabEvents = [
   {
     tabId: TabId.AKTIVITETSPLAN,
     event: 'veilarbpersonflatefs.setAktivitetsplanTab'
+  },
+  {
+    tabId: TabId.DIALOG,
+    event: 'veilarbpersonflatefs.setDialogTab'
+  },
+  {
+    tabId: TabId.OVERBLIKK,
+    event: 'veilarbpersonflatefs.setOverblikkTab'
+  },
+  {
+    tabId: TabId.DIALOG,
+    event: 'veilarbpersonflatefs.setDialogTab'
+  },
+  {
+    tabId: TabId.VEDTAKSSTOTTE,
+    event: 'veilarbpersonflatefs.setVedtakstotteTab'
+  },
+  {
+    tabId: TabId.ARBEIDSMARKEDSTILTAK,
+    event: 'veilarbpersonflatefs.setArbeidsmarkedstiltakTab'
   }
 ]
 
