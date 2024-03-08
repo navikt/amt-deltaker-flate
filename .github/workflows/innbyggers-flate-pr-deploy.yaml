@@ -38,4 +38,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev/pr-${{ github.event.number }}
+        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-dev/pr-${{ github.event.number }}
