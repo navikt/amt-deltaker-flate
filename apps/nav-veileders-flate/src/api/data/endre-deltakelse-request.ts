@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { DeltakerStatusAarsakType } from './pamelding.ts'
+import {innholdDtoSchema} from './send-inn-pamelding-request'
 
 export enum EndreDeltakelseType {
   IKKE_AKTUELL = 'IKKE_AKTUELL',
@@ -61,3 +62,9 @@ export const endreSluttarsakSchema = z.object({
 })
 
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
+
+export const endreInnholdSchema = z.object({
+  innhold: z.array(innholdDtoSchema)
+})
+
+export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>

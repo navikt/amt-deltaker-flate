@@ -11,7 +11,7 @@ import {
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest,
-  EndreSluttarsakRequest
+  EndreSluttarsakRequest, EndreInnholdRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
@@ -339,6 +339,26 @@ export class MockHandler {
       oppdatertPamelding.status.aarsak = request.aarsak
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseInnhold(request: EndreInnholdRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map(( (i) => {
+        const nyInnhold = request.innhold.find( (vi) => vi.innholdskode === i.innholdskode)
+        if (nyInnhold) {
+          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse}
+        } else {
+          return { ...i, valgt: false}
+        }
+      }))
+      oppdatertPamelding.deltakelsesinnhold.innhold = nyListe
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(this.pamelding)
     }
 
     return new HttpResponse(null, { status: 404 })
