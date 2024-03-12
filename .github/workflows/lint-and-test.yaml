@@ -1,0 +1,31 @@
+name: Branch Lint, Test and Build
+on:
+  push:
+    branches-ignore:
+      - main
+env:
+  CI: true
+  TZ: Europe/Amsterdam
+
+jobs:
+  lint-and-test:
+    name: Lint, run tests & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+      packages: "write"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+      - name: Lint
+        run: pnpm lint
+      - name: Run tests
+        run: pnpm test:no-watch
+      - name: Build
+        run: pnpm build
