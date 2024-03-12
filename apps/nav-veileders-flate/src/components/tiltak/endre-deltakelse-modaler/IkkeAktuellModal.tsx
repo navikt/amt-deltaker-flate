@@ -7,7 +7,10 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import {BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
+import {
+  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
+  EndreDeltakelseType
+} from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 
 interface IkkeAktuellModalProps {

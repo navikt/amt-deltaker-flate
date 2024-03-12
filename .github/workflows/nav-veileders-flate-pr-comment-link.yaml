@@ -1,4 +1,4 @@
-name: Opprett lenke til test applikasjon for PR
+name: Opprett lenke til test applikasjon nav-veileders-flate for PR
 on:
   pull_request:
     paths-ignore:
@@ -18,7 +18,7 @@ jobs:
     name: Opprett lenke til test applikasjon for PR
     runs-on: ubuntu-latest
     steps:
-      - name: Opprett lenke til test applikasjon for PR
+      - name: Opprett lenke til test applikasjon nav-veileders-flate for PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |

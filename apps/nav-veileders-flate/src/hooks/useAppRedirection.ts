@@ -1,9 +1,9 @@
-import {useAppContext} from '../AppContext.tsx'
-import {base} from '../Routes.tsx'
+import { useAppContext } from '../AppContext.tsx'
+import { base } from '../Routes.tsx'
 import { useNavigate } from 'react-router-dom'
 
 interface UseAppRedirection {
-    doRedirect: (path: string) => void
+  doRedirect: (path: string) => void
 }
 
 export const useAppRedirection = (): UseAppRedirection => {
@@ -16,6 +16,5 @@ export const useAppRedirection = (): UseAppRedirection => {
     navigate(to)
   }
 
-  return {doRedirect}
-
+  return { doRedirect }
 }

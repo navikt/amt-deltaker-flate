@@ -1,4 +1,4 @@
-name: Opprett lenke til test applikasjon for PR
+name: Opprett lenke til test applikasjon innbyggers-flate for PR
 on:
   pull_request:
     paths-ignore:
@@ -16,7 +16,7 @@ jobs:
   create-link-to-app:
     permissions:
       pull-requests: "write"
-    name: Opprett lenke til test applikasjon for PR
+    name: Opprett lenke til test applikasjon innbyggers-flate for PR
     runs-on: ubuntu-latest
     steps:
       - name: Opprett lenke til test applikasjon for PR

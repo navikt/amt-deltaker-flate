@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-dev:
-    name: Deploy poao-frontend to dev
+    name: Deploy poao-frontend to dev - nav-veileders-flate
     runs-on: ubuntu-latest
     permissions:
       id-token: "write" # Needed for `nais/deploy/actions/deploy`

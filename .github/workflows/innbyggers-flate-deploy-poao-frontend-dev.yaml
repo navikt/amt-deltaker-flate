@@ -1,4 +1,4 @@
-name: Deploy NAIS poao-frontend to dev for nav-veileders-flate
+name: Deploy NAIS poao-frontend to dev for innbyggers-flate
 on:
   workflow_dispatch:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-dev:
-    name: Deploy poao-frontend to dev
+    name: Deploy poao-frontend to dev - innbyggers-flate
     runs-on: ubuntu-latest
     permissions:
       id-token: "write" # Needed for `nais/deploy/actions/deploy`

@@ -23,6 +23,7 @@
       "inputs": ["src/**/*.tsx", "src/**/*.ts"]
     },
     "lint": {},
+    "lint:fix": {},
     "start": {
       "cache": false,
       "persistent": true

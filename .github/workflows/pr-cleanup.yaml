@@ -24,7 +24,7 @@ jobs:
         run: gsutil rm -r gs://amt-deltaker-flate-dev/pr-${{ github.event.number }}
 
   cleanup-pr-innbyggers-flate:
-    if: github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
+    if: github.event.pull_request.head.repo.fork != true
     name: Rydd applikasjon for PR
     runs-on: ubuntu-latest
     permissions:
