@@ -22,9 +22,9 @@ const exportAsWebcomponent = () => {
 exportAsWebcomponent()
 
 export async function enableMocking() {
-  const enpointHandlerType = getEndpointHandlerType()
+  const endpointHandlerType = getEndpointHandlerType()
 
-  if (enpointHandlerType === EndpointHandler.MOCK) {
+  if (endpointHandlerType === EndpointHandler.MOCK) {
     const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
     return worker.start({
       serviceWorker: {
