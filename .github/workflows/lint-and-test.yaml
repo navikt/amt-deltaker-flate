@@ -1,4 +1,4 @@
-name: Branch Lint and Test
+name: Branch Lint, Test and Build
 on:
   push:
     branches-ignore:
@@ -9,7 +9,7 @@ env:
 
 jobs:
   lint-and-test:
-    name: Lint & run tests
+    name: Lint, run tests & build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -21,30 +21,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 8.15.4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '21'
-          registry-url: "https://npm.pkg.github.com"
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Cache Turborepo
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/turbo
-          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turborepo-${{ github.ref_name }}-
-            turborepo-
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
       - name: Lint
-        run: pnpm lint --filter=nav-veileders-flate
+        run: pnpm lint
       - name: Run tests
-        run: pnpm test:no-watch --filter=nav-veileders-flate
+        run: pnpm test:no-watch
       - name: Build
-        run: pnpm build --filter=nav-veileders-flate
+        run: pnpm build

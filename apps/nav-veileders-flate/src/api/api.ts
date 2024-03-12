@@ -1,8 +1,8 @@
-import {PameldingRequest} from './data/pamelding-request.ts'
-import {PameldingResponse, pameldingSchema} from './data/pamelding.ts'
-import {SendInnPameldingRequest} from './data/send-inn-pamelding-request.ts'
-import {SendInnPameldingUtenGodkjenningRequest} from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {deltakerBffApiBasePath} from '../utils/environment-utils.ts'
+import { PameldingRequest } from './data/pamelding-request.ts'
+import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
+import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { deltakerBffApiBasePath } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
   EndreBakgrunnsinfoRequest,
@@ -278,9 +278,7 @@ export const avsluttDeltakelse = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke avslutte deltakelse. Prøv igjen senere. (${response.status})`
-        )
+        throw new Error(`Kunne ikke avslutte deltakelse. Prøv igjen senere. (${response.status})`)
       }
       return response.json()
     })

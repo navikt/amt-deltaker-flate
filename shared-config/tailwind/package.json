@@ -1,0 +1,16 @@
+{
+  "name": "@amt-deltaker-flate/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "postcss.config.js",
+    "tailwind.config.ts"
+  ],
+  "devDependencies": {
+    "@navikt/ds-tailwind": "^6.1.0",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  }
+}

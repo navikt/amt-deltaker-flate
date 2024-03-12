@@ -1,4 +1,4 @@
-import {Alert, Heading} from '@navikt/ds-react'
+import { Alert, Heading } from '@navikt/ds-react'
 
 export const SendTilbakePage = () => {
   return (

@@ -1,14 +1,15 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
-export default UserConfigExport => ({
+export default defineConfig({
   plugins: [react()],
   build: {
     manifest: 'asset-manifest.json',
     outDir: 'build',
     chunkSizeWarningLimit: 1400,
-    sourcemap: true,
+    sourcemap: true
   },
   test: {
     globals: true,

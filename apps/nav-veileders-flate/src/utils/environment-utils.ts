@@ -1,8 +1,8 @@
 export enum EndpointHandler {
-    MOCK = 'MOCK',
-    PROXY = 'PROXY',
-    DEV = 'DEV',
-    PROD = 'PROD'
+  MOCK = 'MOCK',
+  PROXY = 'PROXY',
+  DEV = 'DEV',
+  PROD = 'PROD'
 }
 
 export const getEndpointHandlerType = (): EndpointHandler => {
@@ -16,7 +16,7 @@ export const deltakerBffApiBasePath = (): string => {
     case EndpointHandler.PROXY:
       return 'http://localhost:58080'
     default:
-      if(isDev()) {
+      if (isDev()) {
         return '/amt-deltaker-bff'
       }
 

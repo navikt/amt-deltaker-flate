@@ -9,16 +9,17 @@
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint:fix": "turbo lint:fix",
+    "format": "prettier --config .prettierrc.cjs --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@amt-deltaker-flate/eslint-config": "workspace:*",
+    "@amt-deltaker-flate/typescript-config": "workspace:*",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "prettier": "^3.1.1",
-    "turbo": "^1.12.4"
+    "prettier": "^3.2.5",
+    "turbo": "^1.12.5"
   },
   "lint-staged": {
     "apps/**/*.{js,jsx,ts,tsx}": [
