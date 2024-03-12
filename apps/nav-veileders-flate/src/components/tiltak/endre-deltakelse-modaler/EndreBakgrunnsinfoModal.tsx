@@ -46,7 +46,7 @@ export const EndreBakgrunnsinfoModal = ({
       open={open}
       header={{
         icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO} />,
-        heading: 'Endre bakgrunnsinformasjon'
+        heading: 'Endre bakgrunnsinfo'
       }}
       onClose={onClose}
     >
@@ -72,7 +72,7 @@ export const EndreBakgrunnsinfoModal = ({
           maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
           id="bakgrunnsinformasjon"
           size="small"
-          aria-label={'Bagrunnsinformasjon'}
+          aria-label={'Bagrunnsinfo'}
         />
       </Modal.Body>
       <ModalFooter

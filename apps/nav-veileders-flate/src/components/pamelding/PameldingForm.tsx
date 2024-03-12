@@ -128,7 +128,7 @@ export const PameldingForm = ({
 
           <section className="mb-8">
             <Heading size="medium" level="3" className="mb-4">
-              Bakgrunnsinformasjon
+              Bakgrunnsinfo
             </Heading>
             <Textarea
               label="Er det noe mer dere ønsker å informere arrangøren om?"

@@ -74,7 +74,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
       <div>
         <Heading level="2" size="medium" className="mt-8">
-          Bakgrunnsinformasjon
+          Bakgrunnsinfo
         </Heading>
         <BodyLong size="small" className="mt-2">
           {bakgrunsinformasjon}
