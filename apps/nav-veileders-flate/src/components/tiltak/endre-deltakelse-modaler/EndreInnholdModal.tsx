@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import {generateInnholdFromResponse} from '../../../utils/pamelding-form-utils'
 
-class EndreInnholdModalProps {
+interface EndreInnholdModalProps {
   pamelding: PameldingResponse
   open: boolean
   onClose: () => void
