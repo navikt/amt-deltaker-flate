@@ -30,7 +30,7 @@ export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
       )}
       <div className="mt-4">
         <Heading level="2" size="medium">
-          Bakgrunnsinformasjon
+          Bakgrunnsinfo
         </Heading>
         <BodyLong size="small" className="mt-2">
           {bakgrunnsinfoVisningstekst}

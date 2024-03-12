@@ -21,7 +21,7 @@ export const pameldingFormSchema = z
       .string()
       .max(
         BAKGRUNNSINFORMASJON_MAKS_TEGN,
-        `Bakgrunnsinformasjon kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
+        `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
       )
       .optional(),
     deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
