@@ -7,6 +7,7 @@ import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
 import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
+import { EndreInnholdModal } from './EndreInnholdModal'
 
 interface ModalControllerProps {
   open: boolean
@@ -26,6 +27,8 @@ export const ModalController = (props: ModalControllerProps) => {
       return <EndreOppstartsdatoModal {...props} />
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return <EndreBakgrunnsinfoModal {...props} />
+    case EndreDeltakelseType.ENDRE_INNHOLD:
+      return <EndreInnholdModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
       return <AvsluttDeltakelseModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTDATO:

@@ -93,7 +93,7 @@ export const PameldingForm = ({
                 id="valgteInnhold"
               >
                 {innhold.map((e) => (
-                  <>
+                  <div key={e.innholdskode}>
                     <Checkbox
                       key={e.innholdskode}
                       value={e.innholdskode}
@@ -120,7 +120,7 @@ export const PameldingForm = ({
                         id="innholdAnnetBeskrivelse"
                       />
                     )}
-                  </>
+                  </div>
                 ))}
               </CheckboxGroup>
             )}

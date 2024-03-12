@@ -82,6 +82,8 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
             {statusErVenterPaOppstartEllerDeltar &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
+            {statusErVenterPaOppstartEllerDeltar &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_INNHOLD, openModal)}
             {pamelding.status.type === DeltakerStatusType.DELTAR &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
             {deltakerHarSluttetEllerFullfort &&

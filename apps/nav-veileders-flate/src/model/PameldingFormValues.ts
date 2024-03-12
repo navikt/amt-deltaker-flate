@@ -78,6 +78,10 @@ export const pameldingFormSchema = z
 
 export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
 
+export const generateValgtInnholdKoder = (pamelding: PameldingResponse): string[] => {
+  return pamelding.deltakelsesinnhold?.innhold.filter((i) => i.valgt).map((i) => i.innholdskode) ?? []
+}
+
 export const generateFormDefaultValues = (pamelding: PameldingResponse): PameldingFormValues => {
   const showProsentValg = (): DeltakelsesprosentValg => {
     if (pamelding.deltakelsesprosent && pamelding.deltakelsesprosent < 100) {
@@ -99,8 +103,7 @@ export const generateFormDefaultValues = (pamelding: PameldingResponse): Pameldi
 
   return {
     tilgjengeligInnhold: pamelding.deltakelsesinnhold?.innhold ?? [],
-    valgteInnhold:
-      pamelding.deltakelsesinnhold?.innhold.filter((i) => i.valgt).map((i) => i.innholdskode) ?? [],
+    valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),
