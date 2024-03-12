@@ -53,7 +53,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-innbyggers-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
@@ -77,7 +77,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/337368476147/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-flate-gcs@amt-prod-d4dd.iam.gserviceaccount.com
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
