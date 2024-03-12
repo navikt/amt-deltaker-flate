@@ -32,7 +32,7 @@ export const EndreInnholdModal = ({
   const { enhetId } = useAppContext()
 
   const valgteInnholdAnnetObjekt = innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null>(valgteInnholdAnnetObjekt?.beskrivelse)
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(valgteInnholdAnnetObjekt?.beskrivelse )
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
   const erAnnetValgt = valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 

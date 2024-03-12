@@ -347,7 +347,7 @@ export class MockHandler {
   endreDeltakelseInnhold(request: EndreInnholdRequest) {
     const oppdatertPamelding = this.pamelding
 
-    if (oppdatertPamelding) {
+    if (oppdatertPamelding && oppdatertPamelding.deltakelsesinnhold) {
       const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map(( (i) => {
         const nyInnhold = request.innhold.find( (vi) => vi.innholdskode === i.innholdskode)
         if (nyInnhold) {
