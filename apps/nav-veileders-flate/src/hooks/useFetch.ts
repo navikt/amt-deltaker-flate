@@ -6,11 +6,12 @@ interface UseFetchResult<T> {
   error: string | null
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiFunction<T> = (...args: any[]) => Promise<T>
+type ApiFunction<T, U extends unknown[]> = (...args: U) => Promise<T>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useFetch = <T>(apiFunction: ApiFunction<T>, ...args: any[]): UseFetchResult<T> => {
+const useFetch = <T, U extends unknown[]>(
+  apiFunction: ApiFunction<T, U>,
+  ...args: U
+): UseFetchResult<T> => {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)

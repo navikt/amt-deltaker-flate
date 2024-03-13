@@ -1,19 +1,29 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
+import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import './App.css'
-import useFetch from './hooks/useFetch'
+import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
 import { getDeltakelse } from './api/api'
+import { useEffect } from 'react'
 
 dayjs.locale('nb')
 
-function App() {
+const App = () => {
+  const { deltakerId } = useParams()
   const {
     data: deltaker,
-    loading,
-    error
-  } = useFetch(getDeltakelse, '450e0f37-c4bb-4611-ac66-f725e05bad3e')
+    state,
+    error,
+    doFetch: doFetchDeltakelse
+  } = useDeferredFetch(getDeltakelse)
 
-  if (loading) {
+  useEffect(() => {
+    if (deltakerId) {
+      doFetchDeltakelse(deltakerId)
+    }
+  }, [])
+
+  if (state === DeferredFetchState.LOADING) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader size="3xlarge" title="Venter..." />
@@ -35,7 +45,7 @@ function App() {
   return (
     <Alert variant="info" className="m-4">
       <Heading size="small">Hva har vi?</Heading>
-      Dette er foreløpig alt: {deltaker.deltakerId}
+      Dette er foreløpig alt: {deltaker.status.type}
     </Alert>
   )
 }

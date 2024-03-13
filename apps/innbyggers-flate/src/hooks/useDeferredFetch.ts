@@ -7,27 +7,24 @@ export enum DeferredFetchState {
   ERROR = 'ERROR'
 }
 
-interface UseDeferredFetch<T> {
+interface UseDeferredFetch<T, U extends unknown[]> {
   data: T | null
   state: DeferredFetchState
   error: string | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  doFetch: (...args: any[]) => Promise<T | null>
+  doFetch: (...args: U) => Promise<T | null>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ApiFunction<T> = (...args: any[]) => Promise<T>
+type ApiFunction<T, U extends unknown[]> = (...args: U) => Promise<T>
 
-export const useDeferredFetch = <T>(
-  apiFunction: ApiFunction<T>,
+export const useDeferredFetch = <T, U extends unknown[]>(
+  apiFunction: ApiFunction<T, U>,
   onResolved: (() => void) | undefined = undefined
-): UseDeferredFetch<T> => {
+): UseDeferredFetch<T, U> => {
   const [data, setData] = useState<T | null>(null)
   const [state, setState] = useState<DeferredFetchState>(DeferredFetchState.NOT_STARTED)
   const [error, setError] = useState<string | null>(null)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doFetch = async (...args: any[]): Promise<T | null> => {
+  const doFetch = async (...args: U): Promise<T | null> => {
     try {
       setState(DeferredFetchState.LOADING)
       const result = await apiFunction(...args)

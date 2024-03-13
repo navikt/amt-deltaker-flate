@@ -50,6 +50,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-router-dom:
+        specifier: ^6.22.1
+        version: 6.22.3(react-dom@18.2.0)(react@18.2.0)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -78,6 +81,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.19
         version: 18.2.21
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
@@ -120,9 +126,6 @@ importers:
       '@navikt/ds-tailwind':
         specifier: ^6.1.0
         version: 6.1.1
-      '@types/react-router-dom':
-        specifier: ^5.3.3
-        version: 5.3.3
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -175,6 +178,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.19
         version: 18.2.21
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
@@ -1585,7 +1591,7 @@ packages:
 
   /@types/history@4.7.11:
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
-    dev: false
+    dev: true
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -1624,14 +1630,14 @@ packages:
       '@types/history': 4.7.11
       '@types/react': 18.2.65
       '@types/react-router': 5.1.20
-    dev: false
+    dev: true
 
   /@types/react-router@5.1.20:
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
     dependencies:
       '@types/history': 4.7.11
       '@types/react': 18.2.65
-    dev: false
+    dev: true
 
   /@types/react@18.2.65:
     resolution: {integrity: sha512-98TsY0aW4jqx/3RqsUXwMDZSWR1Z4CUlJNue8ueS2/wcxZOsz4xmW1X8ieaWVRHcmmQM3R8xVA4XWB3dJnWwDQ==}
