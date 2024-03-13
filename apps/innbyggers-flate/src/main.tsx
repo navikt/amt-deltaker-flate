@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { worker } from './mocks/setupMocks.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import {
-  EndpointHandler,
-  getEndpointHandlerType,
-  isEnvLocalDemoOrPr
-} from './utils/environment-utils.ts'
+import { EndpointHandler, getEndpointHandlerType, isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
 import { faro, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 
@@ -26,23 +22,21 @@ export async function enableMocking() {
   }
 }
 
-if (import.meta.env.VITE_FARO_URL) {
-  initializeFaro({
-    url: import.meta.env.VITE_FARO_URL,
-    instrumentations: [...getWebInstrumentations(({captureConsole: true}))],
-    app: {
-      name: 'amt-deltaker-flate'
-    }
-  })
+initializeFaro({
+  url: 'https://telemetry.ekstern.dev.nav.no/collect',
+  instrumentations: [...getWebInstrumentations(({captureConsole: true}))],
+  app: {
+    name: 'amt-deltaker-flate'
+  }
+})
 
-  faro.api.pushLog(['Faro was initialized!'])
-}
+faro.api.pushLog(['Faro was initialized!'])
 
 const renderApp = () => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <BrowserRouter>
-        <AppRoutes />
+        <AppRoutes/>
       </BrowserRouter>
     </React.StrictMode>
   )

@@ -29,8 +29,6 @@ jobs:
         run: pnpm test:no-watch
       - name: Build
         run: pnpm build
-        env:
-          VITE_FARO_URL: https://telemetry.ekstern.dev.nav.no/collect
       - name: Upload frontend asset files
         uses: actions/upload-artifact@v4
         with:
