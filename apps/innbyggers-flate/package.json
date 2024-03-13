@@ -15,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@grafana/faro-web-sdk": "^1.4.2",
     "@hookform/resolvers": "^3.3.4",
     "@navikt/aksel-icons": "^6.1.0",
     "@navikt/ds-css": "^6.1.0",

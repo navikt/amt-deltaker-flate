@@ -9,6 +9,7 @@ import {
   isEnvLocalDemoOrPr
 } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
+import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 
 export async function enableMocking() {
   const endpointHandlerType = getEndpointHandlerType()
@@ -23,6 +24,16 @@ export async function enableMocking() {
       }
     })
   }
+}
+
+if (import.meta.env.VITE_FARO_URL) {
+  initializeFaro({
+    url: import.meta.env.VITE_FARO_URL,
+    instrumentations: [...getWebInstrumentations(({captureConsole: true}))],
+    app: {
+      name: 'amt-deltaker-flate'
+    }
+  })
 }
 
 const renderApp = () => {
