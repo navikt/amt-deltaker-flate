@@ -4,7 +4,7 @@
   "scripts": {
     "build": "turbo build --parallel",
     "build:pull-request": "turbo build:pull-request",
-    "build:gh-pages": "turbo build:gh-pages",
+    "build:demo": "turbo build:demo",
     "start": "turbo start --parallel",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",

@@ -7,6 +7,7 @@
     "start": "NODE_ENV=local vite --mode local-dev",
     "build": "tsc && vite build",
     "build:pull-request": "NODE_ENV=development vite build --mode pull-request",
+    "build:demo": "NODE_ENV=development vite build --mode demo",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

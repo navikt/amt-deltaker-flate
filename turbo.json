@@ -10,7 +10,7 @@
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
     },
-    "build:gh-pages": {
+    "build:demo": {
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
     },
