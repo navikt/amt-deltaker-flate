@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { EndpointHandler, getEndpointHandlerType, isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
-import { faro, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 
 export async function enableMocking() {
   const endpointHandlerType = getEndpointHandlerType()
@@ -21,16 +20,6 @@ export async function enableMocking() {
     })
   }
 }
-
-initializeFaro({
-  url: 'https://telemetry.ekstern.dev.nav.no/collect',
-  instrumentations: [...getWebInstrumentations(({captureConsole: true}))],
-  app: {
-    name: 'amt-deltaker-flate'
-  }
-})
-
-faro.api.pushLog(['Faro was initialized!'])
 
 const renderApp = () => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
