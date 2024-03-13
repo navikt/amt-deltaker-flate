@@ -4,10 +4,10 @@ on:
   push:
     paths:
       - ".github/workflows/.github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml"
-      - apps/innbyggers-flate/nais/nais-dev.yaml
+      - apps/innbyggers-flate/nais/nais-demo.yaml
 
 jobs:
-  deploy-dev:
+  deploy-demo:
     name: Deploy poao-frontend to DEMO - innbyggers-flate
     runs-on: ubuntu-latest
     permissions:
