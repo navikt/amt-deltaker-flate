@@ -3,9 +3,11 @@ on:
   pull_request:
     paths-ignore:
       - .github/workflows/innbyggers-flate-deploy.yaml
-      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev
+      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml
       - .github/workflows/innbyggers-flate-pr-deploy.yaml
       - .github/workflows/innbyggers-flate-pr-comment-link.yaml
+      - .github/workflows/innbyggers-flate-pr-cleanup.yaml
       - apps/innbyggers-flate/**
     branches:
       - main

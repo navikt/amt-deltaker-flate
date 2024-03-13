@@ -6,6 +6,7 @@ on:
       - .github/workflows/nav-veileders-flate-deploy.yaml
       - .github/workflows/nav-veileders-flate-pr-deploy.yaml
       - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-pr-cleanup.yaml
       - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
       - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
       - apps/nav-veileders-flate/**

@@ -1,4 +1,4 @@
-name: Deploy NAIS poao-frontend to prod for nav-veileders-flate
+name: Deploy NAIS poao-frontend to PROD for nav-veileders-flate
 on:
   workflow_dispatch:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-prod:
-    name: Deploy poao-frontend to prod - nav-veileders-flate
+    name: Deploy poao-frontend to PROD - nav-veileders-flate
     if: false # venter med denne til vi er i prod
     runs-on: ubuntu-latest
     permissions:

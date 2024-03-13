@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".github/workflows/.github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml"
+      - ".github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml"
       - apps/innbyggers-flate/nais/nais-demo.yaml
 
 jobs:
