@@ -22,4 +22,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            URL for testing: https://amt-deltaker-flate.intern.dev.nav.no/pr-${{ github.event.number }}/index.html
+            URL for testing av nav-veileders-flate: https://amt-deltaker-flate.intern.dev.nav.no/pr-${{ github.event.number }}/index.html
