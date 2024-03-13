@@ -14,5 +14,6 @@ export default defineConfig({
     port: 3005,
     open: true
   },
+  //  base: process.env.BASE || '/arbeidsmarkedstiltak/',
   plugins: [react()]
 })
