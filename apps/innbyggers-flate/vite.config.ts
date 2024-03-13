@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.BASE || "/arbeidsmarkedstiltak/",
+  //base: process.env.BASE || "/arbeidsmarkedstiltak/",
   build: {
     manifest: 'asset-manifest.json',
     outDir: 'build',
