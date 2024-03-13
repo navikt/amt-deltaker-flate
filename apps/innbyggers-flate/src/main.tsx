@@ -9,7 +9,7 @@ import {
   isEnvLocalDemoOrPr
 } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
+import { faro, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 
 export async function enableMocking() {
   const endpointHandlerType = getEndpointHandlerType()
@@ -34,6 +34,8 @@ if (import.meta.env.VITE_FARO_URL) {
       name: 'amt-deltaker-flate'
     }
   })
+
+  faro.api.pushLog(['Faro was initialized!'])
 }
 
 const renderApp = () => {
