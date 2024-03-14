@@ -9,8 +9,7 @@ on:
 jobs:
   analyze:
     name: Analyze frontend (Typescript)
-    runs-on:
-      labels: ubuntu-latest-8-cores
+    runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
       actions: read
@@ -20,7 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -40,15 +38,6 @@ jobs:
         run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Cache Turborepo
-        uses: actions/cache@v4
-        with:
-          path: node_modules/.cache/turbo
-          key: turborepo-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turborepo-${{ github.ref_name }}-
-            turborepo-
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
