@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom/client'
 import { worker } from './mocks/setupMocks.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import { EndpointHandler, getEndpointHandlerType, isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { useMock, isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
 
 export async function enableMocking() {
-  const endpointHandlerType = getEndpointHandlerType()
-
-  if (endpointHandlerType === EndpointHandler.MOCK) {
+  if (useMock) {
     const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
 
     return worker.start({
@@ -25,7 +23,7 @@ const renderApp = () => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <BrowserRouter>
-        <AppRoutes/>
+        <AppRoutes />
       </BrowserRouter>
     </React.StrictMode>
   )
