@@ -33,14 +33,14 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.0)
       '@navikt/aksel-icons':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       '@navikt/ds-css':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       '@navikt/ds-react':
-        specifier: ^6.1.0
-        version: 6.1.1(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.2.0
+        version: 6.2.0(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -76,8 +76,8 @@ importers:
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@9.3.4)
       '@types/react':
-        specifier: ^18.2.56
-        version: 18.2.65
+        specifier: ^18.2.66
+        version: 18.2.66
       '@types/react-dom':
         specifier: ^18.2.22
         version: 18.2.22
@@ -115,17 +115,17 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.0)
       '@navikt/aksel-icons':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       '@navikt/ds-css':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       '@navikt/ds-react':
-        specifier: ^6.1.0
-        version: 6.1.1(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.2.0
+        version: 6.2.0(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/ds-tailwind':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -173,8 +173,8 @@ importers:
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@9.3.4)
       '@types/react':
-        specifier: ^18.2.58
-        version: 18.2.65
+        specifier: ^18.2.66
+        version: 18.2.66
       '@types/react-dom':
         specifier: ^18.2.22
         version: 18.2.22
@@ -251,8 +251,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^6.1.0
-        version: 6.1.1
+        specifier: ^6.2.0
+        version: 6.2.0
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.18(postcss@8.4.35)
@@ -959,16 +959,16 @@ packages:
       outvariant: 1.4.2
       strict-event-emitter: 0.5.1
 
-  /@navikt/aksel-icons@6.1.1:
-    resolution: {integrity: sha512-gWPr+AH/N/Jcty4FGY7OnMv8hgGyf8KS0q8y1mbAyIeRY9GhuTVuFA153Pvpyyafp6t9FyilsJUkcMkrJvFySA==}
+  /@navikt/aksel-icons@6.2.0:
+    resolution: {integrity: sha512-nwi68avAIuHLAJxAGdTWKYZ9dMzDn+sTC7imlBrzArIe9m4xxEInQORqr++Li3dHd6/nh7Z63YemWMLs1c/chQ==}
     dev: false
 
-  /@navikt/ds-css@6.1.1:
-    resolution: {integrity: sha512-PrMu7BqZKoTczWfnhxb5XA923WFxG0vN6n4BU6IJ4xVsMkdlDKaSvEA2Y58IFSRGsQEB9TrRc4ChGHRjK7rG5g==}
+  /@navikt/ds-css@6.2.0:
+    resolution: {integrity: sha512-SHVjuqRcKJ2NuvGTAr89KkvwCilBF2O/308EJhJmucmrvvcWt9EP1gPjOclOWd58J3VoNguUx02gwIkZuTUWhg==}
     dev: false
 
-  /@navikt/ds-react@6.1.1(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-u2ycWzZi/DI/T64UrLPz37ApHweMm8PJpyTaa1H86jTo/jHdjLelwprF0bzMMVYuSz9O0YlXHSB7y8TeY+TDgQ==}
+  /@navikt/ds-react@6.2.0(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-bTjq16W0xJp+eCAppUAuBXe71pgM66ZroJV0vlorcv47xlM2/8Vzt/fa54hoqkwbEg7zNdPxMqmXAai9vv2Erg==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -977,11 +977,11 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 6.1.1
-      '@navikt/ds-tokens': 6.1.1
+      '@navikt/aksel-icons': 6.2.0
+      '@navikt/ds-tokens': 6.2.0
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@types/react': 18.2.65
+      '@types/react': 18.2.66
       clsx: 2.1.0
       date-fns: 3.4.0
       react: 18.2.0
@@ -990,11 +990,11 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-tailwind@6.1.1:
-    resolution: {integrity: sha512-RIRK7ed2nlO79TURQSs9dDiIvl7xsoat6X9rF4cqOUEsicd5/dQM0OpjILcdp7epcqhS0/9cjTEkhtVsFqGcbg==}
+  /@navikt/ds-tailwind@6.2.0:
+    resolution: {integrity: sha512-W1nIzMYTpPbDTkPwVYkQNaZqllMvULkfmFqJpz9RhANHzX9WnzdCI/t6wHNQHrlxoFX1pzKRsMpAlSYUc/ULEA==}
 
-  /@navikt/ds-tokens@6.1.1:
-    resolution: {integrity: sha512-OHFj34cK23k55v/RQ4YEssx68RYYP8YfR/gstZmZLX93Y4REQjtJujOjmv6QILxSzQWSrdPFWB96i8rY8zrGVA==}
+  /@navikt/ds-tokens@6.2.0:
+    resolution: {integrity: sha512-JXWHrrF9xbwtZltllIAJtiDdn8qnrKk2eS9/kPukHgHQ3dU+TF9Oo6ncYkzFBQbcnss9zY7ocB60OeJIGRuO9w==}
     dev: false
 
   /@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1:
@@ -1621,14 +1621,14 @@ packages:
   /@types/react-dom@18.2.22:
     resolution: {integrity: sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==}
     dependencies:
-      '@types/react': 18.2.65
+      '@types/react': 18.2.66
     dev: true
 
   /@types/react-router-dom@5.3.3:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.2.65
+      '@types/react': 18.2.66
       '@types/react-router': 5.1.20
     dev: true
 
@@ -1636,11 +1636,11 @@ packages:
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.2.65
+      '@types/react': 18.2.66
     dev: true
 
-  /@types/react@18.2.65:
-    resolution: {integrity: sha512-98TsY0aW4jqx/3RqsUXwMDZSWR1Z4CUlJNue8ueS2/wcxZOsz4xmW1X8ieaWVRHcmmQM3R8xVA4XWB3dJnWwDQ==}
+  /@types/react@18.2.66:
+    resolution: {integrity: sha512-OYTmMI4UigXeFMF/j4uv0lBBEbongSgptPrHBxqME44h9+yNov+oL6Z3ocJKo0WyXR84sQUNeyIp9MRfckvZpg==}
     dependencies:
       '@types/prop-types': 15.7.11
       '@types/scheduler': 0.16.8
