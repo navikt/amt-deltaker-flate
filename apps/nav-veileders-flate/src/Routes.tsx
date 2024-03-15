@@ -1,7 +1,7 @@
-import {Navigate, Route, Routes} from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import App from './App.tsx'
-import {useAppContext} from './AppContext.tsx'
-import {SendTilbakePage} from './pages/SendTilbakePage.tsx'
+import { useAppContext } from './AppContext.tsx'
+import { SendTilbakePage } from './pages/SendTilbakePage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 
 const appUrl = (path: string): string => {

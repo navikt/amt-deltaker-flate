@@ -1,5 +1,5 @@
-import {Tiltakstype} from '../../api/data/pamelding.ts'
-import {Heading} from '@navikt/ds-react'
+import { Tiltakstype } from '../../api/data/pamelding.ts'
+import { Heading } from '@navikt/ds-react'
 import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 
 interface Props {

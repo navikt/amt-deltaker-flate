@@ -3,9 +3,7 @@ import { delay, http, HttpResponse } from 'msw'
 import { MockHandler } from './MockHandler.ts'
 import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
-import {
-  sendInnPameldingUtenGodkjenningRequestSchema
-} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
 import {
   avsluttDeltakelseSchema,
@@ -13,7 +11,9 @@ import {
   endreBakgrunnsinfoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
-  ikkeAktuellSchema, endreSluttarsakSchema, endreInnholdSchema
+  ikkeAktuellSchema,
+  endreSluttarsakSchema,
+  endreInnholdSchema
 } from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()

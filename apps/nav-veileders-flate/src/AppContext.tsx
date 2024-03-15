@@ -1,12 +1,12 @@
-import {createContext, useContext, useState} from 'react'
+import { createContext, useContext, useState } from 'react'
 
 export interface AppContextProps {
-    personident: string
-    deltakerlisteId: string
-    enhetId: string
-    setPersonident: React.Dispatch<React.SetStateAction<string>>
-    setDeltakelisteId: React.Dispatch<React.SetStateAction<string>>
-    setEnhetId: React.Dispatch<React.SetStateAction<string>>
+  personident: string
+  deltakerlisteId: string
+  enhetId: string
+  setPersonident: React.Dispatch<React.SetStateAction<string>>
+  setDeltakelisteId: React.Dispatch<React.SetStateAction<string>>
+  setEnhetId: React.Dispatch<React.SetStateAction<string>>
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
@@ -21,11 +21,16 @@ const useAppContext = () => {
   return context
 }
 
-const AppContextProvider = ({initialPersonident, initialDeltakerlisteId, initialEnhetId, children}: {
-    initialPersonident: string,
-    initialDeltakerlisteId: string,
-    initialEnhetId: string,
-    children: React.ReactNode
+const AppContextProvider = ({
+  initialPersonident,
+  initialDeltakerlisteId,
+  initialEnhetId,
+  children
+}: {
+  initialPersonident: string
+  initialDeltakerlisteId: string
+  initialEnhetId: string
+  children: React.ReactNode
 }) => {
   const [personident, setPersonident] = useState(initialPersonident)
   const [deltakerlisteId, setDeltakelisteId] = useState(initialDeltakerlisteId)
@@ -43,4 +48,4 @@ const AppContextProvider = ({initialPersonident, initialDeltakerlisteId, initial
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
 }
 
-export {AppContext, useAppContext, AppContextProvider}
+export { AppContext, useAppContext, AppContextProvider }

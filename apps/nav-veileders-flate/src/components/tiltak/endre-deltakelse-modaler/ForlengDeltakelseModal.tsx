@@ -1,8 +1,8 @@
-import {PameldingResponse} from '../../../api/data/pamelding.ts'
-import {useAppContext} from '../../../AppContext.tsx'
-import {DeferredFetchState, useDeferredFetch} from '../../../hooks/useDeferredFetch.ts'
-import {endreDeltakelseForleng} from '../../../api/api.ts'
-import {useState} from 'react'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { useAppContext } from '../../../AppContext.tsx'
+import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import { endreDeltakelseForleng } from '../../../api/api.ts'
+import { useState } from 'react'
 import {
   Alert,
   BodyLong,

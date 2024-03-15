@@ -56,8 +56,9 @@ export const MeldPaDirekteModal = ({
           </BodyLong>
         </ConfirmationPanel>
         <BodyLong size="small" className="mt-8 mb-4">
-          Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. I Deltakeroversikten
-          på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.
+          Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. I
+          Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker
+          og tildelt veileder.
         </BodyLong>
         <BodyShort weight="semibold">
           {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangørTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}

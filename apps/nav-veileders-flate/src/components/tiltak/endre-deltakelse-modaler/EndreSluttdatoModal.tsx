@@ -2,7 +2,7 @@ import { Alert, BodyLong, DatePicker, Heading, Modal, useDatepicker } from '@nav
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
-import {endreDeltakelseSluttdato} from '../../../api/api.ts'
+import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'

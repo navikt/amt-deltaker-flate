@@ -1,6 +1,6 @@
-import {useAppContext} from '../AppContext.tsx'
-import {Link} from 'react-router-dom'
-import {ReactNode} from 'react'
+import { useAppContext } from '../AppContext.tsx'
+import { Link } from 'react-router-dom'
+import { ReactNode } from 'react'
 import { base } from '../Routes.tsx'
 
 interface Props {
