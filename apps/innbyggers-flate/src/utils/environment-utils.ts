@@ -20,8 +20,3 @@ export const deltakerBffApiBasePath = (): string => {
 }
 
 export const useMock = import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK
-/**
- * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
- * Satt ved: NODE_ENV=development
- */
-export const isEnvLocalDemoOrPr = import.meta.env.DEV

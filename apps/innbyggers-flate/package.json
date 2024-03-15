@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=development VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/arbeidsmarkedstiltak/mockServiceWorker.js' vite --port 3005",
+    "start": "VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/arbeidsmarkedstiltak/mockServiceWorker.js' vite --port 3005",
     "build": "tsc && vite build",
-    "build:pull-request": "NODE_ENV=development vite build",
-    "build:demo": "NODE_ENV=development VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/amt-deltaker-innbyggers-flate/arbeidsmarkedstiltak/mockServiceWorker.js' vite build",
+    "build:pull-request": "vite build",
+    "build:demo": "VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/amt-deltaker-innbyggers-flate/arbeidsmarkedstiltak/mockServiceWorker.js' vite build",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

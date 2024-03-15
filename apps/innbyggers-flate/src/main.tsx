@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { worker } from './mocks/setupMocks.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import { useMock, isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { useMock } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
 
 export async function enableMocking() {
@@ -29,7 +29,7 @@ const renderApp = () => {
   )
 }
 
-if (isEnvLocalDemoOrPr) {
+if (useMock) {
   enableMocking().then(() => {
     renderApp()
   })
