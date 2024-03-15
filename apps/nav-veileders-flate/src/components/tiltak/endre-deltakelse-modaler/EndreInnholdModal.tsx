@@ -31,8 +31,7 @@ export const EndreInnholdModal = ({
   const [hasError, setHasError] = useState<boolean>(false)
   const { enhetId } = useAppContext()
 
-  const valgteInnholdAnnet = innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(valgteInnholdAnnet?.beskrivelse )
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse )
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
   const erAnnetValgt = valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
@@ -48,7 +47,7 @@ export const EndreInnholdModal = ({
       valgteInnhold,
       annetBeskrivelse
     )
-    if (valgteInnhold.length > 0 && (!valgteInnholdAnnet || (valgteInnholdAnnet && harAnnetBeskrivelse))) {
+    if (valgteInnhold.length > 0 && (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))) {
       doFetchEndreDeltakelseInnhold(pamelding.deltakerId, enhetId, {
         innhold: innholdFromRepsonse
       }).then((data) => {
@@ -118,7 +117,7 @@ export const EndreInnholdModal = ({
                       id="innholdAnnetBeskrivelse"
                       error={
                         hasError &&
-                        valgteInnholdAnnet &&
+                        erAnnetValgt &&
                         'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
                       }
                     />
