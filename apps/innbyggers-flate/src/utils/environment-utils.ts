@@ -1,4 +1,4 @@
-enum EndpointHandler {
+export enum EndpointHandler {
   MOCK = 'MOCK', // Brukes for demo
   PROXY = 'PROXY' // brukes for lokal kjøring
 }
