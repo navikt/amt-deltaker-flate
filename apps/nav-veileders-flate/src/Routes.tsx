@@ -3,6 +3,8 @@ import App from './App.tsx'
 import { useAppContext } from './AppContext.tsx'
 import { SendTilbakePage } from './pages/SendTilbakePage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import InngangSePaRediger from './InngangSePaRediger.tsx'
+import InngangMeldPa from './InngangMeldPa.tsx'
 
 const appUrl = (path: string): string => {
   const strippedPath = path.startsWith('/') ? path.substring(1) : path
@@ -20,9 +22,11 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path={`${base}`} element={<App />} />
-      <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
-      <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
+      <Route path={'/'} element={<App />} />
+      <Route path={'/deltaker/:deltakerId'} element={<InngangSePaRediger />} />
+      <Route path={'/:deltakerlisteId'} element={<InngangMeldPa/>}/>
+      <Route path={`/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
+      <Route path={'/*'} element={<Navigate replace to={'/'} />} />
       {isEnvLocalDemoOrPr && (
         <>
           <Route

@@ -51,6 +51,33 @@ export const createPamelding = async (
     })
 }
 
+export const getPamelding = async (
+  deltakerId: string,
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Deltakelse kunne ikke hentes. Prøv igjen senere')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
+    })
+}
+
 export const deletePamelding = (deltakerId: string): Promise<number> => {
   return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}`, {
     method: 'DELETE',

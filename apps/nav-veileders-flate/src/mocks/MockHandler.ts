@@ -1,4 +1,3 @@
-import { PameldingRequest } from '../api/data/pamelding-request.ts'
 import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
@@ -68,7 +67,7 @@ export class MockHandler {
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
 
-  createPamelding(request: PameldingRequest): HttpResponse {
+  createPamelding(deltakerlisteId: string): HttpResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
     const harVedak =
@@ -82,7 +81,7 @@ export class MockHandler {
       mellomnavn: null,
       etternavn: 'Naversen',
       deltakerliste: {
-        deltakerlisteId: request.deltakerlisteId,
+        deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
         tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
