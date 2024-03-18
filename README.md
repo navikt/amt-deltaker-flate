@@ -1,5 +1,12 @@
 # amt-deltaker
 
+
+TODO 
+```shell
+ window.history.pushState(null, '', '/tiltak/1234')
+ window.dispatchEvent(new CustomEvent('veilarbpersonflate.navigate'))
+```
+
 Dett er et monorepo for amt deltaker flater for NAV-veileder og innbygger.
 
 ## monorepo

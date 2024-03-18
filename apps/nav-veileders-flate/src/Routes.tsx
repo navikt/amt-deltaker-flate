@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import App from './App.tsx'
-import { useAppContext } from './AppContext.tsx'
 import { SendTilbakePage } from './pages/SendTilbakePage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import InngangSePaRediger from './InngangSePaRediger.tsx'
@@ -12,13 +11,9 @@ const appUrl = (path: string): string => {
 }
 
 export const base = appUrl('arbeidsmarkedstiltak/tiltak/:id/deltaker')
-export const PAMELDING_PAGE = 'pamelding'
-export const DELTAKELSE_PAGE = 'deltaker'
-
 export const TILBAKE_PAGE = 'tilbake'
 
 export const AppRoutes = () => {
-  const { deltakerlisteId } = useAppContext()
 
   return (
     <Routes>
@@ -29,10 +24,6 @@ export const AppRoutes = () => {
       <Route path={'/*'} element={<Navigate replace to={'/'} />} />
       {isEnvLocalDemoOrPr && (
         <>
-          <Route
-            path={'/'}
-            element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
-          />
           <Route path={'*'} element={<Navigate replace to={'/'} />} />
         </>
       )}

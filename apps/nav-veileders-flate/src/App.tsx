@@ -12,12 +12,12 @@ import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 dayjs.locale('nb')
 
 const App = () => {
-  const { personident, deltakerlisteId, enhetId } = useAppContext()
+  const { personident, enhetId } = useAppContext()
   const {
     data: nyPamelding,
     loading,
     error
-  } = useFetch(createPamelding, personident, deltakerlisteId, enhetId)
+  } = useFetch(createPamelding, personident, '8671fef4-f051-4d19-9da7-5b435d31f8f4', enhetId)
 
   if (loading) {
     return (

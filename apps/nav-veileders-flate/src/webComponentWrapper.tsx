@@ -36,7 +36,6 @@ export class Deltaker extends HTMLElement {
     shadowRoot.appendChild(styleElem)
 
     const initialPersonident = this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''
-    const initialDeltakerlisteId = this.getAttribute(Deltaker.DELTAKERLISTE_ID_PROP) ?? ''
     const initialEnhetId = this.getAttribute(Deltaker.ENHET_ID_PROP) ?? ''
 
     const root = createRoot(this.root)
@@ -44,7 +43,6 @@ export class Deltaker extends HTMLElement {
       <div className="max-w-[1252px] m-auto">
         <AppContextProvider
           initialPersonident={initialPersonident}
-          initialDeltakerlisteId={initialDeltakerlisteId}
           initialEnhetId={initialEnhetId}
         >
           <BrowserRouter>
