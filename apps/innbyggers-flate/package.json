@@ -6,7 +6,6 @@
   "scripts": {
     "start": "VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/arbeidsmarkedstiltak/mockServiceWorker.js' vite --port 3005",
     "build": "tsc && vite build",
-    "build:pull-request": "vite build",
     "build:demo": "VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/amt-deltaker-innbyggers-flate/arbeidsmarkedstiltak/mockServiceWorker.js' vite build",
     "test": "vitest",
     "test:no-watch": "vitest run",
@@ -15,7 +14,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
     "@navikt/aksel-icons": "^6.1.0",
     "@navikt/ds-css": "^6.1.0",
     "@navikt/ds-react": "^6.1.0",

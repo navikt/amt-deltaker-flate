@@ -6,9 +6,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: process.env.BASE || '/arbeidsmarkedstiltak/',
   build: {
-    manifest: 'asset-manifest.json',
     outDir: 'build',
-    chunkSizeWarningLimit: 1400,
     sourcemap: true
   },
   plugins: [react()],
