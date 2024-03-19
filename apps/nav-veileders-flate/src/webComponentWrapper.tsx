@@ -17,9 +17,6 @@ export class Deltaker extends HTMLElement {
 
   // Invoked when the element is created
   constructor() {
-    // eslint-disable-next-line no-console
-    console.log(`here!, ${window.location.pathname}`) // TODO REMOVE
-
     super()
 
     // This will be app entry point

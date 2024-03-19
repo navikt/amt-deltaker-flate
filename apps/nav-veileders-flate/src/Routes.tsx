@@ -14,8 +14,6 @@ export const base = appUrl('arbeidsmarkedstiltak/tiltak/:id/deltaker')
 export const TILBAKE_PAGE = 'tilbake'
 
 export const AppRoutes = () => {
-  // eslint-disable-next-line no-console
-  console.log(`here!, ${window.location.pathname}`) // TODO REMOVE
 
   return (
     <Routes>

@@ -4,6 +4,7 @@
 TODO 
 ```shell
  window.history.pushState(null, '', '/tiltak/1234')
+ window.history.pushState(null, '', '/tiltak/deltaker/1234')
  window.dispatchEvent(new CustomEvent('veilarbpersonflate.navigate'))
 ```
 
