@@ -3,8 +3,8 @@
 
 TODO 
 ```shell
- window.history.pushState(null, '', '/tiltak/1234')
- window.history.pushState(null, '', '/tiltak/deltaker/1234')
+ window.history.pushState(null, '', '/arbeidsmarkedstiltak/deltakelse/450e0f37-c4bb-4611-ac66-f725e05bad3e')
+ window.history.pushState(null, '', '/arbeidsmarkedstiltak/deltakelse/deltaker/a86cf0ca-a7ab-4e0f-9c41-544ddf0efbcc')
  window.dispatchEvent(new CustomEvent('veilarbpersonflate.navigate'))
 ```
 

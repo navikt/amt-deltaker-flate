@@ -18,8 +18,8 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={'/'} element={<App />} />
-      <Route path={'/tiltak/deltaker/:deltakerId'} element={<InngangSePaRediger />} />
-      <Route path={'/tiltak/:deltakerlisteId'} element={<InngangMeldPa/>}/>
+      <Route path={'/arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId'} element={<InngangSePaRediger />} />
+      <Route path={'/arbeidsmarkedstiltak/deltakelse/:deltakerlisteId'} element={<InngangMeldPa/>}/>
       <Route path={`/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
       <Route path={'/*'} element={<Navigate replace to={'/'} />} />
       {isEnvLocalDemoOrPr && (
