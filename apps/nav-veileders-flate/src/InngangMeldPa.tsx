@@ -7,6 +7,7 @@ import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
+import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 
 const InngangMeldPa = () => {
   const {deltakerlisteId} = useParams()
@@ -53,6 +54,7 @@ const InngangMeldPa = () => {
   return (
     <PameldingContextProvider initialPamelding={nyPamelding}>
       {isEnvLocalDemoOrPr && <DemoBanner/>}
+      <Tilbakeknapp/>
       <DeltakerGuard/>
     </PameldingContextProvider>
   )
