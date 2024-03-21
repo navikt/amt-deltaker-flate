@@ -3,26 +3,13 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
-import {
-  Alert,
-  BodyLong,
-  DatePicker,
-  Heading,
-  Modal,
-  Radio,
-  RadioGroup,
-  useDatepicker
-} from '@navikt/ds-react'
-import {
-  kalkulerSluttdato,
-  varigheter,
-  VarighetValg,
-  varighetValgForType
-} from '../../../utils/varighet.ts'
+import { Alert, BodyLong, Heading, Modal } from '@navikt/ds-react'
+import { kalkulerSluttdato, getVarighet, VarighetValg } from '../../../utils/varighet.ts'
 import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
+import { VargihetField } from '../VargihetField.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -37,9 +24,11 @@ export const ForlengDeltakelseModal = ({
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const [valgtVarighet, settValgtVarighet] = useState(VarighetValg.IKKE_VALGT)
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
   const [nySluttDato, settNySluttDato] = useState<Date | null>()
-  const visDatovelger = valgtVarighet === VarighetValg.ANNET
+  const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
+  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
+
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
   const { enhetId } = useAppContext()
 
@@ -50,34 +39,30 @@ export const ForlengDeltakelseModal = ({
   } = useDeferredFetch(endreDeltakelseForleng)
 
   const sendEndring = () => {
-    if (!nySluttDato) {
-      return Promise.reject('Kan ikke sende forlenge deltakelse uten ny sluttdato')
+    if (!valgtVarighet) {
+      setErrorVarighet('Du må velge vargihet')
     }
-    doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
-      sluttdato: formatDateToDateInputStr(nySluttDato)
-    }).then((data) => {
-      onSuccess(data)
-    })
+    if (!nySluttDato) {
+      setErrorSluttDato('Du må velge en sluttdato')
+    }
+
+    if (nySluttDato) {
+      doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
+        sluttdato: formatDateToDateInputStr(nySluttDato)
+      }).then((data) => {
+        onSuccess(data)
+      })
+    }
   }
 
-  const [hasError, setHasError] = useState(false)
-  const { datepickerProps, inputProps } = useDatepicker({
-    fromDate: sluttdato || undefined,
-    toDate: dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
-    onValidate: (val) => {
-      setHasError(!val.isValidDate)
-    },
-    onDateChange: (date) => {
-      settNySluttDato(date)
-    }
-  })
-
-  const handleChangeVarighet = (valgtVarighet: VarighetValg) => {
-    settValgtVarighet(valgtVarighet)
-    const varighet = varigheter[valgtVarighet]
+  const handleChangeVarighet = (valg: VarighetValg) => {
+    setValgtVarighet(valg)
+    const varighet = getVarighet(valg)
     if (varighet && sluttdato) {
       settNySluttDato(kalkulerSluttdato(sluttdato, varighet))
     } else settNySluttDato(null)
+
+    setErrorVarighet(null)
   }
 
   return (
@@ -103,33 +88,20 @@ export const ForlengDeltakelseModal = ({
         </BodyLong>
 
         <section className="mt-4">
-          <RadioGroup
-            legend="Hvor lenge skal deltakelsen forlenges?"
-            size="small"
-            onChange={handleChangeVarighet}
-            value={valgtVarighet}
-          >
-            <>
-              {varighetValgForType(pamelding.deltakerliste.tiltakstype).map((v) => (
-                <Radio value={v} key={v}>
-                  {varigheter[v].navn}
-                </Radio>
-              ))}
-              <Radio value={VarighetValg.ANNET}>
-                Annet - velg dato
-                {visDatovelger && (
-                  <DatePicker {...datepickerProps}>
-                    <DatePicker.Input
-                      {...inputProps}
-                      label="Annet - velg dato"
-                      hideLabel={true}
-                      error={hasError && 'Ny dato må være senere enn sluttdato'}
-                    />
-                  </DatePicker>
-                )}
-              </Radio>
-            </>
-          </RadioGroup>
+          <VargihetField
+            title="Hvor lenge skal deltakelsen forlenges?"
+            className="mt-4"
+            tiltakstype={pamelding.deltakerliste.tiltakstype}
+            startDato={sluttdato || undefined}
+            sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
+            errorVarighet={errorVarighet}
+            errorSluttDato={errorSluttDato}
+            onChangeVarighet={handleChangeVarighet}
+            onChangeSluttDato={(date) => {
+              settNySluttDato(date)
+              setErrorSluttDato(null)
+            }}
+          />
         </section>
       </Modal.Body>
       <ModalFooter
