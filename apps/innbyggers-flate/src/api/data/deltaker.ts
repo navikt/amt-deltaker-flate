@@ -39,22 +39,9 @@ export enum DeltakerStatusAarsakType {
   // TODO Feilregistrert
 }
 
-export enum HvaDelesMedArrangorKoder {
-  NAVN = 'NAVN',
-  PERSONIDENT = 'PERSONIDENT',
-  TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
-  TELEFON = 'TELEFON',
-  EPOST = 'EPOST',
-  ADRESSE = 'ANNET',
-  NAV_VEILEDER = 'NAV_VEILEDER',
-  INNHOLD = 'INNHOLD',
-  BAKGRUNNS_INFORMASJON = 'BAKGRUNNS_INFORMASJON'
-}
-
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(DeltakerStatusAarsakType)
-export const hvaDelesMedArrangorSchema = z.nativeEnum(HvaDelesMedArrangorKoder)
 
 export const innholdSchema = z.object({
   tekst: z.string(),
@@ -113,7 +100,7 @@ export const deltakerSchema = z.object({
   bakgrunnsinformasjon: z.string().nullable(),
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
-  hvaDelesMedArrangor: z.array(hvaDelesMedArrangorSchema)
+  adresseDelesMedArrangor: z.boolean()
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
