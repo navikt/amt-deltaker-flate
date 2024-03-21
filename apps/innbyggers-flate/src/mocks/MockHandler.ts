@@ -1,9 +1,4 @@
-import {
-  DeltakerResponse,
-  DeltakerStatusType,
-  HvaDelesMedArrangorKoder,
-  Tiltakstype
-} from '../api/data/deltaker.ts'
+import { DeltakerResponse, DeltakerStatusType, Tiltakstype } from '../api/data/deltaker.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
@@ -121,15 +116,7 @@ export const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
-    hvaDelesMedArrangor: [
-      HvaDelesMedArrangorKoder.NAV_VEILEDER,
-      HvaDelesMedArrangorKoder.NAVN,
-      HvaDelesMedArrangorKoder.TELEFON,
-      HvaDelesMedArrangorKoder.EPOST,
-      HvaDelesMedArrangorKoder.ADRESSE,
-      HvaDelesMedArrangorKoder.INNHOLD,
-      HvaDelesMedArrangorKoder.BAKGRUNNS_INFORMASJON
-    ]
+    adresseDelesMedArrangor: true
   }
 }
 
