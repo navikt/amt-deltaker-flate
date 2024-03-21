@@ -290,6 +290,7 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.startdato = request.startdato
+      oppdatertPamelding.sluttdato = request.sluttdato
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

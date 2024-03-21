@@ -2,15 +2,16 @@ import { Tiltakstype } from '../api/data/pamelding.ts'
 import dayjs from 'dayjs'
 
 export enum VarighetValg {
-  IKKE_VALGT,
-  ANNET,
-  FIRE_UKER,
-  SEKS_UKER,
-  ATTE_UKER,
-  TOLV_UKER,
-  TRE_MANEDER,
-  SEKS_MANEDER,
-  TOLV_MANEDER
+  ANNET = 'ANNET',
+  FIRE_UKER = 'FIRE_UKER',
+  SEKS_UKER = 'SEKS_UKER',
+  ATTE_UKER = 'ATTE_UKER',
+  TOLV_UKER = 'TOLV_UKER',
+  TRE_MANEDER = 'TRE_MANEDER',
+  FIRE_MANEDER = 'FIRE_MANEDER',
+  SEKS_MANEDER = 'SEKS_MANEDER',
+  ATTE_MANEDER = 'ATTE_MANEDER',
+  TOLV_MANEDER = 'TOLV_MANEDER'
 }
 
 export interface Varighet {
@@ -20,17 +21,23 @@ export interface Varighet {
 }
 
 type Varigheter = {
-  [valg: number]: Varighet
+  [valg: string]: Varighet
 }
 
-export const varigheter: Varigheter = {
+const varigheter: Varigheter = {
   [VarighetValg.FIRE_UKER]: { antall: 4, tidsenhet: 'week', navn: '4 uker' },
   [VarighetValg.SEKS_UKER]: { antall: 6, tidsenhet: 'week', navn: '6 uker' },
   [VarighetValg.ATTE_UKER]: { antall: 8, tidsenhet: 'week', navn: '8 uker' },
   [VarighetValg.TOLV_UKER]: { antall: 12, tidsenhet: 'week', navn: '12 uker' },
   [VarighetValg.TRE_MANEDER]: { antall: 3, tidsenhet: 'month', navn: '3 måneder' },
+  [VarighetValg.FIRE_MANEDER]: { antall: 4, tidsenhet: 'month', navn: '4 måneder' },
   [VarighetValg.SEKS_MANEDER]: { antall: 6, tidsenhet: 'month', navn: '6 måneder' },
+  [VarighetValg.ATTE_MANEDER]: { antall: 8, tidsenhet: 'month', navn: '8 måneder' },
   [VarighetValg.TOLV_MANEDER]: { antall: 12, tidsenhet: 'month', navn: '12 måneder' }
+}
+
+export const getVarighet = (valg: VarighetValg): Varighet => {
+  return varigheter[valg]
 }
 
 export const varighetValgForType = (tiltakstype: Tiltakstype): VarighetValg[] => {
@@ -38,7 +45,7 @@ export const varighetValgForType = (tiltakstype: Tiltakstype): VarighetValg[] =>
     case Tiltakstype.ARBFORB:
       return [VarighetValg.TRE_MANEDER, VarighetValg.SEKS_MANEDER, VarighetValg.TOLV_MANEDER]
     case Tiltakstype.ARBRRHDAG:
-      return [VarighetValg.FIRE_UKER, VarighetValg.SEKS_UKER, VarighetValg.TOLV_UKER]
+      return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER, VarighetValg.TOLV_UKER]
     case Tiltakstype.AVKLARAG:
       return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER]
     case Tiltakstype.INDOPPFAG:
