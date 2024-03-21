@@ -63,6 +63,7 @@ jobs:
   deploy-demo-innbyggers-flate:
     name: Deploy innbyggers-flate to demo
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: 'write' # Used to authenticate with Google Cloud
     steps:
