@@ -64,29 +64,5 @@ spec:
                 "cluster": "dev-gcp"
               }
             }
-          ],
-          "header": {
-            "csp": {
-              "connectSrc":[
-                "'self'",
-                "*.nav.no",
-                "*.boost.ai",
-                "*.psplugin.com",
-                "*.hotjar.com",
-                "*.hotjar.io",
-                "*.taskanalytics.com"
-              ],
-              "scriptSrc":[
-                "*.nav.no",
-                "*.psplugin.com",
-                "*.hotjar.com",
-                "*.taskanalytics.com",
-                "nav.boost.ai",
-                "'unsafe-inline'",
-                "'unsafe-eval'",
-                "'self'",
-                "blob:"
-              ]
-            }
-          }
+          ]
         }
