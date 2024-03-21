@@ -15,7 +15,7 @@ export const deltakerBffApiBasePath = (): string => {
   } else if (endpointHandlerType === EndpointHandler.PROXY) {
     return 'http://localhost:58080'
   } else if (isDev()) {
-    return '/amt-deltaker-bff'
+    return `${import.meta.env.BASE_URL}amt-deltaker-bff`
   } else return 'PROD_LINK'
 }
 
