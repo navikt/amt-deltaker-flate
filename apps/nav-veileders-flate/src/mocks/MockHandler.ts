@@ -58,7 +58,8 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
       sistEndret: dayjs().toString(),
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'NAV Fredrikstad'
-    }
+    },
+    kanEndres: true
   }
 }
 
@@ -182,7 +183,8 @@ export class MockHandler {
         sistEndret: today.toString(),
         sistEndretAv: 'Navn Navnesen',
         sistEndretAvEnhet: 'NAV Fredrikstad'
-      }
+      },
+      kanEndres: true
     }
 
     this.pamelding = nyPamelding
@@ -249,6 +251,8 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = status
+      oppdatertPamelding.startdato = this.getStartdato()
+      oppdatertPamelding.sluttdato = this.getSluttdato()
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -285,6 +289,7 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.startdato = request.startdato
+      oppdatertPamelding.sluttdato = request.sluttdato
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

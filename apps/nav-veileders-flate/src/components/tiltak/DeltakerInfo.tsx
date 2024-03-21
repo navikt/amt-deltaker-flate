@@ -7,7 +7,7 @@ import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
-import { EMDASH, INNHOLD_TYPE_ANNET, formatDateStrWithMonthName } from '../../utils/utils.ts'
+import { EMDASH, INNHOLD_TYPE_ANNET, formatDateFromString } from '../../utils/utils.ts'
 import { DeltakerStatusType } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 
@@ -29,6 +29,18 @@ export const DeltakerInfo = ({ className }: Props) => {
       ? pamelding.bakgrunnsinformasjon
       : EMDASH
 
+  let dato = EMDASH
+  if (
+    pamelding.startdato &&
+    pamelding.sluttdato &&
+    pamelding.startdato !== EMDASH &&
+    pamelding.sluttdato !== EMDASH
+  ) {
+    dato = `${formatDateFromString(pamelding.startdato)} - ${formatDateFromString(pamelding.sluttdato)}`
+  } else if (pamelding.startdato && pamelding.startdato !== EMDASH) {
+    dato = formatDateFromString(pamelding.startdato)
+  }
+
   return (
     <div className={`bg-white px-12 py-4 ${className}`}>
       <Heading level="1" size="large">
@@ -47,8 +59,8 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
       {skalViseDato && (
         <HStack gap="2" className="mt-4">
-          <Label>Dato:</Label>
-          <BodyShort>{formatDateStrWithMonthName(pamelding.startdato) || EMDASH}</BodyShort>
+          <Label>{pamelding.startdato && !pamelding.sluttdato ? 'Oppstartsdato:' : 'Dato:'}</Label>
+          <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
       <BodyLong size="small" className="mt-4">

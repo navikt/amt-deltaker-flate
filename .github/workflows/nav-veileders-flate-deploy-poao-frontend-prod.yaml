@@ -9,11 +9,10 @@ on:
 jobs:
   deploy-prod:
     name: Deploy poao-frontend to PROD - nav-veileders-flate
-    if: false # venter med denne til vi er i prod
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && false # venter med denne til vi er i prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
