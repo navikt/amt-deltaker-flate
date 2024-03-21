@@ -45,7 +45,7 @@ const App = () => {
   return (
     <Alert variant="info" className="m-4">
       <Heading size="small">Hva har vi?</Heading>
-      Dette er foreløpig alt: {deltaker.status.type}
+      Dette er alt: {deltaker.status.type}
     </Alert>
   )
 }
