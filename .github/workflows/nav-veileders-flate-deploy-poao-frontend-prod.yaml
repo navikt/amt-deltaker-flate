@@ -9,17 +9,18 @@ on:
 jobs:
   deploy-prod:
     name: Deploy poao-frontend to PROD - nav-veileders-flate
+    if: false # venter med denne til vi er i prod
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
-#     venter med dette til vi er i prod
+#    fjern if-en over og bruk denne når det skal prodsettes
 #    if: github.ref == 'refs/heads/main'
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Deploy application
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          CLUSTER: prod-gcp
-#          RESOURCE: apps/nav-veileders-flate/nais/nais-prod.yaml
-#          PRINT_PAYLOAD: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy application
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: apps/nav-veileders-flate/nais/nais-prod.yaml
+          PRINT_PAYLOAD: true
