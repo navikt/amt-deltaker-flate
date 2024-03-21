@@ -50,7 +50,8 @@ export const EndreOppstartsdatoModal = ({
     onDateChange: (date) => {
       if (valgtVarighet) {
         const varighetMnd = getVarighet(valgtVarighet)?.antall
-        varighetMnd && settNySluttDato(dayjs(date).add(varighetMnd, 'month').format('DD.MM.YYYY'))
+        varighetMnd &&
+          settNySluttDato(formatDateToDateInputStr(dayjs(date).add(varighetMnd, 'month').toDate()))
       }
       setErrorStartDato(null)
       settNyStartDato(date || null)
@@ -124,7 +125,9 @@ export const EndreOppstartsdatoModal = ({
               onChangeVarighet={(valg: VarighetValg) => {
                 const varighetMnd = getVarighet(valg)?.antall
                 if (nyStartdato && varighetMnd) {
-                  settNySluttDato(dayjs(nyStartdato).add(varighetMnd, 'month').format('DD.MM.YYYY'))
+                  settNySluttDato(
+                    formatDateToDateInputStr(dayjs(nyStartdato).add(varighetMnd, 'month').toDate())
+                  )
                 }
                 if (valg === VarighetValg.ANNET) {
                   settNySluttDato(null)
@@ -135,7 +138,8 @@ export const EndreOppstartsdatoModal = ({
               }}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)
-                settNySluttDato(dayjs(date).format('DD.MM.YYYY'))
+                if (date) settNySluttDato(formatDateToDateInputStr(date))
+                else settNySluttDato(null)
               }}
             />
             <BodyShort className="mt-2">Forventet sluttdato: {nySluttDato || '—'}</BodyShort>

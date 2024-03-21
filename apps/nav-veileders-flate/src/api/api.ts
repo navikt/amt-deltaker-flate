@@ -185,7 +185,7 @@ export const endreDeltakelseStartdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre startdato. Prøv igjen senere. (${response.status})`)
+        throw new Error(`Kunne ikke endre oppstartsdato. Prøv igjen senere. (${response.status})`)
       }
       return response.json()
     })
