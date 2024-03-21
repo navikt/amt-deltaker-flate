@@ -1,13 +1,5 @@
 # amt-deltaker
 
-
-TODO 
-```shell
- window.history.pushState(null, '', '/arbeidsmarkedstiltak/deltakelse/450e0f37-c4bb-4611-ac66-f725e05bad3e')
- window.history.pushState(null, '', '/arbeidsmarkedstiltak/deltakelse/deltaker/a86cf0ca-a7ab-4e0f-9c41-544ddf0efbcc')
- window.dispatchEvent(new CustomEvent('veilarbpersonflate.navigate'))
-```
-
 Dett er et monorepo for amt deltaker flater for NAV-veileder og innbygger.
 
 ## monorepo
