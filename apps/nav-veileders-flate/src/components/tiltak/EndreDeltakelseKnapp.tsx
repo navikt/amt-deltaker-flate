@@ -7,7 +7,12 @@ import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
 import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
-import { dateStrToNullableDate } from '../../utils/utils.ts'
+import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
+import {
+  deltakerHarAvsluttendeStatus,
+  deltakerHarSluttetEllerFullfort,
+  deltakerVenterPaOppstartEllerDeltar
+} from '../../utils/statusutils.ts'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,
@@ -17,6 +22,61 @@ const hentEndreDeltakelseKnappValg = (
     <EndringTypeIkon type={endringsType} />
     {getEndreDeltakelseTypeText(endringsType)}
   </Dropdown.Menu.List.Item>
+)
+
+const harSluttetKanEndres = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && statusdato > toMndSiden && pamelding.kanEndres
+)
+
+const harAvsluttendeStatusKanEndres = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  deltakerHarAvsluttendeStatus(pamelding.status.type) && statusdato > toMndSiden && pamelding.kanEndres
+)
+
+const venterDeltarEllerKanEndres = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) || harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
+)
+
+const skalViseForlengKnapp = (
+  pamelding: PameldingResponse,
+  sluttdato: Date | null,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  sluttdato &&
+    (pamelding.status.type === DeltakerStatusType.DELTAR ||
+        harSluttetKanEndres(pamelding, statusdato, toMndSiden))
+)
+
+const skalViseEndreSluttdatoKnapp = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  deltakerHarSluttetEllerFullfort(pamelding.status.type) && harSluttetKanEndres(pamelding, statusdato, toMndSiden)
+)
+
+const skalViseEndreOppstartsdato = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
+  // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
+  // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
+  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
+    harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
 )
 
 export const EndreDeltakelseKnapp = () => {
@@ -44,29 +104,9 @@ export const EndreDeltakelseKnapp = () => {
   }
 
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
-
-  const skalViseForlengKnapp =
-    sluttdato &&
-    (pamelding.status.type === DeltakerStatusType.DELTAR ||
-      (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
-
-  const statusErVenterPaOppstartEllerDeltar =
-    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
-    pamelding.status.type === DeltakerStatusType.DELTAR
-
-  const deltakerHarSluttetEllerFullfort =
-    pamelding.status.type === DeltakerStatusType.HAR_SLUTTET ||
-    pamelding.status.type === DeltakerStatusType.FULLFORT ||
-    pamelding.status.type === DeltakerStatusType.AVBRUTT
-
-  const skalViseEndreOppstarsdato =
-    // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
-    // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
-    // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
-    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
-    pamelding.status.type === DeltakerStatusType.DELTAR
 
   return (
     <>
@@ -82,21 +122,21 @@ export const EndreDeltakelseKnapp = () => {
         </Button>
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            {skalViseEndreOppstarsdato &&
+            {skalViseEndreOppstartsdato(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
             {pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.IKKE_AKTUELL, openModal)}
-            {skalViseForlengKnapp &&
+            {skalViseForlengKnapp(pamelding, sluttdato, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
-            {statusErVenterPaOppstartEllerDeltar &&
+            {venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_INNHOLD, openModal)}
-            {statusErVenterPaOppstartEllerDeltar &&
+            {venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
             {pamelding.status.type === DeltakerStatusType.DELTAR &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
-            {deltakerHarSluttetEllerFullfort &&
+            {skalViseEndreSluttdatoKnapp(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTDATO, openModal)}
-            {pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
+            {harSluttetKanEndres(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTARSAK, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>

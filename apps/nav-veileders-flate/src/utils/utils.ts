@@ -25,6 +25,11 @@ export const dateStrToNullableDate = (dateStr: string | null): Date | null => {
   return date.isValid() ? date.toDate() : null
 }
 
+export const dateStrToDate = (dateStr: string): Date => {
+  const date = dayjs(dateStr, 'DD.MM.YYYY')
+  return date.toDate()
+}
+
 export const INNHOLD_TYPE_ANNET = 'annet'
 
 export enum DeltakelsesprosentValg {
