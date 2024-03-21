@@ -43,7 +43,6 @@ export const EndreDeltakelseKnapp = () => {
     }
   }
 
-  const startdato = dateStrToNullableDate(pamelding.startdato)
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
@@ -63,7 +62,10 @@ export const EndreDeltakelseKnapp = () => {
     pamelding.status.type === DeltakerStatusType.AVBRUTT
 
   const skalViseEndreOppstarsdato =
-    (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
+    // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
+    // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
+    // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
+    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
     pamelding.status.type === DeltakerStatusType.DELTAR
 
   return (
