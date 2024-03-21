@@ -33,7 +33,8 @@ export const forlengDeltakelseSchema = z.object({
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
 export const endreStartdatoSchema = z.object({
-  startdato: z.string()
+  startdato: z.string().nullable(),
+  sluttdato: z.string().nullable()
 })
 
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>

@@ -51,6 +51,7 @@ export const EndreDeltakelseKnapp = () => {
     sluttdato &&
     (pamelding.status.type === DeltakerStatusType.DELTAR ||
       (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && sluttdato > toMndSiden))
+
   const statusErVenterPaOppstartEllerDeltar =
     pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
     pamelding.status.type === DeltakerStatusType.DELTAR
@@ -59,6 +60,13 @@ export const EndreDeltakelseKnapp = () => {
     pamelding.status.type === DeltakerStatusType.HAR_SLUTTET ||
     pamelding.status.type === DeltakerStatusType.FULLFORT ||
     pamelding.status.type === DeltakerStatusType.AVBRUTT
+
+  const skalViseEndreOppstarsdato =
+    // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
+    // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
+    // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
+    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART ||
+    pamelding.status.type === DeltakerStatusType.DELTAR
 
   return (
     <>
@@ -74,16 +82,16 @@ export const EndreDeltakelseKnapp = () => {
         </Button>
         <Dropdown.Menu>
           <Dropdown.Menu.List>
+            {skalViseEndreOppstarsdato &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
             {pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.IKKE_AKTUELL, openModal)}
             {skalViseForlengKnapp &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
             {statusErVenterPaOppstartEllerDeltar &&
-              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_OPPSTARTSDATO, openModal)}
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_INNHOLD, openModal)}
             {statusErVenterPaOppstartEllerDeltar &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
-            {statusErVenterPaOppstartEllerDeltar &&
-              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_INNHOLD, openModal)}
             {pamelding.status.type === DeltakerStatusType.DELTAR &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.AVSLUTT_DELTAKELSE, openModal)}
             {deltakerHarSluttetEllerFullfort &&
