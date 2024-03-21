@@ -125,8 +125,18 @@ export class MockHandler {
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.UTKAST_TIL_PAMELDING
 
-  getDeltaker(): HttpResponse {
+  getDeltaker() {
     this.deltaker = createDeltaker(this.statusType)
+    return HttpResponse.json(this.deltaker)
+  }
+
+  godkjennUtkast() {
+    const oppdatertPamelding = this.deltaker
+    if (oppdatertPamelding) {
+      oppdatertPamelding.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
+      this.deltaker = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
     return HttpResponse.json(this.deltaker)
   }
 
