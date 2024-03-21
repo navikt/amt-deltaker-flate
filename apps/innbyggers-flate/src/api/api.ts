@@ -15,7 +15,7 @@ export const getDeltakelse = async (deltakerId: string): Promise<DeltakerRespons
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere')
+        throw new Error('Deltakelse kunne ikke hentes. Prøv igjen senere')
       }
       return response.json()
     })

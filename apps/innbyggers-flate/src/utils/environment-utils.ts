@@ -1,35 +1,22 @@
 export enum EndpointHandler {
-  MOCK = 'MOCK',
-  PROXY = 'PROXY',
-  DEV = 'DEV',
-  PROD = 'PROD'
-}
-
-export const getEndpointHandlerType = (): EndpointHandler => {
-  return import.meta.env.VITE_ENDPOINT_HANDLER || EndpointHandler.PROD
-}
-
-export const deltakerBffApiBasePath = (): string => {
-  switch (getEndpointHandlerType()) {
-    case EndpointHandler.MOCK:
-      return '/mock'
-    case EndpointHandler.PROXY:
-      return 'http://localhost:58080'
-    default:
-      if (isDev()) {
-        return '/amt-deltaker-bff'
-      }
-
-      return 'PROD_LINK'
-  }
+  MOCK = 'MOCK', // Brukes for demo
+  PROXY = 'PROXY' // brukes for lokal kjøring
 }
 
 const isDev = (): boolean => {
   return window.location.hostname.includes('intern.dev.nav.no')
 }
 
-export const useMock = getEndpointHandlerType() === EndpointHandler.MOCK
-/**
- * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
- */
-export const isEnvLocalDemoOrPr = import.meta.env.DEV
+export const deltakerBffApiBasePath = (): string => {
+  const endpointHandlerType = import.meta.env.VITE_ENDPOINT_HANDLER
+
+  if (endpointHandlerType === EndpointHandler.MOCK) {
+    return `${import.meta.env.BASE_URL}mock`
+  } else if (endpointHandlerType === EndpointHandler.PROXY) {
+    return 'http://localhost:58080'
+  } else if (isDev()) {
+    return '/amt-deltaker-bff'
+  } else return 'PROD_LINK'
+}
+
+export const useMock = import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK

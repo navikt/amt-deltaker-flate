@@ -30,7 +30,7 @@ jobs:
       - name: Setup frontend
         uses: ./.github/actions/setup-frontend
       - name: Build Pull Request Application
-        run: pnpm build:pull-request -- --base=/pr-${{ github.event.number }}/ --filter=innbyggers-flate
+        run: pnpm build -- --base=/arbeidsmarkedstiltak/pr-${{ github.event.number }}/ --filter=innbyggers-flate
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
