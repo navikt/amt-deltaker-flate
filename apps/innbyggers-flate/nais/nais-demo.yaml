@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: ghcr.io/navikt/poao-frontend/poao-frontend:2023.01.13_08.09-36c09678654f
+  image: ghcr.io/navikt/poao-frontend/poao-frontend:2024.02.26_09.22-a08b941e2c0d
   port: 8080
   ingresses:
     - https://amt.ekstern.dev.nav.no/arbeidsmarkedstiltak
