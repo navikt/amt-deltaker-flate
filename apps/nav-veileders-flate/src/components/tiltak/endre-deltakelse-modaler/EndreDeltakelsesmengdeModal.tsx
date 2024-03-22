@@ -10,7 +10,7 @@ import {
 } from '../../../api/data/endre-deltakelse-request.ts'
 import {ModalFooter} from '../../ModalFooter.tsx'
 import {NumberTextField} from '../../NumberTextField.tsx'
-import {dagerPerUkeFeilmelding, deltakelsesprosentFeilmelding} from '../../../model/PameldingFormValues.ts'
+import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
     pamelding: PameldingResponse
@@ -58,22 +58,22 @@ export const EndreDeltakelsesmengdeModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE}/>,
+        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE} />,
         heading: 'Endre deltakelsesmengde'
       }}
       onClose={onClose}
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
-                            Det skjedde en feil.
+              Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
         )}
         <BodyLong size="small" className="mb-4">
-                    Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
         <NumberTextField
           label="Hva er ny deltakelsesprosent?"
@@ -83,23 +83,29 @@ export const EndreDeltakelsesmengdeModal = ({
             setDeltakelsesprosent(e || null)
             setHasErrorDeltakelsesprosent(false)
           }}
-          error={hasErrorDeltakelsesprosent && !gyldigDeltakelsesprosent && deltakelsesprosentFeilmelding}
+          error={
+            hasErrorDeltakelsesprosent &&
+            !gyldigDeltakelsesprosent &&
+            'Deltakelsesprosent må være et helt tall fra 1 til 100'
+          }
           required
           id="deltakelsesprosent"
           className="[&>input]:w-16 mt-4"
         />
-        {deltakelsesprosent && deltakelsesprosent != 100 && <NumberTextField
-          label="Hvor mange dager i uka? (valgfritt)"
-          disabled={false}
-          value={dagerPerUke || undefined}
-          onChange={(e) => {
-            setDagerPerUke(e || null)
-            setHasErrorDagerPerUke(false)
-          }}
-          error={hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding}
-          className="[&>input]:w-16 mt-4"
-          id="dagerPerUke"
-        />}
+        {deltakelsesprosent && deltakelsesprosent != 100 && (
+          <NumberTextField
+            label="Hvor mange dager i uka? (valgfritt)"
+            disabled={false}
+            value={dagerPerUke || undefined}
+            onChange={(e) => {
+              setDagerPerUke(e || null)
+              setHasErrorDagerPerUke(false)
+            }}
+            error={hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding}
+            className="[&>input]:w-16 mt-4"
+            id="dagerPerUke"
+          />
+        )}
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"
