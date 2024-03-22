@@ -94,7 +94,7 @@ export const EndreOppstartsdatoModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -142,7 +142,9 @@ export const EndreOppstartsdatoModal = ({
                 else settNySluttDato(null)
               }}
             />
-            <BodyShort className="mt-2">Forventet sluttdato: {nySluttDato || '—'}</BodyShort>
+            <BodyShort className="mt-2" size="small">
+              Forventet sluttdato: {nySluttDato || '—'}
+            </BodyShort>
           </>
         )}
       </Modal.Body>

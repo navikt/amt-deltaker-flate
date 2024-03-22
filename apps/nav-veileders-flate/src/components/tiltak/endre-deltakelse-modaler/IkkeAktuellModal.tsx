@@ -1,4 +1,4 @@
-import { Alert, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -66,14 +66,18 @@ export const IkkeAktuellModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
             {endreDeltakelseError}
           </Alert>
         )}
+        <BodyShort size="small">
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.{' '}
+        </BodyShort>
         <RadioGroup
+          className="mt-6"
           legend="Hva er årsaken til at deltakeren ikke er aktuell?"
           size="small"
           error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
@@ -111,10 +115,6 @@ export const IkkeAktuellModal = ({
             )}
           </>
         </RadioGroup>
-        <Alert variant="info" className="mt-4">
-          Når du lagrer så blir det sendt varsel til bruker. Har personen registrert seg i KRR så
-          blir det sendt brev. Arrangør og bruker ser endringen.
-        </Alert>
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"

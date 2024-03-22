@@ -27,6 +27,7 @@ export async function enableMocking() {
   if (endpointHandlerType === EndpointHandler.MOCK) {
     const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
     return worker.start({
+      onUnhandledRequest: 'bypass',
       serviceWorker: {
         url: url
       }

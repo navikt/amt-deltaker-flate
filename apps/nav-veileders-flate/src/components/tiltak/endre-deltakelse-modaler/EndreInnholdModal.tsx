@@ -1,17 +1,27 @@
-import { Alert, BodyLong, Checkbox, CheckboxGroup, Heading, Modal, Textarea } from '@navikt/ds-react'
+import {
+  Alert,
+  BodyLong,
+  Checkbox,
+  CheckboxGroup,
+  Detail,
+  Heading,
+  Modal,
+  Textarea
+} from '@navikt/ds-react'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
 import { ModalFooter } from '../../ModalFooter'
-import { PameldingResponse} from '../../../api/data/pamelding'
+import { PameldingResponse } from '../../../api/data/pamelding'
 import { endreDeltakelseInnhold } from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { INNHOLD_TYPE_ANNET } from '../../../utils/utils'
 import {
-  BESKRIVELSE_ANNET_MAX_TEGN, generateValgtInnholdKoder,
+  BESKRIVELSE_ANNET_MAX_TEGN,
+  generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
 import { useState } from 'react'
-import {generateInnholdFromResponse} from '../../../utils/pamelding-form-utils'
+import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -27,11 +37,15 @@ export const EndreInnholdModal = ({
   onSuccess
 }: EndreInnholdModalProps) => {
   const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
-  const [valgteInnhold, setValgteInnhold] = useState<string[] | []>(generateValgtInnholdKoder(pamelding))
+  const [valgteInnhold, setValgteInnhold] = useState<string[] | []>(
+    generateValgtInnholdKoder(pamelding)
+  )
   const [hasError, setHasError] = useState<boolean>(false)
   const { enhetId } = useAppContext()
 
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse )
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(
+    innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+  )
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
   const erAnnetValgt = valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
@@ -67,7 +81,7 @@ export const EndreInnholdModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -76,11 +90,13 @@ export const EndreInnholdModal = ({
         )}
 
         <section className="space-y-4">
-          <BodyLong size="small">Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.</BodyLong>
+          <Detail size="small">
+            Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          </Detail>
           <BodyLong size="small">{pamelding.deltakelsesinnhold?.ledetekst ?? ''}</BodyLong>
         </section>
 
-        <section className="mb-8 mt-4">
+        <section className="mt-4">
           {innhold.length > 0 && (
             <CheckboxGroup
               defaultValue={valgteInnhold}
@@ -96,12 +112,7 @@ export const EndreInnholdModal = ({
             >
               {innhold.map((e) => (
                 <div key={e.innholdskode}>
-                  <Checkbox
-                    value={e.innholdskode}
-
-                  >
-                    {e.tekst}
-                  </Checkbox>
+                  <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
                   {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
                     <Textarea
                       onChange={(e) => {

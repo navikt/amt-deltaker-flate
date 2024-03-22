@@ -52,7 +52,7 @@ export const EndreBakgrunnsinfoModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -76,7 +76,7 @@ export const EndreBakgrunnsinfoModal = ({
         />
       </Modal.Body>
       <ModalFooter
-        confirmButtonText="Oppdater"
+        confirmButtonText="Lagre"
         onConfirm={sendEndring}
         confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
         disabled={endreDeltakelseState === DeferredFetchState.LOADING}

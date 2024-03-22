@@ -76,7 +76,7 @@ export const ForlengDeltakelseModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -87,22 +87,20 @@ export const ForlengDeltakelseModal = ({
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
 
-        <section className="mt-4">
-          <VargihetField
-            title="Hvor lenge skal deltakelsen forlenges?"
-            className="mt-4"
-            tiltakstype={pamelding.deltakerliste.tiltakstype}
-            startDato={sluttdato || undefined}
-            sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
-            errorVarighet={errorVarighet}
-            errorSluttDato={errorSluttDato}
-            onChangeVarighet={handleChangeVarighet}
-            onChangeSluttDato={(date) => {
-              settNySluttDato(date)
-              setErrorSluttDato(null)
-            }}
-          />
-        </section>
+        <VargihetField
+          title="Hvor lenge skal deltakelsen forlenges?"
+          className="mt-4"
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          startDato={sluttdato || undefined}
+          sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
+          errorVarighet={errorVarighet}
+          errorSluttDato={errorSluttDato}
+          onChangeVarighet={handleChangeVarighet}
+          onChangeSluttDato={(date) => {
+            settNySluttDato(date)
+            setErrorSluttDato(null)
+          }}
+        />
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"

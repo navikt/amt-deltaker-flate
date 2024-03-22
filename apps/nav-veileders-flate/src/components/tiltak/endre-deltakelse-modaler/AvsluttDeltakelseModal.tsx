@@ -42,9 +42,10 @@ export const AvsluttDeltakelseModal = ({
 }: AvsluttDeltakelseModalProps) => {
   const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
-  const [hasError, setHasError] = useState<boolean>(false)
   const [sluttdato, settNySluttDato] = useState<Date | null>()
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
+  const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
+  const [errorSluttDato, setErrorSluttDato] = useState<boolean>(false)
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
@@ -53,11 +54,9 @@ export const AvsluttDeltakelseModal = ({
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
-    onValidate: (val) => {
-      setErrorMessage(!val.isValidDate ? 'Du må velge en gyldig dato' : null)
-    },
     onDateChange: (date) => {
       settNySluttDato(date)
+      setErrorSluttDato(false)
     }
   })
 
@@ -68,21 +67,32 @@ export const AvsluttDeltakelseModal = ({
   } = useDeferredFetch(avsluttDeltakelse)
 
   const sendEndring = () => {
+    let hasError = false
     if (!sluttdato) {
-      setErrorMessage('Du må velge en sluttdato')
-    } else if (valgtArsak) {
-      if (!aarsakErAnnet || (aarsakErAnnet && harAnnetBeskrivelse)) {
-        doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
-          aarsak: {
-            type: valgtArsak,
-            beskrivelse: beskrivelse
-          },
-          sluttdato: formatDateToDateInputStr(sluttdato)
-        }).then((data) => {
-          onSuccess(data)
-        })
-      } else setHasError(true)
-    } else setHasError(true)
+      setErrorSluttDato(true)
+      hasError = true
+    }
+    if (!valgtArsak) {
+      setErrorAarsak(true)
+      hasError = true
+    }
+
+    if (aarsakErAnnet && !harAnnetBeskrivelse) {
+      setErrorAarsakAnnet(true)
+      hasError = true
+    }
+
+    if (!hasError && valgtArsak && sluttdato) {
+      doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
+        aarsak: {
+          type: valgtArsak,
+          beskrivelse: beskrivelse
+        },
+        sluttdato: formatDateToDateInputStr(sluttdato)
+      }).then((data) => {
+        onSuccess(data)
+      })
+    }
   }
 
   return (
@@ -96,7 +106,7 @@ export const AvsluttDeltakelseModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -109,10 +119,11 @@ export const AvsluttDeltakelseModal = ({
         <RadioGroup
           legend="Hva er årsaken til avslutning?"
           size="small"
-          error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
+          error={errorAarsak && 'Du må velge en årsak før du kan fortsette.'}
           onChange={(value: DeltakerStatusAarsakType) => {
             setValgtArsak(value)
-            setHasError(false)
+            setErrorAarsak(false)
+            setErrorAarsakAnnet(false)
           }}
           value={valgtArsak}
         >
@@ -126,18 +137,14 @@ export const AvsluttDeltakelseModal = ({
               <Textarea
                 onChange={(e) => {
                   setBeskrivelse(e.target.value)
-                  setHasError(false)
+                  setErrorAarsakAnnet(false)
                 }}
                 value={beskrivelse ?? ''}
                 minRows={1}
                 rows={1}
                 size="small"
                 label={null}
-                error={
-                  hasError &&
-                  aarsakErAnnet &&
-                  'Du må fylle ut for årsak "annet" før du kan fortsette.'
-                }
+                error={errorAarsakAnnet && 'Du må fylle ut for årsak "annet" før du kan fortsette.'}
                 maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}
               />
@@ -146,7 +153,12 @@ export const AvsluttDeltakelseModal = ({
         </RadioGroup>
         <section className="mt-4">
           <DatePicker {...datepickerProps}>
-            <DatePicker.Input {...inputProps} label="Hva er ny sluttdato?" error={errorMessage} />
+            <DatePicker.Input
+              {...inputProps}
+              size="small"
+              label="Hva er ny sluttdato?"
+              error={errorSluttDato && 'Du må velge en sluttdato'}
+            />
           </DatePicker>
         </section>
       </Modal.Body>

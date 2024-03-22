@@ -65,7 +65,7 @@ export const EndreSluttdatoModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
@@ -76,7 +76,12 @@ export const EndreSluttdatoModal = ({
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyLong>
         <DatePicker {...datepickerProps}>
-          <DatePicker.Input {...inputProps} label="Ny sluttdato" error={errorMessage} />
+          <DatePicker.Input
+            {...inputProps}
+            label="Ny sluttdato"
+            error={errorMessage}
+            size="small"
+          />
         </DatePicker>
       </Modal.Body>
       <ModalFooter
