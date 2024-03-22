@@ -21,7 +21,7 @@
     "@navikt/ds-tailwind": "^6.3.3",
     "dayjs": "^1.11.10",
     "mockjs": "^1.1.0",
-    "msw": "^2.2.9",
+    "msw": "^2.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",

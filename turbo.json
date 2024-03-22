@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "BASE_URL",
+    "VITE_MOCK_SERVICE_RUNNER_PATH",
+    "VITE_ENDPOINT_HANDLER",
+    "VITE_MODE",
+    "DEV"
+  ],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
