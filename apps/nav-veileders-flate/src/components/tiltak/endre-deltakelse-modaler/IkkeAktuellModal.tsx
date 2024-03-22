@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { Alert, Detail, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -73,9 +73,9 @@ export const IkkeAktuellModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyShort size="small">
+        <Detail size="small">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyShort>
+        </Detail>
         <RadioGroup
           className="mt-6"
           legend="Hva er årsaken til at deltakeren ikke er aktuell?"

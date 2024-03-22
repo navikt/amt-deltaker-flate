@@ -1,7 +1,7 @@
 import {
   Alert,
-  BodyLong,
   DatePicker,
+  Detail,
   Heading,
   Modal,
   Radio,
@@ -113,9 +113,9 @@ export const AvsluttDeltakelseModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <RadioGroup
           legend="Hva er årsaken til avslutning?"
           size="small"

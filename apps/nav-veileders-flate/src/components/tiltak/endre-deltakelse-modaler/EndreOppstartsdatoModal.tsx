@@ -1,6 +1,6 @@
 import {
   Alert,
-  BodyLong,
+  Detail,
   BodyShort,
   DatePicker,
   Heading,
@@ -138,9 +138,9 @@ export const EndreOppstartsdatoModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
