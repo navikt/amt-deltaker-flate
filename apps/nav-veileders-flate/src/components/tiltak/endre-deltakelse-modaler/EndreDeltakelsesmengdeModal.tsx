@@ -1,22 +1,20 @@
-import {Alert, BodyLong, Heading, Modal} from '@navikt/ds-react'
-import {PameldingResponse} from '../../../api/data/pamelding.ts'
-import {useState} from 'react'
-import {DeferredFetchState, useDeferredFetch} from '../../../hooks/useDeferredFetch.ts'
-import {endreDeltakelsesmengde} from '../../../api/api.ts'
-import {useAppContext} from '../../../AppContext.tsx'
-import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
-import {
-  EndreDeltakelseType
-} from '../../../api/data/endre-deltakelse-request.ts'
-import {ModalFooter} from '../../ModalFooter.tsx'
-import {NumberTextField} from '../../NumberTextField.tsx'
+import { Alert, Detail, Heading, Modal } from '@navikt/ds-react'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { useState } from 'react'
+import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import { endreDeltakelsesmengde } from '../../../api/api.ts'
+import { useAppContext } from '../../../AppContext.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { NumberTextField } from '../../NumberTextField.tsx'
 import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
-    pamelding: PameldingResponse
-    open: boolean
-    onClose: () => void
-    onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  pamelding: PameldingResponse
+  open: boolean
+  onClose: () => void
+  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
 export const EndreDeltakelsesmengdeModal = ({
@@ -30,10 +28,11 @@ export const EndreDeltakelsesmengdeModal = ({
   const [hasErrorDeltakelsesprosent, setHasErrorDeltakelsesprosent] = useState<boolean>(false)
   const [hasErrorDagerPerUke, setHasErrorDagerPerUke] = useState<boolean>(false)
 
-  const gyldigDeltakelsesprosent = !deltakelsesprosent || (0 < deltakelsesprosent && deltakelsesprosent <= 100)
+  const gyldigDeltakelsesprosent =
+    !deltakelsesprosent || (0 < deltakelsesprosent && deltakelsesprosent <= 100)
   const gyldigDagerPerUke = !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
 
-  const {enhetId} = useAppContext()
+  const { enhetId } = useAppContext()
 
   const {
     state: endreDeltakelseState,
@@ -72,9 +71,9 @@ export const EndreDeltakelsesmengdeModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <NumberTextField
           label="Hva er ny deltakelsesprosent?"
           disabled={false}

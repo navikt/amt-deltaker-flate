@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Heading, Modal, Textarea } from '@navikt/ds-react'
+import { Alert, Detail, Heading, Modal, Textarea } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -59,9 +59,9 @@ export const EndreBakgrunnsinfoModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <Textarea
           onChange={(e) => {
             setBakgrunnsinformasjon(e.target.value)

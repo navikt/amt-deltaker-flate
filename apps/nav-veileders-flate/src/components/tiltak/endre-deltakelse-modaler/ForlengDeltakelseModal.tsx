@@ -3,7 +3,7 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
-import { Alert, BodyLong, Heading, Modal } from '@navikt/ds-react'
+import { Alert, Detail, Heading, Modal } from '@navikt/ds-react'
 import { kalkulerSluttdato, getVarighet, VarighetValg } from '../../../utils/varighet.ts'
 import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -83,9 +83,9 @@ export const ForlengDeltakelseModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small">
+        <Detail size="small">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
 
         <VargihetField
           title="Hvor lenge skal deltakelsen forlenges?"

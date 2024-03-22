@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { Alert, Detail, Heading, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -75,9 +75,9 @@ export const EndreSluttarsakModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <RadioGroup
           legend="Hva er årsaken til avslutning?"
           size="small"

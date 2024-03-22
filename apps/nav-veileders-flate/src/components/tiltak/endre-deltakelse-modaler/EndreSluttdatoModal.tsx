@@ -1,4 +1,4 @@
-import { Alert, BodyLong, DatePicker, Heading, Modal, useDatepicker } from '@navikt/ds-react'
+import { Alert, Detail, DatePicker, Heading, Modal, useDatepicker } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -72,9 +72,9 @@ export const EndreSluttdatoModal = ({
             {endreDeltakelseError}
           </Alert>
         )}
-        <BodyLong size="small" className="mb-4">
+        <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
-        </BodyLong>
+        </Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
