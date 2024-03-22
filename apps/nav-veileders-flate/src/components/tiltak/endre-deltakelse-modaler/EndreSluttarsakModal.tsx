@@ -68,7 +68,7 @@ export const EndreSluttarsakModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mt-4 mb-4">
+          <Alert variant="error" className="mb-4">
             <Heading size="small" spacing level="3">
               Det skjedde en feil.
             </Heading>
