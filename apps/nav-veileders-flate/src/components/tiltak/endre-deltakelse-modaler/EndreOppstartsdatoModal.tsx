@@ -12,7 +12,11 @@ import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
+import {
+  dateStrToNullableDate,
+  formatDateFromString,
+  formatDateToDateInputStr
+} from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
@@ -43,6 +47,10 @@ export const EndreOppstartsdatoModal = ({
 
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
+  const feilmeldingSluttdato = `Du må sette en sluttdato som er før sluttdatoen for tiltaksgjennomføringen: ${formatDateFromString(
+    pamelding.deltakerliste.sluttdato
+  )}`
+
   const { datepickerProps, inputProps } = useDatepicker({
     // TODO i arrangør flate er disse datoene maks 2 mnd tilbake/frem i tid
     fromDate: dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
@@ -50,9 +58,15 @@ export const EndreOppstartsdatoModal = ({
     onDateChange: (date) => {
       if (valgtVarighet) {
         const varighetMnd = getVarighet(valgtVarighet)?.antall
-        varighetMnd &&
-          settNySluttDato(formatDateToDateInputStr(dayjs(date).add(varighetMnd, 'month').toDate()))
+        const sluttDato = dayjs(date).add(varighetMnd, 'month')
+        varighetMnd && settNySluttDato(formatDateToDateInputStr(sluttDato.toDate()))
+
+        const erNySluttdatoGyldig = sluttDato.isBefore(dayjs(pamelding.deltakerliste.sluttdato))
+        if (!erNySluttdatoGyldig) {
+          setErrorVarighet(feilmeldingSluttdato)
+        }
       }
+
       setErrorStartDato(null)
       settNyStartDato(date || null)
     }
@@ -72,8 +86,12 @@ export const EndreOppstartsdatoModal = ({
     if (skalVelgeVarighet && !nySluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
     }
+    const erNySluttdatoGyldig = dayjs(nySluttDato).isBefore(pamelding.deltakerliste.sluttdato)
+    if (skalVelgeVarighet && valgtVarighet && !erNySluttdatoGyldig) {
+      setErrorVarighet(feilmeldingSluttdato)
+    }
 
-    if (nyStartdato && (skalVelgeVarighet ? nySluttDato : true)) {
+    if (nyStartdato && (skalVelgeVarighet ? nySluttDato && erNySluttdatoGyldig : true)) {
       doFetchEndreDeltakelseStartdato(pamelding.deltakerId, enhetId, {
         startdato: formatDateToDateInputStr(nyStartdato),
         sluttdato: nySluttDato
@@ -81,6 +99,25 @@ export const EndreOppstartsdatoModal = ({
         onSuccess(data)
       })
     }
+  }
+
+  const onChangeVarighet = (valg: VarighetValg) => {
+    const varighetMnd = getVarighet(valg)?.antall
+
+    if (nyStartdato && varighetMnd) {
+      const valgtSluttdato = dayjs(nyStartdato).add(varighetMnd, 'month')
+      settNySluttDato(formatDateToDateInputStr(valgtSluttdato.toDate()))
+
+      const erNySluttdatoGyldig = valgtSluttdato.isBefore(dayjs(pamelding.deltakerliste.sluttdato))
+      if (!erNySluttdatoGyldig) {
+        setErrorVarighet(feilmeldingSluttdato)
+      } else setErrorVarighet(null)
+    } else setErrorVarighet(null)
+    if (valg === VarighetValg.ANNET) {
+      settNySluttDato(null)
+    }
+    setErrorSluttDato(null)
+    setValgtVarighet(valg)
   }
 
   return (
@@ -122,20 +159,7 @@ export const EndreOppstartsdatoModal = ({
               sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
-              onChangeVarighet={(valg: VarighetValg) => {
-                const varighetMnd = getVarighet(valg)?.antall
-                if (nyStartdato && varighetMnd) {
-                  settNySluttDato(
-                    formatDateToDateInputStr(dayjs(nyStartdato).add(varighetMnd, 'month').toDate())
-                  )
-                }
-                if (valg === VarighetValg.ANNET) {
-                  settNySluttDato(null)
-                }
-                setErrorVarighet(null)
-                setErrorSluttDato(null)
-                setValgtVarighet(valg)
-              }}
+              onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)
                 if (date) settNySluttDato(formatDateToDateInputStr(date))
@@ -143,7 +167,7 @@ export const EndreOppstartsdatoModal = ({
               }}
             />
             <BodyShort className="mt-2" size="small">
-              Forventet sluttdato: {nySluttDato || '—'}
+              Forventet sluttdato: {formatDateFromString(nySluttDato) || '—'}
             </BodyShort>
           </>
         )}

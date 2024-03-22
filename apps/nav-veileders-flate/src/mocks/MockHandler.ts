@@ -89,7 +89,7 @@ export class MockHandler {
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'løpende',
         startdato: '2022-10-28',
-        sluttdato: '2027-12-20'
+        sluttdato: '2025-02-20'
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
