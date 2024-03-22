@@ -5,6 +5,8 @@ import './App.css'
 import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
 import { getDeltakelse } from './api/api'
 import { useEffect } from 'react'
+import { DeltakerContextProvider } from './DeltakerContext'
+import { DeltakerGuard } from './guards/DeltakerGuard'
 
 dayjs.locale('nb')
 
@@ -43,10 +45,9 @@ const App = () => {
   }
 
   return (
-    <Alert variant="info" className="m-4">
-      <Heading size="small">Hva har vi?</Heading>
-      Dette er alt: {deltaker.status.type}
-    </Alert>
+    <DeltakerContextProvider initialDeltaker={deltaker}>
+      <DeltakerGuard />
+    </DeltakerContextProvider>
   )
 }
 

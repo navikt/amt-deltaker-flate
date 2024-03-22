@@ -15,5 +15,9 @@ export const worker = setupWorker(
   http.get('mock/innbygger/:deltakerId', async () => {
     await delay(1000)
     return handler.getDeltaker()
+  }),
+  http.post('mock/innbygger/:deltakerId/godkjenn-utkast', async () => {
+    await delay(1000)
+    return handler.godkjennUtkast()
   })
 )
