@@ -74,7 +74,7 @@ export const IkkeAktuellModal = ({
           </Alert>
         )}
         <BodyShort size="small">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.{' '}
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
         </BodyShort>
         <RadioGroup
           className="mt-6"
