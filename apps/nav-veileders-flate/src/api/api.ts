@@ -5,7 +5,7 @@ import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pameldin
 import { deltakerBffApiBasePath } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
-  EndreBakgrunnsinfoRequest,
+  EndreBakgrunnsinfoRequest, EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
   EndreSluttarsakRequest,
   EndreSluttdatoRequest,
@@ -337,6 +337,39 @@ export const endreDeltakelseInnhold = (
       if (response.status !== 200) {
         throw new Error(
           `Kunne ikke endre innhold. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
+    })
+}
+
+export const endreDeltakelsesmengde = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreDeltakelsesmengdeRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/deltakelsesmengde`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Kunne ikke endre deltakelsesmengde. Prøv igjen senere. (${response.status})`
         )
       }
       return response.json()

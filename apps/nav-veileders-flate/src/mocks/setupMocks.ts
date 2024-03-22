@@ -13,7 +13,7 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema,
   endreSluttarsakSchema,
-  endreInnholdSchema
+  endreInnholdSchema, endreDeltakelsesmengdeSchema
 } from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()
@@ -129,6 +129,15 @@ export const worker = setupWorker(
       .json()
       .then((json) => endreInnholdSchema.parse(json))
       .then((body) => handler.endreDeltakelseInnhold(body))
+
+    return response
+  }),
+  http.post('/mock/deltaker/:deltakerId/deltakelsesmengde', async ({ request }) => {
+    await delay(100)
+    const response = await request
+      .json()
+      .then((json) => endreDeltakelsesmengdeSchema.parse(json))
+      .then((body) => handler.endreDeltakelsesmengde(body))
 
     return response
   }),

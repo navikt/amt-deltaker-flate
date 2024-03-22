@@ -5,7 +5,7 @@ import {
   ChevronRightCircleFillIcon,
   PlusCircleFillIcon,
   ChevronRightLastCircleFillIcon,
-  MenuElipsisHorizontalCircleFillIcon
+  MenuElipsisHorizontalCircleFillIcon, PieChartFillIcon
 } from '@navikt/aksel-icons'
 
 interface EndringTypeIkonProps {
@@ -48,6 +48,14 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
           className="h-6 w-6"
           aria-hidden
           color="var(--a-deepblue-400)"
+        />
+      )
+    case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
+      return (
+        <PieChartFillIcon
+          className="h-6 w-6"
+          aria-hidden
+          color="var(--a-purple-500)"
         />
       )
   }

@@ -122,5 +122,7 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Endre sluttdato'
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
       return 'Forleng deltakelse'
+    case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
+      return 'Endre deltakelsesmengde'
   }
 }
