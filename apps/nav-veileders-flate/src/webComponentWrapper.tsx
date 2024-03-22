@@ -1,15 +1,17 @@
 import appCss from './app.css?inline'
-import { createRoot } from 'react-dom/client'
+import { createRoot, Root } from 'react-dom/client'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { AppContextProvider } from './AppContext.tsx'
 import { AppRoutes } from './Routes.tsx'
 import { BrowserRouter } from 'react-router-dom'
 
 export class Deltaker extends HTMLElement {
-  private readonly root: HTMLDivElement
   static PERSONIDENT_PROP = 'data-personident'
   static DELTAKERLISTE_ID_PROP = 'data-deltakerlisteId'
   static ENHET_ID_PROP = 'data-enhetId'
+
+  private readonly root: HTMLDivElement
+  private reactRoot?: Root
 
   setPersonident?: (personident: string) => void
   setDeltakelisteId?: (fndeltakerlisteIdr: string) => void
@@ -36,15 +38,13 @@ export class Deltaker extends HTMLElement {
     shadowRoot.appendChild(styleElem)
 
     const initialPersonident = this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''
-    const initialDeltakerlisteId = this.getAttribute(Deltaker.DELTAKERLISTE_ID_PROP) ?? ''
     const initialEnhetId = this.getAttribute(Deltaker.ENHET_ID_PROP) ?? ''
 
-    const root = createRoot(this.root)
-    root.render(
+    this.reactRoot = createRoot(this.root)
+    this.reactRoot.render(
       <div className="max-w-[1252px] m-auto">
         <AppContextProvider
           initialPersonident={initialPersonident}
-          initialDeltakerlisteId={initialDeltakerlisteId}
           initialEnhetId={initialEnhetId}
         >
           <BrowserRouter>
@@ -53,6 +53,10 @@ export class Deltaker extends HTMLElement {
         </AppContextProvider>
       </div>
     )
+  }
+
+  disconnectedCallback() {
+    this.reactRoot?.unmount()
   }
 
   // Invoked when one of the custom element's attributes is added, removed, or changed.

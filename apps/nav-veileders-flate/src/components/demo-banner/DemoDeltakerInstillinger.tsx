@@ -1,8 +1,13 @@
 import { ReadMore, TextField } from '@navikt/ds-react'
 import { useAppContext } from '../../AppContext'
 
+/**
+ * TODO: Legg til funksjon for å velge deltaker / deltakerliste
+ * @constructor
+ */
+
 const DemoDeltakerInstillinger = () => {
-  const { enhetId, personident, deltakerlisteId, setEnhetId, setPersonident, setDeltakelisteId } =
+  const { enhetId, personident, setEnhetId, setPersonident } =
     useAppContext()
 
   return (
@@ -15,14 +20,6 @@ const DemoDeltakerInstillinger = () => {
           className="mt-2"
           value={personident}
           onChange={(e) => setPersonident(e.target.value)}
-        />
-
-        <TextField
-          label="Deltakerliste id (uuid)"
-          size="small"
-          className="mt-2"
-          value={deltakerlisteId}
-          onChange={(e) => setDeltakelisteId(e.target.value)}
         />
 
         <TextField

@@ -3,12 +3,14 @@ import { delay, http, HttpResponse } from 'msw'
 import { MockHandler } from './MockHandler.ts'
 import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
-import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import {
+  sendInnPameldingUtenGodkjenningRequestSchema
+} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
 import {
   avsluttDeltakelseSchema,
-  endreSluttdatoSchema,
   endreBakgrunnsinfoSchema,
+  endreSluttdatoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
   ikkeAktuellSchema,
@@ -30,7 +32,7 @@ export const worker = setupWorker(
     const response = await request
       .json()
       .then((json) => pameldingRequestSchema.parse(json))
-      .then((body) => handler.createPamelding(body))
+      .then((body) => handler.createPamelding(body.deltakerlisteId))
 
     return response
   }),

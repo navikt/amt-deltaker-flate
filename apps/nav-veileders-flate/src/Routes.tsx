@@ -1,36 +1,22 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import App from './App.tsx'
-import { useAppContext } from './AppContext.tsx'
-import { SendTilbakePage } from './pages/SendTilbakePage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
-
-const appUrl = (path: string): string => {
-  const strippedPath = path.startsWith('/') ? path.substring(1) : path
-  return `${import.meta.env.BASE_URL.replace(/^\//, '')}${strippedPath}`
-}
-
-export const base = appUrl('arbeidsmarkedstiltak/tiltak/:id/deltaker')
-export const PAMELDING_PAGE = 'pamelding'
-export const DELTAKELSE_PAGE = 'deltaker'
-
-export const TILBAKE_PAGE = 'tilbake'
+import InngangSePaRediger from './InngangSePaRediger.tsx'
+import InngangMeldPa from './InngangMeldPa.tsx'
+import RedirectToDeltakeroversikt from './guards/RedirectToDeltakeroversikt.tsx'
 
 export const AppRoutes = () => {
-  const { deltakerlisteId } = useAppContext()
 
   return (
     <Routes>
-      <Route path={`${base}`} element={<App />} />
-      <Route path={`${base}/${TILBAKE_PAGE}`} element={<SendTilbakePage />} />
-      <Route path={`${base}/*`} element={<Navigate replace to={`${base}`} />} />
+      <Route path={'/arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId'} element={<InngangSePaRediger/>}/>
+      <Route path={'/arbeidsmarkedstiltak/deltakelse/:deltakerlisteId'} element={<InngangMeldPa/>}/>
+      {!isEnvLocalDemoOrPr && (
+        <Route path={'/*'} element={<RedirectToDeltakeroversikt/>}/>
+      )}
       {isEnvLocalDemoOrPr && (
-        <>
-          <Route
-            path={'/'}
-            element={<Navigate replace to={base.replace(':id', deltakerlisteId)} />}
-          />
-          <Route path={'*'} element={<Navigate replace to={'/'} />} />
-        </>
+        <Route path={'/*'} element={
+          <Navigate replace to={'/arbeidsmarkedstiltak/deltakelse/15462eb2-9fb0-4e37-b749-fe71a9af8d48'}/>}
+        />
       )}
     </Routes>
   )

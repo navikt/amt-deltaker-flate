@@ -1,9 +1,7 @@
-import { Alert, Button, HStack, Heading, HelpText } from '@navikt/ds-react'
+import { Alert, Button, Heading, HelpText, HStack } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
-import { TILBAKE_PAGE } from '../../Routes.tsx'
-import { useAppRedirection } from '../../hooks/useAppRedirection.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
 import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
@@ -13,6 +11,7 @@ import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
 import { getDeltakerNavn } from '../../utils/displayText.ts'
+import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
 
 interface Props {
   pamelding: PameldingResponse
@@ -30,10 +29,10 @@ export const PameldingFormButtons = ({
   const erUtkast = pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
 
-  const { doRedirect } = useAppRedirection()
+  const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
   const returnToFrontpage = () => {
-    doRedirect(TILBAKE_PAGE)
+    doRedirect(DELTAKELSESOVERSIKT_LINK)
   }
   const { handleSubmit, getValues } = useFormContext<PameldingFormValues>()
 
