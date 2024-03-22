@@ -1,13 +1,13 @@
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, Dropdown } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
-import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
-import { EndringTypeIkon } from './EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
-import { usePameldingCOntext } from './PameldingContext.tsx'
-import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
-import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
-import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
+import {PencilIcon} from '@navikt/aksel-icons'
+import {Button, Dropdown} from '@navikt/ds-react'
+import {useRef, useState} from 'react'
+import {DeltakerStatusType, PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
+import {EndringTypeIkon} from './EndringTypeIkon.tsx'
+import {EndreDeltakelseType} from '../../api/data/endre-deltakelse-request.ts'
+import {usePameldingCOntext} from './PameldingContext.tsx'
+import {ModalController} from './endre-deltakelse-modaler/ModalController.tsx'
+import {getEndreDeltakelseTypeText} from '../../utils/displayText.ts'
+import {dateStrToDate, dateStrToNullableDate} from '../../utils/utils.ts'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
@@ -65,6 +65,15 @@ const skalViseEndreSluttdatoKnapp = (
   toMndSiden: Date
 ) => (
   deltakerHarSluttetEllerFullfort(pamelding.status.type) && harSluttetKanEndres(pamelding, statusdato, toMndSiden)
+)
+
+const skalViseEndreDeltakelsesmengde = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV || pamelding.deltakerliste.tiltakstype === Tiltakstype.ARBFORB) &&
+    venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
 )
 
 const skalViseEndreOppstartsdato = (
@@ -138,6 +147,8 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTDATO, openModal)}
             {harSluttetKanEndres(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_SLUTTARSAK, openModal)}
+            {skalViseEndreDeltakelsesmengde(pamelding, statusdato, toMndSiden) &&
+              hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE, openModal)}
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

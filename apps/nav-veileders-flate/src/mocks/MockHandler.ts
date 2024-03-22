@@ -10,7 +10,7 @@ import {
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest,
-  EndreSluttarsakRequest, EndreInnholdRequest
+  EndreSluttarsakRequest, EndreInnholdRequest, EndreDeltakelsesmengdeRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
@@ -361,6 +361,19 @@ export class MockHandler {
         }
       }))
       oppdatertPamelding.deltakelsesinnhold.innhold = nyListe
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(this.pamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelsesmengde(request: EndreDeltakelsesmengdeRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakelsesprosent = request.deltakelsesprosent || null
+      oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)
     }
