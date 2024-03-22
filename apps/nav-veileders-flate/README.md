@@ -10,3 +10,11 @@ Web component blir lastet inn i team VALP sin web-component 'mulighetsrommet-vei
 
 1. Intstaller nav-veileders-flate: `pnpm i`
 2. Start appen lokalt: `pnpm start`
+
+## Innganger
+
+### /arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId
+Inngang fra oversikten til VALP for allerede opprettede påmeldinger
+
+### /arbeidsmarkedstiltak/deltakelse/:deltakerlisteId
+Inngang fra "Start påmelding" knappen, for å opprette påmeldinger
