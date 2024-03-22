@@ -55,10 +55,12 @@ export const UtkastPage = () => {
       <Heading level="2" size="medium" className="mt-6">
         Hva er innholdet?
       </Heading>
-      <BodyLong size="small" className="mt-2">
-        Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din
-        kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.
-      </BodyLong>
+      {deltaker.deltakelsesinnhold?.ledetekst && (
+        <BodyLong size="small" className="mt-2">
+          {deltaker.deltakelsesinnhold?.ledetekst}
+        </BodyLong>
+      )}
+
       {deltaker.deltakelsesinnhold?.innhold && (
         <List as="ul" size="small" className="mt-2">
           {deltaker.deltakelsesinnhold.innhold.map((innhold) => (
