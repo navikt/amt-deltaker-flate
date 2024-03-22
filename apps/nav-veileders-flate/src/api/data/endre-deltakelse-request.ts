@@ -10,7 +10,8 @@ export enum EndreDeltakelseType {
   ENDRE_SLUTTDATO = 'ENDRE_SLUTTDATO',
   ENDRE_OPPSTARTSDATO = 'ENDRE_OPPSTARTSDATO',
   FORLENG_DELTAKELSE = 'FORLENG_DELTAKELSE',
-  AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE'
+  AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE',
+  ENDRE_DELTAKELSESMENGDE = 'ENDRE_DELTAKELSESMENGDE'
 }
 
 export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
@@ -69,3 +70,10 @@ export const endreInnholdSchema = z.object({
 })
 
 export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
+
+export const endreDeltakelsesmengdeSchema = z.object({
+  deltakelsesprosent: z.number().optional(),
+  dagerPerUke: z.number().optional()
+})
+
+export type EndreDeltakelsesmengdeRequest = z.infer<typeof endreDeltakelsesmengdeSchema>
