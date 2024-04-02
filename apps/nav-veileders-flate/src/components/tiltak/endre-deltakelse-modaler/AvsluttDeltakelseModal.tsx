@@ -1,19 +1,21 @@
-import { DatePicker, Detail, Modal, Radio, RadioGroup, Textarea, useDatepicker } from '@navikt/ds-react'
-import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
-import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
-import { avsluttDeltakelse } from '../../../api/api.ts'
-import { useAppContext } from '../../../AppContext.tsx'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
+import {DatePicker, Detail, Modal, Radio, RadioGroup, Textarea, useDatepicker} from '@navikt/ds-react'
+import {DeltakerStatusAarsakType, PameldingResponse} from '../../../api/data/pamelding.ts'
+import {useState} from 'react'
+import {DeferredFetchState, useDeferredFetch} from '../../../hooks/useDeferredFetch.ts'
+import {avsluttDeltakelse} from '../../../api/api.ts'
+import {useAppContext} from '../../../AppContext.tsx'
+import {getDeltakerStatusAarsakTypeText} from '../../../utils/displayText.ts'
 import {
+  dateStrToDate,
   dateStrToNullableDate,
   formatDateToDateInputStr,
-  getDeltakerStatusAarsakTyperAsList
+  getDeltakerStatusAarsakTyperAsList,
+  HarDeltattValg
 } from '../../../utils/utils.ts'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import {EndringTypeIkon} from '../EndringTypeIkon.tsx'
+import {BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType} from '../../../api/data/endre-deltakelse-request.ts'
+import {ModalFooter} from '../../ModalFooter.tsx'
+import {ErrorPage} from '../../../pages/ErrorPage.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -30,6 +32,7 @@ export const AvsluttDeltakelseModal = ({
 }: AvsluttDeltakelseModalProps) => {
   const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
+  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
   const [sluttdato, settNySluttDato] = useState<Date | null>()
   const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
   const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
@@ -38,6 +41,11 @@ export const AvsluttDeltakelseModal = ({
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
   const { enhetId } = useAppContext()
+
+  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
+  const femtenDagerSiden = new Date()
+  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
+  const skalViseHarDeltatt = statusdato > femtenDagerSiden
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
@@ -56,7 +64,7 @@ export const AvsluttDeltakelseModal = ({
 
   const sendEndring = () => {
     let hasError = false
-    if (!sluttdato) {
+    if (harDeltatt && !sluttdato) {
       setErrorSluttDato(true)
       hasError = true
     }
@@ -70,13 +78,14 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (!hasError && valgtArsak && sluttdato) {
+    if (!hasError && valgtArsak && (((harDeltatt || !skalViseHarDeltatt ) && sluttdato) || (!harDeltatt && !sluttdato))) {
       doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
         aarsak: {
           type: valgtArsak,
           beskrivelse: beskrivelse
         },
-        sluttdato: formatDateToDateInputStr(sluttdato)
+        sluttdato: sluttdato ? formatDateToDateInputStr(sluttdato) : null,
+        harDeltatt: harDeltatt
       }).then((data) => {
         onSuccess(data)
       })
@@ -134,7 +143,21 @@ export const AvsluttDeltakelseModal = ({
             )}
           </>
         </RadioGroup>
-        <section className="mt-4">
+        {skalViseHarDeltatt && <RadioGroup
+          legend="Har personen deltatt?"
+          size="small"
+          onChange={(value: HarDeltattValg) => {
+            if (value === HarDeltattValg.NEI) {
+              setHarDeltatt(false)
+            } else {
+              setHarDeltatt(true)
+            }
+          }}
+        >
+          <Radio value={HarDeltattValg.JA}>Ja</Radio>
+          <Radio value={HarDeltattValg.NEI}>Nei</Radio>
+        </RadioGroup>}
+        {(!skalViseHarDeltatt || harDeltatt) && <section className="mt-4">
           <DatePicker {...datepickerProps}>
             <DatePicker.Input
               {...inputProps}
@@ -143,7 +166,7 @@ export const AvsluttDeltakelseModal = ({
               error={errorSluttDato && 'Du må velge en sluttdato'}
             />
           </DatePicker>
-        </section>
+        </section>}
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"

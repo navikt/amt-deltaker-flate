@@ -54,7 +54,8 @@ export type EndreSluttdatoRequest = z.infer<typeof endreSluttdatoSchema>
 
 export const avsluttDeltakelseSchema = z.object({
   aarsak: aarsakSchema,
-  sluttdato: z.string()
+  sluttdato: z.string().nullable(),
+  harDeltatt: z.boolean().nullable()
 })
 
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
