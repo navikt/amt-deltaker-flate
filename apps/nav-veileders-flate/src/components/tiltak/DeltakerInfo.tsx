@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Heading, HStack, Label, Link, List } from '@navikt/ds-react'
-import { getDeltakerStatusAarsakText, hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
+import { getDeltakerStatusAarsakText, hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
@@ -27,7 +27,7 @@ const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
 
 export const DeltakerInfo = ({className}: Props) => {
   const {pamelding} = usePameldingCOntext()
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
+  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     pamelding.deltakerliste.tiltakstype,
     pamelding.deltakerliste.arrangorNavn
   )

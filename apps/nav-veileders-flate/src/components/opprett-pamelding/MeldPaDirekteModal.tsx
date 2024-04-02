@@ -1,7 +1,7 @@
 import { BodyLong, BodyShort, ConfirmationPanel, Modal } from '@navikt/ds-react'
 import { useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
-import { getDeltakerNavn, hentTiltakNavnHosArrangørTekst } from '../../utils/displayText'
+import { getDeltakerNavn, hentTiltakNavnHosArrangorTekst } from '../../utils/displayText'
 import { ModalFooter } from '../ModalFooter'
 
 export interface MeldPaDirekteModalProps {
@@ -61,7 +61,7 @@ export const MeldPaDirekteModal = ({
           og tildelt veileder.
         </BodyLong>
         <BodyShort weight="semibold">
-          {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangørTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}
+          {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyShort>
       </Modal.Body>
       <ModalFooter
