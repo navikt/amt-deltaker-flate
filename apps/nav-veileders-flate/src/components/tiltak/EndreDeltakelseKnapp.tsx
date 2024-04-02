@@ -59,6 +59,15 @@ const skalViseForlengKnapp = (
         harSluttetKanEndres(pamelding, statusdato, toMndSiden))
 )
 
+const skalViseEndreInnholdKnapp = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) => (
+  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
+  && pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV
+)
+
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
   statusdato: Date,
@@ -137,7 +146,7 @@ export const EndreDeltakelseKnapp = () => {
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.IKKE_AKTUELL, openModal)}
             {skalViseForlengKnapp(pamelding, sluttdato, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.FORLENG_DELTAKELSE, openModal)}
-            {venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
+            {skalViseEndreInnholdKnapp(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_INNHOLD, openModal)}
             {venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
               hentEndreDeltakelseKnappValg(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO, openModal)}
