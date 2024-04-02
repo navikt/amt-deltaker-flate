@@ -80,8 +80,8 @@ jobs:
         with:
           app: amt-deltaker-nav-veilderes-flate
           team: amt
-          source: ./build
-          ingress: https://amt.ekstern.dev.nav.no/arbeidsmarkedstiltak
+          source: apps/nav-veileders-flate/build
+          ingress: https://amt.nav-veileders-flate.ekstern.dev.nav.no
           environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
