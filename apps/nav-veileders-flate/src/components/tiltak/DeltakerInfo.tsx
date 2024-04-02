@@ -59,7 +59,7 @@ export const DeltakerInfo = ({className}: Props) => {
 
       <HStack gap="2" className="mt-8">
         <Label>Status:</Label>
-        <DeltakerIStatusTag statusType={pamelding.status.type}/>
+        <DeltakerIStatusTag statusType={pamelding.status.type} />
       </HStack>
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4">
@@ -114,18 +114,18 @@ export const DeltakerInfo = ({className}: Props) => {
         )}
 
         <Link href="#" className="mt-8">
-          <Todo/> Se endringer
+          <Todo /> Se endringer
           <span>
-            <ChevronRightIcon title="Gå til side for endringer"/>
+            <ChevronRightIcon title="Gå til side for endringer" />
           </span>
         </Link>
 
         <div className="mt-8">
-          <Todo/>
+          <Todo />
           Send en melding her til NAV-veilederen din hvis noe skal endres.
         </div>
 
-        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8"/>
+        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
 
         <Heading level="2" size="medium" className="mt-8">
           Du har rett til å klage
@@ -136,7 +136,7 @@ export const DeltakerInfo = ({className}: Props) => {
           informasjonen. Les mer om
           {
             <Link href="#">
-              <Todo/>
+              <Todo />
               retten til å klage her.
             </Link>
           }
