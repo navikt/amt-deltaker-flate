@@ -1,4 +1,5 @@
 export const DELTAKELSESOVERSIKT_LINK = '/arbeidsmarkedstiltak'
+export const TILTAKSGJENNOMFORING_LINK = '/arbeidsmarkedstiltak/tiltak'
 
 interface UseModiaLink {
   doRedirect: (path: string) => void

@@ -34,7 +34,7 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   }
 }
 
-export const hentTiltakNavnHosArrangørTekst = (tiltakstype: Tiltakstype, arrangorNavn: string) =>
+export const hentTiltakNavnHosArrangorTekst = (tiltakstype: Tiltakstype, arrangorNavn: string) =>
   `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 
 export const getDeltakerStatusDisplayText = (type: DeltakerStatusType): string => {

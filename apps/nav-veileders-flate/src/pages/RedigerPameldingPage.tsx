@@ -45,6 +45,7 @@ export const RedigerPameldingPage = () => {
           title="Utkast til påmelding"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
+          deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
         />
         <RedigerPameldingHeader vedtaksinformasjon={pamelding.vedtaksinformasjon} />
       </div>

@@ -1,8 +1,9 @@
 import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
-import { Todo } from '../Todo.tsx'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
-import { hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
+import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
 import { usePameldingCOntext } from './PameldingContext.tsx'
+import { formatDateFromString } from '../../utils/utils.ts'
+import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {
   className: string
@@ -10,6 +11,7 @@ interface Props {
 
 export const ForNAVAnsatt = ({ className }: Props) => {
   const { pamelding } = usePameldingCOntext()
+
   return (
     <div className={`bg-white p-4 h-fit ${className}`}>
       <Heading level="2" size="medium" className="mb-4 ">
@@ -17,29 +19,27 @@ export const ForNAVAnsatt = ({ className }: Props) => {
       </Heading>
       <EndreDeltakelseKnapp />
 
-      <LinkPanel
-        href="#"
-        border
-        className="mt-4 rounded border-2 border-[var(--a-border-selected)]"
-      >
-        <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
-          Gå til tiltaksgjennomføringen
-        </LinkPanel.Title>
-        <LinkPanel.Description>
-          <BodyShort size="small">
-            {hentTiltakNavnHosArrangørTekst(
-              pamelding.deltakerliste.tiltakstype,
-              pamelding.deltakerliste.arrangorNavn
-            )}
-          </BodyShort>
-          <BodyShort size="small">
-            <Todo /> Sted
-          </BodyShort>
-          <BodyShort size="small">
-            <Todo /> Start slutt
-          </BodyShort>
-        </LinkPanel.Description>
-      </LinkPanel>
+      <TiltaksgjennomforingLink deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}>
+        <LinkPanel
+          border
+          className="mt-4 rounded border-2 border-[var(--a-border-selected)]"
+        >
+          <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
+            Gå til tiltaksgjennomføringen
+          </LinkPanel.Title>
+          <LinkPanel.Description>
+            <BodyShort size="small">
+              {hentTiltakNavnHosArrangorTekst(
+                pamelding.deltakerliste.tiltakstype,
+                pamelding.deltakerliste.arrangorNavn
+              )}
+            </BodyShort>
+            <BodyShort size="small">
+              {formatDateFromString(pamelding.deltakerliste.startdato)} - {formatDateFromString(pamelding.deltakerliste.sluttdato)}
+            </BodyShort>
+          </LinkPanel.Description>
+        </LinkPanel>
+      </TiltaksgjennomforingLink>
     </div>
   )
 }
