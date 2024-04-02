@@ -1,22 +1,32 @@
-import { BodyLong, HStack, Heading, List, Link, Label, BodyShort } from '@navikt/ds-react'
-import {
-  getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangørTekst
-} from '../../utils/displayText.ts'
+import { BodyLong, BodyShort, Heading, HStack, Label, Link, List } from '@navikt/ds-react'
+import { getDeltakerStatusAarsakText, hentTiltakNavnHosArrangørTekst } from '../../utils/displayText.ts'
 import { Todo } from '../Todo.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
-import { EMDASH, INNHOLD_TYPE_ANNET, formatDateFromString } from '../../utils/utils.ts'
-import { DeltakerStatusType } from '../../api/data/pamelding.ts'
+import { EMDASH, formatDateFromString, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 
 interface Props {
   className: string
 }
 
-export const DeltakerInfo = ({ className }: Props) => {
-  const { pamelding } = usePameldingCOntext()
+const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
+  return pamelding.deltakerliste.tiltakstype == Tiltakstype.ARBFORB
+    || pamelding.deltakerliste.tiltakstype == Tiltakstype.VASV
+}
+
+const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
+  if (pamelding.dagerPerUke === 1) {
+    return `${pamelding.deltakelsesprosent}% ${pamelding.dagerPerUke} dag i uken`
+  } else {
+    return `${pamelding.deltakelsesprosent}% ${pamelding.dagerPerUke} dager i uken`
+  }
+}
+
+export const DeltakerInfo = ({className}: Props) => {
+  const {pamelding} = usePameldingCOntext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
     pamelding.deltakerliste.tiltakstype,
     pamelding.deltakerliste.arrangorNavn
@@ -49,7 +59,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <HStack gap="2" className="mt-8">
         <Label>Status:</Label>
-        <DeltakerIStatusTag statusType={pamelding.status.type} />
+        <DeltakerIStatusTag statusType={pamelding.status.type}/>
       </HStack>
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4">
@@ -92,19 +102,30 @@ export const DeltakerInfo = ({ className }: Props) => {
           {bakgrunsinformasjon}
         </BodyLong>
 
+        {skalViseDeltakelsesmengde(pamelding) && (
+          <>
+            <Heading level="2" size="medium" className="mt-8">
+              Deltakelsesmendge
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {deltakelsesMengdeString(pamelding)}
+            </BodyLong>
+          </>
+        )}
+
         <Link href="#" className="mt-8">
-          <Todo /> Se endringer
+          <Todo/> Se endringer
           <span>
-            <ChevronRightIcon title="Gå til side for endringer" />
+            <ChevronRightIcon title="Gå til side for endringer"/>
           </span>
         </Link>
 
         <div className="mt-8">
-          <Todo />
+          <Todo/>
           Send en melding her til NAV-veilederen din hvis noe skal endres.
         </div>
 
-        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
+        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8"/>
 
         <Heading level="2" size="medium" className="mt-8">
           Du har rett til å klage
@@ -115,7 +136,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           informasjonen. Les mer om
           {
             <Link href="#">
-              <Todo />
+              <Todo/>
               retten til å klage her.
             </Link>
           }
