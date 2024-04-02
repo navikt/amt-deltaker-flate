@@ -3,6 +3,10 @@ import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { TiltakPage } from '../pages/TiltakPage.tsx'
 import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
+import dayjs from 'dayjs'
+import nb from 'dayjs/locale/nb'
+
+dayjs.locale(nb)
 
 export const DeltakerGuard = () => {
   const { pamelding } = usePameldingCOntext()
