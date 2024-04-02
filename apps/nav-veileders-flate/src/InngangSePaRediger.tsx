@@ -7,6 +7,7 @@ import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
+import { ErrorPage } from './pages/ErrorPage.tsx'
 
 const InngangSePaRediger = () => {
   const {deltakerId} = useParams()
@@ -39,12 +40,9 @@ const InngangSePaRediger = () => {
     return (
       <>
         {isEnvLocalDemoOrPr && <DemoBanner hasError/>}
-        <Alert variant="error">
-          <Heading spacing size="small" level="3">
-                      Vi beklager, men noe gikk galt
-          </Heading>
-          {error}
-        </Alert>
+        <ErrorPage
+          message={error}
+        />
       </>
     )
   }

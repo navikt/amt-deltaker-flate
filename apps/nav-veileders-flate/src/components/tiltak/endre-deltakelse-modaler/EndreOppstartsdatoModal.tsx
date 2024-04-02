@@ -1,28 +1,17 @@
-import {
-  Alert,
-  Detail,
-  BodyShort,
-  DatePicker,
-  Heading,
-  Modal,
-  useDatepicker
-} from '@navikt/ds-react'
+import { BodyShort, DatePicker, Detail, Modal, useDatepicker } from '@navikt/ds-react'
 import { PameldingResponse, Tiltakstype } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import {
-  dateStrToNullableDate,
-  formatDateFromString,
-  formatDateToDateInputStr
-} from '../../../utils/utils.ts'
+import { dateStrToNullableDate, formatDateFromString, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import dayjs from 'dayjs'
-import { VarighetValg, getVarighet } from '../../../utils/varighet.ts'
+import { getVarighet, VarighetValg } from '../../../utils/varighet.ts'
 import { VargihetField } from '../VargihetField.tsx'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -37,7 +26,7 @@ export const EndreOppstartsdatoModal = ({
   onClose,
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
-  const { enhetId } = useAppContext()
+  const {enhetId} = useAppContext()
   const [nyStartdato, settNyStartDato] = useState<Date | null>(null)
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
   const [nySluttDato, settNySluttDato] = useState<string | null>(null)
@@ -51,7 +40,7 @@ export const EndreOppstartsdatoModal = ({
     pamelding.deltakerliste.sluttdato
   )}`
 
-  const { datepickerProps, inputProps } = useDatepicker({
+  const {datepickerProps, inputProps} = useDatepicker({
     // TODO i arrangør flate er disse datoene maks 2 mnd tilbake/frem i tid
     fromDate: dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate: dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
@@ -124,19 +113,14 @@ export const EndreOppstartsdatoModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_OPPSTARTSDATO} />,
+        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_OPPSTARTSDATO}/>,
         heading: 'Endre oppstartsdato'
       }}
       onClose={onClose}
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mb-4">
-            <Heading size="small" spacing level="3">
-              Det skjedde en feil.
-            </Heading>
-            {endreDeltakelseError}
-          </Alert>
+          <ErrorPage message={endreDeltakelseError}/>
         )}
         <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.

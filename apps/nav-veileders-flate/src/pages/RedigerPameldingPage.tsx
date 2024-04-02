@@ -1,7 +1,7 @@
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { RedigerPameldingHeader } from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
-import { Alert, Button, Heading, VStack } from '@navikt/ds-react'
+import { Button, VStack } from '@navikt/ds-react'
 import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { useEffect, useState } from 'react'
 import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
@@ -13,6 +13,7 @@ import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
 import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
 import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../hooks/useModiaLink.ts'
+import { ErrorPage } from './ErrorPage.tsx'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
@@ -84,12 +85,9 @@ export const RedigerPameldingPage = () => {
               disableForm={(disabled) => setIsDisabled(disabled)}
             />
             {avbrytUtkastState === DeferredFetchState.ERROR && (
-              <Alert variant="error" className="mt-4 mb-4">
-                <Heading size="small" spacing level="3">
-                  Det skjedde en feil.
-                </Heading>
-                {avbrytUtkastError}
-              </Alert>
+              <ErrorPage
+                message={avbrytUtkastError}
+              />
             )}
             <Button
               size="small"

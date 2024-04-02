@@ -1,4 +1,4 @@
-import { Alert, Button, Heading, HelpText, HStack } from '@navikt/ds-react'
+import { Alert, Button, HelpText, HStack } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
 import { getDeltakerNavn } from '../../utils/displayText.ts'
 import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
+import { ErrorPage } from '../../pages/ErrorPage.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -82,22 +83,12 @@ export const PameldingFormButtons = ({
   return (
     <>
       {sendSomForslagState === DeferredFetchState.ERROR && (
-        <Alert variant="error" className="mt-4 mb-4">
-          <Heading size="small" spacing level="3">
-            Det skjedde en feil.
-          </Heading>
-          {sendSomForslagError}
-        </Alert>
-      )}
+        <ErrorPage message={sendSomForslagError}/>)
+      }
 
       {slettKladdError === DeferredFetchState.ERROR && (
-        <Alert variant="error" className="mt-4 mb-4">
-          <Heading size="small" spacing level="3">
-            Det skjedde en feil.
-          </Heading>
-          {slettKladdError}
-        </Alert>
-      )}
+        <ErrorPage message={slettKladdError}/>)
+      }
 
       {sendSomForslagState === DeferredFetchState.RESOLVED && (
         <Alert variant="success" className="mt-4 mb-4">
