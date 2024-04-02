@@ -3,13 +3,14 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
-import { Alert, Detail, Heading, Modal } from '@navikt/ds-react'
-import { kalkulerSluttdato, getVarighet, VarighetValg } from '../../../utils/varighet.ts'
+import { Detail, Modal } from '@navikt/ds-react'
+import { getVarighet, kalkulerSluttdato, VarighetValg } from '../../../utils/varighet.ts'
 import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { VargihetField } from '../VargihetField.tsx'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -76,12 +77,7 @@ export const ForlengDeltakelseModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mb-4">
-            <Heading size="small" spacing level="3">
-              Det skjedde en feil.
-            </Heading>
-            {endreDeltakelseError}
-          </Alert>
+          <ErrorPage message={endreDeltakelseError}/>
         )}
         <Detail size="small">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.

@@ -1,4 +1,4 @@
-import { Alert, Button, Heading, HelpText } from '@navikt/ds-react'
+import { Alert, Button, HelpText } from '@navikt/ds-react'
 import { generateFormDefaultValues, PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../AppContext.tsx'
@@ -10,6 +10,7 @@ import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.
 import { ArrowForwardIcon } from '@navikt/aksel-icons'
 import { useFormContext } from 'react-hook-form'
 import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
+import { ErrorPage } from '../../pages/ErrorPage.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -79,12 +80,9 @@ export const MeldPaDirekteButton = ({
   return (
     <div className={className ?? ''}>
       {meldPaDirekteError === DeferredFetchState.ERROR && (
-        <Alert variant="error" className="mt-4 mb-4">
-          <Heading size="small" spacing level="3">
-            Det skjedde en feil.
-          </Heading>
-          {meldPaDirekteError}
-        </Alert>
+        <ErrorPage
+          message={meldPaDirekteError}
+        />
       )}
 
       {sendDirekteState === DeferredFetchState.RESOLVED && (

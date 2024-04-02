@@ -1,13 +1,4 @@
-import {
-  Alert,
-  BodyLong,
-  Checkbox,
-  CheckboxGroup,
-  Detail,
-  Heading,
-  Modal,
-  Textarea
-} from '@navikt/ds-react'
+import { BodyLong, Checkbox, CheckboxGroup, Detail, Modal, Textarea } from '@navikt/ds-react'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
@@ -16,12 +7,10 @@ import { PameldingResponse } from '../../../api/data/pamelding'
 import { endreDeltakelseInnhold } from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { INNHOLD_TYPE_ANNET } from '../../../utils/utils'
-import {
-  BESKRIVELSE_ANNET_MAX_TEGN,
-  generateValgtInnholdKoder
-} from '../../../model/PameldingFormValues'
+import { BESKRIVELSE_ANNET_MAX_TEGN, generateValgtInnholdKoder } from '../../../model/PameldingFormValues'
 import { useState } from 'react'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -81,12 +70,7 @@ export const EndreInnholdModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mb-4">
-            <Heading size="small" spacing level="3">
-              Det skjedde en feil.
-            </Heading>
-            {endreDeltakelseError}
-          </Alert>
+          <ErrorPage message={endreDeltakelseError}/>
         )}
 
         <section className="space-y-4">

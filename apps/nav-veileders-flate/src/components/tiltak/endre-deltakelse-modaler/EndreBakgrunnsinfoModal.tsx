@@ -1,4 +1,4 @@
-import { Alert, Detail, Heading, Modal, Textarea } from '@navikt/ds-react'
+import { Detail, Modal, Textarea } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
@@ -8,6 +8,7 @@ import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -52,12 +53,9 @@ export const EndreBakgrunnsinfoModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <Alert variant="error" className="mb-4">
-            <Heading size="small" spacing level="3">
-              Det skjedde en feil.
-            </Heading>
-            {endreDeltakelseError}
-          </Alert>
+          <ErrorPage
+            message={endreDeltakelseError}
+          />
         )}
         <Detail size="small" className="mb-4">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
