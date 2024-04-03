@@ -81,7 +81,7 @@ jobs:
           app: amt-deltaker-innbyggers-flate
           team: amt
           source: apps/innbyggers-flate/build
-          ingress: https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no/arbeidsmarkedstiltak
+          ingress: https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no
           environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
