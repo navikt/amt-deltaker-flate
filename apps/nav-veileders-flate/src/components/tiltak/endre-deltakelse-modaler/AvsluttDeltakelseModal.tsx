@@ -147,20 +147,22 @@ export const AvsluttDeltakelseModal = ({
             )}
           </>
         </RadioGroup>
-        {skalViseHarDeltatt && <RadioGroup
-          legend="Har personen deltatt?"
-          size="small"
-          onChange={(value: HarDeltattValg) => {
-            if (value === HarDeltattValg.NEI) {
-              setHarDeltatt(false)
-            } else {
-              setHarDeltatt(true)
-            }
-          }}
-        >
-          <Radio value={HarDeltattValg.JA}>Ja</Radio>
-          <Radio value={HarDeltattValg.NEI}>Nei</Radio>
-        </RadioGroup>}
+        {skalViseHarDeltatt && <section className="mt-4">
+          <RadioGroup
+            legend="Har personen deltatt?"
+            size="small"
+            onChange={(value: HarDeltattValg) => {
+              if (value === HarDeltattValg.NEI) {
+                setHarDeltatt(false)
+              } else {
+                setHarDeltatt(true)
+              }
+            }}
+          >
+            <Radio value={HarDeltattValg.JA}>Ja</Radio>
+            <Radio value={HarDeltattValg.NEI}>Nei</Radio>
+          </RadioGroup>
+        </section>}
         {(!skalViseHarDeltatt || harDeltatt) && <section className="mt-4">
           <DatePicker {...datepickerProps}>
             <DatePicker.Input
