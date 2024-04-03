@@ -42,7 +42,7 @@ export class Deltaker extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <div className="m-auto pt-4 deltakelse-wrapper">
+      <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
         <AppContextProvider
           initialPersonident={initialPersonident}
           initialEnhetId={initialEnhetId}
