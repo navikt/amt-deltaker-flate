@@ -12,7 +12,7 @@ export const Tilbakeknapp = ({tekst = 'Tilbake'}: TilbakeknappProps) => {
   return (
     <Link
       href={DELTAKELSESOVERSIKT_LINK}
-      className="no-underline hover:underline"
+      className="no-underline hover:underline ml-10"
       onClick={(event) => {
         event.preventDefault()
         doRedirect(DELTAKELSESOVERSIKT_LINK)
