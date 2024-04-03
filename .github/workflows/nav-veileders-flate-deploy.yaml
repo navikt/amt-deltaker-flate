@@ -60,6 +60,32 @@ jobs:
       - name: Upload files to GCS
         run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev
 
+  deploy-demo-nav-veileders-flate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+      - name: Lint
+        run: pnpm lint
+      - name: Run tests
+        run: pnpm test:no-watch
+      - name: Build
+        run: pnpm build:demo --filter=nav-veileders-flate
+      - uses: navikt/frontend/actions/spa-deploy/v2@main
+        with:
+          app: amt-deltaker-nav-veilderes-flate
+          team: amt
+          source: apps/nav-veileders-flate/build
+          ingress: https://amt-nav-veileders-flate.ekstern.dev.nav.no
+          environment: dev
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
   deploy-prod-nav-veileders-flate:
     name: Deploy nav-veileders-flate to prod
     runs-on: ubuntu-latest
