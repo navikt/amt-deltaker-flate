@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=local vite --port 3004 --mode local-dev",
     "build": "tsc && vite build",
-    "build:demo": "NODE_ENV=development vite build --mode gh-pages --base https://cdn.nav.no/amt/amt-deltaker-nav-veilderes-flate/dev",
+    "build:demo": "NODE_ENV=development vite build --mode gh-pages",
     "build:pull-request": "NODE_ENV=development vite build --mode pull-request",
     "test": "vitest",
     "test:no-watch": "vitest run",
