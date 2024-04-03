@@ -265,6 +265,8 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
       oppdatertPamelding.status.aarsak = request.aarsak
+      oppdatertPamelding.startdato = null
+      oppdatertPamelding.sluttdato = null
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -325,9 +327,16 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
-      oppdatertPamelding.status.aarsak = request.aarsak
-      oppdatertPamelding.sluttdato = request.sluttdato
+      if (request.harDeltatt === false) {
+        oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
+        oppdatertPamelding.status.aarsak = request.aarsak
+        oppdatertPamelding.startdato = null
+        oppdatertPamelding.sluttdato = null
+      } else {
+        oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
+        oppdatertPamelding.status.aarsak = request.aarsak
+        oppdatertPamelding.sluttdato = request.sluttdato
+      }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

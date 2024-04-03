@@ -62,3 +62,8 @@ export const getDeltakerStatusAarsakTyperAsList = () => {
     })
   return arsakstyper.concat(DeltakerStatusAarsakType.ANNET)
 }
+
+export enum HarDeltattValg {
+  JA = 'JA',
+  NEI = 'NEI'
+}
