@@ -61,11 +61,10 @@ jobs:
         run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev
 
   deploy-demo-innbyggers-flate:
-    name: Deploy innbyggers-flate to demo
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     permissions:
-      id-token: 'write' # Used to authenticate with Google Cloud
+      contents: 'read'
+      id-token: 'write'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,12 +76,12 @@ jobs:
         run: pnpm test:no-watch
       - name: Build
         run: pnpm build:demo --filter=innbyggers-flate
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - uses: navikt/frontend/actions/spa-deploy/v2@main
         with:
-          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-      - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-demo
+          app: amt-deltaker-innbyggers-flate
+          team: amt
+          source: apps/innbyggers-flate/build
+          ingress: https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no/arbeidsmarkedstiltak/
+          environment: dev
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
