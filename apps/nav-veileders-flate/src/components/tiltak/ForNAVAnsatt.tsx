@@ -13,17 +13,14 @@ export const ForNAVAnsatt = ({ className }: Props) => {
   const { pamelding } = usePameldingCOntext()
 
   return (
-    <div className={`bg-white p-4 h-fit ${className}`}>
+    <div className={`bg-white p-4 h-fit ${className} flex flex-col`}>
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>
       <EndreDeltakelseKnapp />
 
       <TiltaksgjennomforingLink deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}>
-        <LinkPanel
-          border
-          className="mt-4 rounded border-2 border-[var(--a-border-selected)]"
-        >
+        <LinkPanel border className="mt-4 rounded border-2 border-[var(--a-border-selected)]">
           <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
             Gå til tiltaksgjennomføringen
           </LinkPanel.Title>
@@ -35,7 +32,8 @@ export const ForNAVAnsatt = ({ className }: Props) => {
               )}
             </BodyShort>
             <BodyShort size="small">
-              {formatDateFromString(pamelding.deltakerliste.startdato)} - {formatDateFromString(pamelding.deltakerliste.sluttdato)}
+              {formatDateFromString(pamelding.deltakerliste.startdato)} -{' '}
+              {formatDateFromString(pamelding.deltakerliste.sluttdato)}
             </BodyShort>
           </LinkPanel.Description>
         </LinkPanel>

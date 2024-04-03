@@ -134,6 +134,7 @@ export const EndreDeltakelseKnapp = () => {
           as={Dropdown.Toggle}
           variant="secondary"
           size="small"
+          className="w-fit"
           icon={<PencilIcon aria-hidden />}
         >
           Endre deltakelse
