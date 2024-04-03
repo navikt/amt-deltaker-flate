@@ -24,6 +24,13 @@ interface AvsluttDeltakelseModalProps {
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
+const showHarDeltatt = (pamelding: PameldingResponse) => {
+  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
+  const femtenDagerSiden = new Date()
+  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
+  return statusdato > femtenDagerSiden
+}
+
 export const AvsluttDeltakelseModal = ({
   pamelding,
   open,
@@ -42,10 +49,7 @@ export const AvsluttDeltakelseModal = ({
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
   const { enhetId } = useAppContext()
 
-  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
-  const femtenDagerSiden = new Date()
-  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
-  const skalViseHarDeltatt = statusdato > femtenDagerSiden
+  const skalViseHarDeltatt = showHarDeltatt(pamelding)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
