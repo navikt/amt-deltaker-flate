@@ -1,7 +1,18 @@
-import { BodyLong, BodyShort, Heading, HStack, Label, Link, List } from '@navikt/ds-react'
-import { getDeltakerStatusAarsakText, hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
-import { Todo } from '../Todo.tsx'
-import { ChevronRightIcon } from '@navikt/aksel-icons'
+import {
+  BodyLong,
+  BodyShort,
+  Heading,
+  HStack,
+  Label,
+  Link,
+  LinkPanel,
+  List
+} from '@navikt/ds-react'
+import {
+  getDeltakerStatusAarsakText,
+  hentTiltakNavnHosArrangorTekst
+} from '../../utils/displayText.ts'
+import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { EMDASH, formatDateFromString, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
@@ -13,12 +24,13 @@ interface Props {
 }
 
 const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
-  return pamelding.deltakerliste.tiltakstype == Tiltakstype.ARBFORB
-    || pamelding.deltakerliste.tiltakstype == Tiltakstype.VASV
+  return (
+    pamelding.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
+    pamelding.deltakerliste.tiltakstype == Tiltakstype.VASV
+  )
 }
 
 const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
-
   if (pamelding.dagerPerUke !== null) {
     if (pamelding.dagerPerUke === 1) {
       return `${pamelding.deltakelsesprosent}% ${pamelding.dagerPerUke} dag i uken`
@@ -28,11 +40,10 @@ const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
   }
 
   return `${pamelding.deltakelsesprosent}%`
-
 }
 
-export const DeltakerInfo = ({className}: Props) => {
-  const {pamelding} = usePameldingCOntext()
+export const DeltakerInfo = ({ className }: Props) => {
+  const { pamelding } = usePameldingCOntext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     pamelding.deltakerliste.tiltakstype,
     pamelding.deltakerliste.arrangorNavn
@@ -65,7 +76,7 @@ export const DeltakerInfo = ({className}: Props) => {
 
       <HStack gap="2" className="mt-8">
         <Label>Status:</Label>
-        <DeltakerIStatusTag statusType={pamelding.status.type}/>
+        <DeltakerIStatusTag statusType={pamelding.status.type} />
       </HStack>
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4">
@@ -120,18 +131,22 @@ export const DeltakerInfo = ({className}: Props) => {
         )}
 
         <Link href="#" className="mt-8">
-          <Todo/> Se endringer
+          {/* TODO: lenke til riktig sted */}
+          Se endringer
           <span>
-            <ChevronRightIcon title="Gå til side for endringer"/>
+            <ChevronRightIcon title="Gå til side for endringer" className="text-2xl" />
           </span>
         </Link>
 
-        <div className="mt-8">
-          <Todo/>
-          Send en melding her til NAV-veilederen din hvis noe skal endres.
-        </div>
+        <LinkPanel href="#" className="mt-8 rounded-lg">
+          {/* TODO: lenke til dialogen */}
+          <div className="grid grid-flow-col items-center gap-4">
+            <ChatElipsisIcon className="text-2xl" />
+            <span>Send en melding her til NAV-veilederen din hvis noe skal endres.</span>
+          </div>
+        </LinkPanel>
 
-        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8"/>
+        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
 
         <Heading level="2" size="medium" className="mt-8">
           Du har rett til å klage
@@ -139,10 +154,10 @@ export const DeltakerInfo = ({className}: Props) => {
         <BodyLong size="small" className="mt-1">
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på deltakelsen eller du
           ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
-          informasjonen. Les mer om
+          informasjonen. Les mer om{' '}
           {
             <Link href="#">
-              <Todo/>
+              {/* TODO: lenke til klageinfoside */}
               retten til å klage her.
             </Link>
           }
