@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client'
 import React from 'react'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import './app.css'
-import './index.css'
 
 const renderWebComponent = (personident: string, deltakerlisteId: string, enhetId: string) => {
   return React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
