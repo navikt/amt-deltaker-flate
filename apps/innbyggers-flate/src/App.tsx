@@ -7,8 +7,9 @@ import { getDeltakelse } from './api/api'
 import { useEffect } from 'react'
 import { DeltakerContextProvider } from './DeltakerContext'
 import { DeltakerGuard } from './guards/DeltakerGuard'
+import nb from 'dayjs/locale/nb'
 
-dayjs.locale('nb')
+dayjs.locale(nb)
 
 const App = () => {
   const { deltakerId } = useParams()
