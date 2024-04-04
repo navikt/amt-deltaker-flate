@@ -4,9 +4,13 @@ import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { TiltakPage } from '../pages/TiltakPage.tsx'
 import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
 import dayjs from 'dayjs'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import nb from 'dayjs/locale/nb'
 
 dayjs.locale(nb)
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
 
 export const DeltakerGuard = () => {
   const { pamelding } = usePameldingCOntext()

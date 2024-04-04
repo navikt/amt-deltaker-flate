@@ -15,12 +15,22 @@ export const formatDateStrWithMonthName = (dateStr: string | null): string => {
   return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
 }
 
+/**
+ * Formaterer date til string: YYYY-MM-DD. Format slik backend vil ha.
+ * @param date
+ * @returns string date, format backend vil ha
+ */
 export const formatDateToDateInputStr = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-export const formatDate = (date: Date): string => {
-  return dayjs(date).format('DD.MM.YYYY')
+/**
+ * Formaterer date til string: DD.MM.YYYY
+ * @param date
+ * @returns string date, norsk format
+ */
+export const formatDateToString = (date?: Date): string | undefined => {
+  return date ? dayjs(date).format('DD.MM.YYYY') : undefined
 }
 
 export const dateStrToNullableDate = (dateStr: string | null): Date | null => {
