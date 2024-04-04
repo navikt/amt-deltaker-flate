@@ -12,7 +12,7 @@ export const VilIkkeGodkjenneExpansionCard = ({ arrangorNavn, className }: Props
         <div className="flex gap-4">
           <ChatElipsisIcon aria-hidden fontSize="3rem" />
           <ExpansionCard.Title>
-            Ønsker du ikke at dette deles med {arrangorNavn}
+            Ønsker du ikke at dette deles med {arrangorNavn}?
           </ExpansionCard.Title>
         </div>
       </ExpansionCard.Header>
