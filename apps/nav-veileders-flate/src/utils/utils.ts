@@ -19,6 +19,10 @@ export const formatDateToDateInputStr = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
+export const formatDate = (date: Date): string => {
+  return dayjs(date).format('DD.MM.YYYY')
+}
+
 export const dateStrToNullableDate = (dateStr: string | null): Date | null => {
   if (dateStr == null || dateStr == EMDASH) return null
   const date = dayjs(dateStr, 'DD.MM.YYYY')

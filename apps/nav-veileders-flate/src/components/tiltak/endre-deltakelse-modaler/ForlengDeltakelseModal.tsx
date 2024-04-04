@@ -5,7 +5,7 @@ import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
 import { BodyShort, Detail, Modal } from '@navikt/ds-react'
 import { getVarighet, kalkulerSluttdato, VarighetValg } from '../../../utils/varighet.ts'
-import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
+import { dateStrToNullableDate, formatDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
@@ -98,7 +98,7 @@ export const ForlengDeltakelseModal = ({
           }}
         />
         {nySluttDato && <BodyShort className="mt-2" size="small">
-          Ny sluttdato: {formatDateToDateInputStr(nySluttDato)}
+          Ny sluttdato: {formatDate(nySluttDato)}
         </BodyShort>}
       </Modal.Body>
       <ModalFooter
