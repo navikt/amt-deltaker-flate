@@ -3,7 +3,7 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
-import { Detail, Modal } from '@navikt/ds-react'
+import { BodyShort, Detail, Modal } from '@navikt/ds-react'
 import { getVarighet, kalkulerSluttdato, VarighetValg } from '../../../utils/varighet.ts'
 import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -41,7 +41,7 @@ export const ForlengDeltakelseModal = ({
 
   const sendEndring = () => {
     if (!valgtVarighet) {
-      setErrorVarighet('Du må velge vargihet')
+      setErrorVarighet('Du må velge varighet')
     }
     if (!nySluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
@@ -97,6 +97,9 @@ export const ForlengDeltakelseModal = ({
             setErrorSluttDato(null)
           }}
         />
+        {nySluttDato && <BodyShort className="mt-2" size="small">
+          Ny sluttdato: {formatDateToDateInputStr(nySluttDato)}
+        </BodyShort>}
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"
