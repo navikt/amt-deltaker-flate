@@ -5,7 +5,11 @@ import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
 import { BodyShort, Detail, Modal } from '@navikt/ds-react'
 import { getVarighet, kalkulerSluttdato, VarighetValg } from '../../../utils/varighet.ts'
-import { dateStrToNullableDate, formatDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
+import {
+  dateStrToNullableDate,
+  formatDateToDateInputStr,
+  formatDateToString
+} from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
@@ -26,7 +30,7 @@ export const ForlengDeltakelseModal = ({
   onSuccess
 }: ForlengDeltakelseModalProps) => {
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
-  const [nySluttDato, settNySluttDato] = useState<Date | null>()
+  const [nySluttDato, settNySluttDato] = useState<Date>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
 
@@ -61,7 +65,7 @@ export const ForlengDeltakelseModal = ({
     const varighet = getVarighet(valg)
     if (varighet && sluttdato) {
       settNySluttDato(kalkulerSluttdato(sluttdato, varighet))
-    } else settNySluttDato(null)
+    } else settNySluttDato(undefined)
 
     setErrorVarighet(null)
   }
@@ -77,7 +81,7 @@ export const ForlengDeltakelseModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError}/>
+          <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small">
           Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
@@ -89,6 +93,7 @@ export const ForlengDeltakelseModal = ({
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           startDato={sluttdato || undefined}
           sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
+          valgtDato={nySluttDato}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}
           onChangeVarighet={handleChangeVarighet}
@@ -97,9 +102,11 @@ export const ForlengDeltakelseModal = ({
             setErrorSluttDato(null)
           }}
         />
-        {nySluttDato && <BodyShort className="mt-2" size="small">
-          Ny sluttdato: {formatDate(nySluttDato)}
-        </BodyShort>}
+        {nySluttDato && (
+          <BodyShort className="mt-2" size="small">
+            Ny sluttdato: {formatDateToString(nySluttDato)}
+          </BodyShort>
+        )}
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"
