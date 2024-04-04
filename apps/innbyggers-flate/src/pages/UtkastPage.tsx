@@ -106,7 +106,7 @@ export const UtkastPage = () => {
         Se her hvilke opplysninger NAV har om deg.
       </Link>
 
-      <Heading level="2" size="large" className="mt-6">
+      <Heading level="2" size="medium" className="mt-6">
         Kan informasjonen deles til {arrangorNavn}?
       </Heading>
       <Button
@@ -124,7 +124,7 @@ export const UtkastPage = () => {
         </Alert>
       )}
 
-      <VilIkkeGodkjenneExpansionCard className="mt-6" />
+      <VilIkkeGodkjenneExpansionCard arrangorNavn={arrangorNavn} className="mt-6" />
     </div>
   )
 }
