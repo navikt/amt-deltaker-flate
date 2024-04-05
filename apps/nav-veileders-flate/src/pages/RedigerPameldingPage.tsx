@@ -74,6 +74,9 @@ export const RedigerPameldingPage = () => {
             <Utkast
               innhold={pamelding.deltakelsesinnhold}
               bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
+              deltakelsesprosent={pamelding.deltakelsesprosent}
+              dagerPerUke={pamelding.dagerPerUke}
+              tiltakstype={pamelding.deltakerliste.tiltakstype}
             />
             <Button
               size="small"

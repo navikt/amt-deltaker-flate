@@ -42,13 +42,13 @@ const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
 const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
   if (pamelding.dagerPerUke !== null) {
     if (pamelding.dagerPerUke === 1) {
-      return `${pamelding.deltakelsesprosent}% ${pamelding.dagerPerUke} dag i uken`
+      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dag i uka`
     } else {
-      return `${pamelding.deltakelsesprosent}% ${pamelding.dagerPerUke} dager i uken`
+      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dager i uka`
     }
   }
 
-  return `${pamelding.deltakelsesprosent}%`
+  return `${pamelding.deltakelsesprosent}\u00A0%`
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
@@ -139,7 +139,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         {skalViseDeltakelsesmengde(pamelding) && (
           <>
             <Heading level="2" size="medium" className="mt-8">
-              Deltakelsesmendge
+              Deltakelsesmengde
             </Heading>
             <BodyLong size="small" className="mt-2">
               {deltakelsesMengdeString(pamelding)}

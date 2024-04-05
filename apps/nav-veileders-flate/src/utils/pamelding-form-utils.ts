@@ -5,7 +5,7 @@ import {
   SendInnPameldingRequest
 } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { INNHOLD_TYPE_ANNET } from './utils.ts'
+import { DeltakelsesprosentValg, INNHOLD_TYPE_ANNET } from './utils.ts'
 
 export const generateInnholdFromResponse = (
   pamelding: PameldingResponse,
@@ -44,7 +44,8 @@ export const generatePameldingRequestFromForm = (
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent: data.deltakelsesprosent,
+    deltakelsesprosent:
+      data.deltakelsesprosentValg === DeltakelsesprosentValg.JA ? 100 : data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
     innhold: generateInnholdFromResponse(
       pamelding,

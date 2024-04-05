@@ -36,9 +36,8 @@ export const EndreDeltakelsesmengdeModal = ({
   const [hasErrorDagerPerUke, setHasErrorDagerPerUke] = useState<boolean>(false)
 
   const gyldigDeltakelsesprosent =
-    !deltakelsesprosent || (0 < deltakelsesprosent && deltakelsesprosent <= 100)
-  const gyldigDagerPerUke =
-    !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
+    deltakelsesprosent && 0 < deltakelsesprosent && deltakelsesprosent <= 100
+  const gyldigDagerPerUke = !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
 
   const { enhetId } = useAppContext()
 
@@ -52,7 +51,7 @@ export const EndreDeltakelsesmengdeModal = ({
     if (gyldigDeltakelsesprosent) {
       if (gyldigDagerPerUke) {
         doFetchEndreDeltakelsesmengde(pamelding.deltakerId, enhetId, {
-          deltakelsesprosent: deltakelsesprosent || undefined,
+          deltakelsesprosent: deltakelsesprosent,
           dagerPerUke: dagerPerUke || undefined
         }).then((data) => {
           onSuccess(data)
