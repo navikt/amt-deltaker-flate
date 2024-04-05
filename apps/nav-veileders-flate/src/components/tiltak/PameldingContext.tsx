@@ -10,7 +10,7 @@ const PameldingContext = createContext<PameldingContextProps | undefined>(
   undefined
 )
 
-const usePameldingCOntext = () => {
+const usePameldingContext = () => {
   const context = useContext(PameldingContext)
 
   if (!context) {
@@ -43,4 +43,4 @@ const PameldingContextProvider = ({
   )
 }
 
-export { PameldingContext, usePameldingCOntext, PameldingContextProvider }
+export { PameldingContext, usePameldingContext, PameldingContextProvider }

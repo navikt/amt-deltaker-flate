@@ -1,9 +1,9 @@
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
-import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
+import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 
 export const OpprettPameldingPage = () => {
-  const { pamelding } = usePameldingCOntext()
+  const { pamelding } = usePameldingContext()
 
   return (
     <div className="m-4 max-w-[47.5rem] mx-auto">

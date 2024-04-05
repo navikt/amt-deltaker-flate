@@ -1,22 +1,22 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
+import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
 import {
   DeltakerStatusType,
   PameldingResponse,
   Tiltakstype
 } from '../../api/data/pamelding.ts'
-import { EndringTypeIkon } from './EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
-import { usePameldingCOntext } from './PameldingContext.tsx'
-import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
 import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
-import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
 } from '../../utils/statusutils.ts'
+import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
+import { EndringTypeIkon } from './EndringTypeIkon.tsx'
+import { usePameldingContext } from './PameldingContext.tsx'
+import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,
@@ -101,7 +101,7 @@ const skalViseEndreOppstartsdato = (
   harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
 
 export const EndreDeltakelseKnapp = () => {
-  const { pamelding, setPamelding } = usePameldingCOntext()
+  const { pamelding, setPamelding } = usePameldingContext()
   const endreDeltakelseRef = useRef<HTMLButtonElement>(null)
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)

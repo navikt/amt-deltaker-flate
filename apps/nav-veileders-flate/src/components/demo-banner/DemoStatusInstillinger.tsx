@@ -6,7 +6,7 @@ import {
   pameldingSchema
 } from '../../api/data/pamelding'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
-import { usePameldingCOntext } from '../tiltak/PameldingContext'
+import { usePameldingContext } from '../tiltak/PameldingContext'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
 import { getDeltakerStatusDisplayText } from '../../utils/displayText'
 
@@ -35,7 +35,7 @@ export const endreMockDeltakelseStatus = (
 }
 
 const DemoStatusInstillinger = () => {
-  const { setPamelding } = usePameldingCOntext()
+  const { setPamelding } = usePameldingContext()
 
   const [pameldingStatus, setPameldingStatus] = useState<DeltakerStatusType>(
     DeltakerStatusType.KLADD

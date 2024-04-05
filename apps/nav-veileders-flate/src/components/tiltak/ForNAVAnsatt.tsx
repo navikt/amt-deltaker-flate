@@ -1,7 +1,7 @@
 import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
-import { usePameldingCOntext } from './PameldingContext.tsx'
+import { usePameldingContext } from './PameldingContext.tsx'
 import { formatDateFromString } from '../../utils/utils.ts'
 import {
   TILTAKSGJENNOMFORING_LINK,
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const ForNAVAnsatt = ({ className }: Props) => {
-  const { pamelding } = usePameldingCOntext()
+  const { pamelding } = usePameldingContext()
   const deltakerlisteId = pamelding.deltakerliste.deltakerlisteId
   const { doRedirect } = useModiaLink()
 
