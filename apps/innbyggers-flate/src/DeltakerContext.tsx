@@ -6,13 +6,17 @@ export interface DeltakerContextProps {
   setDeltaker: React.Dispatch<React.SetStateAction<DeltakerResponse>>
 }
 
-const DeltakerContext = createContext<DeltakerContextProps | undefined>(undefined)
+const DeltakerContext = createContext<DeltakerContextProps | undefined>(
+  undefined
+)
 
 const useDeltakerContext = () => {
   const context = useContext(DeltakerContext)
 
   if (!context) {
-    throw new Error('usePameldingCOntext must be used within an PameldingContextProvider')
+    throw new Error(
+      'usePameldingCOntext must be used within an PameldingContextProvider'
+    )
   }
 
   return context
@@ -32,7 +36,11 @@ const DeltakerContextProvider = ({
     setDeltaker
   }
 
-  return <DeltakerContext.Provider value={contextValue}>{children}</DeltakerContext.Provider>
+  return (
+    <DeltakerContext.Provider value={contextValue}>
+      {children}
+    </DeltakerContext.Provider>
+  )
 }
 
 export { DeltakerContext, useDeltakerContext, DeltakerContextProvider }

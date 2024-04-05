@@ -1,11 +1,14 @@
-import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../hooks/useModiaLink.ts'
+import {
+  DELTAKELSESOVERSIKT_LINK,
+  useModiaLink
+} from '../hooks/useModiaLink.ts'
 
 const RedirectToDeltakeroversikt = () => {
-  const {doRedirect} = useModiaLink()
+  const { doRedirect } = useModiaLink()
 
   doRedirect(DELTAKELSESOVERSIKT_LINK)
 
-  return (<></>)
+  return <></>
 }
 
 export default RedirectToDeltakeroversikt

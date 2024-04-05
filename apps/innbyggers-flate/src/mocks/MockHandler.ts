@@ -1,10 +1,16 @@
-import { DeltakerResponse, DeltakerStatusType, Tiltakstype } from '../api/data/deltaker.ts'
+import {
+  DeltakerResponse,
+  DeltakerStatusType,
+  Tiltakstype
+} from '../api/data/deltaker.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
-export const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
+export const createDeltaker = (
+  statusType: DeltakerStatusType
+): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const harVedak =
     statusType !== DeltakerStatusType.KLADD &&
@@ -52,13 +58,15 @@ export const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse
           beskrivelse: null
         },
         {
-          tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          tekst:
+            'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
           innholdskode: 'type3',
           valgt: false,
           beskrivelse: null
         },
         {
-          tekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+          tekst:
+            'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
           innholdskode: 'type4',
           valgt: false,
           beskrivelse: null

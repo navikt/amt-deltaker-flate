@@ -29,23 +29,53 @@ const varigheter: Varigheter = {
   [VarighetValg.SEKS_UKER]: { antall: 6, tidsenhet: 'week', navn: '6 uker' },
   [VarighetValg.ATTE_UKER]: { antall: 8, tidsenhet: 'week', navn: '8 uker' },
   [VarighetValg.TOLV_UKER]: { antall: 12, tidsenhet: 'week', navn: '12 uker' },
-  [VarighetValg.TRE_MANEDER]: { antall: 3, tidsenhet: 'month', navn: '3 måneder' },
-  [VarighetValg.FIRE_MANEDER]: { antall: 4, tidsenhet: 'month', navn: '4 måneder' },
-  [VarighetValg.SEKS_MANEDER]: { antall: 6, tidsenhet: 'month', navn: '6 måneder' },
-  [VarighetValg.ATTE_MANEDER]: { antall: 8, tidsenhet: 'month', navn: '8 måneder' },
-  [VarighetValg.TOLV_MANEDER]: { antall: 12, tidsenhet: 'month', navn: '12 måneder' }
+  [VarighetValg.TRE_MANEDER]: {
+    antall: 3,
+    tidsenhet: 'month',
+    navn: '3 måneder'
+  },
+  [VarighetValg.FIRE_MANEDER]: {
+    antall: 4,
+    tidsenhet: 'month',
+    navn: '4 måneder'
+  },
+  [VarighetValg.SEKS_MANEDER]: {
+    antall: 6,
+    tidsenhet: 'month',
+    navn: '6 måneder'
+  },
+  [VarighetValg.ATTE_MANEDER]: {
+    antall: 8,
+    tidsenhet: 'month',
+    navn: '8 måneder'
+  },
+  [VarighetValg.TOLV_MANEDER]: {
+    antall: 12,
+    tidsenhet: 'month',
+    navn: '12 måneder'
+  }
 }
 
 export const getVarighet = (valg: VarighetValg): Varighet => {
   return varigheter[valg]
 }
 
-export const varighetValgForType = (tiltakstype: Tiltakstype): VarighetValg[] => {
+export const varighetValgForType = (
+  tiltakstype: Tiltakstype
+): VarighetValg[] => {
   switch (tiltakstype) {
     case Tiltakstype.ARBFORB:
-      return [VarighetValg.TRE_MANEDER, VarighetValg.SEKS_MANEDER, VarighetValg.TOLV_MANEDER]
+      return [
+        VarighetValg.TRE_MANEDER,
+        VarighetValg.SEKS_MANEDER,
+        VarighetValg.TOLV_MANEDER
+      ]
     case Tiltakstype.ARBRRHDAG:
-      return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER, VarighetValg.TOLV_UKER]
+      return [
+        VarighetValg.FIRE_UKER,
+        VarighetValg.ATTE_UKER,
+        VarighetValg.TOLV_UKER
+      ]
     case Tiltakstype.AVKLARAG:
       return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER]
     case Tiltakstype.INDOPPFAG:
@@ -66,6 +96,9 @@ export const varighetValgForType = (tiltakstype: Tiltakstype): VarighetValg[] =>
   }
 }
 
-export const kalkulerSluttdato = (sluttdato: Date, varighet: Varighet): Date => {
+export const kalkulerSluttdato = (
+  sluttdato: Date,
+  varighet: Varighet
+): Date => {
   return dayjs(sluttdato).add(varighet.antall, varighet.tidsenhet).toDate()
 }

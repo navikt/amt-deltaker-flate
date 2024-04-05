@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - apps/nav-veileders-flate/nais/nais-prod.yaml
-      - ".github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml"
+      - '.github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml'
 
 jobs:
   deploy-prod:
     name: Deploy poao-frontend to PROD - nav-veileders-flate
     runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
+      id-token: 'write'
     if: github.ref == 'refs/heads/main' && false # venter med denne til vi er i prod
     steps:
       - name: Checkout

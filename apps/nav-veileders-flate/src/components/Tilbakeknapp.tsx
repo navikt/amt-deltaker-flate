@@ -1,13 +1,16 @@
 import { BodyShort, Link } from '@navikt/ds-react'
-import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../hooks/useModiaLink.ts'
+import {
+  DELTAKELSESOVERSIKT_LINK,
+  useModiaLink
+} from '../hooks/useModiaLink.ts'
 import { ChevronLeftIcon } from '@navikt/aksel-icons'
 
 interface TilbakeknappProps {
   tekst?: string
 }
 
-export const Tilbakeknapp = ({tekst = 'Tilbake'}: TilbakeknappProps) => {
-  const {doRedirect} = useModiaLink()
+export const Tilbakeknapp = ({ tekst = 'Tilbake' }: TilbakeknappProps) => {
+  const { doRedirect } = useModiaLink()
 
   return (
     <Link
@@ -16,8 +19,9 @@ export const Tilbakeknapp = ({tekst = 'Tilbake'}: TilbakeknappProps) => {
       onClick={(event) => {
         event.preventDefault()
         doRedirect(DELTAKELSESOVERSIKT_LINK)
-      }}>
-      <ChevronLeftIcon aria-label="Tilbakeknapp"/>
+      }}
+    >
+      <ChevronLeftIcon aria-label="Tilbakeknapp" />
       <BodyShort size="small">{tekst}</BodyShort>
     </Link>
   )

@@ -6,16 +6,14 @@ interface ErrorPageProps {
   message?: string | null | undefined
 }
 
-export const ErrorPage = (
-  {
-    heading = 'Noe gikk galt, prøv igjen senere.',
-    message = undefined
-  }: ErrorPageProps
-) => {
+export const ErrorPage = ({
+  heading = 'Noe gikk galt, prøv igjen senere.',
+  message = undefined
+}: ErrorPageProps) => {
   return (
     <div>
-      <Tilbakeknapp/>
-      
+      <Tilbakeknapp />
+
       <Alert variant="error">
         <Heading spacing size="small" level="3">
           {heading}

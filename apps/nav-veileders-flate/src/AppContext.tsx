@@ -38,7 +38,9 @@ const AppContextProvider = ({
     setEnhetId
   }
 
-  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  return (
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  )
 }
 
 export { AppContext, useAppContext, AppContextProvider }

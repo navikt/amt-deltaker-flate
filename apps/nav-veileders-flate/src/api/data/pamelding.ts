@@ -41,7 +41,9 @@ export enum DeltakerStatusAarsakType {
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
-export const deltakerStatusAarsakTypeSchema = z.nativeEnum(DeltakerStatusAarsakType)
+export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
+  DeltakerStatusAarsakType
+)
 
 export const innholdSchema = z.object({
   tekst: z.string(),

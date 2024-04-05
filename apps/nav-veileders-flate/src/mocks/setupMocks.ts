@@ -3,9 +3,7 @@ import { delay, http, HttpResponse } from 'msw'
 import { MockHandler } from './MockHandler.ts'
 import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
-import {
-  sendInnPameldingUtenGodkjenningRequestSchema
-} from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { DeltakerStatusType } from '../api/data/pamelding.ts'
 import {
   avsluttDeltakelseSchema,
@@ -15,7 +13,8 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema,
   endreSluttarsakSchema,
-  endreInnholdSchema, endreDeltakelsesmengdeSchema
+  endreInnholdSchema,
+  endreDeltakelsesmengdeSchema
 } from '../api/data/endre-deltakelse-request.ts'
 
 const handler = new MockHandler()
@@ -53,18 +52,25 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/pamelding/:deltakerId/utenGodkjenning', async ({ request, params }) => {
-    await delay(1000)
+  http.post(
+    '/mock/pamelding/:deltakerId/utenGodkjenning',
+    async ({ request, params }) => {
+      await delay(1000)
 
-    const { deltakerId } = params
+      const { deltakerId } = params
 
-    const response = await request
-      .json()
-      .then((json) => sendInnPameldingUtenGodkjenningRequestSchema.parse(json))
-      .then((body) => handler.sendInnPameldingUtenGodkjenning(deltakerId as string, body))
+      const response = await request
+        .json()
+        .then((json) =>
+          sendInnPameldingUtenGodkjenningRequestSchema.parse(json)
+        )
+        .then((body) =>
+          handler.sendInnPameldingUtenGodkjenning(deltakerId as string, body)
+        )
 
-    return response
-  }),
+      return response
+    }
+  ),
   http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request }) => {
     await delay(100)
 
@@ -95,16 +101,19 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/bakgrunnsinformasjon', async ({ request }) => {
-    await delay(1000)
+  http.post(
+    '/mock/deltaker/:deltakerId/bakgrunnsinformasjon',
+    async ({ request }) => {
+      await delay(1000)
 
-    const response = await request
-      .json()
-      .then((json) => endreBakgrunnsinfoSchema.parse(json))
-      .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
+      const response = await request
+        .json()
+        .then((json) => endreBakgrunnsinfoSchema.parse(json))
+        .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
 
-    return response
-  }),
+      return response
+    }
+  ),
   http.post('/mock/deltaker/:deltakerId/sluttdato', async ({ request }) => {
     await delay(1000)
 
@@ -134,15 +143,18 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/deltaker/:deltakerId/deltakelsesmengde', async ({ request }) => {
-    await delay(100)
-    const response = await request
-      .json()
-      .then((json) => endreDeltakelsesmengdeSchema.parse(json))
-      .then((body) => handler.endreDeltakelsesmengde(body))
+  http.post(
+    '/mock/deltaker/:deltakerId/deltakelsesmengde',
+    async ({ request }) => {
+      await delay(100)
+      const response = await request
+        .json()
+        .then((json) => endreDeltakelsesmengdeSchema.parse(json))
+        .then((body) => handler.endreDeltakelsesmengde(body))
 
-    return response
-  }),
+      return response
+    }
+  ),
   http.post('/mock/deltaker/:deltakerId/avslutt', async ({ request }) => {
     await delay(100)
 
@@ -153,30 +165,38 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.post('/mock/pamelding/:deltakerId/avbryt', async ({ request, params }) => {
-    await delay(1000)
+  http.post(
+    '/mock/pamelding/:deltakerId/avbryt',
+    async ({ request, params }) => {
+      await delay(1000)
 
-    const { deltakerId } = params
+      const { deltakerId } = params
 
-    const response = await request.json().then((json) => ikkeAktuellSchema.parse(json))
+      const response = await request
+        .json()
+        .then((json) => ikkeAktuellSchema.parse(json))
 
-    // eslint-disable-next-line no-console
-    console.log('Deltaker ' + { deltakerId } + ':', response)
+      // eslint-disable-next-line no-console
+      console.log('Deltaker ' + { deltakerId } + ':', response)
 
-    return new HttpResponse(null, {
-      status: 200
-    })
-  }),
-  http.post('/mock/pamelding/:deltakerId/kladd', async ({ request, params }) => {
-    await delay(1000)
-    const { deltakerId } = params
-    const requestBody = await request.json()
+      return new HttpResponse(null, {
+        status: 200
+      })
+    }
+  ),
+  http.post(
+    '/mock/pamelding/:deltakerId/kladd',
+    async ({ request, params }) => {
+      await delay(1000)
+      const { deltakerId } = params
+      const requestBody = await request.json()
 
-    // eslint-disable-next-line no-console
-    console.log('Kladd stored', deltakerId, requestBody)
+      // eslint-disable-next-line no-console
+      console.log('Kladd stored', deltakerId, requestBody)
 
-    return new HttpResponse(null, {
-      status: 200
-    })
-  })
+      return new HttpResponse(null, {
+        status: 200
+      })
+    }
+  )
 )

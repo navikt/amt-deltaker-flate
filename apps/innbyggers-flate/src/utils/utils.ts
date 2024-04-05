@@ -28,8 +28,10 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   }
 }
 
-export const hentTiltakNavnHosArrangørTekst = (tiltakstype: Tiltakstype, arrangorNavn: string) =>
-  `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
+export const hentTiltakNavnHosArrangørTekst = (
+  tiltakstype: Tiltakstype,
+  arrangorNavn: string
+) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 
 export const formatDateStrWithMonthName = (dateStr: string | null): string => {
   if (!dateStr) return EMDASH

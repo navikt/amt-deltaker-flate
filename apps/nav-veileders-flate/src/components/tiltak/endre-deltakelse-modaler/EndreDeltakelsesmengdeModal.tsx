@@ -1,7 +1,10 @@
 import { Detail, Modal } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -24,14 +27,18 @@ export const EndreDeltakelsesmengdeModal = ({
   onClose,
   onSuccess
 }: EndreDeltakelsesmengdeModalProps) => {
-  const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(null)
+  const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(
+    null
+  )
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(null)
-  const [hasErrorDeltakelsesprosent, setHasErrorDeltakelsesprosent] = useState<boolean>(false)
+  const [hasErrorDeltakelsesprosent, setHasErrorDeltakelsesprosent] =
+    useState<boolean>(false)
   const [hasErrorDagerPerUke, setHasErrorDagerPerUke] = useState<boolean>(false)
 
   const gyldigDeltakelsesprosent =
     !deltakelsesprosent || (0 < deltakelsesprosent && deltakelsesprosent <= 100)
-  const gyldigDagerPerUke = !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
+  const gyldigDagerPerUke =
+    !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
 
   const { enhetId } = useAppContext()
 
@@ -58,19 +65,20 @@ export const EndreDeltakelsesmengdeModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE} />,
+        icon: (
+          <EndringTypeIkon type={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE} />
+        ),
         heading: 'Endre deltakelsesmengde'
       }}
       onClose={onClose}
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage
-            message={endreDeltakelseError}
-          />
+          <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
         <NumberTextField
           label="Hva er ny deltakelsesprosent?"
@@ -98,7 +106,11 @@ export const EndreDeltakelsesmengdeModal = ({
               setDagerPerUke(e || null)
               setHasErrorDagerPerUke(false)
             }}
-            error={hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding}
+            error={
+              hasErrorDagerPerUke &&
+              !gyldigDagerPerUke &&
+              dagerPerUkeFeilmelding
+            }
             className="[&>input]:w-16 mt-4"
             id="dagerPerUke"
           />

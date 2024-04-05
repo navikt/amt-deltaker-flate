@@ -1,13 +1,22 @@
 import { Detail, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-import { DeltakerStatusAarsakType, PameldingResponse } from '../../../api/data/pamelding.ts'
+import {
+  DeltakerStatusAarsakType,
+  PameldingResponse
+} from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN, EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import {
+  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
+  EndreDeltakelseType
+} from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
@@ -24,7 +33,9 @@ export const IkkeAktuellModal = ({
   onClose,
   onSuccess
 }: IkkeAktuellModalProps) => {
-  const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(null)
+  const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(
+    null
+  )
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
   const [hasError, setHasError] = useState<boolean>(false)
 
@@ -67,13 +78,18 @@ export const IkkeAktuellModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
         <RadioGroup
           className="mt-6"
           legend="Hva er årsaken til at deltakeren ikke er aktuell?"
           size="small"
-          error={hasError && !aarsakErAnnet && 'Du må velge en årsak før du kan fortsette.'}
+          error={
+            hasError &&
+            !aarsakErAnnet &&
+            'Du må velge en årsak før du kan fortsette.'
+          }
           onChange={(value: DeltakerStatusAarsakType) => {
             setValgtArsak(value)
             setHasError(false)

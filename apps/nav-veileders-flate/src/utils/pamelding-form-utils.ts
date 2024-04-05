@@ -1,6 +1,9 @@
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
-import { InnholdDto, SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import {
+  InnholdDto,
+  SendInnPameldingRequest
+} from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { INNHOLD_TYPE_ANNET } from './utils.ts'
 
@@ -13,13 +16,18 @@ export const generateInnholdFromResponse = (
     return []
   }
   return pamelding?.deltakelsesinnhold?.innhold.flatMap((i) => {
-    const valgtInnhold = valgteInnhold.find((valgtInnhold) => i.innholdskode === valgtInnhold)
+    const valgtInnhold = valgteInnhold.find(
+      (valgtInnhold) => i.innholdskode === valgtInnhold
+    )
     if (valgtInnhold === undefined) return []
 
     return [
       {
         innholdskode: i.innholdskode,
-        beskrivelse: i.innholdskode === INNHOLD_TYPE_ANNET ? innholdAnnetBeskrivelse || null : null
+        beskrivelse:
+          i.innholdskode === INNHOLD_TYPE_ANNET
+            ? innholdAnnetBeskrivelse || null
+            : null
       }
     ]
   })

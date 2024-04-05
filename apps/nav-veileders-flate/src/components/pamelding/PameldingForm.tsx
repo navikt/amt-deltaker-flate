@@ -1,7 +1,18 @@
-import { BodyLong, Checkbox, CheckboxGroup, Heading, Textarea, VStack } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Checkbox,
+  CheckboxGroup,
+  Heading,
+  Textarea,
+  VStack
+} from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse,
+  Tiltakstype
+} from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
@@ -78,7 +89,9 @@ export const PameldingForm = ({
             <Heading size="medium" level="3">
               Hva er innholdet?
             </Heading>
-            <BodyLong size="small">{pamelding.deltakelsesinnhold?.ledetekst ?? ''}</BodyLong>
+            <BodyLong size="small">
+              {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
+            </BodyLong>
           </section>
 
           <section className="mb-8 mt-4">
@@ -99,27 +112,31 @@ export const PameldingForm = ({
                       value={e.innholdskode}
                       {...register('valgteInnhold')}
                     >
-                      {e.innholdskode === INNHOLD_TYPE_ANNET ? 'Annet - fyll ut' : e.tekst}
+                      {e.innholdskode === INNHOLD_TYPE_ANNET
+                        ? 'Annet - fyll ut'
+                        : e.tekst}
                     </Checkbox>
                     {e.innholdskode === INNHOLD_TYPE_ANNET &&
-                      valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined && (
-                      <Textarea
-                        label={null}
-                        {...register('innholdAnnetBeskrivelse')}
-                        value={watch('innholdAnnetBeskrivelse')}
-                        error={
-                          (errors.innholdAnnetBeskrivelse?.type === 'custom' &&
+                      valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !==
+                        undefined && (
+                        <Textarea
+                          label={null}
+                          {...register('innholdAnnetBeskrivelse')}
+                          value={watch('innholdAnnetBeskrivelse')}
+                          error={
+                            (errors.innholdAnnetBeskrivelse?.type ===
+                              'custom' &&
                               errors.innholdAnnetBeskrivelse?.message) ||
                             !!errors.innholdAnnetBeskrivelse
-                        }
-                        disabled={isDisabled}
-                        aria-label={'Beskrivelse av mål "Annet"'}
-                        aria-required
-                        maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                        size="small"
-                        id="innholdAnnetBeskrivelse"
-                      />
-                    )}
+                          }
+                          disabled={isDisabled}
+                          aria-label={'Beskrivelse av mål "Annet"'}
+                          aria-required
+                          maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                          size="small"
+                          id="innholdAnnetBeskrivelse"
+                        />
+                      )}
                   </div>
                 ))}
               </CheckboxGroup>
@@ -143,7 +160,8 @@ export const PameldingForm = ({
             />
           </section>
 
-          {(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.ARBFORB) && (
+          {(tiltakstype === Tiltakstype.VASV ||
+            tiltakstype === Tiltakstype.ARBFORB) && (
             <Deltakelsesprosent disabled={isDisabled} />
           )}
 
@@ -162,7 +180,9 @@ export const PameldingForm = ({
             disableForm={handleDiableForm}
           />
 
-          {status === DeltakerStatusType.KLADD && <PameldingLagring pamelding={pamelding} />}
+          {status === DeltakerStatusType.KLADD && (
+            <PameldingLagring pamelding={pamelding} />
+          )}
         </div>
       </FormProvider>
     </form>

@@ -71,7 +71,15 @@ export const svg = (
         fill="#C30000"
       />
     </g>
-    <rect x="1" y="1" width="98" height="98" rx="49" stroke="#005B82" strokeWidth="2" />
+    <rect
+      x="1"
+      y="1"
+      width="98"
+      height="98"
+      rx="49"
+      stroke="#005B82"
+      strokeWidth="2"
+    />
     <defs>
       <clipPath id="clip0_267_12872">
         <rect width="100" height="100" rx="50" fill="white" />

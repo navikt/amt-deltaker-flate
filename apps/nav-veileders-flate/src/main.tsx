@@ -1,4 +1,7 @@
-import { APPLICATION_NAME, APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
+import {
+  APPLICATION_NAME,
+  APPLICATION_WEB_COMPONENT_NAME
+} from './constants.ts'
 import { worker } from './mocks/setupMocks.ts'
 import {
   EndpointHandler,
@@ -25,7 +28,8 @@ export async function enableMocking() {
   const endpointHandlerType = getEndpointHandlerType()
 
   if (endpointHandlerType === EndpointHandler.MOCK) {
-    const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
+    const url =
+      import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
     return worker.start({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
