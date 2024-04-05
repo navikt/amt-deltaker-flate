@@ -42,9 +42,9 @@ const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
 const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
   if (pamelding.dagerPerUke !== null) {
     if (pamelding.dagerPerUke === 1) {
-      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dag i uken`
+      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dag i uka`
     } else {
-      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dager i uken`
+      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dager i uka`
     }
   }
 
