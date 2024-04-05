@@ -10,7 +10,6 @@
     "test:no-watch": "turbo test:no-watch",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
-    "format": "prettier --config .prettierrc.cjs --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -26,7 +25,7 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.json": [
+    "*.{json,css,html,yaml,md}": [
       "prettier --write"
     ]
   },

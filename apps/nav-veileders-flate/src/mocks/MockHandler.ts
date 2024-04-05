@@ -1,4 +1,8 @@
-import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse,
+  Tiltakstype
+} from '../api/data/pamelding.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
@@ -10,12 +14,16 @@ import {
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest,
-  EndreSluttarsakRequest, EndreInnholdRequest, EndreDeltakelsesmengdeRequest
+  EndreSluttarsakRequest,
+  EndreInnholdRequest,
+  EndreDeltakelsesmengdeRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
-export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): PameldingResponse => {
+export const getPameldingUtenInnhold = (
+  statusType: DeltakerStatusType
+): PameldingResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const harVedak =
     statusType !== DeltakerStatusType.KLADD &&
@@ -120,13 +128,15 @@ export class MockHandler {
             beskrivelse: null
           },
           {
-            tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+            tekst:
+              'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
             innholdskode: 'type3',
             valgt: false,
             beskrivelse: null
           },
           {
-            tekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+            tekst:
+              'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
             innholdskode: 'type4',
             valgt: false,
             beskrivelse: null
@@ -230,7 +240,10 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
+  sendInnPamelding(
+    deltakerId: string,
+    request: SendInnPameldingRequest
+  ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
     return new HttpResponse(null, { status: 200 })
@@ -361,14 +374,16 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding && oppdatertPamelding.deltakelsesinnhold) {
-      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map(( (i) => {
-        const nyInnhold = request.innhold.find( (vi) => vi.innholdskode === i.innholdskode)
+      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map((i) => {
+        const nyInnhold = request.innhold.find(
+          (vi) => vi.innholdskode === i.innholdskode
+        )
         if (nyInnhold) {
-          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse}
+          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse }
         } else {
-          return { ...i, valgt: false}
+          return { ...i, valgt: false }
         }
-      }))
+      })
       oppdatertPamelding.deltakelsesinnhold.innhold = nyListe
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)

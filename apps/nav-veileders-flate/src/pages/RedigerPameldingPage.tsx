@@ -5,14 +5,20 @@ import { Button, VStack } from '@navikt/ds-react'
 import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { useEffect, useState } from 'react'
 import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
-import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../hooks/useDeferredFetch.ts'
 import { avbrytUtkast } from '../api/api.ts'
 import { useAppContext } from '../AppContext.tsx'
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
 import { usePameldingCOntext } from '../components/tiltak/PameldingContext.tsx'
-import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../hooks/useModiaLink.ts'
+import {
+  DELTAKELSESOVERSIKT_LINK,
+  useModiaLink
+} from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
 
 export const RedigerPameldingPage = () => {
@@ -47,7 +53,9 @@ export const RedigerPameldingPage = () => {
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
         />
-        <RedigerPameldingHeader vedtaksinformasjon={pamelding.vedtaksinformasjon} />
+        <RedigerPameldingHeader
+          vedtaksinformasjon={pamelding.vedtaksinformasjon}
+        />
       </div>
 
       <VStack gap="2" align="start" className="p-8 bg-white">
@@ -86,9 +94,7 @@ export const RedigerPameldingPage = () => {
               disableForm={(disabled) => setIsDisabled(disabled)}
             />
             {avbrytUtkastState === DeferredFetchState.ERROR && (
-              <ErrorPage
-                message={avbrytUtkastError}
-              />
+              <ErrorPage message={avbrytUtkastError} />
             )}
             <Button
               size="small"

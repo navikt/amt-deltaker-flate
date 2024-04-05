@@ -9,7 +9,11 @@ interface Props {
 
 export const SlettKladdModal = ({ open, onConfirm, onCancel }: Props) => {
   return (
-    <Modal open={open} header={{ heading: 'Vil du slette kladden?' }} onClose={onCancel}>
+    <Modal
+      open={open}
+      header={{ heading: 'Vil du slette kladden?' }}
+      onClose={onCancel}
+    >
       <Modal.Body>
         <BodyLong>Påmeldingen og det du har skrevet vil bli borte.</BodyLong>
       </Modal.Body>

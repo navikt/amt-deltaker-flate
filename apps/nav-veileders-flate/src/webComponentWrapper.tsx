@@ -37,7 +37,8 @@ export class Deltaker extends HTMLElement {
     styleElem.innerHTML = appCss
     shadowRoot.appendChild(styleElem)
 
-    const initialPersonident = this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''
+    const initialPersonident =
+      this.getAttribute(Deltaker.PERSONIDENT_PROP) ?? ''
     const initialEnhetId = this.getAttribute(Deltaker.ENHET_ID_PROP) ?? ''
 
     this.reactRoot = createRoot(this.root)
@@ -64,7 +65,10 @@ export class Deltaker extends HTMLElement {
   attributeChangedCallback(name: string, oldVal: string, newValue: string) {
     if (name === Deltaker.PERSONIDENT_PROP && this.setPersonident) {
       this.setPersonident(newValue)
-    } else if (name === Deltaker.DELTAKERLISTE_ID_PROP && this.setDeltakelisteId) {
+    } else if (
+      name === Deltaker.DELTAKERLISTE_ID_PROP &&
+      this.setDeltakelisteId
+    ) {
       this.setDeltakelisteId(newValue)
     }
   }

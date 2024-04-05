@@ -3,7 +3,10 @@ import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { formatDateFromString } from '../../utils/utils.ts'
-import { TILTAKSGJENNOMFORING_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
+import {
+  TILTAKSGJENNOMFORING_LINK,
+  useModiaLink
+} from '../../hooks/useModiaLink.ts'
 
 interface Props {
   className: string

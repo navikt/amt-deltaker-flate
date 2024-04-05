@@ -6,12 +6,10 @@ interface UseModiaLink {
 }
 
 export const useModiaLink = (): UseModiaLink => {
-
   const doRedirect = (path: string) => {
     window.history.pushState(null, '', path)
     window.dispatchEvent(new CustomEvent('veilarbpersonflate.navigate'))
   }
 
-  return {doRedirect}
-
+  return { doRedirect }
 }

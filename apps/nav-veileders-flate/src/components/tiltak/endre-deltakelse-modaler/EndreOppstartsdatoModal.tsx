@@ -1,7 +1,16 @@
-import { BodyShort, DatePicker, Detail, Modal, useDatepicker } from '@navikt/ds-react'
+import {
+  BodyShort,
+  DatePicker,
+  Detail,
+  Modal,
+  useDatepicker
+} from '@navikt/ds-react'
 import { PameldingResponse, Tiltakstype } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import {
@@ -57,8 +66,10 @@ export const EndreOppstartsdatoModal = ({
     selectedDay: nyStartdato
   } = useDatepicker({
     // TODO i arrangør flate er disse datoene maks 2 mnd tilbake/frem i tid
-    fromDate: dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
-    toDate: dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    fromDate:
+      dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
+    toDate:
+      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
@@ -71,8 +82,13 @@ export const EndreOppstartsdatoModal = ({
         if (!erValgtSluttdatoGyldig(sluttDato)) {
           setErrorVarighet(feilmeldingSluttdato)
         } else setErrorVarighet(null)
-      } else if (valgtVarighet === VarighetValg.ANNET && dayjs(nySluttDato).isBefore(date)) {
-        setErrorVarighet('Du må sette en sluttdato som er etter oppstartsdatoen.')
+      } else if (
+        valgtVarighet === VarighetValg.ANNET &&
+        dayjs(nySluttDato).isBefore(date)
+      ) {
+        setErrorVarighet(
+          'Du må sette en sluttdato som er etter oppstartsdatoen.'
+        )
       } else {
         setErrorVarighet(null)
       }
@@ -90,7 +106,10 @@ export const EndreOppstartsdatoModal = ({
     } else if (nyStartdato && varighet) {
       const varighetAntall = varighet.antall
       const varighetTidsEnhet = varighet.tidsenhet
-      const valgtSluttdato = dayjs(nyStartdato).add(varighetAntall, varighetTidsEnhet)
+      const valgtSluttdato = dayjs(nyStartdato).add(
+        varighetAntall,
+        varighetTidsEnhet
+      )
       settNySluttDato(valgtSluttdato.toDate())
 
       if (!erValgtSluttdatoGyldig(valgtSluttdato)) {
@@ -122,7 +141,11 @@ export const EndreOppstartsdatoModal = ({
     if (skalVelgeVarighet && !valgtVarighet) {
       setErrorVarighet('Du må velge vargihet')
       hasError = true
-    } else if (skalVelgeVarighet && nySluttDato && !erValgtSluttdatoGyldig(dayjs(nySluttDato))) {
+    } else if (
+      skalVelgeVarighet &&
+      nySluttDato &&
+      !erValgtSluttdatoGyldig(dayjs(nySluttDato))
+    ) {
       setErrorVarighet(feilmeldingSluttdato)
       hasError = true
     } else if (
@@ -149,7 +172,9 @@ export const EndreOppstartsdatoModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_OPPSTARTSDATO} />,
+        icon: (
+          <EndringTypeIkon type={EndreDeltakelseType.ENDRE_OPPSTARTSDATO} />
+        ),
         heading: 'Endre oppstartsdato'
       }}
       onClose={onClose}
@@ -159,7 +184,8 @@ export const EndreOppstartsdatoModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
@@ -176,9 +202,14 @@ export const EndreOppstartsdatoModal = ({
               className="mt-8"
               tiltakstype={pamelding.deltakerliste.tiltakstype}
               startDato={
-                nyStartdato || dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined
+                nyStartdato ||
+                dateStrToNullableDate(pamelding.deltakerliste.startdato) ||
+                undefined
               }
-              sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
+              sluttdato={
+                dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
+                undefined
+              }
               valgtDato={nySluttDato || undefined}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}

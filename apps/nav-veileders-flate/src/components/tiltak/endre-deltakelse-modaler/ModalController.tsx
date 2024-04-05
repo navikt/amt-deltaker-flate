@@ -8,7 +8,7 @@ import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
 import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
 import { EndreInnholdModal } from './EndreInnholdModal'
-import {EndreDeltakelsesmengdeModal} from './EndreDeltakelsesmengdeModal.tsx'
+import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
 
 interface ModalControllerProps {
   open: boolean

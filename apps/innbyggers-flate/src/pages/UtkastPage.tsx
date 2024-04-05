@@ -1,7 +1,20 @@
-import { BodyLong, Button, Detail, GuidePanel, Heading, List, Link, Alert } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Button,
+  Detail,
+  GuidePanel,
+  Heading,
+  List,
+  Link,
+  Alert
+} from '@navikt/ds-react'
 import { ThumbUpIcon } from '@navikt/aksel-icons'
 import { svg } from '../ikoner/nav-veileder'
-import { EMDASH, formatDateStrWithMonthName, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
+import {
+  EMDASH,
+  formatDateStrWithMonthName,
+  hentTiltakNavnHosArrangørTekst
+} from '../utils/utils'
 import { useParams } from 'react-router-dom'
 import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch'
 import { godkjennUtkast } from '../api/api'
@@ -17,7 +30,11 @@ export const UtkastPage = () => {
     : ''
 
   const { deltakerId } = useParams()
-  const { state, error, doFetch: doFetchGodkjennUtkast } = useDeferredFetch(godkjennUtkast)
+  const {
+    state,
+    error,
+    doFetch: doFetchGodkjennUtkast
+  } = useDeferredFetch(godkjennUtkast)
   const handleGodkjennUtkast = () => {
     if (deltakerId) {
       doFetchGodkjennUtkast(deltakerId).then((oppdatertDeltaker) => {
@@ -35,7 +52,9 @@ export const UtkastPage = () => {
         <div className="flex gap-2 mt-2">
           <Detail weight="semibold">Sist endret:</Detail>
           <Detail>
-            {formatDateStrWithMonthName(deltaker.vedtaksinformasjon?.sistEndret)}{' '}
+            {formatDateStrWithMonthName(
+              deltaker.vedtaksinformasjon?.sistEndret
+            )}{' '}
             {deltaker.vedtaksinformasjon?.sistEndretAv}
           </Detail>
         </div>
@@ -44,11 +63,15 @@ export const UtkastPage = () => {
       <GuidePanel poster illustration={svg} className="mt-4">
         <Heading level="2" size="small">
           Dette er et utkast til påmelding til{' '}
-          {hentTiltakNavnHosArrangørTekst(deltaker.deltakerliste.tiltakstype, arrangorNavn)}
+          {hentTiltakNavnHosArrangørTekst(
+            deltaker.deltakerliste.tiltakstype,
+            arrangorNavn
+          )}
         </Heading>
         <BodyLong className="mt-2">
-          Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser gjennom. Hvis du
-          godkjenner utkastet blir du meldt på, vedtak fattes og {arrangorNavn} mottar informasjon.
+          Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
+          gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtak fattes
+          og {arrangorNavn} mottar informasjon.
         </BodyLong>
       </GuidePanel>
 
@@ -95,14 +118,18 @@ export const UtkastPage = () => {
         Kontaktinformasjon
       </Heading>
       <BodyLong size="small" className="mt-2">
-        NAV samarbeider med {arrangorNavn}. Arrangøren behandler personopplysninger på vegne av NAV.
+        NAV samarbeider med {arrangorNavn}. Arrangøren behandler
+        personopplysninger på vegne av NAV.
       </BodyLong>
       <List as="ul" size="small" className="mt-2">
         <List.Item>Navn og fødselsnummer</List.Item>
         <List.Item>Telefonnummer og e-postadresse</List.Item>
         {deltaker.adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
       </List>
-      <Link href="http://nav.no/person/personopplysninger/" className="text-base">
+      <Link
+        href="http://nav.no/person/personopplysninger/"
+        className="text-base"
+      >
         Se her hvilke opplysninger NAV har om deg.
       </Link>
 
@@ -124,7 +151,10 @@ export const UtkastPage = () => {
         </Alert>
       )}
 
-      <VilIkkeGodkjenneExpansionCard arrangorNavn={arrangorNavn} className="mt-6" />
+      <VilIkkeGodkjenneExpansionCard
+        arrangorNavn={arrangorNavn}
+        className="mt-6"
+      />
     </div>
   )
 }

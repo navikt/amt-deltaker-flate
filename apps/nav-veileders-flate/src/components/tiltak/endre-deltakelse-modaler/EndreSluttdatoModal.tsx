@@ -1,10 +1,16 @@
 import { DatePicker, Detail, Modal, useDatepicker } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { dateStrToNullableDate, formatDateToDateInputStr } from '../../../utils/utils.ts'
+import {
+  dateStrToNullableDate,
+  formatDateToDateInputStr
+} from '../../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
@@ -29,7 +35,8 @@ export const EndreSluttdatoModal = ({
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
-    toDate: dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    toDate:
+      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
     onValidate: (val) => {
       setErrorMessage(!val.isValidDate ? 'Du må velge en gyldig dato' : null)
     },
@@ -66,10 +73,11 @@ export const EndreSluttdatoModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError}/>
+          <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input

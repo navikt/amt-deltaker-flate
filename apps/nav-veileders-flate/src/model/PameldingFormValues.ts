@@ -6,8 +6,10 @@ export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
-export const deltakelsesprosentFeilmelding = 'Deltakelsesprosent må være et helt tall fra 1 til 99.'
-export const dagerPerUkeFeilmelding = 'Dager per uke må være et helt tall fra 1 til 5.'
+export const deltakelsesprosentFeilmelding =
+  'Deltakelsesprosent må være et helt tall fra 1 til 99.'
+export const dagerPerUkeFeilmelding =
+  'Dager per uke må være et helt tall fra 1 til 5.'
 
 export const pameldingFormSchema = z
   .object({
@@ -15,7 +17,10 @@ export const pameldingFormSchema = z
     valgteInnhold: string().array(),
     innholdAnnetBeskrivelse: z
       .string()
-      .max(BESKRIVELSE_MAX_TEGN, `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`)
+      .max(
+        BESKRIVELSE_MAX_TEGN,
+        `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`
+      )
       .optional(),
     bakgrunnsinformasjon: z
       .string()
@@ -55,8 +60,14 @@ export const pameldingFormSchema = z
   )
   .refine(
     (schema) => {
-      if (schema.valgteInnhold?.find((valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET)) {
-        return schema.innholdAnnetBeskrivelse ? schema.innholdAnnetBeskrivelse?.length > 0 : false
+      if (
+        schema.valgteInnhold?.find(
+          (valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET
+        )
+      ) {
+        return schema.innholdAnnetBeskrivelse
+          ? schema.innholdAnnetBeskrivelse?.length > 0
+          : false
       } else return true
     },
     {
@@ -78,11 +89,19 @@ export const pameldingFormSchema = z
 
 export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
 
-export const generateValgtInnholdKoder = (pamelding: PameldingResponse): string[] => {
-  return pamelding.deltakelsesinnhold?.innhold.filter((i) => i.valgt).map((i) => i.innholdskode) ?? []
+export const generateValgtInnholdKoder = (
+  pamelding: PameldingResponse
+): string[] => {
+  return (
+    pamelding.deltakelsesinnhold?.innhold
+      .filter((i) => i.valgt)
+      .map((i) => i.innholdskode) ?? []
+  )
 }
 
-export const generateFormDefaultValues = (pamelding: PameldingResponse): PameldingFormValues => {
+export const generateFormDefaultValues = (
+  pamelding: PameldingResponse
+): PameldingFormValues => {
   const showProsentValg = (): DeltakelsesprosentValg => {
     if (pamelding.deltakelsesprosent && pamelding.deltakelsesprosent < 100) {
       return DeltakelsesprosentValg.NEI

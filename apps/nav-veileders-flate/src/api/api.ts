@@ -5,7 +5,8 @@ import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pameldin
 import { deltakerBffApiBasePath } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
-  EndreBakgrunnsinfoRequest, EndreDeltakelsesmengdeRequest,
+  EndreBakgrunnsinfoRequest,
+  EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
   EndreSluttarsakRequest,
   EndreSluttdatoRequest,
@@ -37,7 +38,9 @@ export const createPamelding = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere')
+        throw new Error(
+          'Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere'
+        )
       }
       return response.json()
     })
@@ -52,15 +55,15 @@ export const createPamelding = async (
 }
 
 export const getPamelding = async (
-  deltakerId: string,
+  deltakerId: string
 ): Promise<PameldingResponse> => {
   return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
+      Accept: 'application/json'
+    }
   })
     .then((response) => {
       if (response.status !== 200) {
@@ -101,7 +104,9 @@ export const sendInnPamelding = async (
     body: JSON.stringify(request)
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(`Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`)
+      throw new Error(
+        `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
+      )
     }
 
     return response.status
@@ -113,18 +118,23 @@ export const sendInnPameldingUtenGodkjenning = (
   enhetId: string,
   request: SendInnPameldingUtenGodkjenningRequest
 ): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/utenGodkjenning`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  }).then((response) => {
+  return fetch(
+    `${deltakerBffApiBasePath()}/pamelding/${deltakerId}/utenGodkjenning`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  ).then((response) => {
     if (response.status !== 200) {
-      throw new Error(`Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`)
+      throw new Error(
+        `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
+      )
     }
 
     return response.status
@@ -136,16 +146,19 @@ export const endreDeltakelseIkkeAktuell = (
   enhetId: string,
   request: IkkeAktuellRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/ikke-aktuell`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  })
+  return fetch(
+    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/ikke-aktuell`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  )
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -181,7 +194,9 @@ export const endreDeltakelseForleng = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke forlenge deltakelsen. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke forlenge deltakelsen. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -212,7 +227,9 @@ export const endreDeltakelseStartdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre oppstartsdato. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke endre oppstartsdato. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -243,7 +260,9 @@ export const endreDeltakelseSluttdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre sluttdato. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke endre sluttdato. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -262,19 +281,24 @@ export const endreDeltakelseSluttarsak = (
   enhetId: string,
   request: EndreSluttarsakRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/sluttarsak`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  })
+  return fetch(
+    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/sluttarsak`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  )
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre sluttårsak. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke endre sluttårsak. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -305,7 +329,9 @@ export const avsluttDeltakelse = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke avslutte deltakelse. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke avslutte deltakelse. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -324,19 +350,24 @@ export const endreDeltakelseBakgrunnsinfo = (
   enhetId: string,
   request: EndreBakgrunnsinfoRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/bakgrunnsinformasjon`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  })
+  return fetch(
+    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/bakgrunnsinformasjon`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  )
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre bakgrunnsinfo. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke endre bakgrunnsinfo. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -383,16 +414,19 @@ export const endreDeltakelsesmengde = (
   enhetId: string,
   request: EndreDeltakelsesmengdeRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/deltakelsesmengde`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  })
+  return fetch(
+    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/deltakelsesmengde`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  )
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -411,7 +445,10 @@ export const endreDeltakelsesmengde = (
     })
 }
 
-export const avbrytUtkast = (deltakerId: string, enhetId: string): Promise<number> => {
+export const avbrytUtkast = (
+  deltakerId: string,
+  enhetId: string
+): Promise<number> => {
   return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/avbryt`, {
     method: 'POST',
     credentials: 'include',
@@ -422,7 +459,9 @@ export const avbrytUtkast = (deltakerId: string, enhetId: string): Promise<numbe
     }
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(`Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`)
+      throw new Error(
+        `Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`
+      )
     }
     return response.status
   })
@@ -444,7 +483,9 @@ export const oppdaterKladd = async (
     body: JSON.stringify(request)
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(`Kunne ikke lagre kladd. Prøv igjen senere. (${response.status})`)
+      throw new Error(
+        `Kunne ikke lagre kladd. Prøv igjen senere. (${response.status})`
+      )
     }
     return response.status
   })

@@ -19,4 +19,5 @@ export const deltakerBffApiBasePath = (): string => {
   } else return 'PROD_LINK'
 }
 
-export const useMock = import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK
+export const useMock =
+  import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK

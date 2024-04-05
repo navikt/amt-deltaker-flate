@@ -5,7 +5,10 @@ interface Props {
   arrangorNavn: string
   className?: string
 }
-export const VilIkkeGodkjenneExpansionCard = ({ arrangorNavn, className }: Props) => {
+export const VilIkkeGodkjenneExpansionCard = ({
+  arrangorNavn,
+  className
+}: Props) => {
   return (
     <ExpansionCard aria-label="Demo med ikon" className={className || ''}>
       <ExpansionCard.Header>
@@ -18,7 +21,8 @@ export const VilIkkeGodkjenneExpansionCard = ({ arrangorNavn, className }: Props
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         <BodyShort>
-          Gi beskjed til NAV-veilederen din hvis du ikke ønsker at dette skal deles til arrangøren.
+          Gi beskjed til NAV-veilederen din hvis du ikke ønsker at dette skal
+          deles til arrangøren.
         </BodyShort>
         {/*TODO, vi må få lenken til dialogmelding*/}
         <Link className="mt-2" href="#">

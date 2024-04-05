@@ -1,13 +1,26 @@
-import { BodyLong, Checkbox, CheckboxGroup, Detail, Modal, Textarea } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Checkbox,
+  CheckboxGroup,
+  Detail,
+  Modal,
+  Textarea
+} from '@navikt/ds-react'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch'
 import { ModalFooter } from '../../ModalFooter'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { endreDeltakelseInnhold } from '../../../api/api'
 import { useAppContext } from '../../../AppContext'
 import { INNHOLD_TYPE_ANNET } from '../../../utils/utils'
-import { BESKRIVELSE_ANNET_MAX_TEGN, generateValgtInnholdKoder } from '../../../model/PameldingFormValues'
+import {
+  BESKRIVELSE_ANNET_MAX_TEGN,
+  generateValgtInnholdKoder
+} from '../../../model/PameldingFormValues'
 import { useState } from 'react'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
@@ -32,11 +45,16 @@ export const EndreInnholdModal = ({
   const [hasError, setHasError] = useState<boolean>(false)
   const { enhetId } = useAppContext()
 
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null | undefined>(
-    innhold.filter((i) => i.valgt).find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<
+    string | null | undefined
+  >(
+    innhold
+      .filter((i) => i.valgt)
+      .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
   )
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
-  const erAnnetValgt = valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
+  const erAnnetValgt =
+    valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
   const {
     state: endreDeltakelseState,
@@ -50,7 +68,10 @@ export const EndreInnholdModal = ({
       valgteInnhold,
       annetBeskrivelse
     )
-    if (valgteInnhold.length > 0 && (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))) {
+    if (
+      valgteInnhold.length > 0 &&
+      (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))
+    ) {
       doFetchEndreDeltakelseInnhold(pamelding.deltakerId, enhetId, {
         innhold: innholdFromRepsonse
       }).then((data) => {
@@ -70,14 +91,17 @@ export const EndreInnholdModal = ({
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError}/>
+          <ErrorPage message={endreDeltakelseError} />
         )}
 
         <section className="space-y-4">
           <Detail size="small">
-            Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+            Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser
+            også endringen.
           </Detail>
-          <BodyLong size="small">{pamelding.deltakelsesinnhold?.ledetekst ?? ''}</BodyLong>
+          <BodyLong size="small">
+            {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
+          </BodyLong>
         </section>
 
         <section className="mt-4">
@@ -85,7 +109,11 @@ export const EndreInnholdModal = ({
             <CheckboxGroup
               defaultValue={valgteInnhold}
               legend="Hva mer skal tiltaket inneholde?"
-              error={hasError && !erAnnetValgt && 'Du må velge innhold før du kan fortsette.'}
+              error={
+                hasError &&
+                !erAnnetValgt &&
+                'Du må velge innhold før du kan fortsette.'
+              }
               size="small"
               aria-required
               id="endreValgteInnhold"

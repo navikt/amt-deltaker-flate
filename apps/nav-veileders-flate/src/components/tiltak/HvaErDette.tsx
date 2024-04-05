@@ -16,8 +16,8 @@ export const HvaErDette = ({ vedtaksinformasjon, className }: Props) => {
         Hva er dette?
       </Heading>
       <BodyLong size="small">
-        Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om arbeidsmarkedstiltak
-        kapittel 4.
+        Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
+        arbeidsmarkedstiltak kapittel 4.
       </BodyLong>
       {vedtaksinformasjon && (
         <Detail className="mt-2">
@@ -31,6 +31,7 @@ export const HvaErDette = ({ vedtaksinformasjon, className }: Props) => {
 }
 
 const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
-  if (vedtaksinformasjon.sistEndretAvEnhet === null) return vedtaksinformasjon.sistEndretAv
+  if (vedtaksinformasjon.sistEndretAvEnhet === null)
+    return vedtaksinformasjon.sistEndretAv
   return `${vedtaksinformasjon.sistEndretAv} ${vedtaksinformasjon.sistEndretAvEnhet}`
 }

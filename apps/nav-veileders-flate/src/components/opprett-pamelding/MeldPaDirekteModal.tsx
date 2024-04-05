@@ -1,7 +1,10 @@
 import { BodyLong, BodyShort, ConfirmationPanel, Modal } from '@navikt/ds-react'
 import { useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
-import { getDeltakerNavn, hentTiltakNavnHosArrangorTekst } from '../../utils/displayText'
+import {
+  getDeltakerNavn,
+  hentTiltakNavnHosArrangorTekst
+} from '../../utils/displayText'
 import { ModalFooter } from '../ModalFooter'
 
 export interface MeldPaDirekteModalProps {
@@ -50,15 +53,15 @@ export const MeldPaDirekteModal = ({
           label="Ja, personen er informert"
         >
           <BodyLong size="small">
-            Før du melder på skal du ha avtalt med personen hvilke personopplysninger som deles med
-            arrangøren, og dere skal være enige om hva innholdet i tiltaket skal være. Er personen
-            informert?
+            Før du melder på skal du ha avtalt med personen hvilke
+            personopplysninger som deles med arrangøren, og dere skal være enige
+            om hva innholdet i tiltaket skal være. Er personen informert?
           </BodyLong>
         </ConfirmationPanel>
         <BodyLong size="small" className="mt-8 mb-4">
-          Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. I
-          Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker
-          og tildelt veileder.
+          Brukeren blir varslet, og finner lenke på Min side og i
+          aktivitetsplanen. I Deltakeroversikten på nav.no ser arrangøren
+          påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.
         </BodyLong>
         <BodyShort weight="semibold">
           {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}

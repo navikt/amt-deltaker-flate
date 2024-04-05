@@ -14,4 +14,6 @@ export const sendInnPameldingRequestSchema = z.object({
 })
 
 export type InnholdDto = z.infer<typeof innholdDtoSchema>
-export type SendInnPameldingRequest = z.infer<typeof sendInnPameldingRequestSchema>
+export type SendInnPameldingRequest = z.infer<
+  typeof sendInnPameldingRequestSchema
+>

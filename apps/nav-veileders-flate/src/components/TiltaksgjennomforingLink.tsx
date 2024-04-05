@@ -1,4 +1,7 @@
-import { TILTAKSGJENNOMFORING_LINK, useModiaLink } from '../hooks/useModiaLink.ts'
+import {
+  TILTAKSGJENNOMFORING_LINK,
+  useModiaLink
+} from '../hooks/useModiaLink.ts'
 import { Link } from '@navikt/ds-react'
 
 interface Props {
@@ -10,7 +13,7 @@ export const TiltaksgjennomforingLink = ({
   deltakerlisteId,
   children
 }: Props) => {
-  const {doRedirect} = useModiaLink()
+  const { doRedirect } = useModiaLink()
 
   return (
     <Link
@@ -19,9 +22,9 @@ export const TiltaksgjennomforingLink = ({
       onClick={(event) => {
         event.preventDefault()
         doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
-      }}>
+      }}
+    >
       {children}
     </Link>
-
   )
 }

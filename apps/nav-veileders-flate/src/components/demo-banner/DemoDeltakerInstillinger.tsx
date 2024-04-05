@@ -7,11 +7,14 @@ import { useAppContext } from '../../AppContext'
  */
 
 const DemoDeltakerInstillinger = () => {
-  const { enhetId, personident, setEnhetId, setPersonident } =
-    useAppContext()
+  const { enhetId, personident, setEnhetId, setPersonident } = useAppContext()
 
   return (
-    <ReadMore className="mt-2" size="small" header="Velg instillinger for deltaker">
+    <ReadMore
+      className="mt-2"
+      size="small"
+      header="Velg instillinger for deltaker"
+    >
       <>
         <TextField
           label="Personident (fødselsnummer etc)"

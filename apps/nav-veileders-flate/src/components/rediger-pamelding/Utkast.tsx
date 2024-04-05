@@ -9,7 +9,9 @@ interface Props {
 
 export const Utkast = ({ innhold, bakgrunnsinformasjon }: Props) => {
   const bakgrunnsinfoVisningstekst =
-    bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 ? bakgrunnsinformasjon : EMDASH
+    bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
+      ? bakgrunnsinformasjon
+      : EMDASH
 
   return (
     <VStack gap="4">

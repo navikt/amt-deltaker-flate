@@ -15,8 +15,16 @@ import {
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingCOntext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
-import { EMDASH, formatDateFromString, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
-import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import {
+  EMDASH,
+  formatDateFromString,
+  INNHOLD_TYPE_ANNET
+} from '../../utils/utils.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse,
+  Tiltakstype
+} from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 
 interface Props {
@@ -81,12 +89,18 @@ export const DeltakerInfo = ({ className }: Props) => {
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4">
           <Label>Årsak:</Label>
-          <BodyShort>{getDeltakerStatusAarsakText(pamelding.status.aarsak)}</BodyShort>
+          <BodyShort>
+            {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
+          </BodyShort>
         </HStack>
       )}
       {skalViseDato && (
         <HStack gap="2" className="mt-4">
-          <Label>{pamelding.startdato && !pamelding.sluttdato ? 'Oppstartsdato:' : 'Dato:'}</Label>
+          <Label>
+            {pamelding.startdato && !pamelding.sluttdato
+              ? 'Oppstartsdato:'
+              : 'Dato:'}
+          </Label>
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
@@ -106,7 +120,9 @@ export const DeltakerInfo = ({ className }: Props) => {
             .filter((i) => i.valgt)
             .map((i) => (
               <List.Item key={i.innholdskode}>
-                {i.innholdskode === INNHOLD_TYPE_ANNET ? i.beskrivelse : i.tekst}
+                {i.innholdskode === INNHOLD_TYPE_ANNET
+                  ? i.beskrivelse
+                  : i.tekst}
               </List.Item>
             ))}
         </List>
@@ -134,7 +150,10 @@ export const DeltakerInfo = ({ className }: Props) => {
           {/* TODO: lenke til riktig sted */}
           Se endringer
           <span>
-            <ChevronRightIcon title="Gå til side for endringer" className="text-2xl" />
+            <ChevronRightIcon
+              title="Gå til side for endringer"
+              className="text-2xl"
+            />
           </span>
         </Link>
 
@@ -142,19 +161,24 @@ export const DeltakerInfo = ({ className }: Props) => {
           {/* TODO: lenke til dialogen */}
           <div className="grid grid-flow-col items-center gap-4">
             <ChatElipsisIcon className="text-2xl" />
-            <span>Send en melding her til NAV-veilederen din hvis noe skal endres.</span>
+            <span>
+              Send en melding her til NAV-veilederen din hvis noe skal endres.
+            </span>
           </div>
         </LinkPanel>
 
-        <HvaErDette vedtaksinformasjon={pamelding.vedtaksinformasjon} className="mt-8" />
+        <HvaErDette
+          vedtaksinformasjon={pamelding.vedtaksinformasjon}
+          className="mt-8"
+        />
 
         <Heading level="2" size="medium" className="mt-8">
           Du har rett til å klage
         </Heading>
         <BodyLong size="small" className="mt-1">
-          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på deltakelsen eller du
-          ønsker et annet arbeidsmarkedstiltak. Fristen for å klage er seks uker etter du mottok
-          informasjonen. Les mer om{' '}
+          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
+          deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
+          å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
           {
             <Link href="#">
               {/* TODO: lenke til klageinfoside */}

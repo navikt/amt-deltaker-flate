@@ -3,7 +3,9 @@ import { DeltakerResponse, deltakerSchema } from './data/deltaker'
 
 const APP_NAME = 'amt-deltaker-innbyggers-flate'
 
-export const getDeltakelse = async (deltakerId: string): Promise<DeltakerResponse> => {
+export const getDeltakelse = async (
+  deltakerId: string
+): Promise<DeltakerResponse> => {
   return fetch(`${deltakerBffApiBasePath()}/innbygger/${deltakerId}`, {
     method: 'GET',
     credentials: 'include',
@@ -29,16 +31,21 @@ export const getDeltakelse = async (deltakerId: string): Promise<DeltakerRespons
     })
 }
 
-export const godkjennUtkast = async (deltakerId: string): Promise<DeltakerResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/innbygger/${deltakerId}/godkjenn-utkast`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'Nav-Consumer-Id': APP_NAME
+export const godkjennUtkast = async (
+  deltakerId: string
+): Promise<DeltakerResponse> => {
+  return fetch(
+    `${deltakerBffApiBasePath()}/innbygger/${deltakerId}/godkjenn-utkast`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Nav-Consumer-Id': APP_NAME
+      }
     }
-  })
+  )
     .then((response) => {
       if (response.status !== 200) {
         throw new Error('Kunne ikke godkjenne utkastet. Prøv igjen senere')

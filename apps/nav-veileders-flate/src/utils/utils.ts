@@ -51,7 +51,11 @@ export enum DeltakelsesprosentValg {
   NEI = 'NEI'
 }
 
-export const isValidFloatInRange = (value: string, from: number, to: number) => {
+export const isValidFloatInRange = (
+  value: string,
+  from: number,
+  to: number
+) => {
   const valueCorrected = value.replace(',', '.')
   const x = parseFloat(valueCorrected)
 

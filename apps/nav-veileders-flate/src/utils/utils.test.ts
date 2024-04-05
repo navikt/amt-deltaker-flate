@@ -32,7 +32,8 @@ describe('isValidFloatInRange', () => {
 })
 
 describe('erGyldigProsent', () => {
-  it('Returenere true for gyldig prosnet 100', () => expect(erGyldigProsent('100')).toBeTruthy())
+  it('Returenere true for gyldig prosnet 100', () =>
+    expect(erGyldigProsent('100')).toBeTruthy())
   it('Returenere true for gyldig prosnet med komma 10,5', () =>
     expect(erGyldigProsent('10,5')).toBeTruthy())
   it('Returenere true for gyldig prosnet med punktum 10.5', () =>
@@ -42,8 +43,10 @@ describe('erGyldigProsent', () => {
   it('Returenere true for gyldig prosnet med spesialtegn bakkerst 12a!', () =>
     expect(erGyldigProsent('12a!')).toBeTruthy())
 
-  it('Returenere false for ugyldig prosnet -1', () => expect(erGyldigProsent('-1')).toBeFalsy())
-  it('Returenere false for ugyldig prosnet 101', () => expect(erGyldigProsent('101')).toBeFalsy())
+  it('Returenere false for ugyldig prosnet -1', () =>
+    expect(erGyldigProsent('-1')).toBeFalsy())
+  it('Returenere false for ugyldig prosnet 101', () =>
+    expect(erGyldigProsent('101')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med bokstaver foran a12', () =>
     expect(erGyldigProsent('a12')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med spesialtegn foran &12', () =>
@@ -76,8 +79,13 @@ describe('formatDateFromString', () => {
   it('Formates valid date string', () =>
     expect(formatDateFromString('11.11.2021')).toBe('11.11.2021'))
   it('Formates valid datetime string', () =>
-    expect(formatDateFromString('2024-01-30T08:56:20.576553')).toBe('30.01.2024'))
-  it('Formates unvalid date string to —', () => expect(formatDateFromString('')).toBe(EMDASH))
-  it('Formates unvalid date string to —', () => expect(formatDateFromString('aa')).toBe(EMDASH))
-  it('Formates null date to —', () => expect(formatDateFromString('aa')).toBe(EMDASH))
+    expect(formatDateFromString('2024-01-30T08:56:20.576553')).toBe(
+      '30.01.2024'
+    ))
+  it('Formates unvalid date string to —', () =>
+    expect(formatDateFromString('')).toBe(EMDASH))
+  it('Formates unvalid date string to —', () =>
+    expect(formatDateFromString('aa')).toBe(EMDASH))
+  it('Formates null date to —', () =>
+    expect(formatDateFromString('aa')).toBe(EMDASH))
 })
