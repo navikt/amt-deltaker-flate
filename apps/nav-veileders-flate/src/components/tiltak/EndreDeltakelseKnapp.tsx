@@ -54,9 +54,7 @@ const skalViseForlengKnapp = (
   statusdato: Date,
   toMndSiden: Date
 ) => (
-  sluttdato &&
-    (pamelding.status.type === DeltakerStatusType.DELTAR ||
-        harSluttetKanEndres(pamelding, statusdato, toMndSiden))
+  sluttdato && (pamelding.status.type === DeltakerStatusType.DELTAR || harSluttetKanEndres(pamelding, statusdato, toMndSiden))
 )
 
 const skalViseEndreInnholdKnapp = (
