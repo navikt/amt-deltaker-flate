@@ -52,13 +52,14 @@ export const Utkast = ({
         </BodyLong>
       </div>
 
-      {(tiltakstype === Tiltakstype.ARBFORB || tiltakstype === Tiltakstype.VASV) && (
+      {(tiltakstype === Tiltakstype.ARBFORB ||
+        tiltakstype === Tiltakstype.VASV) && (
         <>
           <Heading level="2" size="medium" className="mt-4">
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
-            {`${deltakelsesprosent ?? 100}% ${dagerIUkaText}`}
+            {`${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`}
           </BodyLong>
         </>
       )}

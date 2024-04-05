@@ -35,7 +35,7 @@ export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
       render={() => (
         <>
           <RadioGroup
-            legend="Skal personen delta 100%?"
+            legend="Skal personen delta 100&nbsp;%?"
             error={errors.deltakelsesprosentValg?.message}
             defaultValue={deltakelsesprosentValg}
             size="small"

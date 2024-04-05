@@ -109,7 +109,7 @@ export const UtkastPage = () => {
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
-            {`${deltaker.deltakelsesprosent ?? 100}% ${dagerIUkaText}`}
+            {`${deltaker.deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`}
           </BodyLong>
         </>
       )}
