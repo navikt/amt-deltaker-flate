@@ -123,8 +123,8 @@ export const MeldPaDirekteButton = ({
         </Button>
         <div className="ml-2">
           <HelpText aria-label={`Hjelpetekst: ${meldPaDirekteTekst}`}>
-            Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke
-            opplysninger som blir delt med tiltaksarrangør.
+            Meld på uten digital godkjenning av utkastet. Brukeren skal allerede vite hvilke
+            opplysninger som blir delt med arrangøren.
           </HelpText>
         </div>
       </div>
