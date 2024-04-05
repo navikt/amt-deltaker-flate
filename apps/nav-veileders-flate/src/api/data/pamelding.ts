@@ -103,6 +103,7 @@ export const pameldingSchema = z.object({
   bakgrunnsinformasjon: z.string().nullable(),
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
+  adresseDelesMedArrangor: z.boolean(),
   kanEndres: z.boolean()
 })
 

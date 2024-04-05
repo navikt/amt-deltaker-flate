@@ -10,7 +10,9 @@ import {
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest,
-  EndreSluttarsakRequest, EndreInnholdRequest, EndreDeltakelsesmengdeRequest
+  EndreSluttarsakRequest,
+  EndreInnholdRequest,
+  EndreDeltakelsesmengdeRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
@@ -59,6 +61,7 @@ export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): Pameldi
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
+    adresseDelesMedArrangor: true,
     kanEndres: true
   }
 }
@@ -184,6 +187,7 @@ export class MockHandler {
         sistEndretAv: 'Navn Navnesen',
         sistEndretAvEnhet: 'NAV Fredrikstad'
       },
+      adresseDelesMedArrangor: true,
       kanEndres: true
     }
 
@@ -361,14 +365,14 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding && oppdatertPamelding.deltakelsesinnhold) {
-      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map(( (i) => {
-        const nyInnhold = request.innhold.find( (vi) => vi.innholdskode === i.innholdskode)
+      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map((i) => {
+        const nyInnhold = request.innhold.find((vi) => vi.innholdskode === i.innholdskode)
         if (nyInnhold) {
-          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse}
+          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse }
         } else {
-          return { ...i, valgt: false}
+          return { ...i, valgt: false }
         }
-      }))
+      })
       oppdatertPamelding.deltakelsesinnhold.innhold = nyListe
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)

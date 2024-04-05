@@ -1,6 +1,7 @@
 import {
   BodyLong,
   BodyShort,
+  ExpansionCard,
   Heading,
   HStack,
   Label,
@@ -13,7 +14,7 @@ import {
   hentTiltakNavnHosArrangorTekst
 } from '../../utils/displayText.ts'
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
-import { usePameldingCOntext } from './PameldingContext.tsx'
+import { usePameldingContext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { EMDASH, formatDateFromString, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
@@ -43,7 +44,7 @@ const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
-  const { pamelding } = usePameldingCOntext()
+  const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     pamelding.deltakerliste.tiltakstype,
     pamelding.deltakerliste.arrangorNavn
@@ -162,6 +163,28 @@ export const DeltakerInfo = ({ className }: Props) => {
             </Link>
           }
         </BodyLong>
+
+        <ExpansionCard aria-label="Demo med bare tittel" className="mt-8">
+          <ExpansionCard.Header>
+            <ExpansionCard.Title>Hva deles med arrangøren?</ExpansionCard.Title>
+          </ExpansionCard.Header>
+          <ExpansionCard.Content>
+            <BodyLong size="small">
+              NAV samarbeider med {pamelding.deltakerliste.arrangorNavn}. Arrangøren behandler
+              opplysninger på vegne av NAV.
+            </BodyLong>
+            <List as="ul" size="small">
+              <List.Item>Navn og kontaktinformasjonen til NAV-veilederen din</List.Item>
+              <List.Item>Påmeldingen: Innholdet og bakgrunnsinformasjon</List.Item>
+              <List.Item>Navn og fødselsnummer</List.Item>
+              <List.Item>Telefonnummer og e-postadresse</List.Item>
+              {pamelding.adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
+            </List>
+            <Link href="http://nav.no/person/personopplysninger/" className="text-base">
+              Se her hvilke opplysninger NAV har om deg.
+            </Link>
+          </ExpansionCard.Content>
+        </ExpansionCard>
       </div>
     </div>
   )

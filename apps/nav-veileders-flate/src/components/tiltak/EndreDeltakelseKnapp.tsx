@@ -1,13 +1,13 @@
-import {PencilIcon} from '@navikt/aksel-icons'
-import {Button, Dropdown} from '@navikt/ds-react'
-import {useRef, useState} from 'react'
-import {DeltakerStatusType, PameldingResponse, Tiltakstype} from '../../api/data/pamelding.ts'
-import {EndringTypeIkon} from './EndringTypeIkon.tsx'
-import {EndreDeltakelseType} from '../../api/data/endre-deltakelse-request.ts'
-import {usePameldingCOntext} from './PameldingContext.tsx'
-import {ModalController} from './endre-deltakelse-modaler/ModalController.tsx'
-import {getEndreDeltakelseTypeText} from '../../utils/displayText.ts'
-import {dateStrToDate, dateStrToNullableDate} from '../../utils/utils.ts'
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Button, Dropdown } from '@navikt/ds-react'
+import { useRef, useState } from 'react'
+import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../../api/data/pamelding.ts'
+import { EndringTypeIkon } from './EndringTypeIkon.tsx'
+import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
+import { usePameldingContext } from './PameldingContext.tsx'
+import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
+import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
+import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
@@ -24,81 +24,76 @@ const hentEndreDeltakelseKnappValg = (
   </Dropdown.Menu.List.Item>
 )
 
-const harSluttetKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) => (
-  pamelding.status.type === DeltakerStatusType.HAR_SLUTTET && statusdato > toMndSiden && pamelding.kanEndres
-)
+const harSluttetKanEndres = (pamelding: PameldingResponse, statusdato: Date, toMndSiden: Date) =>
+  pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
 
 const harAvsluttendeStatusKanEndres = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
-  deltakerHarAvsluttendeStatus(pamelding.status.type) && statusdato > toMndSiden && pamelding.kanEndres
-)
+) =>
+  deltakerHarAvsluttendeStatus(pamelding.status.type) &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
 
 const venterDeltarEllerKanEndres = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
-  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) || harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
-)
+) =>
+  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
+  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
 
 const skalViseForlengKnapp = (
   pamelding: PameldingResponse,
   sluttdato: Date | null,
   statusdato: Date,
   toMndSiden: Date
-) => (
+) =>
   sluttdato &&
-    (pamelding.status.type === DeltakerStatusType.DELTAR ||
-        harSluttetKanEndres(pamelding, statusdato, toMndSiden))
-)
+  (pamelding.status.type === DeltakerStatusType.DELTAR ||
+    harSluttetKanEndres(pamelding, statusdato, toMndSiden))
 
 const skalViseEndreInnholdKnapp = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
-  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
-  && pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV
-)
+) =>
+  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
+  pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV
 
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
-  deltakerHarSluttetEllerFullfort(pamelding.status.type) && harSluttetKanEndres(pamelding, statusdato, toMndSiden)
-)
+) =>
+  deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
+  harSluttetKanEndres(pamelding, statusdato, toMndSiden)
 
 const skalViseEndreDeltakelsesmengde = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
-  (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV || pamelding.deltakerliste.tiltakstype === Tiltakstype.ARBFORB) &&
-    venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
-)
+) =>
+  (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV ||
+    pamelding.deltakerliste.tiltakstype === Tiltakstype.ARBFORB) &&
+  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
 
 const skalViseEndreOppstartsdato = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
-) => (
+) =>
   // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
   // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
   // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-    harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
-)
+  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
 
 export const EndreDeltakelseKnapp = () => {
-  const { pamelding, setPamelding } = usePameldingCOntext()
+  const { pamelding, setPamelding } = usePameldingContext()
   const endreDeltakelseRef = useRef<HTMLButtonElement>(null)
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)

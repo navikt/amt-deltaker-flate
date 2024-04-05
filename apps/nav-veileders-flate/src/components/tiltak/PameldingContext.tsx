@@ -8,7 +8,7 @@ export interface PameldingContextProps {
 
 const PameldingContext = createContext<PameldingContextProps | undefined>(undefined)
 
-const usePameldingCOntext = () => {
+const usePameldingContext = () => {
   const context = useContext(PameldingContext)
 
   if (!context) {
@@ -35,4 +35,4 @@ const PameldingContextProvider = ({
   return <PameldingContext.Provider value={contextValue}>{children}</PameldingContext.Provider>
 }
 
-export { PameldingContext, usePameldingCOntext, PameldingContextProvider }
+export { PameldingContext, usePameldingContext, PameldingContextProvider }
