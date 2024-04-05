@@ -7,6 +7,7 @@ import { useMock } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
 
 export async function enableMocking() {
+  const wat = 'omg'
   if (useMock) {
     const url =
       import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
