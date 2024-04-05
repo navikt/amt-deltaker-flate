@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml"
+      - '.github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml'
       - apps/innbyggers-flate/nais/nais-dev.yaml
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     name: Deploy poao-frontend to DEV - innbyggers-flate
     runs-on: ubuntu-latest
     permissions:
-      id-token: "write" # Needed for `nais/deploy/actions/deploy`
+      id-token: 'write' # Needed for `nais/deploy/actions/deploy`
     steps:
       - name: Checkout
         uses: actions/checkout@v4

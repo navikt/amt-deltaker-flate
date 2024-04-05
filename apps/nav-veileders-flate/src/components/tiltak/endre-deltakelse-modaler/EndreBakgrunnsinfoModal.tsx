@@ -1,7 +1,10 @@
 import { Detail, Modal, Textarea } from '@navikt/ds-react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -24,9 +27,9 @@ export const EndreBakgrunnsinfoModal = ({
   onSuccess
 }: EndreBakgrunnsinfoModalProps) => {
   const { enhetId } = useAppContext()
-  const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<string | null>(
-    pamelding.bakgrunnsinformasjon
-  )
+  const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<
+    string | null
+  >(pamelding.bakgrunnsinformasjon)
 
   const {
     state: endreDeltakelseState,
@@ -46,19 +49,20 @@ export const EndreBakgrunnsinfoModal = ({
     <Modal
       open={open}
       header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO} />,
+        icon: (
+          <EndringTypeIkon type={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO} />
+        ),
         heading: 'Endre bakgrunnsinfo'
       }}
       onClose={onClose}
     >
       <Modal.Body>
         {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage
-            message={endreDeltakelseError}
-          />
+          <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
         <Textarea
           onChange={(e) => {

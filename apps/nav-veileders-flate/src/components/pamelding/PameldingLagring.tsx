@@ -1,4 +1,7 @@
-import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../hooks/useDeferredFetch.ts'
 import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
@@ -20,7 +23,8 @@ export const PameldingLagring = ({ pamelding }: Props) => {
   const [storedKladd, setStoredKladd] = useState<KladdRequest>()
   const { watch, getValues } = useFormContext<PameldingFormValues>()
 
-  const { state: saveKladdState, doFetch: fetchSaveKladd } = useDeferredFetch(oppdaterKladd)
+  const { state: saveKladdState, doFetch: fetchSaveKladd } =
+    useDeferredFetch(oppdaterKladd)
 
   const watchedFields = watch()
 
@@ -31,8 +35,12 @@ export const PameldingLagring = ({ pamelding }: Props) => {
       data.innholdAnnetBeskrivelse
     )
 
-    const innholdAnnet = innhold.find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)
-    const korrigertInnhold = [...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)]
+    const innholdAnnet = innhold.find(
+      (i) => i.innholdskode === INNHOLD_TYPE_ANNET
+    )
+    const korrigertInnhold = [
+      ...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)
+    ]
 
     if (innholdAnnet) {
       korrigertInnhold.push({

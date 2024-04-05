@@ -6,7 +6,6 @@ module.exports = {
   trailingComma: 'none',
   semi: false,
   useTabs: false,
-  printWidth: 100,
   singleAttributePerLine: false,
   bracketSameLine: false
 }

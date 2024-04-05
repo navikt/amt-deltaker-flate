@@ -16,7 +16,7 @@ on:
 jobs:
   create-link-to-app:
     permissions:
-      pull-requests: "write"
+      pull-requests: 'write'
     name: Opprett lenke til test applikasjon innbyggers-flate for PR
     runs-on: ubuntu-latest
     steps:

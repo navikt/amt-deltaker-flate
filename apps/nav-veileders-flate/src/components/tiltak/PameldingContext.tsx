@@ -6,13 +6,17 @@ export interface PameldingContextProps {
   setPamelding: React.Dispatch<React.SetStateAction<PameldingResponse>>
 }
 
-const PameldingContext = createContext<PameldingContextProps | undefined>(undefined)
+const PameldingContext = createContext<PameldingContextProps | undefined>(
+  undefined
+)
 
 const usePameldingContext = () => {
   const context = useContext(PameldingContext)
 
   if (!context) {
-    throw new Error('usePameldingCOntext must be used within an PameldingContextProvider')
+    throw new Error(
+      'usePameldingCOntext must be used within an PameldingContextProvider'
+    )
   }
 
   return context
@@ -32,7 +36,11 @@ const PameldingContextProvider = ({
     setPamelding
   }
 
-  return <PameldingContext.Provider value={contextValue}>{children}</PameldingContext.Provider>
+  return (
+    <PameldingContext.Provider value={contextValue}>
+      {children}
+    </PameldingContext.Provider>
+  )
 }
 
 export { PameldingContext, usePameldingContext, PameldingContextProvider }

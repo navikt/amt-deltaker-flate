@@ -11,7 +11,12 @@ interface Props {
   deltakerlisteId: string
 }
 
-export const PameldingHeader = ({ title, tiltakstype, arrangorNavn, deltakerlisteId }: Props) => {
+export const PameldingHeader = ({
+  title,
+  tiltakstype,
+  arrangorNavn,
+  deltakerlisteId
+}: Props) => {
   return (
     <div className="space-y-2">
       <Heading level="1" size="large">
@@ -23,10 +28,9 @@ export const PameldingHeader = ({ title, tiltakstype, arrangorNavn, deltakerlist
       <TiltaksgjennomforingLink deltakerlisteId={deltakerlisteId}>
         <div className="flex">
           <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
-          <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen"/>
+          <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
         </div>
       </TiltaksgjennomforingLink>
-
     </div>
   )
 }

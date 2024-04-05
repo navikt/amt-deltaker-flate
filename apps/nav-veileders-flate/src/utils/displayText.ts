@@ -34,10 +34,14 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   }
 }
 
-export const hentTiltakNavnHosArrangorTekst = (tiltakstype: Tiltakstype, arrangorNavn: string) =>
-  `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
+export const hentTiltakNavnHosArrangorTekst = (
+  tiltakstype: Tiltakstype,
+  arrangorNavn: string
+) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 
-export const getDeltakerStatusDisplayText = (type: DeltakerStatusType): string => {
+export const getDeltakerStatusDisplayText = (
+  type: DeltakerStatusType
+): string => {
   switch (type) {
     case DeltakerStatusType.KLADD:
       return 'Kladd'
@@ -87,7 +91,9 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
   }
 }
 
-export const getDeltakerStatusAarsakTypeText = (type: DeltakerStatusAarsakType) => {
+export const getDeltakerStatusAarsakTypeText = (
+  type: DeltakerStatusAarsakType
+) => {
   switch (type) {
     case DeltakerStatusAarsakType.ANNET:
       return 'Annet - fyll ut'

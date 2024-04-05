@@ -278,7 +278,8 @@ const config: Config = {
       boxShadow: {
         focus: '0 0 0 3px rgba(0, 52, 125, 1)',
         'focus-inverted': '0 0 0 3px rgba(153, 195, 255, 1)',
-        xsmall: '0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 1px 0px rgba(0, 0, 0, 0.20)',
+        xsmall:
+          '0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 1px 0px rgba(0, 0, 0, 0.20)',
         small:
           '0px 3px 8px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 0px 1px 0px rgba(0, 0, 0, 0.18)',
         medium:
@@ -326,7 +327,8 @@ const config: Config = {
         full: '9999px'
       },
       screens: {
-        xl: '1200px'
+        xl: '1200px',
+        xxl: '1700px'
         // => @media (min-width: 992px) { ... }
       }
     }

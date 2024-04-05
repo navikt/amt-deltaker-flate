@@ -7,7 +7,11 @@ interface Props {
   onCancel: () => void
 }
 
-export const ForkastUtkastEndringModal = ({ open, onConfirm, onCancel }: Props) => {
+export const ForkastUtkastEndringModal = ({
+  open,
+  onConfirm,
+  onCancel
+}: Props) => {
   return (
     <Modal
       open={open}

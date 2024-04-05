@@ -14,9 +14,9 @@ jobs:
     timeout-minutes: 15
 
     permissions:
-      contents: "read"
-      id-token: "write"
-      packages: "write"
+      contents: 'read'
+      id-token: 'write'
+      packages: 'write'
 
     steps:
       - name: Checkout

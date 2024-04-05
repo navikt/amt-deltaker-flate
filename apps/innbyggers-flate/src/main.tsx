@@ -8,7 +8,8 @@ import { AppRoutes } from './Routes.tsx'
 
 export async function enableMocking() {
   if (useMock) {
-    const url = import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
+    const url =
+      import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
 
     return worker.start({
       onUnhandledRequest: 'bypass',
@@ -36,4 +37,3 @@ if (useMock) {
 } else {
   renderApp()
 }
-

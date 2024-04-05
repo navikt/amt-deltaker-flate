@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # At 05:30 on every Wednesday.
-    - cron: "30 5 * * 1,3"
+    - cron: '30 5 * * 1,3'
 
 jobs:
   analyze:
@@ -41,4 +41,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:javascript"
+          category: '/language:javascript'

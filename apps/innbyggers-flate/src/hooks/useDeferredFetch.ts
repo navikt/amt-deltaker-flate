@@ -21,7 +21,9 @@ export const useDeferredFetch = <T, U extends unknown[]>(
   onResolved: (() => void) | undefined = undefined
 ): UseDeferredFetch<T, U> => {
   const [data, setData] = useState<T | null>(null)
-  const [state, setState] = useState<DeferredFetchState>(DeferredFetchState.NOT_STARTED)
+  const [state, setState] = useState<DeferredFetchState>(
+    DeferredFetchState.NOT_STARTED
+  )
   const [error, setError] = useState<string | null>(null)
 
   const doFetch = async (...args: U): Promise<T | null> => {

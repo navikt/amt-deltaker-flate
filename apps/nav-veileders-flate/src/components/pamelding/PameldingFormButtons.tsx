@@ -3,15 +3,24 @@ import { useFormContext } from 'react-hook-form'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../AppContext.tsx'
-import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../hooks/useDeferredFetch.ts'
 import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
 import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
-import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse
+} from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
 import { getDeltakerNavn } from '../../utils/displayText.ts'
-import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
+import {
+  DELTAKELSESOVERSIKT_LINK,
+  useModiaLink
+} from '../../hooks/useModiaLink.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
 
 interface Props {
@@ -27,7 +36,8 @@ export const PameldingFormButtons = ({
   disableForm,
   onCancelUtkast
 }: Props) => {
-  const erUtkast = pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
+  const erUtkast =
+    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
 
   const { doRedirect } = useModiaLink()
@@ -40,10 +50,13 @@ export const PameldingFormButtons = ({
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState(false)
   const [formData, setFormData] = useState(getValues())
   const [slettKladdModalOpen, setSlettKladdModalOpen] = useState(false)
-  const [forkastUtkastEndringModalOpen, setForkastUtkastEndringModalOpen] = useState(false)
+  const [forkastUtkastEndringModalOpen, setForkastUtkastEndringModalOpen] =
+    useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
 
-  const delEndringKappTekst = erUtkast ? 'Del endring' : 'Del utkast og gjør klar påmelding'
+  const delEndringKappTekst = erUtkast
+    ? 'Del endring'
+    : 'Del utkast og gjør klar påmelding'
 
   const {
     state: sendSomForslagState,
@@ -83,12 +96,12 @@ export const PameldingFormButtons = ({
   return (
     <>
       {sendSomForslagState === DeferredFetchState.ERROR && (
-        <ErrorPage message={sendSomForslagError}/>)
-      }
+        <ErrorPage message={sendSomForslagError} />
+      )}
 
       {slettKladdError === DeferredFetchState.ERROR && (
-        <ErrorPage message={slettKladdError}/>)
-      }
+        <ErrorPage message={slettKladdError} />
+      )}
 
       {sendSomForslagState === DeferredFetchState.RESOLVED && (
         <Alert variant="success" className="mt-4 mb-4">
@@ -116,9 +129,10 @@ export const PameldingFormButtons = ({
           {erKladd && (
             <div className="ml-2">
               <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
-                Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til
-                arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom
-                aktivitetsplanen. Når bruker godtar så blir vedtaket satt.
+                Når utkastet deles med bruker så kan de lese gjennom hva du
+                foreslår å sende til arrangøren. Bruker blir varslet og kan
+                finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når
+                bruker godtar så blir vedtaket satt.
               </HelpText>
             </div>
           )}

@@ -11,11 +11,11 @@ import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 
 const InngangMeldPa = () => {
-  const {deltakerlisteId} = useParams()
-  const {personident, enhetId} = useAppContext()
+  const { deltakerlisteId } = useParams()
+  const { personident, enhetId } = useAppContext()
 
   if (deltakerlisteId === undefined) {
-    return ( <ErrorPage/> )
+    return <ErrorPage />
   }
 
   const {
@@ -27,7 +27,7 @@ const InngangMeldPa = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader size="3xlarge" title="Venter..."/>
+        <Loader size="3xlarge" title="Venter..." />
       </div>
     )
   }
@@ -35,22 +35,19 @@ const InngangMeldPa = () => {
   if (error || !nyPamelding) {
     return (
       <>
-        {isEnvLocalDemoOrPr && <DemoBanner hasError/>}
-        <ErrorPage
-          message={error}
-        />
+        {isEnvLocalDemoOrPr && <DemoBanner hasError />}
+        <ErrorPage message={error} />
       </>
     )
   }
 
   return (
     <PameldingContextProvider initialPamelding={nyPamelding}>
-      {isEnvLocalDemoOrPr && <DemoBanner/>}
-      <Tilbakeknapp/>
-      <DeltakerGuard/>
+      {isEnvLocalDemoOrPr && <DemoBanner />}
+      <Tilbakeknapp />
+      <DeltakerGuard />
     </PameldingContextProvider>
   )
-
 }
 
 export default InngangMeldPa

@@ -1,10 +1,17 @@
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { DeferredFetchState, useDeferredFetch } from '../../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../../hooks/useDeferredFetch.ts'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { useState } from 'react'
 import { BodyShort, Detail, Modal } from '@navikt/ds-react'
-import { getVarighet, kalkulerSluttdato, VarighetValg } from '../../../utils/varighet.ts'
+import {
+  getVarighet,
+  kalkulerSluttdato,
+  VarighetValg
+} from '../../../utils/varighet.ts'
 import {
   dateStrToNullableDate,
   formatDateToDateInputStr,
@@ -84,7 +91,8 @@ export const ForlengDeltakelseModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også endringen.
+          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
+          endringen.
         </Detail>
 
         <VargihetField
@@ -92,7 +100,10 @@ export const ForlengDeltakelseModal = ({
           className="mt-4"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           startDato={sluttdato || undefined}
-          sluttdato={dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined}
+          sluttdato={
+            dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
+            undefined
+          }
           valgtDato={nySluttDato}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}

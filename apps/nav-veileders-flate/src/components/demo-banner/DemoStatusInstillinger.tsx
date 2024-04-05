@@ -1,6 +1,10 @@
 import { Select } from '@navikt/ds-react'
 import { useState } from 'react'
-import { DeltakerStatusType, PameldingResponse, pameldingSchema } from '../../api/data/pamelding'
+import {
+  DeltakerStatusType,
+  PameldingResponse,
+  pameldingSchema
+} from '../../api/data/pamelding'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
@@ -14,7 +18,9 @@ export const endreMockDeltakelseStatus = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(`Kunne ikke endre status. Prøv igjen senere. (${response.status})`)
+        throw new Error(
+          `Kunne ikke endre status. Prøv igjen senere. (${response.status})`
+        )
       }
       return response.json()
     })
@@ -35,7 +41,9 @@ const DemoStatusInstillinger = () => {
     DeltakerStatusType.KLADD
   )
 
-  const { doFetch: doFetchEndreMockDeltakelseStatus } = useDeferredFetch(endreMockDeltakelseStatus)
+  const { doFetch: doFetchEndreMockDeltakelseStatus } = useDeferredFetch(
+    endreMockDeltakelseStatus
+  )
 
   const handlePameldingStatusChange = (nyStatus: DeltakerStatusType) => {
     setPameldingStatus(nyStatus)
@@ -54,7 +62,9 @@ const DemoStatusInstillinger = () => {
       label="Hvilken status skal påmeldingen ha?"
       size="small"
       className="mt-2 w-64"
-      onChange={(e) => handlePameldingStatusChange(e.target.value as DeltakerStatusType)}
+      onChange={(e) =>
+        handlePameldingStatusChange(e.target.value as DeltakerStatusType)
+      }
     >
       <option value={DeltakerStatusType.KLADD}>
         {getDeltakerStatusDisplayText(DeltakerStatusType.KLADD)}

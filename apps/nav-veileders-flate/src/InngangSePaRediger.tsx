@@ -10,7 +10,7 @@ import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 
 const InngangSePaRediger = () => {
-  const {deltakerId} = useParams()
+  const { deltakerId } = useParams()
 
   if (deltakerId === undefined) {
     return (
@@ -31,7 +31,7 @@ const InngangSePaRediger = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader size="3xlarge" title="Venter..."/>
+        <Loader size="3xlarge" title="Venter..." />
       </div>
     )
   }
@@ -39,22 +39,19 @@ const InngangSePaRediger = () => {
   if (error || !pamelding) {
     return (
       <>
-        {isEnvLocalDemoOrPr && <DemoBanner hasError/>}
-        <ErrorPage
-          message={error}
-        />
+        {isEnvLocalDemoOrPr && <DemoBanner hasError />}
+        <ErrorPage message={error} />
       </>
     )
   }
 
   return (
     <PameldingContextProvider initialPamelding={pamelding}>
-      {isEnvLocalDemoOrPr && <DemoBanner/>}
-      <Tilbakeknapp/>
-      <DeltakerGuard/>
+      {isEnvLocalDemoOrPr && <DemoBanner />}
+      <Tilbakeknapp />
+      <DeltakerGuard />
     </PameldingContextProvider>
   )
-
 }
 
 export default InngangSePaRediger

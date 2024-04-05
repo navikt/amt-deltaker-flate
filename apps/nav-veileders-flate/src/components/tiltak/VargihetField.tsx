@@ -1,7 +1,11 @@
 import { Tiltakstype } from '../../api/data/pamelding.ts'
 import { useState } from 'react'
 import { DatePicker, Radio, RadioGroup, useDatepicker } from '@navikt/ds-react'
-import { getVarighet, VarighetValg, varighetValgForType } from '../../utils/varighet.ts'
+import {
+  getVarighet,
+  VarighetValg,
+  varighetValgForType
+} from '../../utils/varighet.ts'
 import { formatDateToString } from '../../utils/utils.ts'
 
 interface Props {

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { DeltakerStatusAarsakType } from './pamelding.ts'
-import {innholdDtoSchema} from './send-inn-pamelding-request'
+import { innholdDtoSchema } from './send-inn-pamelding-request'
 
 export enum EndreDeltakelseType {
   IKKE_AKTUELL = 'IKKE_AKTUELL',
@@ -77,4 +77,6 @@ export const endreDeltakelsesmengdeSchema = z.object({
   dagerPerUke: z.number().optional()
 })
 
-export type EndreDeltakelsesmengdeRequest = z.infer<typeof endreDeltakelsesmengdeSchema>
+export type EndreDeltakelsesmengdeRequest = z.infer<
+  typeof endreDeltakelsesmengdeSchema
+>

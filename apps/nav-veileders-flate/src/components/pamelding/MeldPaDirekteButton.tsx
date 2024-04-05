@@ -1,15 +1,27 @@
 import { Alert, Button, HelpText } from '@navikt/ds-react'
-import { generateFormDefaultValues, PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import {
+  generateFormDefaultValues,
+  PameldingFormValues
+} from '../../model/PameldingFormValues.ts'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../AppContext.tsx'
-import { DeferredFetchState, useDeferredFetch } from '../../hooks/useDeferredFetch.ts'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../hooks/useDeferredFetch.ts'
 import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
 import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
 import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
-import { DeltakerStatusType, PameldingResponse } from '../../api/data/pamelding.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse
+} from '../../api/data/pamelding.ts'
 import { ArrowForwardIcon } from '@navikt/aksel-icons'
 import { useFormContext } from 'react-hook-form'
-import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from '../../hooks/useModiaLink.ts'
+import {
+  DELTAKELSESOVERSIKT_LINK,
+  useModiaLink
+} from '../../hooks/useModiaLink.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
 
 interface Props {
@@ -27,11 +39,12 @@ export const MeldPaDirekteButton = ({
   className,
   disableForm
 }: Props) => {
-  const {doRedirect} = useModiaLink()
-  const {enhetId} = useAppContext()
+  const { doRedirect } = useModiaLink()
+  const { enhetId } = useAppContext()
 
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled)
-  const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] = useState<boolean>(false)
+  const [meldPaDirekteModalOpen, setMeldPaDirekteModalOpen] =
+    useState<boolean>(false)
   const [newPameldingValues, setNewPameldingValues] = useState(
     useOldPamelding ? generateFormDefaultValues(pamelding) : undefined
   )
@@ -63,7 +76,10 @@ export const MeldPaDirekteButton = ({
 
   const sendDirekteModalConfirm = () => {
     if (newPameldingValues) {
-      const request = generateDirektePameldingRequestForm(pamelding, newPameldingValues)
+      const request = generateDirektePameldingRequestForm(
+        pamelding,
+        newPameldingValues
+      )
       doFetchMeldPaDirekte(pamelding.deltakerId, enhetId, request)
     }
     setMeldPaDirekteModalOpen(false)
@@ -80,9 +96,7 @@ export const MeldPaDirekteButton = ({
   return (
     <div className={className ?? ''}>
       {meldPaDirekteError === DeferredFetchState.ERROR && (
-        <ErrorPage
-          message={meldPaDirekteError}
-        />
+        <ErrorPage message={meldPaDirekteError} />
       )}
 
       {sendDirekteState === DeferredFetchState.RESOLVED && (
@@ -95,20 +109,22 @@ export const MeldPaDirekteButton = ({
         <Button
           size="small"
           variant="secondary"
-          icon={<ArrowForwardIcon/>}
+          icon={<ArrowForwardIcon />}
           loading={sendDirekteState === DeferredFetchState.LOADING}
           disabled={isDisabled}
           type="button"
           onClick={
-            useOldPamelding ? handleSendOldPamelding : methods?.handleSubmit(handleFormSubmit)
+            useOldPamelding
+              ? handleSendOldPamelding
+              : methods?.handleSubmit(handleFormSubmit)
           }
         >
           {meldPaDirekteTekst}
         </Button>
         <div className="ml-2">
           <HelpText aria-label={`Hjelpetekst: ${meldPaDirekteTekst}`}>
-            Utkastet deles ikke til brukeren. Brukeren skal allerede vite hvilke opplysninger som
-            blir delt med tiltaksarrangør.
+            Meld på uten digital godkjenning av utkastet. Brukeren skal allerede
+            vite hvilke opplysninger som blir delt med arrangøren.
           </HelpText>
         </div>
       </div>

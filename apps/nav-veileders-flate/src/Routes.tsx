@@ -5,17 +5,30 @@ import InngangMeldPa from './InngangMeldPa.tsx'
 import RedirectToDeltakeroversikt from './guards/RedirectToDeltakeroversikt.tsx'
 
 export const AppRoutes = () => {
-
   return (
     <Routes>
-      <Route path={'/arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId'} element={<InngangSePaRediger/>}/>
-      <Route path={'/arbeidsmarkedstiltak/deltakelse/:deltakerlisteId'} element={<InngangMeldPa/>}/>
+      <Route
+        path={'/arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId'}
+        element={<InngangSePaRediger />}
+      />
+      <Route
+        path={'/arbeidsmarkedstiltak/deltakelse/:deltakerlisteId'}
+        element={<InngangMeldPa />}
+      />
       {!isEnvLocalDemoOrPr && (
-        <Route path={'/*'} element={<RedirectToDeltakeroversikt/>}/>
+        <Route path={'/*'} element={<RedirectToDeltakeroversikt />} />
       )}
       {isEnvLocalDemoOrPr && (
-        <Route path={'/*'} element={
-          <Navigate replace to={'/arbeidsmarkedstiltak/deltakelse/15462eb2-9fb0-4e37-b749-fe71a9af8d48'}/>}
+        <Route
+          path={'/*'}
+          element={
+            <Navigate
+              replace
+              to={
+                '/arbeidsmarkedstiltak/deltakelse/15462eb2-9fb0-4e37-b749-fe71a9af8d48'
+              }
+            />
+          }
         />
       )}
     </Routes>

@@ -14,7 +14,9 @@ Web component blir lastet inn i team VALP sin web-component 'mulighetsrommet-vei
 ## Innganger
 
 ### /arbeidsmarkedstiltak/deltakelse/deltaker/:deltakerId
+
 Inngang fra oversikten til VALP for allerede opprettede påmeldinger
 
 ### /arbeidsmarkedstiltak/deltakelse/:deltakerlisteId
+
 Inngang fra "Start påmelding" knappen, for å opprette påmeldinger

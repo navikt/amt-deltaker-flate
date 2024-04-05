@@ -7,13 +7,21 @@ interface Props {
   onCancel: () => void
 }
 
-export const AvbrytUtkastDeltMedBrukerModal = ({ open, onConfirm, onCancel }: Props) => {
+export const AvbrytUtkastDeltMedBrukerModal = ({
+  open,
+  onConfirm,
+  onCancel
+}: Props) => {
   return (
-    <Modal open={open} header={{ heading: 'Vil du avbryte utkastet?' }} onClose={onCancel}>
+    <Modal
+      open={open}
+      header={{ heading: 'Vil du avbryte utkastet?' }}
+      onClose={onCancel}
+    >
       <Modal.Body>
         <BodyLong className="mb-4" size="small">
-          Når du avbryter utkastet så får personen beskjed. Aktiviteten i aktivitetsplanen blir
-          flyttet til avbrutt.
+          Når du avbryter utkastet så får personen beskjed. Aktiviteten i
+          aktivitetsplanen blir flyttet til avbrutt.
         </BodyLong>
       </Modal.Body>
       <ModalFooter

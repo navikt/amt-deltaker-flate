@@ -6,7 +6,7 @@ describe('kalkulerSluttdato', () => {
   const forventetDato = new Date(2024, 1, 17)
 
   it('Returnerer riktig sluttdato for gyldig dato og varighet', () =>
-    expect(kalkulerSluttdato(gyldigDato, getVarighet(VarighetValg.FIRE_UKER))).toStrictEqual(
-      forventetDato
-    ))
+    expect(
+      kalkulerSluttdato(gyldigDato, getVarighet(VarighetValg.FIRE_UKER))
+    ).toStrictEqual(forventetDato))
 })
