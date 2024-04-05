@@ -22,8 +22,9 @@
     "turbo": "^1.13.2"
   },
   "lint-staged": {
-    "apps/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+    "*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write"
     ],
     "*.json": [
       "prettier --write"
