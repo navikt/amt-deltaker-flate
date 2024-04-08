@@ -27,6 +27,7 @@ import {
   Tiltakstype
 } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
+import { getDialogUrl } from '../../utils/environment-utils.ts'
 
 interface Props {
   className: string
@@ -158,8 +159,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           </span>
         </Link>
 
-        <LinkPanel href="#" className="mt-8 rounded-lg">
-          {/* TODO: lenke til dialogen */}
+        <LinkPanel href={getDialogUrl()} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">
             <ChatElipsisIcon className="text-2xl" />
             <span>

@@ -37,3 +37,9 @@ export const useMock = getEndpointHandlerType() === EndpointHandler.MOCK
  * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
  */
 export const isEnvLocalDemoOrPr = import.meta.env.DEV
+
+export const getDialogUrl = () => {
+  return isDev() || useMock // TODO, når vi har fikset opp i env config, så må vi la demo linke til prod
+    ? 'https://veilarbpersonflate.intern.dev.nav.no/dialog'
+    : '#' // TODO legge til dialogmelding url for prod
+}
