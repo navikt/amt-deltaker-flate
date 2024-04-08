@@ -5,6 +5,8 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
+import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { Page } from '@navikt/ds-react'
 
 export async function enableMocking() {
   if (useMock) {
@@ -20,12 +22,20 @@ export async function enableMocking() {
   }
 }
 
-const renderApp = () => {
+const renderApp = async () => {
+  const Decorator = await fetchDecoratorReact({
+    env: 'dev'
+  })
+
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <Page footer={<Decorator.Footer />}>
+        <Decorator.Header />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+        <Decorator.Scripts />
+      </Page>
     </React.StrictMode>
   )
 }
