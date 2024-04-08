@@ -21,3 +21,11 @@ export const deltakerBffApiBasePath = (): string => {
 
 export const useMock =
   import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK
+
+export const getDialogUrl = () => {
+  return isDev() || import.meta.env.DEV // er devmiljø eller kjører lokalt
+    ? 'https://pto.ekstern.dev.nav.no/arbeid/dialog'
+    : 'https://www.nav.no/arbeid/dialog'
+}
+
+export const PERSONOPPLYSNINGER_URL = 'http://nav.no/person/personopplysninger/'

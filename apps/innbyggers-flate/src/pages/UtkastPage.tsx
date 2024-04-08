@@ -21,6 +21,7 @@ import { godkjennUtkast } from '../api/api'
 import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
 import { useDeltakerContext } from '../DeltakerContext'
 import { Tiltakstype } from '../api/data/deltaker'
+import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()
@@ -126,10 +127,7 @@ export const UtkastPage = () => {
         <List.Item>Telefonnummer og e-postadresse</List.Item>
         {deltaker.adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
       </List>
-      <Link
-        href="http://nav.no/person/personopplysninger/"
-        className="text-base"
-      >
+      <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger NAV har om deg.
       </Link>
 
