@@ -1,5 +1,6 @@
 import { BodyShort, ExpansionCard, Link } from '@navikt/ds-react'
 import { ChatElipsisIcon } from '@navikt/aksel-icons'
+import { getDialogUrl } from '../utils/environment-utils'
 
 interface Props {
   arrangorNavn: string
@@ -24,8 +25,7 @@ export const VilIkkeGodkjenneExpansionCard = ({
           Gi beskjed til NAV-veilederen din hvis du ikke ønsker at dette skal
           deles til arrangøren.
         </BodyShort>
-        {/*TODO, vi må få lenken til dialogmelding*/}
-        <Link className="mt-2" href="#">
+        <Link className="mt-2" href={getDialogUrl()}>
           Send melding til NAV-veilederen din her
         </Link>
       </ExpansionCard.Content>
