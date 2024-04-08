@@ -7,7 +7,7 @@ export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
 export const deltakelsesprosentFeilmelding =
-  'Deltakelsesprosent må være et helt tall fra 1 til 99.'
+  'Deltakelsesprosent må være et helt tall fra 1 til 100.'
 export const dagerPerUkeFeilmelding =
   'Dager per uke må være et helt tall fra 1 til 5.'
 
@@ -36,7 +36,7 @@ export const pameldingFormSchema = z
       })
       .int({ message: deltakelsesprosentFeilmelding })
       .gte(1, { message: deltakelsesprosentFeilmelding })
-      .lte(99, { message: deltakelsesprosentFeilmelding })
+      .lte(100, { message: deltakelsesprosentFeilmelding })
       .optional(),
     dagerPerUke: z
       .number({
@@ -77,6 +77,7 @@ export const pameldingFormSchema = z
   )
   .refine(
     (schema) => {
+      // deltakelsesprosent er påkrevd hvis vi velger NEI
       if (schema.deltakelsesprosentValg === DeltakelsesprosentValg.NEI) {
         return !!schema.deltakelsesprosent
       } else return true

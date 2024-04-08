@@ -1,4 +1,8 @@
-import { DeltakerStatusType, PameldingResponse, Tiltakstype } from '../api/data/pamelding.ts'
+import {
+  DeltakerStatusType,
+  PameldingResponse,
+  Tiltakstype
+} from '../api/data/pamelding.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
@@ -17,7 +21,9 @@ import {
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
 
-export const getPameldingUtenInnhold = (statusType: DeltakerStatusType): PameldingResponse => {
+export const getPameldingUtenInnhold = (
+  statusType: DeltakerStatusType
+): PameldingResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const harVedak =
     statusType !== DeltakerStatusType.KLADD &&
@@ -81,15 +87,15 @@ export class MockHandler {
 
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
-      fornavn: 'Nav',
+      fornavn: 'Navn',
       mellomnavn: null,
       etternavn: 'Naversen',
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: Tiltakstype.ARBFORB,
+        tiltakstype: Tiltakstype.AVKLARAG,
         arrangorNavn: 'Den Beste Arrangøren AS',
-        oppstartstype: 'løpende',
+        oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
         sluttdato: '2025-02-20'
       },
@@ -101,10 +107,10 @@ export class MockHandler {
         gyldigTil: EMDASH,
         opprettet: yesterday.toString()
       },
-      startdato: this.getStartdato(),
-      sluttdato: this.getSluttdato(),
-      dagerPerUke: 1,
-      deltakelsesprosent: 10,
+      startdato: null,
+      sluttdato: null,
+      dagerPerUke: null,
+      deltakelsesprosent: 100,
       bakgrunnsinformasjon: null,
       deltakelsesinnhold: {
         ledetekst:
@@ -123,13 +129,15 @@ export class MockHandler {
             beskrivelse: null
           },
           {
-            tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+            tekst:
+              'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
             innholdskode: 'type3',
             valgt: false,
             beskrivelse: null
           },
           {
-            tekst: 'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+            tekst:
+              'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
             innholdskode: 'type4',
             valgt: false,
             beskrivelse: null
@@ -234,7 +242,10 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(deltakerId: string, request: SendInnPameldingRequest): HttpResponse {
+  sendInnPamelding(
+    deltakerId: string,
+    request: SendInnPameldingRequest
+  ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
     return new HttpResponse(null, { status: 200 })
@@ -366,7 +377,9 @@ export class MockHandler {
 
     if (oppdatertPamelding && oppdatertPamelding.deltakelsesinnhold) {
       const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map((i) => {
-        const nyInnhold = request.innhold.find((vi) => vi.innholdskode === i.innholdskode)
+        const nyInnhold = request.innhold.find(
+          (vi) => vi.innholdskode === i.innholdskode
+        )
         if (nyInnhold) {
           return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse }
         } else {
