@@ -3,7 +3,7 @@ description: Steps for setup of the frontend modules
 
 inputs:
   node_auth_token:
-    description: 'Token used to get dekoratøren'
+    description: Token used to get dekoratøren
     required: true
 
 runs:
@@ -17,6 +17,7 @@ runs:
       with:
         node-version: '21'
         cache: 'pnpm'
+        registry-url: 'https://npm.pkg.github.com'
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
       shell: bash
