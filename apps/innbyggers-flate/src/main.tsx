@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { worker } from './mocks/setupMocks.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import { useMock } from './utils/environment-utils.ts'
+import { isDev, isProd, useMock } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
-import { Page } from '@navikt/ds-react'
+import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 
 export async function enableMocking() {
   if (useMock) {
@@ -22,20 +21,28 @@ export async function enableMocking() {
   }
 }
 
-const renderApp = async () => {
-  const Decorator = await fetchDecoratorReact({
-    env: 'dev'
+const setupNavDekorator = () => {
+  return injectDecoratorClientSide({
+    env: isProd() ? 'prod' : 'dev',
+    params: {
+      chatbot: true,
+      context: 'privatperson',
+      level: 'Level4',
+      simpleFooter: false,
+      enforceLogin: isProd() || isDev(),
+      logoutWarning: isProd() || isDev()
+    }
   })
+}
+
+const renderApp = async () => {
+  await setupNavDekorator()
 
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      <Page footer={<Decorator.Footer />}>
-        <Decorator.Header />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-        <Decorator.Scripts />
-      </Page>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </React.StrictMode>
   )
 }

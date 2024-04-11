@@ -3,8 +3,15 @@ export enum EndpointHandler {
   PROXY = 'PROXY' // brukes for lokal kjøring
 }
 
-const isDev = (): boolean => {
+export const isDev = (): boolean => {
   return window.location.hostname.includes('intern.dev.nav.no')
+}
+
+export const isProd = () => {
+  return (
+    window.location.hostname === 'nav.no' ||
+    window.location.hostname === 'www.nav.no'
+  )
 }
 
 export const deltakerBffApiBasePath = (): string => {

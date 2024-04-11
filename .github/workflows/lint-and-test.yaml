@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup frontend
         uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Lint
         run: pnpm lint
       - name: Run tests
