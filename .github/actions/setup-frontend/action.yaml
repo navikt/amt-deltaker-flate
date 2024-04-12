@@ -3,7 +3,7 @@ description: Steps for setup of the frontend modules
 
 inputs:
   node_auth_token:
-    description: Token used to get dekoratøren
+    description: Token used to get dekoratoren
     required: true
 
 runs:
