@@ -21,15 +21,13 @@ export async function enableMocking() {
   }
 }
 
+// list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
 const setupNavDekorator = () => {
   return injectDecoratorClientSide({
     env: isProd() ? 'prod' : 'dev',
     params: {
-      chatbot: true,
-      context: 'privatperson',
       level: 'Level4',
-      simpleFooter: false,
-      enforceLogin: isProd() || isDev(),
+      enforceLogin: true,
       logoutWarning: isProd() || isDev()
     }
   })

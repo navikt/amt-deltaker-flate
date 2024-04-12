@@ -1,11 +1,21 @@
 import { setupWorker } from 'msw/browser'
-import { delay, http } from 'msw'
+import { HttpResponse, delay, http } from 'msw'
 import { MockHandler } from './MockHandler.ts'
 import { DeltakerStatusType } from '../api/data/deltaker.ts'
 
 const handler = new MockHandler()
 
 export const worker = setupWorker(
+  http.get(
+    'https://www.ekstern.dev.nav.no/person/nav-dekoratoren-api/auth',
+    async () => {
+      return HttpResponse.json({
+        authenticated: true,
+        name: 'Navn Navnesen',
+        securityLevel: '4'
+      })
+    }
+  ),
   http.post('mock/setup/status/:status', async ({ params }) => {
     const { status } = params
 
