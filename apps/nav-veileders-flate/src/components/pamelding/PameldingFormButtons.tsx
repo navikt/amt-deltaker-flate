@@ -132,7 +132,7 @@ export const PameldingFormButtons = ({
                 Når utkastet deles med bruker så kan de lese gjennom hva du
                 foreslår å sende til arrangøren. Bruker blir varslet og kan
                 finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når
-                bruker godtar så blir vedtaket satt.
+                brukeren godtar utkastet, så fattes vedtaket.
               </HelpText>
             </div>
           )}
