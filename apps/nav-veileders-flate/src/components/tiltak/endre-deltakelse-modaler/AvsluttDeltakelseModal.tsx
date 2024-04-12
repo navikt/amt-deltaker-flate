@@ -66,6 +66,8 @@ export const AvsluttDeltakelseModal = ({
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
+  const harForLangAnnetBeskrivelse =
+    harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
   const { enhetId } = useAppContext()
 
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
@@ -97,7 +99,7 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (aarsakErAnnet && !harAnnetBeskrivelse) {
+    if (aarsakErAnnet && (!harAnnetBeskrivelse || harForLangAnnetBeskrivelse)) {
       setErrorAarsakAnnet(true)
       hasError = true
     }
@@ -167,8 +169,11 @@ export const AvsluttDeltakelseModal = ({
                 size="small"
                 label={null}
                 error={
-                  errorAarsakAnnet &&
-                  'Du må fylle ut for årsak "annet" før du kan fortsette.'
+                  (errorAarsakAnnet &&
+                    !harForLangAnnetBeskrivelse &&
+                    'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
+                  (harForLangAnnetBeskrivelse &&
+                    `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
                 }
                 maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
                 aria-label={'Beskrivelse for Annet'}
