@@ -8,6 +8,16 @@ import {
   getEndpointHandlerType,
   isEnvLocalDemoOrPr
 } from './utils/environment-utils.ts'
+import { initializeFaro } from '@grafana/faro-web-sdk'
+
+if (import.meta.env.VITE_FARO_URL) {
+  initializeFaro({
+    url: import.meta.env.VITE_FARO_URL,
+    app: {
+      name: 'amt-deltaker-nav-veilderes-flate'
+    }
+  })
+}
 
 const exportAsWebcomponent = () => {
   // Denne må lazy importeres fordi den laster inn all css selv inn under sin egen shadow-root
