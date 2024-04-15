@@ -43,7 +43,7 @@ export const createDeltaker = (
     bakgrunnsinformasjon: null,
     deltakelsesinnhold: {
       ledetekst:
-        'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
       innhold: [
         {
           tekst: 'Støtte til jobbsøking',
@@ -142,6 +142,9 @@ export class MockHandler {
     const oppdatertPamelding = this.deltaker
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
+      if (oppdatertPamelding.vedtaksinformasjon) {
+        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs().toString()
+      }
       this.deltaker = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
