@@ -39,6 +39,12 @@ jobs:
     permissions:
       id-token: 'write' # Used to authenticate with Google Cloud
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:dev --filter=nav-veileders-flate
       - name: Authenticate to Google Cloud
@@ -85,6 +91,12 @@ jobs:
       id-token: 'write' # Used to authenticate with Google Cloud
       contents: 'write' # Create release
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build --filter=nav-veileders-flate
       - name: Authenticate to Google Cloud
