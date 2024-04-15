@@ -29,6 +29,9 @@ importers:
 
   apps/innbyggers-flate:
     dependencies:
+      '@grafana/faro-web-sdk':
+        specifier: ^1.5.1
+        version: 1.5.1
       '@navikt/aksel-icons':
         specifier: ^6.3.6
         version: 6.5.0
