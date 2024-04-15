@@ -113,7 +113,7 @@ export const AvsluttDeltakelseModal = ({
       doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
         aarsak: {
           type: valgtArsak,
-          beskrivelse: beskrivelse
+          beskrivelse: aarsakErAnnet ? beskrivelse : null
         },
         sluttdato: sluttdato ? formatDateToDateInputStr(sluttdato) : null,
         harDeltatt: harDeltatt
@@ -189,6 +189,7 @@ export const AvsluttDeltakelseModal = ({
               onChange={(value: HarDeltattValg) => {
                 if (value === HarDeltattValg.NEI) {
                   setHarDeltatt(false)
+                  settNySluttDato(null)
                 } else {
                   setHarDeltatt(true)
                 }
