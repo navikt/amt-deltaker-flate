@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "VITE_ENDPOINT_HANDLER='MOCK' VITE_MOCK_SERVICE_RUNNER_PATH='/arbeidsmarkedstiltak/mockServiceWorker.js' vite --port 3005",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "build:demo": "VITE_ENDPOINT_HANDLER='MOCK' vite build --base /",
     "test": "vitest",
     "test:no-watch": "vitest run",

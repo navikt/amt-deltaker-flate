@@ -4,7 +4,7 @@
   "scripts": {
     "build:pull-request": "turbo build:pull-request",
     "build:demo": "turbo build:demo",
-    "build:dev": "turbo build --parallel",
+    "build:dev": "turbo build:dev --parallel",
     "build": "turbo build --parallel",
     "start": "turbo start --parallel",
     "test": "turbo test",
