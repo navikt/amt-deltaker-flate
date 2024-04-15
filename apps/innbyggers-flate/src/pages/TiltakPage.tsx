@@ -24,7 +24,7 @@ import {
 } from '../api/data/deltaker.ts'
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { getDialogUrl } from '../utils/environment-utils.ts'
-import { DeltakerIStatusTag } from '../components/DeltakerIStatusTag.tsx'
+import { DeltakerStatusTag } from '../components/DeltakerStatusTag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
@@ -81,7 +81,7 @@ export const TiltakPage = () => {
 
       <HStack gap="2" className="mt-8">
         <Label>Status:</Label>
-        <DeltakerIStatusTag statusType={deltaker.status.type} />
+        <DeltakerStatusTag statusType={deltaker.status.type} />
       </HStack>
       {deltaker.status.aarsak && (
         <HStack gap="2" className="mt-4">
