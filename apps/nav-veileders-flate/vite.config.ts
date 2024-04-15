@@ -10,5 +10,9 @@ export default defineConfig({
     environment: 'jsdom',
     teardownTimeout: 1000,
     setupFiles: ['./vitest.setup.ts']
+  },
+  build: {
+    outDir: 'build',
+    sourcemap: true
   }
 })
