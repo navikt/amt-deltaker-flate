@@ -24,8 +24,8 @@ import {
 } from '../api/data/deltaker.ts'
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { getDialogUrl } from '../utils/environment-utils.ts'
-import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DeltakerIStatusTag } from '../components/DeltakerIStatusTag.tsx'
+import { HvaErDette } from '../components/HvaErDette.tsx'
 
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
@@ -164,6 +164,7 @@ export const TiltakPage = () => {
         </LinkPanel>
 
         <HvaErDette
+          tiltakstype={deltaker.deltakerliste.tiltakstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
           className="mt-8"
         />
