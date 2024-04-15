@@ -4,6 +4,16 @@ import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { AppContextProvider } from './AppContext.tsx'
 import { AppRoutes } from './Routes.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import { initializeFaro } from '@grafana/faro-web-sdk'
+
+if (import.meta.env.VITE_FARO_URL) {
+  initializeFaro({
+    url: import.meta.env.VITE_FARO_URL,
+    app: {
+      name: 'amt-deltaker-nav-veilderes-flate'
+    }
+  })
+}
 
 export class Deltaker extends HTMLElement {
   static PERSONIDENT_PROP = 'data-personident'
@@ -82,3 +92,5 @@ export class Deltaker extends HTMLElement {
 // Repoer for inspirasjon:
 // https://github.com/navikt/aktivitetsplan/tree/main
 // https://github.com/navikt/mulighetsrommet/tree/main/frontend/mulighetsrommet-veileder-flate
+
+customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
