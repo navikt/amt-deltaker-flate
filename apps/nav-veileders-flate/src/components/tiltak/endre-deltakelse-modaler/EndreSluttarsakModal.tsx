@@ -60,7 +60,7 @@ export const EndreSluttarsakModal = ({
         doFetchEndreSluttarsak(pamelding.deltakerId, enhetId, {
           aarsak: {
             type: valgtArsak,
-            beskrivelse: beskrivelse
+            beskrivelse: aarsakErAnnet ? beskrivelse : null
           }
         }).then((data) => {
           onSuccess(data)
