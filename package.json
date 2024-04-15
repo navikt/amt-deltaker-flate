@@ -2,9 +2,10 @@
   "name": "amt-deltaker-flate",
   "private": true,
   "scripts": {
-    "build": "turbo build --parallel",
     "build:pull-request": "turbo build:pull-request",
     "build:demo": "turbo build:demo",
+    "build:dev": "turbo build --parallel",
+    "build": "turbo build --parallel",
     "start": "turbo start --parallel",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",

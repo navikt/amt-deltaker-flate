@@ -13,6 +13,10 @@
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
     },
+    "build:dev": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**"]
+    },
     "build:pull-request": {
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
