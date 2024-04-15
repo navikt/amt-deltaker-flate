@@ -169,6 +169,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         </LinkPanel>
 
         <HvaErDette
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
           className="mt-8"
         />
