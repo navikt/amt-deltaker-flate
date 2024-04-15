@@ -5,7 +5,7 @@
     "BASE_URL",
     "VITE_MOCK_SERVICE_RUNNER_PATH",
     "VITE_ENDPOINT_HANDLER",
-    "VITE_MODE",
+    "VITE_PR_ENV",
     "DEV"
   ],
   "pipeline": {

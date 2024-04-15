@@ -37,7 +37,7 @@ export const isLocalEnv = import.meta.env.DEV
  * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
  */
 export const isEnvLocalDemoOrPr =
-  useMock || import.meta.env.VITE_MODE === 'pull_request'
+  useMock || import.meta.env.VITE_PR_ENV === 'pull_request'
 
 export const getDialogUrl = () => {
   return isDev() || isLocalEnv

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "VITE_ENDPOINT_HANDLER=MOCK VITE_MOCK_SERVICE_RUNNER_PATH=/mockServiceWorker.js vite --port 3004",
     "build:demo": "VITE_ENDPOINT_HANDLER=MOCK vite build",
-    "build:pull-request": "VITE_ENDPOINT_HANDLER=DEV vite build VITE_MODE=pull_request",
+    "build:pull-request": "VITE_ENDPOINT_HANDLER=DEV VITE_PR_ENV=pull_request vite build",
     "build:dev": "VITE_ENDPOINT_HANDLER=DEV tsc && vite build",
     "build": "VITE_ENDPOINT_HANDLER=PROD tsc && vite build",
     "test": "vitest",
