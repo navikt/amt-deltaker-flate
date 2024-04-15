@@ -74,7 +74,7 @@ export const TiltakPage = () => {
   }
 
   return (
-    <div className={'bg-white px-12 py-4 w-full xl:w-[65%]'}>
+    <div className={'bg-white px-12 py-4 w-full'}>
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
