@@ -26,7 +26,7 @@ jobs:
           app: amt-deltaker-innbyggers-flate
           team: amt
           source: apps/innbyggers-flate/build
-          ingress: https://amt-deltaker-innbyggers-flate-pr-${{ github.event.number }}.ekstern.dev.nav.no
+          ingress: https://amt-deltaker-innbyggers-flate-pr-${{ github.event.number }}.intern.dev.nav.no
           environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -40,4 +40,4 @@ jobs:
       - uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            URL for testing av innbyggers-flate: https://amt-deltaker-innbyggers-flate-pr-${{ github.event.number }}.ekstern.dev.nav.no
+            URL for testing av innbyggers-flate: https://amt-deltaker-innbyggers-flate-pr-${{ github.event.number }}.intern.dev.nav.no
