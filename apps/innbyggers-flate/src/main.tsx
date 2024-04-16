@@ -51,7 +51,8 @@ if (import.meta.env.VITE_FARO_URL) {
     url: import.meta.env.VITE_FARO_URL,
     app: {
       name: 'amt-deltaker-innbyggers-flate'
-    }
+    },
+    isolate: true
   })
 }
 
