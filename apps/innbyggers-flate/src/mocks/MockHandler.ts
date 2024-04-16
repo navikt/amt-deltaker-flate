@@ -157,16 +157,18 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = status
+      oppdatertPamelding.startdato = this.getStartdato(status)
+      oppdatertPamelding.sluttdato = this.getSluttdato(status)
       this.deltaker = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
     return HttpResponse.json(this.deltaker)
   }
 
-  getStartdato(): string {
+  getStartdato(nyStatus: DeltakerStatusType): string {
     if (
-      this.statusType === DeltakerStatusType.DELTAR ||
-      this.statusType === DeltakerStatusType.HAR_SLUTTET
+      nyStatus === DeltakerStatusType.DELTAR ||
+      nyStatus === DeltakerStatusType.HAR_SLUTTET
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
@@ -175,13 +177,13 @@ export class MockHandler {
     return EMDASH
   }
 
-  getSluttdato(): string {
-    if (this.statusType === DeltakerStatusType.DELTAR) {
+  getSluttdato(nyStatus: DeltakerStatusType): string {
+    if (nyStatus === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
       return dayjs(fremtidigDato).format('YYYY-MM-DD')
     }
-    if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+    if (nyStatus === DeltakerStatusType.HAR_SLUTTET) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
       return dayjs(passertDato).format('YYYY-MM-DD')
