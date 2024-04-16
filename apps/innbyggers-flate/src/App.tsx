@@ -8,6 +8,8 @@ import { useEffect } from 'react'
 import { DeltakerContextProvider } from './DeltakerContext'
 import { DeltakerGuard } from './guards/DeltakerGuard'
 import nb from 'dayjs/locale/nb'
+import DemoBanner from './components/demo-banner/DemoBanner.tsx'
+import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 
 dayjs.locale(nb)
 
@@ -47,6 +49,7 @@ const App = () => {
 
   return (
     <DeltakerContextProvider initialDeltaker={deltaker}>
+      {isEnvLocalDemoOrPr && <DemoBanner />}
       <DeltakerGuard />
     </DeltakerContextProvider>
   )

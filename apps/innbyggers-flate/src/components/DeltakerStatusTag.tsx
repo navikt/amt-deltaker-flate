@@ -27,11 +27,11 @@ const getTagType = (status: DeltakerStatusType) => {
   }
 }
 
-interface DeltakerIStatusTagProps {
+interface DeltakerStatusTagProps {
   statusType: DeltakerStatusType
 }
 
-export const DeltakerStatusTag = ({ statusType }: DeltakerIStatusTagProps) => {
+export const DeltakerStatusTag = ({ statusType }: DeltakerStatusTagProps) => {
   return (
     <Tag
       variant={getTagType(statusType)}
