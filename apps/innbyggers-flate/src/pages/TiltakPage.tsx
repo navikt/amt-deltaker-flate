@@ -26,6 +26,7 @@ import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { getDialogUrl } from '../utils/environment-utils.ts'
 import { DeltakerStatusTag } from '../components/DeltakerStatusTag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
+import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
 
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
@@ -101,9 +102,11 @@ export const TiltakPage = () => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
-      <BodyLong size="small" className="mt-4">
-        {`Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
-      </BodyLong>
+      <DeltakerStatusInfoTekst
+        statusType={deltaker.status.type}
+        tiltakOgStedTekst={tiltakOgStedTekst}
+        oppstartsdato={deltaker.startdato}
+      />
 
       <Heading level="2" size="medium" className="mt-8">
         Hva er innholdet?

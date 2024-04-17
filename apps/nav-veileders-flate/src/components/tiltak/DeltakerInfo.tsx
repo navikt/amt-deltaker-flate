@@ -28,6 +28,7 @@ import {
 } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 import { getDialogUrl } from '../../utils/environment-utils.ts'
+import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
 
 interface Props {
   className: string
@@ -106,9 +107,11 @@ export const DeltakerInfo = ({ className }: Props) => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
-      <BodyLong size="small" className="mt-4">
-        {`Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`}
-      </BodyLong>
+      <DeltakerStatusInfoTekst
+        statusType={pamelding.status.type}
+        tiltakOgStedTekst={tiltakOgStedTekst}
+        oppstartsdato={pamelding.startdato}
+      />
 
       <Heading level="2" size="medium" className="mt-8">
         Hva er innholdet?
