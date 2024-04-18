@@ -47,6 +47,15 @@ const deltakelsesmengdeString = (deltaker: DeltakerResponse): string => {
   return `${deltaker.deltakelsesprosent}\u00A0%`
 }
 
+const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
+  return (
+    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
+    status === DeltakerStatusType.DELTAR ||
+    status === DeltakerStatusType.HAR_SLUTTET ||
+    status === DeltakerStatusType.IKKE_AKTUELL
+  )
+}
+
 export const TiltakPage = () => {
   const { deltaker } = useDeltakerContext()
 
@@ -102,11 +111,13 @@ export const TiltakPage = () => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
-      <DeltakerStatusInfoTekst
-        statusType={deltaker.status.type}
-        tiltakOgStedTekst={tiltakOgStedTekst}
-        oppstartsdato={deltaker.startdato}
-      />
+      {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
+        <DeltakerStatusInfoTekst
+          statusType={deltaker.status.type}
+          tiltakOgStedTekst={tiltakOgStedTekst}
+          oppstartsdato={deltaker.startdato}
+        />
+      )}
 
       <Heading level="2" size="medium" className="mt-8">
         Hva er innholdet?

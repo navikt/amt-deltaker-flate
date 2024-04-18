@@ -53,6 +53,15 @@ const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
   return `${pamelding.deltakelsesprosent}\u00A0%`
 }
 
+const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
+  return (
+    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
+    status === DeltakerStatusType.DELTAR ||
+    status === DeltakerStatusType.HAR_SLUTTET ||
+    status === DeltakerStatusType.IKKE_AKTUELL
+  )
+}
+
 export const DeltakerInfo = ({ className }: Props) => {
   const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
@@ -107,11 +116,13 @@ export const DeltakerInfo = ({ className }: Props) => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
-      <DeltakerStatusInfoTekst
-        statusType={pamelding.status.type}
-        tiltakOgStedTekst={tiltakOgStedTekst}
-        oppstartsdato={pamelding.startdato}
-      />
+      {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
+        <DeltakerStatusInfoTekst
+          statusType={pamelding.status.type}
+          tiltakOgStedTekst={tiltakOgStedTekst}
+          oppstartsdato={pamelding.startdato}
+        />
+      )}
 
       <Heading level="2" size="medium" className="mt-8">
         Hva er innholdet?

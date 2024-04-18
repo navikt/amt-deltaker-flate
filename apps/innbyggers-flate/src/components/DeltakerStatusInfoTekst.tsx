@@ -26,8 +26,6 @@ const getInfoTekst = (
       return `Du deltok på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.IKKE_AKTUELL:
       return `${tiltakOgStedTekst} ble ikke aktuelt.`
-    default:
-      return 'TODO'
   }
 }
 
