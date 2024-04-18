@@ -7,7 +7,8 @@
     "VITE_ENDPOINT_HANDLER",
     "VITE_PR_ENV",
     "VITE_FARO_URL",
-    "DEV"
+    "DEV",
+    "VITE_AKTIVITETSPLAN_URL"
   ],
   "pipeline": {
     "build": {

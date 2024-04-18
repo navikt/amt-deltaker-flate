@@ -10,6 +10,7 @@ import { DeltakerGuard } from './guards/DeltakerGuard'
 import nb from 'dayjs/locale/nb'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { TilAktivitetsplanKnapp } from './components/TilAktivitetsplanKnapp.tsx'
 
 dayjs.locale(nb)
 
@@ -50,6 +51,7 @@ const App = () => {
   return (
     <DeltakerContextProvider initialDeltaker={deltaker}>
       {isEnvLocalDemoOrPr && <DemoBanner />}
+      <TilAktivitetsplanKnapp />
       <DeltakerGuard />
     </DeltakerContextProvider>
   )
