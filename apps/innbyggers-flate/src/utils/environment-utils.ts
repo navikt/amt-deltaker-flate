@@ -30,11 +30,12 @@ export const deltakerBffApiBasePath = (): string => {
 export const useMock =
   import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK
 
+export const isPrEvn = import.meta.env.VITE_PR_ENV === 'pull_request'
+
 /**
  * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
  */
-export const isEnvLocalDemoOrPr =
-  useMock || import.meta.env.VITE_PR_ENV === 'pull_request'
+export const isEnvLocalDemoOrPr = useMock || isPrEvn
 
 export const getDialogUrl = () => {
   return isDev() || import.meta.env.DEV // er devmiljø eller kjører lokalt

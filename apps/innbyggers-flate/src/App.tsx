@@ -4,18 +4,22 @@ import dayjs from 'dayjs'
 import './App.css'
 import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
 import { getDeltakelse } from './api/api'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { DeltakerContextProvider } from './DeltakerContext'
 import { DeltakerGuard } from './guards/DeltakerGuard'
 import nb from 'dayjs/locale/nb'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import { TilAktivitetsplanLenke } from './components/TilAktivitetsplanLenke.tsx'
+import { isEnvLocalDemoOrPr, isPrEvn } from './utils/environment-utils.ts'
 
 dayjs.locale(nb)
 
 const App = () => {
-  const { deltakerId } = useParams()
+  const deltakerIdFraUrl = useParams().deltakerId
+  const [deltakerIdPrSetting, setDeltakerIDprSetting] = useState('')
+
+  const deltakerId = isPrEvn ? deltakerIdPrSetting : deltakerIdFraUrl
+
   const {
     data: deltaker,
     state,
@@ -27,7 +31,11 @@ const App = () => {
     if (deltakerId) {
       doFetchDeltakelse(deltakerId)
     }
-  }, [])
+  }, [deltakerId])
+
+  if (isPrEvn && !deltaker) {
+    return <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
+  }
 
   if (state === DeferredFetchState.LOADING) {
     return (
@@ -39,19 +47,26 @@ const App = () => {
 
   if (error || !deltaker) {
     return (
-      <Alert variant="error">
-        <Heading spacing size="small" level="3">
-          Vi beklager, men noe gikk galt
-        </Heading>
-        {error}
-      </Alert>
+      <>
+        {isEnvLocalDemoOrPr && (
+          <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
+        )}
+        <Alert variant="error">
+          <Heading spacing size="small" level="3">
+            Vi beklager, men noe gikk galt
+          </Heading>
+          {error}
+        </Alert>
+      </>
     )
   }
 
   return (
     <DeltakerContextProvider initialDeltaker={deltaker}>
-      {isEnvLocalDemoOrPr && <DemoBanner />}
       <TilAktivitetsplanLenke />
+      {isEnvLocalDemoOrPr && (
+        <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
+      )}
       <DeltakerGuard />
     </DeltakerContextProvider>
   )
