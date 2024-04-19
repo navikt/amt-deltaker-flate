@@ -28,7 +28,7 @@ export const HvaErDette = ({
         <Detail className="mt-2">
           {harNavMeldtPaDirekte
             ? `Meldt på: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)} av ${vedtakEndretAv(vedtaksinformasjon)}.`
-            : `Utkast delt av: ${vedtakEndretAv(vedtaksinformasjon)}. Du godkjente ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}.`}
+            : `Meldt på av: ${vedtakEndretAv(vedtaksinformasjon)}. Du godkjente ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}.`}
         </Detail>
       )}
     </div>
