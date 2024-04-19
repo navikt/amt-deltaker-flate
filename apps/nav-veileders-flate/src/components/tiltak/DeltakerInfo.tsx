@@ -195,12 +195,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
           deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
           å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
-          {
-            <Link href="#">
-              {/* TODO: lenke til klageinfoside */}
-              retten til å klage her.
-            </Link>
-          }
+          {<Link href="https://www.nav.no/klage">retten til å klage her.</Link>}
         </BodyLong>
 
         <ExpansionCard aria-label="Demo med bare tittel" className="mt-8">

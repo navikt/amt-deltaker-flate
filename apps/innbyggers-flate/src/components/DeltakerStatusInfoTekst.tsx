@@ -18,7 +18,7 @@ const getInfoTekst = (
       if (harOppstartsdato) {
         return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
       } else {
-        return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avklare oppstart.`
+        return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.`
       }
     case DeltakerStatusType.DELTAR:
       return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
