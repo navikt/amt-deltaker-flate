@@ -1,13 +1,13 @@
 import { BodyShort, Link } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 
-interface TilAktivitetsplanKnappProps {
+interface TilAktivitetsplanLenkeProps {
   tekst?: string
 }
 
-export const TilAktivitetsplanKnapp = ({
+export const TilAktivitetsplanLenke = ({
   tekst = 'Gå til aktivitetsplanen'
-}: TilAktivitetsplanKnappProps) => {
+}: TilAktivitetsplanLenkeProps) => {
   return (
     <Link
       href={import.meta.env.VITE_AKTIVITETSPLAN_URL}
