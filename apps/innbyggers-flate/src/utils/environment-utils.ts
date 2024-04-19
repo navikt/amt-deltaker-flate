@@ -37,7 +37,15 @@ export const isEnvLocalDemoOrPr =
   useMock || import.meta.env.VITE_PR_ENV === 'pull_request'
 
 export const getDialogUrl = () => {
-  return import.meta.env.VITE_INNBYGGER_DIALOG_URL
+  return isDev() || import.meta.env.DEV // er devmiljø eller kjører lokalt
+    ? 'https://pto.ekstern.dev.nav.no/arbeid/dialog'
+    : 'https://www.nav.no/arbeid/dialog'
+}
+
+export const getAktivitetsplanUrl = () => {
+  return isDev() || import.meta.env.DEV // er devmiljø eller kjører lokalt
+    ? 'https://aktivitetsplan.ekstern.dev.nav.no/'
+    : 'https://aktivitetsplan.nav.no/'
 }
 
 export const PERSONOPPLYSNINGER_URL = 'http://nav.no/person/personopplysninger/'
