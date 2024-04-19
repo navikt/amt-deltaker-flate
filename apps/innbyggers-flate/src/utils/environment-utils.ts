@@ -15,6 +15,8 @@ export const isProd = () => {
   )
 }
 
+export const isPrEvn = import.meta.env.VITE_PR_ENV === 'pull_request'
+
 export const deltakerBffApiBasePath = (): string => {
   const endpointHandlerType = import.meta.env.VITE_ENDPOINT_HANDLER
 
@@ -22,6 +24,8 @@ export const deltakerBffApiBasePath = (): string => {
     return `${import.meta.env.BASE_URL}mock`
   } else if (endpointHandlerType === EndpointHandler.PROXY) {
     return 'http://localhost:58080'
+  } else if (isPrEvn) {
+    return `${import.meta.env.BASE_URL}amt-deltaker-bff`.replace(/\/pr-\d+/, '')
   } else if (isDev()) {
     return `${import.meta.env.BASE_URL}amt-deltaker-bff`
   } else return 'PROD_LINK'
@@ -29,8 +33,6 @@ export const deltakerBffApiBasePath = (): string => {
 
 export const useMock =
   import.meta.env.VITE_ENDPOINT_HANDLER === EndpointHandler.MOCK
-
-export const isPrEvn = import.meta.env.VITE_PR_ENV === 'pull_request'
 
 /**
  * Returnerer true hvis env er lokalt, demo-app eller pr-deploy.
