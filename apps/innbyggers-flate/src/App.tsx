@@ -1,20 +1,21 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
-import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import './App.css'
-import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
-import { getDeltakelse } from './api/api'
-import { useEffect, useState } from 'react'
-import { DeltakerContextProvider } from './DeltakerContext'
-import { DeltakerGuard } from './guards/DeltakerGuard'
 import nb from 'dayjs/locale/nb'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import './App.css'
+import { getDeltakelse } from './api/api'
+import PrBanner from './components/demo-banner/PrBanner copy.tsx'
+import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
+import { isPrEvn, useMock } from './utils/environment-utils.ts'
+import { DeltakerContextProvider } from './DeltakerContext.tsx'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { TilAktivitetsplanLenke } from './components/TilAktivitetsplanLenke.tsx'
-import { isEnvLocalDemoOrPr, isPrEvn } from './utils/environment-utils.ts'
+import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 
 dayjs.locale(nb)
 
-const App = () => {
+export const App = () => {
   const deltakerIdFraUrl = useParams().deltakerId
   const [deltakerIdPrSetting, setDeltakerIDprSetting] = useState('')
 
@@ -33,43 +34,33 @@ const App = () => {
     }
   }, [deltakerId])
 
-  if (isPrEvn && !deltaker) {
-    return <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
-  }
+  return (
+    <>
+      {isPrEvn && <PrBanner setDeltakerID={setDeltakerIDprSetting} />}
 
-  if (state === DeferredFetchState.LOADING) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader size="3xlarge" title="Venter..." />
-      </div>
-    )
-  }
+      {state === DeferredFetchState.LOADING && (
+        <div className="flex justify-center items-center h-screen">
+          <Loader size="3xlarge" title="Venter..." />
+        </div>
+      )}
 
-  if (error || !deltaker) {
-    return (
-      <>
-        {isEnvLocalDemoOrPr && (
-          <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
-        )}
-        <Alert variant="error">
+      {(error || (state === DeferredFetchState.RESOLVED && !deltaker)) && (
+        <Alert variant="error" className="mt-4">
           <Heading spacing size="small" level="3">
             Vi beklager, men noe gikk galt
           </Heading>
           {error}
-        </Alert>
-      </>
+        </Alert>)
+        }
+
+      {!error && deltaker && (
+        <DeltakerContextProvider initialDeltaker={deltaker}>
+          {useMock && <DemoBanner />}
+          <TilAktivitetsplanLenke />
+          <DeltakerGuard />
+        </DeltakerContextProvider>
+      )}
+    </>
     )
   }
 
-  return (
-    <DeltakerContextProvider initialDeltaker={deltaker}>
-      <TilAktivitetsplanLenke />
-      {isEnvLocalDemoOrPr && (
-        <DemoBanner setDeltakerID={setDeltakerIDprSetting} />
-      )}
-      <DeltakerGuard />
-    </DeltakerContextProvider>
-  )
-}
-
-export default App
