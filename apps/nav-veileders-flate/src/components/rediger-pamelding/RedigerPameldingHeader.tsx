@@ -1,21 +1,30 @@
 import { Tag, Detail, HStack } from '@navikt/ds-react'
 import { formatDateStrWithMonthName } from '../../utils/utils'
-import { Vedtaksinformasjon } from '../../api/data/pamelding'
+import {
+  DeltakerStatusType,
+  Vedtaksinformasjon
+} from '../../api/data/pamelding'
 
 interface Props {
+  status: DeltakerStatusType
   vedtaksinformasjon: Vedtaksinformasjon | null
 }
 
-export const RedigerPameldingHeader = ({ vedtaksinformasjon }: Props) => {
+export const RedigerPameldingHeader = ({
+  status,
+  vedtaksinformasjon
+}: Props) => {
   const erEndret =
     vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
     vedtaksinformasjon?.sistEndretAv !== vedtaksinformasjon?.opprettetAv
 
   return (
     <div className="space-y-2">
-      <Tag variant="info" size="small" className="mb-3 mt-4">
-        Venter på godkjenning fra bruker
-      </Tag>
+      {status === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+        <Tag variant="info" size="small" className="mb-3 mt-4">
+          Venter på godkjenning fra bruker
+        </Tag>
+      )}
       {vedtaksinformasjon &&
         (erEndret ? (
           <>
