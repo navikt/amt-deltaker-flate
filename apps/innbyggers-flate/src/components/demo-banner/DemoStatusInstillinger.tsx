@@ -1,13 +1,13 @@
 import { Select } from '@navikt/ds-react'
 import { useState } from 'react'
-import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
-import { useDeferredFetch } from '../../hooks/useDeferredFetch'
 import { useDeltakerContext } from '../../DeltakerContext.tsx'
 import {
   DeltakerResponse,
-  deltakerSchema,
-  DeltakerStatusType
+  DeltakerStatusType,
+  deltakerSchema
 } from '../../api/data/deltaker.ts'
+import { useDeferredFetch } from '../../hooks/useDeferredFetch'
+import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
 import { getDeltakerStatusDisplayText } from '../../utils/utils.ts'
 
 export const endreMockDeltakelseStatus = (

@@ -1,21 +1,26 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
-import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import './App.css'
-import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
-import { getDeltakelse } from './api/api'
-import { useEffect } from 'react'
-import { DeltakerContextProvider } from './DeltakerContext'
-import { DeltakerGuard } from './guards/DeltakerGuard'
 import nb from 'dayjs/locale/nb'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import './App.css'
+import { getDeltakelse } from './api/api'
+import PrBanner from './components/demo-banner/PrBanner copy.tsx'
+import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
+import { isPrEvn, useMock } from './utils/environment-utils.ts'
+import { DeltakerContextProvider } from './DeltakerContext.tsx'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import { TilAktivitetsplanLenke } from './components/TilAktivitetsplanLenke.tsx'
+import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 
 dayjs.locale(nb)
 
-const App = () => {
-  const { deltakerId } = useParams()
+export const App = () => {
+  const deltakerIdFraUrl = useParams().deltakerId
+  const [deltakerIdPrSetting, setDeltakerIDprSetting] = useState('')
+
+  const deltakerId = isPrEvn ? deltakerIdPrSetting : deltakerIdFraUrl
+
   const {
     data: deltaker,
     state,
@@ -27,34 +32,35 @@ const App = () => {
     if (deltakerId) {
       doFetchDeltakelse(deltakerId)
     }
-  }, [])
-
-  if (state === DeferredFetchState.LOADING) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader size="3xlarge" title="Venter..." />
-      </div>
-    )
-  }
-
-  if (error || !deltaker) {
-    return (
-      <Alert variant="error">
-        <Heading spacing size="small" level="3">
-          Vi beklager, men noe gikk galt
-        </Heading>
-        {error}
-      </Alert>
-    )
-  }
+  }, [deltakerId])
 
   return (
-    <DeltakerContextProvider initialDeltaker={deltaker}>
-      {isEnvLocalDemoOrPr && <DemoBanner />}
-      <TilAktivitetsplanLenke />
-      <DeltakerGuard />
-    </DeltakerContextProvider>
-  )
-}
+    <>
+      {isPrEvn && <PrBanner setDeltakerID={setDeltakerIDprSetting} />}
 
-export default App
+      {state === DeferredFetchState.LOADING && (
+        <div className="flex justify-center items-center h-screen">
+          <Loader size="3xlarge" title="Venter..." />
+        </div>
+      )}
+
+      {(error || (state === DeferredFetchState.RESOLVED && !deltaker)) && (
+        <Alert variant="error" className="mt-4">
+          <Heading spacing size="small" level="3">
+            Vi beklager, men noe gikk galt
+          </Heading>
+          {error}
+        </Alert>)
+        }
+
+      {!error && deltaker && (
+        <DeltakerContextProvider initialDeltaker={deltaker}>
+          {useMock && <DemoBanner />}
+          <TilAktivitetsplanLenke />
+          <DeltakerGuard />
+        </DeltakerContextProvider>
+      )}
+    </>
+    )
+  }
+
