@@ -32,7 +32,7 @@ jobs:
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build Pull Request Application
-        run: pnpm build:pull-request -- --base=/arbeidsmarkedstiltak/pr-${{ github.event.number }}/ --filter=innbyggers-flate
+        run: pnpm build:pull-request --filter=innbyggers-flate -- --base=/arbeidsmarkedstiltak/pr-${{ github.event.number }}/
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
