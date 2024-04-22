@@ -42,4 +42,10 @@ export const getDialogUrl = () => {
     : 'https://www.nav.no/arbeid/dialog'
 }
 
+export const getAktivitetsplanUrl = () => {
+  return isDev() || import.meta.env.DEV // er devmiljø eller kjører lokalt
+    ? 'https://aktivitetsplan.ekstern.dev.nav.no/'
+    : 'https://aktivitetsplan.nav.no/'
+}
+
 export const PERSONOPPLYSNINGER_URL = 'http://nav.no/person/personopplysninger/'
