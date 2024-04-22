@@ -36,7 +36,6 @@ export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
         <>
           <RadioGroup
             legend="Skal personen delta 100&nbsp;%?"
-            error={errors.deltakelsesprosentValg?.message}
             defaultValue={deltakelsesprosentValg}
             size="small"
             disabled={disabled}
@@ -53,8 +52,9 @@ export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
               <Controller
                 name={'deltakelsesprosent'}
                 control={control}
-                render={({ field: { onChange } }) => (
+                render={({ field: { onChange, ref } }) => (
                   <NumberTextField
+                    ref={ref}
                     label="Deltakelsesprosent:"
                     disabled={disabled}
                     value={deltakelsesprosent}
@@ -69,8 +69,9 @@ export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
               <Controller
                 name={'dagerPerUke'}
                 control={control}
-                render={({ field: { onChange } }) => (
+                render={({ field: { onChange, ref } }) => (
                   <NumberTextField
+                    ref={ref}
                     label="Hvor mange dager i uka? (valgfritt)"
                     disabled={disabled}
                     value={dagerPerUke}

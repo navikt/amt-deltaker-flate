@@ -19,7 +19,7 @@ export const pameldingFormSchema = z
       .string()
       .max(
         BESKRIVELSE_MAX_TEGN,
-        `"Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`
+        `Tiltaksinnholdet "Annet" kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`
       )
       .optional(),
     bakgrunnsinformasjon: z
@@ -54,7 +54,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Velg minst ett innhold.',
+      message: 'Velg minst ett innhold for tiltaket.',
       path: ['valgteInnhold']
     }
   )
@@ -71,7 +71,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må skrive noe for "Annet" innhold.',
+      message: 'Du må skrive noe om tiltaksinnholdet "Annet".',
       path: ['innholdAnnetBeskrivelse']
     }
   )

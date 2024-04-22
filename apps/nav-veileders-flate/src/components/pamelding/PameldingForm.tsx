@@ -2,6 +2,7 @@ import {
   BodyLong,
   Checkbox,
   CheckboxGroup,
+  ErrorSummary,
   Heading,
   Textarea,
   VStack
@@ -44,6 +45,7 @@ export const PameldingForm = ({
   disableForm,
   onCancelUtkast
 }: Props) => {
+  const errorSummaryWrapper = useRef<HTMLDivElement>(null)
   const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
@@ -61,6 +63,7 @@ export const PameldingForm = ({
   const {
     register,
     watch,
+    setFocus,
     formState: { errors }
   } = methods
 
@@ -74,6 +77,10 @@ export const PameldingForm = ({
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
+
+  const onSubmitError = () => {
+    errorSummaryWrapper.current?.focus()
+  }
 
   return (
     <form
@@ -123,12 +130,7 @@ export const PameldingForm = ({
                           label={null}
                           {...register('innholdAnnetBeskrivelse')}
                           value={watch('innholdAnnetBeskrivelse')}
-                          error={
-                            (errors.innholdAnnetBeskrivelse?.type ===
-                              'custom' &&
-                              errors.innholdAnnetBeskrivelse?.message) ||
-                            !!errors.innholdAnnetBeskrivelse
-                          }
+                          error={errors.innholdAnnetBeskrivelse?.message}
                           disabled={isDisabled}
                           aria-label={'Beskrivelse av mål "Annet"'}
                           aria-required
@@ -152,7 +154,7 @@ export const PameldingForm = ({
               description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
-              error={!!errors.bakgrunnsinformasjon}
+              error={errors.bakgrunnsinformasjon?.message}
               disabled={isDisabled}
               maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
               id="bakgrunnsinformasjon"
@@ -165,11 +167,43 @@ export const PameldingForm = ({
             <Deltakelsesprosent disabled={isDisabled} />
           )}
 
+          <div ref={errorSummaryWrapper} tabIndex={-1}>
+            {Object.keys(errors).length > 0 && (
+              <ErrorSummary heading="Du må fikse disse feilene før du kan opprette påmeldingen.">
+                {(
+                  [
+                    'valgteInnhold',
+                    'innholdAnnetBeskrivelse',
+                    'bakgrunnsinformasjon',
+                    'deltakelsesprosent',
+                    'dagerPerUke'
+                  ] as const
+                ).map((errorName) => {
+                  const error = errors[errorName]
+
+                  return (
+                    error && (
+                      <ErrorSummary.Item
+                        key={errorName}
+                        as="button"
+                        type="button"
+                        onClick={() => setFocus(errorName)}
+                      >
+                        {error.message}
+                      </ErrorSummary.Item>
+                    )
+                  )
+                })}
+              </ErrorSummary>
+            )}
+          </div>
+
           <PameldingFormButtons
             pamelding={pamelding}
             disabled={isDisabled}
             disableForm={handleDiableForm}
             onCancelUtkast={onCancelUtkast}
+            onSubmitError={onSubmitError}
           />
         </VStack>
 
@@ -178,6 +212,7 @@ export const PameldingForm = ({
             pamelding={pamelding}
             disabled={isDisabled}
             disableForm={handleDiableForm}
+            onSubmitError={onSubmitError}
           />
 
           {status === DeltakerStatusType.KLADD && (

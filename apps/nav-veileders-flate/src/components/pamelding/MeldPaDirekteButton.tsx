@@ -30,6 +30,7 @@ interface Props {
   disabled: boolean
   className?: string
   disableForm?: (disabled: boolean) => void
+  onSubmitError?: () => void
 }
 
 export const MeldPaDirekteButton = ({
@@ -37,7 +38,8 @@ export const MeldPaDirekteButton = ({
   disabled,
   useOldPamelding,
   className,
-  disableForm
+  disableForm,
+  onSubmitError
 }: Props) => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -116,7 +118,7 @@ export const MeldPaDirekteButton = ({
           onClick={
             useOldPamelding
               ? handleSendOldPamelding
-              : methods?.handleSubmit(handleFormSubmit)
+              : methods?.handleSubmit(handleFormSubmit, onSubmitError)
           }
         >
           {meldPaDirekteTekst}

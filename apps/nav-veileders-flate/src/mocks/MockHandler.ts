@@ -93,7 +93,7 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: Tiltakstype.AVKLARAG,
+        tiltakstype: Tiltakstype.VASV,
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',

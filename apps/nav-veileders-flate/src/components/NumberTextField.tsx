@@ -1,4 +1,5 @@
 import { TextField } from '@navikt/ds-react'
+import { Ref, forwardRef } from 'react'
 
 export interface NumberTextFieldProps {
   id: string
@@ -11,27 +12,31 @@ export interface NumberTextFieldProps {
   onChange: (newValue: number | undefined) => void
 }
 
-export const NumberTextField = ({
-  id,
-  className,
-  label,
-  disabled,
-  value,
-  error,
-  required,
-  onChange
-}: NumberTextFieldProps) => {
+const NumberTextFieldComponent = (
+  {
+    id,
+    className,
+    label,
+    disabled,
+    value,
+    error,
+    required,
+    onChange
+  }: NumberTextFieldProps,
+  ref: Ref<HTMLInputElement>
+) => {
   return (
     <TextField
+      ref={ref}
       label={label}
       size="small"
       disabled={disabled}
       inputMode="numeric"
       pattern="[0-9]*"
-      value={value || ''}
+      value={value ?? ''}
       onChange={({ target }) => {
         const intValue = parseInt(target.value)
-        if (intValue) onChange(intValue)
+        if (!Number.isNaN(intValue)) onChange(intValue)
         else if (target.value === '') onChange(undefined)
         else onChange(value)
       }}
@@ -42,3 +47,8 @@ export const NumberTextField = ({
     />
   )
 }
+
+export const NumberTextField = forwardRef<
+  HTMLInputElement,
+  NumberTextFieldProps
+>(NumberTextFieldComponent)
