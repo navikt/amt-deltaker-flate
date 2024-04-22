@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import App from './App.tsx'
+import { App } from './App.tsx'
 
 export const appUrl = (path: string): string => {
   const strippedPath = path.startsWith('/') ? path.substring(1) : path
