@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   BodyLong,
   Checkbox,
@@ -6,8 +7,8 @@ import {
   Textarea,
   VStack
 } from '@navikt/ds-react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   DeltakerStatusType,
   PameldingResponse,
@@ -16,15 +17,15 @@ import {
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
+  PameldingFormValues,
   generateFormDefaultValues,
-  pameldingFormSchema,
-  PameldingFormValues
+  pameldingFormSchema
 } from '../../model/PameldingFormValues.ts'
-import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
-import { PameldingFormButtons } from './PameldingFormButtons.tsx'
-import { useEffect, useRef, useState } from 'react'
 import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
+import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
+import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
+import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
@@ -44,6 +45,7 @@ export const PameldingForm = ({
   disableForm,
   onCancelUtkast
 }: Props) => {
+  const errorSummaryRef = useRef<HTMLDivElement>(null)
   const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
@@ -61,6 +63,7 @@ export const PameldingForm = ({
   const {
     register,
     watch,
+    clearErrors,
     formState: { errors }
   } = methods
 
@@ -74,6 +77,16 @@ export const PameldingForm = ({
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
+
+  const onSubmitError = () => {
+    errorSummaryRef.current?.focus()
+  }
+
+  useEffect(() => {
+    if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
+      clearErrors('innholdAnnetBeskrivelse')
+    }
+  }, [valgteInnhold])
 
   return (
     <form
@@ -123,14 +136,9 @@ export const PameldingForm = ({
                           label={null}
                           {...register('innholdAnnetBeskrivelse')}
                           value={watch('innholdAnnetBeskrivelse')}
-                          error={
-                            (errors.innholdAnnetBeskrivelse?.type ===
-                              'custom' &&
-                              errors.innholdAnnetBeskrivelse?.message) ||
-                            !!errors.innholdAnnetBeskrivelse
-                          }
+                          error={errors.innholdAnnetBeskrivelse?.message}
                           disabled={isDisabled}
-                          aria-label={'Beskrivelse av mål "Annet"'}
+                          aria-label="Annet innhold beskrivelse"
                           aria-required
                           maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                           size="small"
@@ -152,7 +160,7 @@ export const PameldingForm = ({
               description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
               {...register('bakgrunnsinformasjon')}
               value={watch('bakgrunnsinformasjon')}
-              error={!!errors.bakgrunnsinformasjon}
+              error={errors.bakgrunnsinformasjon?.message}
               disabled={isDisabled}
               maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
               id="bakgrunnsinformasjon"
@@ -165,11 +173,14 @@ export const PameldingForm = ({
             <Deltakelsesprosent disabled={isDisabled} />
           )}
 
+          <FormErrorSummary ref={errorSummaryRef} />
+
           <PameldingFormButtons
             pamelding={pamelding}
             disabled={isDisabled}
             disableForm={handleDiableForm}
             onCancelUtkast={onCancelUtkast}
+            onSubmitError={onSubmitError}
           />
         </VStack>
 
@@ -178,6 +189,7 @@ export const PameldingForm = ({
             pamelding={pamelding}
             disabled={isDisabled}
             disableForm={handleDiableForm}
+            onSubmitError={onSubmitError}
           />
 
           {status === DeltakerStatusType.KLADD && (

@@ -28,13 +28,15 @@ interface Props {
   disabled: boolean
   disableForm: (disable: boolean) => void
   onCancelUtkast?: () => void
+  onSubmitError?: () => void
 }
 
 export const PameldingFormButtons = ({
   pamelding,
   disabled,
   disableForm,
-  onCancelUtkast
+  onCancelUtkast,
+  onSubmitError
 }: Props) => {
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
@@ -121,7 +123,7 @@ export const PameldingFormButtons = ({
             size="small"
             disabled={isDisabled}
             type="button"
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleFormSubmit, onSubmitError)}
             loading={sendSomForslagState === DeferredFetchState.LOADING}
           >
             {delEndringKappTekst}
