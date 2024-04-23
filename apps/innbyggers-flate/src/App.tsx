@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import './App.css'
 import { getDeltakelse } from './api/api'
-import PrBanner from './components/demo-banner/PrBanner copy.tsx'
+import PrBanner from './components/demo-banner/PrBanner.tsx'
 import { DeferredFetchState, useDeferredFetch } from './hooks/useDeferredFetch'
 import { isPrEvn, useMock } from './utils/environment-utils.ts'
 import { DeltakerContextProvider } from './DeltakerContext.tsx'
@@ -50,8 +50,8 @@ export const App = () => {
             Vi beklager, men noe gikk galt
           </Heading>
           {error}
-        </Alert>)
-        }
+        </Alert>
+      )}
 
       {!error && deltaker && (
         <DeltakerContextProvider initialDeltaker={deltaker}>
@@ -61,6 +61,5 @@ export const App = () => {
         </DeltakerContextProvider>
       )}
     </>
-    )
-  }
-
+  )
+}

@@ -8,7 +8,7 @@ interface Props {
 const PrBanner = ({ setDeltakerID }: Props) => {
   return (
     <Alert variant="warning" className="mb-4" size="small">
-      <BodyShort weight="semibold" size="small">
+      <BodyShort weight="semibold" size="small" className="mb-4">
         Dette er en pr-versjon av appen.
       </BodyShort>
       <PrStatusInstillinger setDeltakerID={setDeltakerID} />
