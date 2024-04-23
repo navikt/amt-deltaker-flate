@@ -21,7 +21,7 @@ const getInfoTekst = (
         return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}. Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.`
       }
     case DeltakerStatusType.DELTAR:
-      return `Du er meldt på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+      return `Du deltar på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.HAR_SLUTTET:
       return `Du deltok på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.IKKE_AKTUELL:
