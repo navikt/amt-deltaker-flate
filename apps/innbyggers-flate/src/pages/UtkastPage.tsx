@@ -1,7 +1,6 @@
 import {
   BodyLong,
   Button,
-  Detail,
   GuidePanel,
   Heading,
   List,
@@ -10,11 +9,7 @@ import {
 } from '@navikt/ds-react'
 import { ThumbUpIcon } from '@navikt/aksel-icons'
 import { svg } from '../ikoner/nav-veileder'
-import {
-  EMDASH,
-  formatDateStrWithMonthName,
-  hentTiltakNavnHosArrangørTekst
-} from '../utils/utils'
+import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
 import { useParams } from 'react-router-dom'
 import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch'
 import { godkjennUtkast } from '../api/api'
@@ -22,6 +17,7 @@ import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExp
 import { useDeltakerContext } from '../DeltakerContext'
 import { Tiltakstype } from '../api/data/deltaker'
 import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
+import { UtkastHeader } from '../components/UtkastHeader.tsx'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()
@@ -49,18 +45,7 @@ export const UtkastPage = () => {
       <Heading level="1" size="large">
         Utkast til påmelding
       </Heading>
-      {deltaker.vedtaksinformasjon?.sistEndret && (
-        <div className="flex gap-2 mt-2">
-          <Detail weight="semibold">Sist endret:</Detail>
-          <Detail>
-            {formatDateStrWithMonthName(
-              deltaker.vedtaksinformasjon?.sistEndret
-            )}{' '}
-            {deltaker.vedtaksinformasjon?.sistEndretAv}
-          </Detail>
-        </div>
-      )}
-
+      <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
       <GuidePanel poster illustration={svg} className="mt-4">
         <Heading level="2" size="small">
           Dette er et utkast til påmelding til{' '}
