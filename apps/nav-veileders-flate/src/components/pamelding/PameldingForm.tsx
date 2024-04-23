@@ -1,14 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   BodyLong,
   Checkbox,
   CheckboxGroup,
-  ErrorSummary,
   Heading,
   Textarea,
   VStack
 } from '@navikt/ds-react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   DeltakerStatusType,
   PameldingResponse,
@@ -17,15 +17,15 @@ import {
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
+  PameldingFormValues,
   generateFormDefaultValues,
-  pameldingFormSchema,
-  PameldingFormValues
+  pameldingFormSchema
 } from '../../model/PameldingFormValues.ts'
-import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
-import { PameldingFormButtons } from './PameldingFormButtons.tsx'
-import { useEffect, useRef, useState } from 'react'
 import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
+import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
+import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
+import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
@@ -45,7 +45,7 @@ export const PameldingForm = ({
   disableForm,
   onCancelUtkast
 }: Props) => {
-  const errorSummaryWrapper = useRef<HTMLDivElement>(null)
+  const errorSummaryRef = useRef<HTMLDivElement>(null)
   const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
@@ -63,7 +63,7 @@ export const PameldingForm = ({
   const {
     register,
     watch,
-    setFocus,
+    clearErrors,
     formState: { errors }
   } = methods
 
@@ -79,8 +79,14 @@ export const PameldingForm = ({
   }, [])
 
   const onSubmitError = () => {
-    errorSummaryWrapper.current?.focus()
+    errorSummaryRef.current?.focus()
   }
+
+  useEffect(() => {
+    if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
+      clearErrors('innholdAnnetBeskrivelse')
+    }
+  }, [valgteInnhold])
 
   return (
     <form
@@ -132,7 +138,7 @@ export const PameldingForm = ({
                           value={watch('innholdAnnetBeskrivelse')}
                           error={errors.innholdAnnetBeskrivelse?.message}
                           disabled={isDisabled}
-                          aria-label={'Beskrivelse av mål "Annet"'}
+                          aria-label="Annet innhold beskrivelse"
                           aria-required
                           maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                           size="small"
@@ -167,36 +173,7 @@ export const PameldingForm = ({
             <Deltakelsesprosent disabled={isDisabled} />
           )}
 
-          <div ref={errorSummaryWrapper} tabIndex={-1}>
-            {Object.keys(errors).length > 0 && (
-              <ErrorSummary heading="Du må fikse disse feilene før du kan opprette påmeldingen.">
-                {(
-                  [
-                    'valgteInnhold',
-                    'innholdAnnetBeskrivelse',
-                    'bakgrunnsinformasjon',
-                    'deltakelsesprosent',
-                    'dagerPerUke'
-                  ] as const
-                ).map((errorName) => {
-                  const error = errors[errorName]
-
-                  return (
-                    error && (
-                      <ErrorSummary.Item
-                        key={errorName}
-                        as="button"
-                        type="button"
-                        onClick={() => setFocus(errorName)}
-                      >
-                        {error.message}
-                      </ErrorSummary.Item>
-                    )
-                  )
-                })}
-              </ErrorSummary>
-            )}
-          </div>
+          <FormErrorSummary ref={errorSummaryRef} />
 
           <PameldingFormButtons
             pamelding={pamelding}
