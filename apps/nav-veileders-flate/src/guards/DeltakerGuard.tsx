@@ -20,7 +20,8 @@ export const DeltakerGuard = () => {
   if (pamelding.status.type === DeltakerStatusType.KLADD) {
     pageToLoad = <OpprettPameldingPage />
   } else if (
-    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
+    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING ||
+    pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   ) {
     pageToLoad = <RedigerPameldingPage />
   } else {

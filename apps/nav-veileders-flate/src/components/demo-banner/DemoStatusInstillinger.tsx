@@ -72,6 +72,9 @@ const DemoStatusInstillinger = () => {
       <option value={DeltakerStatusType.UTKAST_TIL_PAMELDING}>
         {getDeltakerStatusDisplayText(DeltakerStatusType.UTKAST_TIL_PAMELDING)}
       </option>
+      <option value={DeltakerStatusType.AVBRUTT_UTKAST}>
+        {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT_UTKAST)}
+      </option>
       <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>
         {getDeltakerStatusDisplayText(DeltakerStatusType.VENTER_PA_OPPSTART)}
       </option>

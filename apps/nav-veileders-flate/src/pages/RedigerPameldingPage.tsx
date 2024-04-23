@@ -20,6 +20,7 @@ import {
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
+import { DeltakerStatusType } from '../api/data/pamelding.ts'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
@@ -29,6 +30,11 @@ export const RedigerPameldingPage = () => {
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
+
+  const tittel =
+    pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
+      ? 'Avbrutt utkast'
+      : 'Utkast til påmelding'
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -48,12 +54,13 @@ export const RedigerPameldingPage = () => {
     <div className="space-y-4 max-w-[47.5rem] m-auto">
       <div>
         <PameldingHeader
-          title="Utkast til påmelding"
+          title={tittel}
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
         />
         <RedigerPameldingHeader
+          status={pamelding.status.type}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
         />
       </div>
@@ -78,39 +85,44 @@ export const RedigerPameldingPage = () => {
               dagerPerUke={pamelding.dagerPerUke}
               tiltakstype={pamelding.deltakerliste.tiltakstype}
             />
-            <Button
-              size="small"
-              variant="secondary"
-              icon={<PencilIcon />}
-              disabled={idDisabled}
-              onClick={() => setRedigerUtkast(true)}
-              className="mt-8"
-            >
-              Endre utkastet
-            </Button>
-            <HorisontalLine className="mt-8 mb-8" />
-            <MeldPaDirekteButton
-              className="mb-2"
-              pamelding={pamelding}
-              disabled={idDisabled}
-              useOldPamelding
-              disableForm={(disabled) => setIsDisabled(disabled)}
-            />
-            {avbrytUtkastState === DeferredFetchState.ERROR && (
-              <ErrorPage message={avbrytUtkastError} />
+            {pamelding.status.type ===
+              DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+              <>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  icon={<PencilIcon />}
+                  disabled={idDisabled}
+                  onClick={() => setRedigerUtkast(true)}
+                  className="mt-8"
+                >
+                  Endre utkastet
+                </Button>
+                <HorisontalLine className="mt-8 mb-8" />
+                <MeldPaDirekteButton
+                  className="mb-2"
+                  pamelding={pamelding}
+                  disabled={idDisabled}
+                  useOldPamelding
+                  disableForm={(disabled) => setIsDisabled(disabled)}
+                />
+                {avbrytUtkastState === DeferredFetchState.ERROR && (
+                  <ErrorPage message={avbrytUtkastError} />
+                )}
+                <Button
+                  size="small"
+                  variant="secondary"
+                  disabled={idDisabled}
+                  onClick={() => {
+                    setAvbrytModalOpen(true)
+                  }}
+                  loading={avbrytUtkastState === DeferredFetchState.LOADING}
+                  icon={<XMarkIcon />}
+                >
+                  Avbryt utkast til påmelding
+                </Button>
+              </>
             )}
-            <Button
-              size="small"
-              variant="secondary"
-              disabled={idDisabled}
-              onClick={() => {
-                setAvbrytModalOpen(true)
-              }}
-              loading={avbrytUtkastState === DeferredFetchState.LOADING}
-              icon={<XMarkIcon />}
-            >
-              Avbryt utkast til påmelding
-            </Button>
           </>
         )}
         <AvbrytUtkastDeltMedBrukerModal
