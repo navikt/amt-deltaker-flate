@@ -1,8 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import {
+  isEnvLocalDemoOrPr,
+  isPrEnv,
+  useMock
+} from './utils/environment-utils.ts'
 import InngangSePaRediger from './InngangSePaRediger.tsx'
 import InngangMeldPa from './InngangMeldPa.tsx'
 import RedirectToDeltakeroversikt from './guards/RedirectToDeltakeroversikt.tsx'
+import InngangPrEnv from './InngangPrEnv.tsx'
 
 export const AppRoutes = () => {
   return (
@@ -18,7 +23,7 @@ export const AppRoutes = () => {
       {!isEnvLocalDemoOrPr && (
         <Route path={'/*'} element={<RedirectToDeltakeroversikt />} />
       )}
-      {isEnvLocalDemoOrPr && (
+      {useMock && (
         <Route
           path={'/*'}
           element={
@@ -31,6 +36,7 @@ export const AppRoutes = () => {
           }
         />
       )}
+      {isPrEnv && <Route path={'/*'} element={<InngangPrEnv />} />}
     </Routes>
   )
 }

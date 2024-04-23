@@ -1,13 +1,8 @@
 import { Alert, BodyLong, BodyShort } from '@navikt/ds-react'
-import DemoDeltakerInstillinger from './DemoDeltakerInstillinger'
 import { useMock } from '../../utils/environment-utils'
 import DemoStatusInstillinger from './DemoStatusInstillinger'
 
-interface Props {
-  hasError?: boolean
-}
-
-const DemoBanner = ({ hasError }: Props) => {
+const DemoBanner = () => {
   return (
     <Alert variant="warning" className="mb-4" size="small">
       <BodyShort weight="semibold" size="small">
@@ -18,9 +13,7 @@ const DemoBanner = ({ hasError }: Props) => {
         Demoen inneholder ikke ekte data og kan til tider være ustabil.
       </BodyLong>
 
-      {hasError && <DemoDeltakerInstillinger />}
-      {!hasError && useMock && <DemoStatusInstillinger />}
-      {!hasError && !useMock && <DemoDeltakerInstillinger />}
+      {useMock && <DemoStatusInstillinger />}
     </Alert>
   )
 }
