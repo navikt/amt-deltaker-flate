@@ -13,7 +13,10 @@ export const FormErrorSummary = forwardRef<HTMLDivElement>(
     return (
       <div ref={ref} tabIndex={-1}>
         {Object.keys(errors).length > 0 && (
-          <ErrorSummary heading="Du må fikse disse feilene før du kan opprette påmeldingen.">
+          <ErrorSummary
+            heading="Du må fikse disse feilene før du kan opprette påmeldingen."
+            className="mb-4"
+          >
             {(
               [
                 'valgteInnhold',
