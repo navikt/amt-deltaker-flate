@@ -9,7 +9,7 @@ import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
-} from '../../utils/statusUtils.ts'
+} from '../../utils/statusutils.ts'
 import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from './EndringTypeIkon.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
