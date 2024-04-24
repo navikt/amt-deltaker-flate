@@ -1,5 +1,10 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  EMDASH,
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype
+} from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -16,7 +21,6 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 
 export const getPameldingUtenInnhold = (
   statusType: DeltakerStatusType

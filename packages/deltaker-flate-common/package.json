@@ -8,12 +8,15 @@
     ".": "./index.ts"
   },
   "dependencies": {
+    "@navikt/ds-react": "^6.3.6",
+    "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "typescript": "^5.4.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
+    "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^18.2.74"
   }
 }

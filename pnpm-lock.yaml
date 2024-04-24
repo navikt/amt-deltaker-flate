@@ -223,6 +223,12 @@ importers:
 
   packages/deltaker-flate-common:
     dependencies:
+      '@navikt/ds-react':
+        specifier: ^6.3.6
+        version: 6.6.1(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -236,6 +242,9 @@ importers:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
         version: link:../../shared-config/eslint-config
+      '@amt-deltaker-flate/tailwind-config':
+        specifier: workspace:*
+        version: link:../../shared-config/tailwind
       '@types/react':
         specifier: ^18.2.74
         version: 18.2.79

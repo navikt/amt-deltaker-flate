@@ -6,7 +6,11 @@ import {
   Modal,
   Textarea
 } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import {
+  DeferredFetchState,
+  INNHOLD_TYPE_ANNET,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
@@ -18,7 +22,6 @@ import {
 } from '../../../model/PameldingFormValues'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
-import { INNHOLD_TYPE_ANNET } from '../../../utils/utils'
 import { ModalFooter } from '../../ModalFooter'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 

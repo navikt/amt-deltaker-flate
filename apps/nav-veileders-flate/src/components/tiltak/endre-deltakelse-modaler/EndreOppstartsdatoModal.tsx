@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import {
   DeferredFetchState,
   Tiltakstype,
+  formatDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -19,7 +20,6 @@ import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
-  formatDateFromString,
   formatDateToDateInputStr,
   formatDateToString
 } from '../../../utils/utils.ts'

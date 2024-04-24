@@ -3,27 +3,25 @@ import {
   BodyLong,
   BodyShort,
   ExpansionCard,
-  Heading,
   HStack,
+  Heading,
   Label,
   Link,
   LinkPanel,
   List
 } from '@navikt/ds-react'
 import {
+  DeltakerStatusTag,
   DeltakerStatusType,
+  EMDASH,
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype,
+  formatDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst,
-  Tiltakstype
+  hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getDialogUrl } from '../../utils/environment-utils.ts'
-import {
-  EMDASH,
-  formatDateFromString,
-  INNHOLD_TYPE_ANNET
-} from '../../utils/utils.ts'
-import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from './HvaErDette.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
@@ -94,7 +92,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <HStack gap="2" className="mt-8">
         <Label>Status:</Label>
-        <DeltakerIStatusTag statusType={pamelding.status.type} />
+        <DeltakerStatusTag statusType={pamelding.status.type} />
       </HStack>
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4">

@@ -2,10 +2,9 @@ import { describe, it, expect } from 'vitest'
 import {
   erGyldigProsent,
   isValidFloatInRange,
-  erGyldigDagerPerUke,
-  formatDateFromString,
-  EMDASH
+  erGyldigDagerPerUke
 } from './utils'
+import { EMDASH, formatDateFromString } from 'deltaker-flate-common'
 
 describe('isValidFloatInRange', () => {
   it('Returenere true for gyldig float 100', () =>
@@ -75,6 +74,7 @@ describe('erGyldigDagerPerUke', () => {
     expect(erGyldigDagerPerUke('&1')).toBeFalsy())
 })
 
+// TODO sett opp tester der metoden kommer fra: 'deltaker-flate-common'
 describe('formatDateFromString', () => {
   it('Formates valid date string', () =>
     expect(formatDateFromString('11.11.2021')).toBe('11.11.2021'))

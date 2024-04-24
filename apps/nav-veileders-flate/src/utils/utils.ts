@@ -1,19 +1,5 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
-
-export const EMDASH = '—'
-
-export const formatDateFromString = (dateStr: string | null): string => {
-  if (!dateStr) return EMDASH
-  const date = dayjs(dateStr)
-  return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
-}
-
-export const formatDateStrWithMonthName = (dateStr: string | null): string => {
-  if (!dateStr) return EMDASH
-  const date = dayjs(dateStr)
-  return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
-}
+import { DeltakerStatusAarsakType, EMDASH } from 'deltaker-flate-common'
 
 /**
  * Formaterer date til string: YYYY-MM-DD. Format slik backend vil ha.
@@ -43,8 +29,6 @@ export const dateStrToDate = (dateStr: string): Date => {
   const date = dayjs(dateStr, 'DD.MM.YYYY')
   return date.toDate()
 }
-
-export const INNHOLD_TYPE_ANNET = 'annet'
 
 export enum DeltakelsesprosentValg {
   JA = 'JA',

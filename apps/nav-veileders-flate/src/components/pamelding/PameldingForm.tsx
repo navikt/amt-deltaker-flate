@@ -7,7 +7,11 @@ import {
   Textarea,
   VStack
 } from '@navikt/ds-react'
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype
+} from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
@@ -18,7 +22,6 @@ import {
   generateFormDefaultValues,
   pameldingFormSchema
 } from '../../model/PameldingFormValues.ts'
-import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'

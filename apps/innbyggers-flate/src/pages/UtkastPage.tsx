@@ -10,7 +10,9 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  EMDASH,
   Tiltakstype,
+  hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
@@ -20,7 +22,6 @@ import { UtkastHeader } from '../components/UtkastHeader.tsx'
 import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
 import { svg } from '../ikoner/nav-veileder'
 import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
-import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()
@@ -52,7 +53,7 @@ export const UtkastPage = () => {
       <GuidePanel poster illustration={svg} className="mt-4">
         <Heading level="2" size="small">
           Dette er et utkast til påmelding til{' '}
-          {hentTiltakNavnHosArrangørTekst(
+          {hentTiltakNavnHosArrangorTekst(
             deltaker.deltakerliste.tiltakstype,
             arrangorNavn
           )}

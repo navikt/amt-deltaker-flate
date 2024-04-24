@@ -1,5 +1,9 @@
 import { Detail, ErrorMessage, Loader } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import {
+  DeferredFetchState,
+  INNHOLD_TYPE_ANNET,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
@@ -9,7 +13,6 @@ import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { debounce } from '../../utils/debounce.ts'
 import { generateInnholdFromResponse } from '../../utils/pamelding-form-utils.ts'
-import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 
 interface Props {
   pamelding: PameldingResponse

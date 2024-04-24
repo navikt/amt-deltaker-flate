@@ -1,6 +1,7 @@
 import { string, z } from 'zod'
 import { PameldingResponse, innholdSchema } from '../api/data/pamelding.ts'
-import { DeltakelsesprosentValg, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
+import { DeltakelsesprosentValg } from '../utils/utils.ts'
+import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 
 export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
