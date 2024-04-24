@@ -4,7 +4,7 @@ import { MockHandler } from './MockHandler.ts'
 import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 import {
   avsluttDeltakelseSchema,
   endreBakgrunnsinfoSchema,

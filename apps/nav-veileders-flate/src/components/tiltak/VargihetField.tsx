@@ -1,4 +1,4 @@
-import { Tiltakstype } from '../../api/data/pamelding.ts'
+import { Tiltakstype } from 'deltaker-flate-model'
 import { useState } from 'react'
 import { DatePicker, Radio, RadioGroup, useDatepicker } from '@navikt/ds-react'
 import {

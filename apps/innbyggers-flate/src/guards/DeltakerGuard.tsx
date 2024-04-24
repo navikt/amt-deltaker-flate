@@ -1,5 +1,5 @@
 import { useDeltakerContext } from '../DeltakerContext'
-import { DeltakerStatusType } from '../api/data/deltaker'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 import { UtkastPage } from '../pages/UtkastPage'
 import { TiltakPage } from '../pages/TiltakPage'
 import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'

@@ -21,11 +21,7 @@ import {
   formatDateFromString,
   INNHOLD_TYPE_ANNET
 } from '../../utils/utils.ts'
-import {
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 import { getDialogUrl } from '../../utils/environment-utils.ts'
 import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'

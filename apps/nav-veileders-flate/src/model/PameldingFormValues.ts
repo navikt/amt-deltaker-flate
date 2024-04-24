@@ -71,7 +71,7 @@ export const pameldingFormSchema = z
       } else return true
     },
     {
-      message: 'Du må skrive noe om tiltaksinnholdet "Annet".',
+      message: 'Når «Annet» er valgt, må du skrive noe innhold.',
       path: ['innholdAnnetBeskrivelse']
     }
   )

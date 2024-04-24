@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusAarsakType } from '../api/data/pamelding'
-
+import { DeltakerStatusAarsakType } from 'deltaker-flate-model'
 export const EMDASH = '—'
 
 export const formatDateFromString = (dateStr: string | null): string => {

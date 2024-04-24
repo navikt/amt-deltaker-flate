@@ -1,5 +1,5 @@
 import { Tag } from '@navikt/ds-react'
-import { DeltakerStatusType } from '../api/data/deltaker.ts'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 import { getDeltakerStatusDisplayText } from '../utils/utils.ts'
 
 const getTagType = (status: DeltakerStatusType) => {

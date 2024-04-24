@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DeltakerStatusAarsakType } from './pamelding.ts'
+import { DeltakerStatusAarsakType } from 'deltaker-flate-model'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
 export enum EndreDeltakelseType {

@@ -1,4 +1,4 @@
-import { Tiltakstype } from '../api/data/pamelding.ts'
+import { Tiltakstype } from 'deltaker-flate-model'
 import dayjs from 'dayjs'
 
 export enum VarighetValg {

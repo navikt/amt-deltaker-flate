@@ -17,16 +17,13 @@ import {
   hentTiltakNavnHosArrangørTekst,
   INNHOLD_TYPE_ANNET
 } from '../utils/utils.ts'
-import {
-  DeltakerResponse,
-  DeltakerStatusType,
-  Tiltakstype
-} from '../api/data/deltaker.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { getDialogUrl } from '../utils/environment-utils.ts'
 import { DeltakerStatusTag } from '../components/DeltakerStatusTag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (

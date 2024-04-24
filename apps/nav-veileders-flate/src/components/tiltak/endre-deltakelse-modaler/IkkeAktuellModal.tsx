@@ -1,8 +1,5 @@
 import { Detail, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-import {
-  DeltakerStatusAarsakType,
-  PameldingResponse
-} from '../../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import {
   DeferredFetchState,

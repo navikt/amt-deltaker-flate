@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { TiltakPage } from '../pages/TiltakPage.tsx'

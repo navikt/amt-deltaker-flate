@@ -1,6 +1,7 @@
 import { BodyLong, Detail, Heading } from '@navikt/ds-react'
 import { formatDateStrWithMonthName } from '../../utils/utils.ts'
-import { Tiltakstype, Vedtaksinformasjon } from '../../api/data/pamelding.ts'
+import { Vedtaksinformasjon } from '../../api/data/pamelding.ts'
+import { Tiltakstype } from 'deltaker-flate-model'
 
 interface Props {
   tiltakstype: Tiltakstype

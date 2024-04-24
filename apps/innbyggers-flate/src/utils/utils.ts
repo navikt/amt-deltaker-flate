@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
+import { DeltakerStatusAarsak } from '../api/data/deltaker'
 import {
-  DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   Tiltakstype
-} from '../api/data/deltaker'
+} from 'deltaker-flate-model'
 
 export const EMDASH = '—'
 

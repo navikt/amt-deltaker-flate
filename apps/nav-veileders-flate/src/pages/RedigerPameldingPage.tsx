@@ -20,7 +20,7 @@ import {
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
-import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)

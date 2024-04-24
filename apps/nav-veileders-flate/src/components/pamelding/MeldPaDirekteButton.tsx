@@ -12,10 +12,7 @@ import {
 import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
 import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
 import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
-import {
-  DeltakerStatusType,
-  PameldingResponse
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { ArrowForwardIcon } from '@navikt/aksel-icons'
 import { useFormContext } from 'react-hook-form'
 import {

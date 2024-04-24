@@ -1,4 +1,4 @@
-import { Tiltakstype } from '../../api/data/pamelding.ts'
+import { Tiltakstype } from 'deltaker-flate-model'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'

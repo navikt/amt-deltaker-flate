@@ -1,12 +1,9 @@
-import {
-  DeltakerResponse,
-  DeltakerStatusType,
-  Tiltakstype
-} from '../api/data/deltaker.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 export const createDeltaker = (
   statusType: DeltakerStatusType

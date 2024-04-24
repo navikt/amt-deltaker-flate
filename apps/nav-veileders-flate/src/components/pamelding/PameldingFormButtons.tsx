@@ -9,10 +9,7 @@ import {
 } from '../../hooks/useDeferredFetch.ts'
 import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
 import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
-import {
-  DeltakerStatusType,
-  PameldingResponse
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
 import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'

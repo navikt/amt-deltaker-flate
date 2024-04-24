@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 
 export const deltakerVenterPaOppstartEllerDeltar = (
   statustype: DeltakerStatusType

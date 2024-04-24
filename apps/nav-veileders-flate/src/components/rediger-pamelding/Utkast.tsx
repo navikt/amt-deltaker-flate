@@ -1,6 +1,7 @@
 import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
-import { Deltakelsesinnhold, Tiltakstype } from '../../api/data/pamelding.ts'
+import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
+import { Tiltakstype } from 'deltaker-flate-model'
 
 interface Props {
   innhold: Deltakelsesinnhold | null

@@ -1,8 +1,4 @@
-import {
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
-} from '../api/data/pamelding.ts'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 import { v4 as uuidv4 } from 'uuid'
 import { HttpResponse } from 'msw'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
@@ -20,6 +16,7 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { EMDASH, INNHOLD_TYPE_ANNET } from '../utils/utils.ts'
 import dayjs from 'dayjs'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 export const getPameldingUtenInnhold = (
   statusType: DeltakerStatusType

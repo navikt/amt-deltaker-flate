@@ -9,11 +9,7 @@ import {
 } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import {
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
@@ -27,6 +23,7 @@ import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 interface Props {
   pamelding: PameldingResponse

@@ -1,10 +1,12 @@
+import {
+  DeltakerStatusAarsakType,
+  DeltakerStatusType,
+  Tiltakstype
+} from 'deltaker-flate-model'
 import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request.ts'
 import {
   DeltakerStatusAarsak,
-  DeltakerStatusAarsakType,
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
+  PameldingResponse
 } from '../api/data/pamelding.ts'
 
 export const getDeltakerNavn = (pamelding: PameldingResponse) => {

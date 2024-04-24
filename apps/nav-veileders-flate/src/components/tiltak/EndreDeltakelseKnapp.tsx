@@ -2,11 +2,7 @@ import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
-import {
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
 import {
   deltakerHarAvsluttendeStatus,
@@ -17,6 +13,7 @@ import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from './EndringTypeIkon.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,

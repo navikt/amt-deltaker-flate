@@ -5,7 +5,7 @@ import {
   Modal,
   useDatepicker
 } from '@navikt/ds-react'
-import { PameldingResponse, Tiltakstype } from '../../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useState } from 'react'
 import {
   DeferredFetchState,
@@ -26,6 +26,7 @@ import dayjs from 'dayjs'
 import { getVarighet, VarighetValg } from '../../../utils/varighet.ts'
 import { VargihetField } from '../VargihetField.tsx'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { Tiltakstype } from 'deltaker-flate-model'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse

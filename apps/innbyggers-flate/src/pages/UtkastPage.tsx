@@ -15,7 +15,7 @@ import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch'
 import { godkjennUtkast } from '../api/api'
 import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
 import { useDeltakerContext } from '../DeltakerContext'
-import { Tiltakstype } from '../api/data/deltaker'
+import { Tiltakstype } from 'deltaker-flate-model'
 import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
 import { UtkastHeader } from '../components/UtkastHeader.tsx'
 
