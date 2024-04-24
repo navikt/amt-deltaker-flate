@@ -2,7 +2,7 @@ import {
   deltakerStaturTypeSchema,
   deltakerStatusAarsakSchema,
   tiltakstypeSchema
-} from 'deltaker-flate-model'
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const innholdSchema = z.object({

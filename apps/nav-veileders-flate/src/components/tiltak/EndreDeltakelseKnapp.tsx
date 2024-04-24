@@ -1,5 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
@@ -13,7 +14,6 @@ import { dateStrToDate, dateStrToNullableDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from './EndringTypeIkon.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 const hentEndreDeltakelseKnappValg = (
   endringsType: EndreDeltakelseType,

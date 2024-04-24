@@ -5,28 +5,28 @@ import {
   Modal,
   useDatepicker
 } from '@navikt/ds-react'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { useState } from 'react'
+import dayjs from 'dayjs'
 import {
   DeferredFetchState,
+  Tiltakstype,
   useDeferredFetch
-} from '../../../hooks/useDeferredFetch.ts'
-import { endreDeltakelseStartdato } from '../../../api/api.ts'
+} from 'deltaker-flate-common'
+import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
+import { endreDeltakelseStartdato } from '../../../api/api.ts'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
   formatDateFromString,
   formatDateToDateInputStr,
   formatDateToString
 } from '../../../utils/utils.ts'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { VarighetValg, getVarighet } from '../../../utils/varighet.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import dayjs from 'dayjs'
-import { getVarighet, VarighetValg } from '../../../utils/varighet.ts'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VargihetField } from '../VargihetField.tsx'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { Tiltakstype } from 'deltaker-flate-model'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse

@@ -1,5 +1,10 @@
 import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Button, VStack } from '@navikt/ds-react'
+import {
+  DeferredFetchState,
+  DeltakerStatusType,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { avbrytUtkast } from '../api/api.ts'
@@ -12,15 +17,10 @@ import { RedigerPameldingHeader } from '../components/rediger-pamelding/RedigerP
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../hooks/useDeferredFetch.ts'
-import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
-import { DeltakerStatusType } from 'deltaker-flate-model'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)

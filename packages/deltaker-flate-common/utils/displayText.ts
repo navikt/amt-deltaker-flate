@@ -3,7 +3,7 @@ import {
   DeltakerStatusType,
   Tiltakstype,
   DeltakerStatusAarsak
-} from 'deltaker-flate-model'
+} from '../model/deltaker'
 
 export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   switch (type) {

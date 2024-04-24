@@ -1,8 +1,10 @@
-import { Tiltakstype } from 'deltaker-flate-model'
-import { BodyShort, Heading } from '@navikt/ds-react'
-import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
-import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
+import { BodyShort, Heading } from '@navikt/ds-react'
+import {
+  Tiltakstype,
+  hentTiltakNavnHosArrangorTekst
+} from 'deltaker-flate-common'
+import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {
   title: string

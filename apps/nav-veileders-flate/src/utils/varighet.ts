@@ -1,5 +1,5 @@
-import { Tiltakstype } from 'deltaker-flate-model'
 import dayjs from 'dayjs'
+import { Tiltakstype } from 'deltaker-flate-common'
 
 export enum VarighetValg {
   ANNET = 'ANNET',

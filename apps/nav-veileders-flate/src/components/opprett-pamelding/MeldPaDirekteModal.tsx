@@ -1,9 +1,9 @@
 import { BodyLong, BodyShort, ConfirmationPanel, Modal } from '@navikt/ds-react'
+import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
 import { getDeltakerNavn } from '../../utils/displayText'
 import { ModalFooter } from '../ModalFooter'
-import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
 
 export interface MeldPaDirekteModalProps {
   pamelding: PameldingResponse

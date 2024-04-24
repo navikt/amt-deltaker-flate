@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from 'deltaker-flate-model'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import { BodyLong } from '@navikt/ds-react'
 import { EMDASH } from '../utils/utils.ts'
 

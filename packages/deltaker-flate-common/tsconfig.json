@@ -1,4 +1,5 @@
 {
+  "extends": "@amt-deltaker-flate/typescript-config/base.json",
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
@@ -6,5 +7,6 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["hooks", "model", "utils"],
+  "exclude": ["node_modules"]
 }

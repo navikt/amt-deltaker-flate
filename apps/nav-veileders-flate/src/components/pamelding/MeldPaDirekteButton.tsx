@@ -1,26 +1,26 @@
+import { ArrowForwardIcon } from '@navikt/aksel-icons'
 import { Alert, Button, HelpText } from '@navikt/ds-react'
 import {
-  generateFormDefaultValues,
-  PameldingFormValues
-} from '../../model/PameldingFormValues.ts'
-import { useEffect, useState } from 'react'
-import { useAppContext } from '../../AppContext.tsx'
-import {
   DeferredFetchState,
+  DeltakerStatusType,
   useDeferredFetch
-} from '../../hooks/useDeferredFetch.ts'
-import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
-import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
-import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { ArrowForwardIcon } from '@navikt/aksel-icons'
+} from 'deltaker-flate-common'
+import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useAppContext } from '../../AppContext.tsx'
+import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
+import {
+  PameldingFormValues,
+  generateFormDefaultValues
+} from '../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
-import { DeltakerStatusType } from 'deltaker-flate-model'
+import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
+import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
 
 interface Props {
   pamelding: PameldingResponse

@@ -1,14 +1,14 @@
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
-import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
-import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
-import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
-import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
-import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
-import { EndreInnholdModal } from './EndreInnholdModal'
+import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
+import { EndreInnholdModal } from './EndreInnholdModal'
+import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
+import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
+import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
+import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
+import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
 
 interface ModalControllerProps {
   open: boolean

@@ -1,21 +1,21 @@
-import { setupWorker } from 'msw/browser'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
-import { MockHandler } from './MockHandler.ts'
-import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
-import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
-import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { DeltakerStatusType } from 'deltaker-flate-model'
+import { setupWorker } from 'msw/browser'
 import {
   avsluttDeltakelseSchema,
   endreBakgrunnsinfoSchema,
+  endreDeltakelsesmengdeSchema,
+  endreInnholdSchema,
+  endreSluttarsakSchema,
   endreSluttdatoSchema,
   endreStartdatoSchema,
   forlengDeltakelseSchema,
-  ikkeAktuellSchema,
-  endreSluttarsakSchema,
-  endreInnholdSchema,
-  endreDeltakelsesmengdeSchema
+  ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
+import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
+import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
+import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { MockHandler } from './MockHandler.ts'
 
 const handler = new MockHandler()
 

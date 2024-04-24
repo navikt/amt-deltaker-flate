@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusAarsakType } from 'deltaker-flate-model'
+import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
+
 export const EMDASH = '—'
 
 export const formatDateFromString = (dateStr: string | null): string => {

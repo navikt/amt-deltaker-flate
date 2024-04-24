@@ -1,8 +1,8 @@
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
-import { DeltakerStatusType } from 'deltaker-flate-model'
-import { UtkastPage } from '../pages/UtkastPage'
-import { TiltakPage } from '../pages/TiltakPage'
 import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'
+import { TiltakPage } from '../pages/TiltakPage'
+import { UtkastPage } from '../pages/UtkastPage.tsx'
 
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()

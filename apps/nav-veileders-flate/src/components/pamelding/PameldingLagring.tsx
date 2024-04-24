@@ -1,16 +1,13 @@
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../../hooks/useDeferredFetch.ts'
-import { useFormContext } from 'react-hook-form'
-import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { Detail, ErrorMessage, Loader } from '@navikt/ds-react'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { debounce } from '../../utils/debounce.ts'
+import { useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
-import { KladdRequest } from '../../api/data/kladd-request.ts'
 import { oppdaterKladd } from '../../api/api.ts'
+import { KladdRequest } from '../../api/data/kladd-request.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { Loader, Detail, ErrorMessage } from '@navikt/ds-react'
+import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { debounce } from '../../utils/debounce.ts'
 import { generateInnholdFromResponse } from '../../utils/pamelding-form-utils.ts'
 import { INNHOLD_TYPE_ANNET } from '../../utils/utils.ts'
 

@@ -1,3 +1,4 @@
+import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
@@ -10,22 +11,22 @@ import {
   List
 } from '@navikt/ds-react'
 import {
+  DeltakerStatusType,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst
-} from 'deltaker-flate-utils/displayText'
-import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
-import { usePameldingContext } from './PameldingContext.tsx'
-import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
+  hentTiltakNavnHosArrangorTekst,
+  Tiltakstype
+} from 'deltaker-flate-common'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { getDialogUrl } from '../../utils/environment-utils.ts'
 import {
   EMDASH,
   formatDateFromString,
   INNHOLD_TYPE_ANNET
 } from '../../utils/utils.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { HvaErDette } from './HvaErDette.tsx'
-import { getDialogUrl } from '../../utils/environment-utils.ts'
+import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
 import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
+import { HvaErDette } from './HvaErDette.tsx'
+import { usePameldingContext } from './PameldingContext.tsx'
 
 interface Props {
   className: string

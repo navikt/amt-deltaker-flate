@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import { Tiltakstype } from 'deltaker-flate-model'
-import { getTiltakstypeDisplayText } from 'deltaker-flate-utils/displayText'
+import { Tiltakstype, getTiltakstypeDisplayText } from 'deltaker-flate-common'
 
 export const EMDASH = '—'
 

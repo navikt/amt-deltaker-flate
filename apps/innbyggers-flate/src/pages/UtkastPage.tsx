@@ -1,23 +1,26 @@
+import { ThumbUpIcon } from '@navikt/aksel-icons'
 import {
+  Alert,
   BodyLong,
   Button,
   GuidePanel,
   Heading,
-  List,
   Link,
-  Alert
+  List
 } from '@navikt/ds-react'
-import { ThumbUpIcon } from '@navikt/aksel-icons'
-import { svg } from '../ikoner/nav-veileder'
-import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
+import {
+  DeferredFetchState,
+  Tiltakstype,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
-import { DeferredFetchState, useDeferredFetch } from '../hooks/useDeferredFetch'
-import { godkjennUtkast } from '../api/api'
-import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
 import { useDeltakerContext } from '../DeltakerContext'
-import { Tiltakstype } from 'deltaker-flate-model'
-import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
+import { godkjennUtkast } from '../api/api'
 import { UtkastHeader } from '../components/UtkastHeader.tsx'
+import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
+import { svg } from '../ikoner/nav-veileder'
+import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
+import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()

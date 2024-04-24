@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from 'deltaker-flate-model'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 
 export const deltakerVenterPaOppstartEllerDeltar = (
   statustype: DeltakerStatusType

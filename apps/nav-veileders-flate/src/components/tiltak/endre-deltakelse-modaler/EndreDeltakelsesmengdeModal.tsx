@@ -1,18 +1,15 @@
 import { Detail, Modal } from '@navikt/ds-react'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../../../hooks/useDeferredFetch.ts'
-import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { NumberTextField } from '../../NumberTextField.tsx'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { NumberTextField } from '../../NumberTextField.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -37,7 +34,8 @@ export const EndreDeltakelsesmengdeModal = ({
 
   const gyldigDeltakelsesprosent =
     deltakelsesprosent && 0 < deltakelsesprosent && deltakelsesprosent <= 100
-  const gyldigDagerPerUke = !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
+  const gyldigDagerPerUke =
+    !dagerPerUke || (0 < dagerPerUke && dagerPerUke <= 5)
 
   const { enhetId } = useAppContext()
 

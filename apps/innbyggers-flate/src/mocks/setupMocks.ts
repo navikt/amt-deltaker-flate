@@ -1,7 +1,7 @@
-import { setupWorker } from 'msw/browser'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import { HttpResponse, delay, http } from 'msw'
+import { setupWorker } from 'msw/browser'
 import { MockHandler } from './MockHandler.ts'
-import { DeltakerStatusType } from 'deltaker-flate-model'
 const handler = new MockHandler()
 
 export const worker = setupWorker(

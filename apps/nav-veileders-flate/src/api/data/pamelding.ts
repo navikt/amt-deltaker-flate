@@ -3,7 +3,7 @@ import {
   Tiltakstype,
   DeltakerStatusType,
   DeltakerStatusAarsakType
-} from 'deltaker-flate-model'
+} from 'deltaker-flate-common'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)

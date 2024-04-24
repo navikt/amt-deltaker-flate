@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useAppContext } from './AppContext.tsx'
 import { Loader } from '@navikt/ds-react'
-import useFetch from './hooks/useFetch.ts'
+import { useFetch } from 'deltaker-flate-common'
 import { createPamelding } from './api/api.ts'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
@@ -35,7 +35,7 @@ const InngangMeldPa = () => {
   if (error || !nyPamelding) {
     return (
       <>
-        {isEnvLocalDemoOrPr && <DemoBanner hasError />}
+        {isEnvLocalDemoOrPr && <DemoBanner />}
         <ErrorPage message={error} />
       </>
     )

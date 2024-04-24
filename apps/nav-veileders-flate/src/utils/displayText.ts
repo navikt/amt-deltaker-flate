@@ -1,4 +1,4 @@
-import { DeltakerStatusAarsakType } from 'deltaker-flate-model'
+import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 

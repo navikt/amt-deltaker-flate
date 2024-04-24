@@ -1,15 +1,12 @@
 // Only for pull request env
 
 import { Alert, BodyShort, Button, Loader, TextField } from '@navikt/ds-react'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { createPamelding } from './api/api.ts'
 import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from './hooks/useDeferredFetch.ts'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 
 const InngangPrEnv = () => {

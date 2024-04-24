@@ -1,0 +1,19 @@
+{
+  "name": "deltaker-flate-common",
+  "description": "Felleskode for deltaker frontend-applikasjoner for Team Komet",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "typescript": "^5.4.4",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@amt-deltaker-flate/eslint-config": "workspace:*",
+    "@types/react": "^18.2.74"
+  }
+}

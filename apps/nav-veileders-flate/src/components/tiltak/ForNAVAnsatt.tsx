@@ -1,12 +1,12 @@
 import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
-import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
-import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
-import { usePameldingContext } from './PameldingContext.tsx'
-import { formatDateFromString } from '../../utils/utils.ts'
+import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-common'
 import {
   TILTAKSGJENNOMFORING_LINK,
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
+import { formatDateFromString } from '../../utils/utils.ts'
+import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
+import { usePameldingContext } from './PameldingContext.tsx'
 
 interface Props {
   className: string

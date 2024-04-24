@@ -1,8 +1,8 @@
 import { BodyLong, Heading, List } from '@navikt/ds-react'
-import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
+import { Tiltakstype } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
-import { Tiltakstype } from 'deltaker-flate-model'
 import { UtkastHeader } from '../components/UtkastHeader.tsx'
+import { EMDASH, hentTiltakNavnHosArrangørTekst } from '../utils/utils'
 
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()
