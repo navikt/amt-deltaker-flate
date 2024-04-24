@@ -1,10 +1,10 @@
-import appCss from './app.css?inline'
-import { createRoot, Root } from 'react-dom/client'
-import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
-import { AppContextProvider } from './AppContext.tsx'
-import { AppRoutes } from './Routes.tsx'
-import { BrowserRouter } from 'react-router-dom'
 import { initializeFaro } from '@grafana/faro-web-sdk'
+import { createRoot, Root } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import appCss from './app.css?inline'
+import { AppContextProvider } from './AppContext.tsx'
+import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
+import { AppRoutes } from './Routes.tsx'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
