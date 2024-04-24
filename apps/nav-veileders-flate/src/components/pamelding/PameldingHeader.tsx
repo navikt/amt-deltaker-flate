@@ -1,6 +1,6 @@
 import { Tiltakstype } from 'deltaker-flate-model'
 import { BodyShort, Heading } from '@navikt/ds-react'
-import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
+import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 

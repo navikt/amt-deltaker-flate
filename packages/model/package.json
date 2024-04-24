@@ -5,7 +5,8 @@
     ".": "./src/deltaker.ts"
   },
   "dependencies": {
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.4",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*"

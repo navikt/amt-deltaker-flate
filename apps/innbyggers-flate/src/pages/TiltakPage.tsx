@@ -13,7 +13,6 @@ import {
 import {
   EMDASH,
   formatDateFromString,
-  getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangørTekst,
   INNHOLD_TYPE_ANNET
 } from '../utils/utils.ts'
@@ -24,6 +23,7 @@ import { DeltakerStatusTag } from '../components/DeltakerStatusTag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
 import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
+import { getDeltakerStatusAarsakText } from 'deltaker-flate-utils/displayText'
 
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (

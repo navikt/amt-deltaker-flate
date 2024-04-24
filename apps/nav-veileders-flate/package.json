@@ -23,6 +23,7 @@
     "@navikt/ds-tailwind": "^6.3.6",
     "dayjs": "^1.11.10",
     "deltaker-flate-model": "workspace:*",
+    "deltaker-flate-utils": "workspace:*",
     "mockjs": "^1.1.0",
     "msw": "^2.2.13",
     "react": "^18.2.0",

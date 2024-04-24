@@ -1,7 +1,7 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
-import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText'
-import { Tiltakstype } from '../../api/data/pamelding'
+import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
 import { ModalFooter } from '../ModalFooter'
+import { Tiltakstype } from 'deltaker-flate-model'
 
 interface Props {
   open: boolean

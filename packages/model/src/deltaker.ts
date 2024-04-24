@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export enum Tiltakstype {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
@@ -36,3 +38,16 @@ export enum DeltakerStatusAarsakType {
   ANNET = 'ANNET'
   // TODO Feilregistrert
 }
+
+export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
+export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
+export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
+  DeltakerStatusAarsakType
+)
+
+export const deltakerStatusAarsakSchema = z.object({
+  type: deltakerStatusAarsakTypeSchema,
+  beskrivelse: z.string().nullable()
+})
+
+export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>

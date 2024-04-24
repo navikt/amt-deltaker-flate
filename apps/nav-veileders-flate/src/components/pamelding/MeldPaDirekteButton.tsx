@@ -20,6 +20,7 @@ import {
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
+import { DeltakerStatusType } from 'deltaker-flate-model'
 
 interface Props {
   pamelding: PameldingResponse

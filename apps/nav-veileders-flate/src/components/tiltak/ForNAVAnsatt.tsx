@@ -1,6 +1,6 @@
 import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
-import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText.ts'
+import { hentTiltakNavnHosArrangorTekst } from 'deltaker-flate-utils/displayText'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { formatDateFromString } from '../../utils/utils.ts'
 import {

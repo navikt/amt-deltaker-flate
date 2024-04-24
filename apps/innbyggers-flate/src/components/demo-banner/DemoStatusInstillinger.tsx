@@ -4,7 +4,7 @@ import { useDeltakerContext } from '../../DeltakerContext.tsx'
 import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker.ts'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
-import { getDeltakerStatusDisplayText } from '../../utils/utils.ts'
+import { getDeltakerStatusDisplayText } from 'deltaker-flate-utils/displayText'
 import { DeltakerStatusType } from 'deltaker-flate-model'
 
 export const endreMockDeltakelseStatus = (

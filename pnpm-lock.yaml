@@ -50,6 +50,9 @@ importers:
       deltaker-flate-model:
         specifier: workspace:*
         version: link:../../packages/model
+      deltaker-flate-utils:
+        specifier: workspace:*
+        version: link:../../packages/utils
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -141,6 +144,9 @@ importers:
       deltaker-flate-model:
         specifier: workspace:*
         version: link:../../packages/model
+      deltaker-flate-utils:
+        specifier: workspace:*
+        version: link:../../packages/utils
       mockjs:
         specifier: ^1.1.0
         version: 1.1.0
@@ -223,6 +229,22 @@ importers:
 
   packages/model:
     dependencies:
+      typescript:
+        specifier: ^5.4.4
+        version: 5.4.5
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@amt-deltaker-flate/eslint-config':
+        specifier: workspace:*
+        version: link:../../shared-config/eslint-config
+
+  packages/utils:
+    dependencies:
+      deltaker-flate-model:
+        specifier: workspace:*
+        version: link:../model
       typescript:
         specifier: ^5.4.4
         version: 5.4.5

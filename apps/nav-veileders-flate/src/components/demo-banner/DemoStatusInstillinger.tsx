@@ -4,8 +4,8 @@ import { PameldingResponse, pameldingSchema } from '../../api/data/pamelding'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
-import { getDeltakerStatusDisplayText } from '../../utils/displayText'
 import { DeltakerStatusType } from 'deltaker-flate-model'
+import { getDeltakerStatusDisplayText } from 'deltaker-flate-utils/displayText'
 
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType

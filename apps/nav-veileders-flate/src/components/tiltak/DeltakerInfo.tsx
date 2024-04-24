@@ -12,7 +12,7 @@ import {
 import {
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
-} from '../../utils/displayText.ts'
+} from 'deltaker-flate-utils/displayText'
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { DeltakerIStatusTag } from '../DeltakerIStatusTag.tsx'
@@ -25,6 +25,7 @@ import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 import { getDialogUrl } from '../../utils/environment-utils.ts'
 import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-model'
 
 interface Props {
   className: string

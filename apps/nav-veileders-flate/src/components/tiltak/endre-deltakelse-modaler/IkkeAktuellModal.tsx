@@ -16,6 +16,7 @@ import {
 } from '../../../api/data/endre-deltakelse-request.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { DeltakerStatusAarsakType } from 'deltaker-flate-model'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse

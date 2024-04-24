@@ -1,15 +1,9 @@
-import { z } from 'zod'
 import {
-  DeltakerStatusAarsakType,
-  DeltakerStatusType,
-  Tiltakstype
+  deltakerStaturTypeSchema,
+  deltakerStatusAarsakSchema,
+  tiltakstypeSchema
 } from 'deltaker-flate-model'
-
-export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
-export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
-  DeltakerStatusAarsakType
-)
+import { z } from 'zod'
 
 export const innholdSchema = z.object({
   tekst: z.string(),
@@ -31,11 +25,6 @@ export const deltakerlisteSchema = z.object({
   oppstartstype: z.string(),
   startdato: z.string(),
   sluttdato: z.string().nullable()
-})
-
-export const deltakerStatusAarsakSchema = z.object({
-  type: deltakerStatusAarsakTypeSchema,
-  beskrivelse: z.string().nullable()
 })
 
 export const pameldingStatusSchema = z.object({
@@ -72,7 +61,6 @@ export const deltakerSchema = z.object({
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
-export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type DeltakerResponse = z.infer<typeof deltakerSchema>
