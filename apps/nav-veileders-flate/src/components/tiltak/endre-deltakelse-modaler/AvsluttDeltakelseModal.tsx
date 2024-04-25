@@ -8,31 +8,29 @@ import {
   useDatepicker
 } from '@navikt/ds-react'
 import {
-  DeltakerStatusAarsakType,
-  PameldingResponse
-} from '../../../api/data/pamelding.ts'
-import { useState } from 'react'
-import {
   DeferredFetchState,
+  DeltakerStatusAarsakType,
   useDeferredFetch
-} from '../../../hooks/useDeferredFetch.ts'
-import { avsluttDeltakelse } from '../../../api/api.ts'
+} from 'deltaker-flate-common'
+import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
-import {
-  dateStrToDate,
-  dateStrToNullableDate,
-  formatDateToDateInputStr,
-  getDeltakerStatusAarsakTyperAsList,
-  HarDeltattValg
-} from '../../../utils/utils.ts'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { avsluttDeltakelse } from '../../../api/api.ts'
 import {
   BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
   EndreDeltakelseType
 } from '../../../api/data/endre-deltakelse-request.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
+import {
+  HarDeltattValg,
+  dateStrToDate,
+  dateStrToNullableDate,
+  formatDateToDateInputStr,
+  getDeltakerStatusAarsakTyperAsList
+} from '../../../utils/utils.ts'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse

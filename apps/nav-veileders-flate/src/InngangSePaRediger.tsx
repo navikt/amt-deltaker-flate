@@ -1,13 +1,13 @@
-import { useParams } from 'react-router-dom'
 import { Alert, Heading, Loader } from '@navikt/ds-react'
-import useFetch from './hooks/useFetch.ts'
+import { useFetch } from 'deltaker-flate-common'
+import { useParams } from 'react-router-dom'
 import { getPamelding } from './api/api.ts'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
-import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
+import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 
 const InngangSePaRediger = () => {
   const { deltakerId } = useParams()
@@ -39,7 +39,7 @@ const InngangSePaRediger = () => {
   if (error || !pamelding) {
     return (
       <>
-        {isEnvLocalDemoOrPr && <DemoBanner hasError />}
+        {isEnvLocalDemoOrPr && <DemoBanner />}
         <ErrorPage message={error} />
       </>
     )

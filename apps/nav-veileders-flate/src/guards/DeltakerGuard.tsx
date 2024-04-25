@@ -1,12 +1,12 @@
-import { DeltakerStatusType } from '../api/data/pamelding.ts'
+import dayjs from 'dayjs'
+import nb from 'dayjs/locale/nb'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import { DeltakerStatusType } from 'deltaker-flate-common'
+import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { TiltakPage } from '../pages/TiltakPage.tsx'
-import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
-import dayjs from 'dayjs'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
-import nb from 'dayjs/locale/nb'
 
 dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)

@@ -6,24 +6,24 @@ import {
   Modal,
   Textarea
 } from '@navikt/ds-react'
-import { EndringTypeIkon } from '../EndringTypeIkon'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
 import {
   DeferredFetchState,
+  INNHOLD_TYPE_ANNET,
   useDeferredFetch
-} from '../../../hooks/useDeferredFetch'
-import { ModalFooter } from '../../ModalFooter'
-import { PameldingResponse } from '../../../api/data/pamelding'
-import { endreDeltakelseInnhold } from '../../../api/api'
+} from 'deltaker-flate-common'
+import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
-import { INNHOLD_TYPE_ANNET } from '../../../utils/utils'
+import { endreDeltakelseInnhold } from '../../../api/api'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
+import { PameldingResponse } from '../../../api/data/pamelding'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
-import { useState } from 'react'
-import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
+import { ModalFooter } from '../../ModalFooter'
+import { EndringTypeIkon } from '../EndringTypeIkon'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse

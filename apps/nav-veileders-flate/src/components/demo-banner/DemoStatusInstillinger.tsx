@@ -1,14 +1,13 @@
 import { Select } from '@navikt/ds-react'
-import { useState } from 'react'
 import {
   DeltakerStatusType,
-  PameldingResponse,
-  pameldingSchema
-} from '../../api/data/pamelding'
+  getDeltakerStatusDisplayText,
+  useDeferredFetch
+} from 'deltaker-flate-common'
+import { useState } from 'react'
+import { PameldingResponse, pameldingSchema } from '../../api/data/pamelding'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
-import { useDeferredFetch } from '../../hooks/useDeferredFetch'
-import { getDeltakerStatusDisplayText } from '../../utils/displayText'
 
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType

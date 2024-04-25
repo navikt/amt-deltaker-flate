@@ -1,27 +1,25 @@
 import { Alert, Button, HelpText, HStack } from '@navikt/ds-react'
-import { useFormContext } from 'react-hook-form'
-import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
-import { useEffect, useState } from 'react'
-import { useAppContext } from '../../AppContext.tsx'
 import {
   DeferredFetchState,
-  useDeferredFetch
-} from '../../hooks/useDeferredFetch.ts'
-import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
-import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
-import {
   DeltakerStatusType,
-  PameldingResponse
-} from '../../api/data/pamelding.ts'
-import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
-import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
-import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
-import { getDeltakerNavn } from '../../utils/displayText.ts'
+  useDeferredFetch
+} from 'deltaker-flate-common'
+import { useEffect, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { useAppContext } from '../../AppContext.tsx'
 import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
+import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
+import { getDeltakerNavn } from '../../utils/displayText.ts'
+import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
+import { DelUtkastModal } from '../opprett-pamelding/DelUtkastModal.tsx'
+import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEndringModal.tsx'
+import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 
 interface Props {
   pamelding: PameldingResponse

@@ -1,27 +1,24 @@
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { useAppContext } from '../../../AppContext.tsx'
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../../../hooks/useDeferredFetch.ts'
-import { endreDeltakelseForleng } from '../../../api/api.ts'
-import { useState } from 'react'
 import { BodyShort, Detail, Modal } from '@navikt/ds-react'
-import {
-  getVarighet,
-  kalkulerSluttdato,
-  VarighetValg
-} from '../../../utils/varighet.ts'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import { useState } from 'react'
+import { useAppContext } from '../../../AppContext.tsx'
+import { endreDeltakelseForleng } from '../../../api/api.ts'
+import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
   formatDateToDateInputStr,
   formatDateToString
 } from '../../../utils/utils.ts'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import {
+  VarighetValg,
+  getVarighet,
+  kalkulerSluttdato
+} from '../../../utils/varighet.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VargihetField } from '../VargihetField.tsx'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse

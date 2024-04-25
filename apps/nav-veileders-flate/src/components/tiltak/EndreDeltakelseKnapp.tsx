@@ -1,12 +1,9 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
-import {
-  DeltakerStatusType,
-  PameldingResponse,
-  Tiltakstype
-} from '../../api/data/pamelding.ts'
+import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
 import {
   deltakerHarAvsluttendeStatus,

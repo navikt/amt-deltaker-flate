@@ -1,49 +1,9 @@
+import {
+  deltakerStaturTypeSchema,
+  deltakerStatusAarsakSchema,
+  tiltakstypeSchema
+} from 'deltaker-flate-common'
 import { z } from 'zod'
-
-export enum Tiltakstype {
-  ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
-  ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
-  AVKLARAG = 'AVKLARAG', // Avklaring
-  INDOPPFAG = 'INDOPPFAG', // Oppfølging
-  DIGIOPPARB = 'DIGIOPPARB', // Digitalt oppfølgingstiltak
-  GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
-  GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK', // Jobbklubb / er kurs
-  VASV = 'VASV' // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
-}
-
-export enum DeltakerStatusType {
-  KLADD = 'KLADD',
-  UTKAST_TIL_PAMELDING = 'UTKAST_TIL_PAMELDING',
-  AVBRUTT_UTKAST = 'AVBRUTT_UTKAST',
-  VENTER_PA_OPPSTART = 'VENTER_PA_OPPSTART',
-  DELTAR = 'DELTAR',
-  HAR_SLUTTET = 'HAR_SLUTTET',
-  IKKE_AKTUELL = 'IKKE_AKTUELL',
-  FEILREGISTRERT = 'FEILREGISTRERT',
-  SOKT_INN = 'SOKT_INN',
-  VURDERES = 'VURDERES',
-  VENTELISTE = 'VENTELISTE',
-  AVBRUTT = 'AVBRUTT',
-  FULLFORT = 'FULLFORT',
-  PABEGYNT_REGISTRERING = 'PABEGYNT_REGISTRERING'
-}
-
-export enum DeltakerStatusAarsakType {
-  SYK = 'SYK',
-  FATT_JOBB = 'FATT_JOBB',
-  TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
-  // UTDANNING = 'UTDANNING', TODO denne er ny og ikke støttet av backend enda
-  IKKE_MOTT = 'IKKE_MOTT',
-  ANNET = 'ANNET'
-  // TODO Feilregistrert
-}
-
-export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
-export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
-  DeltakerStatusAarsakType
-)
 
 export const innholdSchema = z.object({
   tekst: z.string(),
@@ -65,11 +25,6 @@ export const deltakerlisteSchema = z.object({
   oppstartstype: z.string(),
   startdato: z.string(),
   sluttdato: z.string().nullable()
-})
-
-export const deltakerStatusAarsakSchema = z.object({
-  type: deltakerStatusAarsakTypeSchema,
-  beskrivelse: z.string().nullable()
 })
 
 export const pameldingStatusSchema = z.object({
@@ -106,7 +61,6 @@ export const deltakerSchema = z.object({
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
-export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type DeltakerResponse = z.infer<typeof deltakerSchema>

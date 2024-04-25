@@ -8,7 +8,7 @@ interface UseFetchResult<T> {
 
 type ApiFunction<T, U extends unknown[]> = (...args: U) => Promise<T>
 
-const useFetch = <T, U extends unknown[]>(
+export const useFetch = <T, U extends unknown[]>(
   apiFunction: ApiFunction<T, U>,
   ...args: U
 ): UseFetchResult<T> => {
@@ -33,5 +33,3 @@ const useFetch = <T, U extends unknown[]>(
 
   return { data, loading, error }
 }
-
-export default useFetch

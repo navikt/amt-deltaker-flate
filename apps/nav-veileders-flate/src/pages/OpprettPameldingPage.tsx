@@ -1,5 +1,5 @@
-import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 
 export const OpprettPameldingPage = () => {

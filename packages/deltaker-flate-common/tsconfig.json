@@ -1,0 +1,12 @@
+{
+  "extends": "@amt-deltaker-flate/typescript-config/base.json",
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["hooks", "model", "utils"],
+  "exclude": ["node_modules"]
+}

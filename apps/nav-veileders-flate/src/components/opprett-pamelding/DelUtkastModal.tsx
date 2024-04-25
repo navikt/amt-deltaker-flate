@@ -1,6 +1,8 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
-import { hentTiltakNavnHosArrangorTekst } from '../../utils/displayText'
-import { Tiltakstype } from '../../api/data/pamelding'
+import {
+  Tiltakstype,
+  hentTiltakNavnHosArrangorTekst
+} from 'deltaker-flate-common'
 import { ModalFooter } from '../ModalFooter'
 
 interface Props {

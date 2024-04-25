@@ -1,17 +1,14 @@
 import { Detail, Modal, Textarea } from '@navikt/ds-react'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../../../hooks/useDeferredFetch.ts'
-import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { useAppContext } from '../../../AppContext.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse

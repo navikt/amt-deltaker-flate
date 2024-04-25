@@ -1,9 +1,9 @@
-import { Tag, Detail, HStack } from '@navikt/ds-react'
-import { formatDateStrWithMonthName } from '../../utils/utils'
+import { Detail, HStack, Tag } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
-  Vedtaksinformasjon
-} from '../../api/data/pamelding'
+  formatDateStrWithMonthName
+} from 'deltaker-flate-common'
+import { Vedtaksinformasjon } from '../../api/data/pamelding'
 
 interface Props {
   status: DeltakerStatusType

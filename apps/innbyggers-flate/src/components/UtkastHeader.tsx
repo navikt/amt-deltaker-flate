@@ -1,7 +1,6 @@
 import { Detail, HStack } from '@navikt/ds-react'
+import { formatDateStrWithMonthName } from 'deltaker-flate-common'
 import { Vedtaksinformasjon } from '../api/data/deltaker.ts'
-import { formatDateStrWithMonthName } from '../utils/utils.ts'
-
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
 }

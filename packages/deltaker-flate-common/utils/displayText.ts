@@ -1,14 +1,9 @@
-import dayjs from 'dayjs'
 import {
-  DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  Tiltakstype
-} from '../api/data/deltaker'
-
-export const EMDASH = '—'
-
-export const INNHOLD_TYPE_ANNET = 'annet'
+  Tiltakstype,
+  DeltakerStatusAarsak
+} from '../model/deltaker'
 
 export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
   switch (type) {
@@ -32,6 +27,11 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
       return 'Varig tilrettelagt arbeid'
   }
 }
+
+export const hentTiltakNavnHosArrangorTekst = (
+  tiltakstype: Tiltakstype,
+  arrangorNavn: string
+) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 
 export const getDeltakerStatusDisplayText = (
   type: DeltakerStatusType
@@ -83,21 +83,4 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
 
     // TODO skissene viser Feilregistrert i tillegg
   }
-}
-
-export const hentTiltakNavnHosArrangørTekst = (
-  tiltakstype: Tiltakstype,
-  arrangorNavn: string
-) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
-
-export const formatDateStrWithMonthName = (dateStr: string | null): string => {
-  if (!dateStr) return EMDASH
-  const date = dayjs(dateStr)
-  return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
-}
-
-export const formatDateFromString = (dateStr: string | null): string => {
-  if (!dateStr) return EMDASH
-  const date = dayjs(dateStr)
-  return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }

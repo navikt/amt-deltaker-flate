@@ -1,33 +1,30 @@
-import { useDeltakerContext } from '../DeltakerContext.tsx'
+import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
   ExpansionCard,
-  Heading,
   HStack,
+  Heading,
   Label,
   Link,
   LinkPanel,
   List
 } from '@navikt/ds-react'
 import {
+  DeltakerStatusTag,
+  DeltakerStatusType,
   EMDASH,
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangørTekst,
-  INNHOLD_TYPE_ANNET
-} from '../utils/utils.ts'
-import {
-  DeltakerResponse,
-  DeltakerStatusType,
-  Tiltakstype
-} from '../api/data/deltaker.ts'
-import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
-import { getDialogUrl } from '../utils/environment-utils.ts'
-import { DeltakerStatusTag } from '../components/DeltakerStatusTag.tsx'
-import { HvaErDette } from '../components/HvaErDette.tsx'
+  hentTiltakNavnHosArrangorTekst
+} from 'deltaker-flate-common'
+import { useDeltakerContext } from '../DeltakerContext.tsx'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
-
+import { HvaErDette } from '../components/HvaErDette.tsx'
+import { getDialogUrl } from '../utils/environment-utils.ts'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -59,7 +56,7 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 export const TiltakPage = () => {
   const { deltaker } = useDeltakerContext()
 
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangørTekst(
+  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.arrangorNavn
   )

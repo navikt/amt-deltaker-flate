@@ -1,6 +1,5 @@
-import { DeltakerStatusType } from '../api/data/deltaker.ts'
 import { BodyLong } from '@navikt/ds-react'
-import { EMDASH } from '../utils/utils.ts'
+import { DeltakerStatusType, EMDASH } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
   statusType: DeltakerStatusType

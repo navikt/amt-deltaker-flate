@@ -1,14 +1,13 @@
 import { Select } from '@navikt/ds-react'
+import {
+  DeltakerStatusType,
+  getDeltakerStatusDisplayText,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useDeltakerContext } from '../../DeltakerContext.tsx'
-import {
-  DeltakerResponse,
-  DeltakerStatusType,
-  deltakerSchema
-} from '../../api/data/deltaker.ts'
-import { useDeferredFetch } from '../../hooks/useDeferredFetch'
+import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker.ts'
 import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
-import { getDeltakerStatusDisplayText } from '../../utils/utils.ts'
 
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType
