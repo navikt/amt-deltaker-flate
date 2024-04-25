@@ -25,7 +25,7 @@ export async function enableMocking() {
 // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
 const setupNavDekorator = () => {
   return injectDecoratorClientSide({
-    env: isProd() ? 'prod' : 'dev',
+    env: import.meta.env.VITE_DECORATOR_ENV,
     params: {
       level: 'Level4',
       enforceLogin: true,
