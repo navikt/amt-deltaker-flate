@@ -1,26 +1,31 @@
 import { Detail, HStack, Tag } from '@navikt/ds-react'
 import {
-  DeltakerStatusType,
+  Vedtaksinformasjon,
+  formatDateFromString,
   formatDateStrWithMonthName
 } from 'deltaker-flate-common'
-import { Vedtaksinformasjon } from '../../api/data/pamelding'
 
 interface Props {
-  status: DeltakerStatusType
   vedtaksinformasjon: Vedtaksinformasjon | null
+  visStatusVenterPaaBruker?: boolean
 }
 
-export const RedigerPameldingHeader = ({
-  status,
-  vedtaksinformasjon
+export const UtkastHeader = ({
+  vedtaksinformasjon,
+  visStatusVenterPaaBruker
 }: Props) => {
   const erEndret =
     vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
     vedtaksinformasjon?.sistEndretAv !== vedtaksinformasjon?.opprettetAv
 
+  const erEndretSammeDag =
+    erEndret &&
+    formatDateFromString(vedtaksinformasjon?.sistEndret) ===
+      formatDateFromString(vedtaksinformasjon?.opprettet)
+
   return (
-    <div className="space-y-2">
-      {status === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+    <div className="space-y-2 mt-2 mb-4">
+      {visStatusVenterPaaBruker && (
         <Tag variant="info" size="small" className="mb-3 mt-4">
           Venter på godkjenning fra bruker
         </Tag>
@@ -29,19 +34,21 @@ export const RedigerPameldingHeader = ({
         (erEndret ? (
           <>
             <HStack className="mt-0" gap="2">
-              <Detail weight="semibold">Første utkast delt:</Detail>
+              <Detail weight="semibold">Utkast delt:</Detail>
               <Detail>
                 {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </HStack>
-            <HStack gap="2">
-              <Detail weight="semibold">Sist endret:</Detail>
-              <Detail>
-                {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
-                {vedtaksinformasjon.sistEndretAv}
-              </Detail>
-            </HStack>
+            {!erEndretSammeDag && (
+              <HStack gap="2">
+                <Detail weight="semibold">Sist endret:</Detail>
+                <Detail>
+                  {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
+                  {vedtaksinformasjon.sistEndretAv}
+                </Detail>
+              </HStack>
+            )}
           </>
         ) : (
           <HStack gap="2">

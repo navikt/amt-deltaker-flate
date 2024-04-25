@@ -9,7 +9,9 @@ dayjs.locale(nb)
  * @param dateStr Date as string
  * @returns date string with format 'DD. MMMM YYYY'
  */
-export const formatDateStrWithMonthName = (dateStr: string | null): string => {
+export const formatDateStrWithMonthName = (
+  dateStr: string | null | undefined
+): string => {
   if (!dateStr) return EMDASH
   const date = dayjs(dateStr)
   return date.isValid() ? date.format('DD. MMMM YYYY') : EMDASH
@@ -20,7 +22,9 @@ export const formatDateStrWithMonthName = (dateStr: string | null): string => {
  * @param dateStr Date as string
  * @returns date string with format 'DD. MM YYYY'
  */
-export const formatDateFromString = (dateStr: string | null): string => {
+export const formatDateFromString = (
+  dateStr: string | null | undefined
+): string => {
   if (!dateStr) return EMDASH
   const date = dayjs(dateStr)
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH

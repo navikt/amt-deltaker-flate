@@ -11,17 +11,17 @@ import {
 import {
   DeferredFetchState,
   EMDASH,
+  PERSONOPPLYSNINGER_URL,
   Tiltakstype,
+  UtkastHeader,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
 import { godkjennUtkast } from '../api/api'
-import { UtkastHeader } from '../components/UtkastHeader.tsx'
 import { VilIkkeGodkjenneExpansionCard } from '../components/VilIkkeGodkjenneExpansionCard'
 import { svg } from '../ikoner/nav-veileder'
-import { PERSONOPPLYSNINGER_URL } from '../utils/environment-utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()
@@ -107,6 +107,9 @@ export const UtkastPage = () => {
       <Heading level="2" size="medium" className="mt-6">
         Kontaktinformasjon
       </Heading>
+      {
+        // TODO kan denne bruke <HvaDelesMedArrangor/> den må kanskje splitte inholdet sitt litt
+      }
       <BodyLong size="small" className="mt-2">
         NAV samarbeider med {arrangorNavn}. Arrangøren behandler
         personopplysninger på vegne av NAV.

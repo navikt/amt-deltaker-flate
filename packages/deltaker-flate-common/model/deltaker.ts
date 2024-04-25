@@ -50,4 +50,15 @@ export const deltakerStatusAarsakSchema = z.object({
   beskrivelse: z.string().nullable()
 })
 
+export const vedtaksinformasjonSchema = z.object({
+  fattet: z.string().nullable(), // LocalDateTime
+  fattetAvNav: z.boolean(),
+  opprettet: z.string(),
+  opprettetAv: z.string(),
+  sistEndret: z.string(),
+  sistEndretAv: z.string(),
+  sistEndretAvEnhet: z.string().nullable()
+})
+
+export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
