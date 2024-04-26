@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --port 3005",
-    "build:demo": "vite build --base / --mode demo",
+    "build:demo": "vite build --mode demo",
     "build:pull-request": "vite build --mode pull-request",
     "build:dev": "vite build --mode dev",
     "build": "vite build --mode production",
