@@ -24,7 +24,7 @@ import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
-import { getDialogUrl } from '../utils/environment-utils.ts'
+import { DIALOG_URL } from '../utils/environment-utils.ts'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -165,7 +165,7 @@ export const TiltakPage = () => {
           </span>
         </Link>
 
-        <LinkPanel href={getDialogUrl()} className="mt-8 rounded-lg">
+        <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">
             <ChatElipsisIcon className="text-2xl" />
             <span>

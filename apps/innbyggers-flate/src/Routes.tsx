@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { App } from './App.tsx'
 
-const APP_ROUTE = `${import.meta.env.BASE_URL}/:deltakerId`
+const APP_ROUTE = `${import.meta.env.BASE_URL}:deltakerId`
 
 export const AppRoutes = () => {
   return (

@@ -3,10 +3,10 @@
   "pipeline": {
     "build": {
       "env": [
-        "VITE_MOCK_SERVICE_RUNNER_PATH",
         "VITE_FARO_URL",
-        "VITE_PR_ENV",
-        "VITE_ENDPOINT_HANDLER"
+        "VITE_DIALOG_URL",
+        "VITE_AKTIVITETSPLAN_URL",
+        "VITE_PERSONOPPLYSNINGER_URL"
       ]
     }
   }
