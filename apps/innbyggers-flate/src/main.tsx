@@ -8,20 +8,6 @@ import { AppRoutes } from './Routes.tsx'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import { initializeFaro } from '@grafana/faro-web-sdk'
 
-export async function enableMocking() {
-  if (useMock) {
-    const url =
-      import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
-
-    return worker.start({
-      onUnhandledRequest: 'bypass',
-      serviceWorker: {
-        url
-      }
-    })
-  }
-}
-
 // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
 const setupNavDekorator = () => {
   return injectDecoratorClientSide({
@@ -57,6 +43,16 @@ if (import.meta.env.VITE_FARO_URL) {
 }
 
 if (useMock) {
+  const enableMocking = () =>
+    worker.start({
+      onUnhandledRequest: 'bypass',
+      serviceWorker: {
+        url:
+          import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH ||
+          '/mockServiceWorker.js'
+      }
+    })
+
   enableMocking().then(() => {
     renderApp()
   })

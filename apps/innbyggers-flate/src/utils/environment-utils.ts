@@ -1,4 +1,4 @@
-export enum EndpointHandler {
+enum EndpointHandler {
   MOCK = 'MOCK', // Brukes for demo og lokalt
   DEV = 'DEV', // Brukes for devmiljø og pull_request deployer
   PROXY = 'PROXY' // brukes for lokal kjøring
