@@ -1,12 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { App } from './App.tsx'
 
-export const appUrl = (path: string): string => {
-  const strippedPath = path.startsWith('/') ? path.substring(1) : path
-  return `${import.meta.env.BASE_URL}${strippedPath}`
-}
-
-export const APP_ROUTE = appUrl('/:deltakerId')
+const APP_ROUTE = `${import.meta.env.BASE_URL}/:deltakerId`
 
 export const AppRoutes = () => {
   return (

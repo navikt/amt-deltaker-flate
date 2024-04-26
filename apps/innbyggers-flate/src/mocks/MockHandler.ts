@@ -9,9 +9,7 @@ import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 
-export const createDeltaker = (
-  statusType: DeltakerStatusType
-): DeltakerResponse => {
+const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const harVedak =
     statusType !== DeltakerStatusType.KLADD &&
