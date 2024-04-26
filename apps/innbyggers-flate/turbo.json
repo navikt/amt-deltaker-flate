@@ -1,0 +1,14 @@
+{
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "env": [
+        "VITE_DECORATOR_ENV",
+        "VITE_MOCK_SERVICE_RUNNER_PATH",
+        "VITE_FARO_URL",
+        "VITE_PR_ENV",
+        "VITE_ENDPOINT_HANDLER"
+      ]
+    }
+  }
+}
