@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml'
       - apps/innbyggers-flate/nais/nais-dev.yaml
+    branches:
+      - main
 
 jobs:
   deploy-dev:
