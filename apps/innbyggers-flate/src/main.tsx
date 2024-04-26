@@ -14,7 +14,7 @@ const renderApp = () => {
     params: {
       level: 'Level4',
       enforceLogin: true,
-      logoutWarning: ['production', 'dev'].includes(import.meta.env.MODE)
+      logoutWarning: true
     }
   })
 
