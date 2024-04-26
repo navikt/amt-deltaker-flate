@@ -1,0 +1,39 @@
+name: Deploy innbyggers-flate demo
+on:
+  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
+  push:
+    paths-ignore:
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-pr-cleanup.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
+      - apps/nav-veileders-flate/**
+    branches:
+      - refactor-env-variables
+
+jobs:
+  deploy-demo-innbyggers-flate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Build
+        run: pnpm build:demo --filter=innbyggers-flate
+      - uses: navikt/frontend/actions/spa-deploy/v2@main
+        with:
+          app: amt-deltaker-innbyggers-flate
+          team: amt
+          source: apps/innbyggers-flate/build
+          ingress: https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no
+          environment: dev
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
