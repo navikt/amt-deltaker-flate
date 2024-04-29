@@ -45,5 +45,3 @@ export const getAktivitetsplanUrl = () => {
     ? 'https://aktivitetsplan.ekstern.dev.nav.no/'
     : 'https://aktivitetsplan.nav.no/'
 }
-
-export const PERSONOPPLYSNINGER_URL = 'http://nav.no/person/personopplysninger/'

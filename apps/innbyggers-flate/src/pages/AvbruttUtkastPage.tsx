@@ -2,10 +2,10 @@ import { BodyLong, Heading, List } from '@navikt/ds-react'
 import {
   EMDASH,
   Tiltakstype,
+  UtkastHeader,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
-import { UtkastHeader } from '../components/UtkastHeader.tsx'
 
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()

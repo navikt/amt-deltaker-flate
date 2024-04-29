@@ -7,6 +7,10 @@
   "exports": {
     ".": "./index.ts"
   },
+  "scripts": {
+    "lint": "eslint --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint --fix '*.{ts,tsx}'"
+  },
   "dependencies": {
     "@navikt/ds-react": "^6.3.6",
     "dayjs": "^1.11.10",

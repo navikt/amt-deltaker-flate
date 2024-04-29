@@ -2,7 +2,6 @@ import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
-  ExpansionCard,
   HStack,
   Heading,
   Label,
@@ -14,6 +13,7 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
+  HvaDelesMedArrangor,
   INNHOLD_TYPE_ANNET,
   Tiltakstype,
   formatDateFromString,
@@ -190,36 +190,11 @@ export const TiltakPage = () => {
           {<Link href="https://www.nav.no/klage">retten til å klage her.</Link>}
         </BodyLong>
 
-        <ExpansionCard aria-label="Demo med bare tittel" className="mt-8">
-          <ExpansionCard.Header>
-            <ExpansionCard.Title>Hva deles med arrangøren?</ExpansionCard.Title>
-          </ExpansionCard.Header>
-          <ExpansionCard.Content>
-            <BodyLong size="small">
-              NAV samarbeider med {deltaker.deltakerliste.arrangorNavn}.
-              Arrangøren behandler opplysninger på vegne av NAV.
-            </BodyLong>
-            <List as="ul" size="small">
-              <List.Item>
-                Navn og kontaktinformasjonen til NAV-veilederen din
-              </List.Item>
-              <List.Item>
-                Påmeldingen: Innholdet og bakgrunnsinformasjon
-              </List.Item>
-              <List.Item>Navn og fødselsnummer</List.Item>
-              <List.Item>Telefonnummer og e-postadresse</List.Item>
-              {deltaker.adresseDelesMedArrangor && (
-                <List.Item>Adresse</List.Item>
-              )}
-            </List>
-            <Link
-              href="http://nav.no/person/personopplysninger/"
-              className="text-base"
-            >
-              Se her hvilke opplysninger NAV har om deg.
-            </Link>
-          </ExpansionCard.Content>
-        </ExpansionCard>
+        <HvaDelesMedArrangor
+          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+          adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
+          className="mt-8"
+        />
       </div>
     </div>
   )
