@@ -10,7 +10,10 @@ export const getEndpointHandlerType = (): EndpointHandler => {
 }
 
 const isDev = (): boolean => {
-  return window.location.hostname.includes('intern.dev.nav.no')
+  return (
+    window.location.hostname.includes('intern.dev.nav.no') ||
+    window.location.hostname.includes('ansatt.dev.nav.no')
+  )
 }
 
 export const deltakerBffApiBasePath = (): string => {
