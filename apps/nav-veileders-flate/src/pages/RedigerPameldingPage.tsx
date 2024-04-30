@@ -3,6 +3,7 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  UtkastHeader,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -13,7 +14,6 @@ import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
-import { RedigerPameldingHeader } from '../components/rediger-pamelding/RedigerPameldingHeader.tsx'
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import {
@@ -59,8 +59,8 @@ export const RedigerPameldingPage = () => {
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
         />
-        <RedigerPameldingHeader
-          status={pamelding.status.type}
+        <UtkastHeader
+          visStatusVenterPaaBruker
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
         />
       </div>

@@ -12,7 +12,7 @@ export const TilAktivitetsplanLenke = ({
   return (
     <Link
       href={AKTIVITETSPLAN_URL}
-      className="no-underline hover:underline mb-4"
+      className="no-underline hover:underline mb-8"
     >
       <BodyShort size="small">{tekst}</BodyShort>
       <ArrowRightIcon aria-label="Gå til aktivitetsplanen" />
