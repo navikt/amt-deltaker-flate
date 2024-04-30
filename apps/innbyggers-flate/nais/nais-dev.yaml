@@ -56,7 +56,16 @@ spec:
           },
           "proxies": [
             {
-              "fromPath": "(/pr-\\d+)?/amt-deltaker-bff",
+              "fromPath": "/pr-\\d+/amt-deltaker-bff",
+              "toUrl": "http://amt-deltaker-bff",
+              "toApp": {
+                "name": "amt-deltaker-bff",
+                "namespace": "amt",
+                "cluster": "dev-gcp"
+              }
+            },
+            {
+              "fromPath": "/amt-deltaker-bff",
               "toUrl": "http://amt-deltaker-bff",
               "toApp": {
                 "name": "amt-deltaker-bff",
