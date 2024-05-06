@@ -56,7 +56,7 @@ spec:
           },
           "proxies": [
             {
-              "fromPath": "/pr-[0-9]+/amt-deltaker-bff/*",
+              "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
               "toUrl": "http://amt-deltaker-bff",
               "toApp": {
                 "name": "amt-deltaker-bff",
