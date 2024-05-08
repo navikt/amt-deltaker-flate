@@ -11,7 +11,7 @@ export const ErrorPage = ({
   message = undefined
 }: ErrorPageProps) => {
   return (
-    <div>
+    <div className="m-4 max-w-[47.5rem] mx-auto">
       <Tilbakeknapp />
 
       <Alert variant="error">

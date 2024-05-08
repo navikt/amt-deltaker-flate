@@ -20,7 +20,7 @@ export const PameldingHeader = ({
   deltakerlisteId
 }: Props) => {
   return (
-    <div className="space-y-2">
+    <div>
       <Heading level="1" size="large">
         {title}
       </Heading>

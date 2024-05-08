@@ -100,7 +100,7 @@ export const PameldingForm = ({
         <VStack className="p-4 border rounded border-[var(--a-surface-alt-3)] mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
-          <section className="space-y-4">
+          <section>
             <Heading size="medium" level="3">
               Hva er innholdet?
             </Heading>

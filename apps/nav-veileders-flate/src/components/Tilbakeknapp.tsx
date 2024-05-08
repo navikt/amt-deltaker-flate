@@ -9,13 +9,15 @@ interface TilbakeknappProps {
   tekst?: string
 }
 
-export const Tilbakeknapp = ({ tekst = 'Tilbake' }: TilbakeknappProps) => {
+export const Tilbakeknapp = ({
+  tekst = 'Vis deltakelser'
+}: TilbakeknappProps) => {
   const { doRedirect } = useModiaLink()
 
   return (
     <Link
       href={DELTAKELSESOVERSIKT_LINK}
-      className="no-underline hover:underline ml-10"
+      className="no-underline hover:underline mb-6"
       onClick={(event) => {
         event.preventDefault()
         doRedirect(DELTAKELSESOVERSIKT_LINK)

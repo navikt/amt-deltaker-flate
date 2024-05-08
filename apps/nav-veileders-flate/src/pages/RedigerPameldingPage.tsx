@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { avbrytUtkast } from '../api/api.ts'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
+import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
@@ -51,7 +52,8 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div className="space-y-4 max-w-[47.5rem] m-auto">
+    <div className="max-w-[47.5rem] m-auto">
+      <Tilbakeknapp />
       <div>
         <PameldingHeader
           title={tittel}
