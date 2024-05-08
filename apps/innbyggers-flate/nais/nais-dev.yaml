@@ -10,6 +10,7 @@ spec:
   port: 8080
   ingresses:
     - https://amt.intern.dev.nav.no/arbeidsmarkedstiltak
+    - https://amt.ansatt.dev.nav.no/arbeidsmarkedstiltak
   liveness:
     path: /internal/alive
     initialDelay: 10

@@ -10,6 +10,7 @@ spec:
   port: 8080
   ingresses:
     - https://amt-deltaker-flate.intern.dev.nav.no
+    - https://amt-deltaker-flate.ansatt.dev.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
