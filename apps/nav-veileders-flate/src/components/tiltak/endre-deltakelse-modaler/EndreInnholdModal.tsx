@@ -94,7 +94,7 @@ export const EndreInnholdModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
 
-        <section className="space-y-4">
+        <section>
           <Detail size="small">
             Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser
             også endringen.

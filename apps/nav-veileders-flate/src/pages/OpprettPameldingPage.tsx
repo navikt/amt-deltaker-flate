@@ -1,3 +1,4 @@
+import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
@@ -7,6 +8,7 @@ export const OpprettPameldingPage = () => {
 
   return (
     <div className="m-4 max-w-[47.5rem] mx-auto">
+      <Tilbakeknapp />
       <PameldingHeader
         title="Kladd til påmelding"
         tiltakstype={pamelding.deltakerliste.tiltakstype}

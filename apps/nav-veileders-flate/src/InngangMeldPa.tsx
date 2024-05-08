@@ -1,14 +1,13 @@
-import { useParams } from 'react-router-dom'
-import { useAppContext } from './AppContext.tsx'
 import { Loader } from '@navikt/ds-react'
 import { useFetch } from 'deltaker-flate-common'
+import { useParams } from 'react-router-dom'
+import { useAppContext } from './AppContext.tsx'
 import { createPamelding } from './api/api.ts'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
-import { Tilbakeknapp } from './components/Tilbakeknapp.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
+import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
 
 const InngangMeldPa = () => {
   const { deltakerlisteId } = useParams()
@@ -44,7 +43,6 @@ const InngangMeldPa = () => {
   return (
     <PameldingContextProvider initialPamelding={nyPamelding}>
       {isEnvLocalDemoOrPr && <DemoBanner />}
-      <Tilbakeknapp />
       <DeltakerGuard />
     </PameldingContextProvider>
   )
