@@ -1,41 +1,22 @@
+import { initializeFaro } from '@grafana/faro-web-sdk'
+import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { worker } from './mocks/setupMocks.ts'
 import { BrowserRouter } from 'react-router-dom'
-import './index.css'
-import { isDev, isProd, useMock } from './utils/environment-utils.ts'
 import { AppRoutes } from './Routes.tsx'
-import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import './index.css'
+import { useMock } from './utils/environment-utils.ts'
 
-export async function enableMocking() {
-  if (useMock) {
-    const url =
-      import.meta.env.VITE_MOCK_SERVICE_RUNNER_PATH || '/mockServiceWorker.js'
-
-    return worker.start({
-      onUnhandledRequest: 'bypass',
-      serviceWorker: {
-        url
-      }
-    })
-  }
-}
-
-// list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
-const setupNavDekorator = () => {
-  return injectDecoratorClientSide({
-    env: isProd() ? 'prod' : 'dev',
+const renderApp = () => {
+  // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
+  injectDecoratorClientSide({
+    env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
     params: {
       level: 'Level4',
       enforceLogin: true,
-      logoutWarning: isProd() || isDev()
+      logoutWarning: true
     }
   })
-}
-
-const renderApp = async () => {
-  await setupNavDekorator()
 
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -44,6 +25,21 @@ const renderApp = async () => {
       </BrowserRouter>
     </React.StrictMode>
   )
+}
+
+async function enableMocking() {
+  if (!useMock) {
+    return
+  }
+
+  const { worker } = await import('./mocks/setupMocks')
+
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: `${import.meta.env.BASE_URL}mockServiceWorker.js`
+    }
+  })
 }
 
 if (import.meta.env.VITE_FARO_URL) {
@@ -56,10 +52,4 @@ if (import.meta.env.VITE_FARO_URL) {
   })
 }
 
-if (useMock) {
-  enableMocking().then(() => {
-    renderApp()
-  })
-} else {
-  renderApp()
-}
+enableMocking().then(renderApp)

@@ -1,0 +1,13 @@
+{
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "env": [
+        "VITE_FARO_URL",
+        "VITE_DIALOG_URL",
+        "VITE_AKTIVITETSPLAN_URL",
+        "VITE_PERSONOPPLYSNINGER_URL"
+      ]
+    }
+  }
+}

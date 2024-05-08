@@ -1,6 +1,6 @@
 import { BodyShort, Link } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
-import { getAktivitetsplanUrl } from '../utils/environment-utils.ts'
+import { AKTIVITETSPLAN_URL } from '../utils/environment-utils.ts'
 
 interface TilAktivitetsplanLenkeProps {
   tekst?: string
@@ -11,7 +11,7 @@ export const TilAktivitetsplanLenke = ({
 }: TilAktivitetsplanLenkeProps) => {
   return (
     <Link
-      href={getAktivitetsplanUrl()}
+      href={AKTIVITETSPLAN_URL}
       className="no-underline hover:underline mb-8"
     >
       <BodyShort size="small">{tekst}</BodyShort>

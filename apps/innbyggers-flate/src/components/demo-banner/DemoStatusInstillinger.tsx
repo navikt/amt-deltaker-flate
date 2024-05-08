@@ -7,12 +7,12 @@ import {
 import { useState } from 'react'
 import { useDeltakerContext } from '../../DeltakerContext.tsx'
 import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker.ts'
-import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
+import { API_URL, useMock } from '../../utils/environment-utils'
 
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType
 ): Promise<DeltakerResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/setup/status/${nyStatus}`, {
+  return fetch(`${API_URL}/setup/status/${nyStatus}`, {
     method: 'POST'
   })
     .then((response) => {

@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.02.26_09.22-a08b941e2c0d
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.05.06_08.20-c92409cd4d8b
   port: 8080
   ingresses:
     - https://amt.intern.dev.nav.no/arbeidsmarkedstiltak
@@ -55,6 +55,15 @@ spec:
             "loginProvider": "ID_PORTEN"
           },
           "proxies": [
+            {
+              "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
+              "toUrl": "http://amt-deltaker-bff",
+              "toApp": {
+                "name": "amt-deltaker-bff",
+                "namespace": "amt",
+                "cluster": "dev-gcp"
+              }
+            },
             {
               "fromPath": "/amt-deltaker-bff",
               "toUrl": "http://amt-deltaker-bff",

@@ -15,18 +15,21 @@ export const worker = setupWorker(
       })
     }
   ),
-  http.post('mock/setup/status/:status', async ({ params }) => {
+  http.post('amt-deltaker-bff/setup/status/:status', async ({ params }) => {
     const { status } = params
 
     const response = handler.setStatus(status as DeltakerStatusType)
     return response
   }),
-  http.get('mock/innbygger/:deltakerId', async () => {
+  http.get('amt-deltaker-bff/innbygger/:deltakerId', async () => {
     await delay(1000)
     return handler.getDeltaker()
   }),
-  http.post('mock/innbygger/:deltakerId/godkjenn-utkast', async () => {
-    await delay(1000)
-    return handler.godkjennUtkast()
-  })
+  http.post(
+    'amt-deltaker-bff/innbygger/:deltakerId/godkjenn-utkast',
+    async () => {
+      await delay(1000)
+      return handler.godkjennUtkast()
+    }
+  )
 )
