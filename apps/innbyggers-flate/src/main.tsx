@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
 import './index.css'
-import { useMock } from './utils/environment-utils.ts'
+import { isLocal, useMock } from './utils/environment-utils.ts'
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
@@ -13,7 +13,7 @@ const renderApp = () => {
     env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
     params: {
       level: 'Level4',
-      enforceLogin: true,
+      enforceLogin: isLocal ? false : true,
       logoutWarning: true
     }
   })
