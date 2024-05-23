@@ -10,7 +10,7 @@ interface TilbakeknappProps {
 }
 
 export const Tilbakeknapp = ({
-  tekst = 'Vis deltakelser'
+  tekst = 'Gå til oversikt over brukerens tiltak'
 }: TilbakeknappProps) => {
   const { doRedirect } = useModiaLink()
 
