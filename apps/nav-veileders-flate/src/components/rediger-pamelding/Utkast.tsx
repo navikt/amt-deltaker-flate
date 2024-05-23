@@ -1,5 +1,10 @@
 import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
-import { EMDASH, INNHOLD_TYPE_ANNET, Tiltakstype } from 'deltaker-flate-common'
+import {
+  EMDASH,
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype,
+  deltakerprosentText
+} from 'deltaker-flate-common'
 import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
 
 interface Props {
@@ -21,10 +26,6 @@ export const Utkast = ({
     bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
       ? bakgrunnsinformasjon
       : EMDASH
-
-  const dagerIUkaText = dagerPerUke
-    ? `${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
-    : ''
 
   return (
     <VStack gap="4">
@@ -59,7 +60,7 @@ export const Utkast = ({
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
-            {`${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`}
+            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
           </BodyLong>
         </>
       )}

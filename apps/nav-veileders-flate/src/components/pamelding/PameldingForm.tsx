@@ -172,7 +172,12 @@ export const PameldingForm = ({
 
           {(tiltakstype === Tiltakstype.VASV ||
             tiltakstype === Tiltakstype.ARBFORB) && (
-            <Deltakelsesprosent disabled={isDisabled} />
+            <>
+              <Heading size="medium" level="3" className="mb-4">
+                Deltakelsesmengde
+              </Heading>
+              <Deltakelsesprosent disabled={isDisabled} />
+            </>
           )}
 
           <PameldingFormButtons

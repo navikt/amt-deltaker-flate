@@ -14,6 +14,7 @@ import {
   PERSONOPPLYSNINGER_URL,
   Tiltakstype,
   UtkastHeader,
+  deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -26,9 +27,6 @@ import { svg } from '../ikoner/nav-veileder'
 export const UtkastPage = () => {
   const { deltaker, setDeltaker } = useDeltakerContext()
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
-  const dagerIUkaText = deltaker.dagerPerUke
-    ? `${deltaker.dagerPerUke} ${deltaker.dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
-    : ''
 
   const { deltakerId } = useParams()
   const {
@@ -99,7 +97,10 @@ export const UtkastPage = () => {
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
-            {`${deltaker.deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`}
+            {deltakerprosentText(
+              deltaker.deltakelsesprosent,
+              deltaker.dagerPerUke
+            )}
           </BodyLong>
         </>
       )}
