@@ -2,7 +2,7 @@ import { PameldingRequest } from './data/pamelding-request.ts'
 import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
 import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { deltakerBffApiBasePath } from '../utils/environment-utils.ts'
+import { API_URL } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
   EndreBakgrunnsinfoRequest,
@@ -26,7 +26,7 @@ export const createPamelding = async (
     deltakerlisteId: deltakerlisteId
   }
 
-  return fetch(`${deltakerBffApiBasePath()}/pamelding`, {
+  return fetch(`${API_URL}/pamelding`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -57,7 +57,7 @@ export const createPamelding = async (
 export const getPamelding = async (
   deltakerId: string
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -82,7 +82,7 @@ export const getPamelding = async (
 }
 
 export const deletePamelding = (deltakerId: string): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}`, {
+  return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'DELETE',
     credentials: 'include'
   }).then((response) => response.status)
@@ -93,7 +93,7 @@ export const sendInnPamelding = async (
   enhetId: string,
   request: SendInnPameldingRequest
 ): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}`, {
+  return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -118,19 +118,16 @@ export const sendInnPameldingUtenGodkjenning = (
   enhetId: string,
   request: SendInnPameldingUtenGodkjenningRequest
 ): Promise<number> => {
-  return fetch(
-    `${deltakerBffApiBasePath()}/pamelding/${deltakerId}/utenGodkjenning`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  ).then((response) => {
+  return fetch(`${API_URL}/pamelding/${deltakerId}/utenGodkjenning`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  }).then((response) => {
     if (response.status !== 200) {
       throw new Error(
         `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
@@ -146,19 +143,16 @@ export const endreDeltakelseIkkeAktuell = (
   enhetId: string,
   request: IkkeAktuellRequest
 ): Promise<PameldingResponse> => {
-  return fetch(
-    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/ikke-aktuell`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  )
+  return fetch(`${API_URL}/deltaker/${deltakerId}/ikke-aktuell`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -182,7 +176,7 @@ export const endreDeltakelseForleng = (
   enhetId: string,
   request: ForlengDeltakelseRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/forleng`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/forleng`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -215,7 +209,7 @@ export const endreDeltakelseStartdato = (
   enhetId: string,
   request: EndreStartdatoRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/startdato`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/startdato`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -248,7 +242,7 @@ export const endreDeltakelseSluttdato = (
   enhetId: string,
   request: EndreSluttdatoRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/sluttdato`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/sluttdato`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -281,19 +275,16 @@ export const endreDeltakelseSluttarsak = (
   enhetId: string,
   request: EndreSluttarsakRequest
 ): Promise<PameldingResponse> => {
-  return fetch(
-    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/sluttarsak`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  )
+  return fetch(`${API_URL}/deltaker/${deltakerId}/sluttarsak`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -317,7 +308,7 @@ export const avsluttDeltakelse = (
   enhetId: string,
   request: AvsluttDeltakelseRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/avslutt`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/avslutt`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -350,19 +341,16 @@ export const endreDeltakelseBakgrunnsinfo = (
   enhetId: string,
   request: EndreBakgrunnsinfoRequest
 ): Promise<PameldingResponse> => {
-  return fetch(
-    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/bakgrunnsinformasjon`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  )
+  return fetch(`${API_URL}/deltaker/${deltakerId}/bakgrunnsinformasjon`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -381,7 +369,7 @@ export const endreDeltakelseInnhold = (
   enhetId: string,
   request: EndreInnholdRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/deltaker/${deltakerId}/innhold`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/innhold`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -414,19 +402,16 @@ export const endreDeltakelsesmengde = (
   enhetId: string,
   request: EndreDeltakelsesmengdeRequest
 ): Promise<PameldingResponse> => {
-  return fetch(
-    `${deltakerBffApiBasePath()}/deltaker/${deltakerId}/deltakelsesmengde`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  )
+  return fetch(`${API_URL}/deltaker/${deltakerId}/deltakelsesmengde`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -449,7 +434,7 @@ export const avbrytUtkast = (
   deltakerId: string,
   enhetId: string
 ): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/avbryt`, {
+  return fetch(`${API_URL}/pamelding/${deltakerId}/avbryt`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -472,7 +457,7 @@ export const oppdaterKladd = async (
   enhetId: string,
   request: KladdRequest
 ): Promise<number> => {
-  return fetch(`${deltakerBffApiBasePath()}/pamelding/${deltakerId}/kladd`, {
+  return fetch(`${API_URL}/pamelding/${deltakerId}/kladd`, {
     method: 'POST',
     credentials: 'include',
     headers: {

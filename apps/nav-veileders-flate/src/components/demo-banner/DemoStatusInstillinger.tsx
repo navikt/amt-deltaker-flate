@@ -6,13 +6,13 @@ import {
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { PameldingResponse, pameldingSchema } from '../../api/data/pamelding'
-import { deltakerBffApiBasePath, useMock } from '../../utils/environment-utils'
+import { API_URL, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 
 export const endreMockDeltakelseStatus = (
   nyStatus: DeltakerStatusType
 ): Promise<PameldingResponse> => {
-  return fetch(`${deltakerBffApiBasePath()}/setup/status/${nyStatus}`, {
+  return fetch(`${API_URL}/setup/status/${nyStatus}`, {
     method: 'POST'
   })
     .then((response) => {

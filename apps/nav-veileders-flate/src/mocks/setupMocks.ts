@@ -20,13 +20,13 @@ import { MockHandler } from './MockHandler.ts'
 const handler = new MockHandler()
 
 export const worker = setupWorker(
-  http.post('/mock/setup/status/:status', async ({ params }) => {
+  http.post('/amt-deltaker-bff/setup/status/:status', async ({ params }) => {
     const { status } = params
 
     const response = handler.setStatus(status as DeltakerStatusType)
     return response
   }),
-  http.post('/mock/pamelding', async ({ request }) => {
+  http.post('/amt-deltaker-bff/pamelding', async ({ request }) => {
     await delay(1000)
     const response = await request
       .json()
@@ -35,25 +35,28 @@ export const worker = setupWorker(
 
     return response
   }),
-  http.delete('/mock/pamelding/:deltakerId', async ({ params }) => {
+  http.delete('/amt-deltaker-bff/pamelding/:deltakerId', async ({ params }) => {
     await delay(1000)
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
   }),
-  http.post('/mock/pamelding/:deltakerId', async ({ request, params }) => {
-    await delay(1000)
-
-    const { deltakerId } = params
-
-    const response = await request
-      .json()
-      .then((json) => sendInnPameldingRequestSchema.parse(json))
-      .then((body) => handler.sendInnPamelding(deltakerId as string, body))
-
-    return response
-  }),
   http.post(
-    '/mock/pamelding/:deltakerId/utenGodkjenning',
+    '/amt-deltaker-bff/pamelding/:deltakerId',
+    async ({ request, params }) => {
+      await delay(1000)
+
+      const { deltakerId } = params
+
+      const response = await request
+        .json()
+        .then((json) => sendInnPameldingRequestSchema.parse(json))
+        .then((body) => handler.sendInnPamelding(deltakerId as string, body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/pamelding/:deltakerId/utenGodkjenning',
     async ({ request, params }) => {
       await delay(1000)
 
@@ -71,38 +74,47 @@ export const worker = setupWorker(
       return response
     }
   ),
-  http.post('/mock/deltaker/:deltakerId/ikke-aktuell', async ({ request }) => {
-    await delay(100)
-
-    const response = await request
-      .json()
-      .then((json) => ikkeAktuellSchema.parse(json))
-      .then((body) => handler.endreDeltakelseIkkeAktuell(body))
-
-    return response
-  }),
-  http.post('/mock/deltaker/:deltakerId/forleng', async ({ request }) => {
-    await delay(1000)
-
-    const response = await request
-      .json()
-      .then((json) => forlengDeltakelseSchema.parse(json))
-      .then((body) => handler.endreDeltakelseForleng(body))
-
-    return response
-  }),
-  http.post('/mock/deltaker/:deltakerId/startdato', async ({ request }) => {
-    await delay(1000)
-
-    const response = await request
-      .json()
-      .then((json) => endreStartdatoSchema.parse(json))
-      .then((body) => handler.endreDeltakelseStartdato(body))
-
-    return response
-  }),
   http.post(
-    '/mock/deltaker/:deltakerId/bakgrunnsinformasjon',
+    '/amt-deltaker-bff/deltaker/:deltakerId/ikke-aktuell',
+    async ({ request }) => {
+      await delay(100)
+
+      const response = await request
+        .json()
+        .then((json) => ikkeAktuellSchema.parse(json))
+        .then((body) => handler.endreDeltakelseIkkeAktuell(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/forleng',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => forlengDeltakelseSchema.parse(json))
+        .then((body) => handler.endreDeltakelseForleng(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/startdato',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => endreStartdatoSchema.parse(json))
+        .then((body) => handler.endreDeltakelseStartdato(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/bakgrunnsinformasjon',
     async ({ request }) => {
       await delay(1000)
 
@@ -114,37 +126,46 @@ export const worker = setupWorker(
       return response
     }
   ),
-  http.post('/mock/deltaker/:deltakerId/sluttdato', async ({ request }) => {
-    await delay(1000)
-
-    const response = await request
-      .json()
-      .then((json) => endreSluttdatoSchema.parse(json))
-      .then((body) => handler.endreDeltakelseSluttdato(body))
-
-    return response
-  }),
-  http.post('/mock/deltaker/:deltakerId/sluttarsak', async ({ request }) => {
-    await delay(100)
-
-    const response = await request
-      .json()
-      .then((json) => endreSluttarsakSchema.parse(json))
-      .then((body) => handler.endreDeltakelseSluttarsak(body))
-
-    return response
-  }),
-  http.post('/mock/deltaker/:deltakerId/innhold', async ({ request }) => {
-    await delay(100)
-    const response = await request
-      .json()
-      .then((json) => endreInnholdSchema.parse(json))
-      .then((body) => handler.endreDeltakelseInnhold(body))
-
-    return response
-  }),
   http.post(
-    '/mock/deltaker/:deltakerId/deltakelsesmengde',
+    '/amt-deltaker-bff/deltaker/:deltakerId/sluttdato',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => endreSluttdatoSchema.parse(json))
+        .then((body) => handler.endreDeltakelseSluttdato(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/sluttarsak',
+    async ({ request }) => {
+      await delay(100)
+
+      const response = await request
+        .json()
+        .then((json) => endreSluttarsakSchema.parse(json))
+        .then((body) => handler.endreDeltakelseSluttarsak(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/innhold',
+    async ({ request }) => {
+      await delay(100)
+      const response = await request
+        .json()
+        .then((json) => endreInnholdSchema.parse(json))
+        .then((body) => handler.endreDeltakelseInnhold(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/deltakelsesmengde',
     async ({ request }) => {
       await delay(100)
       const response = await request
@@ -155,18 +176,21 @@ export const worker = setupWorker(
       return response
     }
   ),
-  http.post('/mock/deltaker/:deltakerId/avslutt', async ({ request }) => {
-    await delay(100)
-
-    const response = await request
-      .json()
-      .then((json) => avsluttDeltakelseSchema.parse(json))
-      .then((body) => handler.avsluttDeltakelse(body))
-
-    return response
-  }),
   http.post(
-    '/mock/pamelding/:deltakerId/avbryt',
+    '/amt-deltaker-bff/deltaker/:deltakerId/avslutt',
+    async ({ request }) => {
+      await delay(100)
+
+      const response = await request
+        .json()
+        .then((json) => avsluttDeltakelseSchema.parse(json))
+        .then((body) => handler.avsluttDeltakelse(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/pamelding/:deltakerId/avbryt',
     async ({ request, params }) => {
       await delay(1000)
 
@@ -185,7 +209,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/mock/pamelding/:deltakerId/kladd',
+    '/amt-deltaker-bff/pamelding/:deltakerId/kladd',
     async ({ request, params }) => {
       await delay(1000)
       const { deltakerId } = params

@@ -21,7 +21,7 @@ import {
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { getDialogUrl } from '../../utils/environment-utils.ts'
+import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from './HvaErDette.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
@@ -169,7 +169,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           </span>
         </Link>
 
-        <LinkPanel href={getDialogUrl()} className="mt-8 rounded-lg">
+        <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">
             <ChatElipsisIcon className="text-2xl" />
             <span>
@@ -191,7 +191,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
           deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
           å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
-          {<Link href="https://www.nav.no/klage">retten til å klage her.</Link>}
+          {<Link href={KLAGE_URL}>retten til å klage her.</Link>}
         </BodyLong>
 
         <HvaDelesMedArrangor

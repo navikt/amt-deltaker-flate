@@ -15,6 +15,13 @@ export const worker = setupWorker(
       })
     }
   ),
+  http.get('https://login.ekstern.dev.nav.no/oauth2/session', async () => {
+    return HttpResponse.json({
+      authenticated: true,
+      name: 'Navn Navnesen',
+      securityLevel: '4'
+    })
+  }),
   http.post('amt-deltaker-bff/setup/status/:status', async ({ params }) => {
     const { status } = params
 
