@@ -16,6 +16,7 @@ import {
   HvaDelesMedArrangor,
   INNHOLD_TYPE_ANNET,
   Tiltakstype,
+  deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
@@ -35,18 +36,6 @@ const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
     pamelding.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
     pamelding.deltakerliste.tiltakstype == Tiltakstype.VASV
   )
-}
-
-const deltakelsesMengdeString = (pamelding: PameldingResponse): string => {
-  if (pamelding.dagerPerUke !== null) {
-    if (pamelding.dagerPerUke === 1) {
-      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dag i uka`
-    } else {
-      return `${pamelding.deltakelsesprosent ?? 100}\u00A0% ${pamelding.dagerPerUke} dager i uka`
-    }
-  }
-
-  return `${pamelding.deltakelsesprosent}\u00A0%`
 }
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
@@ -153,7 +142,10 @@ export const DeltakerInfo = ({ className }: Props) => {
               Deltakelsesmengde
             </Heading>
             <BodyLong size="small" className="mt-2">
-              {deltakelsesMengdeString(pamelding)}
+              {deltakerprosentText(
+                pamelding.deltakelsesprosent,
+                pamelding.dagerPerUke
+              )}
             </BodyLong>
           </>
         )}

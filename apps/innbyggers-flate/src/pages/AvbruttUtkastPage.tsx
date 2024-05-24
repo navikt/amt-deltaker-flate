@@ -3,6 +3,7 @@ import {
   EMDASH,
   Tiltakstype,
   UtkastHeader,
+  deltakerprosentText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -13,9 +14,6 @@ export const AvbruttUtkastPage = () => {
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.arrangorNavn
   )
-  const dagerIUkaText = deltaker.dagerPerUke
-    ? `${deltaker.dagerPerUke} ${deltaker.dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
-    : ''
 
   return (
     <div className="flex flex-col items-start mb-4">
@@ -61,7 +59,10 @@ export const AvbruttUtkastPage = () => {
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
-            {`${deltaker.deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`}
+            {deltakerprosentText(
+              deltaker.deltakelsesprosent,
+              deltaker.dagerPerUke
+            )}
           </BodyLong>
         </>
       )}
