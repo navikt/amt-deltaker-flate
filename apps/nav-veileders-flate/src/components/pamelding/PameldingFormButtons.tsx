@@ -39,6 +39,7 @@ export const PameldingFormButtons = ({
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
+  const kanDeleUtkast = pamelding.digitalBruker
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -116,27 +117,36 @@ export const PameldingFormButtons = ({
       )}
 
       <HStack gap="4" className="mt-8">
-        <div className="flex items-center">
-          <Button
-            size="small"
-            disabled={isDisabled}
-            type="button"
-            onClick={handleSubmit(handleFormSubmit, onSubmitError)}
-            loading={sendSomForslagState === DeferredFetchState.LOADING}
-          >
-            {delEndringKappTekst}
-          </Button>
-          {erKladd && (
-            <div className="ml-2">
-              <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
-                Når utkastet deles med bruker så kan de lese gjennom hva du
-                foreslår å sende til arrangøren. Bruker blir varslet og kan
-                finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når
-                brukeren godtar utkastet, så fattes vedtaket.
-              </HelpText>
-            </div>
-          )}
-        </div>
+        {kanDeleUtkast && (
+          <div className="flex items-center">
+            <Button
+              size="small"
+              disabled={isDisabled}
+              type="button"
+              onClick={handleSubmit(handleFormSubmit, onSubmitError)}
+              loading={sendSomForslagState === DeferredFetchState.LOADING}
+            >
+              {delEndringKappTekst}
+            </Button>
+            {erKladd && (
+              <div className="ml-2">
+                <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
+                  Når utkastet deles med bruker så kan de lese gjennom hva du
+                  foreslår å sende til arrangøren. Bruker blir varslet og kan
+                  finne lenke på innlogget nav.no og gjennom aktivitetsplanen.
+                  Når brukeren godtar utkastet, så fattes vedtaket.
+                </HelpText>
+              </div>
+            )}
+          </div>
+        )}
+        {!kanDeleUtkast && (
+          <div className="flex items-center">
+            <Alert variant="warning" className="mt-4 mb-4">
+              Kan ikke kontaktes digitalt
+            </Alert>
+          </div>
+        )}
 
         {erKladd && (
           <Button
