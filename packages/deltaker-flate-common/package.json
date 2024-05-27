@@ -12,15 +12,15 @@
     "lint:fix": "eslint --fix '*.{ts,tsx}'"
   },
   "dependencies": {
-    "@navikt/ds-react": "^6.7.0",
+    "@navikt/ds-react": "^6.8.0",
     "dayjs": "^1.11.11",
     "react": "^18.3.1",
     "typescript": "^5.4.5",
-    "zod": "^3.23.6"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@types/react": "^18.3.1"
+    "@types/react": "^18.3.3"
   }
 }
