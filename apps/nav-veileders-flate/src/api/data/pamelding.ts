@@ -63,7 +63,8 @@ export const pameldingSchema = z.object({
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   adresseDelesMedArrangor: z.boolean(),
-  kanEndres: z.boolean()
+  kanEndres: z.boolean(),
+  digitalBruker: z.boolean()
 })
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>

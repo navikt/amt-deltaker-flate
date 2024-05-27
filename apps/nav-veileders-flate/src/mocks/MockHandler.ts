@@ -69,7 +69,8 @@ export const getPameldingUtenInnhold = (
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
     adresseDelesMedArrangor: true,
-    kanEndres: true
+    kanEndres: true,
+    digitalBruker: true
   }
 }
 
@@ -197,7 +198,8 @@ export class MockHandler {
         sistEndretAvEnhet: 'NAV Fredrikstad'
       },
       adresseDelesMedArrangor: true,
-      kanEndres: true
+      kanEndres: true,
+      digitalBruker: true
     }
 
     this.pamelding = nyPamelding
