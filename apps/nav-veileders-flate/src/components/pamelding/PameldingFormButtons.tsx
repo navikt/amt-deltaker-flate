@@ -142,7 +142,7 @@ export const PameldingFormButtons = ({
         )}
         {!kanDeleUtkast && (
           <div className="flex items-center">
-            <Alert variant="warning" className="mt-4 mb-4">
+            <Alert variant="warning" size="small">
               Kan ikke kontaktes digitalt
             </Alert>
           </div>
