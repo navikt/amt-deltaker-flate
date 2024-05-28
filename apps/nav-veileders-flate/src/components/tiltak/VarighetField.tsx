@@ -1,4 +1,10 @@
-import { DatePicker, Radio, RadioGroup, useDatepicker } from '@navikt/ds-react'
+import {
+  DatePicker,
+  DateValidationT,
+  Radio,
+  RadioGroup,
+  useDatepicker
+} from '@navikt/ds-react'
 import { Tiltakstype } from 'deltaker-flate-common'
 import { useState } from 'react'
 import {
@@ -17,6 +23,7 @@ interface Props {
   errorSluttDato: string | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
+  onValidateSluttDato: (dateValidation: DateValidationT) => void
 }
 
 export const VarighetField = ({
@@ -28,7 +35,8 @@ export const VarighetField = ({
   errorVarighet,
   errorSluttDato,
   onChangeVarighet,
-  onChangeSluttDato
+  onChangeSluttDato,
+  onValidateSluttDato
 }: Props) => {
   const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
@@ -37,6 +45,7 @@ export const VarighetField = ({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
+    onValidate: onValidateSluttDato,
     onDateChange: (date) => {
       onChangeSluttDato(date)
     }

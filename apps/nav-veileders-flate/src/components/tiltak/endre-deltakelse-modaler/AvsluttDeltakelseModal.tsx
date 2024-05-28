@@ -1,4 +1,5 @@
 import {
+  ConfirmationPanel,
   DatePicker,
   Detail,
   Modal,
@@ -31,6 +32,14 @@ import {
 } from '../../../utils/utils.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import {
+  UGYLDIG_DATO_FEILMELDING,
+  VARGIHET_VALG_FEILMELDING,
+  VARIGHET_BEKREFTELSE_FEILMELDING,
+  getSisteGyldigeSluttDato,
+  getSkalBekrefteVarighet,
+  getSoftMaxVarighetBekreftelseText
+} from '../../../utils/varighet.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -60,7 +69,11 @@ export const AvsluttDeltakelseModal = ({
   const [sluttdato, settNySluttDato] = useState<Date | null>()
   const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
   const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
-  const [errorSluttDato, setErrorSluttDato] = useState<boolean>(false)
+  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
+  const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
+  const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
+    string | null
+  >(null)
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
@@ -69,14 +82,21 @@ export const AvsluttDeltakelseModal = ({
   const { enhetId } = useAppContext()
 
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
+  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, sluttdato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
-    toDate:
-      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
+    onValidate: (dateValidation) => {
+      if (dateValidation.isAfter) {
+        setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+      } else if (dateValidation.isInvalid) {
+        setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+      }
+    },
     onDateChange: (date) => {
       settNySluttDato(date)
-      setErrorSluttDato(false)
+      if (date) setErrorSluttDato(null)
     }
   })
 
@@ -88,10 +108,18 @@ export const AvsluttDeltakelseModal = ({
 
   const sendEndring = () => {
     let hasError = false
-    if (harDeltatt && !sluttdato) {
-      setErrorSluttDato(true)
+    if (harDeltatt && !sluttdato && !errorSluttDato) {
+      setErrorSluttDato('Du må velge en sluttdato')
       hasError = true
     }
+    if (harDeltatt && errorSluttDato) {
+      hasError = true
+    }
+    if (skalBekrefteVarighet && !varighetBekreftelse) {
+      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
+      hasError = true
+    }
+
     if (!valgtArsak) {
       setErrorAarsak(true)
       hasError = true
@@ -205,10 +233,27 @@ export const AvsluttDeltakelseModal = ({
                 {...inputProps}
                 size="small"
                 label="Hva er ny sluttdato?"
-                error={errorSluttDato && 'Du må velge en sluttdato'}
+                error={errorSluttDato}
               />
             </DatePicker>
           </section>
+        )}
+        {skalBekrefteVarighet && (
+          <ConfirmationPanel
+            className="mt-6"
+            checked={varighetBekreftelse}
+            label="Ja, deltakeren oppfyller kravene."
+            onChange={() => {
+              setVarighetConfirmation((x) => !x)
+              setErrorVarighetConfirmation(null)
+            }}
+            size="small"
+            error={errorVarighetConfirmation}
+          >
+            {getSoftMaxVarighetBekreftelseText(
+              pamelding.deltakerliste.tiltakstype
+            )}
+          </ConfirmationPanel>
         )}
       </Modal.Body>
       <ModalFooter

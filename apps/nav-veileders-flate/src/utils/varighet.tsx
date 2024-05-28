@@ -1,6 +1,8 @@
 import { BodyLong } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { Tiltakstype } from 'deltaker-flate-common'
+import { PameldingResponse } from '../api/data/pamelding'
+import { dateStrToNullableDate } from './utils'
 
 export enum VarighetValg {
   ANNET = 'ANNET',
@@ -104,6 +106,38 @@ export const kalkulerSluttdato = (
   return dayjs(sluttdato).add(varighet.antall, varighet.tidsenhet).toDate()
 }
 
+export const getMaxVarighetDato = (pamelding: PameldingResponse) =>
+  pamelding.startdato && pamelding.maxVarighet
+    ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
+    : null
+
+export const getSkalBekrefteVarighet = (
+  pamelding: PameldingResponse,
+  nySluttDato?: Date | null
+) => {
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const softMaxVarighetDato =
+    pamelding.startdato && pamelding.softMaxVarighet
+      ? dayjs(pamelding.startdato).add(pamelding.softMaxVarighet, 'millisecond')
+      : null
+  const maxVarighetDato = getMaxVarighetDato(pamelding)
+  return (
+    nySluttDato &&
+    dayjs(nySluttDato).isAfter(softMaxVarighetDato) &&
+    dayjs(nySluttDato).isSameOrBefore(maxVarighetDato) &&
+    (tiltakstype === Tiltakstype.ARBFORB ||
+      tiltakstype === Tiltakstype.INDOPPFAG)
+  )
+}
+
+export const erSluttdatoEtterMaxVarighetsDato = (
+  pamelding: PameldingResponse,
+  sluttdato?: Date
+) => {
+  const maxVarighetDato = getMaxVarighetDato(pamelding)
+  return maxVarighetDato && dayjs(sluttdato).isAfter(maxVarighetDato)
+}
+
 export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
   if (tiltakstype === Tiltakstype.INDOPPFAG) {
     return (
@@ -133,4 +167,27 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
     )
   }
   return null
+}
+
+export const VARGIHET_VALG_FEILMELDING =
+  'Datoen kan ikke velges fordi den er utenfor maks varighet.'
+export const VARIGHET_BEKREFTELSE_FEILMELDING =
+  'Du må bekrefte at deltakeren oppfyller kravene.'
+export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
+
+export const getSisteGyldigeSluttDato = (pamelding: PameldingResponse) => {
+  const deltakerlisteSluttDato = dateStrToNullableDate(
+    pamelding.deltakerliste.sluttdato
+  )
+
+  const maxVarighetDato = getMaxVarighetDato(pamelding)
+  if (!deltakerlisteSluttDato) {
+    return maxVarighetDato?.toDate()
+  } else if (!maxVarighetDato) {
+    return deltakerlisteSluttDato
+  } else if (dayjs(deltakerlisteSluttDato).isAfter(maxVarighetDato)) {
+    return maxVarighetDato.toDate()
+  } else {
+    return deltakerlisteSluttDato
+  }
 }

@@ -1,10 +1,5 @@
 import { BodyShort, ConfirmationPanel, Detail, Modal } from '@navikt/ds-react'
-import dayjs from 'dayjs'
-import {
-  DeferredFetchState,
-  Tiltakstype,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
@@ -17,7 +12,13 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
+  UGYLDIG_DATO_FEILMELDING,
+  VARGIHET_VALG_FEILMELDING,
+  VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
+  erSluttdatoEtterMaxVarighetsDato,
+  getSisteGyldigeSluttDato,
+  getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   getVarighet,
   kalkulerSluttdato
@@ -53,20 +54,7 @@ export const ForlengDeltakelseModal = ({
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
 
-  const softMaxVarighetDato =
-    pamelding.startdato && pamelding.softMaxVarighet
-      ? dayjs(pamelding.startdato).add(pamelding.softMaxVarighet, 'millisecond')
-      : null
-  const maxVarighetDato =
-    pamelding.startdato && pamelding.maxVarighet
-      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
-      : null
-  const skalBekrefteVarighet =
-    nySluttDato &&
-    dayjs(nySluttDato).isAfter(softMaxVarighetDato) &&
-    dayjs(nySluttDato).isSameOrBefore(maxVarighetDato) &&
-    (tiltakstype === Tiltakstype.ARBFORB ||
-      tiltakstype === Tiltakstype.INDOPPFAG)
+  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const {
     state: endreDeltakelseState,
@@ -80,19 +68,16 @@ export const ForlengDeltakelseModal = ({
       setErrorVarighet('Du må velge varighet')
       hasError = true
     }
-    if (!nySluttDato) {
+    if (!nySluttDato && !errorSluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
       hasError = true
     }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
-      setErrorVarighetConfirmation(
-        'Du må bekrefte at deltakeren oppfyller kravene.'
-      )
+      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
     }
-    // TODO sjekke om ny sluttdato er lenger enn maxvarighetsdato
 
-    if (!hasError && nySluttDato) {
+    if (!hasError && !errorVarighet && !errorSluttDato && nySluttDato) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(nySluttDato)
       }).then((data) => {
@@ -106,10 +91,8 @@ export const ForlengDeltakelseModal = ({
     const varighet = getVarighet(valg)
 
     const handleErrorVarighet = (sluttdato: Date | undefined) => {
-      if (maxVarighetDato && dayjs(sluttdato).isAfter(maxVarighetDato)) {
-        setErrorVarighet(
-          'Datoen kan ikke velges fordi den er utenfor maks varighet.'
-        )
+      if (erSluttdatoEtterMaxVarighetsDato(pamelding, sluttdato)) {
+        setErrorVarighet(VARGIHET_VALG_FEILMELDING)
       } else {
         setErrorVarighet(null)
       }
@@ -151,10 +134,7 @@ export const ForlengDeltakelseModal = ({
           className="mt-4"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           startDato={sluttdatoDeltaker || undefined}
-          sluttdato={
-            dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
-            undefined
-          }
+          sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}
           onChangeVarighet={handleChangeVarighet}
@@ -162,6 +142,13 @@ export const ForlengDeltakelseModal = ({
             settNySluttDato(date)
             setSluttDatoField(date)
             setErrorSluttDato(null)
+          }}
+          onValidateSluttDato={(dateValidation) => {
+            if (dateValidation.isAfter) {
+              setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+            } else if (dateValidation.isInvalid) {
+              setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+            }
           }}
         />
         {nySluttDato && (

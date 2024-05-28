@@ -1,5 +1,6 @@
 import {
   BodyShort,
+  ConfirmationPanel,
   DatePicker,
   Detail,
   Modal,
@@ -23,7 +24,17 @@ import {
   formatDateToDateInputStr,
   formatDateToString
 } from '../../../utils/utils.ts'
-import { VarighetValg, getVarighet } from '../../../utils/varighet.tsx'
+import {
+  UGYLDIG_DATO_FEILMELDING,
+  VARGIHET_VALG_FEILMELDING,
+  VARIGHET_BEKREFTELSE_FEILMELDING,
+  VarighetValg,
+  getMaxVarighetDato,
+  getSisteGyldigeSluttDato,
+  getSkalBekrefteVarighet,
+  getSoftMaxVarighetBekreftelseText,
+  getVarighet
+} from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VarighetField } from '../VarighetField.tsx'
@@ -48,17 +59,24 @@ export const EndreOppstartsdatoModal = ({
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
+  const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
+  const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
+    string | null
+  >(null)
 
+  const maxSluttDato = getSisteGyldigeSluttDato(pamelding)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
   const feilmeldingSluttdato = `Du må sette en sluttdato som er før sluttdatoen for tiltaksgjennomføringen: ${formatDateFromString(
     pamelding.deltakerliste.sluttdato
   )}`
+  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const erValgtSluttdatoGyldig = (sluttDato: dayjs.Dayjs) => {
+    const maxVarighetDato = getMaxVarighetDato(pamelding)
     return (
       sluttDato.isSameOrAfter(pamelding.deltakerliste.startdato, 'day') &&
-      sluttDato.isSameOrBefore(pamelding.deltakerliste.sluttdato, 'day')
+      sluttDato.isSameOrBefore(maxVarighetDato, 'day')
     )
   }
 
@@ -70,8 +88,7 @@ export const EndreOppstartsdatoModal = ({
     // TODO i arrangør flate er disse datoene maks 2 mnd tilbake/frem i tid
     fromDate:
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
-    toDate:
-      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
@@ -137,20 +154,22 @@ export const EndreOppstartsdatoModal = ({
       setErrorStartDato('Du må velge startdato')
       hasError = true
     }
-    if (skalVelgeVarighet && !nySluttDato) {
+    if (skalVelgeVarighet && !nySluttDato && !errorSluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
       hasError = true
     }
 
-    if (skalVelgeVarighet && !valgtVarighet) {
-      setErrorVarighet('Du må velge vargihet')
+    if (skalBekrefteVarighet && !varighetBekreftelse) {
+      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
-    } else if (
-      skalVelgeVarighet &&
-      nySluttDato &&
-      !erValgtSluttdatoGyldig(dayjs(nySluttDato))
-    ) {
-      setErrorVarighet(feilmeldingSluttdato)
+    }
+
+    if (skalVelgeVarighet && errorSluttDato) {
+      hasError = true
+    }
+
+    if (skalVelgeVarighet && !valgtVarighet) {
+      setErrorVarighet('Du må velge varighet')
       hasError = true
     } else if (
       skalVelgeVarighet &&
@@ -205,15 +224,8 @@ export const EndreOppstartsdatoModal = ({
               title="Hva er forventet varighet?"
               className="mt-8"
               tiltakstype={pamelding.deltakerliste.tiltakstype}
-              startDato={
-                nyStartdato ||
-                dateStrToNullableDate(pamelding.deltakerliste.startdato) ||
-                undefined
-              }
-              sluttdato={
-                dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
-                undefined
-              }
+              startDato={nyStartdato || undefined}
+              sluttdato={maxSluttDato || undefined}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
               onChangeVarighet={onChangeVarighet}
@@ -224,10 +236,33 @@ export const EndreOppstartsdatoModal = ({
                   setSluttDatoField(date)
                 } else settNySluttDato(undefined)
               }}
+              onValidateSluttDato={(dateValidation) => {
+                if (dateValidation.isAfter) {
+                  setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+                } else if (dateValidation.isInvalid) {
+                  setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+                }
+              }}
             />
             <BodyShort className="mt-2" size="small">
               Forventet sluttdato: {formatDateToString(nySluttDato) || '—'}
             </BodyShort>
+
+            {skalBekrefteVarighet && (
+              <ConfirmationPanel
+                className="mt-6"
+                checked={varighetBekreftelse}
+                label="Ja, deltakeren oppfyller kravene."
+                onChange={() => {
+                  setVarighetConfirmation((x) => !x)
+                  setErrorVarighetConfirmation(null)
+                }}
+                size="small"
+                error={errorVarighetConfirmation}
+              >
+                {getSoftMaxVarighetBekreftelseText(tiltakstype)}
+              </ConfirmationPanel>
+            )}
           </>
         )}
       </Modal.Body>
