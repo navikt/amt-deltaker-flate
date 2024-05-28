@@ -1,3 +1,4 @@
+import { BodyLong } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { Tiltakstype } from 'deltaker-flate-common'
 
@@ -101,4 +102,35 @@ export const kalkulerSluttdato = (
   varighet: Varighet
 ): Date => {
   return dayjs(sluttdato).add(varighet.antall, varighet.tidsenhet).toDate()
+}
+
+export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
+  if (tiltakstype === Tiltakstype.INDOPPFAG) {
+    return (
+      <BodyLong>
+        Sluttdatoen er utenfor hovedregelen for maks varighet.<br></br>
+        <br></br>
+        Som hovedregel kan varigheten være maks tre år for brukere med nedsatt
+        arbeidsevne. Hvis tiltaket brukes ved overgang fra skole eller soning i
+        institusjon kan varigheten forlenges med ytterligere seks måneder.{' '}
+        <br></br>
+        <br></br>
+        Brukes tiltaket ved overgang fra skole eller soning i institusjon?
+      </BodyLong>
+    )
+  }
+  if (tiltakstype === Tiltakstype.ARBFORB) {
+    return (
+      <BodyLong>
+        Sluttdatoen er utenfor hovedregelen for maks varighet. <br></br>
+        <br></br>
+        Som hovedregel kan varigheten være maks to år. Hvis deltakeren
+        gjennomfører opplæring med sikte på formell kompetanse, kan varigheten
+        forlenges med ytterligere ett år.<br></br>
+        <br></br>
+        Gjennomfører personen opplæring med sikte på formell kompetanse?
+      </BodyLong>
+    )
+  }
+  return null
 }

@@ -23,10 +23,10 @@ import {
   formatDateToDateInputStr,
   formatDateToString
 } from '../../../utils/utils.ts'
-import { VarighetValg, getVarighet } from '../../../utils/varighet.ts'
+import { VarighetValg, getVarighet } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { VargihetField } from '../VargihetField.tsx'
+import { VarighetField } from '../VarighetField.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -44,6 +44,7 @@ export const EndreOppstartsdatoModal = ({
   const { enhetId } = useAppContext()
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>()
   const [nySluttDato, settNySluttDato] = useState<Date>()
+  const [sluttDatoField, setSluttDatoField] = useState<Date>()
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
@@ -102,7 +103,7 @@ export const EndreOppstartsdatoModal = ({
     const varighet = getVarighet(valg)
 
     if (valg === VarighetValg.ANNET) {
-      settNySluttDato(undefined)
+      settNySluttDato(sluttDatoField)
       setErrorVarighet(null)
     } else if (nyStartdato && varighet) {
       const varighetAntall = varighet.antall
@@ -116,6 +117,8 @@ export const EndreOppstartsdatoModal = ({
       if (!erValgtSluttdatoGyldig(valgtSluttdato)) {
         setErrorVarighet(feilmeldingSluttdato)
       } else setErrorVarighet(null)
+    } else {
+      settNySluttDato(undefined)
     }
 
     setErrorSluttDato(null)
@@ -198,7 +201,7 @@ export const EndreOppstartsdatoModal = ({
         </DatePicker>
         {skalVelgeVarighet && (
           <>
-            <VargihetField
+            <VarighetField
               title="Hva er forventet varighet?"
               className="mt-8"
               tiltakstype={pamelding.deltakerliste.tiltakstype}
@@ -211,14 +214,15 @@ export const EndreOppstartsdatoModal = ({
                 dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
                 undefined
               }
-              valgtDato={nySluttDato || undefined}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
               onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)
-                if (date) settNySluttDato(date)
-                else settNySluttDato(undefined)
+                if (date) {
+                  settNySluttDato(date)
+                  setSluttDatoField(date)
+                } else settNySluttDato(undefined)
               }}
             />
             <BodyShort className="mt-2" size="small">

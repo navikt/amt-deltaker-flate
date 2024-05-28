@@ -64,7 +64,9 @@ export const pameldingSchema = z.object({
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   adresseDelesMedArrangor: z.boolean(),
   kanEndres: z.boolean(),
-  digitalBruker: z.boolean()
+  digitalBruker: z.boolean(),
+  maxVarighet: z.number().nullable(),
+  softMaxVarighet: z.number().nullable()
 })
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>

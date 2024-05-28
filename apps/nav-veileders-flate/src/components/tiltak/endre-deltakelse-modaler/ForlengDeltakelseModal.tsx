@@ -1,5 +1,10 @@
-import { BodyShort, Detail, Modal } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import { BodyShort, ConfirmationPanel, Detail, Modal } from '@navikt/ds-react'
+import dayjs from 'dayjs'
+import {
+  DeferredFetchState,
+  Tiltakstype,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
@@ -13,12 +18,13 @@ import {
 } from '../../../utils/utils.ts'
 import {
   VarighetValg,
+  getSoftMaxVarighetBekreftelseText,
   getVarighet,
   kalkulerSluttdato
-} from '../../../utils/varighet.ts'
+} from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { VargihetField } from '../VargihetField.tsx'
+import { VarighetField } from '../VarighetField.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -35,11 +41,32 @@ export const ForlengDeltakelseModal = ({
 }: ForlengDeltakelseModalProps) => {
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
   const [nySluttDato, settNySluttDato] = useState<Date>()
+  const [sluttDatoField, setSluttDatoField] = useState<Date>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
+  const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
+  const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
+    string | null
+  >(null)
 
-  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
+
+  const softMaxVarighetDato =
+    pamelding.startdato && pamelding.softMaxVarighet
+      ? dayjs(pamelding.startdato).add(pamelding.softMaxVarighet, 'millisecond')
+      : null
+  const maxVarighetDato =
+    pamelding.startdato && pamelding.maxVarighet
+      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
+      : null
+  const skalBekrefteVarighet =
+    nySluttDato &&
+    dayjs(nySluttDato).isAfter(softMaxVarighetDato) &&
+    dayjs(nySluttDato).isSameOrBefore(maxVarighetDato) &&
+    (tiltakstype === Tiltakstype.ARBFORB ||
+      tiltakstype === Tiltakstype.INDOPPFAG)
 
   const {
     state: endreDeltakelseState,
@@ -48,14 +75,24 @@ export const ForlengDeltakelseModal = ({
   } = useDeferredFetch(endreDeltakelseForleng)
 
   const sendEndring = () => {
+    let hasError = false
     if (!valgtVarighet) {
       setErrorVarighet('Du må velge varighet')
+      hasError = true
     }
     if (!nySluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
+      hasError = true
     }
+    if (skalBekrefteVarighet && !varighetBekreftelse) {
+      setErrorVarighetConfirmation(
+        'Du må bekrefte at deltakeren oppfyller kravene.'
+      )
+      hasError = true
+    }
+    // TODO sjekke om ny sluttdato er lenger enn maxvarighetsdato
 
-    if (nySluttDato) {
+    if (!hasError && nySluttDato) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(nySluttDato)
       }).then((data) => {
@@ -67,11 +104,28 @@ export const ForlengDeltakelseModal = ({
   const handleChangeVarighet = (valg: VarighetValg) => {
     setValgtVarighet(valg)
     const varighet = getVarighet(valg)
-    if (varighet && sluttdato) {
-      settNySluttDato(kalkulerSluttdato(sluttdato, varighet))
-    } else settNySluttDato(undefined)
 
-    setErrorVarighet(null)
+    const handleErrorVarighet = (sluttdato: Date | undefined) => {
+      if (maxVarighetDato && dayjs(sluttdato).isAfter(maxVarighetDato)) {
+        setErrorVarighet(
+          'Datoen kan ikke velges fordi den er utenfor maks varighet.'
+        )
+      } else {
+        setErrorVarighet(null)
+      }
+    }
+
+    if (valg === VarighetValg.ANNET) {
+      settNySluttDato(sluttDatoField)
+      handleErrorVarighet(sluttDatoField)
+    } else if (varighet && sluttdatoDeltaker) {
+      const nySluttDato = kalkulerSluttdato(sluttdatoDeltaker, varighet)
+      settNySluttDato(nySluttDato)
+      handleErrorVarighet(nySluttDato)
+    } else {
+      settNySluttDato(undefined)
+      setErrorVarighet(null)
+    }
   }
 
   return (
@@ -92,21 +146,21 @@ export const ForlengDeltakelseModal = ({
           endringen.
         </Detail>
 
-        <VargihetField
+        <VarighetField
           title="Hvor lenge skal deltakelsen forlenges?"
           className="mt-4"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
-          startDato={sluttdato || undefined}
+          startDato={sluttdatoDeltaker || undefined}
           sluttdato={
             dateStrToNullableDate(pamelding.deltakerliste.sluttdato) ||
             undefined
           }
-          valgtDato={nySluttDato}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}
           onChangeVarighet={handleChangeVarighet}
           onChangeSluttDato={(date) => {
             settNySluttDato(date)
+            setSluttDatoField(date)
             setErrorSluttDato(null)
           }}
         />
@@ -114,6 +168,21 @@ export const ForlengDeltakelseModal = ({
           <BodyShort className="mt-2" size="small">
             Ny sluttdato: {formatDateToString(nySluttDato)}
           </BodyShort>
+        )}
+        {skalBekrefteVarighet && (
+          <ConfirmationPanel
+            className="mt-6"
+            checked={varighetBekreftelse}
+            label="Ja, deltakeren oppfyller kravene."
+            onChange={() => {
+              setVarighetConfirmation((x) => !x)
+              setErrorVarighetConfirmation(null)
+            }}
+            size="small"
+            error={errorVarighetConfirmation}
+          >
+            {getSoftMaxVarighetBekreftelseText(tiltakstype)}
+          </ConfirmationPanel>
         )}
       </Modal.Body>
       <ModalFooter

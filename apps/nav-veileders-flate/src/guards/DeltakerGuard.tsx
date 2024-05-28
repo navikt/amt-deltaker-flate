@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import duration from 'dayjs/plugin/duration'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
@@ -11,6 +12,7 @@ import { TiltakPage } from '../pages/TiltakPage.tsx'
 dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
+dayjs.extend(duration)
 
 export const DeltakerGuard = () => {
   const { pamelding } = usePameldingContext()
