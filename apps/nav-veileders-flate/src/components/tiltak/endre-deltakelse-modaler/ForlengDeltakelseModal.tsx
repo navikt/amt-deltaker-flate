@@ -95,6 +95,7 @@ export const ForlengDeltakelseModal = ({
         setErrorVarighet(VARGIHET_VALG_FEILMELDING)
       } else {
         setErrorVarighet(null)
+        setErrorSluttDato(null)
       }
     }
 
