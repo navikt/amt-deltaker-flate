@@ -43,7 +43,7 @@ export const EndreSluttdatoModal = ({
 }: EndreSluttdatoModalProps) => {
   const { enhetId } = useAppContext()
   const [sluttdato, settNySluttdato] = useState<Date | null>()
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [errorSluttdato, setErrorSluttdato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -56,15 +56,15 @@ export const EndreSluttdatoModal = ({
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     onValidate: (dateValidation) => {
       if (dateValidation.isAfter) {
-        setErrorMessage(VARGIHET_VALG_FEILMELDING)
+        setErrorSluttdato(VARGIHET_VALG_FEILMELDING)
       } else if (dateValidation.isInvalid) {
-        setErrorMessage(UGYLDIG_DATO_FEILMELDING)
+        setErrorSluttdato(UGYLDIG_DATO_FEILMELDING)
       }
     },
     onDateChange: (date) => {
       settNySluttdato(date)
       if (!erSluttdatoEtterMaxVarighetsDato(pamelding, date)) {
-        setErrorMessage(null)
+        setErrorSluttdato(null)
       }
     }
   })
@@ -76,10 +76,11 @@ export const EndreSluttdatoModal = ({
   } = useDeferredFetch(endreDeltakelseSluttdato)
 
   const sendEndring = () => {
-    if (!sluttdato && !errorMessage) setErrorMessage('Du må velge sluttdato')
+    if (!sluttdato && !errorSluttdato)
+      setErrorSluttdato('Du må velge sluttdato')
     else if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
-    } else if (sluttdato && !errorMessage) {
+    } else if (sluttdato && !errorSluttdato) {
       doFetchEndreDeltakelseSluttdato(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(sluttdato)
       }).then((data) => {
@@ -109,7 +110,7 @@ export const EndreSluttdatoModal = ({
           <DatePicker.Input
             {...inputProps}
             label="Ny sluttdato"
-            error={errorMessage}
+            error={errorSluttdato}
             size="small"
           />
         </DatePicker>

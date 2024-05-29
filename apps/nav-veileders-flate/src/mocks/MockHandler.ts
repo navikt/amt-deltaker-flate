@@ -202,7 +202,7 @@ export class MockHandler {
       adresseDelesMedArrangor: true,
       kanEndres: true,
       digitalBruker: true,
-      maxVarighet: dayjs.duration(7, 'month').asMilliseconds(),
+      maxVarighet: dayjs.duration(4, 'month').asMilliseconds(),
       softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
     }
 

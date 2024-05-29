@@ -10,7 +10,6 @@ import dayjs from 'dayjs'
 import {
   DeferredFetchState,
   Tiltakstype,
-  formatDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -27,6 +26,7 @@ import {
 import {
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
+  VARIGHET_VALG_FØR_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
   getMaxVarighetDato,
@@ -64,19 +64,16 @@ export const EndreOppstartsdatoModal = ({
     string | null
   >(null)
 
-  const maxSluttDato = getSisteGyldigeSluttDato(pamelding)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
-  const feilmeldingSluttdato = `Du må sette en sluttdato som er før sluttdatoen for tiltaksgjennomføringen: ${formatDateFromString(
-    pamelding.deltakerliste.sluttdato
-  )}`
-  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, nySluttDato)
 
-  const erValgtSluttdatoGyldig = (sluttDato: dayjs.Dayjs) => {
-    const maxVarighetDato = getMaxVarighetDato(pamelding)
+  const erValgtSluttdatoGyldig = (startDato: Date, sluttDato: Date) => {
+    const maxVarighetDato = getMaxVarighetDato(pamelding, startDato)
     return (
-      sluttDato.isSameOrAfter(pamelding.deltakerliste.startdato, 'day') &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'day')
+      dayjs(sluttDato).isSameOrAfter(
+        pamelding.deltakerliste.startdato,
+        'day'
+      ) && dayjs(sluttDato).isSameOrBefore(maxVarighetDato, 'day')
     )
   }
 
@@ -85,36 +82,63 @@ export const EndreOppstartsdatoModal = ({
     inputProps,
     selectedDay: nyStartdato
   } = useDatepicker({
-    // TODO i arrangør flate er disse datoene maks 2 mnd tilbake/frem i tid
     fromDate:
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
+    onValidate: (dateValidation) => {
+      if (dateValidation.isAfter || dateValidation.isBefore) {
+        setErrorStartDato(
+          'Datoen kan ikke velges fordi den er utenfor gyldig tid.'
+        )
+      } else if (dateValidation.isInvalid) {
+        setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
+      } else {
+        setErrorStartDato(null)
+      }
+    },
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
         const varighetAntall = varighet.antall
         const varighetTidsEnhet = varighet.tidsenhet
-        const sluttDato = dayjs(date).add(varighetAntall, varighetTidsEnhet)
+        const sluttDato = date
+          ? dayjs(date).add(varighetAntall, varighetTidsEnhet)
+          : undefined
 
-        settNySluttDato(sluttDato.toDate())
-
-        if (!erValgtSluttdatoGyldig(sluttDato)) {
-          setErrorVarighet(feilmeldingSluttdato)
+        settNySluttDato(sluttDato?.toDate())
+        if (
+          sluttDato &&
+          date &&
+          !erValgtSluttdatoGyldig(date, sluttDato.toDate())
+        ) {
+          setErrorVarighet(VARGIHET_VALG_FEILMELDING)
         } else setErrorVarighet(null)
       } else if (
         valgtVarighet === VarighetValg.ANNET &&
+        nySluttDato &&
         dayjs(nySluttDato).isBefore(date)
       ) {
-        setErrorVarighet(
+        setErrorSluttDato(
           'Du må sette en sluttdato som er etter oppstartsdatoen.'
         )
+      } else if (
+        valgtVarighet === VarighetValg.ANNET &&
+        nySluttDato &&
+        date &&
+        !erValgtSluttdatoGyldig(date, nySluttDato)
+      ) {
+        setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
       } else {
         setErrorVarighet(null)
+        setErrorSluttDato(null)
       }
-
-      setErrorStartDato(null)
     }
   })
+
+  const skalBekrefteVarighet =
+    nyStartdato && getSkalBekrefteVarighet(pamelding, nySluttDato, nyStartdato)
+
+  const maxSluttDato = getSisteGyldigeSluttDato(pamelding, nyStartdato)
 
   const onChangeVarighet = (valg: VarighetValg) => {
     const varighet = getVarighet(valg)
@@ -123,22 +147,19 @@ export const EndreOppstartsdatoModal = ({
       settNySluttDato(sluttDatoField)
       setErrorVarighet(null)
     } else if (nyStartdato && varighet) {
-      const varighetAntall = varighet.antall
-      const varighetTidsEnhet = varighet.tidsenhet
       const valgtSluttdato = dayjs(nyStartdato).add(
-        varighetAntall,
-        varighetTidsEnhet
+        varighet.antall,
+        varighet.tidsenhet
       )
       settNySluttDato(valgtSluttdato.toDate())
 
-      if (!erValgtSluttdatoGyldig(valgtSluttdato)) {
-        setErrorVarighet(feilmeldingSluttdato)
+      if (!erValgtSluttdatoGyldig(nyStartdato, valgtSluttdato.toDate())) {
+        setErrorVarighet(VARGIHET_VALG_FEILMELDING)
       } else setErrorVarighet(null)
     } else {
       settNySluttDato(undefined)
     }
 
-    setErrorSluttDato(null)
     setValgtVarighet(valg)
   }
 
@@ -164,7 +185,11 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
-    if (skalVelgeVarighet && errorSluttDato) {
+    if (
+      skalVelgeVarighet &&
+      valgtVarighet === VarighetValg.ANNET &&
+      errorSluttDato
+    ) {
       hasError = true
     }
 
@@ -178,6 +203,14 @@ export const EndreOppstartsdatoModal = ({
       dayjs(nySluttDato).isBefore(nyStartdato)
     ) {
       setErrorVarighet('Du må sette en sluttdato som er etter oppstartsdatoen.')
+      hasError = true
+    } else if (
+      skalVelgeVarighet &&
+      valgtVarighet &&
+      nyStartdato &&
+      nySluttDato &&
+      !erValgtSluttdatoGyldig(nyStartdato, nySluttDato)
+    ) {
       hasError = true
     }
 
@@ -231,14 +264,14 @@ export const EndreOppstartsdatoModal = ({
               onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)
-                if (date) {
-                  settNySluttDato(date)
-                  setSluttDatoField(date)
-                } else settNySluttDato(undefined)
+                setSluttDatoField(date)
+                settNySluttDato(date)
               }}
               onValidateSluttDato={(dateValidation) => {
                 if (dateValidation.isAfter) {
                   setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+                } else if (dateValidation.isBefore) {
+                  setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
                 } else if (dateValidation.isInvalid) {
                   setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
                 }

@@ -15,6 +15,7 @@ import {
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
+  VARIGHET_VALG_FØR_FEILMELDING,
   VarighetValg,
   erSluttdatoEtterMaxVarighetsDato,
   getSisteGyldigeSluttDato,
@@ -77,7 +78,11 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (!hasError && !errorVarighet && !errorSluttDato && nySluttDato) {
+    if (valgtVarighet === VarighetValg.ANNET && errorSluttDato) {
+      hasError = true
+    }
+
+    if (!hasError && !errorVarighet && nySluttDato) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(nySluttDato)
       }).then((data) => {
@@ -95,7 +100,7 @@ export const ForlengDeltakelseModal = ({
         setErrorVarighet(VARGIHET_VALG_FEILMELDING)
       } else {
         setErrorVarighet(null)
-        setErrorSluttDato(null)
+        // setErrorSluttDato(null)
       }
     }
 
@@ -147,6 +152,8 @@ export const ForlengDeltakelseModal = ({
           onValidateSluttDato={(dateValidation) => {
             if (dateValidation.isAfter) {
               setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+            } else if (dateValidation.isBefore) {
+              setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
             } else if (dateValidation.isInvalid) {
               setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
             }
