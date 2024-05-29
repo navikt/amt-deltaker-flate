@@ -198,8 +198,12 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
   return null
 }
 
+export const DATO_UTENFOR_TILTAKGJENNOMFORING =
+  'Datoen kan ikke velges fordi den er utenfor perioden til tiltaket.'
 export const VARIGHET_VALG_FØR_FEILMELDING =
   'Datoen kan ikke velges fordi den er før startdato.'
+export const VARIGHET_VALG_ETTER_DELTAKERLISTE_SLUTTDATO_FEILMELDING =
+  'Datoen kan ikke velges fordi den er etter gjennomføringens sluttdato.'
 export const VARGIHET_VALG_FEILMELDING =
   'Datoen kan ikke velges fordi den er utenfor maks varighet.'
 export const VARIGHET_BEKREFTELSE_FEILMELDING =

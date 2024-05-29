@@ -33,7 +33,8 @@ import {
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
-  getVarighet
+  getVarighet,
+  DATO_UTENFOR_TILTAKGJENNOMFORING
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -94,14 +95,8 @@ export const EndreOppstartsdatoModal = ({
       dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
     defaultSelected: dayjs(pamelding.startdato).toDate(),
     onValidate: (dateValidation) => {
-      if (dateValidation.isBefore) {
-        setErrorStartDato(
-          'Datoen kan ikke velges fordi den er før deltakerlistens startdato.'
-        )
-      } else if (dateValidation.isAfter) {
-        setErrorStartDato(
-          'Datoen kan ikke velges fordi den er etter deltakerlistens sluttdato.'
-        )
+      if (dateValidation.isBefore || dateValidation.isAfter) {
+        setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
       } else if (dateValidation.isInvalid) {
         setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
       } else {
