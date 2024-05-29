@@ -15,7 +15,7 @@ export const formatDateToDateInputStr = (date: Date): string => {
  * @param date
  * @returns string date, norsk format
  */
-export const formatDateToString = (date?: Date): string | undefined => {
+export const formatDateToString = (date?: Date | null): string | undefined => {
   return date ? dayjs(date).format('DD.MM.YYYY') : undefined
 }
 

@@ -53,9 +53,15 @@ export const EndreOppstartsdatoModal = ({
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>()
-  const [nySluttDato, settNySluttDato] = useState<Date>()
-  const [sluttDatoField, setSluttDatoField] = useState<Date>()
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(
+    pamelding.sluttdato ? VarighetValg.ANNET : null
+  )
+  const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
+    pamelding.sluttdato ? dayjs(pamelding.sluttdato).toDate() : undefined
+  )
+  const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
+    pamelding.sluttdato ? dayjs(pamelding.sluttdato).toDate() : undefined
+  )
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
@@ -86,6 +92,7 @@ export const EndreOppstartsdatoModal = ({
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate:
       dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    defaultSelected: dayjs(pamelding.startdato).toDate(),
     onValidate: (dateValidation) => {
       if (dateValidation.isBefore) {
         setErrorStartDato(
@@ -261,6 +268,8 @@ export const EndreOppstartsdatoModal = ({
               sluttdato={maxSluttDato || undefined}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
+              defaultVarighet={valgtVarighet}
+              defaultSelectedDate={nySluttDato}
               onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)
