@@ -1,6 +1,10 @@
 import { BodyLong } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import { Tiltakstype } from 'deltaker-flate-common'
+import {
+  Tiltakstype,
+  getDateFromString,
+  isValidDate
+} from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import { dateStrToNullableDate } from './utils'
 
@@ -122,7 +126,7 @@ export const getMaxVarighetDato = (
   if (nyStartdato && pamelding.maxVarighet) {
     return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
   }
-  return pamelding.startdato
+  return isValidDate(pamelding.startdato)
     ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
     : null
 }
@@ -133,9 +137,7 @@ export const getSkalBekrefteVarighet = (
   nyStartdato?: Date | null
 ) => {
   const tiltakstype = pamelding.deltakerliste.tiltakstype
-  const startdato =
-    nyStartdato ||
-    (pamelding.startdato ? dayjs(pamelding.startdato).toDate() : undefined)
+  const startdato = nyStartdato || getDateFromString(pamelding.startdato)
   const softMaxVarighetDato =
     startdato && pamelding.softMaxVarighet
       ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')

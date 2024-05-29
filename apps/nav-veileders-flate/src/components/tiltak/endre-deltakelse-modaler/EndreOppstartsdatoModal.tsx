@@ -10,6 +10,8 @@ import dayjs from 'dayjs'
 import {
   DeferredFetchState,
   Tiltakstype,
+  getDateFromString,
+  isValidDate,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -53,15 +55,18 @@ export const EndreOppstartsdatoModal = ({
   onClose,
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
+  const validDeltakerSluttDato = getDateFromString(pamelding.sluttdato)
+
   const { enhetId } = useAppContext()
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    pamelding.sluttdato ? VarighetValg.ANNET : undefined
+    isValidDate(pamelding.sluttdato) ? VarighetValg.ANNET : undefined
   )
+
   const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
-    pamelding.sluttdato ? dayjs(pamelding.sluttdato).toDate() : undefined
+    validDeltakerSluttDato
   )
   const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
-    pamelding.sluttdato ? dayjs(pamelding.sluttdato).toDate() : undefined
+    validDeltakerSluttDato
   )
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
@@ -93,7 +98,8 @@ export const EndreOppstartsdatoModal = ({
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate:
       dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
-    defaultSelected: dayjs(pamelding.startdato).toDate(),
+    defaultMonth: dayjs().toDate(),
+    defaultSelected: getDateFromString(pamelding.startdato),
     onValidate: (dateValidation) => {
       if (dateValidation.isBefore || dateValidation.isAfter) {
         setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
@@ -259,8 +265,8 @@ export const EndreOppstartsdatoModal = ({
               title="Hva er forventet varighet?"
               className="mt-8"
               tiltakstype={pamelding.deltakerliste.tiltakstype}
-              startDato={nyStartdato || undefined}
-              sluttdato={maxSluttDato || undefined}
+              startDato={nyStartdato}
+              sluttdato={maxSluttDato}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
               defaultVarighet={valgtVarighet}
