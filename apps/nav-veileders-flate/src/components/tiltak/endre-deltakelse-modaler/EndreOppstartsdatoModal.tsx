@@ -86,10 +86,12 @@ export const EndreOppstartsdatoModal = ({
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     onValidate: (dateValidation) => {
-      if (dateValidation.isAfter || dateValidation.isBefore) {
+      if (dateValidation.isBefore) {
         setErrorStartDato(
-          'Datoen kan ikke velges fordi den er utenfor gyldig tid.'
+          'Datoen kan ikke velges fordi den er før deltakerlistens startdato.'
         )
+      } else if (dateValidation.isAfter) {
+        setErrorStartDato(VARGIHET_VALG_FEILMELDING)
       } else if (dateValidation.isInvalid) {
         setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
       } else {
