@@ -143,8 +143,9 @@ export const getSkalBekrefteVarighet = (
   const maxVarighetDato = getMaxVarighetDato(pamelding, startdato)
 
   if (
-    tiltakstype === Tiltakstype.ARBFORB ||
-    (tiltakstype === Tiltakstype.INDOPPFAG && nySluttDato)
+    (tiltakstype === Tiltakstype.ARBFORB ||
+      tiltakstype === Tiltakstype.INDOPPFAG) &&
+    nySluttDato
   ) {
     const erSluttDatoEtterSoftMaxDato =
       softMaxVarighetDato && dayjs(nySluttDato).isAfter(softMaxVarighetDato)
