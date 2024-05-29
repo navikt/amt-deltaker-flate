@@ -10,6 +10,8 @@ import dayjs from 'dayjs'
 import {
   DeferredFetchState,
   Tiltakstype,
+  getDateFromString,
+  isValidDate,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -33,7 +35,8 @@ import {
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
-  getVarighet
+  getVarighet,
+  DATO_UTENFOR_TILTAKGJENNOMFORING
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -52,10 +55,19 @@ export const EndreOppstartsdatoModal = ({
   onClose,
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
+  const validDeltakerSluttDato = getDateFromString(pamelding.sluttdato)
+
   const { enhetId } = useAppContext()
-  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>()
-  const [nySluttDato, settNySluttDato] = useState<Date>()
-  const [sluttDatoField, setSluttDatoField] = useState<Date>()
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
+    isValidDate(pamelding.sluttdato) ? VarighetValg.ANNET : undefined
+  )
+
+  const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
+    validDeltakerSluttDato
+  )
+  const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
+    validDeltakerSluttDato
+  )
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
@@ -86,15 +98,11 @@ export const EndreOppstartsdatoModal = ({
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
     toDate:
       dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
+    defaultMonth: dayjs().toDate(),
+    defaultSelected: getDateFromString(pamelding.startdato),
     onValidate: (dateValidation) => {
-      if (dateValidation.isBefore) {
-        setErrorStartDato(
-          'Datoen kan ikke velges fordi den er før deltakerlistens startdato.'
-        )
-      } else if (dateValidation.isAfter) {
-        setErrorStartDato(
-          'Datoen kan ikke velges fordi den er etter deltakerlistens sluttdato.'
-        )
+      if (dateValidation.isBefore || dateValidation.isAfter) {
+        setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
       } else if (dateValidation.isInvalid) {
         setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
       } else {
@@ -257,10 +265,12 @@ export const EndreOppstartsdatoModal = ({
               title="Hva er forventet varighet?"
               className="mt-8"
               tiltakstype={pamelding.deltakerliste.tiltakstype}
-              startDato={nyStartdato || undefined}
-              sluttdato={maxSluttDato || undefined}
+              startDato={nyStartdato}
+              sluttdato={maxSluttDato}
               errorVarighet={errorVarighet}
               errorSluttDato={errorSluttDato}
+              defaultVarighet={valgtVarighet}
+              defaultSelectedDate={nySluttDato}
               onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
                 setErrorSluttDato(null)

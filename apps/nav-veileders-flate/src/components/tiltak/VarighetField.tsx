@@ -21,6 +21,8 @@ interface Props {
   tiltakstype: Tiltakstype
   errorVarighet: string | null
   errorSluttDato: string | null
+  defaultVarighet?: VarighetValg | null
+  defaultSelectedDate?: Date | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
   onValidateSluttDato: (dateValidation: DateValidationT) => void
@@ -34,17 +36,22 @@ export const VarighetField = ({
   tiltakstype,
   errorVarighet,
   errorSluttDato,
+  defaultVarighet,
+  defaultSelectedDate,
   onChangeVarighet,
   onChangeSluttDato,
   onValidateSluttDato
 }: Props) => {
-  const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(null)
+  const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(
+    defaultVarighet || null
+  )
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
+    defaultSelected: defaultSelectedDate || undefined,
     onValidate: onValidateSluttDato,
     onDateChange: (date) => {
       onChangeSluttDato(date)
