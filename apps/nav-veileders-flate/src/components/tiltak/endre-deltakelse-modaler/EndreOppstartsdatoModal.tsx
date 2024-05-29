@@ -84,14 +84,17 @@ export const EndreOppstartsdatoModal = ({
   } = useDatepicker({
     fromDate:
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
-    toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
+    toDate:
+      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
     onValidate: (dateValidation) => {
       if (dateValidation.isBefore) {
         setErrorStartDato(
           'Datoen kan ikke velges fordi den er før deltakerlistens startdato.'
         )
       } else if (dateValidation.isAfter) {
-        setErrorStartDato(VARGIHET_VALG_FEILMELDING)
+        setErrorStartDato(
+          'Datoen kan ikke velges fordi den er etter deltakerlistens sluttdato.'
+        )
       } else if (dateValidation.isInvalid) {
         setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
       } else {
@@ -101,10 +104,8 @@ export const EndreOppstartsdatoModal = ({
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
-        const varighetAntall = varighet.antall
-        const varighetTidsEnhet = varighet.tidsenhet
         const sluttDato = date
-          ? dayjs(date).add(varighetAntall, varighetTidsEnhet)
+          ? dayjs(date).add(varighet.antall, varighet.tidsenhet)
           : undefined
 
         settNySluttDato(sluttDato?.toDate())
@@ -130,9 +131,6 @@ export const EndreOppstartsdatoModal = ({
         !erValgtSluttdatoGyldig(date, nySluttDato)
       ) {
         setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
-      } else {
-        setErrorVarighet(null)
-        setErrorSluttDato(null)
       }
     }
   })
