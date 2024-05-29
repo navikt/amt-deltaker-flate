@@ -70,7 +70,9 @@ export const getPameldingUtenInnhold = (
     },
     adresseDelesMedArrangor: true,
     kanEndres: true,
-    digitalBruker: true
+    digitalBruker: true,
+    maxVarighet: null,
+    softMaxVarighet: null
   }
 }
 
@@ -95,7 +97,7 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: Tiltakstype.VASV,
+        tiltakstype: Tiltakstype.ARBFORB,
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
@@ -199,7 +201,9 @@ export class MockHandler {
       },
       adresseDelesMedArrangor: true,
       kanEndres: true,
-      digitalBruker: true
+      digitalBruker: true,
+      maxVarighet: dayjs.duration(4, 'month').asMilliseconds(),
+      softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
     }
 
     this.pamelding = nyPamelding

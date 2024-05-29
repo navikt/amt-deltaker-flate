@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { kalkulerSluttdato, getVarighet, VarighetValg } from './varighet.ts'
+import { kalkulerSluttdato, getVarighet, VarighetValg } from './varighet.tsx'
 
 describe('kalkulerSluttdato', () => {
   const gyldigDato = new Date(2024, 0, 20)

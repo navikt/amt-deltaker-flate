@@ -1,37 +1,42 @@
-import { DatePicker, Radio, RadioGroup, useDatepicker } from '@navikt/ds-react'
+import {
+  DatePicker,
+  DateValidationT,
+  Radio,
+  RadioGroup,
+  useDatepicker
+} from '@navikt/ds-react'
 import { Tiltakstype } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { formatDateToString } from '../../utils/utils.ts'
 import {
   VarighetValg,
   getVarighet,
   varighetValgForType
-} from '../../utils/varighet.ts'
+} from '../../utils/varighet.tsx'
 
 interface Props {
   className?: string
   title: string
   startDato?: Date
   sluttdato?: Date
-  valgtDato?: Date
   tiltakstype: Tiltakstype
   errorVarighet: string | null
   errorSluttDato: string | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
+  onValidateSluttDato: (dateValidation: DateValidationT) => void
 }
 
-export const VargihetField = ({
+export const VarighetField = ({
   className,
   title,
   startDato,
   sluttdato,
-  valgtDato,
   tiltakstype,
   errorVarighet,
   errorSluttDato,
   onChangeVarighet,
-  onChangeSluttDato
+  onChangeSluttDato,
+  onValidateSluttDato
 }: Props) => {
   const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
@@ -39,6 +44,8 @@ export const VargihetField = ({
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: startDato,
     toDate: sluttdato,
+    defaultMonth: startDato,
+    onValidate: onValidateSluttDato,
     onDateChange: (date) => {
       onChangeSluttDato(date)
     }
@@ -71,7 +78,6 @@ export const VargihetField = ({
               <DatePicker {...datepickerProps}>
                 <DatePicker.Input
                   {...inputProps}
-                  value={valgtDato ? formatDateToString(valgtDato) : ''}
                   label="Annet - velg dato"
                   size="small"
                   hideLabel={true}
