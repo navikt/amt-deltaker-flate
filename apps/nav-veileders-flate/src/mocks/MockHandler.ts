@@ -39,7 +39,7 @@ export const getPameldingUtenInnhold = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
-      tiltakstype: Tiltakstype.AVKLARAG,
+      tiltakstype: Tiltakstype.VASV,
       arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
       oppstartstype: 'LOPENDE',
       startdato: '2022-10-28',

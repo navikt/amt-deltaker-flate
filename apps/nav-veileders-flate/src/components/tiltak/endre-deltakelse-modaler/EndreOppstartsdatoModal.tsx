@@ -54,8 +54,8 @@ export const EndreOppstartsdatoModal = ({
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(
-    pamelding.sluttdato ? VarighetValg.ANNET : null
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
+    pamelding.sluttdato ? VarighetValg.ANNET : undefined
   )
   const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
     pamelding.sluttdato ? dayjs(pamelding.sluttdato).toDate() : undefined
