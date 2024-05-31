@@ -9,12 +9,16 @@ import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 
-const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
-  const yesterday = dayjs().subtract(1, 'day')
-  const harVedak =
+const harVedtak = (statusType: DeltakerStatusType) => {
+  return (
     statusType !== DeltakerStatusType.KLADD &&
     statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
     statusType !== DeltakerStatusType.AVBRUTT_UTKAST
+  )
+}
+
+const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
+  const yesterday = dayjs().subtract(1, 'day')
 
   return {
     deltakerId: uuidv4(),
@@ -115,7 +119,7 @@ const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
       ]
     },
     vedtaksinformasjon: {
-      fattet: harVedak ? yesterday.toString() : null,
+      fattet: harVedtak(statusType) ? yesterday.toString() : null,
       fattetAvNav: false,
       opprettet: yesterday.toString(),
       opprettetAv: 'Navn Navnesen',
@@ -155,6 +159,19 @@ export class MockHandler {
     const oppdatertPamelding = this.deltaker
 
     if (oppdatertPamelding) {
+      if (status === DeltakerStatusType.FEILREGISTRERT) {
+        oppdatertPamelding.kanEndres = false
+      } else {
+        oppdatertPamelding.kanEndres = true
+      }
+
+      if (harVedtak(status)) {
+        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
+          .subtract(2, 'day')
+          .toString()
+      } else {
+        oppdatertPamelding.vedtaksinformasjon.fattet = null
+      }
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
       oppdatertPamelding.sluttdato = this.getSluttdato(status)
