@@ -7,7 +7,7 @@ import {
 import { z } from 'zod'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
+export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
@@ -41,7 +41,7 @@ export const deltakerStatusAarsakSchema = z.object({
 
 export const pameldingStatusSchema = z.object({
   id: z.string().uuid(),
-  type: deltakerStaturTypeSchema,
+  type: deltakerStatusTypeSchema,
   aarsak: deltakerStatusAarsakSchema.nullable(),
   gyldigFra: z.string(),
   gyldigTil: z.string().nullable(),
