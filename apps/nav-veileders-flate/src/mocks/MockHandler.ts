@@ -22,58 +22,12 @@ import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 
-export const getPameldingUtenInnhold = (
-  statusType: DeltakerStatusType
-): PameldingResponse => {
-  const yesterday = dayjs().subtract(1, 'day')
-  const harVedak =
+const harVedtak = (statusType: DeltakerStatusType) => {
+  return (
     statusType !== DeltakerStatusType.KLADD &&
     statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
     statusType !== DeltakerStatusType.AVBRUTT_UTKAST
-
-  return {
-    deltakerId: uuidv4(),
-    fornavn: 'Pequeño',
-    mellomnavn: null,
-    etternavn: 'Plass',
-    deltakerliste: {
-      deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
-      deltakerlisteNavn: 'avklaring- Tinn org. - Lars',
-      tiltakstype: Tiltakstype.VASV,
-      arrangorNavn: 'TINN KOMMUNE ORGANISASJON',
-      oppstartstype: 'LOPENDE',
-      startdato: '2022-10-28',
-      sluttdato: '2027-12-20'
-    },
-    status: {
-      id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
-      type: statusType,
-      aarsak: null,
-      gyldigFra: yesterday.toString(),
-      gyldigTil: EMDASH,
-      opprettet: yesterday.toString()
-    },
-    startdato: EMDASH,
-    sluttdato: EMDASH,
-    dagerPerUke: null,
-    deltakelsesprosent: null,
-    bakgrunnsinformasjon: null,
-    deltakelsesinnhold: null,
-    vedtaksinformasjon: {
-      fattet: harVedak ? yesterday.toString() : null,
-      fattetAvNav: false,
-      opprettet: yesterday.toString(),
-      opprettetAv: 'Navn Navnesen',
-      sistEndret: dayjs().toString(),
-      sistEndretAv: 'Navn Navnesen',
-      sistEndretAvEnhet: 'NAV Fredrikstad'
-    },
-    adresseDelesMedArrangor: true,
-    kanEndres: true,
-    digitalBruker: true,
-    maxVarighet: null,
-    softMaxVarighet: null
-  }
+  )
 }
 
 export class MockHandler {
@@ -84,10 +38,6 @@ export class MockHandler {
   createPamelding(deltakerlisteId: string): HttpResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
-    const harVedak =
-      this.statusType !== DeltakerStatusType.KLADD &&
-      this.statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
-      this.statusType !== DeltakerStatusType.AVBRUTT_UTKAST
 
     const nyPamelding: PameldingResponse = {
       deltakerId: uuidv4(),
@@ -191,7 +141,7 @@ export class MockHandler {
         ]
       },
       vedtaksinformasjon: {
-        fattet: harVedak ? yesterday.toString() : null,
+        fattet: harVedtak(this.statusType) ? yesterday.toString() : null,
         fattetAvNav: false,
         opprettet: yesterday.toString(),
         opprettetAv: 'Navn Navnesen',
@@ -272,6 +222,19 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
+      if (status === DeltakerStatusType.FEILREGISTRERT) {
+        oppdatertPamelding.kanEndres = false
+      } else {
+        oppdatertPamelding.kanEndres = true
+      }
+
+      if (harVedtak(status)) {
+        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
+          .subtract(2, 'day')
+          .toString()
+      } else {
+        oppdatertPamelding.vedtaksinformasjon.fattet = null
+      }
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato()
       oppdatertPamelding.sluttdato = this.getSluttdato()

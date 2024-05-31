@@ -1,4 +1,4 @@
-import { BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
 import {
   formatDateFromString,
   hentTiltakNavnHosArrangorTekst
@@ -24,7 +24,13 @@ export const ForNAVAnsatt = ({ className }: Props) => {
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>
-      <EndreDeltakelseKnapp />
+      {pamelding.kanEndres ? (
+        <EndreDeltakelseKnapp />
+      ) : (
+        <Alert inline variant="info">
+          Deltakelsen kan ikke endres
+        </Alert>
+      )}
 
       <LinkPanel
         href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}

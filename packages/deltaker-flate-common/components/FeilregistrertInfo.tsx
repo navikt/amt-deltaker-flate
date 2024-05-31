@@ -1,25 +1,26 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Heading, Label, LinkPanel } from '@navikt/ds-react'
-import { DeltakerStatusType, Vedtaksinformasjon } from '../model/deltaker'
-import { formatDateStrWithMonthName } from '../utils/utils'
+import { DeltakerStatusType } from '../model/deltaker'
+import { formatDateWithMonthName } from '../utils/utils'
 import { DeltakerStatusTag } from './DeltakerStatusTag'
 
 interface Props {
   className: string
   dialogUrl: string
   tiltakOgStedTekst: string
-  vedtaksinformasjon: Vedtaksinformasjon
-  feilregistrertDato: Date
+  meldtPaDato?: Date
+  feilregistrertDato?: Date
 }
 
 export const FeilregistrertInfo = ({
   className,
   dialogUrl,
   tiltakOgStedTekst,
-  vedtaksinformasjon
+  meldtPaDato,
+  feilregistrertDato
 }: Props) => {
   return (
-    <div className={`bg-white px-12 py-4 ${className}`}>
+    <div className={`bg-white px-12 py-4 ${className ?? ''}`}>
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
@@ -29,20 +30,20 @@ export const FeilregistrertInfo = ({
         <DeltakerStatusTag statusType={DeltakerStatusType.FEILREGISTRERT} />
       </HStack>
 
-      <BodyShort>
+      <BodyShort className="mt-4">
         Innholdet er slettet av NAV fordi arbeidsmarkedstiltaket ble registrert
         feil.
       </BodyShort>
 
-      <BodyShort className="mt-2">
-        {`Meldt på: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}`}
+      <BodyShort className="mt-4">
+        {`Meldt på: ${formatDateWithMonthName(meldtPaDato)}`}
       </BodyShort>
 
-      <BodyShort className="mt-2">
-        {`Feilen ble registrert: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}`}
+      <BodyShort className="mt-4">
+        {`Feilen ble registrert: ${formatDateWithMonthName(feilregistrertDato)}`}
       </BodyShort>
 
-      <LinkPanel href={dialogUrl} className="mt-8 rounded-lg">
+      <LinkPanel href={dialogUrl} className="mt-8 mb-4 rounded-lg">
         <div className="grid grid-flow-col items-center gap-4">
           <ChatElipsisIcon className="text-2xl" />
           <span>

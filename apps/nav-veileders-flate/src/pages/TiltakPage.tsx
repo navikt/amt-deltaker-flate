@@ -1,7 +1,11 @@
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { DeltakerInfo } from '../components/tiltak/DeltakerInfo.tsx'
 import { ForNAVAnsatt } from '../components/tiltak/ForNAVAnsatt.tsx'
-import { FeilregistrertInfo } from 'deltaker-flate-common'
+import {
+  FeilregistrertInfo,
+  getDateFromString,
+  hentTiltakNavnHosArrangorTekst
+} from 'deltaker-flate-common'
 import { usePameldingContext } from '../components/tiltak/PameldingContext'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { DIALOG_URL } from '../utils/environment-utils'
@@ -24,7 +28,7 @@ export const TiltakPage = () => {
             className="w-full"
             dialogUrl={DIALOG_URL}
             tiltakOgStedTekst={tiltakOgStedTekst}
-            vedtaksinformasjon={pamelding.vedtaksinformasjon}
+            meldtPaDato={getDateFromString(pamelding.vedtaksinformasjon.fattet)}
             feilregistrertDato={pamelding.status.gyldigFra}
           />
         ) : (

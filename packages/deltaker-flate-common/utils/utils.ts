@@ -18,7 +18,7 @@ export const getDateFromString = (dateString?: string | null) => {
 }
 
 /**
- * Returns a string represaenting the date displying month name ('DD. MMMM YYYY')
+ * Returns a string representing the date displying month name ('DD. MMMM YYYY')
  * @param dateStr Date as string
  * @returns date string with format 'DD. MMMM YYYY'
  */
@@ -31,7 +31,20 @@ export const formatDateStrWithMonthName = (
 }
 
 /**
- * Returns a string represaenting the date using month number ('DD. MM YYYY')
+ * Returns a string representing the date displying month name ('DD. MMMM YYYY')
+ * @param date Date as string
+ * @returns date string with format 'DD. MMMM YYYY'
+ */
+export const formatDateWithMonthName = (
+  date: Date | null | undefined
+): string => {
+  if (!date) return EMDASH
+  const d = dayjs(date)
+  return d.isValid() ? d.format('DD. MMMM YYYY') : EMDASH
+}
+
+/**
+ * Returns a string representing the date using month number ('DD. MM YYYY')
  * @param dateStr Date as string
  * @returns date string with format 'DD. MM YYYY'
  */

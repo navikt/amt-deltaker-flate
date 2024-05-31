@@ -83,6 +83,9 @@ const DemoStatusInstillinger = () => {
       <option value={DeltakerStatusType.HAR_SLUTTET}>
         {getDeltakerStatusDisplayText(DeltakerStatusType.HAR_SLUTTET)}
       </option>
+      <option value={DeltakerStatusType.FEILREGISTRERT}>
+        {getDeltakerStatusDisplayText(DeltakerStatusType.FEILREGISTRERT)}
+      </option>
     </Select>
   )
 }
