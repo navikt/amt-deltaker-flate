@@ -57,7 +57,7 @@ export class MockHandler {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
         type: this.statusType,
         aarsak: null,
-        gyldigFra: yesterday.toString(),
+        gyldigFra: dayjs().subtract(17, 'day').toString(),
         gyldigTil: EMDASH,
         opprettet: yesterday.toString()
       },

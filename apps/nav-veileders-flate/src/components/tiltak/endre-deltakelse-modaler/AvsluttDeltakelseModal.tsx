@@ -88,10 +88,11 @@ export const AvsluttDeltakelseModal = ({
     harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
   const { enhetId } = useAppContext()
 
+  // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
-    harDeltatt && getSkalBekrefteVarighet(pamelding, nySluttDato)
+    skalViseSluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
