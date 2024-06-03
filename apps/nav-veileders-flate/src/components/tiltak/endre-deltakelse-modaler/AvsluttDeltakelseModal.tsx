@@ -11,9 +11,10 @@ import {
 import {
   DeferredFetchState,
   DeltakerStatusAarsakType,
+  getDateFromNorwegianStringFormat,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import {
@@ -30,16 +31,18 @@ import {
   formatDateToDateInputStr,
   getDeltakerStatusAarsakTyperAsList
 } from '../../../utils/utils.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {
+  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
+  getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -75,6 +78,7 @@ export const AvsluttDeltakelseModal = ({
     string | null
   >(null)
 
+  const datePickerRef = useRef<HTMLInputElement>(null)
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
   const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
   const harForLangAnnetBeskrivelse =
@@ -82,16 +86,23 @@ export const AvsluttDeltakelseModal = ({
   const { enhetId } = useAppContext()
 
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
-  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, sluttdato)
+  const skalBekrefteVarighet =
+    harDeltatt && getSkalBekrefteVarighet(pamelding, sluttdato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     onValidate: (dateValidation) => {
       if (dateValidation.isAfter) {
-        setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+        const value = getDateFromNorwegianStringFormat(
+          datePickerRef?.current?.value
+        )
+        if (value) setErrorSluttDato(getSluttDatoFeilmelding(pamelding, value))
+        else setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
       } else if (dateValidation.isInvalid) {
         setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+      } else if (dateValidation.isBefore) {
+        setErrorSluttDato(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
       }
     },
     onDateChange: (date) => {
@@ -215,7 +226,6 @@ export const AvsluttDeltakelseModal = ({
               onChange={(value: HarDeltattValg) => {
                 if (value === HarDeltattValg.NEI) {
                   setHarDeltatt(false)
-                  settNySluttDato(null)
                 } else {
                   setHarDeltatt(true)
                 }
@@ -231,6 +241,7 @@ export const AvsluttDeltakelseModal = ({
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
                 {...inputProps}
+                ref={datePickerRef}
                 size="small"
                 label="Hva er ny sluttdato?"
                 error={errorSluttDato}

@@ -13,13 +13,11 @@ import {
 } from '../../../utils/utils.ts'
 import {
   UGYLDIG_DATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
-  VARIGHET_VALG_FØR_FEILMELDING,
   VarighetValg,
-  erSluttdatoEtterMaxVarighetsDato,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
+  getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText,
   getVarighet,
   kalkulerSluttdato
@@ -55,7 +53,8 @@ export const ForlengDeltakelseModal = ({
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
 
-  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, nySluttDato)
+  const skalBekrefteVarighet =
+    nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const {
     state: endreDeltakelseState,
@@ -80,9 +79,11 @@ export const ForlengDeltakelseModal = ({
 
     if (valgtVarighet === VarighetValg.ANNET && errorSluttDato) {
       hasError = true
+    } else if (valgtVarighet !== VarighetValg.ANNET && errorVarighet) {
+      hasError = true
     }
 
-    if (!hasError && !errorVarighet && nySluttDato) {
+    if (!hasError && nySluttDato) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(nySluttDato)
       }).then((data) => {
@@ -95,22 +96,13 @@ export const ForlengDeltakelseModal = ({
     setValgtVarighet(valg)
     const varighet = getVarighet(valg)
 
-    const handleErrorVarighet = (sluttdato: Date | undefined) => {
-      if (erSluttdatoEtterMaxVarighetsDato(pamelding, sluttdato)) {
-        setErrorVarighet(VARGIHET_VALG_FEILMELDING)
-      } else {
-        setErrorVarighet(null)
-        // setErrorSluttDato(null)
-      }
-    }
-
     if (valg === VarighetValg.ANNET) {
       settNySluttDato(sluttDatoField)
-      handleErrorVarighet(sluttDatoField)
-    } else if (varighet && sluttdatoDeltaker) {
+      setErrorVarighet(null)
+    } else if (sluttdatoDeltaker) {
       const nySluttDato = kalkulerSluttdato(sluttdatoDeltaker, varighet)
       settNySluttDato(nySluttDato)
-      handleErrorVarighet(nySluttDato)
+      setErrorVarighet(getSluttDatoFeilmelding(pamelding, nySluttDato))
     } else {
       settNySluttDato(undefined)
       setErrorVarighet(null)
@@ -146,15 +138,24 @@ export const ForlengDeltakelseModal = ({
           onChangeVarighet={handleChangeVarighet}
           onChangeSluttDato={(date) => {
             settNySluttDato(date)
-            setSluttDatoField(date)
-            setErrorSluttDato(null)
+            if (date) {
+              setSluttDatoField(date)
+              setErrorSluttDato(null)
+            }
           }}
-          onValidateSluttDato={(dateValidation) => {
-            if (dateValidation.isAfter) {
-              setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
-            } else if (dateValidation.isBefore) {
-              setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
+          onValidateSluttDato={(dateValidation, currentValue) => {
+            if (dateValidation.isAfter && currentValue) {
+              setSluttDatoField(currentValue)
+              setErrorSluttDato(
+                getSluttDatoFeilmelding(pamelding, currentValue)
+              )
+            } else if (dateValidation.isBefore && currentValue) {
+              setSluttDatoField(currentValue)
+              setErrorSluttDato(
+                'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+              )
             } else if (dateValidation.isInvalid) {
+              setSluttDatoField(currentValue)
               setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
             }
           }}
