@@ -57,7 +57,7 @@ export class MockHandler {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
         type: this.statusType,
         aarsak: null,
-        gyldigFra: yesterday.toString(),
+        gyldigFra: dayjs().subtract(17, 'day').toString(),
         gyldigTil: EMDASH,
         opprettet: yesterday.toString()
       },
@@ -65,7 +65,7 @@ export class MockHandler {
       sluttdato: null,
       dagerPerUke: null,
       deltakelsesprosent: 100,
-      bakgrunnsinformasjon: null,
+      bakgrunnsinformasjon: 'Alle må få se det',
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
@@ -228,11 +228,11 @@ export class MockHandler {
         oppdatertPamelding.kanEndres = true
       }
 
-      if (harVedtak(status)) {
+      if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
           .subtract(2, 'day')
           .toString()
-      } else {
+      } else if (oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = null
       }
       oppdatertPamelding.status.type = status

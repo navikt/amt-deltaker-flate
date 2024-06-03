@@ -8,6 +8,7 @@ import {
 import {
   DeferredFetchState,
   getDateFromNorwegianStringFormat,
+  getDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
@@ -47,7 +48,9 @@ export const EndreSluttdatoModal = ({
   onSuccess
 }: EndreSluttdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const [nySluttDato, settNySluttDato] = useState<Date | null>()
+  const [nySluttDato, settNySluttDato] = useState<Date | null | undefined>(
+    getDateFromString(pamelding.sluttdato)
+  )
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -61,6 +64,7 @@ export const EndreSluttdatoModal = ({
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
+    defaultSelected: getDateFromString(pamelding.sluttdato),
     onValidate: (dateValidation) => {
       if (dateValidation.isAfter) {
         const value = getDateFromNorwegianStringFormat(

@@ -32,9 +32,11 @@ export const EndreSluttarsakModal = ({
   onSuccess
 }: EndreSluttarsakModalProps) => {
   const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(
-    null
+    pamelding.status.aarsak?.type ?? null
   )
-  const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
+  const [beskrivelse, setBeskrivelse] = useState<string | null>(
+    pamelding.status.aarsak?.beskrivelse ?? null
+  )
   const [hasError, setHasError] = useState<boolean>(false)
 
   const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET

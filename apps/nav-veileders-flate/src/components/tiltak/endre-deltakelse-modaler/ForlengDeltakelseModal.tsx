@@ -1,5 +1,9 @@
 import { BodyShort, ConfirmationPanel, Detail, Modal } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import {
+  DeferredFetchState,
+  getDateFromString,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
@@ -39,9 +43,15 @@ export const ForlengDeltakelseModal = ({
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
+  const validDeltakerSluttDato = getDateFromString(pamelding.sluttdato)
+
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
-  const [nySluttDato, settNySluttDato] = useState<Date>()
-  const [sluttDatoField, setSluttDatoField] = useState<Date>()
+  const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
+    validDeltakerSluttDato
+  )
+  const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
+    validDeltakerSluttDato
+  )
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
@@ -135,6 +145,7 @@ export const ForlengDeltakelseModal = ({
           sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}
+          defaultSelectedDate={nySluttDato}
           onChangeVarighet={handleChangeVarighet}
           onChangeSluttDato={(date) => {
             settNySluttDato(date)
