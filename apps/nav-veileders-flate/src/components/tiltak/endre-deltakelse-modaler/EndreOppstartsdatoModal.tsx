@@ -2,6 +2,7 @@ import {
   BodyShort,
   ConfirmationPanel,
   DatePicker,
+  DateValidationT,
   Detail,
   Modal,
   useDatepicker
@@ -26,17 +27,16 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
+  DATO_UTENFOR_TILTAKGJENNOMFORING,
   UGYLDIG_DATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
-  VARIGHET_VALG_FØR_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
+  VARIGHET_VALG_FØR_FEILMELDING,
   VarighetValg,
-  getMaxVarighetDato,
+  getSluttDatoFeilmelding,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
-  getVarighet,
-  DATO_UTENFOR_TILTAKGJENNOMFORING
+  getVarighet
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -79,16 +79,6 @@ export const EndreOppstartsdatoModal = ({
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
 
-  const erValgtSluttdatoGyldig = (startDato: Date, sluttDato: Date) => {
-    const maxVarighetDato = getMaxVarighetDato(pamelding, startDato)
-    return (
-      dayjs(sluttDato).isSameOrAfter(
-        pamelding.deltakerliste.startdato,
-        'day'
-      ) && dayjs(sluttDato).isSameOrBefore(maxVarighetDato, 'day')
-    )
-  }
-
   const {
     datepickerProps,
     inputProps,
@@ -111,34 +101,18 @@ export const EndreOppstartsdatoModal = ({
     },
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
+      if (!date) {
+        settNySluttDato(undefined)
+        setErrorVarighet(null)
+      }
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
-        const sluttDato = date
-          ? dayjs(date).add(varighet.antall, varighet.tidsenhet)
-          : undefined
-
-        settNySluttDato(sluttDato?.toDate())
-        if (
-          sluttDato &&
-          date &&
-          !erValgtSluttdatoGyldig(date, sluttDato.toDate())
-        ) {
-          setErrorVarighet(VARGIHET_VALG_FEILMELDING)
-        } else setErrorVarighet(null)
-      } else if (
-        valgtVarighet === VarighetValg.ANNET &&
-        nySluttDato &&
-        dayjs(nySluttDato).isBefore(date)
-      ) {
-        setErrorSluttDato(
-          'Du må sette en sluttdato som er etter oppstartsdatoen.'
-        )
-      } else if (
-        valgtVarighet === VarighetValg.ANNET &&
-        nySluttDato &&
-        date &&
-        !erValgtSluttdatoGyldig(date, nySluttDato)
-      ) {
-        setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
+        const sluttDato = dayjs(date)
+          .add(varighet.antall, varighet.tidsenhet)
+          .toDate()
+        settNySluttDato(sluttDato)
+        setErrorVarighet(getSluttDatoFeilmelding(pamelding, sluttDato, date))
+      } else if (valgtVarighet === VarighetValg.ANNET && nySluttDato) {
+        setErrorSluttDato(getSluttDatoFeilmelding(pamelding, nySluttDato, date))
       }
     }
   })
@@ -149,26 +123,29 @@ export const EndreOppstartsdatoModal = ({
   const maxSluttDato = getSisteGyldigeSluttDato(pamelding, nyStartdato)
 
   const onChangeVarighet = (valg: VarighetValg) => {
+    setValgtVarighet(valg)
     const varighet = getVarighet(valg)
 
     if (valg === VarighetValg.ANNET) {
       settNySluttDato(sluttDatoField)
       setErrorVarighet(null)
-    } else if (nyStartdato && varighet) {
-      const valgtSluttdato = dayjs(nyStartdato).add(
+    } else if (nyStartdato) {
+      const beregnetSluttdato = dayjs(nyStartdato).add(
         varighet.antall,
         varighet.tidsenhet
       )
-      settNySluttDato(valgtSluttdato.toDate())
-
-      if (!erValgtSluttdatoGyldig(nyStartdato, valgtSluttdato.toDate())) {
-        setErrorVarighet(VARGIHET_VALG_FEILMELDING)
-      } else setErrorVarighet(null)
+      settNySluttDato(beregnetSluttdato.toDate())
+      setErrorVarighet(
+        getSluttDatoFeilmelding(
+          pamelding,
+          beregnetSluttdato.toDate(),
+          nyStartdato
+        )
+      )
     } else {
       settNySluttDato(undefined)
+      setErrorVarighet(null)
     }
-
-    setValgtVarighet(valg)
   }
 
   const {
@@ -199,26 +176,16 @@ export const EndreOppstartsdatoModal = ({
       errorSluttDato
     ) {
       hasError = true
+    } else if (
+      skalVelgeVarighet &&
+      valgtVarighet !== VarighetValg.ANNET &&
+      errorVarighet
+    ) {
+      hasError = true
     }
 
     if (skalVelgeVarighet && !valgtVarighet) {
       setErrorVarighet('Du må velge varighet')
-      hasError = true
-    } else if (
-      skalVelgeVarighet &&
-      valgtVarighet === VarighetValg.ANNET &&
-      nySluttDato &&
-      dayjs(nySluttDato).isBefore(nyStartdato)
-    ) {
-      setErrorVarighet('Du må sette en sluttdato som er etter oppstartsdatoen.')
-      hasError = true
-    } else if (
-      skalVelgeVarighet &&
-      valgtVarighet &&
-      nyStartdato &&
-      nySluttDato &&
-      !erValgtSluttdatoGyldig(nyStartdato, nySluttDato)
-    ) {
       hasError = true
     }
 
@@ -229,6 +196,29 @@ export const EndreOppstartsdatoModal = ({
       }).then((data) => {
         onSuccess(data)
       })
+    }
+  }
+
+  const onValidateSluttDato = (
+    dateValidation: DateValidationT,
+    currentValue?: Date
+  ) => {
+    if (dateValidation.isBefore) {
+      setSluttDatoField(currentValue)
+      setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
+    } else if (dateValidation.isInvalid) {
+      setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+      setSluttDatoField(currentValue)
+    } else if (dateValidation.isAfter && currentValue) {
+      /* currentValue er bare gyldig hvis vi skriver inn dato med tastaturet.
+       Bruker man datovelgeren er dette forrige dato, ikek valgte.
+       Det er bare tastatur som gjør at man kan få en dato som er etter grensen,
+       det er ikke mulig å velge en dato som er etter grensen med datovelger
+      */
+      setSluttDatoField(currentValue)
+      setErrorSluttDato(
+        getSluttDatoFeilmelding(pamelding, currentValue, nyStartdato)
+      )
     }
   }
 
@@ -273,19 +263,13 @@ export const EndreOppstartsdatoModal = ({
               defaultSelectedDate={nySluttDato}
               onChangeVarighet={onChangeVarighet}
               onChangeSluttDato={(date) => {
-                setErrorSluttDato(null)
-                setSluttDatoField(date)
+                if (date) {
+                  setSluttDatoField(date)
+                  setErrorSluttDato(null)
+                }
                 settNySluttDato(date)
               }}
-              onValidateSluttDato={(dateValidation) => {
-                if (dateValidation.isAfter) {
-                  setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
-                } else if (dateValidation.isBefore) {
-                  setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
-                } else if (dateValidation.isInvalid) {
-                  setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-                }
-              }}
+              onValidateSluttDato={onValidateSluttDato}
             />
             <BodyShort className="mt-2" size="small">
               Forventet sluttdato: {formatDateToString(nySluttDato) || '—'}

@@ -111,8 +111,7 @@ export const kalkulerSluttdato = (
 }
 
 /**
- * Returnerer datoen som kommer først av deltakerlistens sluttdato
- * eller max varighet regnet ut fra 'nyStartdato' eller hvis den ikke er gitt; deltakerens startdato
+ * Returnerer datoen regnet ut av max varighet fra nyStartdato eller deltakerens startdato
  * @param pamelding
  * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
  */
@@ -122,51 +121,13 @@ export const getMaxVarighetDato = (
 ) => {
   if (!pamelding.maxVarighet) {
     return null
-  }
-  if (nyStartdato && pamelding.maxVarighet) {
+  } else if (nyStartdato) {
     return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
-  }
-  return isValidDate(pamelding.startdato)
-    ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
-    : null
-}
-
-export const getSkalBekrefteVarighet = (
-  pamelding: PameldingResponse,
-  nySluttDato?: Date | null,
-  nyStartdato?: Date | null
-) => {
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
-  const startdato = nyStartdato || getDateFromString(pamelding.startdato)
-  const softMaxVarighetDato =
-    startdato && pamelding.softMaxVarighet
-      ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')
+  } else {
+    return isValidDate(pamelding.startdato)
+      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
       : null
-  const maxVarighetDato = getMaxVarighetDato(pamelding, startdato)
-
-  if (
-    (tiltakstype === Tiltakstype.ARBFORB ||
-      tiltakstype === Tiltakstype.INDOPPFAG) &&
-    nySluttDato
-  ) {
-    const erSluttDatoEtterSoftMaxDato =
-      softMaxVarighetDato && dayjs(nySluttDato).isAfter(softMaxVarighetDato)
-    const erSluttDatoForMaxDato = maxVarighetDato
-      ? dayjs(nySluttDato).isSameOrBefore(maxVarighetDato)
-      : true
-
-    return erSluttDatoEtterSoftMaxDato && erSluttDatoForMaxDato
-  } else return false
-}
-
-export const erSluttdatoEtterMaxVarighetsDato = (
-  pamelding: PameldingResponse,
-  sluttdato?: Date
-) => {
-  const maxVarighetDato = getMaxVarighetDato(pamelding)
-  return maxVarighetDato
-    ? !!sluttdato && dayjs(sluttdato).isAfter(maxVarighetDato)
-    : false
+  }
 }
 
 export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
@@ -208,10 +169,18 @@ export const VARIGHET_VALG_ETTER_DELTAKERLISTE_SLUTTDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er etter gjennomføringens sluttdato.'
 export const VARGIHET_VALG_FEILMELDING =
   'Datoen kan ikke velges fordi den er utenfor maks varighet.'
+export const SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING =
+  'Datoen kan ikke velges fordi den er før oppstartsdatoen.'
 export const VARIGHET_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at deltakeren oppfyller kravene.'
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
 
+/**
+ * Returnerer datoen som kommer først av deltakerlistens sluttdato
+ * eller max varighet regnet ut fra 'nyStartdato' eller hvis den ikke er gitt; deltakerens startdato
+ * @param pamelding
+ * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
+ */
 export const getSisteGyldigeSluttDato = (
   pamelding: PameldingResponse,
   nyStartdato?: Date
@@ -226,9 +195,87 @@ export const getSisteGyldigeSluttDato = (
     return maxVarighetDato?.toDate()
   } else if (!maxVarighetDato) {
     return deltakerlisteSluttDato
-  } else if (dayjs(deltakerlisteSluttDato).isAfter(maxVarighetDato)) {
+  } else if (dayjs(deltakerlisteSluttDato).isAfter(maxVarighetDato, 'date')) {
     return maxVarighetDato.toDate()
   } else {
     return deltakerlisteSluttDato
+  }
+}
+
+export const getSkalBekrefteVarighet = (
+  pamelding: PameldingResponse,
+  nySluttDato?: Date | null,
+  nyStartdato?: Date | null
+) => {
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const startdato = nyStartdato || getDateFromString(pamelding.startdato)
+  const softMaxVarighetDato =
+    startdato && pamelding.softMaxVarighet
+      ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')
+      : null
+  const maxVarighetDato = getSisteGyldigeSluttDato(pamelding, startdato)
+
+  if (
+    (tiltakstype === Tiltakstype.ARBFORB ||
+      tiltakstype === Tiltakstype.INDOPPFAG) &&
+    nySluttDato &&
+    softMaxVarighetDato
+  ) {
+    const erSluttDatoEtterSoftMaxDato = dayjs(nySluttDato).isAfter(
+      softMaxVarighetDato,
+      'date'
+    )
+    const erSluttDatoForMaxDato = maxVarighetDato
+      ? dayjs(nySluttDato).isSameOrBefore(maxVarighetDato, 'date')
+      : true
+
+    return erSluttDatoEtterSoftMaxDato && erSluttDatoForMaxDato
+  } else return false
+}
+
+export const getSluttDatoFeilmelding = (
+  pamelding: PameldingResponse,
+  nySluttDato: Date,
+  nyStartdato?: Date
+) => {
+  const deltakerlisteSluttDato = dateStrToNullableDate(
+    pamelding.deltakerliste.sluttdato
+  )
+  const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
+  const sluttDato = dayjs(nySluttDato)
+
+  if (nyStartdato && sluttDato.isBefore(nyStartdato, 'date')) {
+    return SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
+  }
+
+  if (!maxVarighetDato && !deltakerlisteSluttDato) {
+    return null
+  }
+
+  if (!maxVarighetDato && sluttDato.isAfter(deltakerlisteSluttDato, 'date')) {
+    return DATO_UTENFOR_TILTAKGJENNOMFORING
+  }
+
+  if (!deltakerlisteSluttDato && sluttDato.isAfter(maxVarighetDato, 'date')) {
+    return VARGIHET_VALG_FEILMELDING
+  }
+
+  if (
+    (sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date') &&
+      sluttDato.isSameOrBefore(maxVarighetDato, 'date')) ||
+    (!maxVarighetDato &&
+      sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date')) ||
+    (!deltakerlisteSluttDato &&
+      sluttDato.isSameOrBefore(maxVarighetDato, 'date'))
+  ) {
+    return null
+  }
+
+  if (dayjs(maxVarighetDato).isBefore(deltakerlisteSluttDato, 'date')) {
+    return sluttDato.isAfter(deltakerlisteSluttDato)
+      ? DATO_UTENFOR_TILTAKGJENNOMFORING
+      : VARGIHET_VALG_FEILMELDING
+  } else {
+    return DATO_UTENFOR_TILTAKGJENNOMFORING
   }
 }

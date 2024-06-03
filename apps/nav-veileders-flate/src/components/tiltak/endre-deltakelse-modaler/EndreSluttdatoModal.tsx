@@ -5,8 +5,12 @@ import {
   Modal,
   useDatepicker
 } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useState } from 'react'
+import {
+  DeferredFetchState,
+  getDateFromNorwegianStringFormat,
+  useDeferredFetch
+} from 'deltaker-flate-common'
+import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
@@ -16,17 +20,18 @@ import {
   dateStrToNullableDate,
   formatDateToDateInputStr
 } from '../../../utils/utils.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {
+  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
-  erSluttdatoEtterMaxVarighetsDato,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
+  getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
+import { ModalFooter } from '../../ModalFooter.tsx'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -42,30 +47,36 @@ export const EndreSluttdatoModal = ({
   onSuccess
 }: EndreSluttdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const [sluttdato, settNySluttdato] = useState<Date | null>()
-  const [errorSluttdato, setErrorSluttdato] = useState<string | null>(null)
+  const [nySluttDato, settNySluttDato] = useState<Date | null>()
+  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
 
-  const skalBekrefteVarighet = getSkalBekrefteVarighet(pamelding, sluttdato)
+  const datePickerRef = useRef<HTMLInputElement>(null)
+  const skalBekrefteVarighet =
+    nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     onValidate: (dateValidation) => {
       if (dateValidation.isAfter) {
-        setErrorSluttdato(VARGIHET_VALG_FEILMELDING)
+        const value = getDateFromNorwegianStringFormat(
+          datePickerRef?.current?.value
+        )
+        if (value) setErrorSluttDato(getSluttDatoFeilmelding(pamelding, value))
+        else setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
       } else if (dateValidation.isInvalid) {
-        setErrorSluttdato(UGYLDIG_DATO_FEILMELDING)
+        setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+      } else if (dateValidation.isBefore) {
+        setErrorSluttDato(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
       }
     },
     onDateChange: (date) => {
-      settNySluttdato(date)
-      if (!erSluttdatoEtterMaxVarighetsDato(pamelding, date)) {
-        setErrorSluttdato(null)
-      }
+      settNySluttDato(date)
+      if (date) setErrorSluttDato(null)
     }
   })
 
@@ -76,13 +87,13 @@ export const EndreSluttdatoModal = ({
   } = useDeferredFetch(endreDeltakelseSluttdato)
 
   const sendEndring = () => {
-    if (!sluttdato && !errorSluttdato)
-      setErrorSluttdato('Du må velge sluttdato')
+    if (!nySluttDato && !errorSluttDato)
+      setErrorSluttDato('Du må velge sluttdato')
     else if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
-    } else if (sluttdato && !errorSluttdato) {
+    } else if (nySluttDato && !errorSluttDato) {
       doFetchEndreDeltakelseSluttdato(pamelding.deltakerId, enhetId, {
-        sluttdato: formatDateToDateInputStr(sluttdato)
+        sluttdato: formatDateToDateInputStr(nySluttDato)
       }).then((data) => {
         onSuccess(data)
       })
@@ -109,8 +120,9 @@ export const EndreSluttdatoModal = ({
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
+            ref={datePickerRef}
             label="Ny sluttdato"
-            error={errorSluttdato}
+            error={errorSluttDato}
             size="small"
           />
         </DatePicker>

@@ -5,8 +5,11 @@ import {
   RadioGroup,
   useDatepicker
 } from '@navikt/ds-react'
-import { Tiltakstype } from 'deltaker-flate-common'
-import { useState } from 'react'
+import {
+  Tiltakstype,
+  getDateFromNorwegianStringFormat
+} from 'deltaker-flate-common'
+import { useRef, useState } from 'react'
 import {
   VarighetValg,
   getVarighet,
@@ -25,7 +28,10 @@ interface Props {
   defaultSelectedDate?: Date | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
-  onValidateSluttDato: (dateValidation: DateValidationT) => void
+  onValidateSluttDato: (
+    dateValidation: DateValidationT,
+    currentValue?: Date
+  ) => void
 }
 
 export const VarighetField = ({
@@ -45,6 +51,7 @@ export const VarighetField = ({
   const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(
     defaultVarighet || null
   )
+  const datePickerRef = useRef<HTMLInputElement>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
 
   const { datepickerProps, inputProps } = useDatepicker({
@@ -52,7 +59,12 @@ export const VarighetField = ({
     toDate: sluttdato,
     defaultMonth: startDato,
     defaultSelected: defaultSelectedDate || undefined,
-    onValidate: onValidateSluttDato,
+    onValidate: (dateValidation) => {
+      onValidateSluttDato(
+        dateValidation,
+        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
+      )
+    },
     onDateChange: (date) => {
       onChangeSluttDato(date)
     }
@@ -85,6 +97,7 @@ export const VarighetField = ({
               <DatePicker {...datepickerProps}>
                 <DatePicker.Input
                   {...inputProps}
+                  ref={datePickerRef}
                   label="Annet - velg dato"
                   size="small"
                   hideLabel={true}
