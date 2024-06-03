@@ -12,6 +12,7 @@ import {
   DeferredFetchState,
   DeltakerStatusAarsakType,
   getDateFromNorwegianStringFormat,
+  getDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
@@ -69,7 +70,9 @@ export const AvsluttDeltakelseModal = ({
   )
   const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
-  const [sluttdato, settNySluttDato] = useState<Date | null>()
+  const [nySluttDato, settNySluttDato] = useState<Date | null | undefined>(
+    getDateFromString(pamelding.sluttdato) ?? null
+  )
   const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
   const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
@@ -86,12 +89,14 @@ export const AvsluttDeltakelseModal = ({
   const { enhetId } = useAppContext()
 
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
+  const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
-    harDeltatt && getSkalBekrefteVarighet(pamelding, sluttdato)
+    harDeltatt && getSkalBekrefteVarighet(pamelding, nySluttDato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
+    defaultSelected: getDateFromString(pamelding.sluttdato),
     onValidate: (dateValidation) => {
       if (dateValidation.isAfter) {
         const value = getDateFromNorwegianStringFormat(
@@ -119,11 +124,14 @@ export const AvsluttDeltakelseModal = ({
 
   const sendEndring = () => {
     let hasError = false
-    if (harDeltatt && !sluttdato && !errorSluttDato) {
+    if (skalViseSluttDato && !nySluttDato && !errorSluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
       hasError = true
     }
-    if (harDeltatt && errorSluttDato) {
+    if (skalViseSluttDato && !nySluttDato) {
+      hasError = true
+    }
+    if (skalViseSluttDato && errorSluttDato) {
       hasError = true
     }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
@@ -141,18 +149,16 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (
-      !hasError &&
-      valgtArsak &&
-      (((harDeltatt || !skalViseHarDeltatt) && sluttdato) ||
-        (!harDeltatt && !sluttdato))
-    ) {
+    if (!hasError && valgtArsak) {
       doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
         aarsak: {
           type: valgtArsak,
           beskrivelse: aarsakErAnnet ? beskrivelse : null
         },
-        sluttdato: sluttdato ? formatDateToDateInputStr(sluttdato) : null,
+        sluttdato:
+          skalViseSluttDato && nySluttDato
+            ? formatDateToDateInputStr(nySluttDato)
+            : null,
         harDeltatt: harDeltatt
       }).then((data) => {
         onSuccess(data)
@@ -236,7 +242,7 @@ export const AvsluttDeltakelseModal = ({
             </RadioGroup>
           </section>
         )}
-        {(!skalViseHarDeltatt || harDeltatt) && (
+        {skalViseSluttDato && (
           <section className="mt-4">
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
