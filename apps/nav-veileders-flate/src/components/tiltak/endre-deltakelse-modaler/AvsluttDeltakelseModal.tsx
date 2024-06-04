@@ -24,7 +24,10 @@ import {
 } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
+import {
+  getDeltakerStatusAarsakTypeText,
+  getEndrePameldingTekst
+} from '../../../utils/displayText.ts'
 import {
   HarDeltattValg,
   dateStrToDate,
@@ -181,8 +184,7 @@ export const AvsluttDeltakelseModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
         <RadioGroup
           legend="Hva er årsaken til avslutning?"

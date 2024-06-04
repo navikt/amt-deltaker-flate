@@ -13,7 +13,10 @@ import {
 } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
+import {
+  getDeltakerStatusAarsakTypeText,
+  getEndrePameldingTekst
+} from '../../../utils/displayText.ts'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
@@ -81,8 +84,7 @@ export const IkkeAktuellModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
         <RadioGroup
           className="mt-6"

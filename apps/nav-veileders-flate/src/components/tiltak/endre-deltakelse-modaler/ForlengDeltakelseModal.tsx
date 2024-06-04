@@ -29,6 +29,7 @@ import {
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VarighetField } from '../VarighetField.tsx'
+import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -133,8 +134,7 @@ export const ForlengDeltakelseModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
 
         <VarighetField

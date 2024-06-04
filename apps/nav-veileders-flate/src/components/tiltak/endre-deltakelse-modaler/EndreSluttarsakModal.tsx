@@ -1,4 +1,4 @@
-import { Detail, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusAarsakType,
@@ -78,14 +78,10 @@ export const EndreSluttarsakModal = ({
       }}
       onClose={onClose}
     >
-      <Modal.Body>
+      <Modal.Body className="min-w-[30rem]">
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <ErrorPage message={endreDeltakelseError} />
         )}
-        <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
-        </Detail>
         <RadioGroup
           legend="Hva er årsaken til avslutning?"
           size="small"
