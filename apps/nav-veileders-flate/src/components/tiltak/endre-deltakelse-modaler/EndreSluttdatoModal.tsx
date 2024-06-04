@@ -33,6 +33,7 @@ import {
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -118,8 +119,7 @@ export const EndreSluttdatoModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input

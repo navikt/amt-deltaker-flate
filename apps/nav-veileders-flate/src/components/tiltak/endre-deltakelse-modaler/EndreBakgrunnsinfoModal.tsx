@@ -9,6 +9,7 @@ import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValu
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -58,8 +59,7 @@ export const EndreBakgrunnsinfoModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
         <Textarea
           onChange={(e) => {

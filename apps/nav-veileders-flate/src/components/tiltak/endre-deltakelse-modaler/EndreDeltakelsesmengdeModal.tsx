@@ -10,6 +10,7 @@ import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { NumberTextField } from '../../NumberTextField.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -74,8 +75,7 @@ export const EndreDeltakelsesmengdeModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <Detail size="small" className="mb-4">
-          Når du lagrer så får bruker beskjed gjennom nav.no. Arrangør ser også
-          endringen.
+          {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
         <NumberTextField
           label="Hva er ny deltakelsesprosent?"

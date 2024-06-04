@@ -47,3 +47,8 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Endre deltakelsesmengde'
   }
 }
+
+export const getEndrePameldingTekst = (digitalBruker: boolean) =>
+  digitalBruker
+    ? 'Bruker får beskjed på nav.no. Arrangør ser endringen i Deltakeroversikten.'
+    : 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet. Arrangør ser endringen i Deltakeroversikten.'
