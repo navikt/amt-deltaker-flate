@@ -82,7 +82,7 @@ export const TiltakPage = () => {
       {deltaker.status.aarsak && (
         <HStack gap="2" className="mt-4">
           <Label>Årsak:</Label>
-          <BodyShort>
+          <BodyShort className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
         </HStack>
@@ -116,7 +116,10 @@ export const TiltakPage = () => {
           {deltaker.deltakelsesinnhold.innhold
             .filter((i) => i.valgt)
             .map((i) => (
-              <List.Item key={i.innholdskode}>
+              <List.Item
+                key={i.innholdskode}
+                className="mt-2 whitespace-pre-wrap"
+              >
                 {i.innholdskode === INNHOLD_TYPE_ANNET
                   ? i.beskrivelse
                   : i.tekst}
@@ -128,7 +131,7 @@ export const TiltakPage = () => {
         <Heading level="2" size="medium" className="mt-8">
           Bakgrunnsinfo
         </Heading>
-        <BodyLong size="small" className="mt-2">
+        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
           {bakgrunsinformasjon}
         </BodyLong>
 
