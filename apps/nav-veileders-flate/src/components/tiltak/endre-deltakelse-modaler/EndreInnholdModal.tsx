@@ -99,7 +99,7 @@ export const EndreInnholdModal = ({
           <Detail size="small">
             {getEndrePameldingTekst(pamelding.digitalBruker)}
           </Detail>
-          <BodyLong size="small">
+          <BodyLong size="small" className="mt-6">
             {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
           </BodyLong>
         </section>

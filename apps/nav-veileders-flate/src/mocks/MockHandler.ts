@@ -65,7 +65,7 @@ export class MockHandler {
       sluttdato: null,
       dagerPerUke: null,
       deltakelsesprosent: 100,
-      bakgrunnsinformasjon: 'Alle må få se det',
+      bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',

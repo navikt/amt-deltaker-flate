@@ -238,13 +238,19 @@ export const getSluttDatoFeilmelding = (
   nySluttDato: Date,
   nyStartdato?: Date
 ) => {
+  const deltakerstartDato = getDateFromString(pamelding.startdato)
   const deltakerlisteSluttDato = dateStrToNullableDate(
     pamelding.deltakerliste.sluttdato
   )
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
   const sluttDato = dayjs(nySluttDato)
 
-  if (nyStartdato && sluttDato.isBefore(nyStartdato, 'date')) {
+  if (
+    (nyStartdato && sluttDato.isBefore(nyStartdato, 'date')) ||
+    (!nyStartdato &&
+      deltakerstartDato &&
+      sluttDato.isBefore(deltakerstartDato, 'date'))
+  ) {
     return SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
   }
 

@@ -9,6 +9,7 @@ import {
 } from '../../hooks/useModiaLink.ts'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
+import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 
 interface Props {
   className: string
@@ -18,13 +19,15 @@ export const ForNAVAnsatt = ({ className }: Props) => {
   const { pamelding } = usePameldingContext()
   const deltakerlisteId = pamelding.deltakerliste.deltakerlisteId
   const { doRedirect } = useModiaLink()
+  const kanEndres =
+    pamelding.kanEndres && getEndreDeltakelsesValg(pamelding).length > 0
 
   return (
     <div className={`bg-white p-4 h-fit ${className} flex flex-col`}>
       <Heading level="2" size="medium" className="mb-4 ">
         For NAV-ansatt
       </Heading>
-      {pamelding.kanEndres ? (
+      {kanEndres ? (
         <EndreDeltakelseKnapp />
       ) : (
         <Alert inline variant="info">
