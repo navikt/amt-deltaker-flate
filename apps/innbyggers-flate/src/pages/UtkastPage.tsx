@@ -75,7 +75,10 @@ export const UtkastPage = () => {
       {deltaker.deltakelsesinnhold?.innhold && (
         <List as="ul" size="small" className="mt-2">
           {deltaker.deltakelsesinnhold.innhold.map((innhold) => (
-            <List.Item key={innhold.innholdskode}>
+            <List.Item
+              key={innhold.innholdskode}
+              className="mt-2 whitespace-pre-wrap"
+            >
               {innhold.tekst}
               {innhold.beskrivelse ? `: ${innhold.beskrivelse}` : ''}
             </List.Item>
@@ -86,7 +89,7 @@ export const UtkastPage = () => {
       <Heading level="2" size="medium" className="mt-6">
         Bakgrunnsinfo
       </Heading>
-      <BodyLong size="small" className="mt-2">
+      <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         {deltaker.bakgrunnsinformasjon || EMDASH}
       </BodyLong>
 

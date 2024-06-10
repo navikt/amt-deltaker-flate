@@ -38,7 +38,7 @@ export const Utkast = ({
           {innhold.innhold
             .filter((i) => i.valgt)
             .map((i) => (
-              <List.Item key={i.innholdskode}>
+              <List.Item key={i.innholdskode} className="whitespace-pre-wrap">
                 {`${i.tekst}${i.innholdskode === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
               </List.Item>
             ))}
@@ -48,7 +48,7 @@ export const Utkast = ({
         <Heading level="2" size="medium">
           Bakgrunnsinfo
         </Heading>
-        <BodyLong size="small" className="mt-2">
+        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
           {bakgrunnsinfoVisningstekst}
         </BodyLong>
       </div>

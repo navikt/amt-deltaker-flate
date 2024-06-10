@@ -65,7 +65,8 @@ export class MockHandler {
       sluttdato: null,
       dagerPerUke: null,
       deltakelsesprosent: 100,
-      bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
+      bakgrunnsinformasjon:
+        'Ønsker å bli kontaktet via sms\nKan ikke på onsdager',
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
@@ -136,7 +137,8 @@ export class MockHandler {
             tekst: 'Annet',
             innholdskode: INNHOLD_TYPE_ANNET,
             valgt: true,
-            beskrivelse: 'Beskrivelse av annet mål'
+            beskrivelse:
+              'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
           }
         ]
       },
