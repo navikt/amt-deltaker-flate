@@ -1,5 +1,6 @@
 import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import {
+  Alert,
   BodyLong,
   BodyShort,
   HStack,
@@ -26,6 +27,7 @@ import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
+import { useEffect } from 'react'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -43,7 +45,7 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 }
 
 export const TiltakPage = () => {
-  const { deltaker } = useDeltakerContext()
+  const { deltaker, showSuccessMessage } = useDeltakerContext()
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -69,8 +71,18 @@ export const TiltakPage = () => {
     dato = formatDateFromString(deltaker.startdato)
   }
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [])
+
   return (
     <div className={'bg-white py-4 w-full'}>
+      {showSuccessMessage && (
+        <Alert variant="success" size="medium" className="mb-8">
+          Du er nå meldt på {tiltakOgStedTekst} og vedtaket er fattet.
+        </Alert>
+      )}
+
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
