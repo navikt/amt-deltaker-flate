@@ -176,8 +176,8 @@ export const UtkastPage = () => {
       )}
 
       <Alert inline variant="info" className="mt-4">
-        Når du godkjenner utkastet blir du meldt på, vedtak fattes og Muligheter
-        AS mottar informasjonen.
+        Når du godkjenner utkastet blir du meldt på, vedtak fattes og{' '}
+        {arrangorNavn} mottar informasjonen.
       </Alert>
     </div>
   )
