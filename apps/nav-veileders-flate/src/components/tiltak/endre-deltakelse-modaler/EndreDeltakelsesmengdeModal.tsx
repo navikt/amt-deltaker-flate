@@ -53,7 +53,7 @@ export const EndreDeltakelsesmengdeModal = ({
       if (gyldigDagerPerUke) {
         doFetchEndreDeltakelsesmengde(pamelding.deltakerId, enhetId, {
           deltakelsesprosent: deltakelsesprosent,
-          dagerPerUke: dagerPerUke || undefined
+          dagerPerUke: deltakelsesprosent !== 100 ? dagerPerUke : undefined
         }).then((data) => {
           onSuccess(data)
         })
