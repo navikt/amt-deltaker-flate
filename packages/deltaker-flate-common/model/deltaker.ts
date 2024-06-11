@@ -35,7 +35,8 @@ export enum DeltakerStatusAarsakType {
   TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
   UTDANNING = 'UTDANNING',
   IKKE_MOTT = 'IKKE_MOTT',
-  ANNET = 'ANNET'
+  ANNET = 'ANNET',
+  SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT = 'SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT'
 }
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)

@@ -56,7 +56,11 @@ export const erGyldigDagerPerUke = (value: string) => {
 
 export const getDeltakerStatusAarsakTyperAsList = () => {
   const arsakstyper = Object.keys(DeltakerStatusAarsakType)
-    .filter((type) => type !== DeltakerStatusAarsakType.ANNET)
+    .filter(
+      (type) =>
+        type !== DeltakerStatusAarsakType.ANNET &&
+        type !== DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
+    )
     .map((typeString) => {
       // @ts-expect-error: arsakType is made from DeltakerStatusAarsakType keys
       const typeKey: keyof typeof DeltakerStatusAarsakType = typeString
