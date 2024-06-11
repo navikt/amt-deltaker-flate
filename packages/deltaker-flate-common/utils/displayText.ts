@@ -90,7 +90,7 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
       return 'Syk'
     case DeltakerStatusAarsakType.TRENGER_ANNEN_STOTTE:
       return 'Trenger annen hjelp og støtte'
-
-    // TODO skissene viser Feilregistrert i tillegg
+    case DeltakerStatusAarsakType.UTDANNING:
+      return 'Utdanning'
   }
 }
