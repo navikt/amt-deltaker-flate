@@ -59,7 +59,10 @@ spec:
             "loginProvider": "AZURE_AD"
           },
           "cors": {
-            "origin": "https://veilarbpersonflate.intern.dev.nav.no"
+            "origin": [
+              "https://veilarbpersonflate.intern.dev.nav.no",
+              "https://veilarbpersonflate.ansatt.dev.nav.no"
+            ]
           },
           "proxies": [
             {
