@@ -26,7 +26,7 @@ export const EndreDeltakelsesmengdeModal = ({
   onSuccess
 }: EndreDeltakelsesmengdeModalProps) => {
   const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(
-    pamelding.deltakelsesprosent
+    pamelding.deltakelsesprosent ?? 100
   )
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(
     pamelding.dagerPerUke
