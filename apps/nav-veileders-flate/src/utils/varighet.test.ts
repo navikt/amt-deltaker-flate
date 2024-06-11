@@ -16,6 +16,9 @@ import {
   kalkulerSluttdato
 } from './varighet.tsx'
 
+const startdato = '2023-10-28'
+const sluttdato = '2025-10-28'
+
 const pamelding: PameldingResponse = {
   deltakerId: uuidv4(),
   fornavn: 'Navn',
@@ -27,8 +30,8 @@ const pamelding: PameldingResponse = {
     tiltakstype: Tiltakstype.ARBFORB,
     arrangorNavn: 'Den Beste Arrangøren AS',
     oppstartstype: 'LOPENDE',
-    startdato: dayjs().subtract(1, 'month').toString(),
-    sluttdato: dayjs().add(10, 'month').toString()
+    startdato: startdato,
+    sluttdato: sluttdato
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -38,7 +41,7 @@ const pamelding: PameldingResponse = {
     gyldigTil: EMDASH,
     opprettet: dayjs().subtract(1, 'day').toString()
   },
-  startdato: dayjs().subtract(5, 'day').toString(),
+  startdato: startdato,
   sluttdato: null,
   dagerPerUke: null,
   deltakelsesprosent: 100,
@@ -66,7 +69,6 @@ describe('getMaxVarighetDato', () => {
   it('returns null når ingen max varighet', () => {
     const maxVarighetDato = getMaxVarighetDato({
       ...pamelding,
-      startdato: dayjs().toString(),
       maxVarighet: null
     })
     expect(maxVarighetDato).toEqual(null)
@@ -84,11 +86,11 @@ describe('getMaxVarighetDato', () => {
   it('returns varighet beregnet fra deltakers startdato', () => {
     const maxVarighetDato = getMaxVarighetDato({
       ...pamelding,
-      startdato: dayjs().toString(),
+      startdato: '2024-01-20',
       maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
     })
     expect(
-      dayjs(maxVarighetDato).isSame(dayjs().add(1, 'month'), 'day')
+      dayjs(maxVarighetDato).isSame(dayjs('2024-02-19'), 'day')
     ).toBeTruthy()
   })
 
@@ -96,23 +98,20 @@ describe('getMaxVarighetDato', () => {
     const maxVarighetDato = getMaxVarighetDato(
       {
         ...pamelding,
-        startdato: dayjs().toString(),
+        startdato: '2024-01-20',
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().add(1, 'day').toDate()
+      dayjs('2024-02-20').toDate()
     )
     expect(
-      dayjs(maxVarighetDato).isSame(
-        dayjs().add(1, 'month').add(1, 'day'),
-        'day'
-      )
+      dayjs(maxVarighetDato).isSame(dayjs('2024-03-21'), 'day')
     ).toBeTruthy()
   })
 })
 
 describe('getSisteGyldigeSluttDato', () => {
   it('returnerer deltakerlistens sluttdato når ingen maxVarighetDato', () => {
-    const deltakerlisteSluttDato = dayjs().add(1, 'month')
+    const deltakerlisteSluttDato = dayjs('2025-01-20')
     const dato = getSisteGyldigeSluttDato({
       ...pamelding,
       deltakerliste: {
@@ -133,12 +132,12 @@ describe('getSisteGyldigeSluttDato', () => {
         },
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().toDate()
+      dayjs('2025-03-20').toDate()
     )
-    expect(dayjs(dato).isSame(dayjs().add(1, 'month'), 'day')).toBeTruthy()
+    expect(dayjs(dato).isSame(dayjs('2025-04-19'), 'day')).toBeTruthy()
   })
   it('returnerer deltakerlistens sluttdato når den er før maxVarighetDato', () => {
-    const deltakerlisteSluttDato = dayjs().add(1, 'month')
+    const deltakerlisteSluttDato = dayjs('2025-03-20')
     const dato = getSisteGyldigeSluttDato(
       {
         ...pamelding,
@@ -148,12 +147,12 @@ describe('getSisteGyldigeSluttDato', () => {
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds()
       },
-      dayjs().toDate()
+      dayjs('2025-02-20').toDate()
     )
     expect(dayjs(dato).isSame(deltakerlisteSluttDato, 'day')).toBeTruthy()
   })
   it('returnerer maxVarighetDato når den er før deltakerlistens sluttdato', () => {
-    const deltakerlisteSluttDato = dayjs().add(2, 'month')
+    const deltakerlisteSluttDato = dayjs('2025-03-20')
     const dato = getSisteGyldigeSluttDato(
       {
         ...pamelding,
@@ -163,9 +162,9 @@ describe('getSisteGyldigeSluttDato', () => {
         },
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().toDate()
+      dayjs('2024-03-20').toDate()
     )
-    expect(dayjs(dato).isSame(dayjs().add(1, 'month'), 'day')).toBeTruthy()
+    expect(dayjs(dato).isSame(dayjs('2024-04-19'), 'day')).toBeTruthy()
   })
 })
 
@@ -179,7 +178,7 @@ describe('getSkalBekrefteVarighet', () => {
           tiltakstype: Tiltakstype.VASV
         }
       },
-      dayjs().add(1, 'month').add(10, 'day').toDate()
+      dayjs('2024-03-20').toDate()
     )
     expect(skalBekrefte).toEqual(false)
   })
@@ -187,13 +186,16 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
+        startdato: '2024-03-20',
+        sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
         },
+        maxVarighet: null,
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().add(1, 'month').add(10, 'day').toDate()
+      dayjs('2024-07-23').toDate()
     )
     expect(skalBekrefte).toEqual(true)
   })
@@ -202,6 +204,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
+        startdato: '2024-03-20',
+        sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
@@ -209,7 +213,7 @@ describe('getSkalBekrefteVarighet', () => {
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().add(3, 'month').add(10, 'day').toDate()
+      dayjs('2024-07-23').toDate()
     )
     expect(skalBekrefte).toEqual(false)
   })
@@ -218,6 +222,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
+        startdato: '2024-01-20',
+        sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
@@ -225,8 +231,8 @@ describe('getSkalBekrefteVarighet', () => {
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().add(4, 'month').add(10, 'day').toDate(),
-      dayjs().add(1, 'month').add(10, 'day').toDate()
+      dayjs('2024-07-23').toDate(),
+      dayjs('2024-05-23').toDate()
     )
     expect(skalBekrefte).toEqual(false)
   })
@@ -234,6 +240,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
+        startdato: '2024-01-20',
+        sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
@@ -241,8 +249,8 @@ describe('getSkalBekrefteVarighet', () => {
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
-      dayjs().add(2, 'month').add(10, 'day').toDate(),
-      dayjs().add(1, 'month').add(10, 'day').toDate()
+      dayjs('2024-06-23').toDate(),
+      dayjs('2024-05-20').toDate()
     )
     expect(skalBekrefte).toEqual(true)
   })
@@ -250,6 +258,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
+        startdato: '2024-03-20',
+        sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
@@ -257,7 +267,7 @@ describe('getSkalBekrefteVarighet', () => {
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: null
       },
-      dayjs().add(1, 'month').add(10, 'day').toDate()
+      dayjs('2024-04-23').toDate()
     )
     expect(skalBekrefte).toEqual(false)
   })
@@ -325,13 +335,14 @@ describe('getSluttDatoFeilmelding', () => {
     const feilmelding = getSluttDatoFeilmelding(
       {
         ...pamelding,
+        startdato: '2024-04-23',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: dayjs().add(3, 'month').toString()
+          sluttdato: '2024-10-23'
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds()
       },
-      dayjs().add(1, 'month').toDate()
+      dayjs('2024-05-23').toDate()
     )
     expect(feilmelding).toEqual(null)
   })
