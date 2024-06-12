@@ -63,6 +63,12 @@ spec:
               "policy": "cross-origin"
             }
           },
+          "cors": {
+            "origin": [
+              "https://veilarbpersonflate.intern.dev.nav.no",
+              "https://veilarbpersonflate.ansatt.dev.nav.no"
+            ]
+          },
           "proxies": [
             {
               "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
