@@ -58,6 +58,11 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
+          "header": {
+            "corp": {
+              "policy": "cross-origin"
+            }
+          },
           "proxies": [
             {
               "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
