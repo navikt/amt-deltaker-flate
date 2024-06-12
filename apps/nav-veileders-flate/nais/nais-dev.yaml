@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.05.06_08.20-c92409cd4d8b
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.05.07_13.29-a2e3b56408a1
   port: 8080
   ingresses:
     - https://amt-deltaker-flate.intern.dev.nav.no
