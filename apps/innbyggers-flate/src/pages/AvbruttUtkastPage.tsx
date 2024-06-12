@@ -18,14 +18,14 @@ export const AvbruttUtkastPage = () => {
   return (
     <div className="flex flex-col items-start mb-4">
       <Heading level="1" size="large">
+        {tiltakOgStedTekst}
+      </Heading>
+      <Heading level="2" size="large" className="mt-4">
         Avbrutt utkast
       </Heading>
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
-      <Heading level="2" size="medium">
-        {tiltakOgStedTekst}
-      </Heading>
 
-      <Heading level="2" size="medium" className="mt-6">
+      <Heading level="3" size="medium" className="mt-6">
         Hva er innholdet?
       </Heading>
       {deltaker.deltakelsesinnhold?.ledetekst && (
@@ -48,7 +48,7 @@ export const AvbruttUtkastPage = () => {
         </List>
       )}
 
-      <Heading level="2" size="medium" className="mt-6">
+      <Heading level="3" size="medium" className="mt-6">
         Bakgrunnsinfo
       </Heading>
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
@@ -58,7 +58,7 @@ export const AvbruttUtkastPage = () => {
       {(deltaker.deltakerliste.tiltakstype === Tiltakstype.ARBFORB ||
         deltaker.deltakerliste.tiltakstype === Tiltakstype.VASV) && (
         <>
-          <Heading level="2" size="medium" className="mt-6">
+          <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">

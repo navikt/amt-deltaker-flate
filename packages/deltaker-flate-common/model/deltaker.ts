@@ -33,10 +33,9 @@ export enum DeltakerStatusAarsakType {
   SYK = 'SYK',
   FATT_JOBB = 'FATT_JOBB',
   TRENGER_ANNEN_STOTTE = 'TRENGER_ANNEN_STOTTE',
-  // UTDANNING = 'UTDANNING', TODO denne er ny og ikke støttet av backend enda
+  UTDANNING = 'UTDANNING',
   IKKE_MOTT = 'IKKE_MOTT',
   ANNET = 'ANNET'
-  // TODO Feilregistrert
 }
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
