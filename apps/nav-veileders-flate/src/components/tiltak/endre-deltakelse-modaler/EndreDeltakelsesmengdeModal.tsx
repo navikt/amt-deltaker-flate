@@ -26,7 +26,7 @@ export const EndreDeltakelsesmengdeModal = ({
   onSuccess
 }: EndreDeltakelsesmengdeModalProps) => {
   const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(
-    pamelding.deltakelsesprosent
+    pamelding.deltakelsesprosent ?? 100
   )
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(
     pamelding.dagerPerUke
@@ -53,7 +53,10 @@ export const EndreDeltakelsesmengdeModal = ({
       if (gyldigDagerPerUke) {
         doFetchEndreDeltakelsesmengde(pamelding.deltakerId, enhetId, {
           deltakelsesprosent: deltakelsesprosent,
-          dagerPerUke: dagerPerUke || undefined
+          dagerPerUke:
+            dagerPerUke != null && deltakelsesprosent !== 100
+              ? dagerPerUke
+              : undefined
         }).then((data) => {
           onSuccess(data)
         })
