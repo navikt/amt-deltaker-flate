@@ -46,7 +46,7 @@ jobs:
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
-        run: pnpm build:dev --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/dev/rbeidsmarkedstiltak-deltaker/build
+        run: pnpm build:dev --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/dev/arbeidsmarkedstiltak-deltaker/build
       - name: Upload to NAV CDN
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
