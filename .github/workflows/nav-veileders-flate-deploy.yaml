@@ -46,16 +46,16 @@ jobs:
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
-        run: pnpm build:dev --filter=nav-veileders-flate
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        run: pnpm build:dev --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/dev/rbeidsmarkedstiltak-deltaker/build
+      - name: Upload to NAV CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
         with:
-          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-      - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev
+          team: amt
+          source: apps/nav-veileders-flate/build
+          destination: dev/arbeidsmarkedstiltak-deltaker
+          no_cache_paths: dev/arbeidsmarkedstiltak-deltaker/build/asset-manifest.json
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-demo-nav-veileders-flate:
     runs-on: ubuntu-latest
