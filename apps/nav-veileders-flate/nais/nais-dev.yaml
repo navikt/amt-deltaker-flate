@@ -41,7 +41,7 @@ spec:
         - /amt-deltaker-bff/**
   gcp:
     buckets:
-      - name: amt-deltaker-flate-dev
+      - name: amt-deltaker-flate-dev-v2
         cascadingDelete: false
   accessPolicy:
     outbound:
@@ -53,7 +53,7 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-dev"
+            "bucketName": "amt-deltaker-flate-dev-v2"
           },
           "auth": {
             "loginProvider": "AZURE_AD"

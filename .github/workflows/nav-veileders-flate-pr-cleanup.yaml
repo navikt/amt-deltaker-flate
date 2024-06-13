@@ -29,4 +29,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Delete files on GCS
-        run: gsutil rm -r gs://amt-deltaker-flate-dev/pr-${{ github.event.number }}
+        run: gsutil rm -r gs://amt-deltaker-flate-dev-v2/pr-${{ github.event.number }}
