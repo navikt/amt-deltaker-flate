@@ -58,11 +58,6 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
-          "header": {
-            "corp": {
-              "policy": "cross-origin"
-            }
-          },
           "cors": {
             "origin": [
               "https://veilarbpersonflate.intern.dev.nav.no",
