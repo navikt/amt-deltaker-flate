@@ -25,7 +25,7 @@ export const AvbruttUtkastPage = () => {
       </Heading>
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
 
-      <Heading level="3" size="medium" className="mt-6">
+      <Heading level="3" size="medium" className="mt-2">
         Hva er innholdet?
       </Heading>
       {deltaker.deltakelsesinnhold?.ledetekst && (
