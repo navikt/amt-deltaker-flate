@@ -32,10 +32,9 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
-  const tittel =
+  const erUtkastAvbrutt =
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
-      ? 'Avbrutt utkast'
-      : 'Utkast til påmelding'
+  const tittel = erUtkastAvbrutt ? 'Avbrutt utkast' : 'Utkast til påmelding'
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -62,8 +61,9 @@ export const RedigerPameldingPage = () => {
           deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
         />
         <UtkastHeader
-          visStatusVenterPaaBruker
+          visStatusVenterPaaBruker={!erUtkastAvbrutt}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
+          erNAVVeileder
         />
       </div>
 

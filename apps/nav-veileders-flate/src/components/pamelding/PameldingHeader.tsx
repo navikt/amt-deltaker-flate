@@ -28,7 +28,7 @@ export const PameldingHeader = ({
         {hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}
       </Heading>
       <TiltaksgjennomforingLink deltakerlisteId={deltakerlisteId}>
-        <div className="flex">
+        <div className="flex mt-2">
           <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
           <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
         </div>

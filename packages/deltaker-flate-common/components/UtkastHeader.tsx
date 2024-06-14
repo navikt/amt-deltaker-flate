@@ -8,11 +8,13 @@ import {
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
   visStatusVenterPaaBruker?: boolean
+  erNAVVeileder?: boolean
 }
 
 export const UtkastHeader = ({
   vedtaksinformasjon,
-  visStatusVenterPaaBruker
+  visStatusVenterPaaBruker,
+  erNAVVeileder
 }: Props) => {
   const erEndret =
     vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
@@ -23,26 +25,32 @@ export const UtkastHeader = ({
     formatDateFromString(vedtaksinformasjon?.sistEndret) ===
       formatDateFromString(vedtaksinformasjon?.opprettet)
 
+  const detailTextColor = erNAVVeileder ? 'subtle' : 'default'
+
   return (
-    <div className="space-y-2 mt-2 mb-4">
+    <div className="mt-4 mb-4">
       {visStatusVenterPaaBruker && (
-        <Tag variant="info" size="small" className="mb-3 mt-4">
+        <Tag variant="info" size="small" className="mb-4">
           Venter på godkjenning fra bruker
         </Tag>
       )}
       {vedtaksinformasjon &&
         (erEndret ? (
           <>
-            <HStack className="mt-0" gap="2">
-              <Detail weight="semibold">Utkast delt:</Detail>
+            <HStack gap="2">
+              <Detail weight="semibold" textColor={detailTextColor}>
+                Utkast delt:
+              </Detail>
               <Detail>
                 {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </HStack>
             {!erEndretSammeDag && (
-              <HStack gap="2">
-                <Detail weight="semibold">Sist endret:</Detail>
+              <HStack gap="2" className="mt-2">
+                <Detail weight="semibold" textColor={detailTextColor}>
+                  Sist endret:
+                </Detail>
                 <Detail>
                   {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
                   {vedtaksinformasjon.sistEndretAv}
@@ -52,7 +60,9 @@ export const UtkastHeader = ({
           </>
         ) : (
           <HStack gap="2">
-            <Detail weight="semibold">Delt:</Detail>
+            <Detail weight="semibold" textColor={detailTextColor}>
+              Delt:
+            </Detail>
             <Detail>
               {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
               {vedtaksinformasjon.opprettetAv}
