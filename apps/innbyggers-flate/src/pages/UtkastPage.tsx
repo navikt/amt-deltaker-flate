@@ -57,10 +57,10 @@ export const UtkastPage = () => {
 
   return (
     <div className="flex flex-col items-start">
-      <Heading level="1" size="large">
+      <Heading level="1" size="xlarge">
         {navnHosArrangorTekst}
       </Heading>
-      <Heading level="2" size="medium" className="mt-6">
+      <Heading level="2" size="large" className="mt-6">
         Utkast til påmelding
       </Heading>
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
@@ -70,7 +70,7 @@ export const UtkastPage = () => {
         </Heading>
         <BodyLong className="mt-2">
           Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
-          gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtak fattes
+          gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtaket fattes
           og {arrangorNavn} mottar informasjon.
         </BodyLong>
       </GuidePanel>
@@ -176,7 +176,7 @@ export const UtkastPage = () => {
       )}
 
       <Alert inline variant="info" className="mt-4">
-        Når du godkjenner utkastet blir du meldt på, vedtak fattes og{' '}
+        Når du godkjenner utkastet blir du meldt på, vedtaket fattes og{' '}
         {arrangorNavn} mottar informasjonen.
       </Alert>
     </div>
