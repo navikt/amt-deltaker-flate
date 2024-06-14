@@ -56,7 +56,7 @@ export const UtkastPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex flex-col items-start mb-8">
       <Heading level="1" size="xlarge">
         {navnHosArrangorTekst}
       </Heading>

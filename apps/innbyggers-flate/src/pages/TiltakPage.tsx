@@ -76,7 +76,7 @@ export const TiltakPage = () => {
   }, [])
 
   return (
-    <div className={'bg-white py-4 w-full'}>
+    <div className={'bg-white w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           Du er nå meldt på {tiltakOgStedTekst} og vedtaket er fattet.

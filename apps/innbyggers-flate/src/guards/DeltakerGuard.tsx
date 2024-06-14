@@ -29,8 +29,8 @@ export const DeltakerGuard = () => {
         className="w-full"
         dialogUrl={DIALOG_URL}
         tiltakOgStedTekst={tiltakOgStedTekst}
-        meldtPaDato={getDateFromString(deltaker.vedtaksinformasjon.fattet)}
-        feilregistrertDato={deltaker.status.gyldigFra}
+        meldtPaDato={getDateFromString(deltaker?.vedtaksinformasjon?.fattet)}
+        feilregistrertDato={getDateFromString(deltaker.status.gyldigFra)}
       />
     )
   } else {
