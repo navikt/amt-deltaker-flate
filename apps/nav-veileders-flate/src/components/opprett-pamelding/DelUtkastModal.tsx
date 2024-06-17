@@ -31,8 +31,9 @@ export const DelUtkastModal = ({
       <Modal.Body>
         <BodyLong size="small">
           Brukeren blir varslet, og finner lenke på Min side og i
-          aktivitetsplanen. Bruker får lest gjennom hva du foreslår å sende til
-          arrangøren. Bruker ser innhold, bakgrunnsinformasjon og navnet ditt.
+          aktivitetsplanen. Brukeren ser hva som foreslås å sende til arrangøren
+          og navnet ditt. Hvis brukeren har spørsmål så kan de ta kontakt
+          gjennom dialogen.
         </BodyLong>
 
         <BodyLong size="small" className="mt-6 mb-6">

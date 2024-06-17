@@ -51,15 +51,15 @@ export const MeldPaDirekteModal = ({
           label="Ja, personen er informert"
         >
           <BodyLong size="small">
-            Før du melder på skal du ha avtalt med personen hvilke
-            personopplysninger som deles med arrangøren, og dere skal være enige
-            om hva innholdet i tiltaket skal være. Er personen informert?
+            Før du melder på skal du ha avtalt med personen om hva innholdet i
+            tiltaket skal være og hvilke personopplysninger som deles med
+            arrangøren. Er personen informert?
           </BodyLong>
         </ConfirmationPanel>
         <BodyLong size="small" className="mt-8 mb-4">
           {pamelding.digitalBruker
-            ? 'Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. Arrangøren ser påmeldingen, kontaktinformasjonen til bruker og tildelt NAV-veileder i Deltakeroversikten.'
-            : 'Brukeren mottar vedtaket på papir. Arrangøren ser påmeldingen, kontaktinformasjonen til bruker og tildelt veileder i Deltakeroversikten.'}
+            ? 'Brukeren blir varslet, og finner lenke på Min side og i aktivitetsplanen. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.'
+            : 'Brukeren mottar vedtaket på papir. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.'}
         </BodyLong>
         <BodyShort weight="semibold">
           {`${getDeltakerNavn(pamelding)} meldes på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}
