@@ -87,6 +87,9 @@ export const worker = setupWorker(
       return response
     }
   ),
+  http.post('/amt-deltaker-bff/deltaker/:deltakerId/reaktiver', async () => {
+    return handler.endreDeltakelseReaktiver()
+  }),
   http.post(
     '/amt-deltaker-bff/deltaker/:deltakerId/forleng',
     async ({ request }) => {

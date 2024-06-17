@@ -47,6 +47,8 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Forleng deltakelse'
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
       return 'Endre deltakelsesmengde'
+    case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
+      return 'Endre til aktiv deltakelse'
   }
 }
 

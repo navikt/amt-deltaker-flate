@@ -111,6 +111,9 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
   }
+  if (ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)) {
+    valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
+  }
   if (skalViseForlengKnapp(pamelding, sluttdato, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.FORLENG_DELTAKELSE)
   }
