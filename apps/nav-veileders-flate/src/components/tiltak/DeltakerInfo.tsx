@@ -10,6 +10,7 @@ import {
   List
 } from '@navikt/ds-react'
 import {
+  DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
@@ -23,7 +24,6 @@ import {
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
-import { DeltakerStatusInfoTekst } from './DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from './HvaErDette.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 
