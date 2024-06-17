@@ -11,6 +11,7 @@ import {
   List
 } from '@navikt/ds-react'
 import {
+  DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
@@ -24,7 +25,6 @@ import {
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { DeltakerStatusInfoTekst } from '../components/DeltakerStatusInfoTekst.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 import { useEffect } from 'react'

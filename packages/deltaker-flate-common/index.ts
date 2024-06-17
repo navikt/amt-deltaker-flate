@@ -1,4 +1,5 @@
 export * from './components/DeltakerStatusTag'
+export * from './components/DeltakerStatusInfoTekst'
 export * from './components/UtkastHeader'
 export * from './components/HvaDelesMedArrangor'
 export * from './components/FeilregistrertInfo'
