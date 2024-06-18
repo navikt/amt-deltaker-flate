@@ -34,12 +34,13 @@ export const DeltakerStatusInfoTekst = ({
       <BodyLong size="small" className="mt-4">
         {getInfoTekst(statusType, tiltakOgStedTekst)}
       </BodyLong>
-      {!harOppstartsDato && (
-        <Alert variant="info" className="mt-4" size="small">
-          Når arrangøren har en ledig plass så vil de ta kontakt med deg for å
-          avtale oppstart.
-        </Alert>
-      )}
+      {!harOppstartsDato &&
+        statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
+          <Alert variant="info" className="mt-4" size="small">
+            Når arrangøren har en ledig plass så vil de ta kontakt med deg for å
+            avtale oppstart.
+          </Alert>
+        )}
     </>
   )
 }

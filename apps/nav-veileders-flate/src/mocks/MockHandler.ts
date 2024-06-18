@@ -261,6 +261,20 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
+  endreDeltakelseReaktiver() {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
+      oppdatertPamelding.startdato = null
+      oppdatertPamelding.sluttdato = null
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
   endreDeltakelseForleng(request: ForlengDeltakelseRequest) {
     const oppdatertPamelding = this.pamelding
 

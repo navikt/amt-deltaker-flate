@@ -17,6 +17,15 @@ const harSluttetKanEndres = (
   statusdato > toMndSiden &&
   pamelding.kanEndres
 
+const ikkeAktuellKanEndres = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) =>
+  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
+
 const harAvsluttendeStatusKanEndres = (
   pamelding: PameldingResponse,
   statusdato: Date,
@@ -60,6 +69,14 @@ const skalViseEndreSluttdatoKnapp = (
   deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
   harSluttetKanEndres(pamelding, statusdato, toMndSiden)
 
+const skalViseEndreSluttarsakKnapp = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) =>
+  harSluttetKanEndres(pamelding, statusdato, toMndSiden) ||
+  ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)
+
 const skalViseEndreDeltakelsesmengde = (
   pamelding: PameldingResponse,
   statusdato: Date,
@@ -77,8 +94,9 @@ const skalViseEndreOppstartsdato = (
   // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
   // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
   // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
-  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
+  pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
+  (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
+    harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden))
 
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
@@ -92,6 +110,9 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   }
   if (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
+  }
+  if (ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)) {
+    valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }
   if (skalViseForlengKnapp(pamelding, sluttdato, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.FORLENG_DELTAKELSE)
@@ -108,7 +129,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (skalViseEndreSluttdatoKnapp(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTDATO)
   }
-  if (harSluttetKanEndres(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreSluttarsakKnapp(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)
   }
   if (skalViseEndreDeltakelsesmengde(pamelding, statusdato, toMndSiden)) {

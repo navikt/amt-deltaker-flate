@@ -2,6 +2,7 @@ import { Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusAarsakType,
+  DeltakerStatusType,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -23,6 +24,14 @@ interface EndreSluttarsakModalProps {
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+}
+
+const sluttarsakSporsmalTekst = (statustype: DeltakerStatusType) => {
+  if (statustype === DeltakerStatusType.IKKE_AKTUELL) {
+    return 'Hva er årsaken til at deltakeren ikke er aktuell?'
+  } else {
+    return 'Hva er årsaken til avslutning?'
+  }
 }
 
 export const EndreSluttarsakModal = ({
@@ -83,7 +92,7 @@ export const EndreSluttarsakModal = ({
           <ErrorPage message={endreDeltakelseError} />
         )}
         <RadioGroup
-          legend="Hva er årsaken til avslutning?"
+          legend={sluttarsakSporsmalTekst(pamelding.status.type)}
           size="small"
           error={
             hasError &&

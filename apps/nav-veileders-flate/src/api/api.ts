@@ -171,6 +171,37 @@ export const endreDeltakelseIkkeAktuell = (
     })
 }
 
+export const endreDeltakelseReaktiver = (
+  deltakerId: string,
+  enhetId: string
+): Promise<PameldingResponse> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/reaktiver`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    }
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Kunne ikke endre til aktiv deltakelse. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return pameldingSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse pameldingSchema:', error)
+        throw error
+      }
+    })
+}
+
 export const endreDeltakelseForleng = (
   deltakerId: string,
   enhetId: string,
