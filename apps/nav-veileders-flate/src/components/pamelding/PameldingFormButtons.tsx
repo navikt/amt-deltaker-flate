@@ -26,6 +26,7 @@ interface Props {
   disabled: boolean
   disableForm: (disable: boolean) => void
   onCancelUtkast?: () => void
+  onDelEndring?: (pamelding: PameldingResponse) => void
   onSubmitError?: () => void
 }
 
@@ -34,6 +35,7 @@ export const PameldingFormButtons = ({
   disabled,
   disableForm,
   onCancelUtkast,
+  onDelEndring,
   onSubmitError
 }: Props) => {
   const erUtkast =
@@ -63,7 +65,10 @@ export const PameldingFormButtons = ({
     state: sendSomForslagState,
     error: sendSomForslagError,
     doFetch: doFetchSendSomForslag
-  } = useDeferredFetch(sendInnPamelding, returnToFrontpage)
+  } = useDeferredFetch(
+    sendInnPamelding,
+    erUtkast ? undefined : returnToFrontpage
+  )
   const {
     state: slettKladdState,
     error: slettKladdError,
@@ -75,7 +80,11 @@ export const PameldingFormButtons = ({
       pamelding.deltakerId,
       enhetId,
       generatePameldingRequestFromForm(pamelding, newFormData)
-    )
+    ).then((res) => {
+      if (onDelEndring !== undefined && res !== null) {
+        onDelEndring(res)
+      }
+    })
   }
 
   const handleFormSubmit = (newFormData: PameldingFormValues) => {

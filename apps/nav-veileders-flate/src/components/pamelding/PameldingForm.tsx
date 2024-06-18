@@ -35,6 +35,7 @@ interface Props {
   focusOnOpen?: boolean
   disableForm?: (disable: boolean) => void
   onCancelUtkast?: () => void
+  onDelEndring?: (pamelding: PameldingResponse) => void
 }
 
 export const PameldingForm = ({
@@ -43,7 +44,8 @@ export const PameldingForm = ({
   disabled,
   focusOnOpen,
   disableForm,
-  onCancelUtkast
+  onCancelUtkast,
+  onDelEndring
 }: Props) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null)
   const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
@@ -185,6 +187,7 @@ export const PameldingForm = ({
             disabled={isDisabled}
             disableForm={handleDiableForm}
             onCancelUtkast={onCancelUtkast}
+            onDelEndring={onDelEndring}
             onSubmitError={onSubmitError}
           />
         </VStack>

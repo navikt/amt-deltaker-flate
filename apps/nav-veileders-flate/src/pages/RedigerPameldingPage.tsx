@@ -22,12 +22,13 @@ import {
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
   const [redigerUtkast, setRedigerUtkast] = useState<boolean>(false)
   const [idDisabled, setIsDisabled] = useState<boolean>(false)
-  const { pamelding } = usePameldingContext()
+  const { pamelding, setPamelding } = usePameldingContext()
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -38,6 +39,12 @@ export const RedigerPameldingPage = () => {
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
+  }
+
+  const handleDelEndring = (pamelding: PameldingResponse) => {
+    setPamelding(pamelding)
+    setRedigerUtkast(false)
+    setIsDisabled(false)
   }
 
   const {
@@ -75,6 +82,7 @@ export const RedigerPameldingPage = () => {
             disabled={idDisabled}
             disableForm={(disabled) => setIsDisabled(disabled)}
             onCancelUtkast={() => setRedigerUtkast(false)}
+            onDelEndring={handleDelEndring}
           />
         )}
 
