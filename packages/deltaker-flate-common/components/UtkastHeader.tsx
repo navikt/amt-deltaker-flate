@@ -31,7 +31,7 @@ export const UtkastHeader = ({
     <div className="mt-4 mb-4">
       {visStatusVenterPaaBruker && (
         <Tag variant="info" size="small" className="mb-4">
-          Venter på godkjenning fra bruker
+          Utkastet er delt og venter på godkjenning
         </Tag>
       )}
       {vedtaksinformasjon &&
@@ -39,7 +39,7 @@ export const UtkastHeader = ({
           <>
             <HStack gap="2">
               <Detail weight="semibold" textColor={detailTextColor}>
-                Utkast delt:
+                Første utkast delt:
               </Detail>
               <Detail>
                 {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}

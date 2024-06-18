@@ -22,10 +22,10 @@ export const PameldingHeader = ({
   return (
     <div>
       <Heading level="1" size="large">
-        {title}
+        {hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}
       </Heading>
       <Heading level="2" size="medium">
-        {hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}
+        {title}
       </Heading>
       <TiltaksgjennomforingLink deltakerlisteId={deltakerlisteId}>
         <div className="flex mt-2">
