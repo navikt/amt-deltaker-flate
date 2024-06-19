@@ -52,7 +52,7 @@ export const PameldingFormButtons = ({
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
-      body: `Vedtaket er gjort klar. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+      body: `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
     })
   }
 
