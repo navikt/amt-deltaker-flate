@@ -36,7 +36,11 @@ export const Utkast = ({
         {innhold?.ledetekst ?? ''}
       </BodyLong>
       {innhold?.innhold && (
-        <List as="ul" size="small">
+        <List
+          as="ul"
+          size="small"
+          className="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
+        >
           {innhold.innhold
             .filter((i) => i.valgt)
             .map((i) => (
