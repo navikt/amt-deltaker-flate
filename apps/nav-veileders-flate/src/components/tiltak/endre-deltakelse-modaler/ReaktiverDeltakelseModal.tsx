@@ -77,10 +77,8 @@ export const ReaktiverDeltakelseModal = ({
           label="Ja, brukeren skal delta likevel"
         >
           <BodyLong size="small">
-            Skal brukeren delta på tiltaket likevel?
-            <br />
-            Statusen settes tilbake til “venter på oppstart” og brukeren mottar
-            informasjon om påmeldingen.
+            Skal brukeren delta på tiltaket likevel? Statusen settes tilbake til
+            “venter på oppstart” og brukeren mottar informasjon om påmeldingen.
           </BodyLong>
         </ConfirmationPanel>
       </Modal.Body>
