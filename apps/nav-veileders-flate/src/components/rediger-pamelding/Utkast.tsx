@@ -29,7 +29,7 @@ export const Utkast = ({
 
   return (
     <VStack gap="4">
-      <Heading level="2" size="medium">
+      <Heading level="3" size="medium">
         Hva er innholdet?
       </Heading>
       <BodyLong size="small">{innhold?.ledetekst ?? ''}</BodyLong>
@@ -44,8 +44,8 @@ export const Utkast = ({
             ))}
         </List>
       )}
-      <div className="mt-4">
-        <Heading level="2" size="medium">
+      <div className="mt-2">
+        <Heading level="3" size="medium">
           Bakgrunnsinfo
         </Heading>
         <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
@@ -56,10 +56,10 @@ export const Utkast = ({
       {(tiltakstype === Tiltakstype.ARBFORB ||
         tiltakstype === Tiltakstype.VASV) && (
         <>
-          <Heading level="2" size="medium" className="mt-4">
+          <Heading level="3" size="medium" className="mt-2">
             Deltakelsesmengde
           </Heading>
-          <BodyLong size="small" className="mt-2">
+          <BodyLong size="small">
             {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
           </BodyLong>
         </>
