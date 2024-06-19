@@ -3,6 +3,7 @@ import { Alert, Button, HelpText } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -56,7 +57,10 @@ export const MeldPaDirekteButton = ({
       : 'Meld på uten godkjent utkast'
 
   const returnToFrontpage = () => {
-    doRedirect(DELTAKELSESOVERSIKT_LINK)
+    doRedirect(DELTAKELSESOVERSIKT_LINK, {
+      heading: 'Bruker er meldt på',
+      body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
+    })
   }
 
   const {

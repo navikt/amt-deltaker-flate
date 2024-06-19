@@ -2,6 +2,7 @@ import { Alert, Button, HelpText, HStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -48,6 +49,13 @@ export const PameldingFormButtons = ({
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
   }
+  const returnToFrontpageWithSuccessMessage = () => {
+    doRedirect(DELTAKELSESOVERSIKT_LINK, {
+      heading: 'Utkastet er delt med bruker',
+      body: `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+    })
+  }
+
   const { handleSubmit, getValues } = useFormContext<PameldingFormValues>()
 
   const [delUtkastModalOpen, setDelUtkastModalOpen] = useState(false)
@@ -67,7 +75,7 @@ export const PameldingFormButtons = ({
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(
     sendInnPamelding,
-    erUtkast ? undefined : returnToFrontpage
+    erUtkast ? undefined : returnToFrontpageWithSuccessMessage
   )
   const {
     state: slettKladdState,
