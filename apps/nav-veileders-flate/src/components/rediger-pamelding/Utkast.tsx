@@ -28,13 +28,19 @@ export const Utkast = ({
       : EMDASH
 
   return (
-    <VStack gap="4">
-      <Heading level="2" size="medium">
+    <VStack>
+      <Heading level="3" size="small">
         Hva er innholdet?
       </Heading>
-      <BodyLong size="small">{innhold?.ledetekst ?? ''}</BodyLong>
+      <BodyLong className="mt-2" size="small">
+        {innhold?.ledetekst ?? ''}
+      </BodyLong>
       {innhold?.innhold && (
-        <List as="ul" size="small">
+        <List
+          as="ul"
+          size="small"
+          className="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
+        >
           {innhold.innhold
             .filter((i) => i.valgt)
             .map((i) => (
@@ -44,8 +50,8 @@ export const Utkast = ({
             ))}
         </List>
       )}
-      <div className="mt-4">
-        <Heading level="2" size="medium">
+      <div className="mt-8">
+        <Heading level="3" size="small">
           Bakgrunnsinfo
         </Heading>
         <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
@@ -56,7 +62,7 @@ export const Utkast = ({
       {(tiltakstype === Tiltakstype.ARBFORB ||
         tiltakstype === Tiltakstype.VASV) && (
         <>
-          <Heading level="2" size="medium" className="mt-4">
+          <Heading level="3" size="small" className="mt-8">
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
