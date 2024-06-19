@@ -207,7 +207,32 @@ export class MockHandler {
   ): HttpResponse {
     // eslint-disable-next-line no-console
     console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
+    if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
+
+    this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null
+    this.pamelding.dagerPerUke = request.dagerPerUke || null
+    this.pamelding.deltakelsesprosent = request.deltakelsesprosent || null
+    if (this.pamelding.deltakelsesinnhold !== null) {
+      this.pamelding.deltakelsesinnhold.innhold =
+        this.pamelding.deltakelsesinnhold.innhold.map((i) => {
+          const valgtInnhold = request.innhold.reduce(
+            (acc, innhold) => {
+              acc[innhold.innholdskode] = innhold
+              return acc
+            },
+            {} as Record<string, (typeof request.innhold)[0]>
+          )
+
+          if (valgtInnhold[i.innholdskode] !== undefined) {
+            i.valgt = true
+            i.beskrivelse = valgtInnhold[i.innholdskode].beskrivelse
+          } else {
+            i.valgt = false
+          }
+          return i
+        })
+    }
+    return HttpResponse.json(this.pamelding)
   }
 
   sendInnPameldingUtenGodkjenning(

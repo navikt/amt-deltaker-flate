@@ -44,14 +44,7 @@ export const createPamelding = async (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const getPamelding = async (
@@ -92,7 +85,7 @@ export const sendInnPamelding = async (
   deltakerId: string,
   enhetId: string,
   request: SendInnPameldingRequest
-): Promise<number> => {
+): Promise<PameldingResponse> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
@@ -102,15 +95,16 @@ export const sendInnPamelding = async (
       'aktiv-enhet': enhetId
     },
     body: JSON.stringify(request)
-  }).then((response) => {
-    if (response.status !== 200) {
-      throw new Error(
-        `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
-      )
-    }
-
-    return response.status
   })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
 }
 
 export const sendInnPameldingUtenGodkjenning = (
@@ -161,14 +155,7 @@ export const endreDeltakelseIkkeAktuell = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseReaktiver = (
@@ -225,14 +212,7 @@ export const endreDeltakelseForleng = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseStartdato = (
@@ -258,14 +238,7 @@ export const endreDeltakelseStartdato = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseSluttdato = (
@@ -291,14 +264,7 @@ export const endreDeltakelseSluttdato = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseSluttarsak = (
@@ -324,14 +290,7 @@ export const endreDeltakelseSluttarsak = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const avsluttDeltakelse = (
@@ -357,14 +316,7 @@ export const avsluttDeltakelse = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseBakgrunnsinfo = (
@@ -390,9 +342,7 @@ export const endreDeltakelseBakgrunnsinfo = (
       }
       return response.json()
     })
-    .then((json) => {
-      return pameldingSchema.parse(json)
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelseInnhold = (
@@ -418,14 +368,7 @@ export const endreDeltakelseInnhold = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const endreDeltakelsesmengde = (
@@ -451,14 +394,7 @@ export const endreDeltakelsesmengde = (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const avbrytUtkast = (
@@ -505,4 +441,13 @@ export const oppdaterKladd = async (
     }
     return response.status
   })
+}
+
+const parsePamelding = (json: string): PameldingResponse => {
+  try {
+    return pameldingSchema.parse(json)
+  } catch (error) {
+    console.error('Kunne ikke parse pameldingSchema:', error)
+    throw error
+  }
 }
