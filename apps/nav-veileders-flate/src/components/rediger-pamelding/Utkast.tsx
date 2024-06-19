@@ -28,11 +28,13 @@ export const Utkast = ({
       : EMDASH
 
   return (
-    <VStack gap="4">
-      <Heading level="3" size="medium">
+    <VStack>
+      <Heading level="3" size="small">
         Hva er innholdet?
       </Heading>
-      <BodyLong size="small">{innhold?.ledetekst ?? ''}</BodyLong>
+      <BodyLong className="mt-2" size="small">
+        {innhold?.ledetekst ?? ''}
+      </BodyLong>
       {innhold?.innhold && (
         <List as="ul" size="small">
           {innhold.innhold
@@ -44,8 +46,8 @@ export const Utkast = ({
             ))}
         </List>
       )}
-      <div className="mt-2">
-        <Heading level="3" size="medium">
+      <div className="mt-8">
+        <Heading level="3" size="small">
           Bakgrunnsinfo
         </Heading>
         <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
@@ -56,10 +58,10 @@ export const Utkast = ({
       {(tiltakstype === Tiltakstype.ARBFORB ||
         tiltakstype === Tiltakstype.VASV) && (
         <>
-          <Heading level="3" size="medium" className="mt-2">
+          <Heading level="3" size="small" className="mt-8">
             Deltakelsesmengde
           </Heading>
-          <BodyLong size="small">
+          <BodyLong size="small" className="mt-2">
             {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
           </BodyLong>
         </>
