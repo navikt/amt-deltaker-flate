@@ -45,7 +45,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
         className="mt-4 rounded border-2 border-[var(--a-border-selected)] xl:max-w-[500px]"
       >
         <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
-          Gå til tiltaksgjennomføringen
+          Gå til tiltaks&shy;gjennomføringen
         </LinkPanel.Title>
         <LinkPanel.Description>
           <BodyShort size="small">

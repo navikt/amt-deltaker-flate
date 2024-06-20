@@ -3,3 +3,8 @@
   margin: 0 auto;
   padding: 1rem;
 }
+
+body {
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+}

@@ -58,7 +58,7 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div className="max-w-[47.5rem] m-auto">
+    <div className="max-w-[47.5rem] md:m-auto m-4">
       <Tilbakeknapp />
       <div>
         <PameldingHeader
@@ -74,7 +74,7 @@ export const RedigerPameldingPage = () => {
         />
       </div>
 
-      <VStack gap="2" align="start" className="p-8 bg-white">
+      <VStack gap="2" align="start" className="md:p-8 p-4 bg-white">
         {redigerUtkast && (
           <PameldingForm
             focusOnOpen

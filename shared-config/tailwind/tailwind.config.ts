@@ -327,6 +327,8 @@ const config: Config = {
         full: '9999px'
       },
       screens: {
+        sm: '480px',
+        md: '768px',
         xl: '1200px',
         xxl: '1700px'
         // => @media (min-width: 992px) { ... }

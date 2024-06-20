@@ -7,7 +7,7 @@ export const OpprettPameldingPage = () => {
   const { pamelding } = usePameldingContext()
 
   return (
-    <div className="m-4 max-w-[47.5rem] mx-auto">
+    <div className="md:m-auto m-4 max-w-[47.5rem] ">
       <Tilbakeknapp />
       <PameldingHeader
         title="Kladd til påmelding"
@@ -16,7 +16,10 @@ export const OpprettPameldingPage = () => {
         deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
       />
 
-      <PameldingForm className="mt-4 p-8 bg-white" pamelding={pamelding} />
+      <PameldingForm
+        className="mt-4 p-4 md:p-8 bg-white"
+        pamelding={pamelding}
+      />
     </div>
   )
 }
