@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import {
+  DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
   INNHOLD_TYPE_ANNET,
@@ -51,7 +52,8 @@ export class MockHandler {
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
-        sluttdato: '2025-02-20'
+        sluttdato: '2025-02-20',
+        status: DeltakerlisteStatus.GJENNOMFORES
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

@@ -39,6 +39,14 @@ export enum DeltakerStatusAarsakType {
   SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT = 'SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT'
 }
 
+export enum DeltakerlisteStatus {
+  PLANLAGT = 'PLANLAGT',
+  GJENNOMFORES = 'GJENNOMFORES',
+  AVBRUTT = 'AVBRUTT',
+  AVLYST = 'AVLYST',
+  AVSLUTTET = 'AVSLUTTET'
+}
+
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
