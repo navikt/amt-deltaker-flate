@@ -1,4 +1,5 @@
 import {
+  DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   Tiltakstype,
@@ -11,6 +12,8 @@ export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
+
+export const deltakerlisteStatusSchema = z.nativeEnum(DeltakerlisteStatus)
 
 export const innholdSchema = z.object({
   tekst: z.string(),
@@ -31,7 +34,8 @@ export const deltakerlisteSchema = z.object({
   arrangorNavn: z.string(),
   oppstartstype: z.string(),
   startdato: z.string(),
-  sluttdato: z.string().nullable()
+  sluttdato: z.string().nullable(),
+  status: deltakerlisteStatusSchema
 })
 
 export const deltakerStatusAarsakSchema = z.object({

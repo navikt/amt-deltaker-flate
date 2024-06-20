@@ -10,6 +10,7 @@ import {
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
+import { DeltakerlisteStatusTag } from './DeltakerlisteStatusTag.tsx'
 
 interface Props {
   className: string
@@ -58,6 +59,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
             {formatDateFromString(pamelding.deltakerliste.startdato)} -{' '}
             {formatDateFromString(pamelding.deltakerliste.sluttdato)}
           </BodyShort>
+          <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
         </LinkPanel.Description>
       </LinkPanel>
     </div>

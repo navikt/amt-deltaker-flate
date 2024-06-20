@@ -2,7 +2,8 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   Tiltakstype,
-  DeltakerStatusAarsak
+  DeltakerStatusAarsak,
+  DeltakerlisteStatus
 } from '../model/deltaker'
 
 export const deltakerprosentText = (
@@ -94,5 +95,20 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
       return 'Utdanning'
     case DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT:
       return 'Samarbeidet med arrangøren er avbrutt'
+  }
+}
+
+export const getDeltakerlisteStatusText = (status: DeltakerlisteStatus) => {
+  switch (status) {
+    case DeltakerlisteStatus.PLANLAGT:
+      return 'Planlagt'
+    case DeltakerlisteStatus.GJENNOMFORES:
+      return 'Gjennomføres'
+    case DeltakerlisteStatus.AVSLUTTET:
+      return 'Avsluttet'
+    case DeltakerlisteStatus.AVLYST:
+      return 'Avlyst'
+    case DeltakerlisteStatus.AVBRUTT:
+      return 'Avbrutt'
   }
 }
