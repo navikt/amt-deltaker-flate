@@ -16,7 +16,7 @@ export const generateInnholdFromResponse = (
   if (pamelding?.deltakelsesinnhold === null) {
     return []
   }
-  return pamelding?.deltakelsesinnhold?.innhold.flatMap((i) => {
+  return pamelding?.deltakerliste.tilgjengeligInnhold.flatMap((i) => {
     const valgtInnhold = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
     )

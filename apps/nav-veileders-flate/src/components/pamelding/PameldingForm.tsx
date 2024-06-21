@@ -48,7 +48,7 @@ export const PameldingForm = ({
   onDelEndring
 }: Props) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null)
-  const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
+  const innhold = pamelding.deltakerliste.tilgjengeligInnhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
 
