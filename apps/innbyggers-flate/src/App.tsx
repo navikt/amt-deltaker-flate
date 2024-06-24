@@ -39,25 +39,29 @@ export const App = () => {
       {isPrEvn && <PrBanner setDeltakerID={setDeltakerIDprSetting} />}
 
       {state === DeferredFetchState.LOADING && (
-        <div className="flex justify-center items-center h-screen">
+        <main className="flex justify-center items-center h-screen">
           <Loader size="3xlarge" title="Venter..." />
-        </div>
+        </main>
       )}
 
       {(error || (state === DeferredFetchState.RESOLVED && !deltaker)) && (
-        <Alert variant="error" className="mt-4">
-          <Heading spacing size="small" level="3">
-            Vi beklager, men noe gikk galt
-          </Heading>
-          {error}
-        </Alert>
+        <main>
+          <Alert variant="error" className="mt-4">
+            <Heading spacing size="small" level="3">
+              Vi beklager, men noe gikk galt
+            </Heading>
+            {error}
+          </Alert>
+        </main>
       )}
 
       {!error && deltaker && (
         <DeltakerContextProvider initialDeltaker={deltaker}>
           {useMock && <DemoBanner />}
           <TilAktivitetsplanLenke />
-          <DeltakerGuard />
+          <main>
+            <DeltakerGuard />
+          </main>
         </DeltakerContextProvider>
       )}
     </>

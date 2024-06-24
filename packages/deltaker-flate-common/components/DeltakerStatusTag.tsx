@@ -36,6 +36,7 @@ export const DeltakerStatusTag = ({ statusType }: DeltakerStatusTagProps) => {
     <Tag
       variant={getTagType(statusType)}
       size="small"
+      aria-describedby="test1"
       className={statusType === DeltakerStatusType.DELTAR ? 'bg-white' : ''}
     >
       {getDeltakerStatusDisplayText(statusType)}

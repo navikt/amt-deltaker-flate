@@ -88,7 +88,7 @@ export const TiltakPage = () => {
       </Heading>
 
       <HStack gap="2" className="mt-8">
-        <Label>Status:</Label>
+        <Label id="test1">Status:</Label>
         <DeltakerStatusTag statusType={deltaker.status.type} />
       </HStack>
       {deltaker.status.aarsak && (
