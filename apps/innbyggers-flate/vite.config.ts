@@ -10,6 +10,11 @@ export default defineConfig({
     sourcemap: true
   },
   plugins: [react()],
+  server: {
+    port: 3005,
+    host: '127.0.0.1',
+    open: true
+  },
   test: {
     globals: true,
     environment: 'jsdom',

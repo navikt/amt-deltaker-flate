@@ -31,6 +31,11 @@
     "start": {
       "cache": false,
       "persistent": true
+    },
+    "playwright": {
+      "env": ["PLAYWRIGHT_BROWSERS_PATH"],
+      "dependsOn": ["^build"],
+      "outputs": []
     }
   }
 }

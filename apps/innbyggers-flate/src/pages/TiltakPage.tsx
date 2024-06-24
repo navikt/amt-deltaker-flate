@@ -83,7 +83,7 @@ export const TiltakPage = () => {
         </Alert>
       )}
 
-      <Heading level="1" size="large">
+      <Heading level="1" size="large" data-testid="heading_tiltak">
         {tiltakOgStedTekst}
       </Heading>
 

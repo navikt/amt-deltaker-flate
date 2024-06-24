@@ -61,7 +61,12 @@ export const UtkastPage = () => {
       <Heading level="1" size="xlarge">
         {navnHosArrangorTekst}
       </Heading>
-      <Heading level="2" size="large" className="mt-6">
+      <Heading
+        level="2"
+        size="large"
+        className="mt-6"
+        data-testid="heading_utkast"
+      >
         Utkast til påmelding
       </Heading>
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
@@ -167,6 +172,7 @@ export const UtkastPage = () => {
         onClick={handleGodkjennUtkast}
         className="mt-4"
         loading={state === DeferredFetchState.LOADING}
+        data-testid="godkjenn_utkast"
       >
         Godkjenn utkast
       </Button>

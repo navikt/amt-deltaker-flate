@@ -17,9 +17,26 @@ env:
   TZ: Europe/Amsterdam
 
 jobs:
+  playwright-version:
+    name: Get playwright version
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: apps/innbyggers-flate
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+
   test-and-lint:
     name: Test and lint
     runs-on: ubuntu-latest
+    needs: playwright-version
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,7 +47,9 @@ jobs:
       - name: Lint
         run: pnpm lint
       - name: Run tests
-        run: pnpm test:no-watch
+        run: pnpm test:no-watch --filter=innbyggers-flate
+      - name: Run playwright tests
+        run: pnpm playwright --filter=innbyggers-flate
 
   deploy-dev-innbyggers-flate:
     name: Deploy innbyggers-flate to dev
