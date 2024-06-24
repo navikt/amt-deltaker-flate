@@ -42,6 +42,7 @@ export const UtkastPage = () => {
     error,
     doFetch: doFetchGodkjennUtkast
   } = useDeferredFetch(godkjennUtkast)
+
   const handleGodkjennUtkast = () => {
     if (!godatt) {
       setGodTattError(true)
@@ -169,11 +170,13 @@ export const UtkastPage = () => {
       >
         Godkjenn utkast
       </Button>
-      {error && (
-        <Alert variant="error" className="mt-4">
-          Det skjedde en feil ved godkjenning av utkastet. Prøv igjen senere
-        </Alert>
-      )}
+      <div aria-live="polite">
+        {error && (
+          <Alert variant="error" className="mt-4">
+            Det skjedde en feil ved godkjenning av utkastet. Prøv igjen senere
+          </Alert>
+        )}
+      </div>
 
       <Alert inline variant="info" className="mt-4">
         Når du godkjenner utkastet blir du meldt på, vedtaket fattes og{' '}
