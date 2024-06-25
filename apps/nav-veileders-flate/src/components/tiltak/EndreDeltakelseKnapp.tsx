@@ -44,6 +44,7 @@ export const EndreDeltakelseKnapp = () => {
           variant="secondary"
           size="small"
           className="w-fit"
+          data-testid="endre_deltakelse_knapp"
           icon={<PencilIcon aria-hidden />}
         >
           Endre deltakelse
