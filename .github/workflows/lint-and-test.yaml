@@ -25,6 +25,9 @@ jobs:
   lint-and-test:
     name: Lint, run tests & build
     runs-on: ubuntu-latest
+    needs: playwright-version
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     timeout-minutes: 15
 
     permissions:
