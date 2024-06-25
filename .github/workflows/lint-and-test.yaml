@@ -8,20 +8,6 @@ env:
   TZ: Europe/Amsterdam
 
 jobs:
-  playwright-version:
-    name: Get playwright version
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: apps/innbyggers-flate
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: get-version
-        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
-
   lint-and-test:
     name: Lint, run tests & build
     runs-on: ubuntu-latest
