@@ -1,5 +1,6 @@
 name: Branch Lint, Test and Build
 on:
+  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/nav-veileders-flate-lint-and-test.yaml
   push:
     branches-ignore:
       - main
