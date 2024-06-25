@@ -122,7 +122,7 @@ export const EndreInnholdModal = ({
                 setHasError(false)
               }}
             >
-              {innhold.map((e) => (
+              {pamelding.deltakerliste.tilgjengeligInnhold.map((e) => (
                 <div key={e.innholdskode}>
                   <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
                   {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (

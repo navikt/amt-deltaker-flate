@@ -35,6 +35,75 @@ export class MockHandler {
   pamelding: PameldingResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
+  innhold = [
+    {
+      tekst: 'Støtte til jobbsøking',
+      innholdskode: 'type1',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Karriereveiledning',
+      innholdskode: 'type2',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+      innholdskode: 'type3',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst:
+        'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+      innholdskode: 'type4',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Kartlegge dine forventninger til å jobbe',
+      innholdskode: 'type5',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Veiledning i sosial mestring',
+      innholdskode: 'type6',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+      innholdskode: 'type7',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Veiledning til arbeidsgiver',
+      innholdskode: 'type8',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Oppfølging på arbeidsplassen',
+      innholdskode: 'type9',
+      valgt: true,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Arbeidspraksis',
+      innholdskode: 'type10',
+      valgt: false,
+      beskrivelse: null
+    },
+    {
+      tekst: 'Annet',
+      innholdskode: INNHOLD_TYPE_ANNET,
+      valgt: true,
+      beskrivelse: 'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
+    }
+  ]
 
   createPamelding(deltakerlisteId: string): HttpResponse {
     const yesterday = dayjs().subtract(1, 'day')
@@ -53,7 +122,11 @@ export class MockHandler {
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
         sluttdato: '2025-02-20',
-        status: DeltakerlisteStatus.GJENNOMFORES
+        status: DeltakerlisteStatus.GJENNOMFORES,
+        tilgjengeligInnhold: this.innhold.map((i) => ({
+          tekst: i.tekst,
+          innholdskode: i.innholdskode
+        }))
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -72,77 +145,7 @@ export class MockHandler {
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
-        innhold: [
-          {
-            tekst: 'Støtte til jobbsøking',
-            innholdskode: 'type1',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Karriereveiledning',
-            innholdskode: 'type2',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst:
-              'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
-            innholdskode: 'type3',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst:
-              'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
-            innholdskode: 'type4',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Kartlegge dine forventninger til å jobbe',
-            innholdskode: 'type5',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Veiledning i sosial mestring',
-            innholdskode: 'type6',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
-            innholdskode: 'type7',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Veiledning til arbeidsgiver',
-            innholdskode: 'type8',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Oppfølging på arbeidsplassen',
-            innholdskode: 'type9',
-            valgt: true,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Arbeidspraksis',
-            innholdskode: 'type10',
-            valgt: false,
-            beskrivelse: null
-          },
-          {
-            tekst: 'Annet',
-            innholdskode: INNHOLD_TYPE_ANNET,
-            valgt: true,
-            beskrivelse:
-              'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
-          }
-        ]
+        innhold: this.innhold
       },
       vedtaksinformasjon: {
         fattet: harVedtak(this.statusType) ? yesterday.toString() : null,

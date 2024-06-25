@@ -1,5 +1,8 @@
 import { string, z } from 'zod'
-import { PameldingResponse, innholdSchema } from '../api/data/pamelding.ts'
+import {
+  PameldingResponse,
+  innholdselementSchema
+} from '../api/data/pamelding.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
 import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 
@@ -14,7 +17,7 @@ export const dagerPerUkeFeilmelding =
 
 export const pameldingFormSchema = z
   .object({
-    tilgjengeligInnhold: innholdSchema.array(),
+    tilgjengeligInnhold: innholdselementSchema.array(),
     valgteInnhold: string().array(),
     innholdAnnetBeskrivelse: z
       .string()
@@ -94,9 +97,14 @@ export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
 export const generateValgtInnholdKoder = (
   pamelding: PameldingResponse
 ): string[] => {
+  const tilgjengeligInnnholdskoder =
+    pamelding.deltakerliste.tilgjengeligInnhold.map((i) => i.innholdskode)
+
   return (
     pamelding.deltakelsesinnhold?.innhold
-      .filter((i) => i.valgt)
+      .filter(
+        (i) => i.valgt && tilgjengeligInnnholdskoder.includes(i.innholdskode)
+      )
       .map((i) => i.innholdskode) ?? []
   )
 }
@@ -123,7 +131,7 @@ export const generateFormDefaultValues = (
   }
 
   return {
-    tilgjengeligInnhold: pamelding.deltakelsesinnhold?.innhold ?? [],
+    tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
