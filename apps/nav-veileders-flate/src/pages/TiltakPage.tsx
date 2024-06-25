@@ -18,7 +18,7 @@ export const TiltakPage = () => {
   )
 
   return (
-    <div className="max-w-[1252px] m-auto">
+    <div className="max-w-[1252px] m-auto" data-testid="page_tiltak">
       <Tilbakeknapp />
       <div className="flex flex-col gap-4 xl:flex-row-reverse">
         <ForNAVAnsatt className="xl:max-w-[412px] w-full" />

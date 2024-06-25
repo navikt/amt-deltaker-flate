@@ -39,7 +39,7 @@ export const Deltakelsesprosent = ({ disabled }: DeltakelsesprosentProps) => {
             defaultValue={deltakelsesprosentValg}
             size="small"
             disabled={disabled}
-            aria-required
+            required
             id="deltakelsesprosentValg"
             onChange={onChangeDeltakelsesprosentValg}
           >

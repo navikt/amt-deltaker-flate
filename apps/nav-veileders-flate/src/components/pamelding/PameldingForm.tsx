@@ -119,7 +119,6 @@ export const PameldingForm = ({
                 error={errors.valgteInnhold?.message}
                 size="small"
                 disabled={isDisabled}
-                aria-required
                 id="valgteInnhold"
               >
                 {innhold.map((e) => (

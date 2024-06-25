@@ -21,7 +21,11 @@ export const FeilregistrertInfo = ({
 }: Props) => {
   return (
     <div className={`bg-white py-4 px-4 md:px-12 ${className ?? ''}`}>
-      <Heading level="1" size="large">
+      <Heading
+        level="1"
+        size="large"
+        data-testid="heading_feilregistrert_tiltak"
+      >
         {tiltakOgStedTekst}
       </Heading>
 

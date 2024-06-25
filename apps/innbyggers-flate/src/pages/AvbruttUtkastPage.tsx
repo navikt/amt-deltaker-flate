@@ -17,7 +17,7 @@ export const AvbruttUtkastPage = () => {
 
   return (
     <div className="flex flex-col items-start mb-8">
-      <Heading level="1" size="xlarge">
+      <Heading level="1" size="xlarge" data-testid="heading_avbrutt_tiltak">
         {tiltakOgStedTekst}
       </Heading>
       <Heading level="2" size="large" className="mt-4">

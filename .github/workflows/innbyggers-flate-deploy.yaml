@@ -20,6 +20,8 @@ jobs:
   test-and-lint:
     name: Test and lint
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.44.0-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,7 +32,9 @@ jobs:
       - name: Lint
         run: pnpm lint
       - name: Run tests
-        run: pnpm test:no-watch
+        run: pnpm test:no-watch --filter=innbyggers-flate
+      - name: Run playwright tests
+        run: pnpm playwright --filter=innbyggers-flate
 
   deploy-dev-innbyggers-flate:
     name: Deploy innbyggers-flate to dev

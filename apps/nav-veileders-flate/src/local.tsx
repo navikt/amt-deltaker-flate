@@ -1,10 +1,12 @@
-import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { worker } from './mocks/setupMocks.ts'
 import { useMock } from './utils/environment-utils.ts'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import React from 'react'
 import './app.css'
 import './webComponentWrapper.tsx'
+import { AppContextProvider } from './AppContext.tsx'
+import { BrowserRouter } from 'react-router-dom'
+import { AppRoutes } from './Routes.tsx'
 
 export async function enableMocking() {
   if (useMock) {
@@ -18,6 +20,9 @@ export async function enableMocking() {
   }
 }
 
+const renderAsReactRoot = () => {
+  /*  TEST webcomponent lokalt:
+
 const renderAsReactRoot = (appElement: HTMLElement) => {
   const rootElement = ReactDOM.createRoot(appElement)
 
@@ -28,8 +33,28 @@ const renderAsReactRoot = (appElement: HTMLElement) => {
       'data-enhetId': '0106'
     })
   )
+  */
+
+  const container = document.getElementById('root')
+  const root = createRoot(container!)
+
+  root.render(
+    <React.StrictMode>
+      <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
+        <AppContextProvider
+          initialPersonident={'29418716256'}
+          initialEnhetId={'0106'}
+        >
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AppContextProvider>
+      </div>
+    </React.StrictMode>
+  )
 }
 
 enableMocking().then(() => {
-  renderAsReactRoot(document.getElementById('root')!)
+  // renderAsReactRoot(document.getElementById('root')!)
+  renderAsReactRoot()
 })

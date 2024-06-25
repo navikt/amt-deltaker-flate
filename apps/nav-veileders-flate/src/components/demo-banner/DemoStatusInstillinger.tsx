@@ -61,6 +61,7 @@ const DemoStatusInstillinger = () => {
       label="Hvilken status skal påmeldingen ha?"
       size="small"
       className="mt-2 w-64"
+      data-testid="select_status"
       onChange={(e) =>
         handlePameldingStatusChange(e.target.value as DeltakerStatusType)
       }

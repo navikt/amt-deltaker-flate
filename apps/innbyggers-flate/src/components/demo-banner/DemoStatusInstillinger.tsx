@@ -59,6 +59,7 @@ const DemoStatusInstillinger = () => {
     <Select
       value={deltakerStatus}
       label="Hvilken status skal deltakeren ha?"
+      data-testid="select_deltaker_status"
       size="small"
       className="mt-2 w-64"
       onChange={(e) =>

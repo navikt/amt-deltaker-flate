@@ -11,6 +11,8 @@ jobs:
   lint-and-test:
     name: Lint, run tests & build
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.44.0-jammy
     timeout-minutes: 15
 
     permissions:
@@ -29,5 +31,7 @@ jobs:
         run: pnpm lint
       - name: Run tests
         run: pnpm test:no-watch
+      - name: Run playwright tests
+        run: pnpm playwright
       - name: Build
         run: pnpm build
