@@ -29,7 +29,8 @@ export const ikkeAktuellSchema = z.object({
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
 
 export const forlengDeltakelseSchema = z.object({
-  sluttdato: z.string()
+  sluttdato: z.string(),
+  begrunnelse: z.string().nullable()
 })
 
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>

@@ -1,4 +1,10 @@
-import { BodyShort, ConfirmationPanel, Detail, Modal } from '@navikt/ds-react'
+import {
+  BodyShort,
+  ConfirmationPanel,
+  Detail,
+  Modal,
+  Textarea
+} from '@navikt/ds-react'
 import {
   DeferredFetchState,
   getDateFromString,
@@ -30,6 +36,7 @@ import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
+import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -53,8 +60,10 @@ export const ForlengDeltakelseModal = ({
   const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
     validDeltakerSluttDato
   )
+  const [begrunnelse, setBegrunnelse] = useState<string | null>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
+  const [errorBegrunnelse, setErrorBegrunnelse] = useState<boolean>(false)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -94,9 +103,15 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (!hasError && nySluttDato) {
+    if (!begrunnelse) {
+      setErrorBegrunnelse(true)
+      hasError = true
+    }
+
+    if (!hasError && nySluttDato && begrunnelse) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
-        sluttdato: formatDateToDateInputStr(nySluttDato)
+        sluttdato: formatDateToDateInputStr(nySluttDato),
+        begrunnelse: begrunnelse
       }).then((data) => {
         onSuccess(data)
       })
@@ -191,6 +206,22 @@ export const ForlengDeltakelseModal = ({
             {getSoftMaxVarighetBekreftelseText(tiltakstype)}
           </ConfirmationPanel>
         )}
+        <Textarea
+          onChange={(e) => {
+            setBegrunnelse(e.target.value)
+            setErrorBegrunnelse(false)
+          }}
+          error={
+            errorBegrunnelse && !begrunnelse && 'Du må begrunne forlengelsen'
+          }
+          className="mt-6"
+          label="Begrunnelse for forlengelsen"
+          value={begrunnelse ?? ''}
+          maxLength={BEGRUNNELSE_MAKS_TEGN}
+          id="begrunnelse"
+          size="small"
+          aria-label={'Begrunnelse'}
+        />
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"
