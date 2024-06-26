@@ -54,7 +54,7 @@ export const TiltakPage = () => {
   const skalViseDato =
     deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
-  const bakgrunsinformasjon =
+  const bakgrunnsinformasjon =
     deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
       ? deltaker.bakgrunnsinformasjon
       : EMDASH
@@ -118,7 +118,7 @@ export const TiltakPage = () => {
       )}
 
       <Heading level="2" size="medium" className="mt-8">
-        Hva er innholdet?
+        Dette er innholdet
       </Heading>
       <BodyLong className="mt-4" size="small">
         {deltaker.deltakelsesinnhold?.ledetekst ?? ''}
@@ -140,12 +140,16 @@ export const TiltakPage = () => {
         </List>
       )}
       <div>
-        <Heading level="2" size="medium" className="mt-8">
-          Bakgrunnsinfo
-        </Heading>
-        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-          {bakgrunsinformasjon}
-        </BodyLong>
+        {bakgrunnsinformasjon && (
+          <>
+            <Heading level="2" size="medium" className="mt-8">
+              Bakgrunnsinfo
+            </Heading>
+            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+              {bakgrunnsinformasjon}
+            </BodyLong>
+          </>
+        )}
 
         {skalViseDeltakelsesmengde(deltaker) && (
           <>

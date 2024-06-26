@@ -56,7 +56,7 @@ export const DeltakerInfo = ({ className }: Props) => {
   const skalViseDato =
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
-  const bakgrunsinformasjon =
+  const bakgrunnsinformasjon =
     pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
       ? pamelding.bakgrunnsinformasjon
       : EMDASH
@@ -132,13 +132,16 @@ export const DeltakerInfo = ({ className }: Props) => {
         </List>
       )}
       <div>
-        <Heading level="2" size="medium" className="mt-8">
-          Bakgrunnsinfo
-        </Heading>
-        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-          {bakgrunsinformasjon}
-        </BodyLong>
-
+        {bakgrunnsinformasjon && (
+          <>
+            <Heading level="2" size="medium" className="mt-8">
+              Bakgrunnsinfo
+            </Heading>
+            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+              {bakgrunnsinformasjon}
+            </BodyLong>
+          </>
+        )}
         {skalViseDeltakelsesmengde(pamelding) && (
           <>
             <Heading level="2" size="medium" className="mt-8">
