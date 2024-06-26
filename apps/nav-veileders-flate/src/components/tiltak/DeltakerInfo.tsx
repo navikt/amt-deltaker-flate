@@ -110,7 +110,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <Heading level="2" size="medium" className="mt-8">
-        Hva er innholdet?
+        Dette er innholdet
       </Heading>
       <BodyLong className="mt-4" size="small">
         {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
@@ -132,7 +132,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         </List>
       )}
       <div>
-        {bakgrunnsinformasjon && (
+        {bakgrunnsinformasjon !== EMDASH && (
           <>
             <Heading level="2" size="medium" className="mt-8">
               Bakgrunnsinfo

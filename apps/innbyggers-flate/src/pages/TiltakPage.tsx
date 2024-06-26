@@ -140,7 +140,7 @@ export const TiltakPage = () => {
         </List>
       )}
       <div>
-        {bakgrunnsinformasjon && (
+        {bakgrunnsinformasjon !== EMDASH && (
           <>
             <Heading level="2" size="medium" className="mt-8">
               Bakgrunnsinfo
