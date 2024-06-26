@@ -1,8 +1,9 @@
-import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
+import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import {
   Alert,
   BodyLong,
   BodyShort,
+  Button,
   HStack,
   Heading,
   Label,
@@ -15,6 +16,7 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
+  HistorikkModal,
   HvaDelesMedArrangor,
   INNHOLD_TYPE_ANNET,
   Tiltakstype,
@@ -23,11 +25,11 @@ import {
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
+import { useEffect, useState } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-import { useEffect } from 'react'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -46,6 +48,7 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 
 export const TiltakPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
+  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -161,16 +164,19 @@ export const TiltakPage = () => {
           </>
         )}
 
-        <Link href="#" className="mt-8">
-          {/* TODO: lenke til riktig sted */}
+        <Button
+          className="mt-8"
+          variant="secondary"
+          size="small"
+          onClick={() => setHistorikkModalOpen(true)}
+        >
           Se endringer
-          <span>
-            <ChevronRightIcon
-              title="Gå til side for endringer"
-              className="text-2xl"
-            />
-          </span>
-        </Link>
+        </Button>
+
+        <HistorikkModal
+          open={historikkModalOpen}
+          onClose={() => setHistorikkModalOpen(false)}
+        />
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">
