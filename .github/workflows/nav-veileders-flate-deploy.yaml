@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         run: pnpm test:no-watch
       - name: Run playwright tests
-        run: pnpm playwright --nav-veileders-flate
+        run: pnpm playwright --filter=nav-veileders-flate
 
   deploy-dev-nav-veileders-flate:
     name: Deploy nav-veileders-flate to dev
