@@ -8,17 +8,16 @@ import {
   Heading,
   Label,
   Link,
-  LinkPanel,
-  List
+  LinkPanel
 } from '@navikt/ds-react'
 import {
+  DeltakelseInnholdListe,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
   HistorikkModal,
   HvaDelesMedArrangor,
-  INNHOLD_TYPE_ANNET,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
@@ -27,6 +26,7 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
+import { getHistorikk } from '../api/api.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
@@ -54,6 +54,7 @@ export const TiltakPage = () => {
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.arrangorNavn
   )
+
   const skalViseDato =
     deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
@@ -127,20 +128,10 @@ export const TiltakPage = () => {
         {deltaker.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {deltaker.deltakelsesinnhold && (
-        <List as="ul" size="small" className="mt-4">
-          {deltaker.deltakelsesinnhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => (
-              <List.Item
-                key={i.innholdskode}
-                className="mt-2 whitespace-pre-wrap"
-              >
-                {i.innholdskode === INNHOLD_TYPE_ANNET
-                  ? i.beskrivelse
-                  : i.tekst}
-              </List.Item>
-            ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={deltaker.deltakelsesinnhold}
+          className="mt-4"
+        />
       )}
       <div>
         <Heading level="2" size="medium" className="mt-8">
@@ -174,8 +165,10 @@ export const TiltakPage = () => {
         </Button>
 
         <HistorikkModal
+          deltakerId={deltaker.deltakerId}
           open={historikkModalOpen}
           onClose={() => setHistorikkModalOpen(false)}
+          fetchHistorikk={getHistorikk}
         />
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">

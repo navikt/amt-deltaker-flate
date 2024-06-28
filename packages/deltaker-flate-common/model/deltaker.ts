@@ -53,6 +53,8 @@ export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
 
+export const stringToDate = z.string().pipe(z.coerce.date())
+
 export const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema,
   beskrivelse: z.string().nullable()
@@ -68,5 +70,19 @@ export const vedtaksinformasjonSchema = z.object({
   sistEndretAvEnhet: z.string().nullable()
 })
 
+export const innholdSchema = z.object({
+  tekst: z.string(),
+  innholdskode: z.string(),
+  valgt: z.boolean(),
+  beskrivelse: z.string().nullable()
+})
+
+export const deltakelsesinnholdSchema = z.object({
+  ledetekst: z.string(),
+  innhold: z.array(innholdSchema)
+})
+
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
+export type Innhold = z.infer<typeof innholdSchema>
+export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>

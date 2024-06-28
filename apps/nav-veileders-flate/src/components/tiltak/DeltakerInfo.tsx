@@ -6,16 +6,15 @@ import {
   Heading,
   Label,
   Link,
-  LinkPanel,
-  List
+  LinkPanel
 } from '@navikt/ds-react'
 import {
+  DeltakelseInnholdListe,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
-  INNHOLD_TYPE_ANNET,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
@@ -116,20 +115,10 @@ export const DeltakerInfo = ({ className }: Props) => {
         {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {pamelding.deltakelsesinnhold && (
-        <List as="ul" size="small" className="mt-4">
-          {pamelding.deltakelsesinnhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => (
-              <List.Item
-                key={i.innholdskode}
-                className="mt-2 whitespace-pre-wrap"
-              >
-                {i.innholdskode === INNHOLD_TYPE_ANNET
-                  ? i.beskrivelse
-                  : i.tekst}
-              </List.Item>
-            ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={pamelding.deltakelsesinnhold}
+          className="mt-4"
+        />
       )}
       <div>
         <Heading level="2" size="medium" className="mt-8">

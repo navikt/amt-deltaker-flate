@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
 import {
+  DeltakerHistorikk,
   DeltakerStatusType,
   EMDASH,
+  EndringType,
+  HistorikkType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -131,6 +134,42 @@ const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
   }
 }
 
+const createHistorikk = (): DeltakerHistorikk => {
+  return [
+    {
+      type: HistorikkType.DeltakerEndring,
+      endring: {
+        type: EndringType.EndreBakgrunnsinformasjon,
+        bakgrunnsinformasjon: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate()
+    },
+    {
+      type: HistorikkType.Vedtak,
+      fattet: dayjs().toDate(),
+      bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
+      fattetAvNav: true,
+      deltakelsesinnhold: {
+        ledetekst:
+          'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        innhold: [
+          {
+            tekst: 'Støtte til jobbsøking',
+            innholdskode: 'type1',
+            valgt: true,
+            beskrivelse: null
+          }
+        ]
+      },
+      opprettetAv: 'Navn Navnesen',
+      opprettetAvEnhet: 'NAV Fredrikstad',
+      opprettet: dayjs().subtract(3, 'day').toDate()
+    }
+  ]
+}
+
 export class MockHandler {
   deltaker: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
@@ -159,18 +198,14 @@ export class MockHandler {
     const oppdatertPamelding = this.deltaker
 
     if (oppdatertPamelding) {
-      if (status === DeltakerStatusType.FEILREGISTRERT) {
-        oppdatertPamelding.kanEndres = false
-      } else {
-        oppdatertPamelding.kanEndres = true
-      }
-
-      if (harVedtak(status)) {
-        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
-          .subtract(2, 'day')
-          .toString()
-      } else {
-        oppdatertPamelding.vedtaksinformasjon.fattet = null
+      if (oppdatertPamelding.vedtaksinformasjon) {
+        if (harVedtak(status)) {
+          oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
+            .subtract(2, 'day')
+            .toString()
+        } else {
+          oppdatertPamelding.vedtaksinformasjon.fattet = null
+        }
       }
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
@@ -205,5 +240,9 @@ export class MockHandler {
       return dayjs(passertDato).format('YYYY-MM-DD')
     }
     return EMDASH
+  }
+
+  getHistorikk() {
+    return HttpResponse.json(createHistorikk())
   }
 }
