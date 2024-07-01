@@ -72,6 +72,8 @@ export const ForlengDeltakelseModal = ({
   const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
+  const harForLangBegrunnelse =
+    begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
 
   const skalBekrefteVarighet =
     nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
@@ -103,7 +105,7 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (!begrunnelse) {
+    if (!begrunnelse || harForLangBegrunnelse) {
       setErrorBegrunnelse(true)
       hasError = true
     }
@@ -212,7 +214,11 @@ export const ForlengDeltakelseModal = ({
             setErrorBegrunnelse(false)
           }}
           error={
-            errorBegrunnelse && !begrunnelse && 'Du må begrunne forlengelsen'
+            (errorBegrunnelse &&
+              !begrunnelse &&
+              'Du må begrunne forlengelsen') ||
+            (harForLangBegrunnelse &&
+              `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`)
           }
           className="mt-6"
           label="Begrunnelse for forlengelsen"
