@@ -18,7 +18,7 @@ export const HvaErDette = ({
   return (
     <div className={className}>
       <Heading level="2" size="medium">
-        Hva er dette?
+        Dette er et vedtak
       </Heading>
       <BodyLong size="small">
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om

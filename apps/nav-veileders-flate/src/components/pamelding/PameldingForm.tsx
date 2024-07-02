@@ -104,7 +104,7 @@ export const PameldingForm = ({
 
           <section>
             <Heading size="medium" level="3">
-              Hva er innholdet?
+              Dette er innholdet
             </Heading>
             <BodyLong size="small">
               {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
