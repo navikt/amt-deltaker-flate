@@ -48,12 +48,16 @@ export const AvbruttUtkastPage = () => {
         </List>
       )}
 
-      <Heading level="3" size="medium" className="mt-6">
-        Bakgrunnsinfo
-      </Heading>
-      <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-        {deltaker.bakgrunnsinformasjon || EMDASH}
-      </BodyLong>
+      {deltaker.bakgrunnsinformasjon && (
+        <>
+          <Heading level="3" size="medium" className="mt-6">
+            Bakgrunnsinfo
+          </Heading>
+          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            {deltaker.bakgrunnsinformasjon || EMDASH}
+          </BodyLong>
+        </>
+      )}
 
       {(deltaker.deltakerliste.tiltakstype === Tiltakstype.ARBFORB ||
         deltaker.deltakerliste.tiltakstype === Tiltakstype.VASV) && (

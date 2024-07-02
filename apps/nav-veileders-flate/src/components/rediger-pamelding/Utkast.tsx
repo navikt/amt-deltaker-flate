@@ -51,7 +51,7 @@ export const Utkast = ({
         </List>
       )}
       <div className="mt-8">
-        {bakgrunnsinformasjon !== EMDASH && (
+        {bakgrunnsinformasjon && (
           <>
             <Heading level="3" size="small">
               Bakgrunnsinfo
