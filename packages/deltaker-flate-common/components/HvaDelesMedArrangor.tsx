@@ -14,11 +14,11 @@ export const HvaDelesMedArrangor = ({
 }: Props) => {
   return (
     <ExpansionCard
-      aria-label="Hva deles med arrangøren?"
+      aria-label="Dette deles med arrangøren"
       className={className || ''}
     >
       <ExpansionCard.Header>
-        <ExpansionCard.Title>Hva deles med arrangøren?</ExpansionCard.Title>
+        <ExpansionCard.Title>Dette deles med arrangøren</ExpansionCard.Title>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         <BodyLong size="small">

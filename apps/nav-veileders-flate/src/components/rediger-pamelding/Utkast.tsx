@@ -30,7 +30,7 @@ export const Utkast = ({
   return (
     <VStack>
       <Heading level="3" size="small">
-        Hva er innholdet?
+        Dette er innholdet
       </Heading>
       <BodyLong className="mt-2" size="small">
         {innhold?.ledetekst ?? ''}
@@ -51,12 +51,16 @@ export const Utkast = ({
         </List>
       )}
       <div className="mt-8">
-        <Heading level="3" size="small">
-          Bakgrunnsinfo
-        </Heading>
-        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-          {bakgrunnsinfoVisningstekst}
-        </BodyLong>
+        {bakgrunnsinformasjon !== EMDASH && (
+          <>
+            <Heading level="3" size="small">
+              Bakgrunnsinfo
+            </Heading>
+            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+              {bakgrunnsinfoVisningstekst}
+            </BodyLong>
+          </>
+        )}
       </div>
 
       {(tiltakstype === Tiltakstype.ARBFORB ||
