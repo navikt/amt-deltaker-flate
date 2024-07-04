@@ -6,7 +6,7 @@ import {
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { forslagSchema } from './forslag.ts'
+import { aktivtForslagSchema } from './forslag.ts'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
@@ -78,7 +78,7 @@ export const pameldingSchema = z.object({
   digitalBruker: z.boolean(),
   maxVarighet: z.number().nullable(),
   softMaxVarighet: z.number().nullable(),
-  forslag: z.array(forslagSchema)
+  forslag: z.array(aktivtForslagSchema)
 })
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>

@@ -1,8 +1,11 @@
 import { z } from 'zod'
 
+export enum ForslagStatusType {
+  VenterPaSvar = 'VenterPaSvar'
+}
+
 export enum ForslagEndringType {
-  ForlengDeltakelse = 'ForlengDeltakelse',
-  EndreStartdato = 'EndreStartdato'
+  ForlengDeltakelse = 'ForlengDeltakelse'
 }
 
 export const forlengDeltakelseForslagSchema = z.object({
@@ -10,23 +13,26 @@ export const forlengDeltakelseForslagSchema = z.object({
   sluttdato: z.string()
 })
 
-export const endreStartdatoForslagSchema = z.object({
-  type: z.literal(ForslagEndringType.EndreStartdato),
-  startdato: z.string()
+export const forslagEndringSchema = z.discriminatedUnion('type', [
+  forlengDeltakelseForslagSchema
+])
+
+const venterPaSvarSchema = z.object({
+  type: z.literal(ForslagStatusType.VenterPaSvar)
 })
 
-export const forslagEndringSchema = forlengDeltakelseForslagSchema.or(
-  endreStartdatoForslagSchema
-)
+const statusSchema = z.discriminatedUnion('type', [venterPaSvarSchema])
 
-export const forslagSchema = z.object({
+export const aktivtForslagSchema = z.object({
   id: z.string().uuid(),
   opprettet: z.string(),
-  begrunnelse: z.string(),
-  endring: forslagEndringSchema
+  begrunnelse: z.string().nullable(),
+  endring: forslagEndringSchema,
+  status: statusSchema.default({ type: ForslagStatusType.VenterPaSvar })
 })
 
-export type Forslag = z.infer<typeof forslagSchema>
+export type AktivtForslag = z.infer<typeof aktivtForslagSchema>
+export type ForslagEndring = z.infer<typeof forslagEndringSchema>
 export type ForlengDeltakelseForslag = z.infer<
   typeof forlengDeltakelseForslagSchema
 >

@@ -1,11 +1,15 @@
-import { ForlengDeltakelseForslag, Forslag } from '../../../api/data/forslag.ts'
+import {
+  AktivtForslag,
+  ForlengDeltakelseForslag
+} from '../../../api/data/forslag.ts'
 import { BodyLong, Detail, Heading, HStack, Tag } from '@navikt/ds-react'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { formatDateFromString } from 'deltaker-flate-common'
+import { getForslagStatusTypeText } from '../../../utils/displayText.ts'
 
 interface Props {
-  forslag: Forslag
+  forslag: AktivtForslag
   forlengDeltakelseForslag: ForlengDeltakelseForslag
 }
 
@@ -20,7 +24,9 @@ export const ForlengDeltakelseForslagDetaljer = ({
         <Heading level="6" size="small">
           Forleng deltakelse
         </Heading>
-        <Tag variant="info">Venter på svar fra NAV</Tag>
+        <Tag variant="info">
+          {getForslagStatusTypeText(forslag.status.type)}
+        </Tag>
       </HStack>
       <BodyLong className="mt-2" size="small">
         Ny sluttdato: {formatDateFromString(forlengDeltakelseForslag.sluttdato)}

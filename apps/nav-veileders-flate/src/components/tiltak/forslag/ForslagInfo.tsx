@@ -1,12 +1,12 @@
-import { Forslag, ForslagEndringType } from '../../../api/data/forslag.ts'
-import { Box, Heading } from '@navikt/ds-react'
+import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 
 interface Props {
-  forslag: Forslag
+  forslag: AktivtForslag
 }
 
-const getForslagDetaljer = (forslag: Forslag) => {
+const getForslagDetaljer = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.ForlengDeltakelse:
       return (
@@ -25,14 +25,23 @@ export const ForslagInfo = ({ forslag }: Props) => {
     <Box
       background="surface-neutral-moderate"
       padding={{ xs: '2', md: '6' }}
+      borderRadius={{ md: 'large' }}
       className="mt-4"
     >
-      <Heading level="6" size="small">
-        Arrangør foreslår en endring:
-      </Heading>
-      <Box background="surface-default" padding="2">
-        {getForslagDetaljer(forslag)}
-      </Box>
+      <VStack gap="1">
+        <Heading level="6" size="small">
+          Arrangør foreslår en endring:
+        </Heading>
+        <Box
+          background="surface-default"
+          padding="2"
+          borderColor="border-default"
+          borderWidth="1"
+          borderRadius={{ md: 'large' }}
+        >
+          {getForslagDetaljer(forslag)}
+        </Box>
+      </VStack>
     </Box>
   )
 }
