@@ -5,6 +5,7 @@ import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pameldin
 import { API_URL } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
+  AvvisForslagRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
@@ -390,6 +391,32 @@ export const endreDeltakelsesmengde = (
       if (response.status !== 200) {
         throw new Error(
           `Kunne ikke endre deltakelsesmengde. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
+export const avvisForslag = (
+  forslagId: string,
+  enhetId: string,
+  request: AvvisForslagRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${API_URL}/forslag/${forslagId}/avvis`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Kunne ikke avvise forslaget. Prøv igjen senere. (${response.status})`
         )
       }
       return response.json()

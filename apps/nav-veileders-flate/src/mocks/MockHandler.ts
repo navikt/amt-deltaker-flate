@@ -202,7 +202,7 @@ export class MockHandler {
   getForslag(): AktivtForslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
-      fremtidigDato.setDate(fremtidigDato.getDate() + 10)
+      fremtidigDato.setDate(fremtidigDato.getDate() + 12)
       const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
       const forslag = {
         id: uuidv4(),
@@ -342,6 +342,9 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
+      if (request.forslagId) {
+        oppdatertPamelding.forslag = []
+      }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -450,6 +453,18 @@ export class MockHandler {
       oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  avvisForslag() {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.forslag = []
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
     }
 
     return new HttpResponse(null, { status: 404 })
