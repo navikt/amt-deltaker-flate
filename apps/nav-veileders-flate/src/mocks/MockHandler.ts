@@ -22,7 +22,7 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { Forslag, ForslagEndringType } from '../api/data/forslag.ts'
+import { AktivtForslag, ForslagEndringType, ForslagStatusType } from '../api/data/forslag.ts'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
@@ -195,7 +195,7 @@ export class MockHandler {
     return EMDASH
   }
 
-  getForslag(): Forslag[] {
+  getForslag(): AktivtForslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
@@ -210,6 +210,9 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
           sluttdato: sluttdato
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
         }
       }
       return [forslag]

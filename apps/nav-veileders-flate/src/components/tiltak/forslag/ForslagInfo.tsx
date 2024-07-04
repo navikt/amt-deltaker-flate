@@ -1,6 +1,8 @@
 import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
+import { util } from 'zod'
+import assertNever = util.assertNever;
 
 interface Props {
   forslag: AktivtForslag
@@ -16,7 +18,7 @@ const getForslagDetaljer = (forslag: AktivtForslag) => {
         />
       )
     default:
-      return <div />
+      assertNever(forslag.endring.type)
   }
 }
 
