@@ -109,12 +109,11 @@ export const DeltakerInfo = ({ className }: Props) => {
           oppstartsdato={pamelding.startdato}
         />
       )}
-      {pamelding.forslag.length > 0 &&
-        pamelding.forslag.map((i, index) => (
-          <div key={`${i.endring.type}${index}`}>
-            <ForslagInfo forslag={i} />
-          </div>
-        ))}
+      {pamelding.forslag.map((i, index) => (
+        <div key={`${i.endring.type}${index}`}>
+          <ForslagInfo forslag={i} />
+        </div>
+      ))}
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
       </Heading>

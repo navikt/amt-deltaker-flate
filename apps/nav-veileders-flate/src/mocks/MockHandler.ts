@@ -22,7 +22,11 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { AktivtForslag, ForslagEndringType, ForslagStatusType } from '../api/data/forslag.ts'
+import {
+  AktivtForslag,
+  ForslagEndringType,
+  ForslagStatusType
+} from '../api/data/forslag.ts'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
