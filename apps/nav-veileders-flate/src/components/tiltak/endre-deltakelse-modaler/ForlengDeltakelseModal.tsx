@@ -86,7 +86,7 @@ export const ForlengDeltakelseModal = ({
   const [begrunnelse, setBegrunnelse] = useState<string | null>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
-  const [errorBegrunnelse, setErrorBegrunnelse] = useState<boolean>(false)
+  const [errorBegrunnelse, setErrorBegrunnelse] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -97,7 +97,7 @@ export const ForlengDeltakelseModal = ({
   const { enhetId } = useAppContext()
   const skalHaBegrunnelse =
     !sluttdatoFraForslag ||
-    getDateFromString(sluttdatoFraForslag) !== nySluttDato
+    getDateFromString(sluttdatoFraForslag)?.getDate() !== nySluttDato?.getDate()
   const harForLangBegrunnelse =
     begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
 
@@ -133,8 +133,15 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if ((!begrunnelse && skalHaBegrunnelse) || harForLangBegrunnelse) {
-      setErrorBegrunnelse(true)
+    if (skalHaBegrunnelse && !begrunnelse) {
+      setErrorBegrunnelse('Du må begrunne forlengelsen')
+      hasError = true
+    }
+
+    if (harForLangBegrunnelse) {
+      setErrorBegrunnelse(
+        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
+      )
       hasError = true
     }
 
@@ -151,8 +158,14 @@ export const ForlengDeltakelseModal = ({
 
   const sendAvvisForslag = () => {
     let hasError = false
-    if (!begrunnelse || harForLangBegrunnelse) {
-      setErrorBegrunnelse(true)
+    if (!begrunnelse) {
+      setErrorBegrunnelse('Du må begrunne avvisningen')
+      hasError = true
+    }
+    if (harForLangBegrunnelse) {
+      setErrorBegrunnelse(
+        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
+      )
       hasError = true
     }
 
@@ -232,6 +245,7 @@ export const ForlengDeltakelseModal = ({
             if (date) {
               setSluttDatoField(date)
               setErrorSluttDato(null)
+              setErrorBegrunnelse(null)
             }
           }}
           onValidateSluttDato={(dateValidation, currentValue) => {
@@ -274,18 +288,12 @@ export const ForlengDeltakelseModal = ({
         <Textarea
           onChange={(e) => {
             setBegrunnelse(e.target.value)
-            setErrorBegrunnelse(false)
+            setErrorBegrunnelse(null)
           }}
-          error={
-            (errorBegrunnelse &&
-              !begrunnelse &&
-              skalHaBegrunnelse &&
-              'Du må begrunne forlengelsen') ||
-            (harForLangBegrunnelse &&
-              `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`)
-          }
+          error={errorBegrunnelse}
           className="mt-6"
           label="Begrunnelse for forlengelsen"
+          description="Beskriv kort hvorfor endringen er riktig for personen."
           value={begrunnelse ?? ''}
           maxLength={BEGRUNNELSE_MAKS_TEGN}
           id="begrunnelse"
