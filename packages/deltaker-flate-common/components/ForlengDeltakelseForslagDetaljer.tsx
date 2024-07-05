@@ -1,12 +1,9 @@
-import {
-  AktivtForslag,
-  ForlengDeltakelseForslag
-} from '../../../api/data/forslag.ts'
 import { BodyLong, Detail, Heading, HStack, Tag } from '@navikt/ds-react'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { formatDateFromString } from 'deltaker-flate-common'
-import { getForslagStatusTypeText } from '../../../utils/displayText.ts'
+import { EndreDeltakelseType } from '../../../apps/nav-veileders-flate/src/api/data/endre-deltakelse-request.ts'
+import { EndringTypeIkon } from '../../../apps/nav-veileders-flate/src/components/tiltak/EndringTypeIkon.tsx'
+import { AktivtForslag, ForlengDeltakelseForslag } from '../model/forslag.ts'
+import { getForslagStatusTypeText } from '../utils/displayText.ts'
+import { formatDateFromString } from '../utils/utils.ts'
 
 interface Props {
   forslag: AktivtForslag

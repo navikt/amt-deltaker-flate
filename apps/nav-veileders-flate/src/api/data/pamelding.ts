@@ -1,4 +1,5 @@
 import {
+  aktivtForslagSchema,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
@@ -6,7 +7,6 @@ import {
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { aktivtForslagSchema } from './forslag.ts'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
 export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)

@@ -41,7 +41,7 @@ import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
-import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
+import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse

@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
 import {
+  AktivtForslag,
   DeltakerStatusType,
   EMDASH,
+  ForslagEndringType,
+  ForslagStatusType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -127,7 +130,8 @@ const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
-    adresseDelesMedArrangor: true
+    adresseDelesMedArrangor: true,
+    forslag: []
   }
 }
 
@@ -175,6 +179,7 @@ export class MockHandler {
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
       oppdatertPamelding.sluttdato = this.getSluttdato(status)
+      oppdatertPamelding.forslag = this.getForslag()
       this.deltaker = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -205,5 +210,30 @@ export class MockHandler {
       return dayjs(passertDato).format('YYYY-MM-DD')
     }
     return EMDASH
+  }
+
+  getForslag(): AktivtForslag[] {
+    if (this.statusType === DeltakerStatusType.DELTAR) {
+      const fremtidigDato = new Date()
+      fremtidigDato.setDate(fremtidigDato.getDate() + 12)
+      const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
+      const forslag = {
+        id: uuidv4(),
+        opprettet: dayjs().format('YYYY-MM-DD'),
+        begrunnelse:
+          'Vi har kommet i gang, men ser at det er hensiktsmessig ' +
+          'å fortsette tett oppfølging nå når han er i gang med å kontakte de riktige arbeidsgiverne. ' +
+          'nå er det totalt sett to hundre tegn. Ja, det er det..',
+        endring: {
+          type: ForslagEndringType.ForlengDeltakelse,
+          sluttdato: sluttdato
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslag]
+    }
+    return []
   }
 }
