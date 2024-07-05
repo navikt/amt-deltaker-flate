@@ -10,10 +10,12 @@ import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
 import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
 import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
 import { ReaktiverDeltakelseModal } from './ReaktiverDeltakelseModal.tsx'
+import { AktivtForslag } from '../../../api/data/forslag.ts'
 
 interface ModalControllerProps {
   open: boolean
   pamelding: PameldingResponse
+  forslag: AktivtForslag | null
   endringsType: EndreDeltakelseType | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void

@@ -70,6 +70,7 @@ export const EndreDeltakelseKnapp = () => {
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
         pamelding={pamelding}
+        forslag={null}
       />
     </>
   )

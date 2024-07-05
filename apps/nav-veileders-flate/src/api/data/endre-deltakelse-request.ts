@@ -30,7 +30,8 @@ export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
 
 export const forlengDeltakelseSchema = z.object({
   sluttdato: z.string(),
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullable()
 })
 
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
@@ -82,3 +83,9 @@ export const endreDeltakelsesmengdeSchema = z.object({
 export type EndreDeltakelsesmengdeRequest = z.infer<
   typeof endreDeltakelsesmengdeSchema
 >
+
+export const avvisForslagSchema = z.object({
+  begrunnelse: z.string()
+})
+
+export type AvvisForslagRequest = z.infer<typeof avvisForslagSchema>

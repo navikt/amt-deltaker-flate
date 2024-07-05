@@ -1,18 +1,22 @@
 import {
+  BodyLong,
   BodyShort,
+  Box,
   ConfirmationPanel,
   Detail,
+  Heading,
   Modal,
   Textarea
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  formatDateFromString,
   getDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { endreDeltakelseForleng } from '../../../api/api.ts'
+import { avvisForslag, endreDeltakelseForleng } from '../../../api/api.ts'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
@@ -22,38 +26,57 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
-  UGYLDIG_DATO_FEILMELDING,
-  VARIGHET_BEKREFTELSE_FEILMELDING,
-  VarighetValg,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText,
   getVarighet,
-  kalkulerSluttdato
+  kalkulerSluttdato,
+  UGYLDIG_DATO_FEILMELDING,
+  VARIGHET_BEKREFTELSE_FEILMELDING,
+  VarighetValg
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
+import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
+  forslag: AktivtForslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
+const getSluttdatoFraForslag = (forslag: AktivtForslag | null) => {
+  if (
+    forslag &&
+    forslag.endring.type === ForslagEndringType.ForlengDeltakelse
+  ) {
+    return forslag.endring.sluttdato
+  } else {
+    return null
+  }
+}
+
 export const ForlengDeltakelseModal = ({
   pamelding,
+  forslag,
   open,
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const validDeltakerSluttDato = getDateFromString(pamelding.sluttdato)
+  const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
+  const validDeltakerSluttDato = sluttdatoFraForslag
+    ? getDateFromString(sluttdatoFraForslag)
+    : getDateFromString(pamelding.sluttdato)
 
-  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(null)
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(
+    forslag ? VarighetValg.ANNET : null
+  )
   const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
     validDeltakerSluttDato
   )
@@ -63,7 +86,7 @@ export const ForlengDeltakelseModal = ({
   const [begrunnelse, setBegrunnelse] = useState<string | null>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
-  const [errorBegrunnelse, setErrorBegrunnelse] = useState<boolean>(false)
+  const [errorBegrunnelse, setErrorBegrunnelse] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -72,6 +95,9 @@ export const ForlengDeltakelseModal = ({
   const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
+  const skalHaBegrunnelse =
+    !sluttdatoFraForslag ||
+    getDateFromString(sluttdatoFraForslag)?.getDate() !== nySluttDato?.getDate()
   const harForLangBegrunnelse =
     begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
 
@@ -83,6 +109,8 @@ export const ForlengDeltakelseModal = ({
     error: endreDeltakelseError,
     doFetch: doFetchEndreDeltakelseForleng
   } = useDeferredFetch(endreDeltakelseForleng)
+
+  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
 
   const sendEndring = () => {
     let hasError = false
@@ -105,14 +133,44 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (!begrunnelse || harForLangBegrunnelse) {
-      setErrorBegrunnelse(true)
+    if (skalHaBegrunnelse && !begrunnelse) {
+      setErrorBegrunnelse('Du må begrunne forlengelsen')
       hasError = true
     }
 
-    if (!hasError && nySluttDato && begrunnelse) {
+    if (harForLangBegrunnelse) {
+      setErrorBegrunnelse(
+        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
+      )
+      hasError = true
+    }
+
+    if (!hasError && nySluttDato && (begrunnelse || !skalHaBegrunnelse)) {
       doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
         sluttdato: formatDateToDateInputStr(nySluttDato),
+        begrunnelse: begrunnelse || null,
+        forslagId: forslag ? forslag.id : null
+      }).then((data) => {
+        onSuccess(data)
+      })
+    }
+  }
+
+  const sendAvvisForslag = () => {
+    let hasError = false
+    if (!begrunnelse) {
+      setErrorBegrunnelse('Du må begrunne avvisningen')
+      hasError = true
+    }
+    if (harForLangBegrunnelse) {
+      setErrorBegrunnelse(
+        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
+      )
+      hasError = true
+    }
+
+    if (!hasError && forslag && begrunnelse) {
+      doFetchAvvisForslag(forslag.id, enhetId, {
         begrunnelse: begrunnelse
       }).then((data) => {
         onSuccess(data)
@@ -154,6 +212,23 @@ export const ForlengDeltakelseModal = ({
           {getEndrePameldingTekst(pamelding.digitalBruker)}
         </Detail>
 
+        {forslag && sluttdatoFraForslag && (
+          <Box
+            background="surface-neutral-moderate"
+            padding={{ xs: '2', md: '6' }}
+            borderRadius={{ md: 'large' }}
+            className="mt-4"
+          >
+            <Heading level="6" size="small">
+              Forslag fra arrangør:
+            </Heading>
+            <BodyLong className="mt-2" size="small">
+              Ny sluttdato: {formatDateFromString(sluttdatoFraForslag)}
+            </BodyLong>
+            <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+          </Box>
+        )}
+
         <VarighetField
           title="Hvor lenge skal deltakelsen forlenges?"
           className="mt-4"
@@ -162,6 +237,7 @@ export const ForlengDeltakelseModal = ({
           sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
           errorVarighet={errorVarighet}
           errorSluttDato={errorSluttDato}
+          defaultVarighet={forslag ? VarighetValg.ANNET : null}
           defaultSelectedDate={nySluttDato}
           onChangeVarighet={handleChangeVarighet}
           onChangeSluttDato={(date) => {
@@ -169,6 +245,7 @@ export const ForlengDeltakelseModal = ({
             if (date) {
               setSluttDatoField(date)
               setErrorSluttDato(null)
+              setErrorBegrunnelse(null)
             }
           }}
           onValidateSluttDato={(dateValidation, currentValue) => {
@@ -211,17 +288,12 @@ export const ForlengDeltakelseModal = ({
         <Textarea
           onChange={(e) => {
             setBegrunnelse(e.target.value)
-            setErrorBegrunnelse(false)
+            setErrorBegrunnelse(null)
           }}
-          error={
-            (errorBegrunnelse &&
-              !begrunnelse &&
-              'Du må begrunne forlengelsen') ||
-            (harForLangBegrunnelse &&
-              `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`)
-          }
+          error={errorBegrunnelse}
           className="mt-6"
           label="Begrunnelse for forlengelsen"
+          description="Beskriv kort hvorfor endringen er riktig for personen."
           value={begrunnelse ?? ''}
           maxLength={BEGRUNNELSE_MAKS_TEGN}
           id="begrunnelse"
@@ -229,12 +301,24 @@ export const ForlengDeltakelseModal = ({
           aria-label={'Begrunnelse'}
         />
       </Modal.Body>
-      <ModalFooter
-        confirmButtonText="Lagre"
-        onConfirm={sendEndring}
-        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-      />
+      {!forslag && (
+        <ModalFooter
+          confirmButtonText="Lagre"
+          onConfirm={sendEndring}
+          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+        />
+      )}
+      {forslag && (
+        <ModalFooter
+          confirmButtonText="Lagre"
+          onConfirm={sendEndring}
+          cancelButtonText="Avvis forslag"
+          onCancel={sendAvvisForslag}
+          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
+          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+        />
+      )}
     </Modal>
   )
 }

@@ -193,6 +193,14 @@ export const worker = setupWorker(
     }
   ),
   http.post(
+    '/amt-deltaker-bff/forslag/:forslagId/avvis',
+    async ({ request }) => {
+      await delay(1000)
+
+      return await request.json().then(() => handler.avvisForslag())
+    }
+  ),
+  http.post(
     '/amt-deltaker-bff/pamelding/:deltakerId/avbryt',
     async ({ request, params }) => {
       await delay(1000)

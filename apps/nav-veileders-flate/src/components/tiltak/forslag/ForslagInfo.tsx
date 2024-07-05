@@ -1,8 +1,9 @@
 import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
-import { Box, Heading, VStack } from '@navikt/ds-react'
+import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { util } from 'zod'
 import assertNever = util.assertNever
+import { BehandleForslagKnapp } from './BehandleForslagKnapp.tsx'
 
 interface Props {
   forslag: AktivtForslag
@@ -42,6 +43,14 @@ export const ForslagInfo = ({ forslag }: Props) => {
           borderRadius={{ md: 'large' }}
         >
           {getForslagDetaljer(forslag)}
+          <Box background="surface-action-subtle" className="mt-6 p-2">
+            <HStack gap="2">
+              <Heading level="6" size="xsmall">
+                For NAV-ansatt:
+              </Heading>
+              <BehandleForslagKnapp forslag={forslag} />
+            </HStack>
+          </Box>
         </Box>
       </VStack>
     </Box>
