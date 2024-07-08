@@ -5,7 +5,11 @@ import {
   DeltakerStatusAarsak,
   DeltakerlisteStatus
 } from '../model/deltaker'
-import { ForslagStatusType } from '../model/forslag.ts'
+import {
+  ForslagEndringAarsak,
+  ForslagEndringAarsakType,
+  ForslagStatusType
+} from '../model/forslag.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -118,5 +122,24 @@ export const getForslagStatusTypeText = (type: ForslagStatusType) => {
   switch (type) {
     case ForslagStatusType.VenterPaSvar:
       return 'Venter på svar fra NAV'
+  }
+}
+
+export const getForslagEndringAarsakText = (aarsak: ForslagEndringAarsak) => {
+  switch (aarsak.type) {
+    case ForslagEndringAarsakType.Annet:
+      return `Annet - ${aarsak.beskrivelse}`
+    case ForslagEndringAarsakType.FattJobb:
+      return 'Fått jobb'
+    case ForslagEndringAarsakType.IkkeMott:
+      return 'Møter ikke opp'
+    case ForslagEndringAarsakType.Syk:
+      return 'Syk'
+    case ForslagEndringAarsakType.TrengerAnnenStotte:
+      return 'Trenger annen hjelp og støtte'
+    case ForslagEndringAarsakType.Utdanning:
+      return 'Utdanning'
+    case ForslagEndringAarsakType.FikkIkkePlass:
+      return 'Fikk ikke plass'
   }
 }

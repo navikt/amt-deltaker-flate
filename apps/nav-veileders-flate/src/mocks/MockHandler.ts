@@ -3,6 +3,7 @@ import {
   DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
+  ForslagEndringAarsakType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -202,7 +203,7 @@ export class MockHandler {
   getForslag(): AktivtForslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
-      fremtidigDato.setDate(fremtidigDato.getDate() + 12)
+      fremtidigDato.setDate(fremtidigDato.getDate() + 15)
       const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
       const forslag = {
         id: uuidv4(),
@@ -219,7 +220,23 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      return [forslag]
+      const forslagAvslutt = {
+        id: uuidv4(),
+        opprettet: dayjs().format('YYYY-MM-DD'),
+        begrunnelse: 'Må avslutte deltakelsen',
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: sluttdato,
+          aarsak: {
+            type: ForslagEndringAarsakType.Syk,
+            beskrivelse: null
+          }
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslag, forslagAvslutt]
     }
     return []
   }
@@ -342,8 +359,10 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
-      if (request.forslagId) {
-        oppdatertPamelding.forslag = []
+      if (request.forslagId && oppdatertPamelding.forslag) {
+        oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
+          (f) => f.id !== request.forslagId
+        )
       }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
@@ -403,6 +422,11 @@ export class MockHandler {
         oppdatertPamelding.status.aarsak = request.aarsak
         oppdatertPamelding.sluttdato = request.sluttdato
       }
+      if (request.forslagId && oppdatertPamelding.forslag) {
+        oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
+          (f) => f.id !== request.forslagId
+        )
+      }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -458,11 +482,13 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  avvisForslag() {
+  avvisForslag(forslagId: string) {
     const oppdatertPamelding = this.pamelding
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.forslag = []
+    if (oppdatertPamelding && oppdatertPamelding.forslag) {
+      oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
+        (f) => f.id !== forslagId
+      )
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

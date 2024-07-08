@@ -14,6 +14,8 @@ interface Props {
 
 const getModaltype = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.AvsluttDeltakelse:
+      return EndreDeltakelseType.AVSLUTT_DELTAKELSE
     case ForslagEndringType.ForlengDeltakelse:
       return EndreDeltakelseType.FORLENG_DELTAKELSE
     default:

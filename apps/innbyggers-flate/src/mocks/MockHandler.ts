@@ -3,6 +3,7 @@ import {
   AktivtForslag,
   DeltakerStatusType,
   EMDASH,
+  ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
   INNHOLD_TYPE_ANNET,
@@ -232,7 +233,23 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      return [forslag]
+      const forslagAvslutt = {
+        id: uuidv4(),
+        opprettet: dayjs().format('YYYY-MM-DD'),
+        begrunnelse: 'Må avslutte deltakelsen',
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: sluttdato,
+          aarsak: {
+            type: ForslagEndringAarsakType.Syk,
+            beskrivelse: null
+          }
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslag, forslagAvslutt]
     }
     return []
   }
