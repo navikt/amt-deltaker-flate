@@ -1,7 +1,6 @@
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../api/data/pamelding.ts'
-import { ForslagStatusType } from '../api/data/forslag.ts'
 
 export const getDeltakerNavn = (pamelding: PameldingResponse) => {
   return `${pamelding.fornavn} ${pamelding.mellomnavn ? pamelding.mellomnavn + ' ' : ''}${pamelding.etternavn}`
@@ -57,10 +56,3 @@ export const getEndrePameldingTekst = (digitalBruker: boolean) =>
   digitalBruker
     ? 'Bruker får beskjed på nav.no. Arrangør ser endringen i Deltakeroversikten.'
     : 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet. Arrangør ser endringen i Deltakeroversikten.'
-
-export const getForslagStatusTypeText = (type: ForslagStatusType) => {
-  switch (type) {
-    case ForslagStatusType.VenterPaSvar:
-      return 'Venter på svar fra NAV'
-  }
-}

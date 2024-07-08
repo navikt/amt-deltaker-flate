@@ -5,6 +5,7 @@ import {
   DeltakerStatusAarsak,
   DeltakerlisteStatus
 } from '../model/deltaker'
+import { ForslagStatusType } from '../model/forslag.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -110,5 +111,12 @@ export const getDeltakerlisteStatusText = (status: DeltakerlisteStatus) => {
       return 'Avlyst'
     case DeltakerlisteStatus.AVBRUTT:
       return 'Avbrutt'
+  }
+}
+
+export const getForslagStatusTypeText = (type: ForslagStatusType) => {
+  switch (type) {
+    case ForslagStatusType.VenterPaSvar:
+      return 'Venter på svar fra NAV'
   }
 }

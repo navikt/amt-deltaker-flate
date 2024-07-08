@@ -26,7 +26,7 @@ import {
   AktivtForslag,
   ForslagEndringType,
   ForslagStatusType
-} from '../api/data/forslag.ts'
+} from 'deltaker-flate-common'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (

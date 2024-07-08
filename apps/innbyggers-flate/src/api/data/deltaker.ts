@@ -1,4 +1,5 @@
 import {
+  aktivtForslagSchema,
   deltakerStaturTypeSchema,
   deltakerStatusAarsakSchema,
   tiltakstypeSchema
@@ -57,7 +58,8 @@ export const deltakerSchema = z.object({
   bakgrunnsinformasjon: z.string().nullable(),
   deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
-  adresseDelesMedArrangor: z.boolean()
+  adresseDelesMedArrangor: z.boolean(),
+  forslag: z.array(aktivtForslagSchema)
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>

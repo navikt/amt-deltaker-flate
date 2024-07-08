@@ -1,6 +1,5 @@
 import { AktivtForslag, ForslagDetaljer } from 'deltaker-flate-common'
-import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
-import { BehandleForslagKnapp } from './BehandleForslagKnapp.tsx'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 
 interface Props {
   forslag: AktivtForslag
@@ -26,14 +25,6 @@ export const ForslagInfo = ({ forslag }: Props) => {
           borderRadius={{ md: 'large' }}
         >
           <ForslagDetaljer forslag={forslag} />
-          <Box background="surface-action-subtle" className="mt-6 p-2">
-            <HStack gap="2">
-              <Heading level="6" size="xsmall">
-                For NAV-ansatt:
-              </Heading>
-              <BehandleForslagKnapp forslag={forslag} />
-            </HStack>
-          </Box>
         </Box>
       </VStack>
     </Box>

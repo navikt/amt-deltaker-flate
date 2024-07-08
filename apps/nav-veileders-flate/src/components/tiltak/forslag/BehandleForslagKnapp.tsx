@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
-import { AktivtForslag, ForslagEndringType } from '../../../api/data/forslag.ts'
+import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
 import { util } from 'zod'
 import assertNever = util.assertNever
 
