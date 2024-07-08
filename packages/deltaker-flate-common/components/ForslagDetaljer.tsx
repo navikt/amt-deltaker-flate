@@ -1,9 +1,13 @@
 import { AktivtForslag, ForslagEndringType } from '../model/forslag.ts'
+import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { util } from 'zod'
 import assertNever = util.assertNever
-import { ForlengDeltakelseForslagDetaljer } from '../components/ForlengDeltakelseForslagDetaljer'
 
-export const getForslagDetaljer = (forslag: AktivtForslag) => {
+interface Props {
+  forslag: AktivtForslag
+}
+
+export const ForslagDetaljer = ({ forslag }: Props) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.ForlengDeltakelse:
       return (

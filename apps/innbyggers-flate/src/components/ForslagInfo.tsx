@@ -1,6 +1,5 @@
-import { AktivtForslag } from 'deltaker-flate-common'
+import { AktivtForslag, ForslagDetaljer } from 'deltaker-flate-common'
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import { getForslagDetaljer } from 'deltaker-flate-common'
 
 interface Props {
   forslag: AktivtForslag
@@ -25,7 +24,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
           borderWidth="1"
           borderRadius={{ md: 'large' }}
         >
-          {getForslagDetaljer(forslag)}
+          <ForslagDetaljer forslag={forslag} />
         </Box>
       </VStack>
     </Box>
