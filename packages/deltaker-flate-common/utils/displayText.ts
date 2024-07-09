@@ -140,8 +140,6 @@ export const getForslagEndringAarsakText = (aarsak: ForslagEndringAarsak) => {
       return 'Trenger annen hjelp og støtte'
     case ForslagEndringAarsakType.Utdanning:
       return 'Utdanning'
-    case ForslagEndringAarsakType.FikkIkkePlass:
-      return 'Fikk ikke plass'
   }
 }
 

@@ -14,7 +14,6 @@ export enum ForslagEndringAarsakType {
   Syk = 'Syk',
   FattJobb = 'FattJobb',
   TrengerAnnenStotte = 'TrengerAnnenStotte',
-  FikkIkkePlass = 'FikkIkkePlass',
   Utdanning = 'Utdanning',
   IkkeMott = 'IkkeMott',
   Annet = 'Annet'
@@ -26,9 +25,6 @@ const FattJobb = z.object({
 })
 const TrengerAnnenStotte = z.object({
   type: z.literal(ForslagEndringAarsakType.TrengerAnnenStotte)
-})
-const FikkIkkePlass = z.object({
-  type: z.literal(ForslagEndringAarsakType.FikkIkkePlass)
 })
 const Utdanning = z.object({
   type: z.literal(ForslagEndringAarsakType.Utdanning)
@@ -45,7 +41,6 @@ const forslagEndringAarsakSchema = z.discriminatedUnion('type', [
   Syk,
   FattJobb,
   TrengerAnnenStotte,
-  FikkIkkePlass,
   Utdanning,
   IkkeMott,
   Annet
