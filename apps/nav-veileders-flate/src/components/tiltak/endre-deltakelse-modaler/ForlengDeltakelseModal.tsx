@@ -1,16 +1,12 @@
 import {
-  BodyLong,
   BodyShort,
-  Box,
   ConfirmationPanel,
   Detail,
-  Heading,
   Modal,
   Textarea
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  formatDateFromString,
   getDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -42,6 +38,7 @@ import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
+import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -213,20 +210,7 @@ export const ForlengDeltakelseModal = ({
         </Detail>
 
         {forslag && sluttdatoFraForslag && (
-          <Box
-            background="surface-neutral-moderate"
-            padding={{ xs: '2', md: '6' }}
-            borderRadius={{ md: 'large' }}
-            className="mt-4"
-          >
-            <Heading level="6" size="small">
-              Forslag fra arrangør:
-            </Heading>
-            <BodyLong className="mt-2" size="small">
-              Ny sluttdato: {formatDateFromString(sluttdatoFraForslag)}
-            </BodyLong>
-            <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
-          </Box>
+          <ModalForslagDetaljer forslag={forslag} />
         )}
 
         <VarighetField
