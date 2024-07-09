@@ -41,6 +41,8 @@ export const App = () => {
       {state === DeferredFetchState.LOADING && (
         <main className="flex justify-center items-center h-screen">
           <Loader size="3xlarge" title="Venter..." />
+          {/* hack for at styling til ikoner fra common skal virke */}
+          <div className="h-6 w-6 rotate-45 " />
         </main>
       )}
 
