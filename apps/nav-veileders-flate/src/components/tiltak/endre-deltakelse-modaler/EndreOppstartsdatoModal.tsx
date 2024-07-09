@@ -13,12 +13,12 @@ import {
   Tiltakstype,
   getDateFromString,
   isValidDate,
-  useDeferredFetch
+  useDeferredFetch,
+  EndreDeltakelseType
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
@@ -39,7 +39,7 @@ import {
   getVarighet
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 

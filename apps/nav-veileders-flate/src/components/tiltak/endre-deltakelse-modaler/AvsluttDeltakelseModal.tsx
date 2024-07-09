@@ -12,6 +12,7 @@ import {
   AktivtForslag,
   DeferredFetchState,
   DeltakerStatusAarsakType,
+  EndreDeltakelseType,
   ForslagEndringType,
   getDateFromNorwegianStringFormat,
   getDateFromString,
@@ -21,10 +22,7 @@ import {
 import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse, avvisForslag } from '../../../api/api.ts'
-import {
-  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
-  EndreDeltakelseType
-} from '../../../api/data/endre-deltakelse-request.ts'
+import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
@@ -49,7 +47,7 @@ import {
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
 

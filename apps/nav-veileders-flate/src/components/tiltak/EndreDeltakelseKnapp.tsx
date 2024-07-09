@@ -1,11 +1,13 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
-import { getEndreDeltakelseTypeText } from '../../utils/displayText.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
-import { EndringTypeIkon } from './EndringTypeIkon.tsx'
+import {
+  EndreDeltakelseType,
+  EndringTypeIkon,
+  getEndreDeltakelseTypeText
+} from 'deltaker-flate-common'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
 

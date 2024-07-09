@@ -1,5 +1,4 @@
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
-import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 
 export const getDeltakerNavn = (pamelding: PameldingResponse) => {
@@ -24,31 +23,6 @@ export const getDeltakerStatusAarsakTypeText = (
       return 'Utdanning'
     case DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT:
       return 'Samarbeidet med arrangøren er avbrutt'
-  }
-}
-
-export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
-  switch (type) {
-    case EndreDeltakelseType.IKKE_AKTUELL:
-      return 'Ikke aktuell'
-    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
-      return 'Avslutt deltakelse'
-    case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
-      return 'Endre bakgrunnsinfo'
-    case EndreDeltakelseType.ENDRE_INNHOLD:
-      return 'Endre innhold'
-    case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
-      return 'Endre oppstartsdato'
-    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
-      return 'Endre sluttårsak'
-    case EndreDeltakelseType.ENDRE_SLUTTDATO:
-      return 'Endre sluttdato'
-    case EndreDeltakelseType.FORLENG_DELTAKELSE:
-      return 'Forleng deltakelse'
-    case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
-      return 'Endre deltakelsesmengde'
-    case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
-      return 'Endre til aktiv deltakelse'
   }
 }
 

@@ -1,15 +1,18 @@
 import { Detail, Modal } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import {
+  DeferredFetchState,
+  EndreDeltakelseType,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { NumberTextField } from '../../NumberTextField.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreDeltakelsesmengdeModalProps {

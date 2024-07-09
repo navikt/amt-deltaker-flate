@@ -3,13 +3,15 @@ import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDeta
 import { util } from 'zod'
 import assertNever = util.assertNever
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
-import { EndreDeltakelseType } from '../../../../apps/nav-veileders-flate/src/api/data/endre-deltakelse-request.ts'
 import { BodyLong, Detail, Heading, HStack, Tag } from '@navikt/ds-react'
-import { EndringTypeIkon } from '../../../../apps/nav-veileders-flate/src/components/tiltak/EndringTypeIkon.tsx'
-import { getForslagStatusTypeText } from '../../utils/displayText.ts'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import {
+  getEndreDeltakelseTypeText,
+  getForslagStatusTypeText
+} from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
-import { getEndreDeltakelseTypeText } from '../../../../apps/nav-veileders-flate/src/utils/displayText.ts'
 import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
+import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
 
 interface Props {
   forslag: AktivtForslag

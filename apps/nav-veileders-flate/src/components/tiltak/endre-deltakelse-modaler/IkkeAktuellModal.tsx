@@ -3,6 +3,7 @@ import {
   AktivtForslag,
   DeferredFetchState,
   DeltakerStatusAarsakType,
+  EndreDeltakelseType,
   ForslagEndringType,
   getDeltakerStatusAarsak,
   useDeferredFetch
@@ -10,10 +11,7 @@ import {
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avvisForslag, endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
-import {
-  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
-  EndreDeltakelseType
-} from '../../../api/data/endre-deltakelse-request.ts'
+import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
@@ -22,7 +20,7 @@ import {
 } from '../../../utils/displayText.ts'
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
 

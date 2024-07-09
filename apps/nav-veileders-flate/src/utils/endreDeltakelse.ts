@@ -1,4 +1,8 @@
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  EndreDeltakelseType,
+  Tiltakstype
+} from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
   deltakerHarAvsluttendeStatus,
@@ -6,7 +10,6 @@ import {
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToDate, dateStrToNullableDate } from './utils'
-import { EndreDeltakelseType } from '../api/data/endre-deltakelse-request'
 
 const harSluttetKanEndres = (
   pamelding: PameldingResponse,
