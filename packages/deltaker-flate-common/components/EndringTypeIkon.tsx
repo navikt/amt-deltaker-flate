@@ -1,4 +1,3 @@
-import { EndreDeltakelseType } from '../../api/data/endre-deltakelse-request'
 import {
   MinusCircleFillIcon,
   ChevronRightDoubleCircleFillIcon,
@@ -9,6 +8,7 @@ import {
   PieChartFillIcon,
   CaretRightCircleFillIcon
 } from '@navikt/aksel-icons'
+import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 
 interface EndringTypeIkonProps {
   type: EndreDeltakelseType

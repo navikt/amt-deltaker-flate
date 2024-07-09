@@ -1,4 +1,3 @@
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
@@ -10,7 +9,7 @@ import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
 import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
 import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
 import { ReaktiverDeltakelseModal } from './ReaktiverDeltakelseModal.tsx'
-import { AktivtForslag } from 'deltaker-flate-common'
+import { AktivtForslag, EndreDeltakelseType } from 'deltaker-flate-common'
 
 interface ModalControllerProps {
   open: boolean

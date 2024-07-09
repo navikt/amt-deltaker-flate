@@ -3,12 +3,15 @@ import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDeta
 import { util } from 'zod'
 import assertNever = util.assertNever
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
-import { EndreDeltakelseType } from '../../../../apps/nav-veileders-flate/src/api/data/endre-deltakelse-request.ts'
 import { BodyLong, Detail, Heading, HStack, Tag } from '@navikt/ds-react'
-import { EndringTypeIkon } from '../../../../apps/nav-veileders-flate/src/components/tiltak/EndringTypeIkon.tsx'
-import { getForslagStatusTypeText } from '../../utils/displayText.ts'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import {
+  getEndreDeltakelseTypeText,
+  getForslagStatusTypeText
+} from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
-import { getEndreDeltakelseTypeText } from '../../../../apps/nav-veileders-flate/src/utils/displayText.ts'
+import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
+import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
 
 interface Props {
   forslag: AktivtForslag
@@ -16,6 +19,8 @@ interface Props {
 
 const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell:
+      return EndreDeltakelseType.IKKE_AKTUELL
     case ForslagEndringType.AvsluttDeltakelse:
       return EndreDeltakelseType.AVSLUTT_DELTAKELSE
     case ForslagEndringType.ForlengDeltakelse:
@@ -27,6 +32,13 @@ const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
 
 export const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell:
+      return (
+        <IkkeAktuellForslagDetaljer
+          forslag={forslag}
+          ikkeAktuellForslag={forslag.endring}
+        />
+      )
     case ForslagEndringType.AvsluttDeltakelse:
       return (
         <AvsluttDeltakelseForslagDetaljer

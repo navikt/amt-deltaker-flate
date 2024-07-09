@@ -7,6 +7,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  EndreDeltakelseType,
   getDateFromNorwegianStringFormat,
   getDateFromString,
   useDeferredFetch
@@ -14,7 +15,6 @@ import {
 import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
@@ -32,7 +32,7 @@ import {
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreSluttdatoModalProps {

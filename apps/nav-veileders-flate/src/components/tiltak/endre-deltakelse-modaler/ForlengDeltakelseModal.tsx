@@ -7,13 +7,13 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  EndreDeltakelseType,
   getDateFromString,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avvisForslag, endreDeltakelseForleng } from '../../../api/api.ts'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
@@ -33,7 +33,7 @@ import {
   VarighetValg
 } from '../../../utils/varighet.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { VarighetField } from '../VarighetField.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'

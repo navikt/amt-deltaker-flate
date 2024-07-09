@@ -2,19 +2,6 @@ import { z } from 'zod'
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
-export enum EndreDeltakelseType {
-  IKKE_AKTUELL = 'IKKE_AKTUELL',
-  ENDRE_INNHOLD = 'ENDRE_INNHOLD',
-  ENDRE_BAKGRUNNSINFO = 'ENDRE_BAKGRUNNSINFO',
-  ENDRE_SLUTTARSAK = 'ENDRE_SLUTTARSAK',
-  ENDRE_SLUTTDATO = 'ENDRE_SLUTTDATO',
-  ENDRE_OPPSTARTSDATO = 'ENDRE_OPPSTARTSDATO',
-  FORLENG_DELTAKELSE = 'FORLENG_DELTAKELSE',
-  AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE',
-  ENDRE_DELTAKELSESMENGDE = 'ENDRE_DELTAKELSESMENGDE',
-  REAKTIVER_DELTAKELSE = 'REAKTIVER_DELTAKELSE'
-}
-
 export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
 
 export const aarsakSchema = z.object({
@@ -23,7 +10,9 @@ export const aarsakSchema = z.object({
 })
 
 export const ikkeAktuellSchema = z.object({
-  aarsak: aarsakSchema
+  aarsak: aarsakSchema,
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullable()
 })
 
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>

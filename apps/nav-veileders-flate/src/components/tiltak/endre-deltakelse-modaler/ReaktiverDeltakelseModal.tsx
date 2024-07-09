@@ -1,11 +1,14 @@
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { useState } from 'react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import {
+  DeferredFetchState,
+  EndreDeltakelseType,
+  useDeferredFetch
+} from 'deltaker-flate-common'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
 import { BodyLong, ConfirmationPanel, Detail, Modal } from '@navikt/ds-react'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'

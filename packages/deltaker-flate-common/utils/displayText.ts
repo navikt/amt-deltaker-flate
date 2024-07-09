@@ -10,6 +10,7 @@ import {
   ForslagEndringAarsakType,
   ForslagStatusType
 } from '../model/forslag.ts'
+import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -141,5 +142,30 @@ export const getForslagEndringAarsakText = (aarsak: ForslagEndringAarsak) => {
       return 'Utdanning'
     case ForslagEndringAarsakType.FikkIkkePlass:
       return 'Fikk ikke plass'
+  }
+}
+
+export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
+  switch (type) {
+    case EndreDeltakelseType.IKKE_AKTUELL:
+      return 'Ikke aktuell'
+    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
+      return 'Avslutt deltakelse'
+    case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
+      return 'Endre bakgrunnsinfo'
+    case EndreDeltakelseType.ENDRE_INNHOLD:
+      return 'Endre innhold'
+    case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
+      return 'Endre oppstartsdato'
+    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
+      return 'Endre sluttårsak'
+    case EndreDeltakelseType.ENDRE_SLUTTDATO:
+      return 'Endre sluttdato'
+    case EndreDeltakelseType.FORLENG_DELTAKELSE:
+      return 'Forleng deltakelse'
+    case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
+      return 'Endre deltakelsesmengde'
+    case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
+      return 'Endre til aktiv deltakelse'
   }
 }

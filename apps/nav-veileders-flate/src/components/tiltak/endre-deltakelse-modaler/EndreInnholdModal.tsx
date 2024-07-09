@@ -8,13 +8,13 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  EndreDeltakelseType,
   INNHOLD_TYPE_ANNET,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
@@ -23,7 +23,7 @@ import {
 import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { ModalFooter } from '../../ModalFooter'
-import { EndringTypeIkon } from '../EndringTypeIkon'
+import { EndringTypeIkon } from 'deltaker-flate-common'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 
 interface EndreInnholdModalProps {

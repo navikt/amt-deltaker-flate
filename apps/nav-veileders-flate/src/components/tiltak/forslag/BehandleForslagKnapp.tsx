@@ -1,10 +1,13 @@
 import { Button } from '@navikt/ds-react'
 import { usePameldingContext } from '../PameldingContext.tsx'
 import { useRef, useState } from 'react'
-import { EndreDeltakelseType } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
-import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
+import {
+  AktivtForslag,
+  EndreDeltakelseType,
+  ForslagEndringType
+} from 'deltaker-flate-common'
 import { util } from 'zod'
 import assertNever = util.assertNever
 
@@ -14,6 +17,8 @@ interface Props {
 
 const getModaltype = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell:
+      return EndreDeltakelseType.IKKE_AKTUELL
     case ForslagEndringType.AvsluttDeltakelse:
       return EndreDeltakelseType.AVSLUTT_DELTAKELSE
     case ForslagEndringType.ForlengDeltakelse:
