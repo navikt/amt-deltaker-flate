@@ -246,8 +246,7 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.IkkeAktuell,
           aarsak: {
-            type: ForslagEndringAarsakType.IkkeMott,
-            beskrivelse: null
+            type: ForslagEndringAarsakType.IkkeMott
           }
         },
         status: {

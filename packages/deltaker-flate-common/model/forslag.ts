@@ -20,14 +20,36 @@ export enum ForslagEndringAarsakType {
   Annet = 'Annet'
 }
 
-export const forslagEndringAarsakTypeSchema = z.nativeEnum(
-  ForslagEndringAarsakType
-)
-
-export const forslagEndringAarsakSchema = z.object({
-  type: forslagEndringAarsakTypeSchema,
-  beskrivelse: z.string().nullable()
+const Syk = z.object({ type: z.literal(ForslagEndringAarsakType.Syk) })
+const FattJobb = z.object({
+  type: z.literal(ForslagEndringAarsakType.FattJobb)
 })
+const TrengerAnnenStotte = z.object({
+  type: z.literal(ForslagEndringAarsakType.TrengerAnnenStotte)
+})
+const FikkIkkePlass = z.object({
+  type: z.literal(ForslagEndringAarsakType.FikkIkkePlass)
+})
+const Utdanning = z.object({
+  type: z.literal(ForslagEndringAarsakType.Utdanning)
+})
+const IkkeMott = z.object({
+  type: z.literal(ForslagEndringAarsakType.IkkeMott)
+})
+const Annet = z.object({
+  type: z.literal(ForslagEndringAarsakType.Annet),
+  beskrivelse: z.string()
+})
+
+const forslagEndringAarsakSchema = z.discriminatedUnion('type', [
+  Syk,
+  FattJobb,
+  TrengerAnnenStotte,
+  FikkIkkePlass,
+  Utdanning,
+  IkkeMott,
+  Annet
+])
 
 export const forlengDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.ForlengDeltakelse),
