@@ -26,7 +26,7 @@ export const forslagEndringAarsakTypeSchema = z.nativeEnum(
 
 export const forslagEndringAarsakSchema = z.object({
   type: forslagEndringAarsakTypeSchema,
-  beskrivelse: z.string().nullable()
+  beskrivelse: z.string().nullable().default(null)
 })
 
 export const forlengDeltakelseForslagSchema = z.object({
