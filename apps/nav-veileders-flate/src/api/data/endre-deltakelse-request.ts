@@ -23,7 +23,9 @@ export const aarsakSchema = z.object({
 })
 
 export const ikkeAktuellSchema = z.object({
-  aarsak: aarsakSchema
+  aarsak: aarsakSchema,
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullable()
 })
 
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>

@@ -251,6 +251,24 @@ export class MockHandler {
       }
       return [forslag, forslagAvslutt]
     }
+    if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
+      const forslagIkkeAktuell = {
+        id: uuidv4(),
+        opprettet: dayjs().format('YYYY-MM-DD'),
+        begrunnelse: 'Har ikke møtt opp',
+        endring: {
+          type: ForslagEndringType.IkkeAktuell,
+          aarsak: {
+            type: ForslagEndringAarsakType.IkkeMott,
+            beskrivelse: null
+          }
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslagIkkeAktuell]
+    }
     return []
   }
 }

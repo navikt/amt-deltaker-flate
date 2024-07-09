@@ -9,6 +9,7 @@ import { EndringTypeIkon } from '../../../../apps/nav-veileders-flate/src/compon
 import { getForslagStatusTypeText } from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
 import { getEndreDeltakelseTypeText } from '../../../../apps/nav-veileders-flate/src/utils/displayText.ts'
+import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
 
 interface Props {
   forslag: AktivtForslag
@@ -16,6 +17,8 @@ interface Props {
 
 const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell:
+      return EndreDeltakelseType.IKKE_AKTUELL
     case ForslagEndringType.AvsluttDeltakelse:
       return EndreDeltakelseType.AVSLUTT_DELTAKELSE
     case ForslagEndringType.ForlengDeltakelse:
@@ -27,6 +30,13 @@ const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
 
 export const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell:
+      return (
+        <IkkeAktuellForslagDetaljer
+          forslag={forslag}
+          ikkeAktuellForslag={forslag.endring}
+        />
+      )
     case ForslagEndringType.AvsluttDeltakelse:
       return (
         <AvsluttDeltakelseForslagDetaljer

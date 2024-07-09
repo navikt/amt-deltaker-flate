@@ -1,7 +1,5 @@
-import {
-  AktivtForslag, getForslagtypeDetaljer
-} from 'deltaker-flate-common'
-import {BodyLong, Box, Heading} from '@navikt/ds-react'
+import { AktivtForslag, getForslagtypeDetaljer } from 'deltaker-flate-common'
+import { BodyLong, Box, Heading } from '@navikt/ds-react'
 
 interface Props {
   forslag: AktivtForslag
