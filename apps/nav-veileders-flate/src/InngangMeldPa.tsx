@@ -44,8 +44,6 @@ const InngangMeldPa = () => {
     <PameldingContextProvider initialPamelding={nyPamelding}>
       {isEnvLocalDemoOrPr && <DemoBanner />}
       <DeltakerGuard />
-      {/* hack for at styling til ikoner fra common skal virke */}
-      <div className="h-6 w-6 rotate-45 " />
     </PameldingContextProvider>
   )
 }
