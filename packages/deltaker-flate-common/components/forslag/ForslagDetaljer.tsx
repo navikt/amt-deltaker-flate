@@ -25,7 +25,7 @@ const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
   }
 }
 
-const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
+export const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.AvsluttDeltakelse:
       return (

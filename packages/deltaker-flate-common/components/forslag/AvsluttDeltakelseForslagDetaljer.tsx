@@ -16,7 +16,7 @@ export const AvsluttDeltakelseForslagDetaljer = ({
       <BodyLong className="mt-2" size="small">
         Ny sluttdato: {formatDateFromString(avsluttDeltakelseForslag.sluttdato)}
       </BodyLong>
-      <BodyLong className="mt-2" size="small">
+      <BodyLong size="small">
         Årsak til avslutning:{' '}
         {getForslagEndringAarsakText(avsluttDeltakelseForslag.aarsak)}
       </BodyLong>

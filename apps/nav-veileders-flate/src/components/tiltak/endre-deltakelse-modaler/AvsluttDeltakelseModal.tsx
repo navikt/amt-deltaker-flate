@@ -1,10 +1,7 @@
 import {
-  BodyLong,
-  Box,
   ConfirmationPanel,
   DatePicker,
   Detail,
-  Heading,
   Modal,
   Radio,
   RadioGroup,
@@ -15,12 +12,10 @@ import {
   AktivtForslag,
   DeferredFetchState,
   DeltakerStatusAarsakType,
-  formatDateFromString,
   ForslagEndringType,
   getDateFromNorwegianStringFormat,
   getDateFromString,
   getDeltakerStatusAarsak,
-  getForslagEndringAarsakText,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
@@ -56,6 +51,7 @@ import {
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
+import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -268,24 +264,7 @@ export const AvsluttDeltakelseModal = ({
         </Detail>
 
         {forslag && sluttdatoFraForslag && sluttaarsakFraForslag && (
-          <Box
-            background="surface-neutral-moderate"
-            padding={{ xs: '2', md: '6' }}
-            borderRadius={{ md: 'large' }}
-            className="mt-4"
-          >
-            <Heading level="6" size="small">
-              Forslag fra arrangør:
-            </Heading>
-            <BodyLong className="mt-2" size="small">
-              Ny sluttdato: {formatDateFromString(sluttdatoFraForslag)}
-            </BodyLong>
-            <BodyLong className="mt-2" size="small">
-              Årsak til avslutning:{' '}
-              {getForslagEndringAarsakText(sluttaarsakFraForslag)}
-            </BodyLong>
-            <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
-          </Box>
+          <ModalForslagDetaljer forslag={forslag} />
         )}
 
         <RadioGroup
@@ -298,6 +277,7 @@ export const AvsluttDeltakelseModal = ({
             setErrorAarsakAnnet(false)
           }}
           value={valgtArsak}
+          className="mt-4"
         >
           <>
             {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
