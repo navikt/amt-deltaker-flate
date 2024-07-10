@@ -80,3 +80,11 @@ export const avvisForslagSchema = z.object({
 })
 
 export type AvvisForslagRequest = z.infer<typeof avvisForslagSchema>
+
+export const reaktiverDeltakelseSchema = z.object({
+  begrunnelse: z.string()
+})
+
+export type ReaktiverDeltakelseRequest = z.infer<
+  typeof reaktiverDeltakelseSchema
+>

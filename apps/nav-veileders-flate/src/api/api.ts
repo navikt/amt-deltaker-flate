@@ -13,7 +13,8 @@ import {
   EndreSluttdatoRequest,
   EndreStartdatoRequest,
   ForlengDeltakelseRequest,
-  IkkeAktuellRequest
+  IkkeAktuellRequest,
+  ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
 
@@ -161,7 +162,8 @@ export const endreDeltakelseIkkeAktuell = (
 
 export const endreDeltakelseReaktiver = (
   deltakerId: string,
-  enhetId: string
+  enhetId: string,
+  request: ReaktiverDeltakelseRequest
 ): Promise<PameldingResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/reaktiver`, {
     method: 'POST',
@@ -170,7 +172,8 @@ export const endreDeltakelseReaktiver = (
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'aktiv-enhet': enhetId
-    }
+    },
+    body: JSON.stringify(request)
   })
     .then((response) => {
       if (response.status !== 200) {
