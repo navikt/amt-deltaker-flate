@@ -8,6 +8,7 @@ import {
   BodyLong,
   Detail,
   Heading,
+  HGrid,
   HStack,
   Tag,
   VStack
@@ -72,17 +73,19 @@ export const ForslagtypeDetaljer = ({
 export const ForslagDetaljer = ({ forslag }: Props) => {
   const endreDeltakelsesType = getEndreDeltakelsesType(forslag)
   return (
-    <VStack className="p-4">
-      <HStack gap="2" className="items-center">
-        <EndringTypeIkon type={endreDeltakelsesType} />
-        <Heading level="3" size="small">
-          {getEndreDeltakelseTypeText(endreDeltakelsesType)}
-        </Heading>
-        <Tag variant="info" size="small">
-          {getForslagStatusTypeText(forslag.status.type)}
-        </Tag>
-      </HStack>
-      <VStack className="ml-8">
+    <HGrid columns="2rem auto" className="p-4 items-start">
+      <VStack>
+        <EndringTypeIkon type={endreDeltakelsesType} size="large" />
+      </VStack>
+      <VStack className="items-start">
+        <HStack gap="2" className="mb-2">
+          <Heading level="3" size="small">
+            {getEndreDeltakelseTypeText(endreDeltakelsesType)}
+          </Heading>
+          <Tag variant="info" size="small">
+            {getForslagStatusTypeText(forslag.status.type)}
+          </Tag>
+        </HStack>
         <ForslagtypeDetaljer forslag={forslag} />
         {forslag.begrunnelse && (
           <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
@@ -91,6 +94,6 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
           Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
         </Detail>
       </VStack>
-    </VStack>
+    </HGrid>
   )
 }

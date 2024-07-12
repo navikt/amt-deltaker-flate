@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   MinusCircleFillIcon,
   ChevronRightDoubleCircleFillIcon,
@@ -12,14 +13,22 @@ import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 
 interface EndringTypeIkonProps {
   type: EndreDeltakelseType
+  size?: 'medium' | 'large'
 }
 
-export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
+export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
+  const sizeName = (size?: 'medium' | 'large') => {
+    if (size === 'large') {
+      return 'h-7 w-7'
+    } else {
+      return 'h-6 w-6'
+    }
+  }
   switch (type) {
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return (
         <ChevronRightCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-deepblue-300)"
         />
@@ -27,7 +36,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
       return (
         <ChevronRightDoubleCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-icon-success)"
         />
@@ -36,7 +45,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return (
         <MinusCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-gray-600)"
         />
@@ -44,7 +53,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.IKKE_AKTUELL:
       return (
         <PlusCircleFillIcon
-          className="h-6 w-6 rotate-45 "
+          className={`${sizeName(size)} rotate-45`}
           aria-hidden
           color="var(--a-orange-600)"
         />
@@ -52,7 +61,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
       return (
         <ChevronRightLastCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-gray-500)"
         />
@@ -61,7 +70,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return (
         <MenuElipsisHorizontalCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-deepblue-400)"
         />
@@ -69,7 +78,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
       return (
         <PieChartFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-purple-500)"
         />
@@ -77,7 +86,7 @@ export const EndringTypeIkon = ({ type }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return (
         <CaretRightCircleFillIcon
-          className="h-6 w-6"
+          className={sizeName(size)}
           aria-hidden
           color="var(--a-icon-alt-2)"
         />
