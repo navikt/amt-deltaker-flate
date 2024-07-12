@@ -1,5 +1,5 @@
 import { AktivtForslag, ForslagtypeDetaljer } from 'deltaker-flate-common'
-import { BodyLong, Box, Heading } from '@navikt/ds-react'
+import { Box, Heading } from '@navikt/ds-react'
 
 interface Props {
   forslag: AktivtForslag
@@ -18,7 +18,6 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
           Forslag fra arrangør:
         </Heading>
         <ForslagtypeDetaljer forslag={forslag} />
-        <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
       </Box>
     </div>
   )
