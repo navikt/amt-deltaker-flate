@@ -1,3 +1,4 @@
+import React from 'react'
 import { BodyLong } from '@navikt/ds-react'
 import { AktivtForslag, AvsluttDeltakelseForslag } from '../../model/forslag.ts'
 import { getForslagEndringAarsakText } from '../../utils/displayText.ts'
@@ -13,7 +14,7 @@ export const AvsluttDeltakelseForslagDetaljer = ({
 }: Props) => {
   return (
     <div>
-      <BodyLong className="mt-2" size="small">
+      <BodyLong size="small">
         Ny sluttdato: {formatDateFromString(avsluttDeltakelseForslag.sluttdato)}
       </BodyLong>
       <BodyLong size="small">

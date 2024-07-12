@@ -12,7 +12,7 @@ export const ForlengDeltakelseForslagDetaljer = ({
 }: Props) => {
   return (
     <div>
-      <BodyLong className="mt-2" size="small">
+      <BodyLong size="small">
         Ny sluttdato: {formatDateFromString(forlengDeltakelseForslag.sluttdato)}
       </BodyLong>
     </div>

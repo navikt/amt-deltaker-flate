@@ -27,7 +27,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
           <ForslagDetaljer forslag={forslag} />
           <Box
             background="surface-action-subtle"
-            className="mt-6 p-2"
+            className="p-2"
             borderRadius="0 0 large large"
           >
             <HStack gap="2" className="items-center">

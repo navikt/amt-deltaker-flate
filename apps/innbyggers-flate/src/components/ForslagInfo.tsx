@@ -19,7 +19,6 @@ export const ForslagInfo = ({ forslag }: Props) => {
         </Heading>
         <Box
           background="surface-default"
-          padding="2"
           borderColor="border-default"
           borderWidth="1"
           borderRadius={{ md: 'large' }}
