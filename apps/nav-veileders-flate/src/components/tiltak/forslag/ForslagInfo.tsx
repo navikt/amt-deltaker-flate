@@ -11,7 +11,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
     <Box
       background="bg-subtle"
       padding={{ xs: '2', md: '6' }}
-      borderRadius={{ md: 'large' }}
+      borderRadius="medium"
       className="mt-4"
     >
       <VStack gap="1">
@@ -22,13 +22,13 @@ export const ForslagInfo = ({ forslag }: Props) => {
           background="surface-default"
           borderColor="border-default"
           borderWidth="1"
-          borderRadius={{ md: 'large' }}
+          borderRadius="medium"
         >
           <ForslagDetaljer forslag={forslag} />
           <Box
             background="surface-action-subtle"
             className="p-2"
-            borderRadius="0 0 large large"
+            borderRadius="0 0 medium medium"
           >
             <HStack gap="2" className="items-center">
               <Heading level="3" size="xsmall">

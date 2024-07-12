@@ -11,7 +11,7 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
       <Box
         background="bg-subtle"
         padding={{ xs: '2', md: '6' }}
-        borderRadius={{ md: 'large' }}
+        borderRadius="medium"
         className="mt-4"
       >
         <Heading level="2" size="small">
