@@ -73,7 +73,7 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
   const endreDeltakelsesType = getEndreDeltakelsesType(forslag)
   return (
     <VStack className="p-4">
-      <HStack gap="2">
+      <HStack gap="2" className="items-center">
         <EndringTypeIkon type={endreDeltakelsesType} />
         <Heading level="3" size="small">
           {getEndreDeltakelseTypeText(endreDeltakelsesType)}
