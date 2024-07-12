@@ -1,3 +1,4 @@
+import React from 'react'
 import { AktivtForslag, ForslagEndringType } from '../../model/forslag.ts'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { util } from 'zod'
@@ -26,11 +27,15 @@ const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
     case ForslagEndringType.ForlengDeltakelse:
       return EndreDeltakelseType.FORLENG_DELTAKELSE
     default:
-      assertNever(forslag.endring.type)
+      assertNever(forslag.endring)
   }
 }
 
-export const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
+export const ForslagtypeDetaljer = ({
+  forslag
+}: {
+  forslag: AktivtForslag
+}) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.IkkeAktuell:
       return (
@@ -53,7 +58,7 @@ export const getForslagtypeDetaljer = (forslag: AktivtForslag) => {
         />
       )
     default:
-      assertNever(forslag.endring.type)
+      assertNever(forslag.endring)
   }
 }
 
@@ -66,11 +71,11 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
         <Heading level="6" size="small">
           {getEndreDeltakelseTypeText(endreDeltakelsesType)}
         </Heading>
-        <Tag variant="info">
+        <Tag variant="info" size="small">
           {getForslagStatusTypeText(forslag.status.type)}
         </Tag>
       </HStack>
-      {getForslagtypeDetaljer(forslag)}
+      <ForslagtypeDetaljer forslag={forslag} />
       <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
       <Detail>
         Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
