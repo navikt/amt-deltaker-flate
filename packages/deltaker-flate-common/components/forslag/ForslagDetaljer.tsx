@@ -72,8 +72,8 @@ export const ForslagtypeDetaljer = ({
 export const ForslagDetaljer = ({ forslag }: Props) => {
   const endreDeltakelsesType = getEndreDeltakelsesType(forslag)
   return (
-    <div>
-      <HStack gap="2" className="mt-2">
+    <VStack className="p-4">
+      <HStack gap="2">
         <EndringTypeIkon type={endreDeltakelsesType} />
         <Heading level="3" size="small">
           {getEndreDeltakelseTypeText(endreDeltakelsesType)}
@@ -91,6 +91,6 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
           Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
         </Detail>
       </VStack>
-    </div>
+    </VStack>
   )
 }
