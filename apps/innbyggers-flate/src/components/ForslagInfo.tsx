@@ -14,7 +14,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
       className="mt-4"
     >
       <VStack gap="1">
-        <Heading level="6" size="small">
+        <Heading level="2" size="medium">
           Arrangør foreslår en endring:
         </Heading>
         <Box

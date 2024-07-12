@@ -14,7 +14,7 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
         borderRadius={{ md: 'large' }}
         className="mt-4"
       >
-        <Heading level="6" size="small">
+        <Heading level="2" size="small">
           Forslag fra arrangør:
         </Heading>
         <ForslagtypeDetaljer forslag={forslag} />

@@ -15,7 +15,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
       className="mt-4"
     >
       <VStack gap="1">
-        <Heading level="6" size="small">
+        <Heading level="2" size="medium">
           Arrangør foreslår en endring:
         </Heading>
         <Box
@@ -27,8 +27,8 @@ export const ForslagInfo = ({ forslag }: Props) => {
         >
           <ForslagDetaljer forslag={forslag} />
           <Box background="surface-action-subtle" className="mt-6 p-2">
-            <HStack gap="2">
-              <Heading level="6" size="xsmall">
+            <HStack gap="2" className="items-center">
+              <Heading level="3" size="xsmall">
                 For NAV-ansatt:
               </Heading>
               <BehandleForslagKnapp forslag={forslag} />

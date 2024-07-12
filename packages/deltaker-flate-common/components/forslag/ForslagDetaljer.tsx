@@ -4,7 +4,14 @@ import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDeta
 import { util } from 'zod'
 import assertNever = util.assertNever
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
-import { BodyLong, Detail, Heading, HStack, Tag } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Detail,
+  Heading,
+  HStack,
+  Tag,
+  VStack
+} from '@navikt/ds-react'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {
   getEndreDeltakelseTypeText,
@@ -68,18 +75,20 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
     <div>
       <HStack gap="2" className="mt-2">
         <EndringTypeIkon type={endreDeltakelsesType} />
-        <Heading level="6" size="small">
+        <Heading level="3" size="small">
           {getEndreDeltakelseTypeText(endreDeltakelsesType)}
         </Heading>
         <Tag variant="info" size="small">
           {getForslagStatusTypeText(forslag.status.type)}
         </Tag>
       </HStack>
-      <ForslagtypeDetaljer forslag={forslag} />
-      <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
-      <Detail>
-        Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
-      </Detail>
+      <VStack className="ml-2">
+        <ForslagtypeDetaljer forslag={forslag} />
+        <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+        <Detail>
+          Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
+        </Detail>
+      </VStack>
     </div>
   )
 }
