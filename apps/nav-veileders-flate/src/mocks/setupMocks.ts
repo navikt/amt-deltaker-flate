@@ -196,7 +196,7 @@ export const worker = setupWorker(
     '/amt-deltaker-bff/forslag/:forslagId/avvis',
     async ({ request, params }) => {
       await delay(1000)
-      const { forslagId } = params
+      const { forslagId } = params as { forslagId: string }
 
       return await request.json().then(() => handler.avvisForslag(forslagId))
     }

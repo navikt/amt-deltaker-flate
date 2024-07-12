@@ -20,13 +20,16 @@ export const ForslagInfo = ({ forslag }: Props) => {
         </Heading>
         <Box
           background="surface-default"
-          padding="2"
           borderColor="border-default"
           borderWidth="1"
           borderRadius={{ md: 'large' }}
         >
           <ForslagDetaljer forslag={forslag} />
-          <Box background="surface-action-subtle" className="mt-6 p-2">
+          <Box
+            background="surface-action-subtle"
+            className="mt-6 p-2"
+            borderRadius="0 0 large large"
+          >
             <HStack gap="2" className="items-center">
               <Heading level="3" size="xsmall">
                 For NAV-ansatt:
