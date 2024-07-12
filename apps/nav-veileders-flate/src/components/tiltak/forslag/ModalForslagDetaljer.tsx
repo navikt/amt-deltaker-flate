@@ -9,7 +9,7 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
   return (
     <div>
       <Box
-        background="surface-neutral-moderate"
+        background="bg-subtle"
         padding={{ xs: '2', md: '6' }}
         borderRadius={{ md: 'large' }}
         className="mt-4"
