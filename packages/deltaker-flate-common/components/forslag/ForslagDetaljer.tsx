@@ -84,7 +84,9 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
       </HStack>
       <VStack className="ml-2">
         <ForslagtypeDetaljer forslag={forslag} />
-        <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+        {forslag.begrunnelse && (
+          <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+        )}
         <Detail>
           Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
         </Detail>
