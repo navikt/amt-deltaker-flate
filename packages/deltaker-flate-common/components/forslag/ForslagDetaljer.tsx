@@ -82,7 +82,7 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
           {getForslagStatusTypeText(forslag.status.type)}
         </Tag>
       </HStack>
-      <VStack className="ml-2">
+      <VStack className="ml-8">
         <ForslagtypeDetaljer forslag={forslag} />
         {forslag.begrunnelse && (
           <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
