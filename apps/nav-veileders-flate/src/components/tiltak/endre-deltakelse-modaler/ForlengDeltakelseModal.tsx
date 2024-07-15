@@ -1,21 +1,9 @@
-import {
-  BodyShort,
-  ConfirmationPanel,
-  Detail,
-  Modal,
-  Textarea
-} from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  EndreDeltakelseType,
-  getDateFromString,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
+import { EndreDeltakelseType, getDateFromString } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { avvisForslag, endreDeltakelseForleng } from '../../../api/api.ts'
+import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
   formatDateToDateInputStr,
@@ -32,13 +20,10 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
 import { VarighetField } from '../VarighetField.tsx'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -80,36 +65,27 @@ export const ForlengDeltakelseModal = ({
   const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
     validDeltakerSluttDato
   )
-  const [begrunnelse, setBegrunnelse] = useState<string | null>()
   const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
-  const [errorBegrunnelse, setErrorBegrunnelse] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
 
-  const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
-  const { enhetId } = useAppContext()
   const skalHaBegrunnelse =
     !sluttdatoFraForslag ||
     getDateFromString(sluttdatoFraForslag)?.getDate() !== nySluttDato?.getDate()
-  const harForLangBegrunnelse =
-    begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
+
+  const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
+
+  const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
+  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
     nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseForleng
-  } = useDeferredFetch(endreDeltakelseForleng)
-
-  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
-
-  const sendEndring = () => {
+  const validertRequest = () => {
     let hasError = false
     if (!valgtVarighet) {
       setErrorVarighet('Du må velge varighet')
@@ -130,49 +106,22 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalHaBegrunnelse && !begrunnelse) {
-      setErrorBegrunnelse('Du må begrunne forlengelsen')
+    if (!begrunnelse.valider()) {
       hasError = true
     }
 
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
+    if (!hasError && nySluttDato) {
+      return {
+        deltakerId: pamelding.deltakerId,
+        enhetId,
+        body: {
+          sluttdato: formatDateToDateInputStr(nySluttDato),
+          begrunnelse: begrunnelse.begrunnelse || null,
+          forslagId: forslag ? forslag.id : null
+        }
+      }
     }
-
-    if (!hasError && nySluttDato && (begrunnelse || !skalHaBegrunnelse)) {
-      doFetchEndreDeltakelseForleng(pamelding.deltakerId, enhetId, {
-        sluttdato: formatDateToDateInputStr(nySluttDato),
-        begrunnelse: begrunnelse || null,
-        forslagId: forslag ? forslag.id : null
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
-  }
-
-  const sendAvvisForslag = () => {
-    let hasError = false
-    if (!begrunnelse) {
-      setErrorBegrunnelse('Du må begrunne avvisningen')
-      hasError = true
-    }
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
-    }
-
-    if (!hasError && forslag && begrunnelse) {
-      doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: begrunnelse
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
+    return null
   }
 
   const handleChangeVarighet = (valg: VarighetValg) => {
@@ -193,116 +142,73 @@ export const ForlengDeltakelseModal = ({
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.FORLENG_DELTAKELSE} />,
-        heading: 'Forleng deltakelse'
-      }}
+      endringstype={EndreDeltakelseType.FORLENG_DELTAKELSE}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelseForleng}
+      validertRequest={validertRequest}
+      forslag={forslag}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
-
-        {forslag && sluttdatoFraForslag && (
-          <ModalForslagDetaljer forslag={forslag} />
-        )}
-
-        <VarighetField
-          title="Hvor lenge skal deltakelsen forlenges?"
-          className="mt-4"
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
-          startDato={sluttdatoDeltaker || undefined}
-          sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
-          errorVarighet={errorVarighet}
-          errorSluttDato={errorSluttDato}
-          defaultVarighet={forslag ? VarighetValg.ANNET : null}
-          defaultSelectedDate={nySluttDato}
-          onChangeVarighet={handleChangeVarighet}
-          onChangeSluttDato={(date) => {
-            settNySluttDato(date)
-            if (date) {
-              setSluttDatoField(date)
-              setErrorSluttDato(null)
-              setErrorBegrunnelse(null)
-            }
-          }}
-          onValidateSluttDato={(dateValidation, currentValue) => {
-            if (dateValidation.isAfter && currentValue) {
-              setSluttDatoField(currentValue)
-              setErrorSluttDato(
-                getSluttDatoFeilmelding(pamelding, currentValue)
-              )
-            } else if (dateValidation.isBefore && currentValue) {
-              setSluttDatoField(currentValue)
-              setErrorSluttDato(
-                'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
-              )
-            } else if (dateValidation.isInvalid) {
-              setSluttDatoField(currentValue)
-              setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-            }
-          }}
-        />
-        {nySluttDato && (
-          <BodyShort className="mt-2" size="small">
-            Ny sluttdato: {formatDateToString(nySluttDato)}
-          </BodyShort>
-        )}
-        {skalBekrefteVarighet && (
-          <ConfirmationPanel
-            className="mt-6"
-            checked={varighetBekreftelse}
-            label="Ja, deltakeren oppfyller kravene."
-            onChange={() => {
-              setVarighetConfirmation((x) => !x)
-              setErrorVarighetConfirmation(null)
-            }}
-            size="small"
-            error={errorVarighetConfirmation}
-          >
-            {getSoftMaxVarighetBekreftelseText(tiltakstype)}
-          </ConfirmationPanel>
-        )}
-        <Textarea
-          onChange={(e) => {
-            setBegrunnelse(e.target.value)
-            setErrorBegrunnelse(null)
-          }}
-          error={errorBegrunnelse}
+      <VarighetField
+        title="Hvor lenge skal deltakelsen forlenges?"
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        startDato={sluttdatoDeltaker || undefined}
+        sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
+        errorVarighet={errorVarighet}
+        errorSluttDato={errorSluttDato}
+        defaultVarighet={forslag ? VarighetValg.ANNET : null}
+        defaultSelectedDate={nySluttDato}
+        onChangeVarighet={handleChangeVarighet}
+        onChangeSluttDato={(date) => {
+          settNySluttDato(date)
+          if (date) {
+            setSluttDatoField(date)
+            setErrorSluttDato(null)
+          }
+        }}
+        onValidateSluttDato={(dateValidation, currentValue) => {
+          if (dateValidation.isAfter && currentValue) {
+            setSluttDatoField(currentValue)
+            setErrorSluttDato(getSluttDatoFeilmelding(pamelding, currentValue))
+          } else if (dateValidation.isBefore && currentValue) {
+            setSluttDatoField(currentValue)
+            setErrorSluttDato(
+              'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+            )
+          } else if (dateValidation.isInvalid) {
+            setSluttDatoField(currentValue)
+            setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
+          }
+        }}
+      />
+      {nySluttDato && (
+        <BodyShort className="mt-2" size="small">
+          Ny sluttdato: {formatDateToString(nySluttDato)}
+        </BodyShort>
+      )}
+      {skalBekrefteVarighet && (
+        <ConfirmationPanel
           className="mt-6"
-          label="Begrunnelse for forlengelsen"
-          description="Beskriv kort hvorfor endringen er riktig for personen."
-          value={begrunnelse ?? ''}
-          maxLength={BEGRUNNELSE_MAKS_TEGN}
-          id="begrunnelse"
+          checked={varighetBekreftelse}
+          label="Ja, deltakeren oppfyller kravene."
+          onChange={() => {
+            setVarighetConfirmation((x) => !x)
+            setErrorVarighetConfirmation(null)
+          }}
           size="small"
-          aria-label={'Begrunnelse'}
-        />
-      </Modal.Body>
-      {!forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
+          error={errorVarighetConfirmation}
+        >
+          {getSoftMaxVarighetBekreftelseText(tiltakstype)}
+        </ConfirmationPanel>
       )}
-      {forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          cancelButtonText="Avvis forslag"
-          onCancel={sendAvvisForslag}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
-      )}
-    </Modal>
+      <BegrunnelseInput
+        valgfri={!skalHaBegrunnelse}
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+      />
+    </Endringsmodal>
   )
 }

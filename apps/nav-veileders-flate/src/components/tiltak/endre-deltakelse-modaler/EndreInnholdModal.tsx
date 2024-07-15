@@ -1,17 +1,5 @@
-import {
-  BodyLong,
-  Checkbox,
-  CheckboxGroup,
-  Detail,
-  Modal,
-  Textarea
-} from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  EndreDeltakelseType,
-  INNHOLD_TYPE_ANNET,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { BodyLong, Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
+import { EndreDeltakelseType, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
@@ -20,11 +8,9 @@ import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
-import { ModalFooter } from '../../ModalFooter'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -57,14 +43,8 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseInnhold
-  } = useDeferredFetch(endreDeltakelseInnhold)
-
-  const sendEndring = () => {
-    const innholdFromRepsonse = generateInnholdFromResponse(
+  const validertRequest = () => {
+    const innholdFromResponse = generateInnholdFromResponse(
       pamelding,
       valgteInnhold,
       annetBeskrivelse
@@ -73,90 +53,83 @@ export const EndreInnholdModal = ({
       valgteInnhold.length > 0 &&
       (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))
     ) {
-      doFetchEndreDeltakelseInnhold(pamelding.deltakerId, enhetId, {
-        innhold: innholdFromRepsonse
-      }).then((data) => {
-        onSuccess(data)
-      })
-    } else setHasError(true)
+      const endring: EndreInnholdRequest = {
+        innhold: innholdFromResponse
+      }
+      return {
+        deltakerId: pamelding.deltakerId,
+        enhetId,
+        body: endring
+      }
+    } else {
+      setHasError(true)
+      return null
+    }
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_INNHOLD} />,
-        heading: 'Endre innhold'
-      }}
+      endringstype={EndreDeltakelseType.ENDRE_INNHOLD}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelseInnhold}
+      validertRequest={validertRequest}
+      forslag={null}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
+      <section>
+        <BodyLong size="small">
+          {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
+        </BodyLong>
+      </section>
+
+      <section className="mt-4">
+        {innhold.length > 0 && (
+          <CheckboxGroup
+            defaultValue={valgteInnhold}
+            legend="Hva mer skal tiltaket inneholde?"
+            error={
+              hasError &&
+              !erAnnetValgt &&
+              'Du må velge innhold før du kan fortsette.'
+            }
+            size="small"
+            aria-required
+            id="endreValgteInnhold"
+            onChange={(value: string[]) => {
+              setValgteInnhold(value)
+              setHasError(false)
+            }}
+          >
+            {pamelding.deltakerliste.tilgjengeligInnhold.map((e) => (
+              <div key={e.innholdskode}>
+                <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
+                {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
+                  <Textarea
+                    onChange={(e) => {
+                      setAnnetBeskrivelse(e.target.value)
+                      setHasError(false)
+                    }}
+                    label={null}
+                    value={annetBeskrivelse ?? ''}
+                    aria-label={'Beskrivelse av innhold "Annet"'}
+                    aria-required
+                    maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                    size="small"
+                    id="innholdAnnetBeskrivelse"
+                    error={
+                      hasError &&
+                      erAnnetValgt &&
+                      'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
+                    }
+                  />
+                )}
+              </div>
+            ))}
+          </CheckboxGroup>
         )}
-
-        <section>
-          <Detail size="small">
-            {getEndrePameldingTekst(pamelding.digitalBruker)}
-          </Detail>
-          <BodyLong size="small" className="mt-6">
-            {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
-          </BodyLong>
-        </section>
-
-        <section className="mt-4">
-          {innhold.length > 0 && (
-            <CheckboxGroup
-              defaultValue={valgteInnhold}
-              legend="Hva mer skal tiltaket inneholde?"
-              error={
-                hasError &&
-                !erAnnetValgt &&
-                'Du må velge innhold før du kan fortsette.'
-              }
-              size="small"
-              aria-required
-              id="endreValgteInnhold"
-              onChange={(value: string[]) => {
-                setValgteInnhold(value)
-                setHasError(false)
-              }}
-            >
-              {pamelding.deltakerliste.tilgjengeligInnhold.map((e) => (
-                <div key={e.innholdskode}>
-                  <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
-                  {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
-                    <Textarea
-                      onChange={(e) => {
-                        setAnnetBeskrivelse(e.target.value)
-                        setHasError(false)
-                      }}
-                      label={null}
-                      value={annetBeskrivelse ?? ''}
-                      aria-label={'Beskrivelse av innhold "Annet"'}
-                      aria-required
-                      maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                      size="small"
-                      id="innholdAnnetBeskrivelse"
-                      error={
-                        hasError &&
-                        erAnnetValgt &&
-                        'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
-                      }
-                    />
-                  )}
-                </div>
-              ))}
-            </CheckboxGroup>
-          )}
-        </section>
-      </Modal.Body>
-      <ModalFooter
-        confirmButtonText="Lagre"
-        onConfirm={sendEndring}
-        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-      />
-    </Modal>
+      </section>
+    </Endringsmodal>
   )
 }

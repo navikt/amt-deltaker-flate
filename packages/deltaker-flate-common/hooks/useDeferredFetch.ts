@@ -14,7 +14,7 @@ interface UseDeferredFetch<T, U extends unknown[]> {
   doFetch: (...args: U) => Promise<T | null>
 }
 
-type ApiFunction<T, U extends unknown[]> = (...args: U) => Promise<T>
+export type ApiFunction<T, U extends unknown[]> = (...args: U) => Promise<T>
 
 export const useDeferredFetch = <T, U extends unknown[]>(
   apiFunction: ApiFunction<T, U>,

@@ -1,19 +1,11 @@
-import { Detail, Modal } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  EndreDeltakelseType,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
 import { NumberTextField } from '../../NumberTextField.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -45,88 +37,73 @@ export const EndreDeltakelsesmengdeModal = ({
 
   const { enhetId } = useAppContext()
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelsesmengde
-  } = useDeferredFetch(endreDeltakelsesmengde)
-
-  const sendEndring = () => {
+  const validertRequest = () => {
     if (gyldigDeltakelsesprosent) {
       if (gyldigDagerPerUke) {
-        doFetchEndreDeltakelsesmengde(pamelding.deltakerId, enhetId, {
-          deltakelsesprosent: deltakelsesprosent,
-          dagerPerUke:
-            dagerPerUke != null && deltakelsesprosent !== 100
-              ? dagerPerUke
-              : undefined
-        }).then((data) => {
-          onSuccess(data)
-        })
-      } else setHasErrorDagerPerUke(true)
-    } else setHasErrorDeltakelsesprosent(true)
+        return {
+          deltakerId: pamelding.deltakerId,
+          enhetId,
+          body: {
+            deltakelsesprosent: deltakelsesprosent,
+            dagerPerUke:
+              dagerPerUke != null && deltakelsesprosent !== 100
+                ? dagerPerUke
+                : undefined
+          }
+        }
+      } else {
+        setHasErrorDagerPerUke(true)
+        return null
+      }
+    }
+    setHasErrorDeltakelsesprosent(true)
+    return null
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: (
-          <EndringTypeIkon type={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE} />
-        ),
-        heading: 'Endre deltakelsesmengde'
-      }}
+      endringstype={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelsesmengde}
+      validertRequest={validertRequest}
+      forslag={null}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small" className="mb-4">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
+      <NumberTextField
+        label="Hva er ny deltakelsesprosent?"
+        disabled={false}
+        value={deltakelsesprosent || undefined}
+        onChange={(e) => {
+          setDeltakelsesprosent(e || null)
+          setHasErrorDeltakelsesprosent(false)
+        }}
+        error={
+          hasErrorDeltakelsesprosent &&
+          !gyldigDeltakelsesprosent &&
+          'Deltakelsesprosent må være et helt tall fra 1 til 100'
+        }
+        required
+        id="deltakelsesprosent"
+        className="[&>input]:w-16 mt-4"
+      />
+      {deltakelsesprosent && deltakelsesprosent != 100 && (
         <NumberTextField
-          label="Hva er ny deltakelsesprosent?"
+          label="Hvor mange dager i uka? (valgfritt)"
           disabled={false}
-          value={deltakelsesprosent || undefined}
+          value={dagerPerUke || undefined}
           onChange={(e) => {
-            setDeltakelsesprosent(e || null)
-            setHasErrorDeltakelsesprosent(false)
+            setDagerPerUke(e || null)
+            setHasErrorDagerPerUke(false)
           }}
           error={
-            hasErrorDeltakelsesprosent &&
-            !gyldigDeltakelsesprosent &&
-            'Deltakelsesprosent må være et helt tall fra 1 til 100'
+            hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding
           }
-          required
-          id="deltakelsesprosent"
           className="[&>input]:w-16 mt-4"
+          id="dagerPerUke"
         />
-        {deltakelsesprosent && deltakelsesprosent != 100 && (
-          <NumberTextField
-            label="Hvor mange dager i uka? (valgfritt)"
-            disabled={false}
-            value={dagerPerUke || undefined}
-            onChange={(e) => {
-              setDagerPerUke(e || null)
-              setHasErrorDagerPerUke(false)
-            }}
-            error={
-              hasErrorDagerPerUke &&
-              !gyldigDagerPerUke &&
-              dagerPerUkeFeilmelding
-            }
-            className="[&>input]:w-16 mt-4"
-            id="dagerPerUke"
-          />
-        )}
-      </Modal.Body>
-      <ModalFooter
-        confirmButtonText="Lagre"
-        onConfirm={sendEndring}
-        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-      />
-    </Modal>
+      )}
+    </Endringsmodal>
   )
 }

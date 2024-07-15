@@ -1,40 +1,27 @@
 import {
   ConfirmationPanel,
   DatePicker,
-  Detail,
-  Modal,
   Radio,
   RadioGroup,
-  Textarea,
   useDatepicker
 } from '@navikt/ds-react'
 import {
   AktivtForslag,
-  DeferredFetchState,
-  DeltakerStatusAarsakType,
   EndreDeltakelseType,
   ForslagEndringType,
   getDateFromNorwegianStringFormat,
-  getDateFromString,
-  getDeltakerStatusAarsak,
-  useDeferredFetch
+  getDateFromString
 } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { avsluttDeltakelse, avvisForslag } from '../../../api/api.ts'
-import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from '../../../api/data/endre-deltakelse-request.ts'
+import { avsluttDeltakelse } from '../../../api/api.ts'
+import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import {
-  getDeltakerStatusAarsakTypeText,
-  getEndrePameldingTekst
-} from '../../../utils/displayText.ts'
 import {
   HarDeltattValg,
   dateStrToDate,
   dateStrToNullableDate,
-  formatDateToDateInputStr,
-  getDeltakerStatusAarsakTyperAsList
+  formatDateToDateInputStr
 } from '../../../utils/utils.ts'
 import {
   SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
@@ -46,10 +33,9 @@ import {
   getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -77,17 +63,6 @@ const getSluttdatoFraForslag = (forslag: AktivtForslag | null) => {
   }
 }
 
-const getSluttaarsakFraForslag = (forslag: AktivtForslag | null) => {
-  if (
-    forslag &&
-    forslag.endring.type === ForslagEndringType.AvsluttDeltakelse
-  ) {
-    return forslag.endring.aarsak
-  } else {
-    return null
-  }
-}
-
 export const AvsluttDeltakelseModal = ({
   pamelding,
   forslag,
@@ -96,36 +71,22 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: AvsluttDeltakelseModalProps) => {
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
-  const sluttaarsakFraForslag = getSluttaarsakFraForslag(forslag)
-  const initValgtArsak = sluttaarsakFraForslag
-    ? getDeltakerStatusAarsak(sluttaarsakFraForslag)
-    : null
-  const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(
-    initValgtArsak ?? null
-  )
-  const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
   const [nySluttDato, settNySluttDato] = useState<Date | null | undefined>(
     (sluttdatoFraForslag
       ? getDateFromString(sluttdatoFraForslag)
       : getDateFromString(pamelding.sluttdato)) ?? null
   )
-  const [begrunnelse, setBegrunnelse] = useState<string | null>()
-  const [errorBegrunnelse, setErrorBegrunnelse] = useState<string | null>(null)
-
-  const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
-  const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
 
+  const aarsak = useAarsak(forslag)
+  const begrunnelse = useBegrunnelse(true)
+
   const datePickerRef = useRef<HTMLInputElement>(null)
-  const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
-  const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
-  const harForLangAnnetBeskrivelse =
-    harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
   const { enhetId } = useAppContext()
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
@@ -133,8 +94,6 @@ export const AvsluttDeltakelseModal = ({
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
-  const harForLangBegrunnelse =
-    begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
@@ -161,15 +120,7 @@ export const AvsluttDeltakelseModal = ({
     }
   })
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchAvsluttDeltakelse
-  } = useDeferredFetch(avsluttDeltakelse)
-
-  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
-
-  const sendEndring = () => {
+  const validertRequest = () => {
     let hasError = false
     if (skalViseSluttDato && !nySluttDato && !errorSluttDato) {
       setErrorSluttDato('Du må velge en sluttdato')
@@ -186,209 +137,107 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (!valgtArsak) {
-      setErrorAarsak(true)
+    if (!aarsak.valider() || !begrunnelse.valider()) {
       hasError = true
     }
 
-    if (aarsakErAnnet && (!harAnnetBeskrivelse || harForLangAnnetBeskrivelse)) {
-      setErrorAarsakAnnet(true)
-      hasError = true
-    }
-
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
-    }
-
-    if (!hasError && valgtArsak) {
-      doFetchAvsluttDeltakelse(pamelding.deltakerId, enhetId, {
+    if (!hasError && aarsak.aarsak !== undefined) {
+      const endring: AvsluttDeltakelseRequest = {
         aarsak: {
-          type: valgtArsak,
-          beskrivelse: aarsakErAnnet ? beskrivelse : null
+          type: aarsak.aarsak,
+          beskrivelse: aarsak.beskrivelse ?? null
         },
         sluttdato:
           skalViseSluttDato && nySluttDato
             ? formatDateToDateInputStr(nySluttDato)
             : null,
         harDeltatt: harDeltatt,
-        begrunnelse: begrunnelse || null,
+        begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
-  }
+      }
 
-  const sendAvvisForslag = () => {
-    let hasError = false
-    if (!begrunnelse) {
-      setErrorBegrunnelse('Du må begrunne avvisningen')
-      hasError = true
+      return {
+        deltakerId: pamelding.deltakerId,
+        enhetId: enhetId,
+        body: endring
+      }
     }
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
-    }
-
-    if (!hasError && forslag && begrunnelse) {
-      doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: begrunnelse
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
+    return null
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.AVSLUTT_DELTAKELSE} />,
-        heading: 'Avslutt deltakelse'
-      }}
+      endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={avsluttDeltakelse}
+      validertRequest={validertRequest}
+      forslag={forslag}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small" className="mb-4">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
-
-        {forslag && sluttdatoFraForslag && sluttaarsakFraForslag && (
-          <ModalForslagDetaljer forslag={forslag} />
-        )}
-
-        <RadioGroup
-          legend="Hva er årsaken til avslutning?"
-          size="small"
-          error={errorAarsak && 'Du må velge en årsak før du kan fortsette.'}
-          onChange={(value: DeltakerStatusAarsakType) => {
-            setValgtArsak(value)
-            setErrorAarsak(false)
-            setErrorAarsakAnnet(false)
-          }}
-          value={valgtArsak}
-          className="mt-4"
-        >
-          <>
-            {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
-              <Radio value={arsakType} key={arsakType}>
-                {getDeltakerStatusAarsakTypeText(arsakType)}
-              </Radio>
-            ))}
-            {valgtArsak === DeltakerStatusAarsakType.ANNET && (
-              <Textarea
-                onChange={(e) => {
-                  setBeskrivelse(e.target.value)
-                  setErrorAarsakAnnet(false)
-                }}
-                value={beskrivelse ?? ''}
-                minRows={1}
-                rows={1}
-                size="small"
-                label={null}
-                error={
-                  (errorAarsakAnnet &&
-                    !harForLangAnnetBeskrivelse &&
-                    'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
-                  (harForLangAnnetBeskrivelse &&
-                    `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
-                }
-                maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
-                aria-label={'Beskrivelse for Annet'}
-              />
-            )}
-          </>
-        </RadioGroup>
-        {skalViseHarDeltatt && (
-          <section className="mt-4">
-            <RadioGroup
-              legend="Har personen deltatt?"
-              size="small"
-              onChange={(value: HarDeltattValg) => {
-                if (value === HarDeltattValg.NEI) {
-                  setHarDeltatt(false)
-                } else {
-                  setHarDeltatt(true)
-                }
-              }}
-            >
-              <Radio value={HarDeltattValg.JA}>Ja</Radio>
-              <Radio value={HarDeltattValg.NEI}>Nei</Radio>
-            </RadioGroup>
-          </section>
-        )}
-        {skalViseSluttDato && (
-          <section className="mt-4">
-            <DatePicker {...datepickerProps}>
-              <DatePicker.Input
-                {...inputProps}
-                ref={datePickerRef}
-                size="small"
-                label="Hva er ny sluttdato?"
-                error={errorSluttDato}
-              />
-            </DatePicker>
-          </section>
-        )}
-        {skalBekrefteVarighet && (
-          <ConfirmationPanel
-            className="mt-6"
-            checked={varighetBekreftelse}
-            label="Ja, deltakeren oppfyller kravene."
-            onChange={() => {
-              setVarighetConfirmation((x) => !x)
-              setErrorVarighetConfirmation(null)
-            }}
+      <AarsakRadioGroup
+        legend="Hva er årsaken til avslutning?"
+        aarsak={aarsak.aarsak}
+        aarsakError={aarsak.aarsakError}
+        beskrivelse={aarsak.beskrivelse}
+        beskrivelseError={aarsak.beskrivelseError}
+        onChange={aarsak.handleChange}
+        onBeskrivelse={aarsak.handleBeskrivelse}
+      />
+      {skalViseHarDeltatt && (
+        <section className="mt-4">
+          <RadioGroup
+            legend="Har personen deltatt?"
             size="small"
-            error={errorVarighetConfirmation}
+            onChange={(value: HarDeltattValg) => {
+              if (value === HarDeltattValg.NEI) {
+                setHarDeltatt(false)
+              } else {
+                setHarDeltatt(true)
+              }
+            }}
           >
-            {getSoftMaxVarighetBekreftelseText(
-              pamelding.deltakerliste.tiltakstype
-            )}
-          </ConfirmationPanel>
-        )}
-        <Textarea
-          onChange={(e) => {
-            setBegrunnelse(e.target.value)
-            setErrorBegrunnelse(null)
-          }}
-          error={errorBegrunnelse}
+            <Radio value={HarDeltattValg.JA}>Ja</Radio>
+            <Radio value={HarDeltattValg.NEI}>Nei</Radio>
+          </RadioGroup>
+        </section>
+      )}
+      {skalViseSluttDato && (
+        <section className="mt-4">
+          <DatePicker {...datepickerProps}>
+            <DatePicker.Input
+              {...inputProps}
+              ref={datePickerRef}
+              size="small"
+              label="Hva er ny sluttdato?"
+              error={errorSluttDato}
+            />
+          </DatePicker>
+        </section>
+      )}
+      {skalBekrefteVarighet && (
+        <ConfirmationPanel
           className="mt-6"
-          label="Begrunnelse for avslutningen (valgfri)"
-          description="Beskriv kort hvorfor endringen er riktig for personen."
-          value={begrunnelse ?? ''}
-          maxLength={BEGRUNNELSE_MAKS_TEGN}
-          id="begrunnelse"
+          checked={varighetBekreftelse}
+          label="Ja, deltakeren oppfyller kravene."
+          onChange={() => {
+            setVarighetConfirmation((x) => !x)
+            setErrorVarighetConfirmation(null)
+          }}
           size="small"
-          aria-label={'Begrunnelse'}
-        />
-      </Modal.Body>
-      {!forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
+          error={errorVarighetConfirmation}
+        >
+          {getSoftMaxVarighetBekreftelseText(
+            pamelding.deltakerliste.tiltakstype
+          )}
+        </ConfirmationPanel>
       )}
-      {forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          cancelButtonText="Avvis forslag"
-          onCancel={sendAvvisForslag}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
-      )}
-    </Modal>
+      <BegrunnelseInput
+        valgfri
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+      />
+    </Endringsmodal>
   )
 }

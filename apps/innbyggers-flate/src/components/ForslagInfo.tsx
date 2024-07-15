@@ -10,7 +10,7 @@ export const ForslagInfo = ({ forslag }: Props) => {
     <Box
       background="bg-subtle"
       padding={{ xs: '2', md: '6' }}
-      borderRadius={{ md: 'large' }}
+      borderRadius="small"
       className="mt-4"
     >
       <VStack gap="1">

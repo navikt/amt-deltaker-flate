@@ -44,30 +44,40 @@ export const ForslagtypeDetaljer = ({
 }: {
   forslag: AktivtForslag
 }) => {
-  switch (forslag.endring.type) {
-    case ForslagEndringType.IkkeAktuell:
-      return (
-        <IkkeAktuellForslagDetaljer
-          forslag={forslag}
-          ikkeAktuellForslag={forslag.endring}
-        />
-      )
-    case ForslagEndringType.AvsluttDeltakelse:
-      return (
-        <AvsluttDeltakelseForslagDetaljer
-          forslag={forslag}
-          avsluttDeltakelseForslag={forslag.endring}
-        />
-      )
-    case ForslagEndringType.ForlengDeltakelse:
-      return (
-        <ForlengDeltakelseForslagDetaljer
-          forlengDeltakelseForslag={forslag.endring}
-        />
-      )
-    default:
-      assertNever(forslag.endring)
+  const detaljer = (forslag: AktivtForslag) => {
+    switch (forslag.endring.type) {
+      case ForslagEndringType.IkkeAktuell:
+        return (
+          <IkkeAktuellForslagDetaljer
+            forslag={forslag}
+            ikkeAktuellForslag={forslag.endring}
+          />
+        )
+      case ForslagEndringType.AvsluttDeltakelse:
+        return (
+          <AvsluttDeltakelseForslagDetaljer
+            forslag={forslag}
+            avsluttDeltakelseForslag={forslag.endring}
+          />
+        )
+      case ForslagEndringType.ForlengDeltakelse:
+        return (
+          <ForlengDeltakelseForslagDetaljer
+            forlengDeltakelseForslag={forslag.endring}
+          />
+        )
+      default:
+        assertNever(forslag.endring)
+    }
   }
+  return (
+    <>
+      {detaljer(forslag)}
+      {forslag.begrunnelse && (
+        <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+      )}
+    </>
+  )
 }
 
 export const ForslagDetaljer = ({ forslag }: Props) => {
@@ -87,9 +97,6 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
           </Tag>
         </HStack>
         <ForslagtypeDetaljer forslag={forslag} />
-        {forslag.begrunnelse && (
-          <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
-        )}
         <Detail>
           Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
         </Detail>

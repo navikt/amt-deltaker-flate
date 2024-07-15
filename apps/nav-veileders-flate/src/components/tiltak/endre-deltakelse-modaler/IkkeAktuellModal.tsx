@@ -1,28 +1,11 @@
-import { Detail, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-import {
-  AktivtForslag,
-  DeferredFetchState,
-  DeltakerStatusAarsakType,
-  EndreDeltakelseType,
-  ForslagEndringType,
-  getDeltakerStatusAarsak,
-  useDeferredFetch
-} from 'deltaker-flate-common'
-import { useState } from 'react'
+import { AktivtForslag, EndreDeltakelseType } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
-import { avvisForslag, endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
-import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from '../../../api/data/endre-deltakelse-request.ts'
+import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
+import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import {
-  getDeltakerStatusAarsakTypeText,
-  getEndrePameldingTekst
-} from '../../../utils/displayText.ts'
-import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse
@@ -32,14 +15,6 @@ interface IkkeAktuellModalProps {
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-const getSluttaarsakFraForslag = (forslag: AktivtForslag | null) => {
-  if (forslag && forslag.endring.type === ForslagEndringType.IkkeAktuell) {
-    return forslag.endring.aarsak
-  } else {
-    return null
-  }
-}
-
 export const IkkeAktuellModal = ({
   pamelding,
   forslag,
@@ -47,187 +22,60 @@ export const IkkeAktuellModal = ({
   onClose,
   onSuccess
 }: IkkeAktuellModalProps) => {
-  const sluttaarsakFraForslag = getSluttaarsakFraForslag(forslag)
-  const initValgtArsak = sluttaarsakFraForslag
-    ? getDeltakerStatusAarsak(sluttaarsakFraForslag)
-    : null
-  const [valgtArsak, setValgtArsak] = useState<DeltakerStatusAarsakType | null>(
-    initValgtArsak ?? null
-  )
-  const [beskrivelse, setBeskrivelse] = useState<string | null>(null)
-  const [errorAarsak, setErrorAarsak] = useState<boolean>(false)
-  const [errorAarsakAnnet, setErrorAarsakAnnet] = useState<boolean>(false)
+  const aarsak = useAarsak(forslag)
+  const begrunnelse = useBegrunnelse(true)
 
-  const [begrunnelse, setBegrunnelse] = useState<string | null>()
-  const [errorBegrunnelse, setErrorBegrunnelse] = useState<string | null>(null)
-
-  const aarsakErAnnet = valgtArsak === DeltakerStatusAarsakType.ANNET
-  const harAnnetBeskrivelse = beskrivelse && beskrivelse.length > 0
-  const harForLangAnnetBeskrivelse =
-    harAnnetBeskrivelse && beskrivelse.length > BESKRIVELSE_ARSAK_ANNET_MAX_TEGN
-  const harForLangBegrunnelse =
-    begrunnelse && begrunnelse.length > BEGRUNNELSE_MAKS_TEGN
   const { enhetId } = useAppContext()
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseIkkeAktuell
-  } = useDeferredFetch(endreDeltakelseIkkeAktuell)
-
-  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
-
-  const sendEndring = () => {
-    let hasError = false
-    if (!valgtArsak) {
-      setErrorAarsak(true)
-      hasError = true
-    }
-
-    if (aarsakErAnnet && (!harAnnetBeskrivelse || harForLangAnnetBeskrivelse)) {
-      setErrorAarsakAnnet(true)
-      hasError = true
-    }
-
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
-    }
-    if (!hasError && valgtArsak) {
-      doFetchEndreDeltakelseIkkeAktuell(pamelding.deltakerId, enhetId, {
+  const validertRequest = () => {
+    if (
+      aarsak.valider() &&
+      begrunnelse.valider() &&
+      aarsak.aarsak !== undefined
+    ) {
+      const endring: IkkeAktuellRequest = {
         aarsak: {
-          type: valgtArsak,
-          beskrivelse: aarsakErAnnet ? beskrivelse : null
+          type: aarsak.aarsak,
+          beskrivelse: aarsak.beskrivelse ?? null
         },
-        begrunnelse: begrunnelse || null,
+        begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
-  }
+      }
 
-  const sendAvvisForslag = () => {
-    let hasError = false
-    if (!begrunnelse) {
-      setErrorBegrunnelse('Du må begrunne avvisningen')
-      hasError = true
+      return {
+        deltakerId: pamelding.deltakerId,
+        enhetId: enhetId,
+        body: endring
+      }
     }
-    if (harForLangBegrunnelse) {
-      setErrorBegrunnelse(
-        `Begrunnelsen kan ikke være mer enn ${BEGRUNNELSE_MAKS_TEGN} tegn`
-      )
-      hasError = true
-    }
-
-    if (!hasError && forslag && begrunnelse) {
-      doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: begrunnelse
-      }).then((data) => {
-        onSuccess(data)
-      })
-    }
+    return null
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.IKKE_AKTUELL} />,
-        heading: 'Er ikke aktuell'
-      }}
+      endringstype={EndreDeltakelseType.IKKE_AKTUELL}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelseIkkeAktuell}
+      validertRequest={validertRequest}
+      forslag={forslag}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
-
-        {forslag && sluttaarsakFraForslag && (
-          <ModalForslagDetaljer forslag={forslag} />
-        )}
-
-        <RadioGroup
-          className="mt-6"
-          legend="Hva er årsaken til at deltakeren ikke er aktuell?"
-          size="small"
-          error={errorAarsak && 'Du må velge en årsak før du kan fortsette.'}
-          onChange={(value: DeltakerStatusAarsakType) => {
-            setValgtArsak(value)
-            setErrorAarsak(false)
-            setErrorAarsakAnnet(false)
-          }}
-          value={valgtArsak}
-        >
-          <>
-            {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
-              <Radio value={arsakType} key={arsakType}>
-                {getDeltakerStatusAarsakTypeText(arsakType)}
-              </Radio>
-            ))}
-            {valgtArsak === DeltakerStatusAarsakType.ANNET && (
-              <Textarea
-                onChange={(e) => {
-                  setBeskrivelse(e.target.value)
-                  setErrorAarsakAnnet(false)
-                }}
-                value={beskrivelse ?? ''}
-                minRows={1}
-                rows={1}
-                size="small"
-                label={null}
-                error={
-                  (errorAarsakAnnet &&
-                    !harForLangAnnetBeskrivelse &&
-                    'Du må fylle ut for årsak "annet" før du kan fortsette.') ||
-                  (harForLangAnnetBeskrivelse &&
-                    `Beskrivelsen kan ikke være mer enn ${BESKRIVELSE_ARSAK_ANNET_MAX_TEGN} tegn`)
-                }
-                maxLength={BESKRIVELSE_ARSAK_ANNET_MAX_TEGN}
-                aria-label={'Beskrivelse for Annet'}
-              />
-            )}
-          </>
-        </RadioGroup>
-        <Textarea
-          onChange={(e) => {
-            setBegrunnelse(e.target.value)
-            setErrorBegrunnelse(null)
-          }}
-          error={errorBegrunnelse}
-          className="mt-6"
-          label="Begrunnelse for at deltakeren ikke er aktuell (valgfri)"
-          description="Beskriv kort hvorfor endringen er riktig for personen."
-          value={begrunnelse ?? ''}
-          maxLength={BEGRUNNELSE_MAKS_TEGN}
-          id="begrunnelse"
-          size="small"
-          aria-label={'Begrunnelse'}
-        />
-      </Modal.Body>
-      {!forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
-      )}
-      {forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          cancelButtonText="Avvis forslag"
-          onCancel={sendAvvisForslag}
-          confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-          disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-        />
-      )}
-    </Modal>
+      <AarsakRadioGroup
+        legend="Hva er årsaken til at deltakeren ikke er aktuell?"
+        aarsak={aarsak.aarsak}
+        aarsakError={aarsak.aarsakError}
+        beskrivelse={aarsak.beskrivelse}
+        beskrivelseError={aarsak.beskrivelseError}
+        onChange={aarsak.handleChange}
+        onBeskrivelse={aarsak.handleBeskrivelse}
+      />
+      <BegrunnelseInput
+        valgfri
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+      />
+    </Endringsmodal>
   )
 }
