@@ -130,6 +130,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
       return 'Endre deltakelsesmengde'
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
+      return 'Endre til aktiv deltakelse'
     default:
       throw new Error(`Endringstekst for ${endringstype} er ikke implementert`)
   }

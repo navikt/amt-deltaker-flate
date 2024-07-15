@@ -99,3 +99,4 @@ export type EndringRequest =
   | EndreSluttarsakRequest
   | EndreInnholdRequest
   | EndreDeltakelsesmengdeRequest
+  | ReaktiverDeltakelseRequest
