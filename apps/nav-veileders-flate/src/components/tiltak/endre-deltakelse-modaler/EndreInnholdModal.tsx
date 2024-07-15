@@ -51,7 +51,7 @@ export const EndreInnholdModal = ({
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
   const validertRequest = () => {
-    const innholdFromRepsonse = generateInnholdFromResponse(
+    const innholdFromResponse = generateInnholdFromResponse(
       pamelding,
       valgteInnhold,
       annetBeskrivelse
@@ -61,7 +61,7 @@ export const EndreInnholdModal = ({
       (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))
     ) {
       const endring: EndreInnholdRequest = {
-        innhold: innholdFromRepsonse
+        innhold: innholdFromResponse
       }
       return {
         deltakerId: pamelding.deltakerId,
@@ -86,7 +86,6 @@ export const EndreInnholdModal = ({
       forslag={null}
     >
       <section>
-        <Detail>{getEndrePameldingTekst(pamelding.digitalBruker)}</Detail>
         <BodyLong size="small" className="mt-6">
           {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
         </BodyLong>

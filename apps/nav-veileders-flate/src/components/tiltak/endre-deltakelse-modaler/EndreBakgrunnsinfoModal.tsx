@@ -13,6 +13,7 @@ import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from 'deltaker-flate-common'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -32,57 +33,40 @@ export const EndreBakgrunnsinfoModal = ({
     string | null
   >(pamelding.bakgrunnsinformasjon)
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseBakgrunnsinfo
-  } = useDeferredFetch(endreDeltakelseBakgrunnsinfo)
-
-  const sendEndring = () => {
-    doFetchEndreDeltakelseBakgrunnsinfo(pamelding.deltakerId, enhetId, {
-      bakgrunnsinformasjon
-    }).then((data) => {
-      onSuccess(data)
-    })
+  const validertRequest = () => {
+    return {
+      deltakerId: pamelding.deltakerId,
+      enhetId,
+      body: {
+        bakgrunnsinformasjon
+      }
+    }
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: (
-          <EndringTypeIkon type={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO} />
-        ),
-        heading: 'Endre bakgrunnsinfo'
-      }}
+      endringstype={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelseBakgrunnsinfo}
+      validertRequest={validertRequest}
+      forslag={null}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small" className="mb-4">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
-        <Textarea
-          onChange={(e) => {
-            setBakgrunnsinformasjon(e.target.value)
-          }}
-          label="Er det noe mer dere ønsker å informere arrangøren om?"
-          description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
-          value={bakgrunnsinformasjon ?? ''}
-          maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
-          id="bakgrunnsinformasjon"
-          size="small"
-          aria-label={'Bagrunnsinfo'}
-        />
-      </Modal.Body>
-      <ModalFooter
-        confirmButtonText="Lagre"
-        onConfirm={sendEndring}
-        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
+      <Textarea
+        onChange={(e) => {
+          setBakgrunnsinformasjon(e.target.value)
+        }}
+        className="mt-4"
+        label="Er det noe mer dere ønsker å informere arrangøren om?"
+        description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
+        value={bakgrunnsinformasjon ?? ''}
+        maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
+        id="bakgrunnsinformasjon"
+        size="small"
+        aria-label={'Bagrunnsinfo'}
       />
-    </Modal>
+    </Endringsmodal>
   )
 }

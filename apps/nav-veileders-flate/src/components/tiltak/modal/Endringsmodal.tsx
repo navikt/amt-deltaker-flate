@@ -118,6 +118,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return 'Endre innhold'
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
+      return 'Endre bakgrunnsinfo'
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
