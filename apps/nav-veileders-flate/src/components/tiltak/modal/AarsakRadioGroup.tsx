@@ -33,7 +33,6 @@ export function AarsakRadioGroup({
 }: Props) {
   return (
     <RadioGroup
-      className="mt-6"
       legend={legend}
       size="small"
       error={aarsakError}

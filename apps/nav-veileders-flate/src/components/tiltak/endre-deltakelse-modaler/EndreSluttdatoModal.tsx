@@ -1,12 +1,5 @@
+import { ConfirmationPanel, DatePicker, useDatepicker } from '@navikt/ds-react'
 import {
-  ConfirmationPanel,
-  DatePicker,
-  Detail,
-  Modal,
-  useDatepicker
-} from '@navikt/ds-react'
-import {
-  DeferredFetchState,
   EndreDeltakelseType,
   getDateFromNorwegianStringFormat,
   getDateFromString,
@@ -34,6 +27,8 @@ import {
 import { ModalFooter } from '../../ModalFooter.tsx'
 import { EndringTypeIkon } from 'deltaker-flate-common'
 import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -85,75 +80,65 @@ export const EndreSluttdatoModal = ({
     }
   })
 
-  const {
-    state: endreDeltakelseState,
-    error: endreDeltakelseError,
-    doFetch: doFetchEndreDeltakelseSluttdato
-  } = useDeferredFetch(endreDeltakelseSluttdato)
-
-  const sendEndring = () => {
-    if (!nySluttDato && !errorSluttDato)
+  const validertRequest = () => {
+    if (!nySluttDato && !errorSluttDato) {
       setErrorSluttDato('Du må velge sluttdato')
-    else if (skalBekrefteVarighet && !varighetBekreftelse) {
-      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
-    } else if (nySluttDato && !errorSluttDato) {
-      doFetchEndreDeltakelseSluttdato(pamelding.deltakerId, enhetId, {
-        sluttdato: formatDateToDateInputStr(nySluttDato)
-      }).then((data) => {
-        onSuccess(data)
-      })
+      return null
     }
+    if (skalBekrefteVarighet && !varighetBekreftelse) {
+      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
+      return null
+    }
+    if (nySluttDato && !errorSluttDato) {
+      const endring: EndreSluttdatoRequest = {
+        sluttdato: formatDateToDateInputStr(nySluttDato)
+      }
+      return {
+        deltakerId: pamelding.deltakerId,
+        enhetId: enhetId,
+        body: endring
+      }
+    }
+    return null
   }
 
   return (
-    <Modal
+    <Endringsmodal
       open={open}
-      header={{
-        icon: <EndringTypeIkon type={EndreDeltakelseType.ENDRE_SLUTTDATO} />,
-        heading: 'Endre sluttdato'
-      }}
+      endringstype={EndreDeltakelseType.ENDRE_SLUTTDATO}
+      digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
+      onSend={onSuccess}
+      apiFunction={endreDeltakelseSluttdato}
+      validertRequest={validertRequest}
+      forslag={null}
     >
-      <Modal.Body>
-        {endreDeltakelseState === DeferredFetchState.ERROR && (
-          <ErrorPage message={endreDeltakelseError} />
-        )}
-        <Detail size="small" className="mb-4">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
-        <DatePicker {...datepickerProps}>
-          <DatePicker.Input
-            {...inputProps}
-            ref={datePickerRef}
-            label="Ny sluttdato"
-            error={errorSluttDato}
-            size="small"
-          />
-        </DatePicker>
-        {skalBekrefteVarighet && (
-          <ConfirmationPanel
-            className="mt-6"
-            checked={varighetBekreftelse}
-            label="Ja, deltakeren oppfyller kravene."
-            onChange={() => {
-              setVarighetConfirmation((x) => !x)
-              setErrorVarighetConfirmation(null)
-            }}
-            size="small"
-            error={errorVarighetConfirmation}
-          >
-            {getSoftMaxVarighetBekreftelseText(
-              pamelding.deltakerliste.tiltakstype
-            )}
-          </ConfirmationPanel>
-        )}
-      </Modal.Body>
-      <ModalFooter
-        confirmButtonText="Lagre"
-        onConfirm={sendEndring}
-        confirmLoading={endreDeltakelseState === DeferredFetchState.LOADING}
-        disabled={endreDeltakelseState === DeferredFetchState.LOADING}
-      />
-    </Modal>
+      <DatePicker {...datepickerProps}>
+        <DatePicker.Input
+          {...inputProps}
+          ref={datePickerRef}
+          label="Ny sluttdato"
+          error={errorSluttDato}
+          size="small"
+        />
+      </DatePicker>
+      {skalBekrefteVarighet && (
+        <ConfirmationPanel
+          className="mt-6"
+          checked={varighetBekreftelse}
+          label="Ja, deltakeren oppfyller kravene."
+          onChange={() => {
+            setVarighetConfirmation((x) => !x)
+            setErrorVarighetConfirmation(null)
+          }}
+          size="small"
+          error={errorVarighetConfirmation}
+        >
+          {getSoftMaxVarighetBekreftelseText(
+            pamelding.deltakerliste.tiltakstype
+          )}
+        </ConfirmationPanel>
+      )}
+    </Endringsmodal>
   )
 }

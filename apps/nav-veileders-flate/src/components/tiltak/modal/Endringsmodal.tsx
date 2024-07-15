@@ -80,7 +80,9 @@ export function Endringsmodal<T extends EndringRequest>({
     >
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
-        <Detail>{getEndrePameldingTekst(digitalBruker)}</Detail>
+        <Detail className="mb-4">
+          {getEndrePameldingTekst(digitalBruker)}
+        </Detail>
         {forslag && <ModalForslagDetaljer forslag={forslag} />}
 
         {children}
@@ -120,6 +122,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return 'Endre bakgrunnsinfo'
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
+      return 'Endre sluttdato'
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:

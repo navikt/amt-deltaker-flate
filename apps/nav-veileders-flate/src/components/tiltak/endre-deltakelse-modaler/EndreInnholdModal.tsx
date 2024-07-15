@@ -86,7 +86,7 @@ export const EndreInnholdModal = ({
       forslag={null}
     >
       <section>
-        <BodyLong size="small" className="mt-6">
+        <BodyLong size="small">
           {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
         </BodyLong>
       </section>

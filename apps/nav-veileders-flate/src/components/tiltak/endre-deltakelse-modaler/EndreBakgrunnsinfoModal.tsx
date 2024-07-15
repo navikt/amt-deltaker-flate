@@ -1,18 +1,10 @@
-import { Detail, Modal, Textarea } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  EndreDeltakelseType,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { Textarea } from '@navikt/ds-react'
+import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreBakgrunnsinfoModalProps {
@@ -58,7 +50,6 @@ export const EndreBakgrunnsinfoModal = ({
         onChange={(e) => {
           setBakgrunnsinformasjon(e.target.value)
         }}
-        className="mt-4"
         label="Er det noe mer dere ønsker å informere arrangøren om?"
         description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
         value={bakgrunnsinformasjon ?? ''}

@@ -1,24 +1,8 @@
-import { Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  DeltakerStatusAarsakType,
-  DeltakerStatusType,
-  EndreDeltakelseType,
-  useDeferredFetch
-} from 'deltaker-flate-common'
-import { useState } from 'react'
+import { DeltakerStatusType, EndreDeltakelseType } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
-import {
-  BESKRIVELSE_ARSAK_ANNET_MAX_TEGN,
-  EndreSluttarsakRequest
-} from '../../../api/data/endre-deltakelse-request.ts'
+import { EndreSluttarsakRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText.ts'
-import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 
