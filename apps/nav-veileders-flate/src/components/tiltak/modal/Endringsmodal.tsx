@@ -128,6 +128,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
       return 'Forleng deltakelse'
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
+      return 'Endre deltakelsesmengde'
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
     default:
       throw new Error(`Endringstekst for ${endringstype} er ikke implementert`)
