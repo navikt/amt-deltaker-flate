@@ -10,7 +10,7 @@ export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
-export const BEGRUNNELSE_MAKS_TEGN = 5
+export const BEGRUNNELSE_MAKS_TEGN = 200
 
 export const deltakelsesprosentFeilmelding =
   'Deltakelsesprosent må være et helt tall fra 1 til 100.'
