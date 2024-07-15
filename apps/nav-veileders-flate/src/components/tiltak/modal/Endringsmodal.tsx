@@ -124,6 +124,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return 'Endre sluttdato'
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
+      return 'Endre oppstartsdato'
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
