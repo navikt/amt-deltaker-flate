@@ -126,6 +126,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return 'Endre oppstartsdato'
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
+      return 'Forleng deltakelse'
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
     default:
