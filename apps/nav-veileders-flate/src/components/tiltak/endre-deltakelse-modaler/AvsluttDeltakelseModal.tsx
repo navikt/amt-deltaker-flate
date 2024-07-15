@@ -168,7 +168,7 @@ export const AvsluttDeltakelseModal = ({
   return (
     <Endringsmodal
       open={open}
-      endringstype={EndreDeltakelseType.IKKE_AKTUELL}
+      endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
       digitalBruker={pamelding.digitalBruker}
       onClose={onClose}
       onSend={onSuccess}
@@ -177,7 +177,7 @@ export const AvsluttDeltakelseModal = ({
       forslag={forslag}
     >
       <AarsakRadioGroup
-        legend="Hva er årsaken til at deltakeren ikke er aktuell?"
+        legend="Hva er årsaken til avslutning?"
         aarsak={aarsak.aarsak}
         aarsakError={aarsak.aarsakError}
         beskrivelse={aarsak.beskrivelse}

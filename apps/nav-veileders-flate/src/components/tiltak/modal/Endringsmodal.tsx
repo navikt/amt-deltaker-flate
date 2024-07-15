@@ -111,13 +111,15 @@ function endringstekst(endringstype: EndreDeltakelseType) {
   switch (endringstype) {
     case EndreDeltakelseType.IKKE_AKTUELL:
       return 'Er ikke aktuell'
+    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
+      return 'Endre sluttårsak'
+    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
+      return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_INNHOLD:
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
-    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
-    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
     default:
