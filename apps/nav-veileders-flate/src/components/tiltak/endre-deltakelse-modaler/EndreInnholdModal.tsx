@@ -1,10 +1,4 @@
-import {
-  BodyLong,
-  Checkbox,
-  CheckboxGroup,
-  Detail,
-  Textarea
-} from '@navikt/ds-react'
+import { BodyLong, Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
 import { EndreDeltakelseType, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
@@ -15,7 +9,6 @@ import {
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
 

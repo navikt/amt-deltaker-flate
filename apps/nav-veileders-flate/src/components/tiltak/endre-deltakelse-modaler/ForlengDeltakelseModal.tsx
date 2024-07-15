@@ -1,21 +1,9 @@
-import {
-  BodyShort,
-  ConfirmationPanel,
-  Detail,
-  Modal,
-  Textarea
-} from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  EndreDeltakelseType,
-  getDateFromString,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
+import { EndreDeltakelseType, getDateFromString } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { avvisForslag, endreDeltakelseForleng } from '../../../api/api.ts'
+import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
   formatDateToDateInputStr,
@@ -32,13 +20,8 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
 import { VarighetField } from '../VarighetField.tsx'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 

@@ -2,14 +2,12 @@ import { ConfirmationPanel, DatePicker, useDatepicker } from '@navikt/ds-react'
 import {
   EndreDeltakelseType,
   getDateFromNorwegianStringFormat,
-  getDateFromString,
-  useDeferredFetch
+  getDateFromString
 } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { ErrorPage } from '../../../pages/ErrorPage.tsx'
 import {
   dateStrToNullableDate,
   formatDateToDateInputStr
@@ -24,9 +22,6 @@ import {
   getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
-import { ModalFooter } from '../../ModalFooter.tsx'
-import { EndringTypeIkon } from 'deltaker-flate-common'
-import { getEndrePameldingTekst } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
 
