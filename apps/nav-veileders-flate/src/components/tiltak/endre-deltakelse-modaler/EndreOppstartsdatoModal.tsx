@@ -212,10 +212,10 @@ export const EndreOppstartsdatoModal = ({
       setSluttDatoField(currentValue)
     } else if (dateValidation.isAfter && currentValue) {
       /* currentValue er bare gyldig hvis vi skriver inn dato med tastaturet.
-       Bruker man datovelgeren er dette forrige dato, ikek valgte.
-       Det er bare tastatur som gjør at man kan få en dato som er etter grensen,
-       det er ikke mulig å velge en dato som er etter grensen med datovelger
-      */
+			 Bruker man datovelgeren er dette forrige dato, ikek valgte.
+			 Det er bare tastatur som gjør at man kan få en dato som er etter grensen,
+			 det er ikke mulig å velge en dato som er etter grensen med datovelger
+			*/
       setSluttDatoField(currentValue)
       setErrorSluttDato(
         getSluttDatoFeilmelding(pamelding, currentValue, nyStartdato)
@@ -238,15 +238,14 @@ export const EndreOppstartsdatoModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <ErrorPage message={endreDeltakelseError} />
         )}
-        <Detail size="small" className="mb-4">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
+        <Detail>{getEndrePameldingTekst(pamelding.digitalBruker)}</Detail>
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
             label="Ny oppstartsdato"
             error={errorStartDato}
             size="small"
+            className="mt-4"
           />
         </DatePicker>
         {skalVelgeVarighet && (

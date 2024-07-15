@@ -205,9 +205,7 @@ export const ForlengDeltakelseModal = ({
         {endreDeltakelseState === DeferredFetchState.ERROR && (
           <ErrorPage message={endreDeltakelseError} />
         )}
-        <Detail size="small">
-          {getEndrePameldingTekst(pamelding.digitalBruker)}
-        </Detail>
+        <Detail>{getEndrePameldingTekst(pamelding.digitalBruker)}</Detail>
 
         {forslag && sluttdatoFraForslag && (
           <ModalForslagDetaljer forslag={forslag} />

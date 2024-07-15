@@ -88,3 +88,14 @@ export const reaktiverDeltakelseSchema = z.object({
 export type ReaktiverDeltakelseRequest = z.infer<
   typeof reaktiverDeltakelseSchema
 >
+
+export type EndringRequest =
+  | IkkeAktuellRequest
+  | ForlengDeltakelseRequest
+  | EndreStartdatoRequest
+  | EndreBakgrunnsinfoRequest
+  | EndreSluttdatoRequest
+  | AvsluttDeltakelseRequest
+  | EndreSluttarsakRequest
+  | EndreInnholdRequest
+  | EndreDeltakelsesmengdeRequest

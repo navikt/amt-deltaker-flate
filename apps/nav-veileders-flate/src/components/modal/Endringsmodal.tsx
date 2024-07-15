@@ -1,0 +1,125 @@
+import {
+  AktivtForslag,
+  ApiFunction,
+  DeferredFetchState,
+  EndreDeltakelseType,
+  EndringTypeIkon,
+  useDeferredFetch
+} from 'deltaker-flate-common'
+import { Detail, Modal } from '@navikt/ds-react'
+import { PameldingResponse } from '../../api/data/pamelding'
+import { ModalFooter } from '../ModalFooter'
+import { ReactNode } from 'react'
+import { getEndrePameldingTekst } from '../../utils/displayText'
+import { ErrorPage } from '../../pages/ErrorPage'
+import { EndringRequest } from '../../api/data/endre-deltakelse-request'
+import { ModalForslagDetaljer } from '../tiltak/forslag/ModalForslagDetaljer'
+import { useAppContext } from '../../AppContext'
+import { avvisForslag } from '../../api/api'
+
+export type EndringsmodalRequest<T extends EndringRequest> = {
+  deltakerId: string
+  enhetId: string
+  body: T
+}
+
+interface Props<T extends EndringRequest> {
+  open: boolean
+  endringstype: EndreDeltakelseType
+  digitalBruker: boolean
+  onClose: () => void
+  onSend: (oppdatertPamelding: PameldingResponse | null) => void
+  apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
+  validertRequest: () => EndringsmodalRequest<T> | null
+  forslag: AktivtForslag | null
+  children: ReactNode
+}
+export function Endringsmodal<T extends EndringRequest>({
+  open,
+  endringstype,
+  digitalBruker,
+  onSend,
+  onClose,
+  apiFunction,
+  validertRequest,
+  forslag,
+  children
+}: Props<T>) {
+  const { enhetId } = useAppContext()
+  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
+  const { state, error, doFetch } = useDeferredFetch(apiFunction)
+
+  const sendEndring = () => {
+    const request = validertRequest()
+    if (request) {
+      doFetch(request.deltakerId, request.enhetId, request.body).then((data) =>
+        onSend(data)
+      )
+    }
+  }
+
+  const sendAvvisForslag = () => {
+    if (forslag) {
+      doFetchAvvisForslag(forslag.id, enhetId, {
+        begrunnelse: 'BEGRUNN THIS'
+      }).then((data) => {
+        onSend(data)
+      })
+    }
+  }
+
+  return (
+    <Modal
+      open={open}
+      header={{
+        icon: <EndringTypeIkon type={endringstype} />,
+        heading: endringstekst(endringstype)
+      }}
+      onClose={onClose}
+    >
+      <Modal.Body>
+        {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
+        <Detail>{getEndrePameldingTekst(digitalBruker)}</Detail>
+        {forslag && <ModalForslagDetaljer forslag={forslag} />}
+
+        {children}
+      </Modal.Body>
+      {!forslag && (
+        <ModalFooter
+          confirmButtonText="Lagre"
+          onConfirm={sendEndring}
+          confirmLoading={state === DeferredFetchState.LOADING}
+          disabled={state === DeferredFetchState.LOADING}
+        />
+      )}
+      {forslag && (
+        <ModalFooter
+          confirmButtonText="Lagre"
+          onConfirm={sendEndring}
+          cancelButtonText="Avvis forslag"
+          onCancel={sendAvvisForslag}
+          confirmLoading={state === DeferredFetchState.LOADING}
+          disabled={state === DeferredFetchState.LOADING}
+        />
+      )}
+    </Modal>
+  )
+}
+
+function endringstekst(endringstype: EndreDeltakelseType) {
+  switch (endringstype) {
+    case EndreDeltakelseType.IKKE_AKTUELL:
+      return 'Er ikke aktuell'
+    case EndreDeltakelseType.ENDRE_INNHOLD:
+    case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
+    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
+    case EndreDeltakelseType.ENDRE_SLUTTDATO:
+    case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
+    case EndreDeltakelseType.FORLENG_DELTAKELSE:
+    case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
+    case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
+    case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
+    default:
+      throw new Error(`Endringstekst for ${endringstype} er ikke implementert`)
+  }
+}
