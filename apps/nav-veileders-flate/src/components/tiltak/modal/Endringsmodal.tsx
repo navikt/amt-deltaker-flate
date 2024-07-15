@@ -62,7 +62,7 @@ export function Endringsmodal<T extends EndringRequest>({
   const sendAvvisForslag = () => {
     if (forslag) {
       doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: 'BEGRUNN THIS'
+        begrunnelse: 'Avvisning skal flyttes til sin egen modal, soon TM'
       }).then((data) => {
         onSend(data)
       })
@@ -116,6 +116,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
       return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_INNHOLD:
+      return 'Endre innhold'
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
