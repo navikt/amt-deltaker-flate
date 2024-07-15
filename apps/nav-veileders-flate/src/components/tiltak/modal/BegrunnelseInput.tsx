@@ -22,7 +22,7 @@ export function BegrunnelseInput({ valgfri, onChange, error }: Props) {
       onChange={handleChange}
       error={error}
       className="mt-6"
-      label={`NAVs begrunnelse${valgfri ? ' (valgfri)' : ''}`}
+      label={`NAVs begrunnelse${valgfri ? ' (valgfritt)' : ''}`}
       description="Beskriv kort hvorfor endringen er riktig for personen."
       value={begrunnelse}
       maxLength={BEGRUNNELSE_MAKS_TEGN}
