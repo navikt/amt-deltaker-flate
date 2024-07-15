@@ -8,7 +8,7 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { Detail, Modal } from '@navikt/ds-react'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { useAppContext } from '../../../AppContext'
@@ -17,8 +17,6 @@ import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
-import { BegrunnelseInput } from './BegrunnelseInput'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
@@ -35,7 +33,6 @@ interface Props<T extends EndringRequest> {
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: AktivtForslag | null
-  begrunnelse?: 'required' | 'optional'
   children: ReactNode
 }
 export function Endringsmodal<T extends EndringRequest>({
