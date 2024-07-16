@@ -74,7 +74,7 @@ export const ForlengDeltakelseModal = ({
 
   const skalHaBegrunnelse =
     !sluttdatoFraForslag ||
-    getDateFromString(sluttdatoFraForslag)?.getDate() !== nySluttDato?.getDate()
+    getDateFromString(sluttdatoFraForslag)?.getTime() !== nySluttDato?.getTime()
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 

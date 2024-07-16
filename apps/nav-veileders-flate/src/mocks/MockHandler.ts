@@ -165,8 +165,8 @@ export class MockHandler {
       adresseDelesMedArrangor: true,
       kanEndres: true,
       digitalBruker: true,
-      maxVarighet: dayjs.duration(4, 'month').asMilliseconds(),
-      softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds(),
+      maxVarighet: dayjs.duration(12, 'month').asMilliseconds(),
+      softMaxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
       forslag: []
     }
 
@@ -202,9 +202,9 @@ export class MockHandler {
 
   getForslag(): AktivtForslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
-      const fremtidigDato = new Date()
-      fremtidigDato.setDate(fremtidigDato.getDate() + 15)
-      const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
+      const sluttdato = dayjs(this.pamelding?.sluttdato)
+        .add(3, 'months')
+        .format('YYYY-MM-DD')
       const forslag: AktivtForslag = {
         id: uuidv4(),
         opprettet: dayjs().format('YYYY-MM-DD'),
