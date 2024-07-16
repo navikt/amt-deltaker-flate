@@ -7,15 +7,14 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { Detail, Modal } from '@navikt/ds-react'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
-import { useAppContext } from '../../../AppContext'
-import { avvisForslag } from '../../../api/api'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
+import AvvisningsmodalBody from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
@@ -45,8 +44,57 @@ export function Endringsmodal<T extends EndringRequest>({
   forslag,
   children
 }: Props<T>) {
-  const { enhetId } = useAppContext()
-  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
+  const [visAvvisningsmodal, setAvvisningsmodal] = useState(false)
+
+  return (
+    <Modal
+      open={open}
+      header={{
+        icon: visAvvisningsmodal ? undefined : (
+          <EndringTypeIkon type={endringstype} />
+        ),
+        heading: visAvvisningsmodal
+          ? 'Avvis forslag'
+          : endringstekst(endringstype)
+      }}
+      onClose={onClose}
+    >
+      {visAvvisningsmodal && forslag ? (
+        <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
+      ) : (
+        <EndringsmodalBody
+          onSend={onSend}
+          onAvvis={() => setAvvisningsmodal(true)}
+          apiFunction={apiFunction}
+          validertRequest={validertRequest}
+          forslag={forslag}
+          digitalBruker={digitalBruker}
+        >
+          {children}
+        </EndringsmodalBody>
+      )}
+    </Modal>
+  )
+}
+
+interface EndrinsmodalBodyProps<T extends EndringRequest> {
+  onSend: (oppdatertPamelding: PameldingResponse | null) => void
+  onAvvis: () => void
+  apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
+  validertRequest: () => EndringsmodalRequest<T> | null
+  forslag: AktivtForslag | null
+  digitalBruker: boolean
+  children: ReactNode
+}
+function EndringsmodalBody<T extends EndringRequest>({
+  onSend,
+  onAvvis,
+  apiFunction,
+  validertRequest,
+  forslag,
+  digitalBruker,
+  children
+}: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
 
   const sendEndring = () => {
@@ -58,53 +106,26 @@ export function Endringsmodal<T extends EndringRequest>({
     }
   }
 
-  const sendAvvisForslag = () => {
-    if (forslag) {
-      doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: 'Avvisning skal flyttes til sin egen modal, soon TM'
-      }).then((data) => {
-        onSend(data)
-      })
-    }
-  }
-
   return (
-    <Modal
-      open={open}
-      header={{
-        icon: <EndringTypeIkon type={endringstype} />,
-        heading: endringstekst(endringstype)
-      }}
-      onClose={onClose}
-    >
+    <>
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-4">
           {getEndrePameldingTekst(digitalBruker)}
         </Detail>
-        {forslag && <ModalForslagDetaljer forslag={forslag} />}
+        {forslag && (
+          <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
+        )}
 
         {children}
       </Modal.Body>
-      {!forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          confirmLoading={state === DeferredFetchState.LOADING}
-          disabled={state === DeferredFetchState.LOADING}
-        />
-      )}
-      {forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          cancelButtonText="Avvis forslag"
-          onCancel={sendAvvisForslag}
-          confirmLoading={state === DeferredFetchState.LOADING}
-          disabled={state === DeferredFetchState.LOADING}
-        />
-      )}
-    </Modal>
+      <ModalFooter
+        confirmButtonText="Lagre"
+        onConfirm={sendEndring}
+        confirmLoading={state === DeferredFetchState.LOADING}
+        disabled={state === DeferredFetchState.LOADING}
+      />
+    </>
   )
 }
 

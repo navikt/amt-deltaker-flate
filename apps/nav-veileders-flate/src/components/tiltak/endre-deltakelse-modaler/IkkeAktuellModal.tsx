@@ -72,7 +72,7 @@ export const IkkeAktuellModal = ({
         onBeskrivelse={aarsak.handleBeskrivelse}
       />
       <BegrunnelseInput
-        valgfri
+        type="valgfri"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
       />

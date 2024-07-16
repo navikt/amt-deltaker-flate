@@ -234,7 +234,7 @@ export const AvsluttDeltakelseModal = ({
         </ConfirmationPanel>
       )}
       <BegrunnelseInput
-        valgfri
+        type="valgfri"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
       />
