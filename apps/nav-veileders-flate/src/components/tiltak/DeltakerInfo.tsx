@@ -26,7 +26,7 @@ import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { HvaErDette } from './HvaErDette.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
-import { ForslagInfo } from './forslag/ForslagInfo.tsx'
+import { AktiveForslag } from './forslag/AktiveForslag.tsx'
 
 interface Props {
   className: string
@@ -109,11 +109,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           oppstartsdato={pamelding.startdato}
         />
       )}
-      {pamelding.forslag.map((i, index) => (
-        <div key={`${i.endring.type}${index}`}>
-          <ForslagInfo forslag={i} />
-        </div>
-      ))}
+      <AktiveForslag forslag={pamelding.forslag} />
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
       </Heading>

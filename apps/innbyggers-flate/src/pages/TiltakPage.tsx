@@ -28,7 +28,7 @@ import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 import { useEffect } from 'react'
-import { ForslagInfo } from '../components/ForslagInfo.tsx'
+import { AktiveForslag } from '../components/AktiveForslag.tsx'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -118,11 +118,7 @@ export const TiltakPage = () => {
         />
       )}
 
-      {deltaker.forslag.map((i, index) => (
-        <div key={`${i.endring.type}${index}`}>
-          <ForslagInfo forslag={i} />
-        </div>
-      ))}
+      <AktiveForslag forslag={deltaker.forslag} />
 
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
