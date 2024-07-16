@@ -127,7 +127,7 @@ export class MockHandler {
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
-        sluttdato: '2025-02-20',
+        sluttdato: '2030-02-20',
         status: DeltakerlisteStatus.GJENNOMFORES,
         tilgjengeligInnhold: this.innhold.map((i) => ({
           tekst: i.tekst,

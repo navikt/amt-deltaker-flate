@@ -173,7 +173,7 @@ export const ForlengDeltakelseModal = ({
           if (dateValidation.isAfter && currentValue) {
             setSluttDatoField(currentValue)
             setErrorSluttDato(getSluttDatoFeilmelding(pamelding, currentValue))
-          } else if (dateValidation.isBefore && currentValue) {
+          } else if (dateValidation.isBefore) {
             setSluttDatoField(currentValue)
             setErrorSluttDato(
               'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
