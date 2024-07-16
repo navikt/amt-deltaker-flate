@@ -11,6 +11,9 @@ interface Props {
 export function BegrunnelseInput({ valgfri, onChange, error }: Props) {
   const [begrunnelse, setBegrunnelse] = useState<string>('')
 
+  const valgfriLabel = 'Vil du legge til noe mer begrunnelse? (valgfritt)'
+  const label = 'NAVs begrunnelse'
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
     setBegrunnelse(value)
@@ -22,7 +25,7 @@ export function BegrunnelseInput({ valgfri, onChange, error }: Props) {
       onChange={handleChange}
       error={error}
       className="mt-6"
-      label={`NAVs begrunnelse${valgfri ? ' (valgfritt)' : ''}`}
+      label={valgfri ? valgfriLabel : label}
       description="Beskriv kort hvorfor endringen er riktig for personen."
       value={begrunnelse}
       maxLength={BEGRUNNELSE_MAKS_TEGN}
