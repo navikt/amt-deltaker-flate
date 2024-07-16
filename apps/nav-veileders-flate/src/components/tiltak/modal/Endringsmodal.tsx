@@ -7,15 +7,14 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { Detail, Modal } from '@navikt/ds-react'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
-import { useAppContext } from '../../../AppContext'
-import { avvisForslag } from '../../../api/api'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
+import Avvisningsmodal from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
@@ -45,9 +44,8 @@ export function Endringsmodal<T extends EndringRequest>({
   forslag,
   children
 }: Props<T>) {
-  const { enhetId } = useAppContext()
-  const { doFetch: doFetchAvvisForslag } = useDeferredFetch(avvisForslag)
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
+  const [visAvvisningsmodal, setAvvisningsmodal] = useState(false)
 
   const sendEndring = () => {
     const request = validertRequest()
@@ -58,14 +56,15 @@ export function Endringsmodal<T extends EndringRequest>({
     }
   }
 
-  const sendAvvisForslag = () => {
-    if (forslag) {
-      doFetchAvvisForslag(forslag.id, enhetId, {
-        begrunnelse: 'Avvisning skal flyttes til sin egen modal, soon TM'
-      }).then((data) => {
-        onSend(data)
-      })
-    }
+  if (visAvvisningsmodal && forslag) {
+    return (
+      <Avvisningsmodal
+        open={open}
+        onSend={onSend}
+        onClose={onClose}
+        forslag={forslag}
+      />
+    )
   }
 
   return (
@@ -82,28 +81,21 @@ export function Endringsmodal<T extends EndringRequest>({
         <Detail className="mb-4">
           {getEndrePameldingTekst(digitalBruker)}
         </Detail>
-        {forslag && <ModalForslagDetaljer forslag={forslag} />}
+        {forslag && (
+          <ModalForslagDetaljer
+            forslag={forslag}
+            onClick={() => setAvvisningsmodal(true)}
+          />
+        )}
 
         {children}
       </Modal.Body>
-      {!forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          confirmLoading={state === DeferredFetchState.LOADING}
-          disabled={state === DeferredFetchState.LOADING}
-        />
-      )}
-      {forslag && (
-        <ModalFooter
-          confirmButtonText="Lagre"
-          onConfirm={sendEndring}
-          cancelButtonText="Avvis forslag"
-          onCancel={sendAvvisForslag}
-          confirmLoading={state === DeferredFetchState.LOADING}
-          disabled={state === DeferredFetchState.LOADING}
-        />
-      )}
+      <ModalFooter
+        confirmButtonText="Lagre"
+        onConfirm={sendEndring}
+        confirmLoading={state === DeferredFetchState.LOADING}
+        disabled={state === DeferredFetchState.LOADING}
+      />
     </Modal>
   )
 }

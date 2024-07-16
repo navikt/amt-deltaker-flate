@@ -1,11 +1,13 @@
 import { AktivtForslag, ForslagtypeDetaljer } from 'deltaker-flate-common'
-import { Box, Heading } from '@navikt/ds-react'
+import { Box, Button, HStack, Heading } from '@navikt/ds-react'
+import { ArrowRightIcon } from '@navikt/aksel-icons'
 
 interface Props {
   forslag: AktivtForslag
+  onClick?: () => void
 }
 
-export const ModalForslagDetaljer = ({ forslag }: Props) => {
+export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
   return (
     <div>
       <Box
@@ -14,9 +16,23 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
         borderRadius="medium"
         className="mt-4"
       >
-        <Heading level="2" size="small">
-          Forslag fra arrangør:
-        </Heading>
+        <HStack>
+          <Heading level="2" size="small">
+            Forslag fra arrangør:
+          </Heading>
+          {onClick && (
+            <Button
+              size="small"
+              variant="secondary"
+              className="ml-auto"
+              onClick={onClick}
+            >
+              <div className="flex flex-row items-center">
+                Avvis forslag <ArrowRightIcon height={24} width={24} />
+              </div>
+            </Button>
+          )}
+        </HStack>
         <ForslagtypeDetaljer forslag={forslag} />
       </Box>
     </div>

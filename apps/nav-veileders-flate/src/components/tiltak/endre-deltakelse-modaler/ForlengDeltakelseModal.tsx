@@ -205,7 +205,7 @@ export const ForlengDeltakelseModal = ({
         </ConfirmationPanel>
       )}
       <BegrunnelseInput
-        valgfri={!skalHaBegrunnelse}
+        type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
       />
