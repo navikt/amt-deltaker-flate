@@ -75,7 +75,7 @@ export function useBegrunnelse(valgfri: boolean) {
 
   const valider = () => {
     if (!valgfri && begrunnelse.trim() === '') {
-      setError('Begrunnelse er påkrevd')
+      setError('Du må fylle ut begrunnelse før du kan fortsette.')
       return false
     } else if (begrunnelse.length > BEGRUNNELSE_MAKS_TEGN) {
       setError(
