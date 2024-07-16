@@ -14,16 +14,12 @@ import { BegrunnelseInput, useBegrunnelse } from './BegrunnelseInput'
 import { useAppContext } from '../../../AppContext'
 
 interface Props {
-  open: boolean
-  onClose: () => void
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
   forslag: AktivtForslag
   children?: ReactNode
 }
 
-export default function Avvisningsmodal({
-  open,
-  onClose,
+export default function AvvisningsmodalBody({
   onSend,
   forslag,
   children
@@ -41,13 +37,7 @@ export default function Avvisningsmodal({
   }
 
   return (
-    <Modal
-      open={open}
-      header={{
-        heading: 'Avvis forslag'
-      }}
-      onClose={onClose}
-    >
+    <>
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-4">
@@ -68,6 +58,6 @@ export default function Avvisningsmodal({
         confirmLoading={state === DeferredFetchState.LOADING}
         disabled={state === DeferredFetchState.LOADING}
       />
-    </Modal>
+    </>
   )
 }

@@ -14,7 +14,7 @@ import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
-import Avvisningsmodal from './Avvisningsmodal'
+import AvvisningsmodalBody from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
@@ -44,8 +44,58 @@ export function Endringsmodal<T extends EndringRequest>({
   forslag,
   children
 }: Props<T>) {
-  const { state, error, doFetch } = useDeferredFetch(apiFunction)
   const [visAvvisningsmodal, setAvvisningsmodal] = useState(false)
+
+  return (
+    <Modal
+      open={open}
+      header={{
+        icon: visAvvisningsmodal ? undefined : (
+          <EndringTypeIkon type={endringstype} />
+        ),
+        heading: visAvvisningsmodal
+          ? 'Avvis forslag'
+          : endringstekst(endringstype)
+      }}
+      onClose={onClose}
+    >
+      {visAvvisningsmodal && forslag ? (
+        <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
+      ) : (
+        <EndringsmodalBody
+          onSend={onSend}
+          onAvvis={() => setAvvisningsmodal(true)}
+          apiFunction={apiFunction}
+          validertRequest={validertRequest}
+          forslag={forslag}
+          digitalBruker={digitalBruker}
+        >
+          {children}
+        </EndringsmodalBody>
+      )}
+    </Modal>
+  )
+}
+
+interface EndrinsmodalBodyProps<T extends EndringRequest> {
+  onSend: (oppdatertPamelding: PameldingResponse | null) => void
+  onAvvis: () => void
+  apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
+  validertRequest: () => EndringsmodalRequest<T> | null
+  forslag: AktivtForslag | null
+  digitalBruker: boolean
+  children: ReactNode
+}
+function EndringsmodalBody<T extends EndringRequest>({
+  onSend,
+  onAvvis,
+  apiFunction,
+  validertRequest,
+  forslag,
+  digitalBruker,
+  children
+}: EndrinsmodalBodyProps<T>) {
+  const { state, error, doFetch } = useDeferredFetch(apiFunction)
 
   const sendEndring = () => {
     const request = validertRequest()
@@ -56,36 +106,15 @@ export function Endringsmodal<T extends EndringRequest>({
     }
   }
 
-  if (visAvvisningsmodal && forslag) {
-    return (
-      <Avvisningsmodal
-        open={open}
-        onSend={onSend}
-        onClose={onClose}
-        forslag={forslag}
-      />
-    )
-  }
-
   return (
-    <Modal
-      open={open}
-      header={{
-        icon: <EndringTypeIkon type={endringstype} />,
-        heading: endringstekst(endringstype)
-      }}
-      onClose={onClose}
-    >
+    <>
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-4">
           {getEndrePameldingTekst(digitalBruker)}
         </Detail>
         {forslag && (
-          <ModalForslagDetaljer
-            forslag={forslag}
-            onClick={() => setAvvisningsmodal(true)}
-          />
+          <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
         )}
 
         {children}
@@ -96,7 +125,7 @@ export function Endringsmodal<T extends EndringRequest>({
         confirmLoading={state === DeferredFetchState.LOADING}
         disabled={state === DeferredFetchState.LOADING}
       />
-    </Modal>
+    </>
   )
 }
 
