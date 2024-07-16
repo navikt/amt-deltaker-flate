@@ -16,7 +16,7 @@ const labels: { [Key in BegrunnelseType]: BegrunnelseLabel } = {
   },
   obligatorisk: {
     label: 'NAVs begrunnelse',
-    desc: 'Beskriv kort hvorfor endringen er riktig for personen.'
+    desc: 'Beskriv kort hvorfor endringen er riktig for deltakeren.'
   },
   avvis: {
     label: 'NAVs begrunnelse',
