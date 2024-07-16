@@ -24,7 +24,7 @@ const getModaltype = (forslag: AktivtForslag) => {
     case ForslagEndringType.ForlengDeltakelse:
       return EndreDeltakelseType.FORLENG_DELTAKELSE
     default:
-      assertNever(forslag.endring.type)
+      assertNever(forslag.endring)
   }
 }
 
