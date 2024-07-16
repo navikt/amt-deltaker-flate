@@ -12,7 +12,7 @@ import {
   isValidDate,
   EndreDeltakelseType
 } from 'deltaker-flate-common'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
@@ -59,11 +59,7 @@ export const EndreOppstartsdatoModal = ({
   const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
     validDeltakerSluttDato
   )
-  const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
-    validDeltakerSluttDato
-  )
   const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
-  const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
   const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -71,6 +67,7 @@ export const EndreOppstartsdatoModal = ({
   >(null)
 
   const tiltakstype = pamelding.deltakerliste.tiltakstype
+  //TODO: THIS NEEDS TO GO!
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
 
   const {
@@ -95,21 +92,26 @@ export const EndreOppstartsdatoModal = ({
     },
     onDateChange: (date) => {
       const varighet = valgtVarighet && getVarighet(valgtVarighet)
-      if (!date) {
-        settNySluttDato(undefined)
-        setErrorVarighet(null)
-      }
       if (varighet && valgtVarighet !== VarighetValg.ANNET) {
         const sluttDato = dayjs(date)
           .add(varighet.antall, varighet.tidsenhet)
           .toDate()
         settNySluttDato(sluttDato)
-        setErrorVarighet(getSluttDatoFeilmelding(pamelding, sluttDato, date))
-      } else if (valgtVarighet === VarighetValg.ANNET && nySluttDato) {
-        setErrorSluttDato(getSluttDatoFeilmelding(pamelding, nySluttDato, date))
       }
     }
   })
+
+  const annet = useAnnetSluttdato(pamelding, nyStartdato)
+
+  useEffect(() => {
+    if (
+      nyStartdato &&
+      valgtVarighet === VarighetValg.ANNET &&
+      nySluttDato === undefined
+    ) {
+      settNySluttDato(annet.sluttdato)
+    }
+  }, [nyStartdato])
 
   const skalBekrefteVarighet =
     nyStartdato && getSkalBekrefteVarighet(pamelding, nySluttDato, nyStartdato)
@@ -121,24 +123,15 @@ export const EndreOppstartsdatoModal = ({
     const varighet = getVarighet(valg)
 
     if (valg === VarighetValg.ANNET) {
-      settNySluttDato(sluttDatoField)
-      setErrorVarighet(null)
+      settNySluttDato(annet.sluttdato)
     } else if (nyStartdato) {
       const beregnetSluttdato = dayjs(nyStartdato).add(
         varighet.antall,
         varighet.tidsenhet
       )
       settNySluttDato(beregnetSluttdato.toDate())
-      setErrorVarighet(
-        getSluttDatoFeilmelding(
-          pamelding,
-          beregnetSluttdato.toDate(),
-          nyStartdato
-        )
-      )
     } else {
       settNySluttDato(undefined)
-      setErrorVarighet(null)
     }
   }
 
@@ -148,7 +141,7 @@ export const EndreOppstartsdatoModal = ({
       setErrorStartDato('Du må velge startdato')
       hasError = true
     }
-    if (skalVelgeVarighet && !nySluttDato && !errorSluttDato) {
+    if (skalVelgeVarighet && !nySluttDato && !annet.error) {
       setErrorSluttDato('Du må velge en sluttdato')
       hasError = true
     }
@@ -161,19 +154,19 @@ export const EndreOppstartsdatoModal = ({
     if (
       skalVelgeVarighet &&
       valgtVarighet === VarighetValg.ANNET &&
-      errorSluttDato
+      annet.error
     ) {
       hasError = true
     } else if (
       skalVelgeVarighet &&
       valgtVarighet !== VarighetValg.ANNET &&
-      errorVarighet
+      annet.error
     ) {
       hasError = true
     }
 
     if (skalVelgeVarighet && !valgtVarighet) {
-      setErrorVarighet('Du må velge varighet')
+      setErrorSluttDato('Du må velge varighet')
       hasError = true
     }
 
@@ -188,29 +181,6 @@ export const EndreOppstartsdatoModal = ({
       }
     }
     return null
-  }
-
-  const onValidateSluttDato = (
-    dateValidation: DateValidationT,
-    currentValue?: Date
-  ) => {
-    if (dateValidation.isBefore) {
-      setSluttDatoField(currentValue)
-      setErrorSluttDato(VARIGHET_VALG_FØR_FEILMELDING)
-    } else if (dateValidation.isInvalid) {
-      setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-      setSluttDatoField(currentValue)
-    } else if (dateValidation.isAfter && currentValue) {
-      /* currentValue er bare gyldig hvis vi skriver inn dato med tastaturet.
-			 Bruker man datovelgeren er dette forrige dato, ikek valgte.
-			 Det er bare tastatur som gjør at man kan få en dato som er etter grensen,
-			 det er ikke mulig å velge en dato som er etter grensen med datovelger
-			*/
-      setSluttDatoField(currentValue)
-      setErrorSluttDato(
-        getSluttDatoFeilmelding(pamelding, currentValue, nyStartdato)
-      )
-    }
   }
 
   return (
@@ -240,19 +210,18 @@ export const EndreOppstartsdatoModal = ({
             tiltakstype={pamelding.deltakerliste.tiltakstype}
             startDato={nyStartdato}
             sluttdato={maxSluttDato}
-            errorVarighet={errorVarighet}
-            errorSluttDato={errorSluttDato}
+            errorVarighet={errorSluttDato}
+            errorSluttDato={annet.error}
             defaultVarighet={valgtVarighet}
             defaultSelectedDate={nySluttDato}
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={(date) => {
               if (date) {
-                setSluttDatoField(date)
                 setErrorSluttDato(null)
               }
               settNySluttDato(date)
             }}
-            onValidateSluttDato={onValidateSluttDato}
+            onValidateSluttDato={annet.onValidateAnnet}
           />
           <BodyShort className="mt-2" size="small">
             Forventet sluttdato: {formatDateToString(nySluttDato) || '—'}
@@ -277,4 +246,41 @@ export const EndreOppstartsdatoModal = ({
       )}
     </Endringsmodal>
   )
+}
+
+function useAnnetSluttdato(deltaker: PameldingResponse, startdato?: Date) {
+  const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
+
+  const [sluttdato, setSluttdato] = useState<Date | undefined>(
+    opprinneligSluttdato
+  )
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (sluttdato) {
+      setError(getSluttDatoFeilmelding(deltaker, sluttdato, startdato))
+    }
+  }, [startdato])
+
+  const onValidateAnnet = (
+    dateValidation: DateValidationT,
+    currentValue?: Date
+  ) => {
+    setSluttdato(currentValue)
+    if (dateValidation.isInvalid) {
+      setError(UGYLDIG_DATO_FEILMELDING)
+    } else if (dateValidation.isBefore) {
+      setError(
+        startdato
+          ? VARIGHET_VALG_FØR_FEILMELDING
+          : 'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+      )
+    } else if (dateValidation.isAfter && currentValue) {
+      setError(getSluttDatoFeilmelding(deltaker, currentValue, startdato))
+    } else {
+      setError(null)
+    }
+  }
+
+  return { sluttdato, setSluttdato, error, onValidateAnnet }
 }
