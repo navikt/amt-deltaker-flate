@@ -54,7 +54,7 @@ export const EndreOppstartsdatoModal = ({
     isValidDate(pamelding.sluttdato) ? VarighetValg.ANNET : undefined
   )
 
-  const [errorStartDato, setErrorStartDato] = useState<string | null>(null)
+  const [errorStartdato, setErrorStartDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -67,7 +67,7 @@ export const EndreOppstartsdatoModal = ({
   const {
     datepickerProps,
     inputProps,
-    selectedDay: nyStartdato
+    selectedDay: startdato
   } = useDatepicker({
     fromDate:
       dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
@@ -86,13 +86,13 @@ export const EndreOppstartsdatoModal = ({
     }
   })
 
-  const sluttdato = useSluttdato(pamelding, nyStartdato, valgtVarighet)
+  const sluttdato = useSluttdato(pamelding, startdato, valgtVarighet)
 
   const skalBekrefteVarighet =
-    nyStartdato &&
-    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, nyStartdato)
+    startdato &&
+    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, startdato)
 
-  const maxSluttDato = getSisteGyldigeSluttDato(pamelding, nyStartdato)
+  const maxSluttdato = getSisteGyldigeSluttDato(pamelding, startdato)
 
   const onChangeVarighet = (valg: VarighetValg) => {
     setValgtVarighet(valg)
@@ -100,7 +100,7 @@ export const EndreOppstartsdatoModal = ({
 
   const validertRequest = () => {
     let hasError = false
-    if (!nyStartdato) {
+    if (!startdato) {
       setErrorStartDato('Du må velge startdato')
       hasError = true
     }
@@ -113,12 +113,12 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
-    if (!hasError && nyStartdato) {
+    if (!hasError && startdato) {
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
         body: {
-          startdato: formatDateToDateInputStr(nyStartdato),
+          startdato: formatDateToDateInputStr(startdato),
           sluttdato: sluttdato.sluttdato
             ? formatDateToDateInputStr(sluttdato.sluttdato)
             : null
@@ -143,7 +143,7 @@ export const EndreOppstartsdatoModal = ({
         <DatePicker.Input
           {...inputProps}
           label="Ny oppstartsdato"
-          error={errorStartDato}
+          error={errorStartdato}
           size="small"
         />
       </DatePicker>
@@ -153,8 +153,8 @@ export const EndreOppstartsdatoModal = ({
             title="Hva er forventet varighet?"
             className="mt-8"
             tiltakstype={pamelding.deltakerliste.tiltakstype}
-            startDato={nyStartdato}
-            sluttdato={maxSluttDato}
+            startDato={startdato}
+            sluttdato={maxSluttdato}
             errorVarighet={sluttdato.error}
             errorSluttDato={null}
             defaultVarighet={valgtVarighet}
