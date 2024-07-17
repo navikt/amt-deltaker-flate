@@ -175,7 +175,8 @@ export const SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING =
 export const VARIGHET_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at deltakeren oppfyller kravene.'
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
-
+export const DATO_FØR_SLUTTDATO_FEILMELDING =
+  'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
 /**
  * Returnerer datoen som kommer først av deltakerlistens sluttdato
  * eller max varighet regnet ut fra 'nyStartdato' eller hvis den ikke er gitt; deltakerens startdato
@@ -341,11 +342,11 @@ export function useSluttdato(
 
   const valider = () => {
     if (!valgtVarighet) {
-      setError('Du må velge varighet')
+      setError('Du må velge en varighet')
       return false
     }
     if (!sluttdato) {
-      setError('Du må velge sluttdato')
+      setError('Du må velge en sluttdato')
       return false
     }
     return error !== undefined && annet.error !== undefined
@@ -398,7 +399,7 @@ function useAnnetSluttdato(
       setError(
         startdato
           ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
-          : 'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+          : DATO_FØR_SLUTTDATO_FEILMELDING
       )
     } else if (dateValidation.isAfter && date) {
       setError(getSluttDatoFeilmelding(deltaker, date, startdato))

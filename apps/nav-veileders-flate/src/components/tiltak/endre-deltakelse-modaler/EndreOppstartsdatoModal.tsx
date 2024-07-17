@@ -106,7 +106,7 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
-    if (!sluttdato.valider()) {
+    if (skalVelgeVarighet && !sluttdato.valider()) {
       hasError = true
     }
 
