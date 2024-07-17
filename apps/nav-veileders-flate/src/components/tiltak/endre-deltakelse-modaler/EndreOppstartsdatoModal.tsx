@@ -277,7 +277,6 @@ function useAnnetSluttdato(
   }, [valgtVarighet, sluttdato, startdato])
 
   const validate = (dateValidation: DateValidationT, date?: Date) => {
-    setSluttdato(date)
     if (dateValidation.isInvalid) {
       setError(UGYLDIG_DATO_FEILMELDING)
     } else if (dateValidation.isBefore) {
