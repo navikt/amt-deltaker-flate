@@ -10,6 +10,7 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
+  finnVarighetValgForTiltakstype,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
@@ -21,6 +22,7 @@ import { VarighetField } from '../VarighetField.tsx'
 import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import dayjs from 'dayjs'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -48,11 +50,19 @@ export const ForlengDeltakelseModal = ({
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
   const sluttdatoFraDeltaker = dateStrToNullableDate(pamelding.sluttdato)
+  const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
+  const varighetFraForslag =
+    sluttdatoFraForslag && sluttdatoFraDeltaker
+      ? finnVarighetValgForTiltakstype(
+          sluttdatoFraDeltaker,
+          dayjs(sluttdatoFraForslag).toDate(),
+          pamelding.deltakerliste.tiltakstype
+        )
+      : undefined
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    forslag ? VarighetValg.ANNET : undefined
+    varighetFraForslag
   )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -126,7 +136,7 @@ export const ForlengDeltakelseModal = ({
         sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
         errorVarighet={sluttdato.error}
         errorSluttDato={null}
-        defaultVarighet={forslag ? VarighetValg.ANNET : null}
+        defaultVarighet={valgtVarighet}
         defaultSelectedDate={sluttdato.sluttdato}
         onChangeVarighet={handleChangeVarighet}
         onChangeSluttDato={sluttdato.handleChange}

@@ -8,6 +8,7 @@ import {
   SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg,
+  finnVarighetValg,
   getMaxVarighetDato,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
@@ -390,5 +391,44 @@ describe('getSluttDatoFeilmelding', () => {
       dayjs().add(4, 'month').toDate()
     )
     expect(feilmelding).toEqual(DATO_UTENFOR_TILTAKGJENNOMFORING)
+  })
+})
+
+describe('finnVarighet', () => {
+  it('tildato er en uke-varighet etter fradato finner riktig varighet', () => {
+    const fra = dayjs()
+    const til = fra.add(4, 'weeks')
+
+    const varighet = finnVarighetValg(fra.toDate(), til.toDate())
+
+    expect(varighet.uker).toBe(VarighetValg.FIRE_UKER)
+    expect(varighet.maaneder).toBe(VarighetValg.ANNET)
+  })
+  it('tildato er en mnd-varighet etter fradato finner riktig varighet', () => {
+    const fra = dayjs()
+    const til = fra.add(12, 'months')
+
+    const varighet = finnVarighetValg(fra.toDate(), til.toDate())
+
+    expect(varighet.uker).toBe(VarighetValg.ANNET)
+    expect(varighet.maaneder).toBe(VarighetValg.TOLV_MANEDER)
+  })
+  it('tildato er ikke en varighet etter fradato finner ANNET', () => {
+    const fra = dayjs()
+    const til = fra.add(4, 'weeks').add(1, 'day')
+
+    const varighet = finnVarighetValg(fra.toDate(), til.toDate())
+
+    expect(varighet.uker).toBe(VarighetValg.ANNET)
+    expect(varighet.maaneder).toBe(VarighetValg.ANNET)
+  })
+  it('tildato er ikke en varighet etter fradato finner ANNET', () => {
+    const fra = dayjs()
+    const til = fra.add(3, 'months').add(4, 'weeks')
+
+    const varighet = finnVarighetValg(fra.toDate(), til.toDate())
+
+    expect(varighet.uker).toBe(VarighetValg.ANNET)
+    expect(varighet.maaneder).toBe(VarighetValg.ANNET)
   })
 })

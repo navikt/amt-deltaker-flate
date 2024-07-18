@@ -51,10 +51,12 @@ describe('useSluttdato - deltakerUtenDatoer', () => {
 
 const useCustomVarighetHook = (
   deltaker: PameldingResponse,
-  initVarighet: VarighetValg,
+  initVarighet: VarighetValg | undefined,
   initStartdato?: Date
 ) => {
-  const [varighetValg, setVarighetValg] = useState<VarighetValg>(initVarighet)
+  const [varighetValg, setVarighetValg] = useState<VarighetValg | undefined>(
+    initVarighet
+  )
   const [startdato, setStartdato] = useState(initStartdato)
 
   const sluttdatoResultat = useSluttdato(deltaker, varighetValg, startdato)
@@ -331,6 +333,43 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     })
 
     expect(result.current.error).toBe(DATO_UTENFOR_TILTAKGJENNOMFORING)
+  })
+
+  it('har en error - sluttdato er undefined', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato)
+    const { result, rerender } = renderHook(() =>
+      useCustomVarighetHook(
+        deltakerMedDatoer,
+        VarighetValg.ANNET,
+        startdato.toDate()
+      )
+    )
+    act(() => {
+      result.current.handleChange(
+        dayjs(deltakerMedDatoer.startdato).add(24, 'months').toDate()
+      )
+    })
+    expect(result.current.sluttdato).toBe(undefined)
+
+    act(() => {
+      result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
+    })
+    rerender()
+    expect(result.current.sluttdato).toBeTypeOf('object')
+
+    act(() => {
+      result.current.setVarighetValg(VarighetValg.TOLV_MANEDER)
+    })
+    rerender()
+    expect(result.current.sluttdato).toBe(undefined)
+  })
+
+  it('varighet er ikke valgt - sluttdato er undefined', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato)
+    const { result } = renderHook(() =>
+      useSluttdato(deltakerMedDatoer, undefined, startdato.toDate())
+    )
+    expect(result.current.sluttdato).toBe(undefined)
   })
 })
 
