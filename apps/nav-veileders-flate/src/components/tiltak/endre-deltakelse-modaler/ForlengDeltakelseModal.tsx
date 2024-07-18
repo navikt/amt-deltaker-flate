@@ -49,6 +49,7 @@ export const ForlengDeltakelseModal = ({
   onSuccess
 }: ForlengDeltakelseModalProps) => {
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
+  const sluttdatoFraDeltaker = dateStrToNullableDate(pamelding.sluttdato)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     forslag ? VarighetValg.ANNET : undefined
@@ -67,12 +68,12 @@ export const ForlengDeltakelseModal = ({
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
-  const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
-    sluttdato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
+    sluttdato.sluttdato &&
+    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
   const validertRequest = () => {
     let hasError = false
@@ -121,7 +122,7 @@ export const ForlengDeltakelseModal = ({
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
         tiltakstype={pamelding.deltakerliste.tiltakstype}
-        startDato={sluttdatoDeltaker || undefined}
+        startDato={sluttdatoFraDeltaker || undefined}
         sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
         errorVarighet={sluttdato.error}
         errorSluttDato={null}
