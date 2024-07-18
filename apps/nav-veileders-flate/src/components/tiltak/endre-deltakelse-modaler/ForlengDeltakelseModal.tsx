@@ -1,5 +1,5 @@
 import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
-import { EndreDeltakelseType, getDateFromString } from 'deltaker-flate-common'
+import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
@@ -37,9 +37,9 @@ const getSluttdatoFraForslag = (forslag: AktivtForslag | null) => {
     forslag &&
     forslag.endring.type === ForslagEndringType.ForlengDeltakelse
   ) {
-    return forslag.endring.sluttdato
+    return dayjs(forslag.endring.sluttdato).toDate()
   } else {
-    return null
+    return undefined
   }
 }
 
@@ -56,7 +56,7 @@ export const ForlengDeltakelseModal = ({
     sluttdatoFraForslag && sluttdatoFraDeltaker
       ? finnVarighetValgForTiltakstype(
           sluttdatoFraDeltaker,
-          dayjs(sluttdatoFraForslag).toDate(),
+          sluttdatoFraForslag,
           pamelding.deltakerliste.tiltakstype
         )
       : undefined
@@ -69,12 +69,15 @@ export const ForlengDeltakelseModal = ({
     string | null
   >(null)
 
-  const sluttdato = useSluttdato(pamelding, valgtVarighet)
+  const sluttdato = useSluttdato({
+    deltaker: pamelding,
+    valgtVarighet: valgtVarighet,
+    defaultAnnetDato: sluttdatoFraForslag
+  })
 
   const skalHaBegrunnelse =
     !sluttdatoFraForslag ||
-    getDateFromString(sluttdatoFraForslag)?.getTime() !==
-      sluttdato.sluttdato?.getTime()
+    sluttdatoFraForslag?.getTime() !== sluttdato.sluttdato?.getTime()
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
@@ -142,7 +145,7 @@ export const ForlengDeltakelseModal = ({
         onChangeSluttDato={sluttdato.handleChange}
         onValidateSluttDato={sluttdato.validerDato}
       />
-      {sluttdato.sluttdato && (
+      {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
         <BodyShort className="mt-2" size="small">
           Ny sluttdato: {formatDateToString(sluttdato.sluttdato)}
         </BodyShort>

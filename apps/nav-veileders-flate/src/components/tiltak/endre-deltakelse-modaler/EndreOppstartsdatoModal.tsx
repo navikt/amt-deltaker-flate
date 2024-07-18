@@ -82,8 +82,14 @@ export const EndreOppstartsdatoModal = ({
       }
     }
   })
-
-  const sluttdato = useSluttdato(pamelding, valgtVarighet, startdato)
+  const sluttdato = useSluttdato({
+    deltaker: pamelding,
+    valgtVarighet: valgtVarighet,
+    defaultAnnetDato: pamelding.sluttdato
+      ? dayjs(pamelding.sluttdato).toDate()
+      : undefined,
+    startdato: startdato
+  })
 
   const skalBekrefteVarighet =
     startdato &&
@@ -160,10 +166,12 @@ export const EndreOppstartsdatoModal = ({
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
           />
-          <BodyShort className="mt-2" size="small">
-            Forventet sluttdato:{' '}
-            {formatDateToString(sluttdato.sluttdato) || '—'}
-          </BodyShort>
+          {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
+            <BodyShort className="mt-2" size="small">
+              Forventet sluttdato:{' '}
+              {formatDateToString(sluttdato.sluttdato) || '—'}
+            </BodyShort>
+          )}
 
           {skalBekrefteVarighet && (
             <ConfirmationPanel

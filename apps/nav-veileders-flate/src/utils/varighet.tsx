@@ -1,6 +1,9 @@
 import { BodyLong, DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  AktivtForslag,
+  ForlengDeltakelseForslag,
+  ForslagEndring,
   Tiltakstype,
   getDateFromString,
   isValidDate
@@ -364,11 +367,19 @@ export const getSluttDatoFeilmelding = (
   }
 }
 
-export function useSluttdato(
-  deltaker: PameldingResponse,
-  valgtVarighet: VarighetValg | undefined,
+interface UseSluttdatoOpts {
+  deltaker: PameldingResponse
+  valgtVarighet: VarighetValg | undefined
+  defaultAnnetDato?: Date
   startdato?: Date
-): {
+}
+
+export function useSluttdato({
+  deltaker,
+  valgtVarighet,
+  defaultAnnetDato,
+  startdato
+}: UseSluttdatoOpts): {
   sluttdato: Date | undefined
   error: string | null
   valider: () => boolean
@@ -389,6 +400,7 @@ export function useSluttdato(
   const annet = useAnnetSluttdato(
     deltaker,
     onAnnetChange,
+    defaultAnnetDato,
     startdato,
     valgtVarighet
   )
@@ -441,7 +453,7 @@ export function useSluttdato(
   const hasError = error !== null || annet.error !== null
 
   return {
-    sluttdato: hasError || !valgtVarighet ? undefined : sluttdato,
+    sluttdato: valgtVarighet !== undefined ? sluttdato : undefined,
     error: error || annet.error,
     valider,
     validerDato,
@@ -452,14 +464,11 @@ export function useSluttdato(
 function useAnnetSluttdato(
   deltaker: PameldingResponse,
   onChange: (date: Date | undefined) => void,
+  defaultDato: Date | undefined,
   startdato?: Date,
   valgtVarighet?: VarighetValg
 ) {
-  const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
-
-  const [sluttdato, setSluttdato] = useState<Date | undefined>(
-    opprinneligSluttdato
-  )
+  const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
