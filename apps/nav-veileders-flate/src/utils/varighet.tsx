@@ -439,7 +439,7 @@ export function useSluttdato(
   const hasError = error !== null || annet.error !== null
 
   return {
-    sluttdato: hasError ? undefined : sluttdato,
+    sluttdato: hasError || !valgtVarighet ? undefined : sluttdato,
     error: error || annet.error,
     valider,
     validerDato,
