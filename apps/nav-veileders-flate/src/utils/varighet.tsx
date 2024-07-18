@@ -104,6 +104,82 @@ export const varighetValgForType = (
   }
 }
 
+export function finnVarighetValg(
+  fraDato: Date,
+  tilDato: Date
+): { uker: VarighetValg; maaneder: VarighetValg } {
+  const fra = dayjs(fraDato)
+  const til = dayjs(tilDato)
+
+  const uker = til.diff(fra, 'weeks')
+  const maaneder = til.diff(fra, 'months')
+
+  const erIkkeDelbarIVarigheter =
+    fra.add(uker, 'weeks').isBefore(til) &&
+    fra.add(maaneder, 'months').isBefore(til)
+
+  if (erIkkeDelbarIVarigheter) {
+    return {
+      uker: VarighetValg.ANNET,
+      maaneder: VarighetValg.ANNET
+    }
+  }
+
+  const ukeVarighet = () => {
+    switch (uker) {
+      case 4:
+        return VarighetValg.FIRE_UKER
+      case 6:
+        return VarighetValg.SEKS_UKER
+      case 8:
+        return VarighetValg.ATTE_UKER
+      case 12:
+        return VarighetValg.TOLV_UKER
+      default:
+        return VarighetValg.ANNET
+    }
+  }
+
+  const mndVarighet = () => {
+    switch (maaneder) {
+      case 3:
+        return VarighetValg.TRE_MANEDER
+      case 4:
+        return VarighetValg.FIRE_MANEDER
+      case 6:
+        return VarighetValg.SEKS_MANEDER
+      case 8:
+        return VarighetValg.ATTE_MANEDER
+      case 12:
+        return VarighetValg.TOLV_MANEDER
+      default:
+        return VarighetValg.ANNET
+    }
+  }
+
+  return {
+    uker: ukeVarighet(),
+    maaneder: mndVarighet()
+  }
+}
+
+export function finnVarighetValgForTiltakstype(
+  fraDato: Date,
+  tilDato: Date,
+  tiltakstype: Tiltakstype
+) {
+  const varighet = finnVarighetValg(fraDato, tilDato)
+  const varigheter = varighetValgForType(tiltakstype)
+
+  if (varigheter.includes(varighet.uker)) {
+    return varighet.uker
+  } else if (varigheter.includes(varighet.maaneder)) {
+    return varighet.maaneder
+  } else {
+    return VarighetValg.ANNET
+  }
+}
+
 export const kalkulerSluttdato = (
   sluttdato: Date,
   varighet: Varighet
