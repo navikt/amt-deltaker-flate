@@ -433,7 +433,9 @@ export function useSluttdato(
   }
 
   const handleChange = (date: Date | undefined) => {
-    annet.onChange(date)
+    if (valgtVarighet === VarighetValg.ANNET) {
+      annet.onChange(date)
+    }
   }
 
   const hasError = error !== null || annet.error !== null

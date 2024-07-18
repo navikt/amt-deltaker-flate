@@ -9,7 +9,7 @@ import {
   Tiltakstype,
   getDateFromNorwegianStringFormat
 } from 'deltaker-flate-common'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   VarighetValg,
   getVarighet,
@@ -25,7 +25,7 @@ interface Props {
   errorVarighet: string | null
   errorSluttDato: string | null
   defaultVarighet?: VarighetValg | null
-  defaultSelectedDate?: Date | null
+  selectedDate?: Date | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
   onValidateSluttDato: (
@@ -43,7 +43,7 @@ export const VarighetField = ({
   errorVarighet,
   errorSluttDato,
   defaultVarighet,
-  defaultSelectedDate,
+  selectedDate,
   onChangeVarighet,
   onChangeSluttDato,
   onValidateSluttDato
@@ -54,11 +54,11 @@ export const VarighetField = ({
   const datePickerRef = useRef<HTMLInputElement>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
 
-  const { datepickerProps, inputProps } = useDatepicker({
+  const { datepickerProps, inputProps, setSelected } = useDatepicker({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
-    defaultSelected: defaultSelectedDate || undefined,
+    defaultSelected: selectedDate || undefined,
     onValidate: (dateValidation) => {
       onValidateSluttDato(
         dateValidation,
@@ -69,6 +69,10 @@ export const VarighetField = ({
       onChangeSluttDato(date)
     }
   })
+
+  useEffect(() => {
+    setSelected(selectedDate ?? undefined)
+  }, [selectedDate])
 
   const handleChangeVarighet = (valg: VarighetValg) => {
     settValgtVarighet(valg)
