@@ -332,6 +332,35 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
     expect(result.current.error).toBe(DATO_UTENFOR_TILTAKGJENNOMFORING)
   })
+
+  it('har en error - sluttdato er undefined', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato)
+    const { result, rerender } = renderHook(() =>
+      useCustomVarighetHook(
+        deltakerMedDatoer,
+        VarighetValg.ANNET,
+        startdato.toDate()
+      )
+    )
+    act(() => {
+      result.current.handleChange(
+        dayjs(deltakerMedDatoer.startdato).add(24, 'months').toDate()
+      )
+    })
+    expect(result.current.sluttdato).toBe(undefined)
+
+    act(() => {
+      result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
+    })
+    rerender()
+    expect(result.current.sluttdato).toBeTypeOf('object')
+
+    act(() => {
+      result.current.setVarighetValg(VarighetValg.TOLV_MANEDER)
+    })
+    rerender()
+    expect(result.current.sluttdato).toBe(undefined)
+  })
 })
 
 function dateValidation(

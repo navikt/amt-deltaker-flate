@@ -436,7 +436,7 @@ export function useSluttdato(
     annet.onChange(date)
   }
 
-  const hasError = error !== null && annet.error !== null
+  const hasError = error !== null || annet.error !== null
 
   return {
     sluttdato: hasError ? undefined : sluttdato,
