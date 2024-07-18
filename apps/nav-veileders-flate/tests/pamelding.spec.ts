@@ -23,6 +23,7 @@ const sjekkUU = async (page: Page, testid: string) => {
 
 test.describe('Smoketest og UU', () => {
   test('Nav veileders flate - kladd', async ({ page }) => {
+    await page.getByTestId('select_status').selectOption('KLADD')
     await expect(page).toHaveTitle(/Deltaker/)
     await sjekkUU(page, 'page_kladd')
   })
