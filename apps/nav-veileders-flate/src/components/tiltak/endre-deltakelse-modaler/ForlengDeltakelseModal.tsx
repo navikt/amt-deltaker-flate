@@ -12,11 +12,8 @@ import {
 import {
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSluttDatoFeilmelding,
   getSoftMaxVarighetBekreftelseText,
-  getVarighet,
-  kalkulerSluttdato,
-  UGYLDIG_DATO_FEILMELDING,
+  useSluttdato,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
@@ -52,57 +49,40 @@ export const ForlengDeltakelseModal = ({
   onSuccess
 }: ForlengDeltakelseModalProps) => {
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
-  const validDeltakerSluttDato = sluttdatoFraForslag
-    ? getDateFromString(sluttdatoFraForslag)
-    : getDateFromString(pamelding.sluttdato)
+  const sluttdatoFraDeltaker = dateStrToNullableDate(pamelding.sluttdato)
 
-  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(
-    forslag ? VarighetValg.ANNET : null
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
+    forslag ? VarighetValg.ANNET : undefined
   )
-  const [nySluttDato, settNySluttDato] = useState<Date | undefined>(
-    validDeltakerSluttDato
-  )
-  const [sluttDatoField, setSluttDatoField] = useState<Date | undefined>(
-    validDeltakerSluttDato
-  )
-  const [errorVarighet, setErrorVarighet] = useState<string | null>(null)
-  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
 
+  const sluttdato = useSluttdato(pamelding, valgtVarighet)
+
   const skalHaBegrunnelse =
     !sluttdatoFraForslag ||
-    getDateFromString(sluttdatoFraForslag)?.getTime() !== nySluttDato?.getTime()
+    getDateFromString(sluttdatoFraForslag)?.getTime() !==
+      sluttdato.sluttdato?.getTime()
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
-  const sluttdatoDeltaker = dateStrToNullableDate(pamelding.sluttdato)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
-    nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
+    sluttdato.sluttdato &&
+    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
   const validertRequest = () => {
     let hasError = false
-    if (!valgtVarighet) {
-      setErrorVarighet('Du må velge varighet')
-      hasError = true
-    }
-    if (!nySluttDato && !errorSluttDato) {
-      setErrorSluttDato('Du må velge en sluttdato')
-      hasError = true
-    }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
     }
 
-    if (valgtVarighet === VarighetValg.ANNET && errorSluttDato) {
-      hasError = true
-    } else if (valgtVarighet !== VarighetValg.ANNET && errorVarighet) {
+    if (!sluttdato.valider()) {
       hasError = true
     }
 
@@ -110,12 +90,12 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
-    if (!hasError && nySluttDato) {
+    if (!hasError && sluttdato.sluttdato) {
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
         body: {
-          sluttdato: formatDateToDateInputStr(nySluttDato),
+          sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null
         }
@@ -126,19 +106,6 @@ export const ForlengDeltakelseModal = ({
 
   const handleChangeVarighet = (valg: VarighetValg) => {
     setValgtVarighet(valg)
-    const varighet = getVarighet(valg)
-
-    if (valg === VarighetValg.ANNET) {
-      settNySluttDato(sluttDatoField)
-      setErrorVarighet(null)
-    } else if (sluttdatoDeltaker) {
-      const nySluttDato = kalkulerSluttdato(sluttdatoDeltaker, varighet)
-      settNySluttDato(nySluttDato)
-      setErrorVarighet(getSluttDatoFeilmelding(pamelding, nySluttDato))
-    } else {
-      settNySluttDato(undefined)
-      setErrorVarighet(null)
-    }
   }
 
   return (
@@ -155,38 +122,19 @@ export const ForlengDeltakelseModal = ({
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
         tiltakstype={pamelding.deltakerliste.tiltakstype}
-        startDato={sluttdatoDeltaker || undefined}
+        startDato={sluttdatoFraDeltaker || undefined}
         sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
-        errorVarighet={errorVarighet}
-        errorSluttDato={errorSluttDato}
+        errorVarighet={sluttdato.error}
+        errorSluttDato={null}
         defaultVarighet={forslag ? VarighetValg.ANNET : null}
-        defaultSelectedDate={nySluttDato}
+        defaultSelectedDate={sluttdato.sluttdato}
         onChangeVarighet={handleChangeVarighet}
-        onChangeSluttDato={(date) => {
-          settNySluttDato(date)
-          if (date) {
-            setSluttDatoField(date)
-            setErrorSluttDato(null)
-          }
-        }}
-        onValidateSluttDato={(dateValidation, currentValue) => {
-          if (dateValidation.isAfter && currentValue) {
-            setSluttDatoField(currentValue)
-            setErrorSluttDato(getSluttDatoFeilmelding(pamelding, currentValue))
-          } else if (dateValidation.isBefore && currentValue) {
-            setSluttDatoField(currentValue)
-            setErrorSluttDato(
-              'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
-            )
-          } else if (dateValidation.isInvalid) {
-            setSluttDatoField(currentValue)
-            setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-          }
-        }}
+        onChangeSluttDato={sluttdato.handleChange}
+        onValidateSluttDato={sluttdato.validerDato}
       />
-      {nySluttDato && (
+      {sluttdato.sluttdato && (
         <BodyShort className="mt-2" size="small">
-          Ny sluttdato: {formatDateToString(nySluttDato)}
+          Ny sluttdato: {formatDateToString(sluttdato.sluttdato)}
         </BodyShort>
       )}
       {skalBekrefteVarighet && (

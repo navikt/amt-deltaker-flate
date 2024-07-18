@@ -111,11 +111,20 @@ export class MockHandler {
     }
   ]
 
-  createPamelding(deltakerlisteId: string): HttpResponse {
+  createDeltaker(
+    deltakerlisteId: string,
+    startdato?: Date,
+    sluttdato?: Date,
+    maxVarighetMnd?: number,
+    softMaxVarighetMnd?: number
+  ): PameldingResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
 
-    const nyPamelding: PameldingResponse = {
+    const _startdato = startdato ? dayjs(startdato).toString() : null
+    const _sluttdato = sluttdato ? dayjs(sluttdato).toString() : null
+
+    return {
       deltakerId: uuidv4(),
       fornavn: 'Navn',
       mellomnavn: null,
@@ -127,7 +136,7 @@ export class MockHandler {
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
-        sluttdato: '2025-02-20',
+        sluttdato: '2030-02-20',
         status: DeltakerlisteStatus.GJENNOMFORES,
         tilgjengeligInnhold: this.innhold.map((i) => ({
           tekst: i.tekst,
@@ -142,8 +151,8 @@ export class MockHandler {
         gyldigTil: EMDASH,
         opprettet: yesterday.toString()
       },
-      startdato: null,
-      sluttdato: null,
+      startdato: _startdato,
+      sluttdato: _sluttdato,
       dagerPerUke: null,
       deltakelsesprosent: 100,
       bakgrunnsinformasjon:
@@ -165,13 +174,19 @@ export class MockHandler {
       adresseDelesMedArrangor: true,
       kanEndres: true,
       digitalBruker: true,
-      maxVarighet: dayjs.duration(12, 'month').asMilliseconds(),
-      softMaxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
+      maxVarighet: dayjs
+        .duration(maxVarighetMnd ?? 12, 'month')
+        .asMilliseconds(),
+      softMaxVarighet: dayjs
+        .duration(softMaxVarighetMnd ?? 6, 'month')
+        .asMilliseconds(),
       forslag: []
     }
+  }
 
-    this.pamelding = nyPamelding
-    return HttpResponse.json(nyPamelding)
+  createPamelding(deltakerlisteId: string): HttpResponse {
+    this.pamelding = this.createDeltaker(deltakerlisteId)
+    return HttpResponse.json(this.pamelding)
   }
 
   getStartdato(): string {

@@ -21,7 +21,9 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
-const createDeltaker = (statusType: DeltakerStatusType): DeltakerResponse => {
+export const createDeltaker = (
+  statusType: DeltakerStatusType
+): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
 
   return {

@@ -4,7 +4,7 @@ import {
   getDeltakerStatusDisplayText,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PameldingResponse, pameldingSchema } from '../../api/data/pamelding'
 import { API_URL, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
@@ -54,6 +54,10 @@ const DemoStatusInstillinger = () => {
       })
     }
   }
+
+  useEffect(() => {
+    handlePameldingStatusChange(DeltakerStatusType.DELTAR)
+  }, [])
 
   return (
     <Select
