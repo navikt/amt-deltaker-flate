@@ -9,7 +9,7 @@ import {
   Tiltakstype,
   getDateFromNorwegianStringFormat
 } from 'deltaker-flate-common'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   VarighetValg,
   getVarighet,

@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import {
   Tiltakstype,
   getDateFromString,
-  isValidDate,
   EndreDeltakelseType
 } from 'deltaker-flate-common'
 import { useState } from 'react'

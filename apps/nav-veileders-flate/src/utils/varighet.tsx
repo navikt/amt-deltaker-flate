@@ -1,9 +1,6 @@
 import { BodyLong, DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  AktivtForslag,
-  ForlengDeltakelseForslag,
-  ForslagEndring,
   Tiltakstype,
   getDateFromString,
   isValidDate
