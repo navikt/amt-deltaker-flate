@@ -388,9 +388,7 @@ export function useSluttdato({
 } {
   const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
 
-  const [sluttdato, setSluttdato] = useState<Date | undefined>(
-    opprinneligSluttdato
-  )
+  const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
   const onAnnetChange = (d: Date | undefined) => {
@@ -453,7 +451,7 @@ export function useSluttdato({
   const hasError = error !== null || annet.error !== null
 
   return {
-    sluttdato: valgtVarighet !== undefined ? sluttdato : undefined,
+    sluttdato: hasError || valgtVarighet === undefined ? undefined : sluttdato,
     error: error || annet.error,
     valider,
     validerDato,

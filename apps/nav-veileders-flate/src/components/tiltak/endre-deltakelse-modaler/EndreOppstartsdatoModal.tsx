@@ -47,8 +47,13 @@ export const EndreOppstartsdatoModal = ({
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
+
+  const defaultAnnetDato = pamelding.sluttdato
+    ? dayjs(pamelding.sluttdato).toDate()
+    : undefined
+
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    isValidDate(pamelding.sluttdato) ? VarighetValg.ANNET : undefined
+    defaultAnnetDato ? VarighetValg.ANNET : undefined
   )
 
   const [errorStartdato, setErrorStartDato] = useState<string | null>(null)
@@ -85,9 +90,7 @@ export const EndreOppstartsdatoModal = ({
   const sluttdato = useSluttdato({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
-    defaultAnnetDato: pamelding.sluttdato
-      ? dayjs(pamelding.sluttdato).toDate()
-      : undefined,
+    defaultAnnetDato: defaultAnnetDato,
     startdato: startdato
   })
 
@@ -161,7 +164,7 @@ export const EndreOppstartsdatoModal = ({
             errorVarighet={sluttdato.error}
             errorSluttDato={null}
             defaultVarighet={valgtVarighet}
-            selectedDate={sluttdato.sluttdato}
+            defaultAnnetDato={defaultAnnetDato}
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
