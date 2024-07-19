@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import {
   Tiltakstype,
   getDateFromString,
-  isValidDate,
   EndreDeltakelseType
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -47,8 +46,13 @@ export const EndreOppstartsdatoModal = ({
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
+
+  const defaultAnnetDato = pamelding.sluttdato
+    ? dayjs(pamelding.sluttdato).toDate()
+    : undefined
+
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    isValidDate(pamelding.sluttdato) ? VarighetValg.ANNET : undefined
+    defaultAnnetDato ? VarighetValg.ANNET : undefined
   )
 
   const [errorStartdato, setErrorStartDato] = useState<string | null>(null)
@@ -82,8 +86,12 @@ export const EndreOppstartsdatoModal = ({
       }
     }
   })
-
-  const sluttdato = useSluttdato(pamelding, valgtVarighet, startdato)
+  const sluttdato = useSluttdato({
+    deltaker: pamelding,
+    valgtVarighet: valgtVarighet,
+    defaultAnnetDato: defaultAnnetDato,
+    startdato: startdato
+  })
 
   const skalBekrefteVarighet =
     startdato &&
@@ -155,15 +163,17 @@ export const EndreOppstartsdatoModal = ({
             errorVarighet={sluttdato.error}
             errorSluttDato={null}
             defaultVarighet={valgtVarighet}
-            defaultSelectedDate={sluttdato.sluttdato}
+            defaultAnnetDato={defaultAnnetDato}
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
           />
-          <BodyShort className="mt-2" size="small">
-            Forventet sluttdato:{' '}
-            {formatDateToString(sluttdato.sluttdato) || '—'}
-          </BodyShort>
+          {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
+            <BodyShort className="mt-2" size="small">
+              Forventet sluttdato:{' '}
+              {formatDateToString(sluttdato.sluttdato) || '—'}
+            </BodyShort>
+          )}
 
           {skalBekrefteVarighet && (
             <ConfirmationPanel

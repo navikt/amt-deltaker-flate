@@ -25,7 +25,7 @@ interface Props {
   errorVarighet: string | null
   errorSluttDato: string | null
   defaultVarighet?: VarighetValg | null
-  defaultSelectedDate?: Date | null
+  defaultAnnetDato?: Date | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
   onValidateSluttDato: (
@@ -43,7 +43,7 @@ export const VarighetField = ({
   errorVarighet,
   errorSluttDato,
   defaultVarighet,
-  defaultSelectedDate,
+  defaultAnnetDato,
   onChangeVarighet,
   onChangeSluttDato,
   onValidateSluttDato
@@ -58,7 +58,7 @@ export const VarighetField = ({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
-    defaultSelected: defaultSelectedDate || undefined,
+    defaultSelected: defaultAnnetDato || undefined,
     onValidate: (dateValidation) => {
       onValidateSluttDato(
         dateValidation,

@@ -30,7 +30,7 @@ const deltakerMedDatoer = mock.createDeltaker(
 describe('useSluttdato - deltakerUtenDatoer', () => {
   it('har error uten varighet', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerUtenDatoer, undefined)
+      useSluttdato({ deltaker: deltakerUtenDatoer, valgtVarighet: undefined })
     )
     act(() => {
       result.current.valider()
@@ -40,7 +40,10 @@ describe('useSluttdato - deltakerUtenDatoer', () => {
 
   it('har error uten sluttdato', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerUtenDatoer, VarighetValg.TRE_MANEDER)
+      useSluttdato({
+        deltaker: deltakerUtenDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER
+      })
     )
     act(() => {
       result.current.valider()
@@ -54,12 +57,17 @@ const useCustomVarighetHook = (
   initVarighet: VarighetValg | undefined,
   initStartdato?: Date
 ) => {
-  const [varighetValg, setVarighetValg] = useState<VarighetValg | undefined>(
+  const [valgtVarighet, setVarighetValg] = useState<VarighetValg | undefined>(
     initVarighet
   )
   const [startdato, setStartdato] = useState(initStartdato)
 
-  const sluttdatoResultat = useSluttdato(deltaker, varighetValg, startdato)
+  const sluttdatoResultat = useSluttdato({
+    deltaker,
+    valgtVarighet,
+    defaultAnnetDato: undefined,
+    startdato
+  })
 
   return { ...sluttdatoResultat, setVarighetValg, setStartdato }
 }
@@ -67,7 +75,7 @@ const useCustomVarighetHook = (
 describe('useSluttdato - deltakerMedDatoer', () => {
   it('har error uten varighet2', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, undefined)
+      useSluttdato({ deltaker: deltakerMedDatoer, valgtVarighet: undefined })
     )
     act(() => {
       result.current.valider()
@@ -77,14 +85,20 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
   it('har ikke error med varighet', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TRE_MANEDER)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET
+      })
     )
     expect(result.current.error).toBe(null)
   })
 
   it('har error med varighet over max-varighet', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TOLV_MANEDER)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TOLV_MANEDER
+      })
     )
     expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
   })
@@ -113,6 +127,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     )
 
     act(() => {
+      result.current.setVarighetValg(VarighetValg.ANNET)
       result.current.handleChange(
         dayjs(deltakerMedDatoer.startdato).add(42, 'days').toDate()
       )
@@ -225,7 +240,10 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
   it('beregner sluttdato fra deltakers sluttdato når startdato ikke er gitt', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TRE_MANEDER)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER
+      })
     )
 
     expect(result.current.sluttdato?.getTime()).toBe(
@@ -238,7 +256,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       .add(1, 'month')
       .toDate()
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TRE_MANEDER, startdato)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER,
+        startdato
+      })
     )
 
     expect(result.current.sluttdato?.getTime()).toBe(
@@ -251,7 +273,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     const startdato = dagjs.toDate()
 
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TRE_MANEDER, startdato)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER,
+        startdato
+      })
     )
 
     act(() => {
@@ -266,7 +292,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     const startdato = dagjs.toDate()
 
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.TRE_MANEDER, startdato)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER,
+        startdato
+      })
     )
 
     act(() => {
@@ -281,7 +311,10 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
   it('validerDato - startdato ikke satt, dato er før sluttdato - setter error', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.ANNET)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET
+      })
     )
 
     act(() => {
@@ -296,7 +329,10 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
   it('validerDato - dato er etter max varighet dato - setter error', () => {
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, VarighetValg.ANNET)
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET
+      })
     )
 
     act(() => {
@@ -322,7 +358,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       12
     )
     const { result } = renderHook(() =>
-      useSluttdato(deltaker, VarighetValg.ANNET)
+      useSluttdato({ deltaker, valgtVarighet: VarighetValg.ANNET })
     )
 
     act(() => {
@@ -367,7 +403,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
   it('varighet er ikke valgt - sluttdato er undefined', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
     const { result } = renderHook(() =>
-      useSluttdato(deltakerMedDatoer, undefined, startdato.toDate())
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: undefined,
+        startdato: startdato.toDate()
+      })
     )
     expect(result.current.sluttdato).toBe(undefined)
   })

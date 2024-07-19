@@ -364,11 +364,19 @@ export const getSluttDatoFeilmelding = (
   }
 }
 
-export function useSluttdato(
-  deltaker: PameldingResponse,
-  valgtVarighet: VarighetValg | undefined,
+interface UseSluttdatoOpts {
+  deltaker: PameldingResponse
+  valgtVarighet: VarighetValg | undefined
+  defaultAnnetDato?: Date
   startdato?: Date
-): {
+}
+
+export function useSluttdato({
+  deltaker,
+  valgtVarighet,
+  defaultAnnetDato,
+  startdato
+}: UseSluttdatoOpts): {
   sluttdato: Date | undefined
   error: string | null
   valider: () => boolean
@@ -377,9 +385,7 @@ export function useSluttdato(
 } {
   const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
 
-  const [sluttdato, setSluttdato] = useState<Date | undefined>(
-    opprinneligSluttdato
-  )
+  const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
   const onAnnetChange = (d: Date | undefined) => {
@@ -389,6 +395,7 @@ export function useSluttdato(
   const annet = useAnnetSluttdato(
     deltaker,
     onAnnetChange,
+    defaultAnnetDato,
     startdato,
     valgtVarighet
   )
@@ -433,13 +440,15 @@ export function useSluttdato(
   }
 
   const handleChange = (date: Date | undefined) => {
-    annet.onChange(date)
+    if (valgtVarighet === VarighetValg.ANNET) {
+      annet.onChange(date)
+    }
   }
 
   const hasError = error !== null || annet.error !== null
 
   return {
-    sluttdato: hasError || !valgtVarighet ? undefined : sluttdato,
+    sluttdato: hasError || valgtVarighet === undefined ? undefined : sluttdato,
     error: error || annet.error,
     valider,
     validerDato,
@@ -450,14 +459,11 @@ export function useSluttdato(
 function useAnnetSluttdato(
   deltaker: PameldingResponse,
   onChange: (date: Date | undefined) => void,
+  defaultDato: Date | undefined,
   startdato?: Date,
   valgtVarighet?: VarighetValg
 ) {
-  const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
-
-  const [sluttdato, setSluttdato] = useState<Date | undefined>(
-    opprinneligSluttdato
-  )
+  const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
