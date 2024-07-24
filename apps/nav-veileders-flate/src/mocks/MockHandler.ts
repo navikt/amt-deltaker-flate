@@ -3,6 +3,7 @@ import {
   DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
+  ForslagEndring,
   ForslagEndringAarsakType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
@@ -220,9 +221,7 @@ export class MockHandler {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
         .format('YYYY-MM-DD')
-      const forslag: AktivtForslag = {
-        id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
+      const forslag = aktivtForslag({
         begrunnelse:
           'Vi har kommet i gang, men ser at det er hensiktsmessig ' +
           'å fortsette tett oppfølging nå når han er i gang med å kontakte de riktige arbeidsgiverne. ' +
@@ -230,14 +229,9 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
           sluttdato: sluttdato
-        },
-        status: {
-          type: ForslagStatusType.VenterPaSvar
         }
-      }
-      const forslagAvslutt: AktivtForslag = {
-        id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
+      })
+      const forslagAvslutt = aktivtForslag({
         begrunnelse: null,
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
@@ -245,43 +239,39 @@ export class MockHandler {
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           }
-        },
-        status: {
-          type: ForslagStatusType.VenterPaSvar
         }
-      }
-      const forslagDeltakelsesmengde: AktivtForslag = {
-        id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
-        begrunnelse: 'Med noe begrunnelse også',
+      })
+      const forslagDeltakelsesmengde = aktivtForslag({
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
           deltakelsesprosent: 42,
           dagerPerUke: 3
-        },
-        status: {
-          type: ForslagStatusType.VenterPaSvar
         }
-      }
+      })
       return [forslagDeltakelsesmengde, forslag, forslagAvslutt]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
-      const forslagIkkeAktuell: AktivtForslag = {
-        id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
-        begrunnelse: 'Har ikke møtt opp',
+      const forslagIkkeAktuell = aktivtForslag({
         endring: {
           type: ForslagEndringType.IkkeAktuell,
           aarsak: {
             type: ForslagEndringAarsakType.Annet,
             beskrivelse: 'Fordi...'
           }
-        },
-        status: {
-          type: ForslagStatusType.VenterPaSvar
         }
-      }
+      })
       return [forslagIkkeAktuell]
+    }
+    if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+      const sluttdatoForslag = aktivtForslag({
+        endring: {
+          type: ForslagEndringType.Sluttdato,
+          sluttdato: dayjs(this.pamelding?.sluttdato)
+            .add(7, 'days')
+            .toISOString()
+        }
+      })
+      return [sluttdatoForslag]
     }
     return []
   }
@@ -544,5 +534,27 @@ export class MockHandler {
     }
 
     return new HttpResponse(null, { status: 404 })
+  }
+}
+
+const defaultBegrunnnelseTekst = 'Endringen har er veldig viktig fordi at.'
+
+function aktivtForslag({
+  endring,
+  begrunnelse
+}: {
+  endring: ForslagEndring
+  begrunnelse?: string | null
+}): AktivtForslag {
+  const b = begrunnelse === undefined ? defaultBegrunnnelseTekst : begrunnelse
+
+  return {
+    id: uuidv4(),
+    opprettet: dayjs().format('YYYY-MM-DD'),
+    begrunnelse: b,
+    endring: endring,
+    status: {
+      type: ForslagStatusType.VenterPaSvar
+    }
   }
 }

@@ -38,6 +38,8 @@ export const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
       return EndreDeltakelseType.FORLENG_DELTAKELSE
     case ForslagEndringType.Deltakelsesmengde:
       return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
+    case ForslagEndringType.Sluttdato:
+      return EndreDeltakelseType.ENDRE_SLUTTDATO
     default:
       assertNever(forslag.endring)
   }
@@ -75,6 +77,12 @@ export const ForslagtypeDetaljer = ({
               forslag.endring.dagerPerUke
             )}
           </BodyShort>
+        )
+      case ForslagEndringType.Sluttdato:
+        return (
+          <BodyLong size="small">
+            Ny sluttdato: {formatDateFromString(forslag.endring.sluttdato)}
+          </BodyLong>
         )
       default:
         assertNever(forslag.endring)
