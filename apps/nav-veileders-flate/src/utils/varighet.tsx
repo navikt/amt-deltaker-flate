@@ -397,7 +397,7 @@ export function useSluttdato({
     onChange: onAnnetChange,
     defaultDato: defaultAnnetDato,
     startdato,
-    valgtVarighet
+    erSkjult: valgtVarighet !== VarighetValg.ANNET
   })
 
   const kalkulerSluttdatoFra = (date: Date, varighetValg: VarighetValg) => {
@@ -432,7 +432,7 @@ export function useSluttdato({
       setError('Du må velge en sluttdato')
       return false
     }
-    return error !== null && annet.error !== null
+    return error === null && annet.error === null
   }
 
   const validerDato = (dateValidation: DateValidationT, date?: Date) => {
@@ -461,14 +461,14 @@ interface SluttdatoInputOpts {
   onChange?: (date: Date | undefined) => void
   defaultDato: Date | undefined
   startdato?: Date
-  valgtVarighet?: VarighetValg
+  erSkjult?: boolean
 }
 export function useSluttdatoInput({
   deltaker,
   onChange,
   defaultDato,
   startdato,
-  valgtVarighet
+  erSkjult
 }: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
@@ -479,7 +479,7 @@ export function useSluttdatoInput({
     } else {
       setError(null)
     }
-  }, [startdato, sluttdato])
+  }, [startdato])
 
   const validate = (dateValidation: DateValidationT, date?: Date) => {
     if (dateValidation.isInvalid) {
@@ -490,7 +490,7 @@ export function useSluttdatoInput({
           ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
           : DATO_FØR_SLUTTDATO_FEILMELDING
       )
-    } else if (dateValidation.isAfter && date) {
+    } else if (date) {
       setError(getSluttDatoFeilmelding(deltaker, date, startdato))
     } else {
       setError(null)
@@ -498,11 +498,16 @@ export function useSluttdatoInput({
   }
 
   const handleChange = (date: Date | undefined) => {
-    if (date) setSluttdato(date)
-    if (onChange) onChange(date)
+    if (date) {
+      setSluttdato(date)
+      setError(getSluttDatoFeilmelding(deltaker, date, startdato))
+    }
+    if (onChange) {
+      onChange(date)
+    }
   }
 
-  const errorMsg = valgtVarighet !== VarighetValg.ANNET ? null : error
+  const errorMsg = erSkjult ? null : error
 
   return { sluttdato, error: errorMsg, validate, onChange: handleChange }
 }

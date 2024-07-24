@@ -4,7 +4,7 @@ import {
   getDateFromNorwegianStringFormat,
   getDateFromString
 } from 'deltaker-flate-common'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
@@ -13,14 +13,11 @@ import {
   formatDateToDateInputStr
 } from '../../../utils/utils.ts'
 import {
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSluttDatoFeilmelding,
-  getSoftMaxVarighetBekreftelseText
+  getSoftMaxVarighetBekreftelseText,
+  useSluttdatoInput
 } from '../../../utils/varighet.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
@@ -39,54 +36,46 @@ export const EndreSluttdatoModal = ({
   onSuccess
 }: EndreSluttdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const [nySluttDato, settNySluttDato] = useState<Date | null | undefined>(
-    getDateFromString(pamelding.sluttdato)
-  )
-  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
 
-  const datePickerRef = useRef<HTMLInputElement>(null)
-  const skalBekrefteVarighet =
-    nySluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
+  const sluttdato = useSluttdatoInput({
+    deltaker: pamelding,
+    defaultDato: getDateFromString(pamelding.sluttdato),
+    startdato: useMemo(
+      () => getDateFromString(pamelding.startdato),
+      [pamelding.startdato]
+    )
+  })
 
+  const datePickerRef = useRef<HTMLInputElement>(null)
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
     defaultSelected: getDateFromString(pamelding.sluttdato),
     onValidate: (dateValidation) => {
-      if (dateValidation.isAfter) {
-        const value = getDateFromNorwegianStringFormat(
-          datePickerRef?.current?.value
-        )
-        if (value) setErrorSluttDato(getSluttDatoFeilmelding(pamelding, value))
-        else setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
-      } else if (dateValidation.isInvalid) {
-        setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-      } else if (dateValidation.isBefore) {
-        setErrorSluttDato(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
-      }
+      sluttdato.validate(
+        dateValidation,
+        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
+      )
     },
-    onDateChange: (date) => {
-      settNySluttDato(date)
-      if (date) setErrorSluttDato(null)
-    }
+    onDateChange: sluttdato.onChange
   })
 
+  const skalBekrefteVarighet =
+    sluttdato.sluttdato &&
+    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
+
   const validertRequest = () => {
-    if (!nySluttDato && !errorSluttDato) {
-      setErrorSluttDato('Du må velge sluttdato')
-      return null
-    }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       return null
     }
-    if (nySluttDato && !errorSluttDato) {
+    if (sluttdato.sluttdato) {
       const endring: EndreSluttdatoRequest = {
-        sluttdato: formatDateToDateInputStr(nySluttDato)
+        sluttdato: formatDateToDateInputStr(sluttdato.sluttdato)
       }
       return {
         deltakerId: pamelding.deltakerId,
@@ -113,7 +102,7 @@ export const EndreSluttdatoModal = ({
           {...inputProps}
           ref={datePickerRef}
           label="Ny sluttdato"
-          error={errorSluttDato}
+          error={sluttdato.error}
           size="small"
         />
       </DatePicker>
