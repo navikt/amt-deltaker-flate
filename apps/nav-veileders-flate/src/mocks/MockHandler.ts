@@ -250,7 +250,20 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      return [forslag, forslagAvslutt]
+      const forslagDeltakelsesmengde: AktivtForslag = {
+        id: uuidv4(),
+        opprettet: dayjs().format('YYYY-MM-DD'),
+        begrunnelse: 'Med noe begrunnelse også',
+        endring: {
+          type: ForslagEndringType.Deltakelsesmengde,
+          deltakelsesprosent: 42,
+          dagerPerUke: 3
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslagDeltakelsesmengde, forslag, forslagAvslutt]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
       const forslagIkkeAktuell: AktivtForslag = {

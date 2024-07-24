@@ -1,11 +1,10 @@
 import React from 'react'
 import { BodyLong } from '@navikt/ds-react'
-import { AktivtForslag, AvsluttDeltakelseForslag } from '../../model/forslag.ts'
+import { AvsluttDeltakelseForslag } from '../../model/forslag.ts'
 import { getForslagEndringAarsakText } from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
 
 interface Props {
-  forslag: AktivtForslag
   avsluttDeltakelseForslag: AvsluttDeltakelseForslag
 }
 
