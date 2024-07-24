@@ -6,27 +6,12 @@ import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx
 import {
   AktivtForslag,
   EndreDeltakelseType,
-  ForslagEndringType
+  getEndreDeltakelsesType
 } from 'deltaker-flate-common'
-import { util } from 'zod'
-import assertNever = util.assertNever
 import { AvvisModal } from './AvvisForslagModal.tsx'
 
 interface Props {
   forslag: AktivtForslag
-}
-
-const getModaltype = (forslag: AktivtForslag) => {
-  switch (forslag.endring.type) {
-    case ForslagEndringType.IkkeAktuell:
-      return EndreDeltakelseType.IKKE_AKTUELL
-    case ForslagEndringType.AvsluttDeltakelse:
-      return EndreDeltakelseType.AVSLUTT_DELTAKELSE
-    case ForslagEndringType.ForlengDeltakelse:
-      return EndreDeltakelseType.FORLENG_DELTAKELSE
-    default:
-      assertNever(forslag.endring)
-  }
 }
 
 export const BehandleForslagKnapp = ({ forslag }: Props) => {
@@ -37,7 +22,7 @@ export const BehandleForslagKnapp = ({ forslag }: Props) => {
 
   const openModal = () => {
     if (deltaker.kanEndres) {
-      const type = getModaltype(forslag)
+      const type = getEndreDeltakelsesType(forslag)
       setModalType(type)
       setModalOpen(true)
     }

@@ -68,7 +68,9 @@ export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 
 export const endreDeltakelsesmengdeSchema = z.object({
   deltakelsesprosent: z.number().optional(),
-  dagerPerUke: z.number().optional()
+  dagerPerUke: z.number().optional(),
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().nullable()
 })
 
 export type EndreDeltakelsesmengdeRequest = z.infer<

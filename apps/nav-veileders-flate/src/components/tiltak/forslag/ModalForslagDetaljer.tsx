@@ -12,11 +12,11 @@ export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
     <div>
       <Box
         background="bg-subtle"
-        padding={{ xs: '2', md: '6' }}
+        padding={{ xs: '2', md: '4' }}
         borderRadius="medium"
         className="mt-4"
       >
-        <HStack>
+        <HStack className="items-end mb-2">
           <Heading level="2" size="small">
             Forslag fra arrangør:
           </Heading>

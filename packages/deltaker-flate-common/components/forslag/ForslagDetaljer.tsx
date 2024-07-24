@@ -6,6 +6,7 @@ import assertNever = util.assertNever
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
 import {
   BodyLong,
+  BodyShort,
   Detail,
   Heading,
   HGrid,
@@ -15,6 +16,7 @@ import {
 } from '@navikt/ds-react'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {
+  deltakerprosentText,
   getEndreDeltakelseTypeText,
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
@@ -26,7 +28,7 @@ interface Props {
   forslag: AktivtForslag
 }
 
-const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
+export const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.IkkeAktuell:
       return EndreDeltakelseType.IKKE_AKTUELL
@@ -34,6 +36,8 @@ const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
       return EndreDeltakelseType.AVSLUTT_DELTAKELSE
     case ForslagEndringType.ForlengDeltakelse:
       return EndreDeltakelseType.FORLENG_DELTAKELSE
+    case ForslagEndringType.Deltakelsesmengde:
+      return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
     default:
       assertNever(forslag.endring)
   }
@@ -48,15 +52,11 @@ export const ForslagtypeDetaljer = ({
     switch (forslag.endring.type) {
       case ForslagEndringType.IkkeAktuell:
         return (
-          <IkkeAktuellForslagDetaljer
-            forslag={forslag}
-            ikkeAktuellForslag={forslag.endring}
-          />
+          <IkkeAktuellForslagDetaljer ikkeAktuellForslag={forslag.endring} />
         )
       case ForslagEndringType.AvsluttDeltakelse:
         return (
           <AvsluttDeltakelseForslagDetaljer
-            forslag={forslag}
             avsluttDeltakelseForslag={forslag.endring}
           />
         )
@@ -65,6 +65,16 @@ export const ForslagtypeDetaljer = ({
           <ForlengDeltakelseForslagDetaljer
             forlengDeltakelseForslag={forslag.endring}
           />
+        )
+      case ForslagEndringType.Deltakelsesmengde:
+        return (
+          <BodyShort size="small">
+            Ny deltakelsesmengde:{' '}
+            {deltakerprosentText(
+              forslag.endring.deltakelsesprosent,
+              forslag.endring.dagerPerUke
+            )}
+          </BodyShort>
         )
       default:
         assertNever(forslag.endring)

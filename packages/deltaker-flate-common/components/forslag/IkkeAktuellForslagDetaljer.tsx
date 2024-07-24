@@ -1,9 +1,8 @@
 import { BodyLong } from '@navikt/ds-react'
-import { AktivtForslag, IkkeAktuellForslag } from '../../model/forslag.ts'
+import { IkkeAktuellForslag } from '../../model/forslag.ts'
 import { getForslagEndringAarsakText } from '../../utils/displayText.ts'
 
 interface Props {
-  forslag: AktivtForslag
   ikkeAktuellForslag: IkkeAktuellForslag
 }
 
