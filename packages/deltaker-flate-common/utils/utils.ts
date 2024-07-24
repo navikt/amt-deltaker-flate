@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { EMDASH } from './constants'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 dayjs.locale(nb)
+dayjs.extend(customParseFormat)
 
 /**
  * Returns true if date is not null or undefined and is a valid date.

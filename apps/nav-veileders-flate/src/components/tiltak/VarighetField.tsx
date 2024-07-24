@@ -15,6 +15,8 @@ import {
   getVarighet,
   varighetValgForType
 } from '../../utils/varighet.tsx'
+import { formatDateToInputStr } from '../../utils/utils.ts'
+import dayjs from 'dayjs'
 
 interface Props {
   className?: string
@@ -53,8 +55,11 @@ export const VarighetField = ({
   )
   const datePickerRef = useRef<HTMLInputElement>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
+  const [dateInput, setDateInput] = useState<string>(
+    defaultAnnetDato ? formatDateToInputStr(defaultAnnetDato) : ''
+  )
 
-  const { datepickerProps, inputProps } = useDatepicker({
+  const { datepickerProps } = useDatepicker({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
@@ -66,6 +71,9 @@ export const VarighetField = ({
       )
     },
     onDateChange: (date) => {
+      if (date) {
+        setDateInput(formatDateToInputStr(date))
+      }
       onChangeSluttDato(date)
     }
   })
@@ -73,6 +81,18 @@ export const VarighetField = ({
   const handleChangeVarighet = (valg: VarighetValg) => {
     settValgtVarighet(valg)
     onChangeVarighet(valg)
+  }
+
+  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateInput(e.target.value)
+
+    const date = dayjs(e.target.value, 'DD.MM.YYYY')
+    if (date.isValid()) {
+      onChangeSluttDato(date.toDate())
+    } else {
+      onValidateSluttDato(dateValidation({ isInvalid: true }))
+      onChangeSluttDato(undefined)
+    }
   }
 
   return (
@@ -96,12 +116,13 @@ export const VarighetField = ({
             <div className="mt-2">
               <DatePicker {...datepickerProps}>
                 <DatePicker.Input
-                  {...inputProps}
+                  value={dateInput}
                   ref={datePickerRef}
                   label="Annet - velg dato"
                   size="small"
                   hideLabel={true}
                   error={errorSluttDato}
+                  onChange={handleDateInputChange}
                 />
               </DatePicker>
             </div>
@@ -110,4 +131,19 @@ export const VarighetField = ({
       </>
     </RadioGroup>
   )
+}
+
+export function dateValidation(
+  overrides: Partial<DateValidationT> = {}
+): DateValidationT {
+  return {
+    isDisabled: false,
+    isWeekend: false,
+    isEmpty: false,
+    isInvalid: false,
+    isValidDate: false,
+    isBefore: false,
+    isAfter: false,
+    ...overrides
+  }
 }

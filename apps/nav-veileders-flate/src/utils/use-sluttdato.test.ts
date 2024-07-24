@@ -13,7 +13,7 @@ import {
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { PameldingResponse } from '../api/data/pamelding.ts'
-import { DateValidationT } from '@navikt/ds-react'
+import { dateValidation } from '../components/tiltak/VarighetField.tsx'
 
 const mock = new MockHandler()
 const deltakerUtenDatoer = mock.createDeltaker(
@@ -275,7 +275,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     const { result } = renderHook(() =>
       useSluttdato({
         deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.TRE_MANEDER,
+        valgtVarighet: VarighetValg.ANNET,
         startdato
       })
     )
@@ -294,7 +294,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     const { result } = renderHook(() =>
       useSluttdato({
         deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.TRE_MANEDER,
+        valgtVarighet: VarighetValg.ANNET,
         startdato
       })
     )
@@ -412,18 +412,3 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     expect(result.current.sluttdato).toBe(undefined)
   })
 })
-
-function dateValidation(
-  overrides: Partial<DateValidationT> = {}
-): DateValidationT {
-  return {
-    isDisabled: false,
-    isWeekend: false,
-    isEmpty: false,
-    isInvalid: false,
-    isValidDate: false,
-    isBefore: false,
-    isAfter: false,
-    ...overrides
-  }
-}
