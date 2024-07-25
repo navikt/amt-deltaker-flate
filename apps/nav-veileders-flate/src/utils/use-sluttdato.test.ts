@@ -7,13 +7,13 @@ import {
   SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
-  VarighetValg,
-  useSluttdato
+  VarighetValg
 } from './varighet.tsx'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { dateValidation } from '../components/tiltak/VarighetField.tsx'
+import { useSluttdato } from './use-sluttdato.ts'
 
 const mock = new MockHandler()
 const deltakerUtenDatoer = mock.createDeltaker(
