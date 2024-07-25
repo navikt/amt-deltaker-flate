@@ -1,19 +1,13 @@
-import {
-  ConfirmationPanel,
-  Radio,
-  RadioGroup,
-  useDatepicker
-} from '@navikt/ds-react'
+import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AktivtForslag,
   AvsluttDeltakelseForslag,
   EndreDeltakelseType,
   ForslagEndring,
   ForslagEndringType,
-  getDateFromNorwegianStringFormat,
   getDateFromString
 } from 'deltaker-flate-common'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
