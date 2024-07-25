@@ -56,7 +56,7 @@ const DemoStatusInstillinger = () => {
   }
 
   useEffect(() => {
-    handlePameldingStatusChange(DeltakerStatusType.HAR_SLUTTET)
+    handlePameldingStatusChange(DeltakerStatusType.DELTAR)
   }, [])
 
   return (
