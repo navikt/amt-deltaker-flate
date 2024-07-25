@@ -392,13 +392,13 @@ export function useSluttdato({
     setSluttdato(d)
   }
 
-  const annet = useAnnetSluttdato(
+  const annet = useSluttdatoInput({
     deltaker,
-    onAnnetChange,
-    defaultAnnetDato,
+    onChange: onAnnetChange,
+    defaultDato: defaultAnnetDato,
     startdato,
-    valgtVarighet
-  )
+    erSkjult: valgtVarighet !== VarighetValg.ANNET
+  })
 
   const kalkulerSluttdatoFra = (date: Date, varighetValg: VarighetValg) => {
     const varighet = getVarighet(varighetValg)
@@ -432,7 +432,7 @@ export function useSluttdato({
       setError('Du må velge en sluttdato')
       return false
     }
-    return error !== undefined && annet.error !== undefined
+    return error === null && annet.error === null
   }
 
   const validerDato = (dateValidation: DateValidationT, date?: Date) => {
@@ -456,23 +456,30 @@ export function useSluttdato({
   }
 }
 
-function useAnnetSluttdato(
-  deltaker: PameldingResponse,
-  onChange: (date: Date | undefined) => void,
-  defaultDato: Date | undefined,
-  startdato?: Date,
-  valgtVarighet?: VarighetValg
-) {
+interface SluttdatoInputOpts {
+  deltaker: PameldingResponse
+  onChange?: (date: Date | undefined) => void
+  defaultDato: Date | undefined
+  startdato?: Date
+  erSkjult?: boolean
+}
+export function useSluttdatoInput({
+  deltaker,
+  onChange,
+  defaultDato,
+  startdato,
+  erSkjult
+}: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (valgtVarighet !== VarighetValg.ANNET) {
-      setError(null)
-    } else if (sluttdato) {
+    if (sluttdato) {
       setError(getSluttDatoFeilmelding(deltaker, sluttdato, startdato))
+    } else {
+      setError(null)
     }
-  }, [valgtVarighet, sluttdato, startdato])
+  }, [startdato])
 
   const validate = (dateValidation: DateValidationT, date?: Date) => {
     if (dateValidation.isInvalid) {
@@ -483,7 +490,7 @@ function useAnnetSluttdato(
           ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
           : DATO_FØR_SLUTTDATO_FEILMELDING
       )
-    } else if (dateValidation.isAfter && date) {
+    } else if (date) {
       setError(getSluttDatoFeilmelding(deltaker, date, startdato))
     } else {
       setError(null)
@@ -491,9 +498,16 @@ function useAnnetSluttdato(
   }
 
   const handleChange = (date: Date | undefined) => {
-    if (date) setSluttdato(date)
-    onChange(date)
+    if (date) {
+      setSluttdato(date)
+      setError(getSluttDatoFeilmelding(deltaker, date, startdato))
+    }
+    if (onChange) {
+      onChange(date)
+    }
   }
 
-  return { sluttdato, error, validate, onChange: handleChange }
+  const errorMsg = erSkjult ? null : error
+
+  return { sluttdato, error: errorMsg, validate, onChange: handleChange }
 }

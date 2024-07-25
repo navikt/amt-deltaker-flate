@@ -10,6 +10,10 @@ export const formatDateToDateInputStr = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
+export const formatDateToInputStr = (date: Date): string => {
+  return dayjs(date).format('DD.MM.YYYY')
+}
+
 /**
  * Formaterer date til string: DD.MM.YYYY
  * @param date
@@ -21,7 +25,7 @@ export const formatDateToString = (date?: Date | null): string | undefined => {
 
 export const dateStrToNullableDate = (dateStr: string | null): Date | null => {
   if (dateStr == null || dateStr == EMDASH) return null
-  const date = dayjs(dateStr, 'DD.MM.YYYY')
+  const date = dayjs(dateStr)
   return date.isValid() ? date.toDate() : null
 }
 

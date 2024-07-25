@@ -39,7 +39,8 @@ export const endreBakgrunnsinfoSchema = z.object({
 export type EndreBakgrunnsinfoRequest = z.infer<typeof endreBakgrunnsinfoSchema>
 
 export const endreSluttdatoSchema = z.object({
-  sluttdato: z.string()
+  sluttdato: z.string(),
+  forslagId: z.string().uuid().nullish()
 })
 
 export type EndreSluttdatoRequest = z.infer<typeof endreSluttdatoSchema>
