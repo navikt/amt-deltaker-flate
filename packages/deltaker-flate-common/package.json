@@ -12,11 +12,11 @@
     "lint:fix": "eslint --fix '*.{ts,tsx}'"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^6.8.0",
-    "@navikt/ds-react": "^6.8.0",
-    "dayjs": "^1.11.11",
+    "@navikt/aksel-icons": "^6.13.0",
+    "@navikt/ds-react": "^6.13.0",
+    "dayjs": "^1.11.12",
     "react": "^18.3.1",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
