@@ -1,9 +1,4 @@
-import {
-  BodyShort,
-  ConfirmationPanel,
-  DatePicker,
-  useDatepicker
-} from '@navikt/ds-react'
+import { BodyShort, ConfirmationPanel, DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
   Tiltakstype,
@@ -31,6 +26,7 @@ import {
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
+import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -65,27 +61,20 @@ export const EndreOppstartsdatoModal = ({
 
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
 
-  const {
-    datepickerProps,
-    inputProps,
-    selectedDay: startdato
-  } = useDatepicker({
-    fromDate:
-      dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined,
-    toDate:
-      dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined,
-    defaultMonth: dayjs().toDate(),
-    defaultSelected: getDateFromString(pamelding.startdato),
-    onValidate: (dateValidation) => {
-      if (dateValidation.isBefore || dateValidation.isAfter) {
-        setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
-      } else if (dateValidation.isInvalid) {
-        setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
-      } else {
-        setErrorStartDato(null)
-      }
+  const [startdato, setStartdato] = useState<Date | undefined>(
+    getDateFromString(pamelding.startdato)
+  )
+
+  const validateStartdato = (dateValidation: DateValidationT) => {
+    if (dateValidation.isBefore || dateValidation.isAfter) {
+      setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
+    } else if (dateValidation.isInvalid) {
+      setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
+    } else {
+      setErrorStartDato(null)
     }
-  })
+  }
+
   const sluttdato = useSluttdato({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
@@ -144,14 +133,20 @@ export const EndreOppstartsdatoModal = ({
       validertRequest={validertRequest}
       forslag={null}
     >
-      <DatePicker {...datepickerProps}>
-        <DatePicker.Input
-          {...inputProps}
-          label="Ny oppstartsdato"
-          error={errorStartdato}
-          size="small"
-        />
-      </DatePicker>
+      <SimpleDatePicker
+        label="Ny oppstartsdato"
+        error={errorStartdato}
+        fromDate={
+          dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined
+        }
+        toDate={
+          dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined
+        }
+        defaultMonth={dayjs().toDate()}
+        defaultDate={getDateFromString(pamelding.startdato)}
+        onValidate={validateStartdato}
+        onChange={(date) => setStartdato(date)}
+      />
       {skalVelgeVarighet && (
         <>
           <VarighetField

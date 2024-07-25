@@ -8,6 +8,7 @@ interface Props {
   fromDate?: Date
   toDate?: Date
   defaultDate?: Date
+  defaultMonth?: Date
   onValidate: (validation: DateValidationT, date?: Date) => void
   onChange: (date: Date | undefined) => void
 }
@@ -18,6 +19,7 @@ export function SimpleDatePicker({
   fromDate,
   toDate,
   defaultDate,
+  defaultMonth,
   onValidate,
   onChange
 }: Props) {
@@ -26,6 +28,7 @@ export function SimpleDatePicker({
     fromDate: fromDate,
     toDate: toDate,
     defaultSelected: defaultDate,
+    defaultMonth: defaultMonth,
     onValidate: (dateValidation) => {
       onValidate(
         dateValidation,

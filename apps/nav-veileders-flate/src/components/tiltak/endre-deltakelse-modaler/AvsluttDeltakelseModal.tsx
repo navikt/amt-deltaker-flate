@@ -1,6 +1,5 @@
 import {
   ConfirmationPanel,
-  DatePicker,
   Radio,
   RadioGroup,
   useDatepicker
@@ -35,6 +34,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
+import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -67,7 +67,6 @@ export const AvsluttDeltakelseModal = ({
 
   const aarsak = useAarsak(forslag)
   const begrunnelse = useBegrunnelse(true)
-
   const sluttdato = useSluttdatoInput({
     deltaker: pamelding,
     defaultDato: defaultSluttdato,
@@ -76,8 +75,6 @@ export const AvsluttDeltakelseModal = ({
       [pamelding.startdato]
     )
   })
-
-  const datePickerRef = useRef<HTMLInputElement>(null)
   const { enhetId } = useAppContext()
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
@@ -85,19 +82,6 @@ export const AvsluttDeltakelseModal = ({
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
-
-  const { datepickerProps, inputProps } = useDatepicker({
-    fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
-    toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
-    defaultSelected: defaultSluttdato,
-    onValidate: (dateValidation) => {
-      sluttdato.validate(
-        dateValidation,
-        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
-      )
-    },
-    onDateChange: sluttdato.onChange
-  })
 
   const validertRequest = () => {
     let hasError = false
@@ -177,15 +161,15 @@ export const AvsluttDeltakelseModal = ({
       )}
       {skalViseSluttDato && (
         <section className="mt-4">
-          <DatePicker {...datepickerProps}>
-            <DatePicker.Input
-              {...inputProps}
-              ref={datePickerRef}
-              size="small"
-              label="Hva er ny sluttdato?"
-              error={sluttdato.error}
-            />
-          </DatePicker>
+          <SimpleDatePicker
+            label="Hva er ny sluttdato?"
+            error={sluttdato.error}
+            fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
+            toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
+            defaultDate={defaultSluttdato}
+            onValidate={sluttdato.validate}
+            onChange={sluttdato.onChange}
+          />
         </section>
       )}
       {skalBekrefteVarighet && (
