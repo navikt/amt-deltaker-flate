@@ -29,12 +29,12 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
-  useSluttdatoInput
+  getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
+import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse

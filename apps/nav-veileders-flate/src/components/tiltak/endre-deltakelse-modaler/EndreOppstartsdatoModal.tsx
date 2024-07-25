@@ -26,11 +26,11 @@ import {
   VarighetValg,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
-  useSluttdato
+  getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse

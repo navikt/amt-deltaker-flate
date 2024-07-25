@@ -14,7 +14,6 @@ import {
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
-  useSluttdato,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
@@ -23,6 +22,7 @@ import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import dayjs from 'dayjs'
+import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse

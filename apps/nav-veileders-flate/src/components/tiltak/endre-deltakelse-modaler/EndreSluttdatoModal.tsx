@@ -20,12 +20,12 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
-  useSluttdatoInput
+  getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
