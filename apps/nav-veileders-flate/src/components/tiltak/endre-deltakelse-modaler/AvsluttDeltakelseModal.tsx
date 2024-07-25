@@ -7,12 +7,14 @@ import {
 } from '@navikt/ds-react'
 import {
   AktivtForslag,
+  AvsluttDeltakelseForslag,
   EndreDeltakelseType,
+  ForslagEndring,
   ForslagEndringType,
   getDateFromNorwegianStringFormat,
   getDateFromString
 } from 'deltaker-flate-common'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
@@ -24,14 +26,11 @@ import {
   formatDateToDateInputStr
 } from '../../../utils/utils.ts'
 import {
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSluttDatoFeilmelding,
-  getSoftMaxVarighetBekreftelseText
+  getSoftMaxVarighetBekreftelseText,
+  useSluttdatoInput
 } from '../../../utils/varighet.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
@@ -52,17 +51,6 @@ const showHarDeltatt = (pamelding: PameldingResponse) => {
   return statusdato > femtenDagerSiden
 }
 
-const getSluttdatoFraForslag = (forslag: AktivtForslag | null) => {
-  if (
-    forslag &&
-    forslag.endring.type === ForslagEndringType.AvsluttDeltakelse
-  ) {
-    return forslag.endring.sluttdato
-  } else {
-    return null
-  }
-}
-
 export const AvsluttDeltakelseModal = ({
   pamelding,
   forslag,
@@ -70,14 +58,8 @@ export const AvsluttDeltakelseModal = ({
   onClose,
   onSuccess
 }: AvsluttDeltakelseModalProps) => {
-  const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
+  const defaultSluttdato = getSluttdato(pamelding, forslag)
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
-  const [nySluttDato, settNySluttDato] = useState<Date | null | undefined>(
-    (sluttdatoFraForslag
-      ? getDateFromString(sluttdatoFraForslag)
-      : getDateFromString(pamelding.sluttdato)) ?? null
-  )
-  const [errorSluttDato, setErrorSluttDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -86,6 +68,15 @@ export const AvsluttDeltakelseModal = ({
   const aarsak = useAarsak(forslag)
   const begrunnelse = useBegrunnelse(true)
 
+  const sluttdato = useSluttdatoInput({
+    deltaker: pamelding,
+    defaultDato: defaultSluttdato,
+    startdato: useMemo(
+      () => getDateFromString(pamelding.startdato),
+      [pamelding.startdato]
+    )
+  })
+
   const datePickerRef = useRef<HTMLInputElement>(null)
   const { enhetId } = useAppContext()
 
@@ -93,43 +84,24 @@ export const AvsluttDeltakelseModal = ({
   const skalViseHarDeltatt = showHarDeltatt(pamelding)
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
-    skalViseSluttDato && getSkalBekrefteVarighet(pamelding, nySluttDato)
+    skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
     toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
-    defaultSelected: sluttdatoFraForslag
-      ? getDateFromString(sluttdatoFraForslag)
-      : getDateFromString(pamelding.sluttdato),
+    defaultSelected: defaultSluttdato,
     onValidate: (dateValidation) => {
-      if (dateValidation.isAfter) {
-        const value = getDateFromNorwegianStringFormat(
-          datePickerRef?.current?.value
-        )
-        if (value) setErrorSluttDato(getSluttDatoFeilmelding(pamelding, value))
-        else setErrorSluttDato(VARGIHET_VALG_FEILMELDING)
-      } else if (dateValidation.isInvalid) {
-        setErrorSluttDato(UGYLDIG_DATO_FEILMELDING)
-      } else if (dateValidation.isBefore) {
-        setErrorSluttDato(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
-      }
+      sluttdato.validate(
+        dateValidation,
+        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
+      )
     },
-    onDateChange: (date) => {
-      settNySluttDato(date)
-      if (date) setErrorSluttDato(null)
-    }
+    onDateChange: sluttdato.onChange
   })
 
   const validertRequest = () => {
     let hasError = false
-    if (skalViseSluttDato && !nySluttDato && !errorSluttDato) {
-      setErrorSluttDato('Du må velge en sluttdato')
-      hasError = true
-    }
-    if (skalViseSluttDato && !nySluttDato) {
-      hasError = true
-    }
-    if (skalViseSluttDato && errorSluttDato) {
+    if (skalViseSluttDato && !sluttdato.sluttdato) {
       hasError = true
     }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
@@ -148,8 +120,8 @@ export const AvsluttDeltakelseModal = ({
           beskrivelse: aarsak.beskrivelse ?? null
         },
         sluttdato:
-          skalViseSluttDato && nySluttDato
-            ? formatDateToDateInputStr(nySluttDato)
+          skalViseSluttDato && sluttdato.sluttdato
+            ? formatDateToDateInputStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
         begrunnelse: begrunnelse.begrunnelse || null,
@@ -211,7 +183,7 @@ export const AvsluttDeltakelseModal = ({
               ref={datePickerRef}
               size="small"
               label="Hva er ny sluttdato?"
-              error={errorSluttDato}
+              error={sluttdato.error}
             />
           </DatePicker>
         </section>
@@ -240,4 +212,26 @@ export const AvsluttDeltakelseModal = ({
       />
     </Endringsmodal>
   )
+}
+
+function isAvsluttDeltakelseForslag(
+  endring: ForslagEndring
+): endring is AvsluttDeltakelseForslag {
+  return endring.type === ForslagEndringType.AvsluttDeltakelse
+}
+
+function getSluttdato(
+  deltaker: PameldingResponse,
+  forslag: AktivtForslag | null
+) {
+  if (forslag === null) {
+    return getDateFromString(deltaker.sluttdato)
+  }
+  if (isAvsluttDeltakelseForslag(forslag.endring)) {
+    return getDateFromString(forslag.endring.sluttdato)
+  } else {
+    throw new Error(
+      `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
+    )
+  }
 }
