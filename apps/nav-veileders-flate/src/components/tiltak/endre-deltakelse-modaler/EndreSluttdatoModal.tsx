@@ -1,14 +1,13 @@
-import { ConfirmationPanel, DatePicker, useDatepicker } from '@navikt/ds-react'
+import { ConfirmationPanel } from '@navikt/ds-react'
 import {
   AktivtForslag,
   EndreDeltakelseType,
   ForslagEndring,
   ForslagEndringType,
   SluttdatoForslag,
-  getDateFromNorwegianStringFormat,
   getDateFromString
 } from 'deltaker-flate-common'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
@@ -26,6 +25,7 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
+import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -64,20 +64,6 @@ export const EndreSluttdatoModal = ({
 
   const begrunnelse = useBegrunnelse(valgfriBegrunnelse)
 
-  const datePickerRef = useRef<HTMLInputElement>(null)
-  const { datepickerProps, inputProps } = useDatepicker({
-    fromDate: dateStrToNullableDate(pamelding.startdato) || undefined,
-    toDate: getSisteGyldigeSluttDato(pamelding) || undefined,
-    defaultSelected: getDateFromString(pamelding.sluttdato),
-    onValidate: (dateValidation) => {
-      sluttdato.validate(
-        dateValidation,
-        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
-      )
-    },
-    onDateChange: sluttdato.onChange
-  })
-
   const skalBekrefteVarighet =
     sluttdato.sluttdato &&
     getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
@@ -112,15 +98,15 @@ export const EndreSluttdatoModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      <DatePicker {...datepickerProps}>
-        <DatePicker.Input
-          {...inputProps}
-          ref={datePickerRef}
-          label="Ny sluttdato"
-          error={sluttdato.error}
-          size="small"
-        />
-      </DatePicker>
+      <SimpleDatePicker
+        label="Ny sluttdato"
+        error={sluttdato.error}
+        fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
+        toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
+        defaultDate={getDateFromString(pamelding.sluttdato)}
+        onValidate={sluttdato.validate}
+        onChange={sluttdato.onChange}
+      />
       {skalBekrefteVarighet && (
         <ConfirmationPanel
           className="mt-6"
