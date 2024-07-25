@@ -14,7 +14,7 @@ export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
         background="bg-subtle"
         padding={{ xs: '2', md: '4' }}
         borderRadius="medium"
-        className="mt-4"
+        className="mt-4 mb-4"
       >
         <HStack className="items-end mb-2">
           <Heading level="2" size="small">

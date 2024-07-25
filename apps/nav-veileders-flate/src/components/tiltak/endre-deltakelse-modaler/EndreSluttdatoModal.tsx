@@ -1,6 +1,10 @@
 import { ConfirmationPanel, DatePicker, useDatepicker } from '@navikt/ds-react'
 import {
+  AktivtForslag,
   EndreDeltakelseType,
+  ForslagEndring,
+  ForslagEndringType,
+  SluttdatoForslag,
   getDateFromNorwegianStringFormat,
   getDateFromString
 } from 'deltaker-flate-common'
@@ -21,9 +25,11 @@ import {
 } from '../../../utils/varighet.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
+  forslag: AktivtForslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
@@ -31,10 +37,12 @@ interface EndreSluttdatoModalProps {
 
 export const EndreSluttdatoModal = ({
   pamelding,
+  forslag,
   open,
   onClose,
   onSuccess
 }: EndreSluttdatoModalProps) => {
+  const defaultSluttdato = getSluttdato(pamelding, forslag)
   const { enhetId } = useAppContext()
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -43,12 +51,18 @@ export const EndreSluttdatoModal = ({
 
   const sluttdato = useSluttdatoInput({
     deltaker: pamelding,
-    defaultDato: getDateFromString(pamelding.sluttdato),
+    defaultDato: defaultSluttdato,
     startdato: useMemo(
       () => getDateFromString(pamelding.startdato),
       [pamelding.startdato]
     )
   })
+
+  const valgfriBegrunnelse =
+    forslag !== null &&
+    defaultSluttdato?.getTime() === sluttdato.sluttdato?.getTime()
+
+  const begrunnelse = useBegrunnelse(valgfriBegrunnelse)
 
   const datePickerRef = useRef<HTMLInputElement>(null)
   const { datepickerProps, inputProps } = useDatepicker({
@@ -73,9 +87,10 @@ export const EndreSluttdatoModal = ({
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       return null
     }
-    if (sluttdato.sluttdato) {
+    if (sluttdato.sluttdato && begrunnelse.valider()) {
       const endring: EndreSluttdatoRequest = {
-        sluttdato: formatDateToDateInputStr(sluttdato.sluttdato)
+        sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
+        forslagId: forslag?.id
       }
       return {
         deltakerId: pamelding.deltakerId,
@@ -95,7 +110,7 @@ export const EndreSluttdatoModal = ({
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttdato}
       validertRequest={validertRequest}
-      forslag={null}
+      forslag={forslag}
     >
       <DatePicker {...datepickerProps}>
         <DatePicker.Input
@@ -123,6 +138,33 @@ export const EndreSluttdatoModal = ({
           )}
         </ConfirmationPanel>
       )}
+      <BegrunnelseInput
+        type={valgfriBegrunnelse ? 'valgfri' : 'obligatorisk'}
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+      />
     </Endringsmodal>
   )
+}
+
+function isSluttdatoForslag(
+  endring: ForslagEndring
+): endring is SluttdatoForslag {
+  return endring.type === ForslagEndringType.Sluttdato
+}
+
+function getSluttdato(
+  deltaker: PameldingResponse,
+  forslag: AktivtForslag | null
+) {
+  if (forslag === null) {
+    return getDateFromString(deltaker.sluttdato)
+  }
+  if (isSluttdatoForslag(forslag.endring)) {
+    return getDateFromString(forslag.endring.sluttdato)
+  } else {
+    throw new Error(
+      `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
+    )
+  }
 }

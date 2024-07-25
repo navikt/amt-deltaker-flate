@@ -368,11 +368,7 @@ export class MockHandler {
       oppdatertPamelding.status.aarsak = request.aarsak
       oppdatertPamelding.startdato = null
       oppdatertPamelding.sluttdato = null
-      if (request.forslagId && oppdatertPamelding.forslag) {
-        oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
-          (f) => f.id !== request.forslagId
-        )
-      }
+      this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -399,11 +395,7 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
-      if (request.forslagId && oppdatertPamelding.forslag) {
-        oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
-          (f) => f.id !== request.forslagId
-        )
-      }
+      this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -442,6 +434,7 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
       this.pamelding = oppdatertPamelding
+      this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)
     }
 
@@ -462,11 +455,7 @@ export class MockHandler {
         oppdatertPamelding.status.aarsak = request.aarsak
         oppdatertPamelding.sluttdato = request.sluttdato
       }
-      if (request.forslagId && oppdatertPamelding.forslag) {
-        oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
-          (f) => f.id !== request.forslagId
-        )
-      }
+      this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
@@ -516,6 +505,7 @@ export class MockHandler {
       oppdatertPamelding.deltakelsesprosent = request.deltakelsesprosent || null
       oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
       this.pamelding = oppdatertPamelding
+      this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(this.pamelding)
     }
 
@@ -523,21 +513,23 @@ export class MockHandler {
   }
 
   avvisForslag(forslagId: string) {
-    const oppdatertPamelding = this.pamelding
-
-    if (oppdatertPamelding && oppdatertPamelding.forslag) {
-      oppdatertPamelding.forslag = oppdatertPamelding.forslag.filter(
-        (f) => f.id !== forslagId
-      )
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+    if (this.pamelding) {
+      this.fjernAktivtForslag(forslagId)
+      return HttpResponse.json(this.pamelding)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
+
+  fjernAktivtForslag(id: string | null | undefined) {
+    if (id && this.pamelding) {
+      this.pamelding.forslag = this.pamelding.forslag.filter((f) => f.id !== id)
+    }
+  }
 }
 
-const defaultBegrunnnelseTekst = 'Endringen har er veldig viktig fordi at.'
+const defaultBegrunnnelseTekst =
+  'Endringen her er veldig viktig fordi at det...'
 
 function aktivtForslag({
   endring,
