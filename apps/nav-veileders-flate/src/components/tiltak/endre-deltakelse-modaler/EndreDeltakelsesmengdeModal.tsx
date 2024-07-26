@@ -56,7 +56,7 @@ export const EndreDeltakelsesmengdeModal = ({
     deltakelsesprosent <= 100
 
   const gyldigDagerPerUke =
-    dagerPerUke !== null && 0 < dagerPerUke && dagerPerUke <= 5
+    dagerPerUke !== null ? 0 < dagerPerUke && dagerPerUke <= 5 : true
 
   const validertRequest = () => {
     if (!gyldigDeltakelsesprosent) {

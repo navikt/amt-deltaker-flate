@@ -3,7 +3,11 @@ import dayjs from 'dayjs'
 import {
   Tiltakstype,
   getDateFromString,
-  EndreDeltakelseType
+  EndreDeltakelseType,
+  AktivtForslag,
+  ForslagEndring,
+  StartdatoForslag,
+  ForslagEndringType
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -19,6 +23,7 @@ import {
   UGYLDIG_DATO_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
+  finnValgtVarighet,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText
@@ -27,10 +32,12 @@ import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
   open: boolean
+  forslag: AktivtForslag | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
@@ -38,19 +45,21 @@ interface EndreOppstartsdatoModalProps {
 export const EndreOppstartsdatoModal = ({
   pamelding,
   open,
+  forslag,
   onClose,
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
 
-  const defaultAnnetDato = pamelding.sluttdato
-    ? dayjs(pamelding.sluttdato).toDate()
-    : undefined
+  const defaultDatoer = getDatoer(pamelding, forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    defaultAnnetDato ? VarighetValg.ANNET : undefined
+    finnValgtVarighet(
+      defaultDatoer.startdato,
+      defaultDatoer.sluttdato,
+      pamelding.deltakerliste.tiltakstype
+    )
   )
-
   const [errorStartdato, setErrorStartDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -62,8 +71,28 @@ export const EndreOppstartsdatoModal = ({
   const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
 
   const [startdato, setStartdato] = useState<Date | undefined>(
-    getDateFromString(pamelding.startdato)
+    defaultDatoer.startdato
   )
+
+  const sluttdato = useSluttdato({
+    deltaker: pamelding,
+    valgtVarighet: valgtVarighet,
+    defaultAnnetDato: defaultDatoer.sluttdato,
+    startdato: startdato
+  })
+
+  const skalHaBegrunnelse =
+    !forslag ||
+    defaultDatoer.startdato?.getTime() !== startdato?.getTime() ||
+    defaultDatoer.sluttdato?.getTime() !== sluttdato.sluttdato?.getTime()
+
+  const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
+
+  const skalBekrefteVarighet =
+    startdato &&
+    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, startdato)
+
+  const maxSluttdato = getSisteGyldigeSluttDato(pamelding, startdato)
 
   const validateStartdato = (dateValidation: DateValidationT) => {
     if (dateValidation.isBefore || dateValidation.isAfter) {
@@ -74,19 +103,6 @@ export const EndreOppstartsdatoModal = ({
       setErrorStartDato(null)
     }
   }
-
-  const sluttdato = useSluttdato({
-    deltaker: pamelding,
-    valgtVarighet: valgtVarighet,
-    defaultAnnetDato: defaultAnnetDato,
-    startdato: startdato
-  })
-
-  const skalBekrefteVarighet =
-    startdato &&
-    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, startdato)
-
-  const maxSluttdato = getSisteGyldigeSluttDato(pamelding, startdato)
 
   const onChangeVarighet = (valg: VarighetValg) => {
     setValgtVarighet(valg)
@@ -107,6 +123,10 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
+    if (!begrunnelse.valider()) {
+      hasError = true
+    }
+
     if (!hasError && startdato) {
       return {
         deltakerId: pamelding.deltakerId,
@@ -115,7 +135,9 @@ export const EndreOppstartsdatoModal = ({
           startdato: formatDateToDateInputStr(startdato),
           sluttdato: sluttdato.sluttdato
             ? formatDateToDateInputStr(sluttdato.sluttdato)
-            : null
+            : null,
+          begrunnelse: begrunnelse.begrunnelse,
+          forslagId: forslag?.id
         }
       }
     }
@@ -131,7 +153,7 @@ export const EndreOppstartsdatoModal = ({
       onSend={onSuccess}
       apiFunction={endreDeltakelseStartdato}
       validertRequest={validertRequest}
-      forslag={null}
+      forslag={forslag}
     >
       <SimpleDatePicker
         label="Ny oppstartsdato"
@@ -143,7 +165,7 @@ export const EndreOppstartsdatoModal = ({
           dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined
         }
         defaultMonth={dayjs().toDate()}
-        defaultDate={getDateFromString(pamelding.startdato)}
+        defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}
         onChange={(date) => setStartdato(date)}
       />
@@ -158,7 +180,7 @@ export const EndreOppstartsdatoModal = ({
             errorVarighet={sluttdato.error}
             errorSluttDato={null}
             defaultVarighet={valgtVarighet}
-            defaultAnnetDato={defaultAnnetDato}
+            defaultAnnetDato={defaultDatoer.sluttdato}
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
@@ -185,8 +207,38 @@ export const EndreOppstartsdatoModal = ({
               {getSoftMaxVarighetBekreftelseText(tiltakstype)}
             </ConfirmationPanel>
           )}
+          <BegrunnelseInput
+            type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
+            onChange={begrunnelse.handleChange}
+            error={begrunnelse.error}
+          />
         </>
       )}
     </Endringsmodal>
   )
+}
+
+function isStartdatoForslag(
+  endring: ForslagEndring
+): endring is StartdatoForslag {
+  return endring.type === ForslagEndringType.Startdato
+}
+
+function getDatoer(deltaker: PameldingResponse, forslag: AktivtForslag | null) {
+  if (forslag === null) {
+    return {
+      startdato: getDateFromString(deltaker.startdato),
+      sluttdato: getDateFromString(deltaker.sluttdato)
+    }
+  }
+  if (isStartdatoForslag(forslag.endring)) {
+    return {
+      startdato: getDateFromString(forslag.endring.startdato),
+      sluttdato: getDateFromString(forslag.endring.sluttdato)
+    }
+  } else {
+    throw new Error(
+      `Kan ikke behandle forslag av type ${forslag.endring.type} som startdato`
+    )
+  }
 }

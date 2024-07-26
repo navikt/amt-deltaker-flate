@@ -18,6 +18,7 @@ import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import {
   deltakerprosentText,
   getEndreDeltakelseTypeText,
+  getForslagEndringAarsakText,
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
@@ -40,6 +41,10 @@ export const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
       return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
     case ForslagEndringType.Sluttdato:
       return EndreDeltakelseType.ENDRE_SLUTTDATO
+    case ForslagEndringType.Startdato:
+      return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
+    case ForslagEndringType.Sluttarsak:
+      return EndreDeltakelseType.ENDRE_SLUTTARSAK
     default:
       assertNever(forslag.endring)
   }
@@ -82,6 +87,24 @@ export const ForslagtypeDetaljer = ({
         return (
           <BodyLong size="small">
             Ny sluttdato: {formatDateFromString(forslag.endring.sluttdato)}
+          </BodyLong>
+        )
+      case ForslagEndringType.Startdato:
+        return (
+          <>
+            <BodyLong size="small">
+              Ny oppstartsdato:{' '}
+              {formatDateFromString(forslag.endring.startdato)}
+            </BodyLong>
+            <BodyLong size="small">
+              Ny sluttdato: {formatDateFromString(forslag.endring.sluttdato)}
+            </BodyLong>
+          </>
+        )
+      case ForslagEndringType.Sluttarsak:
+        return (
+          <BodyLong size="small">
+            Ny sluttårsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
           </BodyLong>
         )
       default:

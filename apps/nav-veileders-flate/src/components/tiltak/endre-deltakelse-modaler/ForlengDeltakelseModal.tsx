@@ -10,7 +10,7 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
-  finnVarighetValgForTiltakstype,
+  finnValgtVarighet,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
@@ -52,17 +52,13 @@ export const ForlengDeltakelseModal = ({
 }: ForlengDeltakelseModalProps) => {
   const sluttdatoFraDeltaker = dateStrToNullableDate(pamelding.sluttdato)
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
-  const varighetFraForslag =
-    sluttdatoFraForslag && sluttdatoFraDeltaker
-      ? finnVarighetValgForTiltakstype(
-          sluttdatoFraDeltaker,
-          sluttdatoFraForslag,
-          pamelding.deltakerliste.tiltakstype
-        )
-      : undefined
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    varighetFraForslag
+    finnValgtVarighet(
+      sluttdatoFraDeltaker,
+      sluttdatoFraForslag,
+      pamelding.deltakerliste.tiltakstype
+    )
   )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<

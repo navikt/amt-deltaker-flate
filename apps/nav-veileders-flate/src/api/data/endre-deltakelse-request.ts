@@ -27,7 +27,9 @@ export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
 export const endreStartdatoSchema = z.object({
   startdato: z.string().nullable(),
-  sluttdato: z.string().nullable()
+  sluttdato: z.string().nullable(),
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullish()
 })
 
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
@@ -56,7 +58,9 @@ export const avsluttDeltakelseSchema = z.object({
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
 
 export const endreSluttarsakSchema = z.object({
-  aarsak: aarsakSchema
+  aarsak: aarsakSchema,
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullish()
 })
 
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>

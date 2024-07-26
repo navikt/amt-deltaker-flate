@@ -162,6 +162,16 @@ export function finnVarighetValg(
   }
 }
 
+export function finnValgtVarighet(
+  fraDato: Date | null | undefined,
+  tilDato: Date | null | undefined,
+  tiltakstype: Tiltakstype
+) {
+  return fraDato && tilDato
+    ? finnVarighetValgForTiltakstype(fraDato, tilDato, tiltakstype)
+    : undefined
+}
+
 export function finnVarighetValgForTiltakstype(
   fraDato: Date,
   tilDato: Date,
