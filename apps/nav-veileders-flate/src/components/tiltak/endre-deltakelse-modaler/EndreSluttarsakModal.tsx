@@ -1,14 +1,20 @@
-import { DeltakerStatusType, EndreDeltakelseType } from 'deltaker-flate-common'
+import {
+  AktivtForslag,
+  DeltakerStatusType,
+  EndreDeltakelseType
+} from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
 import { EndreSluttarsakRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
   open: boolean
+  forslag: AktivtForslag | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
@@ -24,19 +30,27 @@ const sluttarsakSporsmalTekst = (statustype: DeltakerStatusType) => {
 export const EndreSluttarsakModal = ({
   pamelding,
   open,
+  forslag,
   onClose,
   onSuccess
 }: EndreSluttarsakModalProps) => {
-  const aarsak = useAarsak(null)
+  const aarsak = useAarsak(forslag)
+  const begrunnelse = useBegrunnelse(true)
   const { enhetId } = useAppContext()
 
   const validertRequest = () => {
-    if (aarsak.valider() && aarsak.aarsak !== undefined) {
+    if (
+      begrunnelse.valider() &&
+      aarsak.valider() &&
+      aarsak.aarsak !== undefined
+    ) {
       const endring: EndreSluttarsakRequest = {
         aarsak: {
           type: aarsak.aarsak,
           beskrivelse: aarsak.beskrivelse ?? null
-        }
+        },
+        begrunnelse: begrunnelse.begrunnelse,
+        forslagId: forslag?.id
       }
 
       return {
@@ -57,7 +71,7 @@ export const EndreSluttarsakModal = ({
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttarsak}
       validertRequest={validertRequest}
-      forslag={null}
+      forslag={forslag}
     >
       <AarsakRadioGroup
         legend={sluttarsakSporsmalTekst(pamelding.status.type)}
@@ -67,6 +81,11 @@ export const EndreSluttarsakModal = ({
         beskrivelseError={aarsak.beskrivelseError}
         onChange={aarsak.handleChange}
         onBeskrivelse={aarsak.handleBeskrivelse}
+      />
+      <BegrunnelseInput
+        type="valgfri"
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
       />
     </Endringsmodal>
   )

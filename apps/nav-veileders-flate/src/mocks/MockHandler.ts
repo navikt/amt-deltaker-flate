@@ -221,6 +221,11 @@ export class MockHandler {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
         .format('YYYY-MM-DD')
+
+      const startdato = dayjs(this.pamelding?.startdato)
+        .add(1, 'week')
+        .format('YYYY-MM-DD')
+
       const forslag = aktivtForslag({
         begrunnelse:
           'Vi har kommet i gang, men ser at det er hensiktsmessig ' +
@@ -248,7 +253,19 @@ export class MockHandler {
           dagerPerUke: 3
         }
       })
-      return [forslagDeltakelsesmengde, forslag, forslagAvslutt]
+      const forslagStartdato = aktivtForslag({
+        endring: {
+          type: ForslagEndringType.Startdato,
+          startdato: startdato,
+          sluttdato: sluttdato
+        }
+      })
+      return [
+        forslagStartdato,
+        forslagDeltakelsesmengde,
+        forslag,
+        forslagAvslutt
+      ]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
       const forslagIkkeAktuell = aktivtForslag({
@@ -271,7 +288,16 @@ export class MockHandler {
             .toISOString()
         }
       })
-      return [sluttdatoForslag]
+      const sluttarsakForslag = aktivtForslag({
+        endring: {
+          type: ForslagEndringType.Sluttarsak,
+          aarsak: {
+            type: ForslagEndringAarsakType.Annet,
+            beskrivelse: 'Fordi...'
+          }
+        }
+      })
+      return [sluttarsakForslag, sluttdatoForslag]
     }
     return []
   }
@@ -410,6 +436,7 @@ export class MockHandler {
       oppdatertPamelding.startdato = request.startdato
       oppdatertPamelding.sluttdato = request.sluttdato
       this.pamelding = oppdatertPamelding
+      this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)
     }
 
@@ -470,6 +497,7 @@ export class MockHandler {
       oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
       oppdatertPamelding.status.aarsak = request.aarsak
       this.pamelding = oppdatertPamelding
+      this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)
     }
 
