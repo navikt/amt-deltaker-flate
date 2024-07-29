@@ -12,7 +12,7 @@ jobs:
     name: Lint, run tests & build
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.44.0-jammy
+      image: mcr.microsoft.com/playwright:v1.45.3-jammy
     timeout-minutes: 15
 
     permissions:
