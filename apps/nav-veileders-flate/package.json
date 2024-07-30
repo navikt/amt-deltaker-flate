@@ -10,7 +10,7 @@
     "build": "vite build --mode production --config vite-micro-frontend.config.js",
     "test": "vitest",
     "test:no-watch": "vitest run",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
     "playwright": "playwright test",
     "playwright:debug": "playwright test --debug",

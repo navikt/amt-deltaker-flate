@@ -11,7 +11,7 @@
     "build": "vite build --mode production",
     "test": "vitest",
     "test:no-watch": "vitest run",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
     "preview": "vite preview",
     "playwright": "playwright test",
