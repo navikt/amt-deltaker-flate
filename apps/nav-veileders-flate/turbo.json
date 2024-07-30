@@ -1,6 +1,6 @@
 {
   "extends": ["//"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "env": ["VITE_FARO_URL", "VITE_DIALOG_URL", "VITE_KLAGE_URL"]
     }
