@@ -86,7 +86,7 @@ export const VarighetField = ({
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDateInput(e.target.value)
 
-    const date = dayjs(e.target.value, 'DD.MM.YYYY')
+    const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
     if (date.isValid()) {
       onChangeSluttDato(date.toDate())
     } else {
