@@ -1,4 +1,4 @@
-import { BodyLong, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import { Tiltakstype, formatDateStrWithMonthName } from 'deltaker-flate-common'
 import { Vedtaksinformasjon } from '../../api/data/pamelding.ts'
 
@@ -13,8 +13,6 @@ export const HvaErDette = ({
   vedtaksinformasjon,
   className
 }: Props) => {
-  const harNavMeldtPaDirekte = vedtaksinformasjon?.fattetAvNav
-
   return (
     <div className={className}>
       <Heading level="2" size="medium">
@@ -23,14 +21,9 @@ export const HvaErDette = ({
       <BodyLong size="small">
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
 				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakstype]}.`}
+        {vedtaksinformasjon &&
+          ` Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`}
       </BodyLong>
-      {vedtaksinformasjon && (
-        <Detail className="mt-2">
-          {harNavMeldtPaDirekte
-            ? `Meldt på: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)} av ${vedtakEndretAv(vedtaksinformasjon)}.`
-            : `Meldt på av: ${vedtakEndretAv(vedtaksinformasjon)}. Du godkjente ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}.`}
-        </Detail>
-      )}
     </div>
   )
 }
@@ -38,7 +31,7 @@ export const HvaErDette = ({
 const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
   if (vedtaksinformasjon.sistEndretAvEnhet === null)
     return vedtaksinformasjon.sistEndretAv
-  return `${vedtaksinformasjon.sistEndretAv} ${vedtaksinformasjon.sistEndretAvEnhet}`
+  return `${vedtaksinformasjon.sistEndretAv}, ${vedtaksinformasjon.sistEndretAvEnhet}`
 }
 
 const forskriftskapitler: { [Key in Tiltakstype]: string } = {
