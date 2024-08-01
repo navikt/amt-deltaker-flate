@@ -4,9 +4,11 @@ import { useRef, useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 import {
+  AktivtForslag,
   EndreDeltakelseType,
   EndringTypeIkon,
-  getEndreDeltakelseTypeText
+  getEndreDeltakelseTypeText,
+  getEndreDeltakelsesType
 } from 'deltaker-flate-common'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
@@ -16,10 +18,15 @@ export const EndreDeltakelseKnapp = () => {
   const endreDeltakelseRef = useRef<HTMLButtonElement>(null)
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [forslag, setForslag] = useState<AktivtForslag | null>(null)
 
   const openModal = (type: EndreDeltakelseType) => {
     setModalType(type)
     setModalOpen(true)
+    setForslag(
+      pamelding.forslag.filter((f) => getEndreDeltakelsesType(f) === type)[0] ??
+        null
+    )
   }
 
   const handleCloseModal = () => {
@@ -72,7 +79,7 @@ export const EndreDeltakelseKnapp = () => {
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
         pamelding={pamelding}
-        forslag={null}
+        forslag={forslag}
       />
     </>
   )
