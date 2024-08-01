@@ -1,4 +1,4 @@
-import { BodyLong, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import { Tiltakstype, formatDateStrWithMonthName } from 'deltaker-flate-common'
 import { Vedtaksinformasjon } from '../../api/data/pamelding.ts'
 
@@ -13,8 +13,6 @@ export const HvaErDette = ({
   vedtaksinformasjon,
   className
 }: Props) => {
-  const harNavMeldtPaDirekte = vedtaksinformasjon?.fattetAvNav
-
   return (
     <div className={className}>
       <Heading level="2" size="medium">
