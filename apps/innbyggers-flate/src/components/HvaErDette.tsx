@@ -22,7 +22,7 @@ export const HvaErDette = ({
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
 				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakstype]}.`}
         {vedtaksinformasjon &&
-          `Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`}
+          ` Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`}
       </BodyLong>
     </div>
   )
