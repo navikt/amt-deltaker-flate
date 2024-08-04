@@ -1,27 +1,30 @@
-import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
+import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
+  Button,
   HStack,
   Heading,
   Label,
   Link,
-  LinkPanel,
-  List
+  LinkPanel
 } from '@navikt/ds-react'
 import {
+  DeltakelseInnholdListe,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
+  HistorikkModal,
   HvaDelesMedArrangor,
-  INNHOLD_TYPE_ANNET,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
+import { useState } from 'react'
+import { getHistorikk } from '../../api/api.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { HvaErDette } from './HvaErDette.tsx'
@@ -49,6 +52,7 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
+  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
   const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     pamelding.deltakerliste.tiltakstype,
@@ -117,20 +121,10 @@ export const DeltakerInfo = ({ className }: Props) => {
         {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {pamelding.deltakelsesinnhold && (
-        <List as="ul" size="small" className="mt-4">
-          {pamelding.deltakelsesinnhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => (
-              <List.Item
-                key={i.innholdskode}
-                className="mt-2 whitespace-pre-wrap"
-              >
-                {i.innholdskode === INNHOLD_TYPE_ANNET
-                  ? i.beskrivelse
-                  : i.tekst}
-              </List.Item>
-            ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={pamelding.deltakelsesinnhold}
+          className="mt-4"
+        />
       )}
       <div>
         {bakgrunnsinformasjon !== EMDASH && (
@@ -157,16 +151,21 @@ export const DeltakerInfo = ({ className }: Props) => {
           </>
         )}
 
-        <Link href="#" className="mt-8">
-          {/* TODO: lenke til riktig sted */}
+        <Button
+          className="mt-8"
+          variant="secondary"
+          size="small"
+          onClick={() => setHistorikkModalOpen(true)}
+        >
           Se endringer
-          <span>
-            <ChevronRightIcon
-              title="Gå til side for endringer"
-              className="text-2xl"
-            />
-          </span>
-        </Link>
+        </Button>
+
+        <HistorikkModal
+          deltakerId={pamelding.deltakerId}
+          open={historikkModalOpen}
+          onClose={() => setHistorikkModalOpen(false)}
+          fetchHistorikk={getHistorikk}
+        />
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">

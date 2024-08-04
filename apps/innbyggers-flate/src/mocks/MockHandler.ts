@@ -1,11 +1,14 @@
 import dayjs from 'dayjs'
 import {
   AktivtForslag,
+  DeltakerHistorikk,
   DeltakerStatusType,
   EMDASH,
+  EndringType,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
+  HistorikkType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -19,6 +22,42 @@ const harVedtak = (statusType: DeltakerStatusType) => {
     statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
     statusType !== DeltakerStatusType.AVBRUTT_UTKAST
   )
+}
+
+const createHistorikk = (): DeltakerHistorikk => {
+  return [
+    {
+      type: HistorikkType.DeltakerEndring,
+      endring: {
+        type: EndringType.EndreBakgrunnsinformasjon,
+        bakgrunnsinformasjon: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate()
+    },
+    {
+      type: HistorikkType.Vedtak,
+      fattet: dayjs().toDate(),
+      bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
+      fattetAvNav: true,
+      deltakelsesinnhold: {
+        ledetekst:
+          'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        innhold: [
+          {
+            tekst: 'Støtte til jobbsøking',
+            innholdskode: 'type1',
+            valgt: true,
+            beskrivelse: null
+          }
+        ]
+      },
+      opprettetAv: 'Navn Navnesen',
+      opprettetAvEnhet: 'NAV Fredrikstad',
+      opprettet: dayjs().subtract(3, 'day').toDate()
+    }
+  ]
 }
 
 export const createDeltaker = (
@@ -166,18 +205,21 @@ export class MockHandler {
     const oppdatertPamelding = this.deltaker
 
     if (oppdatertPamelding) {
-      if (status === DeltakerStatusType.FEILREGISTRERT) {
-        oppdatertPamelding.kanEndres = false
-      } else {
-        oppdatertPamelding.kanEndres = true
-      }
-
-      if (harVedtak(status)) {
+      if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
           .subtract(2, 'day')
           .toString()
-      } else {
+      } else if (oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = null
+      }
+      if (oppdatertPamelding.vedtaksinformasjon) {
+        if (harVedtak(status)) {
+          oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
+            .subtract(2, 'day')
+            .toString()
+        } else {
+          oppdatertPamelding.vedtaksinformasjon.fattet = null
+        }
       }
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
@@ -251,6 +293,7 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
+      // @ts-expect-error typescript ser ikke ForslagEndringType
       return [forslag, forslagAvslutt]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
@@ -269,8 +312,13 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
+      // @ts-expect-error typescript ser ikke ForslagEndringType
       return [forslagIkkeAktuell]
     }
     return []
+  }
+
+  getHistorikk() {
+    return HttpResponse.json(createHistorikk())
   }
 }

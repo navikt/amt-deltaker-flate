@@ -17,6 +17,11 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
+import {
+  DeltakerHistorikk,
+  deltakerHistorikkSchema
+} from 'deltaker-flate-common'
+import { ZodError } from 'zod'
 
 export const createPamelding = async (
   personident: string,
@@ -471,6 +476,36 @@ export const oppdaterKladd = async (
     }
     return response.status
   })
+}
+
+export const getHistorikk = async (
+  deltakerId: string
+): Promise<DeltakerHistorikk> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/historikk`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    }
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Endringer kunne ikke hentes. Prøv igjen senere')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return deltakerHistorikkSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse deltakerHistorikkSchema:', error)
+        if (error instanceof ZodError) {
+          console.error('Issue', error.issues)
+        }
+        throw error
+      }
+    })
 }
 
 const parsePamelding = (json: string): PameldingResponse => {

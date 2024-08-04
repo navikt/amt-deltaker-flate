@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
 import { Box, Heading, VStack } from '@navikt/ds-react'
+import { ReactNode } from 'react'
 import { AktivtForslag } from '../../model/forslag'
 import { ForslagDetaljer } from './ForslagDetaljer'
 

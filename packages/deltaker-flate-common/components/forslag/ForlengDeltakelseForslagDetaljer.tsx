@@ -1,4 +1,3 @@
-import React from 'react'
 import { BodyLong } from '@navikt/ds-react'
 import { ForlengDeltakelseForslag } from '../../model/forslag.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
