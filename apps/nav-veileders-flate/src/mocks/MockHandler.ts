@@ -44,7 +44,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 const createHistorikk = (): DeltakerHistorikk => {
   return [
     {
-      type: HistorikkType.DeltakerEndring,
+      type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndreBakgrunnsinformasjon,
         bakgrunnsinformasjon: null

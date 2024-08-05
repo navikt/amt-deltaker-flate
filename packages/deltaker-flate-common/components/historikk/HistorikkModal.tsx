@@ -58,7 +58,9 @@ export const HistorikkModal = ({
         )}
         {historikk &&
           historikk.map((i, index) => (
-            <div key={`${i.type}${index}`}>{getHistorikkItem(i)}</div>
+            <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
+              {getHistorikkItem(i)}
+            </div>
           ))}
       </Modal.Body>
     </Modal>

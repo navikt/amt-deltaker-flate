@@ -22,7 +22,7 @@ export enum EndringType {
 
 export enum HistorikkType {
   Vedtak = 'Vedtak',
-  DeltakerEndring = 'DeltakerEndring',
+  Endring = 'Endring',
   Forslag = 'Forslag'
 }
 
@@ -118,7 +118,7 @@ export const forslagStatusSchema = forslagAvvistSchema
   .or(forslagErstattetSchema)
 
 export const deltakerEndringSchema = z.object({
-  type: z.literal(HistorikkType.DeltakerEndring),
+  type: z.literal(HistorikkType.Endring),
   endring: endringSchema,
   endretAv: z.string(),
   endretAvEnhet: z.string(),
