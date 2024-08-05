@@ -5,7 +5,7 @@ import {
   innholdSchema,
   stringToDate
 } from './deltaker'
-import { forslagEndringSchema } from './forslag'
+import { forslagEndringSchema, ForslagStatusType } from './forslag'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -80,36 +80,32 @@ export const reaktiverDeltakelseSchema = z.object({
   reaktivertDato: stringToDate
 })
 
-export const endringSchema = endreBakgrunnsinformasjonSchema
-  .or(endreInnholdSchema)
-  .or(endreDeltakelsesmengdeSchema)
-  .or(endreStartdatoSchema)
-  .or(endreStartdatoSchema)
-  .or(endreSluttdatoSchema)
-  .or(forlengDeltakelseSchema)
-  .or(ikkeAktuellSchema)
-  .or(avsluttDeltakelseSchema)
-  .or(endreSluttarsakSchema)
-  .or(reaktiverDeltakelseSchema)
+const endringSchema = z.discriminatedUnion('type', [
+  endreBakgrunnsinformasjonSchema,
+  endreInnholdSchema,
+  endreDeltakelsesmengdeSchema,
+  endreStartdatoSchema,
+  endreSluttdatoSchema,
+  forlengDeltakelseSchema,
+  ikkeAktuellSchema,
+  avsluttDeltakelseSchema,
+  endreSluttarsakSchema,
+  reaktiverDeltakelseSchema
+])
 
-export enum ForslagType {
-  Avvist = 'Avvist',
-  Tilbakekalt = 'Tilbakekalt',
-  Erstattet = 'Erstattet'
-}
 export const forslagAvvistSchema = z.object({
-  type: z.literal(ForslagType.Avvist),
+  type: z.literal(ForslagStatusType.Avvist),
   avvistAv: z.string(),
   avvistAvEnhet: z.string(),
   avvist: stringToDate,
   begrunnelseFraNav: z.string()
 })
 export const forslagTilbakekaltSchema = z.object({
-  type: z.literal(ForslagType.Tilbakekalt),
+  type: z.literal(ForslagStatusType.Tilbakekalt),
   tilbakekalt: stringToDate
 })
 export const forslagErstattetSchema = z.object({
-  type: z.literal(ForslagType.Erstattet),
+  type: z.literal(ForslagStatusType.Erstattet),
   erstattet: stringToDate
 })
 
@@ -145,12 +141,19 @@ export const forslagSchema = z.object({
   status: forslagStatusSchema
 })
 
-export const deltakerHistorikkSchema = z.array(
-  vedtakSchema.or(deltakerEndringSchema).or(forslagSchema)
-)
+export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
+  vedtakSchema,
+  deltakerEndringSchema,
+  forslagSchema
+])
+
+export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
 
 export type Endring = z.infer<typeof endringSchema>
 export type DeltakerEndring = z.infer<typeof deltakerEndringSchema>
 export type Vedtak = z.infer<typeof vedtakSchema>
 export type Forslag = z.infer<typeof forslagSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
+export type DeltakerHistorikkListe = z.infer<
+  typeof deltakerHistorikkListeSchema
+>

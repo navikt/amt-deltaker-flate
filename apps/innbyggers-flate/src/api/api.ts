@@ -1,10 +1,10 @@
 import {
-  DeltakerHistorikk,
-  deltakerHistorikkSchema
+  DeltakerHistorikkListe,
+  deltakerHistorikkListeSchema
 } from 'deltaker-flate-common'
+import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils'
 import { DeltakerResponse, deltakerSchema } from './data/deltaker'
-import { ZodError } from 'zod'
 
 const APP_NAME = 'amt-deltaker-innbyggers-flate'
 
@@ -72,7 +72,7 @@ export const godkjennUtkast = async (
 
 export const getHistorikk = async (
   deltakerId: string
-): Promise<DeltakerHistorikk> => {
+): Promise<DeltakerHistorikkListe> => {
   return fetch(`${API_URL}/innbygger/${deltakerId}/historikk`, {
     method: 'GET',
     credentials: 'include',
@@ -90,9 +90,9 @@ export const getHistorikk = async (
     })
     .then((json) => {
       try {
-        return deltakerHistorikkSchema.parse(json)
+        return deltakerHistorikkListeSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse deltakerHistorikkSchema:', error)
+        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
         if (error instanceof ZodError) {
           console.error('Issue', error.issues)
         }

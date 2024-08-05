@@ -1,7 +1,8 @@
-import { PameldingRequest } from './data/pamelding-request.ts'
-import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
-import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
+import {
+  DeltakerHistorikkListe,
+  deltakerHistorikkListeSchema
+} from 'deltaker-flate-common'
+import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
@@ -17,11 +18,10 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
-import {
-  DeltakerHistorikk,
-  deltakerHistorikkSchema
-} from 'deltaker-flate-common'
-import { ZodError } from 'zod'
+import { PameldingRequest } from './data/pamelding-request.ts'
+import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
+import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 export const createPamelding = async (
   personident: string,
@@ -480,7 +480,7 @@ export const oppdaterKladd = async (
 
 export const getHistorikk = async (
   deltakerId: string
-): Promise<DeltakerHistorikk> => {
+): Promise<DeltakerHistorikkListe> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/historikk`, {
     method: 'GET',
     credentials: 'include',
@@ -497,9 +497,9 @@ export const getHistorikk = async (
     })
     .then((json) => {
       try {
-        return deltakerHistorikkSchema.parse(json)
+        return deltakerHistorikkListeSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse deltakerHistorikkSchema:', error)
+        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
         if (error instanceof ZodError) {
           console.error('Issue', error.issues)
         }

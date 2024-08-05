@@ -1,12 +1,15 @@
 import dayjs from 'dayjs'
 import {
-  DeltakerHistorikk,
+  AktivtForslag,
+  DeltakerHistorikkListe,
   DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
   EndringType,
   ForslagEndring,
   ForslagEndringAarsakType,
+  ForslagEndringType,
+  ForslagStatusType,
   HistorikkType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
@@ -27,11 +30,6 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {
-  AktivtForslag,
-  ForslagEndringType,
-  ForslagStatusType
-} from 'deltaker-flate-common'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
@@ -41,7 +39,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
-const createHistorikk = (): DeltakerHistorikk => {
+const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
       type: HistorikkType.Endring,

@@ -1,7 +1,10 @@
 import { z } from 'zod'
 
 export enum ForslagStatusType {
-  VenterPaSvar = 'VenterPaSvar'
+  VenterPaSvar = 'VenterPaSvar',
+  Avvist = 'Avvist',
+  Tilbakekalt = 'Tilbakekalt',
+  Erstattet = 'Erstattet'
 }
 
 export enum ForslagEndringType {

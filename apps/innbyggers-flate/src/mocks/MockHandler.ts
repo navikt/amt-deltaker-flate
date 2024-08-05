@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import {
   AktivtForslag,
-  DeltakerHistorikk,
+  DeltakerHistorikkListe,
   DeltakerStatusType,
   EMDASH,
   EndringType,
@@ -24,7 +24,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
-const createHistorikk = (): DeltakerHistorikk => {
+const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
       type: HistorikkType.Endring,
@@ -262,7 +262,7 @@ export class MockHandler {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 12)
       const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
-      const forslag = {
+      const forslag: AktivtForslag = {
         id: uuidv4(),
         opprettet: dayjs().format('YYYY-MM-DD'),
         begrunnelse:
@@ -277,7 +277,7 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      const forslagAvslutt = {
+      const forslagAvslutt: AktivtForslag = {
         id: uuidv4(),
         opprettet: dayjs().format('YYYY-MM-DD'),
         begrunnelse: 'Må avslutte deltakelsen',
@@ -285,34 +285,30 @@ export class MockHandler {
           type: ForslagEndringType.AvsluttDeltakelse,
           sluttdato: sluttdato,
           aarsak: {
-            type: ForslagEndringAarsakType.Syk,
-            beskrivelse: null
+            type: ForslagEndringAarsakType.Syk
           }
         },
         status: {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      // @ts-expect-error typescript ser ikke ForslagEndringType
       return [forslag, forslagAvslutt]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
-      const forslagIkkeAktuell = {
+      const forslagIkkeAktuell: AktivtForslag = {
         id: uuidv4(),
         opprettet: dayjs().format('YYYY-MM-DD'),
         begrunnelse: 'Har ikke møtt opp',
         endring: {
           type: ForslagEndringType.IkkeAktuell,
           aarsak: {
-            type: ForslagEndringAarsakType.IkkeMott,
-            beskrivelse: null
+            type: ForslagEndringAarsakType.IkkeMott
           }
         },
         status: {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      // @ts-expect-error typescript ser ikke ForslagEndringType
       return [forslagIkkeAktuell]
     }
     return []

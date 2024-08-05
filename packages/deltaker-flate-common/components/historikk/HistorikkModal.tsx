@@ -2,11 +2,9 @@ import { Alert, Modal } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import { useDeferredFetch } from '../../hooks/useDeferredFetch'
 import {
-  DeltakerEndring,
   DeltakerHistorikk,
-  Forslag,
-  HistorikkType,
-  Vedtak
+  DeltakerHistorikkListe,
+  HistorikkType
 } from '../../model/deltakerHistorikk'
 import { HistorikkVedtak } from './HistorikkVedtak'
 
@@ -14,10 +12,10 @@ interface Props {
   deltakerId: string
   open: boolean
   onClose: () => void
-  fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikk>
+  fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
 }
 
-const getHistorikkItem = (historikk: Vedtak | DeltakerEndring | Forslag) => {
+const getHistorikkItem = (historikk: DeltakerHistorikk) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return <HistorikkVedtak endringsVedtak={historikk} />
