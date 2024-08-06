@@ -3,7 +3,6 @@ import {
   Alert,
   BodyLong,
   BodyShort,
-  Button,
   HStack,
   Heading,
   Label,
@@ -16,21 +15,21 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
-  HistorikkModal,
   HvaDelesMedArrangor,
+  SeEndringer,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
+import { getHistorikk } from '../api/api.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-import { getHistorikk } from '../api/api.ts'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -49,7 +48,6 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 
 export const TiltakPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
-  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -161,19 +159,9 @@ export const TiltakPage = () => {
           </>
         )}
 
-        <Button
+        <SeEndringer
           className="mt-8"
-          variant="secondary"
-          size="small"
-          onClick={() => setHistorikkModalOpen(true)}
-        >
-          Se endringer
-        </Button>
-
-        <HistorikkModal
           deltakerId={deltaker.deltakerId}
-          open={historikkModalOpen}
-          onClose={() => setHistorikkModalOpen(false)}
           fetchHistorikk={getHistorikk}
         />
 

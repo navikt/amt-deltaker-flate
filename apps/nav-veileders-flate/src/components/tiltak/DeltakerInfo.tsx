@@ -2,7 +2,6 @@ import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
-  Button,
   HStack,
   Heading,
   Label,
@@ -15,15 +14,14 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
-  HistorikkModal,
   HvaDelesMedArrangor,
+  SeEndringer,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
-import { useState } from 'react'
 import { getHistorikk } from '../../api/api.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
@@ -52,7 +50,6 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
-  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
   const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     pamelding.deltakerliste.tiltakstype,
@@ -151,19 +148,9 @@ export const DeltakerInfo = ({ className }: Props) => {
           </>
         )}
 
-        <Button
+        <SeEndringer
           className="mt-8"
-          variant="secondary"
-          size="small"
-          onClick={() => setHistorikkModalOpen(true)}
-        >
-          Se endringer
-        </Button>
-
-        <HistorikkModal
           deltakerId={pamelding.deltakerId}
-          open={historikkModalOpen}
-          onClose={() => setHistorikkModalOpen(false)}
           fetchHistorikk={getHistorikk}
         />
 
