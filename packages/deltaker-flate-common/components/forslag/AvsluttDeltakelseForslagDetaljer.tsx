@@ -1,4 +1,3 @@
-import React from 'react'
 import { BodyLong } from '@navikt/ds-react'
 import { AvsluttDeltakelseForslag } from '../../model/forslag.ts'
 import { getForslagEndringAarsakText } from '../../utils/displayText.ts'

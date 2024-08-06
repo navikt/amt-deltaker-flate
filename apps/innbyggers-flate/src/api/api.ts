@@ -1,3 +1,8 @@
+import {
+  DeltakerHistorikkListe,
+  deltakerHistorikkListeSchema
+} from 'deltaker-flate-common'
+import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils'
 import { DeltakerResponse, deltakerSchema } from './data/deltaker'
 
@@ -26,6 +31,9 @@ export const getDeltakelse = async (
         return deltakerSchema.parse(json)
       } catch (error) {
         console.error('Kunne ikke parse deltakerSchema:', error)
+        if (error instanceof ZodError) {
+          console.error('Issue', error.issues)
+        }
         throw error
       }
     })
@@ -54,6 +62,40 @@ export const godkjennUtkast = async (
         return deltakerSchema.parse(json)
       } catch (error) {
         console.error('Kunne ikke parse deltakerSchema:', error)
+        if (error instanceof ZodError) {
+          console.error('Issue', error.issues)
+        }
+        throw error
+      }
+    })
+}
+
+export const getHistorikk = async (
+  deltakerId: string
+): Promise<DeltakerHistorikkListe> => {
+  return fetch(`${API_URL}/innbygger/${deltakerId}/historikk`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Endringer kunne ikke hentes. Prøv igjen senere')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return deltakerHistorikkListeSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
+        if (error instanceof ZodError) {
+          console.error('Issue', error.issues)
+        }
         throw error
       }
     })

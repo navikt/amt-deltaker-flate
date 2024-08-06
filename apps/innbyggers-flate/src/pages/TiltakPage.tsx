@@ -1,4 +1,4 @@
-import { ChatElipsisIcon, ChevronRightIcon } from '@navikt/aksel-icons'
+import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import {
   Alert,
   BodyLong,
@@ -7,28 +7,29 @@ import {
   Heading,
   Label,
   Link,
-  LinkPanel,
-  List
+  LinkPanel
 } from '@navikt/ds-react'
 import {
+  DeltakelseInnholdListe,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
-  INNHOLD_TYPE_ANNET,
+  SeEndringer,
   Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
+import { useEffect } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
+import { getHistorikk } from '../api/api.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
+import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-import { useEffect } from 'react'
-import { AktiveForslag } from '../components/AktiveForslag.tsx'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (
     deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
@@ -127,20 +128,10 @@ export const TiltakPage = () => {
         {deltaker.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {deltaker.deltakelsesinnhold && (
-        <List as="ul" size="small" className="mt-4">
-          {deltaker.deltakelsesinnhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => (
-              <List.Item
-                key={i.innholdskode}
-                className="mt-2 whitespace-pre-wrap"
-              >
-                {i.innholdskode === INNHOLD_TYPE_ANNET
-                  ? i.beskrivelse
-                  : i.tekst}
-              </List.Item>
-            ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={deltaker.deltakelsesinnhold}
+          className="mt-4"
+        />
       )}
       <div>
         {bakgrunnsinformasjon !== EMDASH && (
@@ -168,16 +159,11 @@ export const TiltakPage = () => {
           </>
         )}
 
-        <Link href="#" className="mt-8">
-          {/* TODO: lenke til riktig sted */}
-          Se endringer
-          <span>
-            <ChevronRightIcon
-              title="Gå til side for endringer"
-              className="text-2xl"
-            />
-          </span>
-        </Link>
+        <SeEndringer
+          className="mt-8"
+          deltakerId={deltaker.deltakerId}
+          fetchHistorikk={getHistorikk}
+        />
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">

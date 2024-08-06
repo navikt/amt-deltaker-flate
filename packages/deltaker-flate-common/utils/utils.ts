@@ -71,6 +71,17 @@ export const formatDateWithMonthName = (
 }
 
 /**
+ * Returns a string representing the date displying month number ('DD.MM.YYYY')
+ * @param date Date as string
+ * @returns date string with format 'DD.MM.YYYY'
+ */
+export const formatDate = (date: Date | null | undefined): string => {
+  if (!date) return EMDASH
+  const d = dayjs(date)
+  return d.isValid() ? d.format('DD.MM.YYYY') : EMDASH
+}
+
+/**
  * Returns a string representing the date using month number ('DD. MM YYYY')
  * @param dateStr Date as string
  * @returns date string with format 'DD. MM YYYY'

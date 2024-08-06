@@ -1,7 +1,8 @@
-import { PameldingRequest } from './data/pamelding-request.ts'
-import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
-import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
+import {
+  DeltakerHistorikkListe,
+  deltakerHistorikkListeSchema
+} from 'deltaker-flate-common'
+import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
@@ -17,6 +18,10 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
+import { PameldingRequest } from './data/pamelding-request.ts'
+import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
+import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
+import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 export const createPamelding = async (
   personident: string,
@@ -471,6 +476,36 @@ export const oppdaterKladd = async (
     }
     return response.status
   })
+}
+
+export const getHistorikk = async (
+  deltakerId: string
+): Promise<DeltakerHistorikkListe> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/historikk`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    }
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Endringer kunne ikke hentes. Prøv igjen senere')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return deltakerHistorikkListeSchema.parse(json)
+      } catch (error) {
+        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
+        if (error instanceof ZodError) {
+          console.error('Issue', error.issues)
+        }
+        throw error
+      }
+    })
 }
 
 const parsePamelding = (json: string): PameldingResponse => {

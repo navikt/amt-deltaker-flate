@@ -234,5 +234,9 @@ export const worker = setupWorker(
         status: 200
       })
     }
-  )
+  ),
+  http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
+    await delay(1000)
+    return handler.getHistorikk()
+  })
 )

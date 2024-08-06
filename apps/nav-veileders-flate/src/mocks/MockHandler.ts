@@ -1,10 +1,16 @@
 import dayjs from 'dayjs'
 import {
+  AktivtForslag,
+  DeltakerHistorikkListe,
   DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
+  EndringType,
   ForslagEndring,
   ForslagEndringAarsakType,
+  ForslagEndringType,
+  ForslagStatusType,
+  HistorikkType,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -24,11 +30,6 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
-import {
-  AktivtForslag,
-  ForslagEndringType,
-  ForslagStatusType
-} from 'deltaker-flate-common'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
@@ -36,6 +37,42 @@ const harVedtak = (statusType: DeltakerStatusType) => {
     statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
     statusType !== DeltakerStatusType.AVBRUTT_UTKAST
   )
+}
+
+const createHistorikk = (): DeltakerHistorikkListe => {
+  return [
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreBakgrunnsinformasjon,
+        bakgrunnsinformasjon: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate()
+    },
+    {
+      type: HistorikkType.Vedtak,
+      fattet: dayjs().toDate(),
+      bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
+      fattetAvNav: true,
+      deltakelsesinnhold: {
+        ledetekst:
+          'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        innhold: [
+          {
+            tekst: 'Støtte til jobbsøking',
+            innholdskode: 'type1',
+            valgt: true,
+            beskrivelse: null
+          }
+        ]
+      },
+      opprettetAv: 'Navn Navnesen',
+      opprettetAvEnhet: 'NAV Fredrikstad',
+      opprettet: dayjs().subtract(3, 'day').toDate()
+    }
+  ]
 }
 
 export class MockHandler {
@@ -553,6 +590,10 @@ export class MockHandler {
     if (id && this.pamelding) {
       this.pamelding.forslag = this.pamelding.forslag.filter((f) => f.id !== id)
     }
+  }
+
+  getHistorikk() {
+    return HttpResponse.json(createHistorikk())
   }
 }
 

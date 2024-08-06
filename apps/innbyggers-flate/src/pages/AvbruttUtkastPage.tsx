@@ -1,5 +1,6 @@
-import { BodyLong, Heading, List } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import {
+  DeltakelseInnholdListe,
   EMDASH,
   Tiltakstype,
   UtkastHeader,
@@ -35,17 +36,10 @@ export const AvbruttUtkastPage = () => {
       )}
 
       {deltaker.deltakelsesinnhold?.innhold && (
-        <List as="ul" size="small" className="mt-2">
-          {deltaker.deltakelsesinnhold.innhold.map((innhold) => (
-            <List.Item
-              key={innhold.innholdskode}
-              className="mt-2 whitespace-pre-wrap"
-            >
-              {innhold.tekst}
-              {innhold.beskrivelse ? `: ${innhold.beskrivelse}` : ''}
-            </List.Item>
-          ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={deltaker.deltakelsesinnhold}
+          className="mt-2"
+        />
       )}
 
       {deltaker.bakgrunnsinformasjon && (

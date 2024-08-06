@@ -10,6 +10,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
+  DeltakelseInnholdListe,
   EMDASH,
   PERSONOPPLYSNINGER_URL,
   Tiltakstype,
@@ -91,17 +92,10 @@ export const UtkastPage = () => {
       )}
 
       {deltaker.deltakelsesinnhold?.innhold && (
-        <List as="ul" size="small" className="mt-2">
-          {deltaker.deltakelsesinnhold.innhold.map((innhold) => (
-            <List.Item
-              key={innhold.innholdskode}
-              className="mt-2 whitespace-pre-wrap"
-            >
-              {innhold.tekst}
-              {innhold.beskrivelse ? `: ${innhold.beskrivelse}` : ''}
-            </List.Item>
-          ))}
-        </List>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={deltaker.deltakelsesinnhold}
+          className="mt-2"
+        />
       )}
 
       {deltaker.bakgrunnsinformasjon && (

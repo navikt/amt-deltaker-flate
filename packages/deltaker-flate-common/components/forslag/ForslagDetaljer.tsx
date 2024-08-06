@@ -1,9 +1,3 @@
-import React from 'react'
-import { AktivtForslag, ForslagEndringType } from '../../model/forslag.ts'
-import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
-import { util } from 'zod'
-import assertNever = util.assertNever
-import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
 import {
   BodyLong,
   BodyShort,
@@ -14,7 +8,9 @@ import {
   Tag,
   VStack
 } from '@navikt/ds-react'
-import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { util } from 'zod'
+import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
+import { AktivtForslag, ForslagEndringType } from '../../model/forslag.ts'
 import {
   deltakerprosentText,
   getEndreDeltakelseTypeText,
@@ -22,8 +18,11 @@ import {
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
 import { formatDateFromString } from '../../utils/utils.ts'
+import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
+import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
+import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
-import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
+import assertNever = util.assertNever
 
 interface Props {
   forslag: AktivtForslag

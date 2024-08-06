@@ -1,22 +1,11 @@
 import {
   aktivtForslagSchema,
+  deltakelsesinnholdSchema,
   deltakerStaturTypeSchema,
   deltakerStatusAarsakSchema,
   tiltakstypeSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-
-export const innholdSchema = z.object({
-  tekst: z.string(),
-  innholdskode: z.string(),
-  valgt: z.boolean(),
-  beskrivelse: z.string().nullable()
-})
-
-export const deltakelsesinnholdSchema = z.object({
-  ledetekst: z.string(),
-  innhold: z.array(innholdSchema)
-})
 
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.string().uuid(),
@@ -63,7 +52,5 @@ export const deltakerSchema = z.object({
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
-export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type DeltakerResponse = z.infer<typeof deltakerSchema>
-export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
