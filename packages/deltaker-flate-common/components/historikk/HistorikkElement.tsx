@@ -2,6 +2,7 @@ import { BodyLong, Detail, Heading, ReadMore } from '@navikt/ds-react'
 import { Forslag, ForslagEndringType } from '../../model/forslag'
 import { getForslagEndringAarsakText } from '../../utils/displayText'
 import { getForslagStatusTag } from '../../utils/forslagUtils'
+import { formatDate } from '../../utils/utils'
 
 interface Props {
   tittel: string
@@ -21,12 +22,20 @@ const getForslagsDetaljer = (forslag: Forslag) => {
           <BodyLong size="small">
             {`Årsak: ${getForslagEndringAarsakText(forslag.endring.aarsak)}`}
           </BodyLong>
-          <Detail className="mt-1">{`Sendt ${forslag.opprettet} 19.06.2024 fra Muligheter AS.`}</Detail>
         </>
       )
     }
     case ForslagEndringType.ForlengDeltakelse: {
-      return <div></div>
+      return (
+        <>
+          <BodyLong size="small" weight="semibold">
+            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+          </BodyLong>
+          <BodyLong size="small">
+            {`Begrunnelse: ${forslag.begrunnelse}`}
+          </BodyLong>
+        </>
+      )
     }
     case ForslagEndringType.AvsluttDeltakelse: {
       return <div></div>
@@ -80,6 +89,7 @@ export const HistorikkElement = ({
           <div className="mt-1 mb-1">
             <ReadMore size="small" header="Forslaget fra arrangør">
               {getForslagsDetaljer(forslag)}
+              <Detail className="mt-1">{`Sendt ${formatDate(forslag.opprettet)} fra Muligheter AS.`}</Detail>
             </ReadMore>
           </div>
         )}
