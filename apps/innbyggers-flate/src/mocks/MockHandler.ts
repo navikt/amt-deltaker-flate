@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import {
-  AktivtForslag,
+  Forslag,
   DeltakerHistorikkListe,
   DeltakerStatusType,
   EMDASH,
@@ -10,7 +10,8 @@ import {
   ForslagStatusType,
   HistorikkType,
   INNHOLD_TYPE_ANNET,
-  Tiltakstype
+  Tiltakstype,
+  DeltakerStatusAarsakType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -27,6 +28,23 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
+      id: uuidv4(),
+      type: HistorikkType.Forslag,
+      opprettet: dayjs().toDate(),
+      begrunnelse: 'Har ikke møtt opp',
+      arrangorNavn: 'Muligheter As',
+      endring: {
+        type: ForslagEndringType.IkkeAktuell,
+        aarsak: {
+          type: ForslagEndringAarsakType.IkkeMott
+        }
+      },
+      status: {
+        type: ForslagStatusType.Erstattet,
+        erstattet: dayjs().toDate()
+      }
+    },
+    {
       type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndreBakgrunnsinformasjon,
@@ -34,7 +52,22 @@ const createHistorikk = (): DeltakerHistorikkListe => {
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'NAV Fredrikstad',
-      endret: dayjs().subtract(2, 'day').toDate()
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.IkkeAktuell,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        }
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
     },
     {
       type: HistorikkType.Vedtak,
@@ -257,18 +290,20 @@ export class MockHandler {
     return EMDASH
   }
 
-  getForslag(): AktivtForslag[] {
+  getForslag(): Forslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 12)
       const sluttdato = dayjs(fremtidigDato).format('YYYY-MM-DD')
-      const forslag: AktivtForslag = {
+      const forslag: Forslag = {
         id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
         begrunnelse:
           'Vi har kommet i gang, men ser at det er hensiktsmessig ' +
           'å fortsette tett oppfølging nå når han er i gang med å kontakte de riktige arbeidsgiverne. ' +
           'nå er det totalt sett to hundre tegn. Ja, det er det..',
+        arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
           sluttdato: sluttdato
@@ -277,10 +312,12 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      const forslagAvslutt: AktivtForslag = {
+      const forslagAvslutt: Forslag = {
         id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
         begrunnelse: 'Må avslutte deltakelsen',
+        arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
           sluttdato: sluttdato,
@@ -295,10 +332,12 @@ export class MockHandler {
       return [forslag, forslagAvslutt]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
-      const forslagIkkeAktuell: AktivtForslag = {
+      const forslagIkkeAktuell: Forslag = {
         id: uuidv4(),
-        opprettet: dayjs().format('YYYY-MM-DD'),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
         begrunnelse: 'Har ikke møtt opp',
+        arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.IkkeAktuell,
           aarsak: {

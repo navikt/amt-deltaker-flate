@@ -4,14 +4,14 @@ import { useRef, useState } from 'react'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
 import {
-  AktivtForslag,
+  Forslag,
   EndreDeltakelseType,
   getEndreDeltakelsesType
 } from 'deltaker-flate-common'
 import { AvvisModal } from './AvvisForslagModal.tsx'
 
 interface Props {
-  forslag: AktivtForslag
+  forslag: Forslag
 }
 
 export const BehandleForslagKnapp = ({ forslag }: Props) => {

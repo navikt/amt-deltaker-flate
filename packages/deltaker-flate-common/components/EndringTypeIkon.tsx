@@ -1,25 +1,26 @@
-import React from 'react'
 import {
-  MinusCircleFillIcon,
-  ChevronRightDoubleCircleFillIcon,
+  CaretRightCircleFillIcon,
   ChevronRightCircleFillIcon,
-  PlusCircleFillIcon,
+  ChevronRightDoubleCircleFillIcon,
   ChevronRightLastCircleFillIcon,
   MenuElipsisHorizontalCircleFillIcon,
+  MinusCircleFillIcon,
   PieChartFillIcon,
-  CaretRightCircleFillIcon
+  PlusCircleFillIcon
 } from '@navikt/aksel-icons'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 
 interface EndringTypeIkonProps {
   type: EndreDeltakelseType
-  size?: 'medium' | 'large'
+  size?: 'medium' | 'large' | 'small'
 }
 
 export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
-  const sizeName = (size?: 'medium' | 'large') => {
+  const sizeName = (size?: 'small' | 'medium' | 'large') => {
     if (size === 'large') {
       return 'h-7 w-7'
+    } else if (size === 'small') {
+      return 'h-5 w-5'
     } else {
       return 'h-6 w-6'
     }

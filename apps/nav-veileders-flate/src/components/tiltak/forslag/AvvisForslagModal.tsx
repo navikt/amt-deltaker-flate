@@ -2,11 +2,11 @@ import { Modal } from '@navikt/ds-react'
 import React from 'react'
 import AvvisningsmodalBody from '../modal/Avvisningsmodal'
 import { PameldingResponse } from '../../../api/data/pamelding'
-import { AktivtForslag } from 'deltaker-flate-common'
+import { Forslag } from 'deltaker-flate-common'
 
 interface Props {
   open: boolean
-  forslag: AktivtForslag
+  forslag: Forslag
   onSend: (deltaker: PameldingResponse | null) => void
   onClose: () => void
 }

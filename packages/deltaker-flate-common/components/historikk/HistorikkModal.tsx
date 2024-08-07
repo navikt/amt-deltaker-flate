@@ -1,12 +1,17 @@
 import { Alert, Modal } from '@navikt/ds-react'
 import { useEffect } from 'react'
-import { useDeferredFetch } from '../../hooks/useDeferredFetch'
+import {
+  DeferredFetchState,
+  useDeferredFetch
+} from '../../hooks/useDeferredFetch'
 import {
   DeltakerHistorikk,
-  DeltakerHistorikkListe,
-  HistorikkType
+  DeltakerHistorikkListe
 } from '../../model/deltakerHistorikk'
 import { HistorikkVedtak } from './HistorikkVedtak'
+import { HistorikkEndring } from './HistorikkEndring'
+import { HistorikkType } from '../../model/forslag'
+import { HistorikkForslag } from './HistorikkForslag'
 
 interface Props {
   deltakerId: string
@@ -19,8 +24,10 @@ const getHistorikkItem = (historikk: DeltakerHistorikk) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return <HistorikkVedtak endringsVedtak={historikk} />
-    default:
-      return null // TODO lag for alle HistorikkType
+    case HistorikkType.Endring:
+      return <HistorikkEndring deltakerEndring={historikk} />
+    case HistorikkType.Forslag:
+      return <HistorikkForslag forslag={historikk} />
   }
 }
 
@@ -32,6 +39,7 @@ export const HistorikkModal = ({
 }: Props) => {
   const {
     data: historikk,
+    state,
     error,
     doFetch: doFetchHistorikk
   } = useDeferredFetch(fetchHistorikk)
@@ -42,8 +50,9 @@ export const HistorikkModal = ({
     }
   }, [open, deltakerId])
 
-  if (!historikk) {
-    return <div></div>
+  // TODO denne er ikke helt heldig hvis lastetida er treg...
+  if (state === DeferredFetchState.LOADING) {
+    return <></>
   }
 
   return (
@@ -60,6 +69,9 @@ export const HistorikkModal = ({
               {getHistorikkItem(i)}
             </div>
           ))}
+        {state === DeferredFetchState.RESOLVED && !historikk && (
+          <Alert variant="info">Ingen historikk å vise.</Alert>
+        )}
       </Modal.Body>
     </Modal>
   )

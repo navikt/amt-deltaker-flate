@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import {
-  AktivtForslag,
+  Forslag,
   DeltakerHistorikkListe,
   DeltakerlisteStatus,
   DeltakerStatusType,
@@ -12,7 +12,8 @@ import {
   ForslagStatusType,
   HistorikkType,
   INNHOLD_TYPE_ANNET,
-  Tiltakstype
+  Tiltakstype,
+  DeltakerStatusAarsakType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -42,6 +43,23 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
+      id: uuidv4(),
+      type: HistorikkType.Forslag,
+      opprettet: dayjs().toDate(),
+      begrunnelse: 'Har ikke møtt opp',
+      arrangorNavn: 'Muligheter As',
+      endring: {
+        type: ForslagEndringType.IkkeAktuell,
+        aarsak: {
+          type: ForslagEndringAarsakType.IkkeMott
+        }
+      },
+      status: {
+        type: ForslagStatusType.Erstattet,
+        erstattet: dayjs().toDate()
+      }
+    },
+    {
       type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndreBakgrunnsinformasjon,
@@ -49,7 +67,22 @@ const createHistorikk = (): DeltakerHistorikkListe => {
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'NAV Fredrikstad',
-      endret: dayjs().subtract(2, 'day').toDate()
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.IkkeAktuell,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        }
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
     },
     {
       type: HistorikkType.Vedtak,
@@ -253,7 +286,7 @@ export class MockHandler {
     return EMDASH
   }
 
-  getForslag(): AktivtForslag[] {
+  getForslag(): Forslag[] {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
@@ -606,14 +639,16 @@ function aktivtForslag({
 }: {
   endring: ForslagEndring
   begrunnelse?: string | null
-}): AktivtForslag {
+}): Forslag {
   const b = begrunnelse === undefined ? defaultBegrunnnelseTekst : begrunnelse
 
   return {
+    type: HistorikkType.Forslag,
     id: uuidv4(),
-    opprettet: dayjs().format('YYYY-MM-DD'),
+    opprettet: dayjs().toDate(),
     begrunnelse: b,
     endring: endring,
+    arrangorNavn: 'Muligheter As',
     status: {
       type: ForslagStatusType.VenterPaSvar
     }

@@ -1,5 +1,5 @@
 import {
-  AktivtForslag,
+  Forslag,
   DeltakelsesmengdeForslag,
   EndreDeltakelseType,
   ForslagEndring,
@@ -18,7 +18,7 @@ import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakels
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
   open: boolean
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
@@ -142,7 +142,7 @@ function isDeltakelsesmengde(
   return endring.type === ForslagEndringType.Deltakelsesmengde
 }
 
-function getMengde(deltaker: PameldingResponse, forslag: AktivtForslag | null) {
+function getMengde(deltaker: PameldingResponse, forslag: Forslag | null) {
   if (forslag === null)
     return {
       deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,

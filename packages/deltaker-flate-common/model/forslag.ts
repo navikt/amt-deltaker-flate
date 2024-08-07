@@ -1,10 +1,18 @@
 import { z } from 'zod'
+import { stringToDate } from './deltaker'
+
+export enum HistorikkType {
+  Vedtak = 'Vedtak',
+  Endring = 'Endring',
+  Forslag = 'Forslag'
+}
 
 export enum ForslagStatusType {
   VenterPaSvar = 'VenterPaSvar',
   Avvist = 'Avvist',
   Tilbakekalt = 'Tilbakekalt',
-  Erstattet = 'Erstattet'
+  Erstattet = 'Erstattet',
+  Godkjent = 'Godkjent'
 }
 
 export enum ForslagEndringType {
@@ -104,18 +112,45 @@ export const forslagEndringSchema = z.discriminatedUnion('type', [
 const venterPaSvarSchema = z.object({
   type: z.literal(ForslagStatusType.VenterPaSvar)
 })
-
-const statusSchema = z.discriminatedUnion('type', [venterPaSvarSchema])
-
-export const aktivtForslagSchema = z.object({
-  id: z.string().uuid(),
-  opprettet: z.string(),
-  begrunnelse: z.string().nullable(),
-  endring: forslagEndringSchema,
-  status: statusSchema.default({ type: ForslagStatusType.VenterPaSvar })
+const godkjentSchema = z.object({
+  type: z.literal(ForslagStatusType.Godkjent),
+  godkjent: stringToDate
+})
+const avvistSchema = z.object({
+  type: z.literal(ForslagStatusType.Avvist),
+  avvistAv: z.string(),
+  avvistAvEnhet: z.string(),
+  avvist: stringToDate,
+  begrunnelseFraNav: z.string()
+})
+const tilbakekaltSchema = z.object({
+  type: z.literal(ForslagStatusType.Tilbakekalt),
+  tilbakekalt: stringToDate
+})
+const erstattetSchema = z.object({
+  type: z.literal(ForslagStatusType.Erstattet),
+  erstattet: stringToDate
 })
 
-export type AktivtForslag = z.infer<typeof aktivtForslagSchema>
+const forslagStatusSchema = z.discriminatedUnion('type', [
+  venterPaSvarSchema,
+  godkjentSchema,
+  avvistSchema,
+  tilbakekaltSchema,
+  erstattetSchema
+])
+
+export const forslagSchema = z.object({
+  id: z.string().uuid(),
+  type: z.literal(HistorikkType.Forslag),
+  opprettet: stringToDate,
+  begrunnelse: z.string().nullable(),
+  arrangorNavn: z.string(),
+  endring: forslagEndringSchema,
+  status: forslagStatusSchema
+})
+
+export type Forslag = z.infer<typeof forslagSchema>
 export type ForslagEndring = z.infer<typeof forslagEndringSchema>
 export type ForslagEndringAarsak = z.infer<typeof forslagEndringAarsakSchema>
 export type ForlengDeltakelseForslag = z.infer<

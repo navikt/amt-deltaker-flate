@@ -1,6 +1,6 @@
 import { Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import {
-  AktivtForslag,
+  Forslag,
   DeltakerStatusAarsakType,
   ForslagEndringAarsakType,
   ForslagEndringType,
@@ -64,7 +64,7 @@ export function AarsakRadioGroup({
 }
 
 const getSluttaarsakFraForslag = (
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
 ): [DeltakerStatusAarsakType | undefined, string | undefined] => {
   if (forslag === null) {
     return [undefined, undefined]
@@ -89,7 +89,7 @@ const getSluttaarsakFraForslag = (
   return [getDeltakerStatusAarsak(aarsak), beskrivelse]
 }
 
-export function useAarsak(forslag: AktivtForslag | null) {
+export function useAarsak(forslag: Forslag | null) {
   const [initAarsak, initBeskrivelse] = getSluttaarsakFraForslag(forslag)
 
   const [aarsak, setAarsak] = useState<DeltakerStatusAarsakType | undefined>(

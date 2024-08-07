@@ -1,9 +1,9 @@
-import { AktivtForslag, ForslagtypeDetaljer } from 'deltaker-flate-common'
+import { Forslag, ForslagtypeDetaljer } from 'deltaker-flate-common'
 import { Box, Button, HStack, Heading } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 
 interface Props {
-  forslag: AktivtForslag
+  forslag: Forslag
   onClick?: () => void
 }
 

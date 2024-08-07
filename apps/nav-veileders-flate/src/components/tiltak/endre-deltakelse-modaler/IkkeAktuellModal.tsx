@@ -1,4 +1,4 @@
-import { AktivtForslag, EndreDeltakelseType } from 'deltaker-flate-common'
+import { Forslag, EndreDeltakelseType } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
@@ -9,7 +9,7 @@ import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void

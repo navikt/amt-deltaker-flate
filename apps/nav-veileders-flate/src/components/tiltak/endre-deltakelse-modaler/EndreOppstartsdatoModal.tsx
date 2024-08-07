@@ -4,7 +4,7 @@ import {
   Tiltakstype,
   getDateFromString,
   EndreDeltakelseType,
-  AktivtForslag,
+  Forslag,
   ForslagEndring,
   StartdatoForslag,
   ForslagEndringType
@@ -37,7 +37,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
   open: boolean
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
@@ -224,7 +224,7 @@ function isStartdatoForslag(
   return endring.type === ForslagEndringType.Startdato
 }
 
-function getDatoer(deltaker: PameldingResponse, forslag: AktivtForslag | null) {
+function getDatoer(deltaker: PameldingResponse, forslag: Forslag | null) {
   if (forslag === null) {
     return {
       startdato: getDateFromString(deltaker.startdato),
