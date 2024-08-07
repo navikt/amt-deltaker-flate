@@ -5,9 +5,33 @@ import {
   Forslag,
   ForslagEndringAarsak,
   ForslagEndringAarsakType,
-  ForslagEndringType
+  ForslagEndringType,
+  ForslagStatusType
 } from '../model/forslag.ts'
 import assertNever = util.assertNever
+import { getForslagStatusTypeText } from './displayText.ts'
+import { Tag } from '@navikt/ds-react'
+
+export const getForslagStatusTag = (forslagStatusType: ForslagStatusType) => {
+  switch (forslagStatusType) {
+    case ForslagStatusType.Erstattet:
+    case ForslagStatusType.Tilbakekalt:
+    case ForslagStatusType.Avvist:
+      return (
+        <Tag size="small" variant="neutral">
+          {getForslagStatusTypeText(forslagStatusType)}
+        </Tag>
+      )
+    case ForslagStatusType.VenterPaSvar:
+      return (
+        <Tag size="small" variant="info">
+          {getForslagStatusTypeText(forslagStatusType)}
+        </Tag>
+      )
+    case ForslagStatusType.Godkjent:
+      return null // ForslagStatusType.Godkjent vises ikke per nå
+  }
+}
 
 export const getDeltakerStatusAarsak = (aarsak: ForslagEndringAarsak) => {
   switch (aarsak.type) {

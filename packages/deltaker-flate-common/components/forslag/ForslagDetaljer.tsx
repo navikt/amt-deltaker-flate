@@ -22,7 +22,7 @@ import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDeta
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
 import assertNever = util.assertNever
-import { getEndreDeltakelsesType } from '../../utils/forslagUtils.ts'
+import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
 
 interface Props {
   forslag: Forslag

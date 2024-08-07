@@ -43,6 +43,23 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
+      id: uuidv4(),
+      type: HistorikkType.Forslag,
+      opprettet: dayjs().toDate(),
+      begrunnelse: 'Har ikke møtt opp',
+      arrangorNavn: 'Muligheter As',
+      endring: {
+        type: ForslagEndringType.IkkeAktuell,
+        aarsak: {
+          type: ForslagEndringAarsakType.IkkeMott
+        }
+      },
+      status: {
+        type: ForslagStatusType.Erstattet,
+        erstattet: dayjs().toDate()
+      }
+    },
+    {
       type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndreBakgrunnsinformasjon,

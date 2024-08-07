@@ -11,7 +11,7 @@ import {
 } from '../../utils/displayText'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
-import { getForslagsDetaljer } from './HistorikkForslag'
+import { formatDate } from '../../utils/utils'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -88,14 +88,10 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
     <HistorikkElement
       tittel={getEndringsTittel(deltakerEndring.endring)}
       icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
-      forslag={
-        deltakerEndring.forslag
-          ? getForslagsDetaljer(deltakerEndring.forslag)
-          : null
-      }
+      forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring)}
-      <Detail size="small">{`Endret ${deltakerEndring.endret} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
+      <Detail size="small">{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
     </HistorikkElement>
   )
 }

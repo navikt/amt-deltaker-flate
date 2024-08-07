@@ -11,6 +11,7 @@ import {
 import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkType } from '../../model/forslag'
+import { HistorikkForslag } from './HistorikkForslag'
 
 interface Props {
   deltakerId: string
@@ -26,7 +27,7 @@ const getHistorikkItem = (historikk: DeltakerHistorikk) => {
     case HistorikkType.Endring:
       return <HistorikkEndring deltakerEndring={historikk} />
     case HistorikkType.Forslag:
-      return null // TODO lag for alle HistorikkType
+      return <HistorikkForslag forslag={historikk} />
   }
 }
 

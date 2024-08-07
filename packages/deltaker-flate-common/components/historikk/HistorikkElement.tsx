@@ -1,11 +1,48 @@
-import { Heading, ReadMore } from '@navikt/ds-react'
-import React from 'react'
+import { BodyLong, Heading, ReadMore } from '@navikt/ds-react'
+import { Forslag, ForslagEndringType } from '../../model/forslag'
+import { getForslagEndringAarsakText } from '../../utils/displayText'
+import { getForslagStatusTag } from '../../utils/forslagUtils'
 
 interface Props {
   tittel: string
   icon: React.ReactNode
-  forslag?: React.ReactNode
+  forslag?: Forslag | null
   children: React.ReactNode
+}
+
+const getForslagsDetaljer = (forslag: Forslag) => {
+  switch (forslag.endring.type) {
+    case ForslagEndringType.IkkeAktuell: {
+      return (
+        <>
+          <BodyLong size="small" weight="semibold">
+            Er ikke aktuell
+          </BodyLong>
+          <BodyLong size="small">
+            {getForslagEndringAarsakText(forslag.endring.aarsak)}
+          </BodyLong>
+        </>
+      )
+    }
+    case ForslagEndringType.ForlengDeltakelse: {
+      return <div></div>
+    }
+    case ForslagEndringType.AvsluttDeltakelse: {
+      return <div></div>
+    }
+    case ForslagEndringType.Deltakelsesmengde: {
+      return <div></div>
+    }
+    case ForslagEndringType.Sluttarsak: {
+      return <div></div>
+    }
+    case ForslagEndringType.Sluttdato: {
+      return <div></div>
+    }
+    case ForslagEndringType.Startdato: {
+      return <div></div>
+    }
+  }
 }
 
 export const HistorikkElement = ({
@@ -26,9 +63,17 @@ export const HistorikkElement = ({
       </div>
 
       <div className="pt-2">
-        <Heading level="2" size="small" className="mb-1">
-          {tittel}
-        </Heading>
+        <div className="flex md:flex-row flex-col justify-between w-full">
+          <Heading level="2" size="small" className="mb-1">
+            {tittel}
+          </Heading>
+          {forslag && (
+            <div className="w-fit md:mb-0 mb-1">
+              {getForslagStatusTag(forslag.status.type)}
+            </div>
+          )}
+        </div>
+
         {children}
       </div>
 
@@ -38,7 +83,7 @@ export const HistorikkElement = ({
           header="Forslaget fra arrangør"
           className="mt-1mb-1"
         >
-          {forslag}
+          {getForslagsDetaljer(forslag)}
         </ReadMore>
       )}
     </div>

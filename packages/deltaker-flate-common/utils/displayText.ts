@@ -126,6 +126,14 @@ export const getForslagStatusTypeText = (type: ForslagStatusType) => {
   switch (type) {
     case ForslagStatusType.VenterPaSvar:
       return 'Venter på svar fra NAV'
+    case ForslagStatusType.Avvist:
+      return 'Forslaget er avvist'
+    case ForslagStatusType.Erstattet:
+      return 'Forslaget er erstattet'
+    case ForslagStatusType.Godkjent:
+      return 'Forslaget er godkjent'
+    case ForslagStatusType.Tilbakekalt:
+      return 'Forslaget er tilbakekalt'
   }
 }
 
