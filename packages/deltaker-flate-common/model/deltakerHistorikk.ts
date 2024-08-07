@@ -5,7 +5,7 @@ import {
   innholdSchema,
   stringToDate
 } from './deltaker'
-import { forslagSchema } from './forslag'
+import { forslagSchema, HistorikkType } from './forslag'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -18,12 +18,6 @@ export enum EndringType {
   AvsluttDeltakelse = 'AvsluttDeltakelse',
   EndreSluttarsak = 'EndreSluttarsak',
   ReaktiverDeltakelse = 'ReaktiverDeltakelse'
-}
-
-export enum HistorikkType {
-  Vedtak = 'Vedtak',
-  Endring = 'Endring',
-  Forslag = 'Forslag'
 }
 
 export const endreBakgrunnsinformasjonSchema = z.object({

@@ -10,8 +10,8 @@ import {
 } from '../../utils/displayText'
 import { formatDate } from '../../utils/utils'
 import { EndringTypeIkon } from '../EndringTypeIkon'
-import { getEndreDeltakelsesType } from '../forslag/ForslagDetaljer'
 import { HistorikkElement } from './HistorikkElement'
+import { getEndreDeltakelsesType } from '../../utils/forslagUtils'
 
 interface Props {
   forslag: Forslag

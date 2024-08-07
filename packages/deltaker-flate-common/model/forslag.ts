@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import { stringToDate } from './deltaker'
-import { HistorikkType } from './deltakerHistorikk'
+
+export enum HistorikkType {
+  Vedtak = 'Vedtak',
+  Endring = 'Endring',
+  Forslag = 'Forslag'
+}
 
 export enum ForslagStatusType {
   VenterPaSvar = 'VenterPaSvar',
@@ -136,8 +141,8 @@ const forslagStatusSchema = z.discriminatedUnion('type', [
 ])
 
 export const forslagSchema = z.object({
-  type: z.literal(HistorikkType.Forslag),
   id: z.string().uuid(),
+  type: z.literal(HistorikkType.Forslag),
   opprettet: stringToDate,
   begrunnelse: z.string().nullable(),
   arrangorNavn: z.string(),

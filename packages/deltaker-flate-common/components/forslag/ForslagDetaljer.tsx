@@ -9,7 +9,6 @@ import {
   VStack
 } from '@navikt/ds-react'
 import { util } from 'zod'
-import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
 import { Forslag, ForslagEndringType } from '../../model/forslag.ts'
 import {
   deltakerprosentText,
@@ -23,30 +22,10 @@ import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDeta
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
 import assertNever = util.assertNever
+import { getEndreDeltakelsesType } from '../../utils/forslagUtils.ts'
 
 interface Props {
   forslag: Forslag
-}
-
-export const getEndreDeltakelsesType = (forslag: Forslag) => {
-  switch (forslag.endring.type) {
-    case ForslagEndringType.IkkeAktuell:
-      return EndreDeltakelseType.IKKE_AKTUELL
-    case ForslagEndringType.AvsluttDeltakelse:
-      return EndreDeltakelseType.AVSLUTT_DELTAKELSE
-    case ForslagEndringType.ForlengDeltakelse:
-      return EndreDeltakelseType.FORLENG_DELTAKELSE
-    case ForslagEndringType.Deltakelsesmengde:
-      return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
-    case ForslagEndringType.Sluttdato:
-      return EndreDeltakelseType.ENDRE_SLUTTDATO
-    case ForslagEndringType.Startdato:
-      return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
-    case ForslagEndringType.Sluttarsak:
-      return EndreDeltakelseType.ENDRE_SLUTTARSAK
-    default:
-      assertNever(forslag.endring)
-  }
 }
 
 export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {

@@ -6,11 +6,11 @@ import {
 } from '../../hooks/useDeferredFetch'
 import {
   DeltakerHistorikk,
-  DeltakerHistorikkListe,
-  HistorikkType
+  DeltakerHistorikkListe
 } from '../../model/deltakerHistorikk'
 import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkEndring } from './HistorikkEndring'
+import { HistorikkType } from '../../model/forslag'
 
 interface Props {
   deltakerId: string
