@@ -5,7 +5,7 @@ import {
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { ReactNode } from 'react'
-import { Detail, Modal } from '@navikt/ds-react'
+import { Alert, Detail, Modal } from '@navikt/ds-react'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { avvisForslag } from '../../../api/api'
@@ -51,6 +51,11 @@ export default function AvvisningsmodalBody({
           error={begrunnelse.error}
         />
         {children}
+        <Alert variant="info" className="mt-4">
+          Vurder om dette er et ønske fra brukeren og om du skal sende et
+          avslagsbrev. Les mer på Navet om rutinen for avslag og klage på
+          arbeidsmarkedstiltak.
+        </Alert>
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Avvis forslag"
