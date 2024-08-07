@@ -233,8 +233,8 @@ function getDatoer(deltaker: PameldingResponse, forslag: Forslag | null) {
   }
   if (isStartdatoForslag(forslag.endring)) {
     return {
-      startdato: getDateFromString(forslag.endring.startdato),
-      sluttdato: getDateFromString(forslag.endring.sluttdato)
+      startdato: forslag.endring.startdato,
+      sluttdato: forslag.endring.sluttdato ?? undefined
     }
   } else {
     throw new Error(

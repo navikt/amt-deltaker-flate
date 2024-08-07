@@ -70,6 +70,50 @@ const createHistorikk = (): DeltakerHistorikkListe => {
       forslag: null
     },
     {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.ForlengDeltakelse,
+        sluttdato: dayjs().add(1, 'month').toDate(),
+        begrunnelse: 'Forlenger fordi vi må'
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.ForlengDeltakelse,
+          sluttdato: dayjs().add(1, 'month').toDate()
+        },
+        status: {
+          type: ForslagStatusType.Erstattet,
+          erstattet: dayjs().toDate()
+        }
+      }
+    },
+    {
+      id: uuidv4(),
+      type: HistorikkType.Forslag,
+      opprettet: dayjs().toDate(),
+      begrunnelse: 'Trenger mer tid til hjelp',
+      arrangorNavn: 'Muligheter As',
+      endring: {
+        type: ForslagEndringType.ForlengDeltakelse,
+        sluttdato: dayjs().add(1, 'month').toDate()
+      },
+      status: {
+        type: ForslagStatusType.Avvist,
+        avvist: dayjs().toDate(),
+        avvistAv: 'Navn Navnesen',
+        avvistAvEnhet: 'Nav Fredrikstad',
+        begrunnelseFraNav: 'Kan ikke forlenge så lenge'
+      }
+    },
+    {
       type: HistorikkType.Vedtak,
       fattet: dayjs().toDate(),
       bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
@@ -306,7 +350,7 @@ export class MockHandler {
         arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
-          sluttdato: sluttdato
+          sluttdato: dayjs(sluttdato).toDate()
         },
         status: {
           type: ForslagStatusType.VenterPaSvar
@@ -320,7 +364,7 @@ export class MockHandler {
         arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: sluttdato,
+          sluttdato: dayjs(sluttdato).toDate(),
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           }

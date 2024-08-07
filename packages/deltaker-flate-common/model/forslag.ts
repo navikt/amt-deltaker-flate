@@ -63,12 +63,12 @@ const forslagEndringAarsakSchema = z.discriminatedUnion('type', [
 
 export const forlengDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.ForlengDeltakelse),
-  sluttdato: z.string()
+  sluttdato: stringToDate
 })
 
 export const avsluttDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.AvsluttDeltakelse),
-  sluttdato: z.string(),
+  sluttdato: stringToDate,
   aarsak: forslagEndringAarsakSchema
 })
 
@@ -85,13 +85,13 @@ const deltakelsesmengdeForslagSchema = z.object({
 
 export const sluttdatoForslagSchema = z.object({
   type: z.literal(ForslagEndringType.Sluttdato),
-  sluttdato: z.string()
+  sluttdato: stringToDate
 })
 
 export const startdatoForslagSchema = z.object({
   type: z.literal(ForslagEndringType.Startdato),
-  startdato: z.string(),
-  sluttdato: z.string().nullable()
+  startdato: stringToDate,
+  sluttdato: stringToDate.nullable()
 })
 
 export const sluttarsakForslagSchema = z.object({

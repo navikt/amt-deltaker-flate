@@ -144,7 +144,7 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
     return getDateFromString(deltaker.sluttdato)
   }
   if (isSluttdatoForslag(forslag.endring)) {
-    return getDateFromString(forslag.endring.sluttdato)
+    return forslag.endring.sluttdato
   } else {
     throw new Error(
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`

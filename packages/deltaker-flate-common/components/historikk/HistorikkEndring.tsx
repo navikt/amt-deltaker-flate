@@ -46,13 +46,17 @@ const getEndringsDetaljer = (endring: Endring) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (
-        <BodyLong size="small" weight="semibold">
+        <BodyLong size="small">
           Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
         </BodyLong>
       )
     }
     case EndringType.ForlengDeltakelse: {
-      return <div></div>
+      return (
+        <BodyLong size="small">
+          NAVs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      )
     }
     case EndringType.AvsluttDeltakelse: {
       return <div></div>
@@ -91,7 +95,7 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
       forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring)}
-      <Detail size="small">{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
+      <Detail className="mt-1">{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
     </HistorikkElement>
   )
 }

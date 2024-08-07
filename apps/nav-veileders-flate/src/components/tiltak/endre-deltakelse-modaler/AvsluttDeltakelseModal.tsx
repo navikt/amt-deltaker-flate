@@ -1,8 +1,8 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
-  Forslag,
   AvsluttDeltakelseForslag,
   EndreDeltakelseType,
+  Forslag,
   ForslagEndring,
   ForslagEndringType,
   getDateFromString
@@ -12,6 +12,7 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   HarDeltattValg,
   dateStrToDate,
@@ -24,11 +25,10 @@ import {
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
+import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
+import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
-import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
-import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -203,7 +203,7 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
     return getDateFromString(deltaker.sluttdato)
   }
   if (isAvsluttDeltakelseForslag(forslag.endring)) {
-    return getDateFromString(forslag.endring.sluttdato)
+    return forslag.endring.sluttdato
   } else {
     throw new Error(
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`

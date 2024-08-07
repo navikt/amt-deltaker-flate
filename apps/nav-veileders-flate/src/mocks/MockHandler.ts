@@ -62,6 +62,50 @@ const createHistorikk = (): DeltakerHistorikkListe => {
     {
       type: HistorikkType.Endring,
       endring: {
+        type: EndringType.ForlengDeltakelse,
+        sluttdato: dayjs().add(1, 'month').toDate(),
+        begrunnelse: 'Forlenger fordi vi må'
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.ForlengDeltakelse,
+          sluttdato: dayjs().add(1, 'month').toDate()
+        },
+        status: {
+          type: ForslagStatusType.Erstattet,
+          erstattet: dayjs().toDate()
+        }
+      }
+    },
+    {
+      id: uuidv4(),
+      type: HistorikkType.Forslag,
+      opprettet: dayjs().toDate(),
+      begrunnelse: 'Trenger mer tid til hjelp',
+      arrangorNavn: 'Muligheter As',
+      endring: {
+        type: ForslagEndringType.ForlengDeltakelse,
+        sluttdato: dayjs().add(1, 'month').toDate()
+      },
+      status: {
+        type: ForslagStatusType.Avvist,
+        avvist: dayjs().toDate(),
+        avvistAv: 'Navn Navnesen',
+        avvistAvEnhet: 'Nav Fredrikstad',
+        begrunnelseFraNav: 'Kan ikke forlenge så lenge'
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
         type: EndringType.EndreBakgrunnsinformasjon,
         bakgrunnsinformasjon: null
       },
@@ -303,14 +347,14 @@ export class MockHandler {
           'nå er det totalt sett to hundre tegn. Ja, det er det..',
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
-          sluttdato: sluttdato
+          sluttdato: dayjs(sluttdato).toDate()
         }
       })
       const forslagAvslutt = aktivtForslag({
         begrunnelse: null,
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: sluttdato,
+          sluttdato: dayjs(sluttdato).toDate(),
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           }
@@ -326,8 +370,8 @@ export class MockHandler {
       const forslagStartdato = aktivtForslag({
         endring: {
           type: ForslagEndringType.Startdato,
-          startdato: startdato,
-          sluttdato: sluttdato
+          startdato: dayjs(startdato).toDate(),
+          sluttdato: dayjs(sluttdato).toDate()
         }
       })
       return [
@@ -353,9 +397,7 @@ export class MockHandler {
       const sluttdatoForslag = aktivtForslag({
         endring: {
           type: ForslagEndringType.Sluttdato,
-          sluttdato: dayjs(this.pamelding?.sluttdato)
-            .add(7, 'days')
-            .toISOString()
+          sluttdato: dayjs(this.pamelding?.sluttdato).add(7, 'days').toDate()
         }
       })
       const sluttarsakForslag = aktivtForslag({
