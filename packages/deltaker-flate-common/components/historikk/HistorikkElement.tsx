@@ -1,4 +1,4 @@
-import { BodyLong, Heading, ReadMore } from '@navikt/ds-react'
+import { BodyLong, Detail, Heading, ReadMore } from '@navikt/ds-react'
 import { Forslag, ForslagEndringType } from '../../model/forslag'
 import { getForslagEndringAarsakText } from '../../utils/displayText'
 import { getForslagStatusTag } from '../../utils/forslagUtils'
@@ -19,8 +19,9 @@ const getForslagsDetaljer = (forslag: Forslag) => {
             Er ikke aktuell
           </BodyLong>
           <BodyLong size="small">
-            {getForslagEndringAarsakText(forslag.endring.aarsak)}
+            {`Årsak: ${getForslagEndringAarsakText(forslag.endring.aarsak)}`}
           </BodyLong>
+          <Detail className="mt-1">{`Sendt ${forslag.opprettet} 19.06.2024 fra Muligheter AS.`}</Detail>
         </>
       )
     }
@@ -75,17 +76,14 @@ export const HistorikkElement = ({
         </div>
 
         {children}
+        {forslag && (
+          <div className="mt-1 mb-1">
+            <ReadMore size="small" header="Forslaget fra arrangør">
+              {getForslagsDetaljer(forslag)}
+            </ReadMore>
+          </div>
+        )}
       </div>
-
-      {forslag && (
-        <ReadMore
-          size="small"
-          header="Forslaget fra arrangør"
-          className="mt-1mb-1"
-        >
-          {getForslagsDetaljer(forslag)}
-        </ReadMore>
-      )}
     </div>
   )
 }
