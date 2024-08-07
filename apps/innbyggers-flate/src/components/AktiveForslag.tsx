@@ -1,11 +1,7 @@
-import {
-  AktivtForslag,
-  AktivtForslagBox,
-  ForslagInfo
-} from 'deltaker-flate-common'
+import { Forslag, AktivtForslagBox, ForslagInfo } from 'deltaker-flate-common'
 
 interface Props {
-  forslag: AktivtForslag[]
+  forslag: Forslag[]
 }
 
 export const AktiveForslag = ({ forslag }: Props) => {

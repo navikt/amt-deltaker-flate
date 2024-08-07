@@ -18,7 +18,7 @@ import {
   VarighetValg
 } from '../../../utils/varighet.tsx'
 import { VarighetField } from '../VarighetField.tsx'
-import { AktivtForslag, ForslagEndringType } from 'deltaker-flate-common'
+import { Forslag, ForslagEndringType } from 'deltaker-flate-common'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import dayjs from 'dayjs'
@@ -26,13 +26,13 @@ import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-const getSluttdatoFraForslag = (forslag: AktivtForslag | null) => {
+const getSluttdatoFraForslag = (forslag: Forslag | null) => {
   if (
     forslag &&
     forslag.endring.type === ForslagEndringType.ForlengDeltakelse

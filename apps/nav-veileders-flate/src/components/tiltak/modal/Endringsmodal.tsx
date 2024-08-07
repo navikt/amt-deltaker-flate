@@ -1,5 +1,5 @@
 import {
-  AktivtForslag,
+  Forslag,
   ApiFunction,
   DeferredFetchState,
   EndreDeltakelseType,
@@ -30,7 +30,7 @@ interface Props<T extends EndringRequest> {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   children: ReactNode
 }
 export function Endringsmodal<T extends EndringRequest>({
@@ -82,7 +82,7 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   onAvvis: () => void
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   digitalBruker: boolean
   children: ReactNode
 }

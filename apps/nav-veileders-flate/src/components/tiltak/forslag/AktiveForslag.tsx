@@ -1,13 +1,9 @@
-import {
-  AktivtForslag,
-  AktivtForslagBox,
-  ForslagInfo
-} from 'deltaker-flate-common'
+import { Forslag, AktivtForslagBox, ForslagInfo } from 'deltaker-flate-common'
 import { Box, Heading, HStack } from '@navikt/ds-react'
 import { BehandleForslagKnapp } from './BehandleForslagKnapp.tsx'
 
 interface Props {
-  forslag: AktivtForslag[]
+  forslag: Forslag[]
 }
 
 export const AktiveForslag = ({ forslag }: Props) => {

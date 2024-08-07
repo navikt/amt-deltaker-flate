@@ -1,5 +1,5 @@
 import {
-  AktivtForslag,
+  Forslag,
   DeferredFetchState,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -15,7 +15,7 @@ import { useAppContext } from '../../../AppContext'
 
 interface Props {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
-  forslag: AktivtForslag
+  forslag: Forslag
   children?: ReactNode
 }
 

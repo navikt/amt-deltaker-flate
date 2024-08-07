@@ -1,6 +1,6 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
 import {
-  AktivtForslag,
+  Forslag,
   EndreDeltakelseType,
   ForslagEndring,
   ForslagEndringType,
@@ -29,7 +29,7 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
@@ -139,10 +139,7 @@ function isSluttdatoForslag(
   return endring.type === ForslagEndringType.Sluttdato
 }
 
-function getSluttdato(
-  deltaker: PameldingResponse,
-  forslag: AktivtForslag | null
-) {
+function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
   if (forslag === null) {
     return getDateFromString(deltaker.sluttdato)
   }

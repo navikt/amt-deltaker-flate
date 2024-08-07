@@ -10,14 +10,14 @@ import {
 } from '@navikt/ds-react'
 import { util } from 'zod'
 import { EndreDeltakelseType } from '../../model/endre-deltaker.ts'
-import { AktivtForslag, ForslagEndringType } from '../../model/forslag.ts'
+import { Forslag, ForslagEndringType } from '../../model/forslag.ts'
 import {
   deltakerprosentText,
   getEndreDeltakelseTypeText,
   getForslagEndringAarsakText,
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
-import { formatDateFromString } from '../../utils/utils.ts'
+import { formatDate, formatDateFromString } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
@@ -25,10 +25,10 @@ import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
 import assertNever = util.assertNever
 
 interface Props {
-  forslag: AktivtForslag
+  forslag: Forslag
 }
 
-export const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
+export const getEndreDeltakelsesType = (forslag: Forslag) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.IkkeAktuell:
       return EndreDeltakelseType.IKKE_AKTUELL
@@ -49,12 +49,8 @@ export const getEndreDeltakelsesType = (forslag: AktivtForslag) => {
   }
 }
 
-export const ForslagtypeDetaljer = ({
-  forslag
-}: {
-  forslag: AktivtForslag
-}) => {
-  const detaljer = (forslag: AktivtForslag) => {
+export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
+  const detaljer = (forslag: Forslag) => {
     switch (forslag.endring.type) {
       case ForslagEndringType.IkkeAktuell:
         return (
@@ -138,7 +134,7 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
         </HStack>
         <ForslagtypeDetaljer forslag={forslag} />
         <Detail>
-          Forslag sendt fra arrangør {formatDateFromString(forslag.opprettet)}
+          Forslag sendt fra arrangør {formatDate(forslag.opprettet)}
         </Detail>
       </VStack>
     </HGrid>

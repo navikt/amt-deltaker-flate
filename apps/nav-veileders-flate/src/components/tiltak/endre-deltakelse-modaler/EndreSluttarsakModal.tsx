@@ -1,5 +1,5 @@
 import {
-  AktivtForslag,
+  Forslag,
   DeltakerStatusType,
   EndreDeltakelseType
 } from 'deltaker-flate-common'
@@ -14,7 +14,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
   open: boolean
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }

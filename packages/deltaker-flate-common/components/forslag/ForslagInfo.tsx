@@ -1,6 +1,6 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { ReactNode } from 'react'
-import { AktivtForslag } from '../../model/forslag'
+import { Forslag } from '../../model/forslag'
 import { ForslagDetaljer } from './ForslagDetaljer'
 
 interface ForslagInfoProps {
@@ -26,7 +26,7 @@ export function ForslagInfo({ children }: ForslagInfoProps) {
 }
 
 interface AktivtForslagBoxProps {
-  forslag: AktivtForslag
+  forslag: Forslag
   children?: ReactNode
 }
 export function AktivtForslagBox({ forslag, children }: AktivtForslagBoxProps) {

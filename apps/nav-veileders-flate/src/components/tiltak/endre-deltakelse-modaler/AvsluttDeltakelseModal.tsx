@@ -1,6 +1,6 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
-  AktivtForslag,
+  Forslag,
   AvsluttDeltakelseForslag,
   EndreDeltakelseType,
   ForslagEndring,
@@ -32,7 +32,7 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
-  forslag: AktivtForslag | null
+  forslag: Forslag | null
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
@@ -198,10 +198,7 @@ function isAvsluttDeltakelseForslag(
   return endring.type === ForslagEndringType.AvsluttDeltakelse
 }
 
-function getSluttdato(
-  deltaker: PameldingResponse,
-  forslag: AktivtForslag | null
-) {
+function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
   if (forslag === null) {
     return getDateFromString(deltaker.sluttdato)
   }

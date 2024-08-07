@@ -5,7 +5,7 @@ import {
   innholdSchema,
   stringToDate
 } from './deltaker'
-import { forslagEndringSchema, ForslagStatusType } from './forslag'
+import { forslagSchema } from './forslag'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -93,34 +93,6 @@ const endringSchema = z.discriminatedUnion('type', [
   reaktiverDeltakelseSchema
 ])
 
-export const forslagAvvistSchema = z.object({
-  type: z.literal(ForslagStatusType.Avvist),
-  avvistAv: z.string(),
-  avvistAvEnhet: z.string(),
-  avvist: stringToDate,
-  begrunnelseFraNav: z.string()
-})
-export const forslagTilbakekaltSchema = z.object({
-  type: z.literal(ForslagStatusType.Tilbakekalt),
-  tilbakekalt: stringToDate
-})
-export const forslagErstattetSchema = z.object({
-  type: z.literal(ForslagStatusType.Erstattet),
-  erstattet: stringToDate
-})
-
-export const forslagStatusSchema = forslagAvvistSchema
-  .or(forslagTilbakekaltSchema)
-  .or(forslagErstattetSchema)
-
-export const deltakerEndringSchema = z.object({
-  type: z.literal(HistorikkType.Endring),
-  endring: endringSchema,
-  endretAv: z.string(),
-  endretAvEnhet: z.string(),
-  endret: stringToDate
-})
-
 export const vedtakSchema = z.object({
   type: z.literal(HistorikkType.Vedtak),
   fattet: stringToDate.nullable(),
@@ -132,13 +104,13 @@ export const vedtakSchema = z.object({
   opprettet: stringToDate
 })
 
-export const forslagSchema = z.object({
-  type: z.literal(HistorikkType.Forslag),
-  opprettet: stringToDate,
-  begrunnelseFraArrangor: z.string().nullable(),
-  arrangorNavn: z.string(),
-  endring: forslagEndringSchema,
-  status: forslagStatusSchema
+export const deltakerEndringSchema = z.object({
+  type: z.literal(HistorikkType.Endring),
+  endring: endringSchema,
+  endretAv: z.string(),
+  endretAvEnhet: z.string(),
+  endret: stringToDate,
+  forslag: forslagSchema.nullable()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
@@ -152,7 +124,6 @@ export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
 export type Endring = z.infer<typeof endringSchema>
 export type DeltakerEndring = z.infer<typeof deltakerEndringSchema>
 export type Vedtak = z.infer<typeof vedtakSchema>
-export type Forslag = z.infer<typeof forslagSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
 export type DeltakerHistorikkListe = z.infer<
   typeof deltakerHistorikkListeSchema

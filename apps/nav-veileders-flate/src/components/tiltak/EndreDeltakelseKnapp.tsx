@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 import {
-  AktivtForslag,
+  Forslag,
   EndreDeltakelseType,
   EndringTypeIkon,
   getEndreDeltakelseTypeText,
@@ -18,7 +18,7 @@ export const EndreDeltakelseKnapp = () => {
   const endreDeltakelseRef = useRef<HTMLButtonElement>(null)
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
-  const [forslag, setForslag] = useState<AktivtForslag | null>(null)
+  const [forslag, setForslag] = useState<Forslag | null>(null)
 
   const openModal = (type: EndreDeltakelseType) => {
     setModalType(type)

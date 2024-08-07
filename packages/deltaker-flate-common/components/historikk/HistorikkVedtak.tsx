@@ -13,6 +13,7 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
   const {
     fattet,
     fattetAvNav,
+    opprettet,
     opprettetAv,
     opprettetAvEnhet,
     deltakelsesinnhold,
@@ -33,15 +34,19 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
         className="-mt-3 -mb-1"
       />
 
-      <BodyLong size="small" weight="semibold" className="mt-2">
-        Bakgrunnsinfo
-      </BodyLong>
-      <BodyLong size="small">{bakgrunnsinformasjon}</BodyLong>
+      {bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 && (
+        <>
+          <BodyLong size="small" weight="semibold" className="mt-2">
+            Bakgrunnsinfo
+          </BodyLong>
+          <BodyLong size="small">{bakgrunnsinformasjon}</BodyLong>
+        </>
+      )}
 
       <BodyLong size="small" textColor="subtle" className="mt-1">
         {fattetAvNav
           ? `Meldt på av ${opprettetAv} ${opprettetAvEnhet} ${formatDate(fattet)}.`
-          : `Utkast delt av ${opprettetAv} ${opprettetAvEnhet}. Du godkjente utkastet ${formatDate(fattet)}.`}
+          : `Utkast delt ${formatDate(opprettet)} av ${opprettetAv} ${opprettetAvEnhet}. Du godkjente utkastet ${formatDate(fattet)}.`}
       </BodyLong>
     </HistorikkElement>
   )

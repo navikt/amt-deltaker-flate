@@ -1,16 +1,19 @@
 import {
+  DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  Tiltakstype,
-  DeltakerStatusAarsak,
-  DeltakerlisteStatus
+  DeltakerlisteStatus,
+  Tiltakstype
 } from '../model/deltaker'
+import { Endring, EndringType } from '../model/deltakerHistorikk.ts'
+import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 import {
   ForslagEndringAarsak,
   ForslagEndringAarsakType,
+  ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
-import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
+import { formatDateWithMonthName } from './utils.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -165,5 +168,48 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Endre deltakelsesmengde'
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return 'Endre til aktiv deltakelse'
+  }
+}
+
+export const getForslagTittel = (endringstype: ForslagEndringType) => {
+  switch (endringstype) {
+    case ForslagEndringType.IkkeAktuell:
+      return 'Er ikke aktuell'
+    case ForslagEndringType.ForlengDeltakelse:
+      return 'Forleng deltakelse'
+    case ForslagEndringType.AvsluttDeltakelse:
+      return 'Avslutt deltakelse'
+    case ForslagEndringType.Deltakelsesmengde:
+      return 'Endre deltakelsesmengde'
+    case ForslagEndringType.Sluttarsak:
+      return 'Endre sluttårsak'
+    case ForslagEndringType.Sluttdato:
+      return 'Endre sluttdato'
+    case ForslagEndringType.Startdato:
+      return 'Endre startdato'
+  }
+}
+
+export const getEndringsTittel = (endring: Endring) => {
+  switch (endring.type) {
+    case EndringType.IkkeAktuell:
+      return 'Deltakelsen er ikke aktuell'
+    case EndringType.ForlengDeltakelse:
+      return `Deltakelsen er forlenget til ${formatDateWithMonthName(endring.sluttdato)}`
+    case EndringType.AvsluttDeltakelse:
+    case EndringType.EndreSluttdato:
+      return `Ny sluttdato er ${formatDateWithMonthName(endring.sluttdato)}`
+    case EndringType.EndreBakgrunnsinformasjon:
+      return 'Bakgrunnsinfo er endret'
+    case EndringType.EndreDeltakelsesmengde:
+      return `Deltakelsen er endret til ${deltakerprosentText(endring.deltakelsesprosent, endring.dagerPerUke)}`
+    case EndringType.EndreInnhold:
+      return 'Innholdet er endret'
+    case EndringType.ReaktiverDeltakelse:
+      return 'Deltakelsen er endret til å være aktiv'
+    case EndringType.EndreSluttarsak:
+      return `Sluttårsak er endret til: ${getDeltakerStatusAarsakText(endring.aarsak)}`
+    case EndringType.EndreStartdato:
+      return `Oppstartsdato er endret til ${formatDateWithMonthName(endring.sluttdato)}`
   }
 }
