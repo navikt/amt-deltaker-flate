@@ -1,7 +1,7 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong } from '@navikt/ds-react'
 import { Vedtak } from '../../model/deltakerHistorikk'
-import { formatDate } from '../../utils/utils'
+import { formatDate, formatDateWithMonthName } from '../../utils/utils'
 import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
 import { HistorikkElement } from './HistorikkElement'
 
@@ -22,7 +22,7 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
 
   return (
     <HistorikkElement
-      tittel={`Påmelding ${formatDate(fattet)}`}
+      tittel={`Påmelding ${formatDateWithMonthName(fattet)}`}
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
       <BodyLong size="small" weight="semibold">

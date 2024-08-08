@@ -1,6 +1,10 @@
 import { BodyLong, Detail, Heading, ReadMore } from '@navikt/ds-react'
 import { Forslag, ForslagEndringType } from '../../model/forslag'
-import { getForslagEndringAarsakText } from '../../utils/displayText'
+import {
+  deltakerprosentText,
+  getForslagEndringAarsakText,
+  getForslagTittel
+} from '../../utils/displayText'
 import { getForslagStatusTag } from '../../utils/forslagUtils'
 import { formatDate } from '../../utils/utils'
 
@@ -15,9 +19,23 @@ const getForslagsDetaljer = (forslag: Forslag) => {
   switch (forslag.endring.type) {
     case ForslagEndringType.IkkeAktuell: {
       return (
+        <BodyLong size="small">
+          {`Årsak: ${getForslagEndringAarsakText(forslag.endring.aarsak)}`}
+        </BodyLong>
+      )
+    }
+    case ForslagEndringType.ForlengDeltakelse: {
+      return (
+        <BodyLong size="small">
+          Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+        </BodyLong>
+      )
+    }
+    case ForslagEndringType.AvsluttDeltakelse: {
+      return (
         <>
-          <BodyLong size="small" weight="semibold">
-            Er ikke aktuell
+          <BodyLong size="small">
+            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
           </BodyLong>
           <BodyLong size="small">
             {`Årsak: ${getForslagEndringAarsakText(forslag.endring.aarsak)}`}
@@ -25,32 +43,42 @@ const getForslagsDetaljer = (forslag: Forslag) => {
         </>
       )
     }
-    case ForslagEndringType.ForlengDeltakelse: {
+    case ForslagEndringType.Deltakelsesmengde: {
+      return (
+        <BodyLong size="small">
+          Ny deltakelsesmengde:{' '}
+          {deltakerprosentText(
+            forslag.endring.deltakelsesprosent,
+            forslag.endring.dagerPerUke
+          )}
+        </BodyLong>
+      )
+    }
+    case ForslagEndringType.Sluttarsak: {
+      return (
+        <BodyLong size="small">
+          Ny sluttårsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+        </BodyLong>
+      )
+    }
+    case ForslagEndringType.Sluttdato: {
+      return (
+        <BodyLong size="small">
+          Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+        </BodyLong>
+      )
+    }
+    case ForslagEndringType.Startdato: {
       return (
         <>
-          <BodyLong size="small" weight="semibold">
-            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+          <BodyLong size="small">
+            Ny oppstartsdato: {formatDate(forslag.endring.startdato)}
           </BodyLong>
           <BodyLong size="small">
-            {`Begrunnelse: ${forslag.begrunnelse}`}
+            Forventet sluttdato: {formatDate(forslag.endring.sluttdato)}
           </BodyLong>
         </>
       )
-    }
-    case ForslagEndringType.AvsluttDeltakelse: {
-      return <div></div>
-    }
-    case ForslagEndringType.Deltakelsesmengde: {
-      return <div></div>
-    }
-    case ForslagEndringType.Sluttarsak: {
-      return <div></div>
-    }
-    case ForslagEndringType.Sluttdato: {
-      return <div></div>
-    }
-    case ForslagEndringType.Startdato: {
-      return <div></div>
     }
   }
 }
@@ -88,7 +116,15 @@ export const HistorikkElement = ({
         {forslag && (
           <div className="mt-1 mb-1">
             <ReadMore size="small" header="Forslaget fra arrangør">
+              <BodyLong size="small" weight="semibold">
+                {getForslagTittel(forslag.endring.type)}
+              </BodyLong>
               {getForslagsDetaljer(forslag)}
+              {forslag.begrunnelse && (
+                <BodyLong size="small">
+                  {`Begrunnelse: ${forslag.begrunnelse}`}
+                </BodyLong>
+              )}
               <Detail className="mt-1">{`Sendt ${formatDate(forslag.opprettet)} fra Muligheter AS.`}</Detail>
             </ReadMore>
           </div>

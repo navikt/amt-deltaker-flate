@@ -33,18 +33,21 @@ export const endreInnholdSchema = z.object({
 export const endreDeltakelsesmengdeSchema = z.object({
   type: z.literal(EndringType.EndreDeltakelsesmengde),
   deltakelsesprosent: z.number().nullable(),
-  dagerPerUke: z.number().nullable()
+  dagerPerUke: z.number().nullable(),
+  begrunnelse: z.string()
 })
 
 export const endreStartdatoSchema = z.object({
   type: z.literal(EndringType.EndreStartdato),
   startdato: stringToDate,
-  sluttdato: stringToDate
+  sluttdato: stringToDate,
+  begrunnelse: z.string().nullable()
 })
 
 export const endreSluttdatoSchema = z.object({
   type: z.literal(EndringType.EndreSluttdato),
-  sluttdato: stringToDate
+  sluttdato: stringToDate,
+  begrunnelse: z.string().nullable()
 })
 
 export const forlengDeltakelseSchema = z.object({
@@ -55,23 +58,27 @@ export const forlengDeltakelseSchema = z.object({
 
 export const ikkeAktuellSchema = z.object({
   type: z.literal(EndringType.IkkeAktuell),
-  aarsak: deltakerStatusAarsakSchema
+  aarsak: deltakerStatusAarsakSchema,
+  begrunnelse: z.string().nullable()
 })
 
 export const avsluttDeltakelseSchema = z.object({
   type: z.literal(EndringType.AvsluttDeltakelse),
   aarsak: deltakerStatusAarsakSchema,
-  sluttdato: stringToDate
+  sluttdato: stringToDate,
+  begrunnelse: z.string().nullable()
 })
 
 export const endreSluttarsakSchema = z.object({
   type: z.literal(EndringType.EndreSluttarsak),
-  aarsak: deltakerStatusAarsakSchema
+  aarsak: deltakerStatusAarsakSchema,
+  begrunnelse: z.string().nullable()
 })
 
 export const reaktiverDeltakelseSchema = z.object({
   type: z.literal(EndringType.ReaktiverDeltakelse),
-  reaktivertDato: stringToDate
+  reaktivertDato: stringToDate,
+  begrunnelse: z.string()
 })
 
 const endringSchema = z.discriminatedUnion('type', [

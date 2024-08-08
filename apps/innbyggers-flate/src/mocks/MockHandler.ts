@@ -28,6 +28,34 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 const createHistorikk = (): DeltakerHistorikkListe => {
   return [
     {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreSluttarsak,
+        aarsak: { type: DeltakerStatusAarsakType.IKKE_MOTT, beskrivelse: null },
+        begrunnelse: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: null,
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.Sluttarsak,
+          aarsak: {
+            type: ForslagEndringAarsakType.IkkeMott
+          }
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
       id: uuidv4(),
       type: HistorikkType.Forslag,
       opprettet: dayjs().toDate(),
@@ -47,8 +75,9 @@ const createHistorikk = (): DeltakerHistorikkListe => {
     {
       type: HistorikkType.Endring,
       endring: {
-        type: EndringType.EndreBakgrunnsinformasjon,
-        bakgrunnsinformasjon: null
+        type: EndringType.EndreSluttdato,
+        sluttdato: dayjs().toDate(),
+        begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'NAV Fredrikstad',
@@ -58,11 +87,86 @@ const createHistorikk = (): DeltakerHistorikkListe => {
     {
       type: HistorikkType.Endring,
       endring: {
+        type: EndringType.EndreStartdato,
+        sluttdato: dayjs().toDate(),
+        startdato: dayjs().toDate(),
+        begrunnelse: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.Startdato,
+          sluttdato: dayjs().add(4, 'month').toDate(),
+          startdato: dayjs().add(1, 'month').toDate()
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.ReaktiverDeltakelse,
+        reaktivertDato: dayjs().toDate(),
+        begrunnelse:
+          'Det var en feil at deltakelsen ble satt til ikke aktuell, dette er nå rettet.'
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.AvsluttDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().toDate(),
+        begrunnelse: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs().add(1, 'month').toDate(),
+          aarsak: {
+            type: ForslagEndringAarsakType.FattJobb
+          }
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
         type: EndringType.IkkeAktuell,
         aarsak: {
           type: DeltakerStatusAarsakType.FATT_JOBB,
           beskrivelse: null
-        }
+        },
+        begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'NAV Fredrikstad',
@@ -90,8 +194,8 @@ const createHistorikk = (): DeltakerHistorikkListe => {
           sluttdato: dayjs().add(1, 'month').toDate()
         },
         status: {
-          type: ForslagStatusType.Erstattet,
-          erstattet: dayjs().toDate()
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
         }
       }
     },
@@ -114,8 +218,72 @@ const createHistorikk = (): DeltakerHistorikkListe => {
       }
     },
     {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreDeltakelsesmengde,
+        begrunnelse: 'Det er ok.',
+        deltakelsesprosent: 80,
+        dagerPerUke: 4
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid til hjelp',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.Deltakelsesmengde,
+          begrunnelse: 'Lurt å øke litt mengden nå.',
+          deltakelsesprosent: 80,
+          dagerPerUke: 4
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreBakgrunnsinformasjon,
+        bakgrunnsinformasjon: ''
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreInnhold,
+        innhold: [
+          {
+            tekst: 'Støtte til jobbsøking',
+            innholdskode: 'type1',
+            valgt: true,
+            beskrivelse: null
+          },
+          {
+            tekst: 'Karriereveiledning',
+            innholdskode: 'type2',
+            valgt: false,
+            beskrivelse: null
+          }
+        ]
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'NAV Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
       type: HistorikkType.Vedtak,
-      fattet: dayjs().toDate(),
+      fattet: dayjs().subtract(10, 'days').toDate(),
       bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
       fattetAvNav: true,
       deltakelsesinnhold: {
