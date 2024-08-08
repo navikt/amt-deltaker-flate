@@ -93,15 +93,10 @@ const getEndringsDetaljer = (endring: Endring) => {
     }
     case EndringType.EndreInnhold: {
       return (
-        <>
-          <BodyLong size="small">
-            TODO, denne får vi ikke fra backend enda
-          </BodyLong>
-          <DeltakelseInnholdListe
-            deltakelsesinnhold={{ ledetekst: '', innhold: endring.innhold }}
-            className="-mt-3 -mb-2"
-          />
-        </>
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={{ ledetekst: '', innhold: endring.innhold }}
+          className="-mt-3 -mb-2"
+        />
       )
     }
     case EndringType.ReaktiverDeltakelse: {
