@@ -256,11 +256,8 @@ const createHistorikk = (): DeltakerHistorikkListe => {
           dagerPerUke: 4
         },
         status: {
-          type: ForslagStatusType.Avvist,
-          avvist: dayjs().toDate(),
-          avvistAv: 'Navn Navnesen',
-          avvistAvEnhet: 'Nav Fredrikstad',
-          begrunnelseFraNav: 'Kan ikke forlenge så lenge'
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
         }
       }
     },
