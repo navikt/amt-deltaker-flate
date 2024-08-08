@@ -57,8 +57,9 @@ export default function AvvisningsmodalBody({
         <Alert variant="info" className="mt-4">
           Vurder om dette er et ønske fra brukeren og om du skal sende et
           avslagsbrev. Les mer på Navet om{' '}
-          <Link href={RUTINE_NAVET_LINK}>
-            rutinen for avslag og klage på arbeidsmarkedstiltak.
+          <Link href={RUTINE_NAVET_LINK} inlineText target="_blank">
+            rutinen for avslag og klage på arbeidsmarkedstiltak (åpner i en ny
+            fane).
           </Link>
         </Alert>
       </Modal.Body>
