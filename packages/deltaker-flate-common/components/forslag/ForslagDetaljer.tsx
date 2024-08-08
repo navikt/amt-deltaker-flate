@@ -16,13 +16,13 @@ import {
   getForslagEndringAarsakText,
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
-import { formatDate, formatDateFromString } from '../../utils/utils.ts'
+import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
+import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { AvsluttDeltakelseForslagDetaljer } from './AvsluttDeltakelseForslagDetaljer.tsx'
 import { ForlengDeltakelseForslagDetaljer } from './ForlengDeltakelseForslagDetaljer.tsx'
 import { IkkeAktuellForslagDetaljer } from './IkkeAktuellForslagDetaljer.tsx'
 import assertNever = util.assertNever
-import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
 
 interface Props {
   forslag: Forslag
@@ -60,18 +60,17 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.Sluttdato:
         return (
           <BodyLong size="small">
-            Ny sluttdato: {formatDateFromString(forslag.endring.sluttdato)}
+            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
           </BodyLong>
         )
       case ForslagEndringType.Startdato:
         return (
           <>
             <BodyLong size="small">
-              Ny oppstartsdato:{' '}
-              {formatDateFromString(forslag.endring.startdato)}
+              Ny oppstartsdato: {formatDate(forslag.endring.startdato)}
             </BodyLong>
             <BodyLong size="small">
-              Ny sluttdato: {formatDateFromString(forslag.endring.sluttdato)}
+              Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
             </BodyLong>
           </>
         )

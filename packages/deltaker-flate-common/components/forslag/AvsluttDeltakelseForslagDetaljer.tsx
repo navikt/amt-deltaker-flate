@@ -1,7 +1,7 @@
 import { BodyLong } from '@navikt/ds-react'
 import { AvsluttDeltakelseForslag } from '../../model/forslag.ts'
 import { getForslagEndringAarsakText } from '../../utils/displayText.ts'
-import { formatDateFromString } from '../../utils/utils.ts'
+import { formatDate } from '../../utils/utils.ts'
 
 interface Props {
   avsluttDeltakelseForslag: AvsluttDeltakelseForslag
@@ -13,7 +13,7 @@ export const AvsluttDeltakelseForslagDetaljer = ({
   return (
     <div>
       <BodyLong size="small">
-        Ny sluttdato: {formatDateFromString(avsluttDeltakelseForslag.sluttdato)}
+        Ny sluttdato: {formatDate(avsluttDeltakelseForslag.sluttdato)}
       </BodyLong>
       <BodyLong size="small">
         Årsak til avslutning:{' '}
