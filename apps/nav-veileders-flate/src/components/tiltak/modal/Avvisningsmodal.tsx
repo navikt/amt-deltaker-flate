@@ -5,7 +5,7 @@ import {
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { ReactNode } from 'react'
-import { Detail, Modal } from '@navikt/ds-react'
+import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { avvisForslag } from '../../../api/api'
@@ -18,6 +18,9 @@ interface Props {
   forslag: Forslag
   children?: ReactNode
 }
+
+export const RUTINE_NAVET_LINK =
+  'https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-tiltak-og-virkemidler/SitePages/Klage-p%C3%A5-arbeidsmarkedstiltak.aspx'
 
 export default function AvvisningsmodalBody({
   onSend,
@@ -51,6 +54,14 @@ export default function AvvisningsmodalBody({
           error={begrunnelse.error}
         />
         {children}
+        <Alert variant="info" className="mt-4">
+          Vurder om dette er et ønske fra brukeren og om du skal sende et
+          avslagsbrev. Les mer på Navet om{' '}
+          <Link href={RUTINE_NAVET_LINK} inlineText target="_blank">
+            rutinen for avslag og klage på arbeidsmarkedstiltak (åpner i en ny
+            fane).
+          </Link>
+        </Alert>
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Avvis forslag"
