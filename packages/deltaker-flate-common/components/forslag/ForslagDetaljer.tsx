@@ -70,7 +70,7 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
               Ny oppstartsdato: {formatDate(forslag.endring.startdato)}
             </BodyLong>
             <BodyLong size="small">
-              Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+              Forventet sluttdato: {formatDate(forslag.endring.sluttdato)}
             </BodyLong>
           </>
         )
