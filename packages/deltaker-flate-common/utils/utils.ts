@@ -67,7 +67,7 @@ export const formatDateWithMonthName = (
 ): string => {
   if (!date) return EMDASH
   const d = dayjs(date)
-  return d.isValid() ? d.format('DD. MMMM YYYY') : EMDASH
+  return d.isValid() ? d.format('D. MMMM YYYY') : EMDASH
 }
 
 /**

@@ -12,6 +12,8 @@ import {
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
 import { formatDate } from '../../utils/utils'
+import { EMDASH } from '../../utils/constants'
+import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -59,28 +61,73 @@ const getEndringsDetaljer = (endring: Endring) => {
       )
     }
     case EndringType.AvsluttDeltakelse: {
-      return <div></div>
+      return (
+        <>
+          <BodyLong size="small">
+            Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small">
+              NAVs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
     }
     case EndringType.EndreSluttdato: {
-      return <div></div>
+      return <div className="-mb-1" />
     }
     case EndringType.EndreBakgrunnsinformasjon: {
-      return <div></div>
+      return (
+        <BodyLong size="small">
+          {endring.bakgrunnsinformasjon || EMDASH}
+        </BodyLong>
+      )
     }
     case EndringType.EndreDeltakelsesmengde: {
-      return <div></div>
+      return (
+        <BodyLong size="small">
+          NAVs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      )
     }
     case EndringType.EndreInnhold: {
-      return <div></div>
+      return (
+        <DeltakelseInnholdListe
+          deltakelsesinnhold={{ ledetekst: '', innhold: endring.innhold }}
+          className="-mt-3 -mb-2"
+        />
+      )
     }
     case EndringType.ReaktiverDeltakelse: {
-      return <div></div>
+      return (
+        <BodyLong size="small">
+          NAVs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      )
     }
     case EndringType.EndreSluttarsak: {
-      return <div></div>
+      return endring.begrunnelse ? (
+        <BodyLong size="small">
+          NAVs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      ) : (
+        <div className="-mb-1" />
+      )
     }
     case EndringType.EndreStartdato: {
-      return <div></div>
+      return (
+        <>
+          <BodyLong size="small">
+            Forventet sluttdato: {formatDate(endring.sluttdato)}
+          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small">
+              NAVs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
     }
   }
 }

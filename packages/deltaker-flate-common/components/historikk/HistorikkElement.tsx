@@ -1,58 +1,15 @@
 import { BodyLong, Detail, Heading, ReadMore } from '@navikt/ds-react'
-import { Forslag, ForslagEndringType } from '../../model/forslag'
-import { getForslagEndringAarsakText } from '../../utils/displayText'
+import { Forslag } from '../../model/forslag'
+import { getForslagTittel } from '../../utils/displayText'
 import { getForslagStatusTag } from '../../utils/forslagUtils'
 import { formatDate } from '../../utils/utils'
+import { ForslagtypeDetaljer } from '../forslag/ForslagDetaljer'
 
 interface Props {
   tittel: string
   icon: React.ReactNode
   forslag?: Forslag | null
   children: React.ReactNode
-}
-
-const getForslagsDetaljer = (forslag: Forslag) => {
-  switch (forslag.endring.type) {
-    case ForslagEndringType.IkkeAktuell: {
-      return (
-        <>
-          <BodyLong size="small" weight="semibold">
-            Er ikke aktuell
-          </BodyLong>
-          <BodyLong size="small">
-            {`Årsak: ${getForslagEndringAarsakText(forslag.endring.aarsak)}`}
-          </BodyLong>
-        </>
-      )
-    }
-    case ForslagEndringType.ForlengDeltakelse: {
-      return (
-        <>
-          <BodyLong size="small" weight="semibold">
-            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
-          </BodyLong>
-          <BodyLong size="small">
-            {`Begrunnelse: ${forslag.begrunnelse}`}
-          </BodyLong>
-        </>
-      )
-    }
-    case ForslagEndringType.AvsluttDeltakelse: {
-      return <div></div>
-    }
-    case ForslagEndringType.Deltakelsesmengde: {
-      return <div></div>
-    }
-    case ForslagEndringType.Sluttarsak: {
-      return <div></div>
-    }
-    case ForslagEndringType.Sluttdato: {
-      return <div></div>
-    }
-    case ForslagEndringType.Startdato: {
-      return <div></div>
-    }
-  }
 }
 
 export const HistorikkElement = ({
@@ -88,7 +45,10 @@ export const HistorikkElement = ({
         {forslag && (
           <div className="mt-1 mb-1">
             <ReadMore size="small" header="Forslaget fra arrangør">
-              {getForslagsDetaljer(forslag)}
+              <BodyLong size="small" weight="semibold">
+                {getForslagTittel(forslag.endring.type)}
+              </BodyLong>
+              <ForslagtypeDetaljer forslag={forslag} />
               <Detail className="mt-1">{`Sendt ${formatDate(forslag.opprettet)} fra Muligheter AS.`}</Detail>
             </ReadMore>
           </div>

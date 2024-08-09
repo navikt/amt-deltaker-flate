@@ -1,23 +1,17 @@
 import { Alert, Modal } from '@navikt/ds-react'
-import { useEffect } from 'react'
-import {
-  DeferredFetchState,
-  useDeferredFetch
-} from '../../hooks/useDeferredFetch'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
 } from '../../model/deltakerHistorikk'
-import { HistorikkVedtak } from './HistorikkVedtak'
-import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkType } from '../../model/forslag'
+import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
+import { HistorikkVedtak } from './HistorikkVedtak'
 
 interface Props {
-  deltakerId: string
+  historikk: DeltakerHistorikkListe | null
   open: boolean
   onClose: () => void
-  fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
 }
 
 const getHistorikkItem = (historikk: DeltakerHistorikk) => {
@@ -31,46 +25,20 @@ const getHistorikkItem = (historikk: DeltakerHistorikk) => {
   }
 }
 
-export const HistorikkModal = ({
-  deltakerId,
-  open,
-  onClose,
-  fetchHistorikk
-}: Props) => {
-  const {
-    data: historikk,
-    state,
-    error,
-    doFetch: doFetchHistorikk
-  } = useDeferredFetch(fetchHistorikk)
-
-  useEffect(() => {
-    if (open && !historikk) {
-      doFetchHistorikk(deltakerId)
-    }
-  }, [open, deltakerId])
-
-  // TODO denne er ikke helt heldig hvis lastetida er treg...
-  if (state === DeferredFetchState.LOADING) {
-    return <></>
-  }
-
+export const HistorikkModal = ({ open, historikk, onClose }: Props) => {
   return (
     <Modal open={open} header={{ heading: 'Endringer' }} onClose={onClose}>
       <Modal.Body>
-        {error && (
-          <Alert variant="error">
-            Beklager, vi kunne ikke hente historiske endringer på tiltaket.
-          </Alert>
-        )}
         {historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
               {getHistorikkItem(i)}
             </div>
           ))}
-        {state === DeferredFetchState.RESOLVED && !historikk && (
-          <Alert variant="info">Ingen historikk å vise.</Alert>
+        {(!historikk || historikk.length < 0) && (
+          <Alert variant="info" size="small">
+            Ingen historikk å vise.
+          </Alert>
         )}
       </Modal.Body>
     </Modal>

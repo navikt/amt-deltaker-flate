@@ -1,6 +1,6 @@
 import { BodyLong } from '@navikt/ds-react'
 import { ForlengDeltakelseForslag } from '../../model/forslag.ts'
-import { formatDateFromString } from '../../utils/utils.ts'
+import { formatDate } from '../../utils/utils.ts'
 
 interface Props {
   forlengDeltakelseForslag: ForlengDeltakelseForslag
@@ -12,7 +12,7 @@ export const ForlengDeltakelseForslagDetaljer = ({
   return (
     <div>
       <BodyLong size="small">
-        Ny sluttdato: {formatDateFromString(forlengDeltakelseForslag.sluttdato)}
+        Ny sluttdato: {formatDate(forlengDeltakelseForslag.sluttdato)}
       </BodyLong>
     </div>
   )
