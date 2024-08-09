@@ -80,8 +80,7 @@ export const ikkeAktuellForslagSchema = z.object({
 const deltakelsesmengdeForslagSchema = z.object({
   type: z.literal(ForslagEndringType.Deltakelsesmengde),
   deltakelsesprosent: z.number(),
-  dagerPerUke: z.number().nullable(),
-  begrunnelse: z.string()
+  dagerPerUke: z.number().nullable()
 })
 
 export const sluttdatoForslagSchema = z.object({

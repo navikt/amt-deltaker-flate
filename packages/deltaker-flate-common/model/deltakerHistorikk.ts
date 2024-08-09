@@ -34,7 +34,7 @@ export const endreDeltakelsesmengdeSchema = z.object({
   type: z.literal(EndringType.EndreDeltakelsesmengde),
   deltakelsesprosent: z.number().nullable(),
   dagerPerUke: z.number().nullable(),
-  begrunnelse: z.string()
+  begrunnelse: z.string().nullable()
 })
 
 export const endreStartdatoSchema = z.object({
