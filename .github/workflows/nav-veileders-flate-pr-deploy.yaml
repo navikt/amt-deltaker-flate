@@ -23,7 +23,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: frontend/mr-admin-flate
+        working-directory: apps/nav-veileders-flate
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
