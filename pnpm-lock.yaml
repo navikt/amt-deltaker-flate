@@ -696,6 +696,9 @@ packages:
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@6.13.0':
     resolution: {integrity: sha512-sFc528w9etyJqWSeG1QnrZ50pK2aaMf3YL1evVs5Bc8ChT1N+6icX8OBB0rk0enexHGWzTa3oEgD1W14EaZiFw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.13.0/26007f66871356b67e6d9b4f7fbe3a1f9771b8a2}
@@ -3596,11 +3599,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/aksel-icons': 6.13.0
       '@navikt/ds-tokens': 6.13.0
-      '@types/react': 18.3.3
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
     transitivePeerDependencies:
       - react-dom
 
