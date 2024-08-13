@@ -20,7 +20,7 @@ const getForslagStatusTekst = (forslag: Forslag) => {
     case ForslagStatusType.Erstattet:
       return `Erstattet av et nyere forslag ${formatDate(forslagStatus.erstattet)} av ${forslag.arrangorNavn}.`
     default:
-      return '' // VI viser ikke andre statuser i historikken.
+      return '' // Vi viser ikke andre statuser i historikken.
   }
 }
 
