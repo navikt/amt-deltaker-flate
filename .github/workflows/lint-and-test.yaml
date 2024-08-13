@@ -20,17 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: get-version
-        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(cat package.json | jq -r '.devDependencies.@playwright/test' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   lint-and-test:
     name: Lint, run tests & build
+    needs: playwright-version
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: 'read'
       id-token: 'write'
       packages: 'write'
-    needs: playwright-version
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     steps:
