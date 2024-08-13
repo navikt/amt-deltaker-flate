@@ -194,7 +194,7 @@ export const getForslagTittel = (endringstype: ForslagEndringType) => {
     case ForslagEndringType.Sluttdato:
       return 'Endre sluttdato'
     case ForslagEndringType.Startdato:
-      return 'Endre startdato'
+      return 'Endre oppstartsdato'
   }
 }
 
@@ -218,6 +218,6 @@ export const getEndringsTittel = (endring: Endring) => {
     case EndringType.EndreSluttarsak:
       return `Sluttårsak er endret til: ${getDeltakerStatusAarsakText(endring.aarsak)}`
     case EndringType.EndreStartdato:
-      return `Oppstartsdato er endret til ${formatDateWithMonthName(endring.sluttdato)}`
+      return `Oppstartsdato er endret til ${formatDateWithMonthName(endring.startdato)}`
   }
 }

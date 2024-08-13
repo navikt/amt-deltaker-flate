@@ -48,9 +48,16 @@ const getEndringsDetaljer = (endring: Endring) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (
-        <BodyLong size="small">
-          Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
-        </BodyLong>
+        <>
+          <BodyLong size="small">
+            Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small">
+              NAVs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
       )
     }
     case EndringType.ForlengDeltakelse: {
@@ -75,7 +82,13 @@ const getEndringsDetaljer = (endring: Endring) => {
       )
     }
     case EndringType.EndreSluttdato: {
-      return <div className="-mb-1" />
+      return endring.begrunnelse ? (
+        <BodyLong size="small">
+          NAVs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      ) : (
+        <div className="-mb-1" />
+      )
     }
     case EndringType.EndreBakgrunnsinformasjon: {
       return (
