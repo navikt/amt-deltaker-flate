@@ -15,6 +15,7 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
+  HvaErDette,
   SeEndringer,
   Tiltakstype,
   deltakerprosentText,
@@ -25,7 +26,6 @@ import {
 import { getHistorikk } from '../../api/api.ts'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
-import { HvaErDette } from './HvaErDette.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
 

@@ -3,7 +3,8 @@ import {
   deltakelsesinnholdSchema,
   deltakerStaturTypeSchema,
   deltakerStatusAarsakSchema,
-  tiltakstypeSchema
+  tiltakstypeSchema,
+  vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -26,16 +27,6 @@ export const pameldingStatusSchema = z.object({
   opprettet: z.string()
 })
 
-export const vedtaksinformasjonSchema = z.object({
-  fattet: z.string().nullable(), // LocalDateTime
-  fattetAvNav: z.boolean(),
-  opprettet: z.string(),
-  opprettetAv: z.string(),
-  sistEndret: z.string(),
-  sistEndretAv: z.string(),
-  sistEndretAvEnhet: z.string().nullable()
-})
-
 export const deltakerSchema = z.object({
   deltakerId: z.string().uuid(),
   deltakerliste: deltakerlisteSchema,
@@ -51,6 +42,5 @@ export const deltakerSchema = z.object({
   forslag: z.array(forslagSchema)
 })
 
-export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type DeltakerResponse = z.infer<typeof deltakerSchema>

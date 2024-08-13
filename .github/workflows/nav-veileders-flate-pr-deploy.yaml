@@ -17,6 +17,20 @@ env:
   TZ: Europe/Oslo
 
 jobs:
+  playwright-version:
+    name: Get playwright version
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: apps/nav-veileders-flate
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+
   deploy-pull-request-branch:
     if: github.event.pull_request.head.repo.fork != true
     name: Deploy Pull Request Branch - nav-veileders-flate
@@ -24,6 +38,9 @@ jobs:
     timeout-minutes: 15
     permissions:
       id-token: 'write' # Used to authenticate with Google Cloud
+    needs: playwright-version
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
