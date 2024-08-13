@@ -112,7 +112,7 @@ importers:
         specifier: ^2.3.4
         version: 2.3.5(typescript@5.5.4)
       playwright:
-        specifier: ^1.45.3
+        specifier: ^1.46.0
         version: 1.46.0
       tailwindcss:
         specifier: ^3.4.7
@@ -230,7 +230,7 @@ importers:
         specifier: ^24.1.1
         version: 24.1.1
       playwright:
-        specifier: ^1.45.3
+        specifier: ^1.46.0
         version: 1.46.0
       rollup-plugin-import-map:
         specifier: ^3.0.0
