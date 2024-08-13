@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: get-version
-        run: echo "version=$(cat package.json | jq -r '.devDependencies.@playwright/test' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   lint-and-test:
     name: Lint, run tests & build

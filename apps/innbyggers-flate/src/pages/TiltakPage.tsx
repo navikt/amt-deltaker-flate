@@ -16,6 +16,7 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
+  HvaErDette,
   SeEndringer,
   Tiltakstype,
   deltakerprosentText,
@@ -28,7 +29,6 @@ import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
-import { HvaErDette } from '../components/HvaErDette.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
   return (

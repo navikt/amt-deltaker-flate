@@ -14,12 +14,18 @@ updates:
       interval: 'daily'
     open-pull-requests-limit: 10
     groups:
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/test'
       minor-and-patch:
         patterns:
           - '*'
         update-types:
           - 'minor'
           - 'patch'
+        exclude-patterns:
+          - 'playwright'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
