@@ -73,7 +73,9 @@ const InngangPrEnv = () => {
         </div>
       )}
 
-      {(error || !nyPamelding) && <ErrorPage message={error} />}
+      {(error || !nyPamelding) && (
+        <ErrorPage message="Kunne ikke opprette kladd for påmelding." />
+      )}
 
       {nyPamelding && (
         <PameldingContextProvider initialPamelding={nyPamelding}>

@@ -35,7 +35,7 @@ const InngangMeldPa = () => {
     return (
       <>
         {isEnvLocalDemoOrPr && <DemoBanner />}
-        <ErrorPage message={error} />
+        <ErrorPage message="Kunne ikke opprette kladd for påmelding." />
       </>
     )
   }

@@ -73,7 +73,9 @@ export const PameldingForm = ({
 
   const handleDiableForm = (disable: boolean) => {
     setIsDisabled(disable)
-    disableForm && disableForm(disable)
+    if (disableForm) {
+      disableForm(disable)
+    }
   }
 
   useEffect(() => {

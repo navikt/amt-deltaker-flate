@@ -26,17 +26,7 @@ export const getDeltakelse = async (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return deltakerSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse deltakerSchema:', error)
-        if (error instanceof ZodError) {
-          console.error('Issue', error.issues)
-        }
-        throw error
-      }
-    })
+    .then(parseDeltakelse)
 }
 
 export const godkjennUtkast = async (
@@ -57,17 +47,7 @@ export const godkjennUtkast = async (
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return deltakerSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse deltakerSchema:', error)
-        if (error instanceof ZodError) {
-          console.error('Issue', error.issues)
-        }
-        throw error
-      }
-    })
+    .then(parseDeltakelse)
 }
 
 export const getHistorikk = async (
@@ -96,7 +76,21 @@ export const getHistorikk = async (
         if (error instanceof ZodError) {
           console.error('Issue', error.issues)
         }
-        throw error
+        throw new Error(
+          'Kunne ikke laste inn endringene for deltakelsen. Prøv igjen senere'
+        )
       }
     })
+}
+
+const parseDeltakelse = (json: string): DeltakerResponse => {
+  try {
+    return deltakerSchema.parse(json)
+  } catch (error) {
+    console.error('Kunne ikke parse deltakerSchema:', error)
+    if (error instanceof ZodError) {
+      console.error('Issue', error.issues)
+    }
+    throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
+  }
 }

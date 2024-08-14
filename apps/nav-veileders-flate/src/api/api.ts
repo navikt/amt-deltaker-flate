@@ -513,6 +513,6 @@ const parsePamelding = (json: string): PameldingResponse => {
     return pameldingSchema.parse(json)
   } catch (error) {
     console.error('Kunne ikke parse pameldingSchema:', error)
-    throw error
+    throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
   }
 }

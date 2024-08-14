@@ -50,7 +50,6 @@ export const App = () => {
             <Heading spacing size="small" level="3">
               Vi beklager, men noe gikk galt
             </Heading>
-            {error}
           </Alert>
         </main>
       )}

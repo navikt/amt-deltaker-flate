@@ -94,7 +94,9 @@ export const MeldPaDirekteButton = ({
       sendDirekteState === DeferredFetchState.LOADING ||
       sendDirekteState === DeferredFetchState.RESOLVED
     setIsDisabled(isLoading || disabled)
-    disableForm && disableForm(isLoading || disabled)
+    if (disableForm) {
+      disableForm(isLoading || disabled)
+    }
   }, [sendDirekteState, disabled])
 
   return (

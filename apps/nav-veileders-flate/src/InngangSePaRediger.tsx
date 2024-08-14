@@ -39,7 +39,7 @@ const InngangSePaRediger = () => {
     return (
       <>
         {isEnvLocalDemoOrPr && <DemoBanner />}
-        <ErrorPage message={error} />
+        <ErrorPage message="Kunne ikke hente påmelding." />
       </>
     )
   }
