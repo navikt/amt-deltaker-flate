@@ -265,6 +265,9 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -278,6 +281,9 @@ importers:
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
+      '@types/uuid':
+        specifier: ^10.0.0
+        version: 10.0.0
 
   shared-config/eslint-config:
     dependencies:
@@ -702,6 +708,9 @@ packages:
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@6.16.0':
     resolution: {integrity: sha512-99t+/EibwC9couUdDiybdlgx2nK5J8PtjMPnOMvLIPJVY8PV54jTNWAE7ObAln0WbMj03nNRot6j//RnZb9K9Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.16.0/734a8531f46c397da9ccc35a8847814cb6d6e322}
@@ -3605,11 +3614,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/aksel-icons': 6.16.0
       '@navikt/ds-tokens': 6.16.0
-      '@types/react': 18.3.3
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
     transitivePeerDependencies:
       - react-dom
 

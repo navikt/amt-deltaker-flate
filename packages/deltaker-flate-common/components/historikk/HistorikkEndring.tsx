@@ -60,13 +60,6 @@ const getEndringsDetaljer = (endring: Endring) => {
         </>
       )
     }
-    case EndringType.ForlengDeltakelse: {
-      return (
-        <BodyLong size="small">
-          NAVs begrunnelse: {endring.begrunnelse}
-        </BodyLong>
-      )
-    }
     case EndringType.AvsluttDeltakelse: {
       return (
         <>
@@ -81,26 +74,10 @@ const getEndringsDetaljer = (endring: Endring) => {
         </>
       )
     }
-    case EndringType.EndreSluttdato: {
-      return endring.begrunnelse ? (
-        <BodyLong size="small">
-          NAVs begrunnelse: {endring.begrunnelse}
-        </BodyLong>
-      ) : (
-        <div className="-mb-1" />
-      )
-    }
     case EndringType.EndreBakgrunnsinformasjon: {
       return (
         <BodyLong size="small">
           {endring.bakgrunnsinformasjon || EMDASH}
-        </BodyLong>
-      )
-    }
-    case EndringType.EndreDeltakelsesmengde: {
-      return (
-        <BodyLong size="small">
-          NAVs begrunnelse: {endring.begrunnelse}
         </BodyLong>
       )
     }
@@ -119,6 +96,9 @@ const getEndringsDetaljer = (endring: Endring) => {
         </BodyLong>
       )
     }
+    case EndringType.ForlengDeltakelse:
+    case EndringType.EndreSluttdato:
+    case EndringType.EndreDeltakelsesmengde:
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
         <BodyLong size="small">

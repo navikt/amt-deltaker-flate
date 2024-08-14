@@ -20,7 +20,7 @@ export const deltakerprosentText = (
   dagerPerUke: number | null
 ) => {
   const dagerIUkaText = dagerPerUke
-    ? `fordelt på ${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka.`
+    ? `fordelt på ${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
     : ''
   return `${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`
 }

@@ -28,11 +28,7 @@ export const SeEndringer = ({
   } = useDeferredFetch(fetchHistorikk)
 
   const seEndringer = () => {
-    if (!historikk) {
-      doFetchHistorikk(deltakerId).then(() => setHistorikkModalOpen(true))
-    } else {
-      setHistorikkModalOpen(true)
-    }
+    doFetchHistorikk(deltakerId).then(() => setHistorikkModalOpen(true))
   }
 
   return (

@@ -20,6 +20,10 @@ export enum EndringType {
   ReaktiverDeltakelse = 'ReaktiverDeltakelse'
 }
 
+export enum ArrangorEndringsType {
+  LeggTilOppstartsdato = 'LeggTilOppstartsdato'
+}
+
 export const endreBakgrunnsinformasjonSchema = z.object({
   type: z.literal(EndringType.EndreBakgrunnsinformasjon),
   bakgrunnsinformasjon: z.string().nullable()
@@ -94,6 +98,16 @@ const endringSchema = z.discriminatedUnion('type', [
   reaktiverDeltakelseSchema
 ])
 
+const arrangorLeggTilOppstartSchema = z.object({
+  type: z.literal(ArrangorEndringsType.LeggTilOppstartsdato),
+  startdato: stringToDate,
+  sluttdato: stringToDate
+})
+
+const arrangorEndringSchema = z.discriminatedUnion('type', [
+  arrangorLeggTilOppstartSchema
+])
+
 export const vedtakSchema = z.object({
   type: z.literal(HistorikkType.Vedtak),
   fattet: stringToDate.nullable(),
@@ -114,16 +128,29 @@ export const deltakerEndringSchema = z.object({
   forslag: forslagSchema.nullable()
 })
 
+export const endringFraArrangorSchema = z.object({
+  type: z.literal(HistorikkType.EndringFraArrangor),
+  id: z.string().uuid(),
+  opprettet: stringToDate,
+  arrangorNavn: z.string(),
+  endring: arrangorEndringSchema
+})
+
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   vedtakSchema,
   deltakerEndringSchema,
-  forslagSchema
+  forslagSchema,
+  endringFraArrangorSchema
 ])
 
 export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
 
 export type Endring = z.infer<typeof endringSchema>
+export type ArrangorEndring = z.infer<typeof arrangorEndringSchema>
 export type DeltakerEndring = z.infer<typeof deltakerEndringSchema>
+export type DeltakerEndringFraArrangor = z.infer<
+  typeof endringFraArrangorSchema
+>
 export type Vedtak = z.infer<typeof vedtakSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
 export type DeltakerHistorikkListe = z.infer<
