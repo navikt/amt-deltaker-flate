@@ -48,7 +48,7 @@ export enum DeltakerlisteStatus {
 }
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStaturTypeSchema = z.nativeEnum(DeltakerStatusType)
+export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
@@ -80,6 +80,15 @@ export const innholdSchema = z.object({
 export const deltakelsesinnholdSchema = z.object({
   ledetekst: z.string(),
   innhold: z.array(innholdSchema)
+})
+
+export const pameldingStatusSchema = z.object({
+  id: z.string().uuid(),
+  type: deltakerStatusTypeSchema,
+  aarsak: deltakerStatusAarsakSchema.nullable(),
+  gyldigFra: stringToDate,
+  gyldigTil: stringToDate.nullable(),
+  opprettet: stringToDate
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>

@@ -9,7 +9,7 @@ import {
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
-import { dateStrToDate, dateStrToNullableDate } from './utils'
+import { dateStrToNullableDate } from './utils'
 
 const harSluttetKanEndres = (
   pamelding: PameldingResponse,
@@ -104,7 +104,7 @@ const skalViseEndreOppstartsdato = (
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
-  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
+  const statusdato = pamelding.status.gyldigFra
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 

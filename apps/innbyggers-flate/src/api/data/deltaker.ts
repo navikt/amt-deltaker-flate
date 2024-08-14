@@ -1,8 +1,7 @@
 import {
-  forslagSchema,
   deltakelsesinnholdSchema,
-  deltakerStaturTypeSchema,
-  deltakerStatusAarsakSchema,
+  forslagSchema,
+  pameldingStatusSchema,
   tiltakstypeSchema,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
@@ -14,17 +13,8 @@ export const deltakerlisteSchema = z.object({
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.string(),
-  startdato: z.string(),
-  sluttdato: z.string().nullable()
-})
-
-export const pameldingStatusSchema = z.object({
-  id: z.string().uuid(),
-  type: deltakerStaturTypeSchema,
-  aarsak: deltakerStatusAarsakSchema.nullable(),
-  gyldigFra: z.string(),
-  gyldigTil: z.string().nullable(),
-  opprettet: z.string()
+  startdato: z.string(), // har format "YYYY-MM-DD"
+  sluttdato: z.string().nullable() // har format "YYYY-MM-DD"
 })
 
 export const deltakerSchema = z.object({
