@@ -7,6 +7,7 @@ import { HistorikkType } from '../../model/forslag'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
 import { HistorikkVedtak } from './HistorikkVedtak'
+import { HistorikkArrangorEndring } from './HistorikkArrangorEndring'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
@@ -22,6 +23,8 @@ const getHistorikkItem = (historikk: DeltakerHistorikk) => {
       return <HistorikkEndring deltakerEndring={historikk} />
     case HistorikkType.Forslag:
       return <HistorikkForslag forslag={historikk} />
+    case HistorikkType.EndringFraArrangor:
+      return <HistorikkArrangorEndring deltakerEndringFraArrangor={historikk} />
   }
 }
 

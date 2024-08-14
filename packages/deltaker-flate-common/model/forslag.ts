@@ -4,7 +4,8 @@ import { stringToDate } from './deltaker'
 export enum HistorikkType {
   Vedtak = 'Vedtak',
   Endring = 'Endring',
-  Forslag = 'Forslag'
+  Forslag = 'Forslag',
+  EndringFraArrangor = 'EndringFraArrangor'
 }
 
 export enum ForslagStatusType {

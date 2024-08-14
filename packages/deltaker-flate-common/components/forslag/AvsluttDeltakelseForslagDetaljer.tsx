@@ -16,8 +16,7 @@ export const AvsluttDeltakelseForslagDetaljer = ({
         Ny sluttdato: {formatDate(avsluttDeltakelseForslag.sluttdato)}
       </BodyLong>
       <BodyLong size="small">
-        Årsak til avslutning:{' '}
-        {getForslagEndringAarsakText(avsluttDeltakelseForslag.aarsak)}
+        Årsak: {getForslagEndringAarsakText(avsluttDeltakelseForslag.aarsak)}
       </BodyLong>
     </div>
   )
