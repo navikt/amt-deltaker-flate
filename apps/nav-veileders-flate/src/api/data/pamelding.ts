@@ -1,15 +1,14 @@
 import {
-  forslagSchema,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
-  DeltakerStatusType,
+  forslagSchema,
+  pameldingStatusSchema,
   Tiltakstype,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
@@ -48,15 +47,6 @@ export const deltakerlisteSchema = z.object({
 export const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema,
   beskrivelse: z.string().nullable()
-})
-
-export const pameldingStatusSchema = z.object({
-  id: z.string().uuid(),
-  type: deltakerStatusTypeSchema,
-  aarsak: deltakerStatusAarsakSchema.nullable(),
-  gyldigFra: z.string(),
-  gyldigTil: z.string().nullable(),
-  opprettet: z.string()
 })
 
 export const pameldingSchema = z.object({

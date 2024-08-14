@@ -15,7 +15,6 @@ import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   HarDeltattValg,
-  dateStrToDate,
   dateStrToNullableDate,
   formatDateToDateInputStr
 } from '../../../utils/utils.ts'
@@ -39,7 +38,7 @@ interface AvsluttDeltakelseModalProps {
 }
 
 const showHarDeltatt = (pamelding: PameldingResponse) => {
-  const statusdato = dateStrToDate(pamelding.status.gyldigFra)
+  const statusdato = pamelding.status.gyldigFra
   const femtenDagerSiden = new Date()
   femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
   return statusdato > femtenDagerSiden

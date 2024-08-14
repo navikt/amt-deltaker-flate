@@ -236,7 +236,6 @@ const createHistorikk = (): DeltakerHistorikkListe => {
         arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
-          begrunnelse: 'Lurt å øke litt mengden nå.',
           deltakelsesprosent: 80,
           dagerPerUke: 4
         },
@@ -325,9 +324,9 @@ export const createDeltaker = (
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
       type: statusType,
       aarsak: null,
-      gyldigFra: yesterday.toString(),
-      gyldigTil: EMDASH,
-      opprettet: yesterday.toString()
+      gyldigFra: yesterday.toDate(),
+      gyldigTil: null,
+      opprettet: yesterday.toDate()
     },
     startdato: EMDASH,
     sluttdato: EMDASH,

@@ -251,7 +251,6 @@ const createHistorikk = (): DeltakerHistorikkListe => {
         arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
-          begrunnelse: 'Lurt å øke litt mengden nå.',
           deltakelsesprosent: 80,
           dagerPerUke: 4
         },
@@ -430,9 +429,9 @@ export class MockHandler {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
         type: this.statusType,
         aarsak: null,
-        gyldigFra: dayjs().subtract(17, 'day').toString(),
-        gyldigTil: EMDASH,
-        opprettet: yesterday.toString()
+        gyldigFra: dayjs().subtract(17, 'day').toDate(),
+        gyldigTil: null,
+        opprettet: yesterday.toDate()
       },
       startdato: _startdato,
       sluttdato: _sluttdato,
@@ -532,8 +531,7 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
           deltakelsesprosent: 42,
-          dagerPerUke: 3,
-          begrunnelse: 'Lurt å endre nå.'
+          dagerPerUke: 3
         }
       })
       const forslagStartdato = aktivtForslag({

@@ -1,20 +1,24 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusType, EMDASH, Tiltakstype } from 'deltaker-flate-common'
+import {
+  DeltakerlisteStatus,
+  DeltakerStatusType,
+  Tiltakstype
+} from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
-  VarighetValg,
   finnVarighetValg,
   getMaxVarighetDato,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSluttDatoFeilmelding,
   getVarighet,
-  kalkulerSluttdato
+  kalkulerSluttdato,
+  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
+  VARGIHET_VALG_FEILMELDING,
+  VarighetValg
 } from './varighet.tsx'
 
 const startdato = '2023-10-28'
@@ -32,15 +36,52 @@ const pamelding: PameldingResponse = {
     arrangorNavn: 'Den Beste Arrangøren AS',
     oppstartstype: 'LOPENDE',
     startdato: startdato,
-    sluttdato: sluttdato
+    sluttdato: sluttdato,
+    status: DeltakerlisteStatus.GJENNOMFORES,
+    tilgjengeligInnhold: [
+      {
+        tekst: 'Arbeidspraksis',
+        innholdskode: 'arbeidspraksis'
+      },
+      {
+        tekst: 'Karriereveiledning',
+        innholdskode: 'karriereveiledning'
+      },
+      {
+        tekst:
+          'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+        innholdskode: 'kartlegge-helse'
+      },
+      {
+        tekst:
+          'Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin',
+        innholdskode: 'kartlegge-grunnleggende-ferdigheter'
+      },
+      {
+        tekst: 'Veiledning i sosial mestring',
+        innholdskode: 'veiledning-sosialt'
+      },
+      {
+        tekst: 'Oppfølging på arbeidsplassen',
+        innholdskode: 'oppfolging-arbeidsplassen'
+      },
+      {
+        tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+        innholdskode: 'tilpasse-arbeidsoppgaver'
+      },
+      {
+        tekst: 'Annet',
+        innholdskode: 'annet'
+      }
+    ]
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
     type: DeltakerStatusType.DELTAR,
     aarsak: null,
-    gyldigFra: dayjs().subtract(17, 'day').toString(),
-    gyldigTil: EMDASH,
-    opprettet: dayjs().subtract(1, 'day').toString()
+    gyldigFra: dayjs().subtract(17, 'day').toDate(),
+    gyldigTil: null,
+    opprettet: dayjs().subtract(1, 'day').toDate()
   },
   startdato: startdato,
   sluttdato: null,
@@ -53,7 +94,8 @@ const pamelding: PameldingResponse = {
   kanEndres: true,
   digitalBruker: true,
   maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
-  softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
+  softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds(),
+  forslag: []
 }
 
 describe('kalkulerSluttdato', () => {

@@ -29,7 +29,7 @@ export const TiltakPage = () => {
             dialogUrl={DIALOG_URL}
             tiltakOgStedTekst={tiltakOgStedTekst}
             meldtPaDato={getDateFromString(pamelding.vedtaksinformasjon.fattet)}
-            feilregistrertDato={getDateFromString(pamelding.status.gyldigFra)}
+            feilregistrertDato={pamelding.status.gyldigFra}
           />
         ) : (
           <DeltakerInfo className="w-full" />
