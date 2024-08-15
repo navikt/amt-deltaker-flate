@@ -52,7 +52,10 @@ export const HistorikkArrangorEndring = ({
       forslag={null}
     >
       {getEndringsDetaljer(deltakerEndringFraArrangor.endring)}
-      <Detail className="mt-1">{`Endret ${formatDate(deltakerEndringFraArrangor.opprettet)} av ${deltakerEndringFraArrangor.arrangorNavn}`}</Detail>
+      <Detail
+        className="mt-1"
+        textColor="subtle"
+      >{`Endret ${formatDate(deltakerEndringFraArrangor.opprettet)} av ${deltakerEndringFraArrangor.arrangorNavn}`}</Detail>
     </HistorikkElement>
   )
 }

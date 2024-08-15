@@ -49,7 +49,10 @@ export const HistorikkElement = ({
                 {getForslagTittel(forslag.endring.type)}
               </BodyLong>
               <ForslagtypeDetaljer forslag={forslag} />
-              <Detail className="mt-1">{`Sendt ${formatDate(forslag.opprettet)} fra ${forslag.arrangorNavn}.`}</Detail>
+              <Detail
+                className="mt-1"
+                textColor="subtle"
+              >{`Sendt ${formatDate(forslag.opprettet)} fra ${forslag.arrangorNavn}.`}</Detail>
             </ReadMore>
           </div>
         )}
