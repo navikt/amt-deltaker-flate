@@ -43,7 +43,7 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
         </>
       )}
 
-      <Detail className="mt-1">
+      <Detail className="mt-1" textColor="subtle">
         {fattetAvNav
           ? `Meldt på av ${opprettetAv} ${opprettetAvEnhet} ${formatDate(fattet)}.`
           : `Utkast delt ${formatDate(opprettet)} av ${opprettetAv} ${opprettetAvEnhet}. Du godkjente utkastet ${formatDate(fattet)}.`}

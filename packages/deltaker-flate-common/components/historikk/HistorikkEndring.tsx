@@ -135,7 +135,10 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
       forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring)}
-      <Detail className="mt-1">{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
+      <Detail
+        className="mt-1"
+        textColor="subtle"
+      >{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
     </HistorikkElement>
   )
 }

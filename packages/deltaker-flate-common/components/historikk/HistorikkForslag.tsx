@@ -37,7 +37,9 @@ export const HistorikkForslag = ({ forslag }: Props) => {
         <BodyLong size="small">{forslag.status.begrunnelseFraNav}</BodyLong>
       )}
 
-      {forslagStatusTekst && <Detail size="small">{forslagStatusTekst}</Detail>}
+      {forslagStatusTekst && (
+        <Detail textColor="subtle">{forslagStatusTekst}</Detail>
+      )}
     </HistorikkElement>
   )
 }
