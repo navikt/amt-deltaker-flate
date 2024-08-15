@@ -157,5 +157,11 @@ export function useSluttdatoInput({
 
   const errorMsg = erSkjult ? null : error
 
-  return { sluttdato, error: errorMsg, validate, onChange: handleChange }
+  return {
+    sluttdato,
+    defaultDato,
+    error: errorMsg,
+    validate,
+    onChange: handleChange
+  }
 }

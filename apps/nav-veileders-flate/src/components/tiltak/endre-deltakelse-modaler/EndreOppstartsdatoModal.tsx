@@ -50,7 +50,6 @@ export const EndreOppstartsdatoModal = ({
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
-
   const defaultDatoer = getDatoer(pamelding, forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
