@@ -29,7 +29,7 @@ export const EndreInnholdModal = ({
   const [valgteInnhold, setValgteInnhold] = useState<string[] | []>(
     generateValgtInnholdKoder(pamelding)
   )
-  const [hasError, setHasError] = useState<boolean>(false)
+  const [innholdError, setInnholdError] = useState<string | null>(null)
   const { enhetId } = useAppContext()
 
   const [annetBeskrivelse, setAnnetBeskrivelse] = useState<
@@ -39,31 +39,43 @@ export const EndreInnholdModal = ({
       .filter((i) => i.valgt)
       .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
   )
+  const [annetError, setAnnetError] = useState<string | null>(null)
+
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
   const validertRequest = () => {
-    const innholdFromResponse = generateInnholdFromResponse(
-      pamelding,
-      valgteInnhold,
-      annetBeskrivelse
-    )
-    if (
-      valgteInnhold.length > 0 &&
-      (!erAnnetValgt || (erAnnetValgt && harAnnetBeskrivelse))
+    if (valgteInnhold.length <= 0) {
+      setInnholdError('Du må velge innhold før du kan fortsette.')
+      return null
+    } else if (
+      erAnnetValgt &&
+      harAnnetBeskrivelse &&
+      annetBeskrivelse.length > BESKRIVELSE_ANNET_MAX_TEGN
     ) {
+      setAnnetError(
+        `Tiltaksinnholdet "Annet" kan ikke være mer enn ${BESKRIVELSE_ANNET_MAX_TEGN} tegn.`
+      )
+      return null
+    } else if (erAnnetValgt && !harAnnetBeskrivelse) {
+      setAnnetError(
+        'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
+      )
+      return null
+    } else {
       const endring: EndreInnholdRequest = {
-        innhold: innholdFromResponse
+        innhold: generateInnholdFromResponse(
+          pamelding,
+          valgteInnhold,
+          annetBeskrivelse
+        )
       }
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
         body: endring
       }
-    } else {
-      setHasError(true)
-      return null
     }
   }
 
@@ -89,17 +101,13 @@ export const EndreInnholdModal = ({
           <CheckboxGroup
             defaultValue={valgteInnhold}
             legend="Hva mer skal tiltaket inneholde?"
-            error={
-              hasError &&
-              !erAnnetValgt &&
-              'Du må velge innhold før du kan fortsette.'
-            }
+            error={innholdError}
             size="small"
             aria-required
             id="endreValgteInnhold"
             onChange={(value: string[]) => {
               setValgteInnhold(value)
-              setHasError(false)
+              setInnholdError(null)
             }}
           >
             {pamelding.deltakerliste.tilgjengeligInnhold.map((e) => (
@@ -109,7 +117,7 @@ export const EndreInnholdModal = ({
                   <Textarea
                     onChange={(e) => {
                       setAnnetBeskrivelse(e.target.value)
-                      setHasError(false)
+                      setAnnetError(null)
                     }}
                     label={null}
                     value={annetBeskrivelse ?? ''}
@@ -118,11 +126,7 @@ export const EndreInnholdModal = ({
                     maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                     size="small"
                     id="innholdAnnetBeskrivelse"
-                    error={
-                      hasError &&
-                      erAnnetValgt &&
-                      'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
-                    }
+                    error={annetError}
                   />
                 )}
               </div>

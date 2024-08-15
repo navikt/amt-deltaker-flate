@@ -24,8 +24,18 @@ export const EndreBakgrunnsinfoModal = ({
   const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<
     string | null
   >(pamelding.bakgrunnsinformasjon)
+  const [error, setError] = useState<string | null>(null)
 
   const validertRequest = () => {
+    if (
+      bakgrunnsinformasjon &&
+      bakgrunnsinformasjon.length > BAKGRUNNSINFORMASJON_MAKS_TEGN
+    ) {
+      setError(
+        `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
+      )
+      return null
+    }
     return {
       deltakerId: pamelding.deltakerId,
       enhetId,
@@ -48,6 +58,7 @@ export const EndreBakgrunnsinfoModal = ({
     >
       <Textarea
         onChange={(e) => {
+          setError(null)
           setBakgrunnsinformasjon(e.target.value)
         }}
         label="Er det noe mer dere ønsker å informere arrangøren om?"
@@ -57,6 +68,7 @@ export const EndreBakgrunnsinfoModal = ({
         id="bakgrunnsinformasjon"
         size="small"
         aria-label={'Bagrunnsinfo'}
+        error={error}
       />
     </Endringsmodal>
   )
