@@ -76,7 +76,8 @@ export const EndreSluttdatoModal = ({
     if (sluttdato.sluttdato && begrunnelse.valider()) {
       const endring: EndreSluttdatoRequest = {
         sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
-        forslagId: forslag?.id
+        forslagId: forslag?.id,
+        begrunnelse: begrunnelse.begrunnelse || null
       }
       return {
         deltakerId: pamelding.deltakerId,
