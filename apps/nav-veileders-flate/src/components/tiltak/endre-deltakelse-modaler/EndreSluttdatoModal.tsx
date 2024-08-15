@@ -104,7 +104,7 @@ export const EndreSluttdatoModal = ({
         error={sluttdato.error}
         fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
         toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
-        defaultDate={getDateFromString(pamelding.sluttdato)}
+        defaultDate={sluttdato.defaultDato}
         onValidate={sluttdato.validate}
         onChange={sluttdato.onChange}
       />
