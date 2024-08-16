@@ -138,7 +138,7 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
       <Detail
         className="mt-1"
         textColor="subtle"
-      >{`Endret ${formatDate(deltakerEndring.endret)} ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}`}</Detail>
+      >{`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}</Detail>
     </HistorikkElement>
   )
 }
