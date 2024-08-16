@@ -136,7 +136,7 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
-    if (!hasError && startdato) {
+    if (!hasError && !errorStartdato && startdato) {
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
