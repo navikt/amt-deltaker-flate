@@ -1,6 +1,8 @@
-import { DateValidationT, useDatepicker, DatePicker } from '@navikt/ds-react'
-import { getDateFromNorwegianStringFormat } from 'deltaker-flate-common'
-import { useRef } from 'react'
+import { DatePicker, DateValidationT, useDatepicker } from '@navikt/ds-react'
+import dayjs from 'dayjs'
+import { useRef, useState } from 'react'
+import { formatDateToInputStr } from '../../utils/utils'
+import { dateValidation } from './VarighetField'
 
 interface Props {
   label: string
@@ -9,7 +11,7 @@ interface Props {
   toDate?: Date
   defaultDate?: Date
   defaultMonth?: Date
-  onValidate: (validation: DateValidationT, date?: Date) => void
+  onValidate: (validation: DateValidationT, newDate?: Date) => void
   onChange: (date: Date | undefined) => void
 }
 
@@ -23,29 +25,51 @@ export function SimpleDatePicker({
   onValidate,
   onChange
 }: Props) {
+  const [dateInput, setDateInput] = useState<string>(
+    defaultDate ? formatDateToInputStr(defaultDate) : ''
+  )
   const datePickerRef = useRef<HTMLInputElement>(null)
-  const { datepickerProps, inputProps } = useDatepicker({
+  const { datepickerProps } = useDatepicker({
     fromDate: fromDate,
     toDate: toDate,
     defaultSelected: defaultDate,
     defaultMonth: defaultMonth,
     onValidate: (dateValidation) => {
-      onValidate(
-        dateValidation,
-        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
-      )
+      onValidate(dateValidation)
     },
-    onDateChange: onChange
+    onDateChange: (date) => {
+      // Denne treffer valg i date picker fra klikk
+      // den vil alltid velge gyldige datoer definert av datepicker.
+      if (date) {
+        setDateInput(formatDateToInputStr(date))
+      }
+      onChange(date)
+    }
   })
+
+  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Denne treffers hvis vi endrer date-input med tastatur.
+    setDateInput(e.target.value)
+
+    const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
+    if (date.isValid()) {
+      onChange(date.toDate())
+      onValidate(dateValidation({ isValidDate: true }), date.toDate())
+    } else {
+      onValidate(dateValidation({ isInvalid: true }))
+      onChange(undefined)
+    }
+  }
 
   return (
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
-        {...inputProps}
+        value={dateInput}
         ref={datePickerRef}
         label={label}
         error={error}
         size="small"
+        onChange={handleDateInputChange}
       />
     </DatePicker>
   )

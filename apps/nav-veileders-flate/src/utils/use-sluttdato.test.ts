@@ -37,19 +37,6 @@ describe('useSluttdato - deltakerUtenDatoer', () => {
     })
     expect(result.current.error).toBe('Du må velge en varighet')
   })
-
-  it('har error uten sluttdato', () => {
-    const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerUtenDatoer,
-        valgtVarighet: VarighetValg.TRE_MANEDER
-      })
-    )
-    act(() => {
-      result.current.valider()
-    })
-    expect(result.current.error).toBe('Du må velge en sluttdato')
-  })
 })
 
 const useCustomVarighetHook = (
@@ -281,7 +268,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     )
 
     act(() => {
-      result.current.validerDato(dateValidation({ isInvalid: true }), undefined)
+      result.current.validerDato(dateValidation({ isInvalid: true }))
     })
 
     expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)

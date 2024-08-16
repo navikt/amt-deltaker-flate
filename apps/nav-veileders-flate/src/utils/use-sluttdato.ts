@@ -1,4 +1,7 @@
 import { DateValidationT } from '@navikt/ds-react'
+import dayjs from 'dayjs'
+import { getDateFromString } from 'deltaker-flate-common'
+import { useEffect, useState } from 'react'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
   DATO_FØR_SLUTTDATO_FEILMELDING,
@@ -8,9 +11,6 @@ import {
   getSluttDatoFeilmelding,
   getVarighet
 } from './varighet'
-import { getDateFromString } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
 
 interface UseSluttdatoOpts {
   deltaker: PameldingResponse
@@ -28,7 +28,7 @@ export function useSluttdato({
   sluttdato: Date | undefined
   error: string | null
   valider: () => boolean
-  validerDato: (dateValidation: DateValidationT, date?: Date) => void
+  validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
   handleChange: (date: Date | undefined) => void
 } {
   const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
@@ -77,14 +77,13 @@ export function useSluttdato({
       return false
     }
     if (!sluttdato) {
-      setError('Du må velge en sluttdato')
       return false
     }
     return error === null && annet.error === null
   }
 
-  const validerDato = (dateValidation: DateValidationT, date?: Date) => {
-    annet.validate(dateValidation, date)
+  const validerDato = (dateValidation: DateValidationT, newDate?: Date) => {
+    annet.validate(dateValidation, newDate)
   }
 
   const handleChange = (date: Date | undefined) => {
@@ -129,7 +128,7 @@ export function useSluttdatoInput({
     }
   }, [startdato])
 
-  const validate = (dateValidation: DateValidationT, date?: Date) => {
+  const validate = (dateValidation: DateValidationT, newDate?: Date) => {
     if (dateValidation.isInvalid) {
       setError(UGYLDIG_DATO_FEILMELDING)
     } else if (dateValidation.isBefore) {
@@ -138,10 +137,8 @@ export function useSluttdatoInput({
           ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
           : DATO_FØR_SLUTTDATO_FEILMELDING
       )
-    } else if (date) {
-      setError(getSluttDatoFeilmelding(deltaker, date, startdato))
-    } else {
-      setError(null)
+    } else if (newDate) {
+      setError(getSluttDatoFeilmelding(deltaker, newDate, startdato))
     }
   }
 

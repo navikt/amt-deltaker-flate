@@ -93,11 +93,21 @@ export const EndreOppstartsdatoModal = ({
 
   const maxSluttdato = getSisteGyldigeSluttDato(pamelding, startdato)
 
-  const validateStartdato = (dateValidation: DateValidationT) => {
+  const validateStartdato = (
+    dateValidation: DateValidationT,
+    newDate?: Date
+  ) => {
     if (dateValidation.isBefore || dateValidation.isAfter) {
       setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
     } else if (dateValidation.isInvalid) {
       setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
+    } else if (
+      // dateValidation kan ikke vite datoen hvis det er tastaturendringer
+      newDate &&
+      (dayjs(newDate).isBefore(pamelding.deltakerliste.startdato, 'date') ||
+        dayjs(newDate).isAfter(pamelding.deltakerliste.sluttdato, 'date'))
+    ) {
+      setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
     } else {
       setErrorStartDato(null)
     }
