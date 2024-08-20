@@ -26,7 +26,8 @@ export const DeltakerGuard = () => {
   const { doRedirect } = useModiaLink()
   const { personident } = useAppContext()
   const [isFirstRender, setIsFirstRender] = useState(true)
-  const [firstPersonident, setFirstPersonident] = useState(personident)
+
+  const p = sessionStorage.getItem('aktivitetsplan_fnr')
 
   useEffect(() => {
     // eslint-disable-next-line no-console
@@ -34,12 +35,12 @@ export const DeltakerGuard = () => {
     // eslint-disable-next-line no-console
     console.log('isFirstRender', isFirstRender)
     // eslint-disable-next-line no-console
-    console.log('firstPersonident', firstPersonident)
-    if (firstPersonident !== personident) {
+    console.log('session storage p:', p)
+    if (p !== personident) {
       // eslint-disable-next-line no-console
       console.log('De er ulike, jeg kunne ha routa')
-      setFirstPersonident(personident)
     }
+
     if (isFirstRender) {
       setIsFirstRender(false)
     } else if (!isEnvLocalDemoOrPr) {
