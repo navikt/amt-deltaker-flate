@@ -91,7 +91,7 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:demo --filter=nav-veileders-flate
-      - uses: navikt/frontend/actions/spa-deploy/v2@main
+      - uses: nais/deploy/actions/spa-deploy/v2@master
         with:
           app: amt-deltaker-nav-veilderes-flate
           team: amt
