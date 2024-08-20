@@ -28,6 +28,8 @@ export const DeltakerGuard = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('UseEffect personident', personident)
     if (isFirstRender) {
       setIsFirstRender(false)
     } else if (!isEnvLocalDemoOrPr) {

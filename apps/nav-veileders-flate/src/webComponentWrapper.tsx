@@ -72,8 +72,13 @@ export class Deltaker extends HTMLElement {
   }
 
   // Invoked when one of the custom element's attributes is added, removed, or changed.
-  // @ts-expect-error no-unused-variable
   attributeChangedCallback(name: string, oldVal: string, newValue: string) {
+    // eslint-disable-next-line no-console
+    console.log(
+      'attributeChangedCallback',
+      `name: ${name} - oldVal: ${oldVal} - newValue: ${name}`
+    )
+
     if (name === Deltaker.PERSONIDENT_PROP && this.setPersonident) {
       this.setPersonident(newValue)
     } else if (
