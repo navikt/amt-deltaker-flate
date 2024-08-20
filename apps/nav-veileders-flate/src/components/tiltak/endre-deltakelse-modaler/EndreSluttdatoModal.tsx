@@ -73,7 +73,7 @@ export const EndreSluttdatoModal = ({
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       return null
     }
-    if (sluttdato.sluttdato && begrunnelse.valider()) {
+    if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
       const endring: EndreSluttdatoRequest = {
         sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
         forslagId: forslag?.id,

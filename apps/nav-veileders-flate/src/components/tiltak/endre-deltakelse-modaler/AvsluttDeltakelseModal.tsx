@@ -78,15 +78,15 @@ export const AvsluttDeltakelseModal = ({
 
   const validertRequest = () => {
     let hasError = false
+
+    if (sluttdato.error || !aarsak.valider() || !begrunnelse.valider()) {
+      hasError = true
+    }
     if (skalViseSluttDato && !sluttdato.sluttdato) {
       hasError = true
     }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
-      hasError = true
-    }
-
-    if (!aarsak.valider() || !begrunnelse.valider()) {
       hasError = true
     }
 

@@ -1,5 +1,5 @@
 import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
-import { EndreDeltakelseType } from 'deltaker-flate-common'
+import { EndreDeltakelseType, getDateFromString } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
@@ -68,7 +68,8 @@ export const ForlengDeltakelseModal = ({
   const sluttdato = useSluttdato({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
-    defaultAnnetDato: sluttdatoFraForslag
+    defaultAnnetDato:
+      sluttdatoFraForslag || getDateFromString(pamelding.sluttdato)
   })
 
   const skalHaBegrunnelse =
@@ -136,7 +137,9 @@ export const ForlengDeltakelseModal = ({
         errorVarighet={sluttdato.error}
         errorSluttDato={null}
         defaultVarighet={valgtVarighet}
-        defaultAnnetDato={sluttdatoFraForslag}
+        defaultAnnetDato={
+          sluttdatoFraForslag || getDateFromString(pamelding.sluttdato)
+        }
         onChangeVarighet={handleChangeVarighet}
         onChangeSluttDato={sluttdato.handleChange}
         onValidateSluttDato={sluttdato.validerDato}

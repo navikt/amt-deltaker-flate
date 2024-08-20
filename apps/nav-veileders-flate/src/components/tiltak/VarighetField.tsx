@@ -5,18 +5,15 @@ import {
   RadioGroup,
   useDatepicker
 } from '@navikt/ds-react'
-import {
-  Tiltakstype,
-  getDateFromNorwegianStringFormat
-} from 'deltaker-flate-common'
+import dayjs from 'dayjs'
+import { Tiltakstype } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
+import { formatDateToInputStr } from '../../utils/utils.ts'
 import {
   VarighetValg,
   getVarighet,
   varighetValgForType
 } from '../../utils/varighet.tsx'
-import { formatDateToInputStr } from '../../utils/utils.ts'
-import dayjs from 'dayjs'
 
 interface Props {
   className?: string
@@ -30,10 +27,7 @@ interface Props {
   defaultAnnetDato?: Date | null
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
-  onValidateSluttDato: (
-    dateValidation: DateValidationT,
-    currentValue?: Date
-  ) => void
+  onValidateSluttDato: (dateValidation: DateValidationT, newDate?: Date) => void
 }
 
 export const VarighetField = ({
@@ -65,12 +59,12 @@ export const VarighetField = ({
     defaultMonth: startDato,
     defaultSelected: defaultAnnetDato || undefined,
     onValidate: (dateValidation) => {
-      onValidateSluttDato(
-        dateValidation,
-        getDateFromNorwegianStringFormat(datePickerRef?.current?.value)
-      )
+      // Treffer valg endret av musepeker
+      onValidateSluttDato(dateValidation)
     },
     onDateChange: (date) => {
+      // Denne treffer valg i date picker fra klikk
+      // den vil alltid velge gyldige datoer definert av datepicker.
       if (date) {
         setDateInput(formatDateToInputStr(date))
       }
@@ -84,11 +78,13 @@ export const VarighetField = ({
   }
 
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Denne treffers hvis vi endrer date-input med tastatur.
     setDateInput(e.target.value)
 
     const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
     if (date.isValid()) {
       onChangeSluttDato(date.toDate())
+      onValidateSluttDato(dateValidation({ isValidDate: true }), date.toDate())
     } else {
       onValidateSluttDato(dateValidation({ isInvalid: true }))
       onChangeSluttDato(undefined)
