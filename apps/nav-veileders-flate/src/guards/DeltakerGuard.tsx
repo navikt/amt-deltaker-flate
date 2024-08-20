@@ -26,10 +26,20 @@ export const DeltakerGuard = () => {
   const { doRedirect } = useModiaLink()
   const { personident } = useAppContext()
   const [isFirstRender, setIsFirstRender] = useState(true)
+  const [firstPersonident, setFirstPersonident] = useState(personident)
 
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log('UseEffect personident', personident)
+    console.log('UseEffect: personident', personident)
+    // eslint-disable-next-line no-console
+    console.log('isFirstRender', isFirstRender)
+    // eslint-disable-next-line no-console
+    console.log('firstPersonident', firstPersonident)
+    if (firstPersonident !== personident) {
+      // eslint-disable-next-line no-console
+      console.log('De er ulike, jeg kunne ha routa')
+      setFirstPersonident(personident)
+    }
     if (isFirstRender) {
       setIsFirstRender(false)
     } else if (!isEnvLocalDemoOrPr) {
