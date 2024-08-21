@@ -4,7 +4,7 @@ import duration from 'dayjs/plugin/duration'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import { DeltakerStatusType } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import {
@@ -15,6 +15,11 @@ import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { TiltakPage } from '../pages/TiltakPage.tsx'
 import { isEnvLocalDemoOrPr } from '../utils/environment-utils.ts'
+import {
+  deltakerStateFromSessionStorage,
+  DetlakerStateSessionStorage,
+  ssetPersonidentISessionStorage
+} from '../utils/sessionStorage.ts'
 
 dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)
@@ -25,26 +30,25 @@ export const DeltakerGuard = () => {
   const { pamelding } = usePameldingContext()
   const { doRedirect } = useModiaLink()
   const { personident } = useAppContext()
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
-  const p = sessionStorage.getItem('aktivitetsplan_fnr')
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('UseEffect: personident', personident)
-    // eslint-disable-next-line no-console
-    console.log('isFirstRender', isFirstRender)
-    // eslint-disable-next-line no-console
-    console.log('session storage p:', p)
-    if (p !== personident) {
-      // eslint-disable-next-line no-console
-      console.log('De er ulike, jeg kunne ha routa')
-    }
+    try {
+      const deltakerState = deltakerStateFromSessionStorage()
 
-    if (isFirstRender) {
-      setIsFirstRender(false)
-    } else if (!isEnvLocalDemoOrPr) {
-      doRedirect(DELTAKELSESOVERSIKT_LINK)
+      if ((deltakerState as DetlakerStateSessionStorage).brukerIKontekst) {
+        if (
+          deltakerState.brukerIKontekst !== personident &&
+          !isEnvLocalDemoOrPr
+        ) {
+          ssetPersonidentISessionStorage(personident)
+          doRedirect(DELTAKELSESOVERSIKT_LINK)
+        }
+      } else {
+        ssetPersonidentISessionStorage(personident)
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      ssetPersonidentISessionStorage(personident)
     }
   }, [personident])
 
