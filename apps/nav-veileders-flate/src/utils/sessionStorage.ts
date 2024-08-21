@@ -11,5 +11,5 @@ export const ssetPersonidentISessionStorage = (personident: string) => {
   const data: DetlakerStateSessionStorage = {
     brukerIKontekst: personident
   }
-  sessionStorage.setItem(DELTAKER_SESSION_STORAGE_KEY, JSON.stringify({ data }))
+  sessionStorage.setItem(DELTAKER_SESSION_STORAGE_KEY, JSON.stringify(data))
 }
