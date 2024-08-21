@@ -14,7 +14,7 @@
   "dependencies": {
     "@navikt/aksel-icons": "^6.16.0",
     "@navikt/ds-react": "^6.16.0",
-    "dayjs": "^1.11.12",
+    "dayjs": "^1.11.13",
     "react": "^18.3.1",
     "typescript": "^5.5.4",
     "uuid": "^10.0.0",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.4",
     "@types/uuid": "^10.0.0"
   }
 }
