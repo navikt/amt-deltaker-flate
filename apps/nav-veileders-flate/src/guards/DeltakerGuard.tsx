@@ -18,7 +18,7 @@ import { isEnvLocalDemoOrPr } from '../utils/environment-utils.ts'
 import {
   deltakerStateFromSessionStorage,
   DetlakerStateSessionStorage,
-  ssetPersonidentISessionStorage
+  setPersonidentISessionStorage
 } from '../utils/sessionStorage.ts'
 
 dayjs.locale(nb)
@@ -40,15 +40,15 @@ export const DeltakerGuard = () => {
           deltakerState.brukerIKontekst !== personident &&
           !isEnvLocalDemoOrPr
         ) {
-          ssetPersonidentISessionStorage(personident)
+          setPersonidentISessionStorage(personident)
           doRedirect(DELTAKELSESOVERSIKT_LINK)
         }
       } else {
-        ssetPersonidentISessionStorage(personident)
+        setPersonidentISessionStorage(personident)
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      ssetPersonidentISessionStorage(personident)
+      setPersonidentISessionStorage(personident)
     }
   }, [personident])
 

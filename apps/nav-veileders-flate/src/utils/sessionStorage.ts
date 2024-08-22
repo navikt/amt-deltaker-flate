@@ -7,7 +7,7 @@ export const deltakerStateFromSessionStorage = () => {
   return JSON.parse(sessionStorage.getItem(DELTAKER_SESSION_STORAGE_KEY) ?? '')
 }
 
-export const ssetPersonidentISessionStorage = (personident: string) => {
+export const setPersonidentISessionStorage = (personident: string) => {
   const data: DetlakerStateSessionStorage = {
     brukerIKontekst: personident
   }
