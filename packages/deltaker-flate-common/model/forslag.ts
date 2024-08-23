@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { stringToDate } from './deltaker'
+import { dateSchema, nullableDateSchema } from './utils'
 
 export enum HistorikkType {
   Vedtak = 'Vedtak',
@@ -64,12 +64,12 @@ const forslagEndringAarsakSchema = z.discriminatedUnion('type', [
 
 export const forlengDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.ForlengDeltakelse),
-  sluttdato: stringToDate
+  sluttdato: dateSchema
 })
 
 export const avsluttDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.AvsluttDeltakelse),
-  sluttdato: stringToDate,
+  sluttdato: dateSchema,
   aarsak: forslagEndringAarsakSchema
 })
 
@@ -86,13 +86,13 @@ const deltakelsesmengdeForslagSchema = z.object({
 
 export const sluttdatoForslagSchema = z.object({
   type: z.literal(ForslagEndringType.Sluttdato),
-  sluttdato: stringToDate
+  sluttdato: dateSchema
 })
 
 export const startdatoForslagSchema = z.object({
   type: z.literal(ForslagEndringType.Startdato),
-  startdato: stringToDate,
-  sluttdato: stringToDate.nullable()
+  startdato: dateSchema,
+  sluttdato: nullableDateSchema
 })
 
 export const sluttarsakForslagSchema = z.object({
@@ -115,22 +115,22 @@ const venterPaSvarSchema = z.object({
 })
 const godkjentSchema = z.object({
   type: z.literal(ForslagStatusType.Godkjent),
-  godkjent: stringToDate
+  godkjent: dateSchema
 })
 const avvistSchema = z.object({
   type: z.literal(ForslagStatusType.Avvist),
   avvistAv: z.string(),
   avvistAvEnhet: z.string(),
-  avvist: stringToDate,
+  avvist: dateSchema,
   begrunnelseFraNav: z.string()
 })
 const tilbakekaltSchema = z.object({
   type: z.literal(ForslagStatusType.Tilbakekalt),
-  tilbakekalt: stringToDate
+  tilbakekalt: dateSchema
 })
 const erstattetSchema = z.object({
   type: z.literal(ForslagStatusType.Erstattet),
-  erstattet: stringToDate
+  erstattet: dateSchema
 })
 
 const forslagStatusSchema = z.discriminatedUnion('type', [
@@ -144,7 +144,7 @@ const forslagStatusSchema = z.discriminatedUnion('type', [
 export const forslagSchema = z.object({
   id: z.string().uuid(),
   type: z.literal(HistorikkType.Forslag),
-  opprettet: stringToDate,
+  opprettet: dateSchema,
   begrunnelse: z.string().nullable(),
   arrangorNavn: z.string(),
   endring: forslagEndringSchema,

@@ -16,7 +16,7 @@ import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   HarDeltattValg,
   dateStrToNullableDate,
-  formatDateToDateInputStr
+  formatDateToDtoStr
 } from '../../../utils/utils.ts'
 import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
@@ -98,7 +98,7 @@ export const AvsluttDeltakelseModal = ({
         },
         sluttdato:
           skalViseSluttDato && sluttdato.sluttdato
-            ? formatDateToDateInputStr(sluttdato.sluttdato)
+            ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
         begrunnelse: begrunnelse.begrunnelse || null,

@@ -6,7 +6,7 @@ import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import {
   dateStrToNullableDate,
-  formatDateToDateInputStr,
+  formatDateToDtoStr,
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
@@ -105,7 +105,7 @@ export const ForlengDeltakelseModal = ({
         deltakerId: pamelding.deltakerId,
         enhetId,
         body: {
-          sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
+          sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null
         }

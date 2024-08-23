@@ -2,10 +2,10 @@ import { z } from 'zod'
 import {
   deltakelsesinnholdSchema,
   deltakerStatusAarsakSchema,
-  innholdSchema,
-  stringToDate
+  innholdSchema
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
+import { dateSchema, nullableDateSchema } from './utils'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -43,20 +43,20 @@ export const endreDeltakelsesmengdeSchema = z.object({
 
 export const endreStartdatoSchema = z.object({
   type: z.literal(EndringType.EndreStartdato),
-  startdato: stringToDate,
-  sluttdato: stringToDate,
+  startdato: dateSchema,
+  sluttdato: dateSchema,
   begrunnelse: z.string().nullable()
 })
 
 export const endreSluttdatoSchema = z.object({
   type: z.literal(EndringType.EndreSluttdato),
-  sluttdato: stringToDate,
+  sluttdato: dateSchema,
   begrunnelse: z.string().nullable()
 })
 
 export const forlengDeltakelseSchema = z.object({
   type: z.literal(EndringType.ForlengDeltakelse),
-  sluttdato: stringToDate,
+  sluttdato: dateSchema,
   begrunnelse: z.string().nullable()
 })
 
@@ -69,7 +69,7 @@ export const ikkeAktuellSchema = z.object({
 export const avsluttDeltakelseSchema = z.object({
   type: z.literal(EndringType.AvsluttDeltakelse),
   aarsak: deltakerStatusAarsakSchema,
-  sluttdato: stringToDate,
+  sluttdato: dateSchema,
   begrunnelse: z.string().nullable()
 })
 
@@ -81,7 +81,7 @@ export const endreSluttarsakSchema = z.object({
 
 export const reaktiverDeltakelseSchema = z.object({
   type: z.literal(EndringType.ReaktiverDeltakelse),
-  reaktivertDato: stringToDate,
+  reaktivertDato: dateSchema,
   begrunnelse: z.string()
 })
 
@@ -100,8 +100,8 @@ const endringSchema = z.discriminatedUnion('type', [
 
 const arrangorLeggTilOppstartSchema = z.object({
   type: z.literal(ArrangorEndringsType.LeggTilOppstartsdato),
-  startdato: stringToDate,
-  sluttdato: stringToDate
+  startdato: dateSchema,
+  sluttdato: dateSchema
 })
 
 const arrangorEndringSchema = z.discriminatedUnion('type', [
@@ -110,13 +110,13 @@ const arrangorEndringSchema = z.discriminatedUnion('type', [
 
 export const vedtakSchema = z.object({
   type: z.literal(HistorikkType.Vedtak),
-  fattet: stringToDate.nullable(),
+  fattet: nullableDateSchema,
   bakgrunnsinformasjon: z.string().nullable(),
   fattetAvNav: z.boolean(),
   deltakelsesinnhold: deltakelsesinnholdSchema,
   opprettetAv: z.string(),
   opprettetAvEnhet: z.string(),
-  opprettet: stringToDate
+  opprettet: dateSchema
 })
 
 export const deltakerEndringSchema = z.object({
@@ -124,14 +124,14 @@ export const deltakerEndringSchema = z.object({
   endring: endringSchema,
   endretAv: z.string(),
   endretAvEnhet: z.string(),
-  endret: stringToDate,
+  endret: dateSchema,
   forslag: forslagSchema.nullable()
 })
 
 export const endringFraArrangorSchema = z.object({
   type: z.literal(HistorikkType.EndringFraArrangor),
   id: z.string().uuid(),
-  opprettet: stringToDate,
+  opprettet: dateSchema,
   arrangorNavn: z.string(),
   endring: arrangorEndringSchema
 })
