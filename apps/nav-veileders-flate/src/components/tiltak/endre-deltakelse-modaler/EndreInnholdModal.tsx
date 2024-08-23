@@ -1,4 +1,10 @@
-import { BodyLong, Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Checkbox,
+  CheckboxGroup,
+  Heading,
+  Textarea
+} from '@navikt/ds-react'
 import { EndreDeltakelseType, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
@@ -90,6 +96,9 @@ export const EndreInnholdModal = ({
       validertRequest={validertRequest}
       forslag={null}
     >
+      <Heading level="2" size="small" className="mb-4">
+        Dette er innholdet
+      </Heading>
       <section>
         <BodyLong size="small">
           {pamelding.deltakelsesinnhold?.ledetekst ?? ''}

@@ -153,7 +153,7 @@ export const AvsluttDeltakelseModal = ({
         </section>
       )}
       {skalViseSluttDato && (
-        <section className="mt-4">
+        <section className="mt-6">
           <SimpleDatePicker
             label="Hva er ny sluttdato?"
             error={sluttdato.error}

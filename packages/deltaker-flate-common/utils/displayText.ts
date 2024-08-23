@@ -157,7 +157,7 @@ export const getForslagEndringAarsakText = (aarsak: ForslagEndringAarsak) => {
 export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
   switch (type) {
     case EndreDeltakelseType.IKKE_AKTUELL:
-      return 'Ikke aktuell'
+      return 'Er ikke aktuell'
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
       return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:

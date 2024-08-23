@@ -90,7 +90,6 @@ export const UtkastPage = () => {
           {deltaker.deltakelsesinnhold?.ledetekst}
         </BodyLong>
       )}
-
       {deltaker.deltakelsesinnhold?.innhold && (
         <DeltakelseInnholdListe
           deltakelsesinnhold={deltaker.deltakelsesinnhold}
@@ -108,6 +107,7 @@ export const UtkastPage = () => {
           </BodyLong>
         </>
       )}
+
       {(deltaker.deltakerliste.tiltakstype === Tiltakstype.ARBFORB ||
         deltaker.deltakerliste.tiltakstype === Tiltakstype.VASV) && (
         <>
@@ -126,17 +126,20 @@ export const UtkastPage = () => {
       <Heading level="3" size="medium" className="mt-6">
         Kontaktinformasjon
       </Heading>
-      {
-        // TODO kan denne bruke <HvaDelesMedArrangor/> den må kanskje splitte inholdet sitt litt
-      }
       <BodyLong size="small" className="mt-2">
         NAV samarbeider med {arrangorNavn}. Arrangøren behandler
         personopplysninger på vegne av NAV.
       </BodyLong>
-      <List as="ul" size="small" className="mt-2">
-        <List.Item>Navn og fødselsnummer</List.Item>
-        <List.Item>Telefonnummer og e-postadresse</List.Item>
-        {deltaker.adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
+      <List as="ul" size="small" className="-mt-1 -mb-2">
+        <List.Item className="mt-2 whitespace-pre-wrap">
+          Navn og fødselsnummer
+        </List.Item>
+        <List.Item className="mt-2 whitespace-pre-wrap">
+          Telefonnummer og e-postadresse
+        </List.Item>
+        {deltaker.adresseDelesMedArrangor && (
+          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+        )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger NAV har om deg.

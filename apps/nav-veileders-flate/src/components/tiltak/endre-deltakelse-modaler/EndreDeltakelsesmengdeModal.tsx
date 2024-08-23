@@ -123,7 +123,7 @@ export const EndreDeltakelsesmengdeModal = ({
           error={
             hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding
           }
-          className="[&>input]:w-16 mt-4"
+          className="[&>input]:w-16 mt-6"
           id="dagerPerUke"
         />
       )}

@@ -114,13 +114,13 @@ export const DeltakerInfo = ({ className }: Props) => {
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
       </Heading>
-      <BodyLong className="mt-4" size="small">
+      <BodyLong className="mt-2" size="small">
         {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {pamelding.deltakelsesinnhold && (
         <DeltakelseInnholdListe
           deltakelsesinnhold={pamelding.deltakelsesinnhold}
-          className="mt-4"
+          className="mt-2"
         />
       )}
       <div>
@@ -172,7 +172,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <Heading level="2" size="medium" className="mt-8">
           Du har rett til å klage
         </Heading>
-        <BodyLong size="small" className="mt-1">
+        <BodyLong size="small" className="mt-2">
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
           deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
           å klage er seks uker etter du mottok informasjonen. Les mer om{' '}

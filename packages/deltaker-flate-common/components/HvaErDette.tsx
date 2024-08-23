@@ -18,7 +18,7 @@ export const HvaErDette = ({
       <Heading level="2" size="medium">
         Dette er et vedtak
       </Heading>
-      <BodyLong size="small">
+      <BodyLong size="small" className="mt-2">
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
 				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakstype]}.`}
         {vedtaksinformasjon &&
