@@ -13,7 +13,7 @@ import { endreDeltakelseSluttdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import {
   dateStrToNullableDate,
-  formatDateToDateInputStr
+  formatDateToDtoStr
 } from '../../../utils/utils.ts'
 import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
@@ -75,7 +75,7 @@ export const EndreSluttdatoModal = ({
     }
     if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
       const endring: EndreSluttdatoRequest = {
-        sluttdato: formatDateToDateInputStr(sluttdato.sluttdato),
+        sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
         forslagId: forslag?.id,
         begrunnelse: begrunnelse.begrunnelse || null
       }

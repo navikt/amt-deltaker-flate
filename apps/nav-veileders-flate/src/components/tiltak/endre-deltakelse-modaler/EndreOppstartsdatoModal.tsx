@@ -1,21 +1,22 @@
 import { BodyShort, ConfirmationPanel, DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  Tiltakstype,
-  getDateFromString,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
+  ForslagEndringType,
   StartdatoForslag,
-  ForslagEndringType
+  Tiltakstype,
+  getDateFromString
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import {
   dateStrToNullableDate,
-  formatDateToDateInputStr,
+  formatDateToDtoStr,
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
@@ -28,11 +29,10 @@ import {
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
-import { VarighetField } from '../VarighetField.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
+import { VarighetField } from '../VarighetField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -141,9 +141,9 @@ export const EndreOppstartsdatoModal = ({
         deltakerId: pamelding.deltakerId,
         enhetId,
         body: {
-          startdato: formatDateToDateInputStr(startdato),
+          startdato: formatDateToDtoStr(startdato),
           sluttdato: sluttdato.sluttdato
-            ? formatDateToDateInputStr(sluttdato.sluttdato)
+            ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id

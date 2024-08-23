@@ -6,7 +6,7 @@ import { DeltakerStatusAarsakType, EMDASH } from 'deltaker-flate-common'
  * @param date
  * @returns string date, format backend vil ha
  */
-export const formatDateToDateInputStr = (date: Date): string => {
+export const formatDateToDtoStr = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 

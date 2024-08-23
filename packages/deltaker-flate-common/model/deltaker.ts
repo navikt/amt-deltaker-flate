@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { dateSchema, nullableDateSchema } from './utils'
 
 export enum Tiltakstype {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
@@ -53,8 +54,6 @@ export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
 
-export const stringToDate = z.string().pipe(z.coerce.date())
-
 export const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema,
   beskrivelse: z.string().nullable()
@@ -86,9 +85,9 @@ export const pameldingStatusSchema = z.object({
   id: z.string().uuid(),
   type: deltakerStatusTypeSchema,
   aarsak: deltakerStatusAarsakSchema.nullable(),
-  gyldigFra: stringToDate,
-  gyldigTil: stringToDate.nullable(),
-  opprettet: stringToDate
+  gyldigFra: dateSchema,
+  gyldigTil: nullableDateSchema,
+  opprettet: dateSchema
 })
 
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
