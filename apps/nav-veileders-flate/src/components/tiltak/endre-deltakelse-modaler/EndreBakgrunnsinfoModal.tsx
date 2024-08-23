@@ -1,4 +1,4 @@
-import { Textarea } from '@navikt/ds-react'
+import { Heading, Textarea } from '@navikt/ds-react'
 import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -56,20 +56,25 @@ export const EndreBakgrunnsinfoModal = ({
       validertRequest={validertRequest}
       forslag={null}
     >
-      <Textarea
-        onChange={(e) => {
-          setError(null)
-          setBakgrunnsinformasjon(e.target.value)
-        }}
-        label="Er det noe mer dere ønsker å informere arrangøren om?"
-        description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
-        value={bakgrunnsinformasjon ?? ''}
-        maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
-        id="bakgrunnsinformasjon"
-        size="small"
-        aria-label={'Bagrunnsinfo'}
-        error={error}
-      />
+      <>
+        <Heading level="2" size="small" className="mb-4">
+          Bakgrunnsinfo
+        </Heading>
+        <Textarea
+          onChange={(e) => {
+            setError(null)
+            setBakgrunnsinformasjon(e.target.value)
+          }}
+          label="Er det noe mer dere ønsker å informere arrangøren om?"
+          description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
+          value={bakgrunnsinformasjon ?? ''}
+          maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
+          id="bakgrunnsinformasjon"
+          size="small"
+          aria-label={'Bagrunnsinfo'}
+          error={error}
+        />
+      </>
     </Endringsmodal>
   )
 }

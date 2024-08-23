@@ -110,7 +110,7 @@ function EndringsmodalBody<T extends EndringRequest>({
     <>
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
-        <Detail className="mb-4">
+        <Detail className="mb-6">
           {getEndrePameldingTekst(digitalBruker)}
         </Detail>
         {forslag && (

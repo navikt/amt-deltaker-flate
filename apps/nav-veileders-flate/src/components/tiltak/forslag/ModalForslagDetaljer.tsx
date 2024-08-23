@@ -9,7 +9,7 @@ interface Props {
 
 export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
   return (
-    <div>
+    <div className="mb-6">
       <Box
         background="bg-subtle"
         padding={{ xs: '2', md: '4' }}

@@ -66,7 +66,6 @@ export const ReaktiverDeltakelseModal = ({
       forslag={null}
     >
       <ConfirmationPanel
-        className="mt-6"
         size="small"
         checked={confirmed}
         onChange={handleChangeConfirm}

@@ -182,7 +182,7 @@ export const EndreOppstartsdatoModal = ({
         <>
           <VarighetField
             title="Hva er forventet varighet?"
-            className="mt-8"
+            className="mt-6"
             tiltakstype={pamelding.deltakerliste.tiltakstype}
             startDato={startdato}
             sluttdato={maxSluttdato}
