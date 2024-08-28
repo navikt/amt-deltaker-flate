@@ -264,6 +264,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndreInnhold,
+        ledetekst:
+          'Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
         innhold: [
           {
             tekst: 'Støtte til jobbsøking',

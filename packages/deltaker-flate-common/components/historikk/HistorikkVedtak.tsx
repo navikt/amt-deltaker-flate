@@ -2,7 +2,7 @@ import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils'
-import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
+import { DeltakelseInnholdPanel } from '../DeltakelseInnholdPanel.tsx'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -28,8 +28,7 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
       <BodyLong size="small" weight="semibold">
         Dette er innholdet
       </BodyLong>
-      <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
-      <DeltakelseInnholdListe
+      <DeltakelseInnholdPanel
         deltakelsesinnhold={deltakelsesinnhold}
         className="-mt-3 -mb-1"
       />

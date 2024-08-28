@@ -10,7 +10,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  DeltakelseInnholdListe,
+  DeltakelseInnholdPanel,
   EMDASH,
   PERSONOPPLYSNINGER_URL,
   Tiltakstype,
@@ -85,13 +85,8 @@ export const UtkastPage = () => {
       <Heading level="3" size="medium" className="mt-6">
         Dette er innholdet
       </Heading>
-      {deltaker.deltakelsesinnhold?.ledetekst && (
-        <BodyLong size="small" className="mt-2">
-          {deltaker.deltakelsesinnhold?.ledetekst}
-        </BodyLong>
-      )}
       {deltaker.deltakelsesinnhold?.innhold && (
-        <DeltakelseInnholdListe
+        <DeltakelseInnholdPanel
           deltakelsesinnhold={deltaker.deltakelsesinnhold}
           className="mt-2"
         />

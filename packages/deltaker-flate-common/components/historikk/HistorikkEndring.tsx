@@ -13,7 +13,7 @@ import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
 import { formatDate } from '../../utils/utils'
 import { EMDASH } from '../../utils/constants'
-import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
+import { DeltakelseInnholdPanel } from '../DeltakelseInnholdPanel.tsx'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -83,8 +83,11 @@ const getEndringsDetaljer = (endring: Endring) => {
     }
     case EndringType.EndreInnhold: {
       return (
-        <DeltakelseInnholdListe
-          deltakelsesinnhold={{ ledetekst: '', innhold: endring.innhold }}
+        <DeltakelseInnholdPanel
+          deltakelsesinnhold={{
+            ledetekst: endring.ledetekst || '',
+            innhold: endring.innhold
+          }}
           className="-mt-3 -mb-2"
         />
       )
