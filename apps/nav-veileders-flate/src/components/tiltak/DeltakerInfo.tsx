@@ -9,7 +9,7 @@ import {
   LinkPanel
 } from '@navikt/ds-react'
 import {
-  DeltakelseInnholdListe,
+  DeltakelseInnholdPanel,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -114,11 +114,8 @@ export const DeltakerInfo = ({ className }: Props) => {
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
       </Heading>
-      <BodyLong className="mt-2" size="small">
-        {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
-      </BodyLong>
       {pamelding.deltakelsesinnhold && (
-        <DeltakelseInnholdListe
+        <DeltakelseInnholdPanel
           deltakelsesinnhold={pamelding.deltakelsesinnhold}
           className="mt-2"
         />

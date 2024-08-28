@@ -10,7 +10,7 @@ import {
   LinkPanel
 } from '@navikt/ds-react'
 import {
-  DeltakelseInnholdListe,
+  DeltakelseInnholdPanel,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -128,7 +128,7 @@ export const TiltakPage = () => {
         {deltaker.deltakelsesinnhold?.ledetekst ?? ''}
       </BodyLong>
       {deltaker.deltakelsesinnhold && (
-        <DeltakelseInnholdListe
+        <DeltakelseInnholdPanel
           deltakelsesinnhold={deltaker.deltakelsesinnhold}
           className="mt-2"
         />
