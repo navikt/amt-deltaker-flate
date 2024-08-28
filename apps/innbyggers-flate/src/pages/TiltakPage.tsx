@@ -124,9 +124,6 @@ export const TiltakPage = () => {
       <Heading level="2" size="medium" className="mt-8">
         Dette er innholdet
       </Heading>
-      <BodyLong className="mt-2" size="small">
-        {deltaker.deltakelsesinnhold?.ledetekst ?? ''}
-      </BodyLong>
       {deltaker.deltakelsesinnhold && (
         <DeltakelseInnholdPanel
           deltakelsesinnhold={deltaker.deltakelsesinnhold}
