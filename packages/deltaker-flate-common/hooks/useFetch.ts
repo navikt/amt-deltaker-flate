@@ -22,6 +22,7 @@ export const useFetch = <T, U extends unknown[]>(
         const result = await apiFunction(...args)
         setData(result)
       } catch (error) {
+        console.error(error)
         setError('En feil oppsto ved henting av data.')
       } finally {
         setLoading(false)
