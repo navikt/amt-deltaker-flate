@@ -291,6 +291,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       fattet: dayjs().subtract(10, 'days').toDate(),
       bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
       fattetAvNav: true,
+      dagerPerUke: null,
+      deltakelsesprosent: 100,
       deltakelsesinnhold: {
         ledetekst:
           'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
