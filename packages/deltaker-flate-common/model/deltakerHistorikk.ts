@@ -112,6 +112,8 @@ export const vedtakSchema = z.object({
   type: z.literal(HistorikkType.Vedtak),
   fattet: nullableDateSchema,
   bakgrunnsinformasjon: z.string().nullable(),
+  dagerPerUke: z.number().nullable(),
+  deltakelsesprosent: z.number().nullable(),
   fattetAvNav: z.boolean(),
   deltakelsesinnhold: deltakelsesinnholdSchema,
   opprettetAv: z.string(),

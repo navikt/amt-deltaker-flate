@@ -4,6 +4,7 @@ import { Vedtak } from '../../model/deltakerHistorikk'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils'
 import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
 import { HistorikkElement } from './HistorikkElement'
+import { deltakerprosentText } from '../../utils/displayText'
 
 interface Props {
   endringsVedtak: Vedtak
@@ -16,6 +17,8 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
     opprettet,
     opprettetAv,
     opprettetAvEnhet,
+    dagerPerUke,
+    deltakelsesprosent,
     deltakelsesinnhold,
     bakgrunnsinformasjon
   } = endringsVedtak
@@ -40,6 +43,17 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
             Bakgrunnsinfo
           </BodyLong>
           <BodyLong size="small">{bakgrunnsinformasjon}</BodyLong>
+        </>
+      )}
+
+      {deltakelsesprosent && (
+        <>
+          <BodyLong size="small" weight="semibold" className="mt-2">
+            Deltakelsesmengde
+          </BodyLong>
+          <BodyLong size="small">
+            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+          </BodyLong>
         </>
       )}
 
