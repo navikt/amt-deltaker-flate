@@ -43,7 +43,7 @@ importers:
         version: 6.16.1(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^2.1.6
-        version: 2.1.6(jsdom@24.1.1)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -125,7 +125,7 @@ importers:
         version: 5.4.2(@types/node@22.5.0)
       vitest:
         specifier: ^2.0.4
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)
 
   apps/nav-veileders-flate:
     dependencies:
@@ -227,8 +227,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       playwright:
         specifier: ^1.46.1
         version: 1.46.1
@@ -246,7 +246,7 @@ importers:
         version: 5.4.2(@types/node@22.5.0)
       vitest:
         specifier: ^2.0.4
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)
 
   packages/deltaker-flate-common:
     dependencies:
@@ -2141,8 +2141,8 @@ packages:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
-  jsdom@24.1.1:
-    resolution: {integrity: sha512-5O1wWV99Jhq4DV7rCLIoZ/UIhyQeDR7wHVyZAHAshbrvZsLs+Xzz7gtwnlJTJDjleiTKh54F4dXrX70vJQTyJQ==}
+  jsdom@25.0.0:
+    resolution: {integrity: sha512-OhoFVT59T7aEq75TVw9xxEfkXgacpqAhQaYgP9y/fDqWQCMB/b1H66RfmPm/MaeaAIU9nDwMOVTlPN51+ao6CQ==}
     engines: {node: '>=18'}
     peerDependencies:
       canvas: ^2.11.2
@@ -3625,11 +3625,11 @@ snapshots:
 
   '@navikt/ds-tokens@6.16.1': {}
 
-  '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@24.1.1)(react@18.3.1)':
+  '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.0)(react@18.3.1)':
     dependencies:
       csp-header: 5.2.1
       html-react-parser: 3.0.16(react@18.3.1)
-      jsdom: 24.1.1
+      jsdom: 25.0.0
       node-cache: 5.1.2
       react: 18.3.1
 
@@ -5191,7 +5191,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@24.1.1:
+  jsdom@25.0.0:
     dependencies:
       cssstyle: 4.0.1
       data-urls: 5.0.0
@@ -6173,7 +6173,7 @@ snapshots:
       '@types/node': 22.5.0
       fsevents: 2.3.3
 
-  vitest@2.0.5(@types/node@22.5.0)(jsdom@24.1.1):
+  vitest@2.0.5(@types/node@22.5.0)(jsdom@25.0.0):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -6196,7 +6196,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.5.0
-      jsdom: 24.1.1
+      jsdom: 25.0.0
     transitivePeerDependencies:
       - less
       - lightningcss
