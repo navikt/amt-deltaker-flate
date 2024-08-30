@@ -2,7 +2,8 @@ import { z } from 'zod'
 import {
   deltakelsesinnholdSchema,
   deltakerStatusAarsakSchema,
-  innholdSchema
+  innholdSchema,
+  tiltakstypeSchema
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
@@ -113,6 +114,7 @@ export const vedtakSchema = z.object({
   type: z.literal(HistorikkType.Vedtak),
   fattet: nullableDateSchema,
   bakgrunnsinformasjon: z.string().nullable(),
+  tiltakstype: tiltakstypeSchema,
   dagerPerUke: z.number().nullable(),
   deltakelsesprosent: z.number().nullable(),
   fattetAvNav: z.boolean(),

@@ -3,7 +3,8 @@ import {
   EMDASH,
   INNHOLD_TYPE_ANNET,
   Tiltakstype,
-  deltakerprosentText
+  deltakerprosentText,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
 
@@ -63,8 +64,7 @@ export const Utkast = ({
         )}
       </div>
 
-      {(tiltakstype === Tiltakstype.ARBFORB ||
-        tiltakstype === Tiltakstype.VASV) && (
+      {visDeltakelsesmengde(tiltakstype) && (
         <>
           <Heading level="3" size="small" className="mt-8">
             Deltakelsesmengde

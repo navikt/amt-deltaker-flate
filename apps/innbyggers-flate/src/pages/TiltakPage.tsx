@@ -18,24 +18,17 @@ import {
   HvaDelesMedArrangor,
   HvaErDette,
   SeEndringer,
-  Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakNavnHosArrangorTekst,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
-import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
-  return (
-    deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
-    deltaker.deltakerliste.tiltakstype == Tiltakstype.VASV
-  )
-}
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
   return (
@@ -144,7 +137,7 @@ export const TiltakPage = () => {
           </>
         )}
 
-        {skalViseDeltakelsesmengde(deltaker) && (
+        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
           <>
             <Heading level="2" size="medium" className="mt-8">
               Deltakelsesmengde
