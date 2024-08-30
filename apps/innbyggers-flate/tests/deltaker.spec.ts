@@ -21,7 +21,7 @@ const sjekkUU = async (page: Page, testid: string) => {
 
 test.describe('Smoketest og UU', () => {
   test('Innbyggers flate utkastside', async ({ page }) => {
-    await expect(page).toHaveTitle(/Deltaker/)
+    await expect(page).toHaveTitle(/Arbeidsmarkedstiltak/)
     await sjekkUU(page, 'heading_utkast')
   })
 
