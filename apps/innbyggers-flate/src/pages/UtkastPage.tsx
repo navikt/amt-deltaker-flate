@@ -73,7 +73,7 @@ export const UtkastPage = () => {
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
       <GuidePanel poster illustration={svg}>
         <Heading level="3" size="small">
-          Dette er et utkast til påmelding til {navnHosArrangorTekst}
+          {`Dette er et utkast til påmelding til ${navnHosArrangorTekst}`}
         </Heading>
         <BodyLong className="mt-2">
           Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
@@ -152,7 +152,7 @@ export const UtkastPage = () => {
         error={godattError && 'Du må si ja for å kunne godkjenne utkastet'}
       >
         <Heading level="3" size="xsmall">
-          Kan informasjonen deles til {arrangorNavn}?
+          {`Kan informasjonen deles til ${arrangorNavn}?`}
         </Heading>
         <BodyLong className="mt-4">
           Hvis du har et spørsmål, innspill eller ikke ønsker at dette deles,{' '}

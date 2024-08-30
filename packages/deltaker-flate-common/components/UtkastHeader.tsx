@@ -37,21 +37,21 @@ export const UtkastHeader = ({
       {vedtaksinformasjon &&
         (erEndret ? (
           <>
-            <HStack gap="2">
-              <Detail weight="semibold" textColor={detailTextColor}>
+            <HStack gap="2" aria-atomic>
+              <Detail as="span" weight="semibold" textColor={detailTextColor}>
                 Første utkast delt:
               </Detail>
-              <Detail>
+              <Detail as="span">
                 {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </HStack>
             {!erEndretSammeDag && (
-              <HStack gap="2" className="mt-2">
-                <Detail weight="semibold" textColor={detailTextColor}>
+              <HStack gap="2" className="mt-2" aria-atomic>
+                <Detail as="span" weight="semibold" textColor={detailTextColor}>
                   Sist endret:
                 </Detail>
-                <Detail>
+                <Detail as="span">
                   {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
                   {vedtaksinformasjon.sistEndretAv}
                 </Detail>
@@ -59,11 +59,11 @@ export const UtkastHeader = ({
             )}
           </>
         ) : (
-          <HStack gap="2">
-            <Detail weight="semibold" textColor={detailTextColor}>
+          <HStack gap="2" aria-atomic>
+            <Detail as="span" weight="semibold" textColor={detailTextColor}>
               Delt:
             </Detail>
-            <Detail>
+            <Detail as="span">
               {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
               {vedtaksinformasjon.opprettetAv}
             </Detail>

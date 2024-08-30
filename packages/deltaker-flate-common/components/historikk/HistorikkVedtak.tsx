@@ -45,16 +45,12 @@ export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
         </>
       )}
 
-      {deltakelsesprosent && (
-        <>
-          <BodyLong size="small" weight="semibold" className="mt-2">
-            Deltakelsesmengde
-          </BodyLong>
-          <BodyLong size="small">
-            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
-          </BodyLong>
-        </>
-      )}
+      <BodyLong size="small" weight="semibold" className="mt-2">
+        Deltakelsesmengde
+      </BodyLong>
+      <BodyLong size="small">
+        {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+      </BodyLong>
 
       <Detail className="mt-1" textColor="subtle">
         {fattetAvNav
