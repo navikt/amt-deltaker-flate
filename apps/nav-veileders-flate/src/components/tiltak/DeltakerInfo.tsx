@@ -81,14 +81,14 @@ export const DeltakerInfo = ({ className }: Props) => {
         {tiltakOgStedTekst}
       </Heading>
 
-      <HStack gap="2" className="mt-8">
+      <HStack gap="2" className="mt-8" aria-atomic>
         <Label>Status:</Label>
         <DeltakerStatusTag statusType={pamelding.status.type} />
       </HStack>
       {pamelding.status.aarsak && (
-        <HStack gap="2" className="mt-4">
+        <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort className="whitespace-pre-wrap">
+          <BodyShort as="span" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
           </BodyShort>
         </HStack>
