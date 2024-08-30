@@ -81,7 +81,9 @@ export const TiltakPage = () => {
     <div className={'bg-white w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
-          Du er nå meldt på {tiltakOgStedTekst} og vedtaket er fattet.
+          <BodyShort role="alert">
+            Du er nå meldt på {tiltakOgStedTekst} og vedtaket er fattet.
+          </BodyShort>
         </Alert>
       )}
 
@@ -89,14 +91,14 @@ export const TiltakPage = () => {
         {tiltakOgStedTekst}
       </Heading>
 
-      <HStack gap="2" className="mt-8">
+      <HStack gap="2" className="mt-8" aria-atomic>
         <Label>Status:</Label>
         <DeltakerStatusTag statusType={deltaker.status.type} />
       </HStack>
       {deltaker.status.aarsak && (
-        <HStack gap="2" className="mt-4">
+        <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort className="whitespace-pre-wrap">
+          <BodyShort as="span" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
         </HStack>
