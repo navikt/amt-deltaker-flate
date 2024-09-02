@@ -179,8 +179,12 @@ export const TiltakPage = () => {
         <BodyLong size="small" className="mt-2">
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
           deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
-          å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
-          {<Link href="https://www.nav.no/klage">retten til å klage her.</Link>}
+          å klage er seks uker etter du mottok informasjonen.{' '}
+          {
+            <Link href="https://www.nav.no/klage">
+              Les mer om retten til å klage her.
+            </Link>
+          }
         </BodyLong>
 
         <HvaDelesMedArrangor
