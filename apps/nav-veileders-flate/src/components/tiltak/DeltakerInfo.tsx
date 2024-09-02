@@ -17,27 +17,19 @@ import {
   HvaDelesMedArrangor,
   HvaErDette,
   SeEndringer,
-  Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakNavnHosArrangorTekst,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
 
 interface Props {
   className: string
-}
-
-const skalViseDeltakelsesmengde = (pamelding: PameldingResponse) => {
-  return (
-    pamelding.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
-    pamelding.deltakerliste.tiltakstype == Tiltakstype.VASV
-  )
 }
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
@@ -131,7 +123,7 @@ export const DeltakerInfo = ({ className }: Props) => {
             </BodyLong>
           </>
         )}
-        {skalViseDeltakelsesmengde(pamelding) && (
+        {visDeltakelsesmengde(pamelding.deltakerliste.tiltakstype) && (
           <>
             <Heading level="2" size="medium" className="mt-8">
               Deltakelsesmengde
@@ -147,6 +139,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <SeEndringer
           className="mt-8"
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
           deltakerId={pamelding.deltakerId}
           fetchHistorikk={getHistorikk}
         />

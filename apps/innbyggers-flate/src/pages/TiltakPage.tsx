@@ -18,24 +18,17 @@ import {
   HvaDelesMedArrangor,
   HvaErDette,
   SeEndringer,
-  Tiltakstype,
   deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakNavnHosArrangorTekst,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
-import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-const skalViseDeltakelsesmengde = (deltaker: DeltakerResponse) => {
-  return (
-    deltaker.deltakerliste.tiltakstype == Tiltakstype.ARBFORB ||
-    deltaker.deltakerliste.tiltakstype == Tiltakstype.VASV
-  )
-}
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
   return (
@@ -144,7 +137,7 @@ export const TiltakPage = () => {
           </>
         )}
 
-        {skalViseDeltakelsesmengde(deltaker) && (
+        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
           <>
             <Heading level="2" size="medium" className="mt-8">
               Deltakelsesmengde
@@ -160,6 +153,7 @@ export const TiltakPage = () => {
 
         <SeEndringer
           className="mt-8"
+          tiltakstype={deltaker.deltakerliste.tiltakstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
         />
@@ -185,8 +179,12 @@ export const TiltakPage = () => {
         <BodyLong size="small" className="mt-2">
           Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
           deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
-          å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
-          {<Link href="https://www.nav.no/klage">retten til å klage her.</Link>}
+          å klage er seks uker etter du mottok informasjonen.{' '}
+          {
+            <Link href="https://www.nav.no/klage">
+              Les mer om retten til å klage her.
+            </Link>
+          }
         </BodyLong>
 
         <HvaDelesMedArrangor

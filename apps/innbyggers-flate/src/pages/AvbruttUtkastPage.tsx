@@ -2,10 +2,10 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnholdPanel,
   EMDASH,
-  Tiltakstype,
   UtkastHeader,
   deltakerprosentText,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakNavnHosArrangorTekst,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 
@@ -47,8 +47,7 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      {(deltaker.deltakerliste.tiltakstype === Tiltakstype.ARBFORB ||
-        deltaker.deltakerliste.tiltakstype === Tiltakstype.VASV) && (
+      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde

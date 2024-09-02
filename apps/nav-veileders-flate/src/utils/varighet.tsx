@@ -113,18 +113,11 @@ export function finnVarighetValg(
   const uker = til.diff(fra, 'weeks')
   const maaneder = til.diff(fra, 'months')
 
-  const erIkkeDelbarIVarigheter =
-    fra.add(uker, 'weeks').isBefore(til) &&
-    fra.add(maaneder, 'months').isBefore(til)
-
-  if (erIkkeDelbarIVarigheter) {
-    return {
-      uker: VarighetValg.ANNET,
-      maaneder: VarighetValg.ANNET
-    }
-  }
-
   const ukeVarighet = () => {
+    if (fra.add(uker, 'weeks').isBefore(til)) {
+      return VarighetValg.ANNET
+    }
+
     switch (uker) {
       case 4:
         return VarighetValg.FIRE_UKER
@@ -140,6 +133,10 @@ export function finnVarighetValg(
   }
 
   const mndVarighet = () => {
+    if (fra.add(maaneder, 'months').isBefore(til)) {
+      return VarighetValg.ANNET
+    }
+
     switch (maaneder) {
       case 3:
         return VarighetValg.TRE_MANEDER

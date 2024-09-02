@@ -13,11 +13,11 @@ import {
   DeltakelseInnholdPanel,
   EMDASH,
   PERSONOPPLYSNINGER_URL,
-  Tiltakstype,
   UtkastHeader,
   deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
-  useDeferredFetch
+  useDeferredFetch,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -103,8 +103,7 @@ export const UtkastPage = () => {
         </>
       )}
 
-      {(deltaker.deltakerliste.tiltakstype === Tiltakstype.ARBFORB ||
-        deltaker.deltakerliste.tiltakstype === Tiltakstype.VASV) && (
+      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde

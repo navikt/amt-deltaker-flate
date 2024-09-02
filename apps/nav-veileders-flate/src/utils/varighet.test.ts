@@ -466,7 +466,7 @@ describe('finnVarighet', () => {
   })
   it('tildato er ikke en varighet etter fradato finner ANNET', () => {
     const fra = dayjs()
-    const til = fra.add(3, 'months').add(4, 'weeks')
+    const til = fra.add(3, 'months').add(1, 'weeks')
 
     const varighet = finnVarighetValg(fra.toDate(), til.toDate())
 
