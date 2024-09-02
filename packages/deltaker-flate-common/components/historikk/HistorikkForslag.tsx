@@ -34,7 +34,9 @@ export const HistorikkForslag = ({ forslag }: Props) => {
       forslag={forslag}
     >
       {forslag.status.type === ForslagStatusType.Avvist && (
-        <BodyLong size="small">{forslag.status.begrunnelseFraNav}</BodyLong>
+        <BodyLong size="small" className="whitespace-pre-wrap">
+          {forslag.status.begrunnelseFraNav}
+        </BodyLong>
       )}
 
       {forslagStatusTekst && (

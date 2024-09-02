@@ -53,7 +53,7 @@ const getEndringsDetaljer = (endring: Endring) => {
             Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
           </BodyLong>
           {endring.begrunnelse && (
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-wrap">
               NAVs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
@@ -67,7 +67,7 @@ const getEndringsDetaljer = (endring: Endring) => {
             Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
           </BodyLong>
           {endring.begrunnelse && (
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-wrap">
               NAVs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
@@ -76,7 +76,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     }
     case EndringType.EndreBakgrunnsinformasjon: {
       return (
-        <BodyLong size="small">
+        <BodyLong size="small" className="whitespace-pre-wrap">
           {endring.bakgrunnsinformasjon || EMDASH}
         </BodyLong>
       )
@@ -94,7 +94,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     }
     case EndringType.ReaktiverDeltakelse: {
       return (
-        <BodyLong size="small">
+        <BodyLong size="small" className="whitespace-pre-wrap">
           NAVs begrunnelse: {endring.begrunnelse}
         </BodyLong>
       )
@@ -104,7 +104,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     case EndringType.EndreDeltakelsesmengde:
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
-        <BodyLong size="small">
+        <BodyLong size="small" className="whitespace-pre-wrap">
           NAVs begrunnelse: {endring.begrunnelse}
         </BodyLong>
       ) : (
@@ -118,7 +118,7 @@ const getEndringsDetaljer = (endring: Endring) => {
             Forventet sluttdato: {formatDate(endring.sluttdato)}
           </BodyLong>
           {endring.begrunnelse && (
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-wrap">
               NAVs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
@@ -138,10 +138,9 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
       forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring)}
-      <Detail
-        className="mt-1"
-        textColor="subtle"
-      >{`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}</Detail>
+      <Detail className="mt-1" textColor="subtle">
+        {`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
+      </Detail>
     </HistorikkElement>
   )
 }
