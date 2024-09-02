@@ -6,15 +6,18 @@ import {
   DeferredFetchState,
   useDeferredFetch
 } from '../../hooks/useDeferredFetch'
+import { Tiltakstype } from '../../model/deltaker'
 
 interface Props {
   deltakerId: string
+  tiltakstype: Tiltakstype
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
 }
 
 export const SeEndringer = ({
   deltakerId,
+  tiltakstype,
   className,
   fetchHistorikk
 }: Props) => {
@@ -52,6 +55,7 @@ export const SeEndringer = ({
 
       <HistorikkModal
         historikk={historikk}
+        tiltakstype={tiltakstype}
         open={historikkModalOpen}
         onClose={() => setHistorikkModalOpen(false)}
       />

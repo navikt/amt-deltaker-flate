@@ -139,6 +139,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <SeEndringer
           className="mt-8"
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
           deltakerId={pamelding.deltakerId}
           fetchHistorikk={getHistorikk}
         />

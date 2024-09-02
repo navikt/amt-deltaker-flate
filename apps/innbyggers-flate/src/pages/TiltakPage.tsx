@@ -153,6 +153,7 @@ export const TiltakPage = () => {
 
         <SeEndringer
           className="mt-8"
+          tiltakstype={deltaker.deltakerliste.tiltakstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
         />

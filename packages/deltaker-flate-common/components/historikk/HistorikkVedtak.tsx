@@ -9,19 +9,20 @@ import {
 } from '../../utils/utils'
 import { DeltakelseInnholdPanel } from '../DeltakelseInnholdPanel.tsx'
 import { HistorikkElement } from './HistorikkElement'
+import { Tiltakstype } from '../../model/deltaker.ts'
 
 interface Props {
   endringsVedtak: Vedtak
+  tiltakstype: Tiltakstype
 }
 
-export const HistorikkVedtak = ({ endringsVedtak }: Props) => {
+export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
   const {
     fattet,
     fattetAvNav,
     opprettet,
     opprettetAv,
     opprettetAvEnhet,
-    tiltakstype,
     dagerPerUke,
     deltakelsesprosent,
     deltakelsesinnhold,
