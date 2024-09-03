@@ -92,7 +92,9 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
     <>
       {detaljer(forslag)}
       {forslag.begrunnelse && (
-        <BodyLong size="small">Begrunnelse: {forslag.begrunnelse}</BodyLong>
+        <BodyLong size="small" className="whitespace-pre-wrap">
+          Begrunnelse: {forslag.begrunnelse}
+        </BodyLong>
       )}
     </>
   )

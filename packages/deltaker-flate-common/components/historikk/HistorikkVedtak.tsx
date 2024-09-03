@@ -44,7 +44,11 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
 
       {bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 && (
         <>
-          <BodyLong size="small" weight="semibold" className="mt-2">
+          <BodyLong
+            size="small"
+            weight="semibold"
+            className="mt-2 whitespace-pre-wrap"
+          >
             Bakgrunnsinfo
           </BodyLong>
           <BodyLong size="small">{bakgrunnsinformasjon}</BodyLong>
