@@ -26,6 +26,7 @@ updates:
           - 'patch'
         exclude-patterns:
           - 'playwright'
+          - '@playwright/test'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
