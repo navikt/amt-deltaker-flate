@@ -33,14 +33,14 @@ importers:
         specifier: ^1.9.1
         version: 1.9.1
       '@navikt/aksel-icons':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       '@navikt/ds-css':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       '@navikt/ds-react':
-        specifier: ^6.16.2
-        version: 6.16.2(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.16.3
+        version: 6.16.3(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^2.1.6
         version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
@@ -74,10 +74,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@axe-core/playwright':
         specifier: ^4.10.0
-        version: 4.10.0(playwright-core@1.46.1)
+        version: 4.10.0(playwright-core@1.47.0)
       '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
+        specifier: ^1.47.0
+        version: 1.47.0
       '@testing-library/jest-dom':
         specifier: ^6.5.0
         version: 6.5.0
@@ -88,8 +88,8 @@ importers:
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/node':
-        specifier: ^22.5.2
-        version: 22.5.2
+        specifier: ^22.5.4
+        version: 22.5.4
       '@types/react':
         specifier: ^18.3.5
         version: 18.3.5
@@ -104,13 +104,13 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react':
         specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.2(@types/node@22.5.2))
+        version: 4.3.1(vite@5.4.3(@types/node@22.5.4))
       mockjs:
         specifier: ^1.1.0
         version: 1.1.0
       msw:
-        specifier: ^2.4.1
-        version: 2.4.1(graphql@16.9.0)(typescript@5.5.4)
+        specifier: ^2.4.2
+        version: 2.4.2(graphql@16.9.0)(typescript@5.5.4)
       playwright:
         specifier: ^1.46.1
         version: 1.46.1
@@ -121,11 +121,11 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       vite:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/node@22.5.2)
+        specifier: ^5.4.3
+        version: 5.4.3(@types/node@22.5.4)
       vitest:
         specifier: ^2.0.4
-        version: 2.0.5(@types/node@22.5.2)(jsdom@25.0.0)
+        version: 2.0.5(@types/node@22.5.4)(jsdom@25.0.0)
 
   apps/nav-veileders-flate:
     dependencies:
@@ -136,17 +136,17 @@ importers:
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@navikt/aksel-icons':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       '@navikt/ds-css':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       '@navikt/ds-react':
-        specifier: ^6.16.2
-        version: 6.16.2(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.16.3
+        version: 6.16.3(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/ds-tailwind':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -157,8 +157,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       msw:
-        specifier: ^2.4.1
-        version: 2.4.1(graphql@16.9.0)(typescript@5.5.4)
+        specifier: ^2.4.2
+        version: 2.4.2(graphql@16.9.0)(typescript@5.5.4)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -189,10 +189,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@axe-core/playwright':
         specifier: ^4.10.0
-        version: 4.10.0(playwright-core@1.46.1)
+        version: 4.10.0(playwright-core@1.47.0)
       '@playwright/test':
-        specifier: ^1.46.1
-        version: 1.46.1
+        specifier: ^1.47.0
+        version: 1.47.0
       '@testing-library/jest-dom':
         specifier: ^6.5.0
         version: 6.5.0
@@ -206,8 +206,8 @@ importers:
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/node':
-        specifier: ^22.5.2
-        version: 22.5.2
+        specifier: ^22.5.4
+        version: 22.5.4
       '@types/react':
         specifier: ^18.3.5
         version: 18.3.5
@@ -222,7 +222,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react-swc':
         specifier: ^3.7.0
-        version: 3.7.0(vite@5.4.2(@types/node@22.5.2))
+        version: 3.7.0(vite@5.4.3(@types/node@22.5.4))
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -242,20 +242,20 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       vite:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/node@22.5.2)
+        specifier: ^5.4.3
+        version: 5.4.3(@types/node@22.5.4)
       vitest:
         specifier: ^2.0.4
-        version: 2.0.5(@types/node@22.5.2)(jsdom@25.0.0)
+        version: 2.0.5(@types/node@22.5.4)(jsdom@25.0.0)
 
   packages/deltaker-flate-common:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       '@navikt/ds-react':
-        specifier: ^6.16.2
-        version: 6.16.2(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.16.3
+        version: 6.16.3(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -298,11 +298,11 @@ importers:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.9.1(jiti@1.21.6))
       eslint-plugin-jsx-a11y:
-        specifier: ^6.9.0
-        version: 6.9.0(eslint@9.9.1(jiti@1.21.6))
+        specifier: ^6.10.0
+        version: 6.10.0(eslint@9.9.1(jiti@1.21.6))
       eslint-plugin-react:
-        specifier: ^7.35.1
-        version: 7.35.1(eslint@9.9.1(jiti@1.21.6))
+        specifier: ^7.35.2
+        version: 7.35.2(eslint@9.9.1(jiti@1.21.6))
       eslint-plugin-react-hooks:
         specifier: ^4.6.2
         version: 4.6.2(eslint@9.9.1(jiti@1.21.6))
@@ -316,14 +316,14 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^6.16.2
-        version: 6.16.2
+        specifier: ^6.16.3
+        version: 6.16.3
       autoprefixer:
         specifier: ^10.4.19
-        version: 10.4.20(postcss@8.4.44)
+        version: 10.4.20(postcss@8.4.45)
       postcss:
-        specifier: ^8.4.44
-        version: 8.4.44
+        specifier: ^8.4.45
+        version: 8.4.45
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
@@ -701,23 +701,23 @@ packages:
     resolution: {integrity: sha512-3rDakgJZ77+RiQUuSK69t1F0m8BQKA8Vh5DCS5V0DWvNY67zob2JhhQrhCO0AKLGINTRSFd1tBaHcJTkhefoSw==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@6.16.2':
-    resolution: {integrity: sha512-M2rJHEYbHeh9M8smGizRvV6QAj6CAfQMW4vF6zBiNUzV4LfcwgxmwTRM/F5A1lbZScPuFZqAHUey1N3htVl8Cw==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/6.16.2/9ee0592457a1e1bc8c1990d1aa3a3cf6c9cc4522}
+  '@navikt/aksel-icons@6.16.3':
+    resolution: {integrity: sha512-EE5L1F/HGzX1XJ0hQBUJq/wpdoTIs2ii02MxrZ6Ubr50Au9k9gGAUEC+fE+qxTxB8e2aDWlEvOePj1PSP/nMww==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/6.16.3/e0a4e5abf2a0b9ae9b7be68d0f72080832fd8457}
 
-  '@navikt/ds-css@6.16.2':
-    resolution: {integrity: sha512-fWJRierHeHKe718crx8+TmRsKfQ+BODm13oodvt3LIiQmINNNdF7rtAFSO6+yzF6ReVj2bAnqyr+6UqDH9RJyw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/6.16.2/6504d11c7905723a585a2c9ba2555fb5a8a159e1}
+  '@navikt/ds-css@6.16.3':
+    resolution: {integrity: sha512-wq4NHNceTmrXfl9B1GjPypKcpCDNcxhrX+ENfJ/6LJJlHyCKeWZRTtHSr7gprLFQ9hREglJR9Ie8m9xDr4nimA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/6.16.3/eabc958ee4d9ae6c3510608b5bf21b53ad479e4f}
 
-  '@navikt/ds-react@6.16.2':
-    resolution: {integrity: sha512-snJnxUXiDN8wmjb3uoELhTfpdsdpftXuZBaZeLsST/skMPJHdym9D8pVjbti4pKrnG2/9zYI2rX/bE2e26D7CQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/6.16.2/b16cba0f95df6b9e4035099c0dc5b239dcbd5392}
+  '@navikt/ds-react@6.16.3':
+    resolution: {integrity: sha512-88dyVXXqNp8NgDjtoBEmuDANaOOt8DCMNqAUMT3/FPdTeFFH42yLqbkYUiSqRC37e3S3vKLbhphZiPQla1SloQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/6.16.3/55d1ee7cebf5c9db3e7300cfb81bd60f60347e81}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
 
-  '@navikt/ds-tailwind@6.16.2':
-    resolution: {integrity: sha512-EUqZFZOYCApqXjMgi1s3KeVd9FhUmS2d3Wog6aYFAVWjgeTxLjP5CaBj3fOr6J1HZlJns9Z8rvdirqyifGeKpg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.16.2/7e8eb496cf2b759148b10ee5ce1413beb65e520e}
+  '@navikt/ds-tailwind@6.16.3':
+    resolution: {integrity: sha512-bgoZwfYJBAvPKMNNcnuLlrOVshEaJaLfRq2Iolsle746sUZE9cEdSXR/TmZ7w8Ug9Dd3SvvH+OmvRa9f/QwViQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.16.3/bf8a7fd5f919c31491b2516ff29726d36d836082}
 
-  '@navikt/ds-tokens@6.16.2':
-    resolution: {integrity: sha512-2m1CNuP2Uz3mLBQt5Xb1fKziJTrrMw97E6HgICrUCkm2Vo5ZpzkD1tcS0KSlbz1XMg/q+CheERUIL6kPdj79eQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/6.16.2/e2f8b1ee8b5125a4497d1baca3b19ac4bd6716e4}
+  '@navikt/ds-tokens@6.16.3':
+    resolution: {integrity: sha512-kVIYWf2gSdy4PB+sRbKn1HERep/c6WnCH31DUHLqrcgzGXHG+qcfnS5nEWl9wn10NE+dMlL4+A7B2rPc/3rIzQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/6.16.3/1ce1e16ad2c2386a756e6e6d8a05dcd9564cae9b}
 
   '@navikt/nav-dekoratoren-moduler@2.1.6':
     resolution: {integrity: sha512-P9c+a8/HuIY6XScNr/DVS7lZ0UtndzYAMEaIVdAzCOrG4SudY4tXSp+44g1V58GKml1RjdzOfGVF4hxmFv3SiA==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/2.1.6/049e1daeecff43519e41e387f21fd7e3634c2bd3}
@@ -799,8 +799,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.46.1':
-    resolution: {integrity: sha512-Fq6SwLujA/DOIvNC2EL/SojJnkKf/rAwJ//APpJJHRyMi1PdKrY3Az+4XNQ51N4RTbItbIByQ0jgd1tayq1aeA==}
+  '@playwright/test@1.47.0':
+    resolution: {integrity: sha512-SgAdlSwYVpToI4e/IH19IHHWvoijAYH5hu2MWSXptRypLSnzj51PcGD+rsOXFayde4P9ZLi+loXVwArg6IUkCA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1065,8 +1065,8 @@ packages:
   '@types/mute-stream@0.0.4':
     resolution: {integrity: sha512-CPM9nzrCPPJHQNA9keH9CVkVI+WR5kMa+7XEs5jcGQ0VoAGnLv242w8lIVgwAEfmE4oufJRaTc9PNLQl0ioAow==}
 
-  '@types/node@22.5.2':
-    resolution: {integrity: sha512-acJsPTEqYqulZS/Yp/S3GgeE6GZ0qYODUR8aVr/DkhHQ8l9nd4j5x1/ZJy9/gHrRlFMqkO6i0I3E27Alu4jjPg==}
+  '@types/node@22.5.4':
+    resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -1310,8 +1310,9 @@ packages:
     resolution: {integrity: sha512-Mr2ZakwQ7XUAjp7pAwQWRhhK8mQQ6JAaNWSjmjxil0R8BPioMtQsTLOolGYkji1rcL++3dCqZA3zWqpT+9Ew6g==}
     engines: {node: '>=4'}
 
-  axobject-query@3.1.1:
-    resolution: {integrity: sha512-goKlv8DZrK9hUh975fnHzhNIO4jUnFCfv/dszV5VwUGDFjI6vQ2VwoyjYjYNEbBE8AH87TduWP5uyDR1D+Iteg==}
+  axobject-query@4.1.0:
+    resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
+    engines: {node: '>= 0.4'}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1672,11 +1673,11 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-jsx-a11y@6.9.0:
-    resolution: {integrity: sha512-nOFOCaJG2pYqORjK19lqPqxMO/JpvdCZdPtNdxY3kvom3jTvkAbOvQvD8wuD0G8BYR0IGAGYDlzqWJOh/ybn2g==}
+  eslint-plugin-jsx-a11y@6.10.0:
+    resolution: {integrity: sha512-ySOHvXX8eSN6zz8Bywacm7CvGNhUtdjvqfQDVe6020TUK34Cywkw7m0KsCCk1Qtm9G1FayfTN1/7mMYnYO2Bhg==}
     engines: {node: '>=4.0'}
     peerDependencies:
-      eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+      eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
   eslint-plugin-react-hooks@4.6.2:
     resolution: {integrity: sha512-QzliNJq4GinDBcD8gPB5v0wh6g8q3SUi6EFF0x8N/BL9PoVs0atuGc47ozMRyOWAKdwaZ5OnbOEa3WR+dSGKuQ==}
@@ -1684,8 +1685,8 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
 
-  eslint-plugin-react@7.35.1:
-    resolution: {integrity: sha512-B5ok2JgbaaWn/zXbKCGgKDNL2tsID3Pd/c/yvjcpsd9HQDwyYc/TQv3AZMmOvrJgCs3AnYNUHRCQEMMQAYJ7Yg==}
+  eslint-plugin-react@7.35.2:
+    resolution: {integrity: sha512-Rbj2R9zwP2GYNcIak4xoAMV57hrBh3hTaR0k7hVjwCQgryE/pw5px4b13EYjduOI0hfXyZhwBxaGpOTbWSGzKQ==}
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
@@ -2297,13 +2298,13 @@ packages:
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
-  msw@2.4.1:
-    resolution: {integrity: sha512-HXcoQPzYTwEmVk+BGIcRa0vLabBT+J20SSSeYh/QfajaK5ceA6dlD4ZZjfz2dqGEq4vRNCPLP6eXsB94KllPFg==}
+  msw@2.4.2:
+    resolution: {integrity: sha512-GImSQGhn19czhVpxPdiUDK8CMZ6jbBcvOhzfJd8KFErjEER2wDKWs1UYaetJs2GSNlAqt6heZYm7g3eLatTcog==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
       graphql: '>= 16.8.x'
-      typescript: '>= 4.7.x'
+      typescript: '>= 4.8.x'
     peerDependenciesMeta:
       graphql:
         optional: true
@@ -2497,8 +2498,18 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  playwright-core@1.47.0:
+    resolution: {integrity: sha512-1DyHT8OqkcfCkYUD9zzUTfg7EfTd+6a8MkD/NWOvjo0u/SCNd5YmY/lJwFvUZOxJbWNds+ei7ic2+R/cRz/PDg==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright@1.46.1:
     resolution: {integrity: sha512-oPcr1yqoXLCkgKtD5eNUPLiN40rYEM39odNpIb6VE6S7/15gJmA1NzVv6zJYusV0e7tzvkU/utBFNa/Kpxmwng==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.47.0:
+    resolution: {integrity: sha512-jOWiRq2pdNAX/mwLiwFYnPHpEZ4rM+fRSQpRHwEwZlP2PUANvL3+aJOF/bvISMhFD30rqMxUB4RJx9aQbfh4Ww==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2543,12 +2554,12 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.4.41:
-    resolution: {integrity: sha512-TesUflQ0WKZqAvg52PWL6kHgLKP6xB6heTOdoYM0Wt2UHyxNa4K25EZZMgKns3BH1RLVbZCREPpLY0rhnNoHVQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
   postcss@8.4.44:
     resolution: {integrity: sha512-Aweb9unOEpQ3ezu4Q00DPvvM2ZTUitJdNKeP/+uQgr1IBIqu574IaZoURId7BKtWMREwzKa9OgzPzezWGPWFQw==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.4.45:
+    resolution: {integrity: sha512-7KTLTdzdZZYscUc65XmjFiB73vBhBfbPztCYdUNvlaso9PrzjzcmjqBPR0lNGkcVlcO4BjiO5rK/qNz+XAen1Q==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -3057,8 +3068,8 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
-  vite@5.4.2:
-    resolution: {integrity: sha512-dDrQTRHp5C1fTFzcSaMxjk6vdpKvT+2/mIdE07Gw2ykehT49O0z/VHS3zZ8iV/Gh8BJJKHWOe5RjaNrW5xf/GA==}
+  vite@5.4.3:
+    resolution: {integrity: sha512-IH+nl64eq9lJjFqU+/yrRnrHPVTlgy42/+IzbOdaFDVlyLgI/wDlf+FCobXLX1cT0X5+7LMyH1mIy2xJdLfo8Q==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -3242,10 +3253,10 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@axe-core/playwright@4.10.0(playwright-core@1.46.1)':
+  '@axe-core/playwright@4.10.0(playwright-core@1.47.0)':
     dependencies:
       axe-core: 4.10.0
-      playwright-core: 1.46.1
+      playwright-core: 1.47.0
 
   '@babel/code-frame@7.24.7':
     dependencies:
@@ -3550,7 +3561,7 @@ snapshots:
       '@inquirer/figures': 1.0.5
       '@inquirer/type': 1.5.2
       '@types/mute-stream': 0.0.4
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
       '@types/wrap-ansi': 3.0.0
       ansi-escapes: 4.3.2
       cli-spinners: 2.9.2
@@ -3602,16 +3613,16 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@6.16.2': {}
+  '@navikt/aksel-icons@6.16.3': {}
 
-  '@navikt/ds-css@6.16.2': {}
+  '@navikt/ds-css@6.16.3': {}
 
-  '@navikt/ds-react@6.16.2(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@navikt/ds-react@6.16.3(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/aksel-icons': 6.16.2
-      '@navikt/ds-tokens': 6.16.2
+      '@navikt/aksel-icons': 6.16.3
+      '@navikt/ds-tokens': 6.16.3
       '@types/react': 18.3.5
       clsx: 2.1.1
       date-fns: 3.6.0
@@ -3620,9 +3631,9 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@6.16.2': {}
+  '@navikt/ds-tailwind@6.16.3': {}
 
-  '@navikt/ds-tokens@6.16.2': {}
+  '@navikt/ds-tokens@6.16.3': {}
 
   '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.0)(react@18.3.1)':
     dependencies:
@@ -3707,9 +3718,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@playwright/test@1.46.1':
+  '@playwright/test@1.47.0':
     dependencies:
-      playwright: 1.46.1
+      playwright: 1.47.0
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -3911,9 +3922,9 @@ snapshots:
 
   '@types/mute-stream@0.0.4':
     dependencies:
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
 
-  '@types/node@22.5.2':
+  '@types/node@22.5.4':
     dependencies:
       undici-types: 6.19.8
 
@@ -4028,21 +4039,21 @@ snapshots:
       '@typescript-eslint/types': 8.4.0
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-react-swc@3.7.0(vite@5.4.2(@types/node@22.5.2))':
+  '@vitejs/plugin-react-swc@3.7.0(vite@5.4.3(@types/node@22.5.4))':
     dependencies:
       '@swc/core': 1.7.10
-      vite: 5.4.2(@types/node@22.5.2)
+      vite: 5.4.3(@types/node@22.5.4)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@4.3.1(vite@5.4.2(@types/node@22.5.2))':
+  '@vitejs/plugin-react@4.3.1(vite@5.4.3(@types/node@22.5.4))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.25.2)
       '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.25.2)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.2(@types/node@22.5.2)
+      vite: 5.4.3(@types/node@22.5.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -4210,14 +4221,14 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.4.20(postcss@8.4.44):
+  autoprefixer@10.4.20(postcss@8.4.45):
     dependencies:
       browserslist: 4.23.3
       caniuse-lite: 1.0.30001651
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
-      postcss: 8.4.44
+      postcss: 8.4.45
       postcss-value-parser: 4.2.0
 
   available-typed-arrays@1.0.7:
@@ -4226,9 +4237,7 @@ snapshots:
 
   axe-core@4.10.0: {}
 
-  axobject-query@3.1.1:
-    dependencies:
-      deep-equal: 2.2.3
+  axobject-query@4.1.0: {}
 
   balanced-match@1.0.2: {}
 
@@ -4673,14 +4682,14 @@ snapshots:
     dependencies:
       eslint: 9.9.1(jiti@1.21.6)
 
-  eslint-plugin-jsx-a11y@6.9.0(eslint@9.9.1(jiti@1.21.6)):
+  eslint-plugin-jsx-a11y@6.10.0(eslint@9.9.1(jiti@1.21.6)):
     dependencies:
       aria-query: 5.1.3
       array-includes: 3.1.8
       array.prototype.flatmap: 1.3.2
       ast-types-flow: 0.0.8
       axe-core: 4.10.0
-      axobject-query: 3.1.1
+      axobject-query: 4.1.0
       damerau-levenshtein: 1.0.8
       emoji-regex: 9.2.2
       es-iterator-helpers: 1.0.19
@@ -4697,7 +4706,7 @@ snapshots:
     dependencies:
       eslint: 9.9.1(jiti@1.21.6)
 
-  eslint-plugin-react@7.35.1(eslint@9.9.1(jiti@1.21.6)):
+  eslint-plugin-react@7.35.2(eslint@9.9.1(jiti@1.21.6)):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlast: 1.2.5
@@ -5354,7 +5363,7 @@ snapshots:
 
   ms@2.1.2: {}
 
-  msw@2.4.1(graphql@16.9.0)(typescript@5.5.4):
+  msw@2.4.2(graphql@16.9.0)(typescript@5.5.4):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.0
       '@bundled-es-modules/statuses': 1.0.1
@@ -5531,36 +5540,44 @@ snapshots:
 
   playwright-core@1.46.1: {}
 
+  playwright-core@1.47.0: {}
+
   playwright@1.46.1:
     dependencies:
       playwright-core: 1.46.1
     optionalDependencies:
       fsevents: 2.3.2
 
+  playwright@1.47.0:
+    dependencies:
+      playwright-core: 1.47.0
+    optionalDependencies:
+      fsevents: 2.3.2
+
   possible-typed-array-names@1.0.0: {}
 
-  postcss-import@15.1.0(postcss@8.4.41):
+  postcss-import@15.1.0(postcss@8.4.44):
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.44
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-js@4.0.1(postcss@8.4.41):
+  postcss-js@4.0.1(postcss@8.4.44):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.41
+      postcss: 8.4.44
 
-  postcss-load-config@4.0.2(postcss@8.4.41):
+  postcss-load-config@4.0.2(postcss@8.4.44):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.5.0
     optionalDependencies:
-      postcss: 8.4.41
+      postcss: 8.4.44
 
-  postcss-nested@6.2.0(postcss@8.4.41):
+  postcss-nested@6.2.0(postcss@8.4.44):
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.44
       postcss-selector-parser: 6.1.2
 
   postcss-selector-parser@6.1.2:
@@ -5570,13 +5587,13 @@ snapshots:
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.4.41:
+  postcss@8.4.44:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  postcss@8.4.44:
+  postcss@8.4.45:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
@@ -5610,7 +5627,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
       long: 5.2.3
 
   psl@1.9.0: {}
@@ -5976,11 +5993,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.41
-      postcss-import: 15.1.0(postcss@8.4.41)
-      postcss-js: 4.0.1(postcss@8.4.41)
-      postcss-load-config: 4.0.2(postcss@8.4.41)
-      postcss-nested: 6.2.0(postcss@8.4.41)
+      postcss: 8.4.44
+      postcss-import: 15.1.0(postcss@8.4.44)
+      postcss-js: 4.0.1(postcss@8.4.44)
+      postcss-load-config: 4.0.2(postcss@8.4.44)
+      postcss-nested: 6.2.0(postcss@8.4.44)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -6144,13 +6161,13 @@ snapshots:
 
   uuid@10.0.0: {}
 
-  vite-node@2.0.5(@types/node@22.5.2):
+  vite-node@2.0.5(@types/node@22.5.4):
     dependencies:
       cac: 6.7.14
       debug: 4.3.6
       pathe: 1.1.2
       tinyrainbow: 1.2.0
-      vite: 5.4.2(@types/node@22.5.2)
+      vite: 5.4.3(@types/node@22.5.4)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6162,16 +6179,16 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.4.2(@types/node@22.5.2):
+  vite@5.4.3(@types/node@22.5.4):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.4.41
+      postcss: 8.4.44
       rollup: 4.20.0
     optionalDependencies:
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
       fsevents: 2.3.3
 
-  vitest@2.0.5(@types/node@22.5.2)(jsdom@25.0.0):
+  vitest@2.0.5(@types/node@22.5.4)(jsdom@25.0.0):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -6189,11 +6206,11 @@ snapshots:
       tinybench: 2.9.0
       tinypool: 1.0.0
       tinyrainbow: 1.2.0
-      vite: 5.4.2(@types/node@22.5.2)
-      vite-node: 2.0.5(@types/node@22.5.2)
+      vite: 5.4.3(@types/node@22.5.4)
+      vite-node: 2.0.5(@types/node@22.5.4)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
       jsdom: 25.0.0
     transitivePeerDependencies:
       - less
