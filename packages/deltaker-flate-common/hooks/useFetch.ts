@@ -21,6 +21,7 @@ export const useFetch = <T, U extends unknown[]>(
       try {
         const result = await apiFunction(...args)
         setData(result)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setError('En feil oppsto ved henting av data.')
       } finally {
