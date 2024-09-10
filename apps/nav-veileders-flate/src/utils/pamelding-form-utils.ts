@@ -1,12 +1,12 @@
+import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
-import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import {
   InnholdDto,
   SendInnPameldingRequest
 } from '../api/data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
-import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 
 export const generateInnholdFromResponse = (
   pamelding: PameldingResponse,
@@ -68,7 +68,10 @@ export const generateDirektePameldingRequestForm = (
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent: data.deltakelsesprosent,
+    deltakelsesprosent:
+      data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
+        ? 100
+        : data.deltakelsesprosent,
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
     innhold: generateInnholdFromResponse(
       pamelding,
