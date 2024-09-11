@@ -1,4 +1,4 @@
-import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
+import { INNHOLD_TYPE_ANNET, visDeltakelsesmengde } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import {
   InnholdDto,
@@ -34,6 +34,20 @@ export const generateInnholdFromResponse = (
   })
 }
 
+const getDeltakerProsent = (
+  pamelding: PameldingResponse,
+  data: PameldingFormValues
+) => {
+  const harDeltakelsesmengde = visDeltakelsesmengde(
+    pamelding.deltakerliste.tiltakstype
+  )
+  const deltakelsesprosen =
+    data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
+      ? 100
+      : data.deltakelsesprosent
+  return harDeltakelsesmengde ? deltakelsesprosen : undefined
+}
+
 export const generatePameldingRequestFromForm = (
   pamelding: PameldingResponse,
   data: PameldingFormValues | undefined
@@ -45,10 +59,7 @@ export const generatePameldingRequestFromForm = (
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent:
-      data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
-        ? 100
-        : data.deltakelsesprosent,
+    deltakelsesprosent: getDeltakerProsent(pamelding, data),
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
     innhold: generateInnholdFromResponse(
       pamelding,
@@ -68,10 +79,7 @@ export const generateDirektePameldingRequestForm = (
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent:
-      data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
-        ? 100
-        : data.deltakelsesprosent,
+    deltakelsesprosent: getDeltakerProsent(pamelding, data),
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
     innhold: generateInnholdFromResponse(
       pamelding,
