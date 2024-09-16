@@ -18,10 +18,13 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest } from './data/kladd-request.ts'
-import { PameldingRequest } from './data/pamelding-request.ts'
+import { DeltakerRequest, PameldingRequest } from './data/pamelding-request.ts'
 import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
 import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
+
+export const ERROR_PERSONIDENT =
+  'Deltakelsen kunen ikke hentes fordi den tilhører en annen person enn den som er i kontekst.'
 
 export const createPamelding = async (
   personident: string,
@@ -55,30 +58,34 @@ export const createPamelding = async (
 }
 
 export const getPamelding = async (
-  deltakerId: string
+  deltakerId: string,
+  personident: string,
+  enhetId: string
 ): Promise<PameldingResponse> => {
+  const request: DeltakerRequest = {
+    personident: personident
+  }
+
   return fetch(`${API_URL}/deltaker/${deltakerId}`, {
-    method: 'GET',
+    method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
   })
     .then((response) => {
+      if (response.status === 400) {
+        throw new Error(ERROR_PERSONIDENT)
+      }
       if (response.status !== 200) {
         throw new Error('Deltakelse kunne ikke hentes. Prøv igjen senere')
       }
       return response.json()
     })
-    .then((json) => {
-      try {
-        return pameldingSchema.parse(json)
-      } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
-        throw error
-      }
-    })
+    .then(parsePamelding)
 }
 
 export const deletePamelding = (deltakerId: string): Promise<number> => {
