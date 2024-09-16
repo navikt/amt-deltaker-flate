@@ -1,15 +1,19 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { useFetch } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
-import { getPamelding } from './api/api.ts'
+import { ERROR_PERSONIDENT, getPamelding } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { useAppContext } from './AppContext.tsx'
+import { DELTAKELSESOVERSIKT_LINK, useModiaLink } from './hooks/useModiaLink.ts'
 
 const InngangSePaRediger = () => {
   const { deltakerId } = useParams()
+  const { personident, enhetId } = useAppContext()
+  const { doRedirect } = useModiaLink()
 
   if (deltakerId === undefined) {
     return (
@@ -25,7 +29,7 @@ const InngangSePaRediger = () => {
     data: pamelding,
     loading,
     error
-  } = useFetch(getPamelding, deltakerId!)
+  } = useFetch(getPamelding, deltakerId!, personident, enhetId)
 
   if (loading) {
     return (
@@ -33,6 +37,10 @@ const InngangSePaRediger = () => {
         <Loader size="3xlarge" title="Venter..." />
       </div>
     )
+  }
+
+  if (error === ERROR_PERSONIDENT && !isEnvLocalDemoOrPr) {
+    doRedirect(DELTAKELSESOVERSIKT_LINK)
   }
 
   if (error || !pamelding) {
