@@ -145,8 +145,8 @@ importers:
         specifier: ^6.16.3
         version: 6.16.3(@types/react@18.3.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/ds-tailwind':
-        specifier: ^6.16.3
-        version: 6.16.3
+        specifier: ^7.0.0
+        version: 7.0.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -316,8 +316,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^6.16.3
-        version: 6.16.3
+        specifier: ^7.0.0
+        version: 7.0.0
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.47)
@@ -717,8 +717,8 @@ packages:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
 
-  '@navikt/ds-tailwind@6.16.3':
-    resolution: {integrity: sha512-bgoZwfYJBAvPKMNNcnuLlrOVshEaJaLfRq2Iolsle746sUZE9cEdSXR/TmZ7w8Ug9Dd3SvvH+OmvRa9f/QwViQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/6.16.3/bf8a7fd5f919c31491b2516ff29726d36d836082}
+  '@navikt/ds-tailwind@7.0.0':
+    resolution: {integrity: sha512-siFtDzFsPECDO0ZGTgUhvpLaBQTxpGNjoDpI4p+68pfJNoUoU4bmD4IMN4q1unJCXMOhzG0tgRVST8VXlhYzIQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.0.0/4c52cadcf6396250dee613fb5156ee2fd184880c}
 
   '@navikt/ds-tokens@6.16.3':
     resolution: {integrity: sha512-kVIYWf2gSdy4PB+sRbKn1HERep/c6WnCH31DUHLqrcgzGXHG+qcfnS5nEWl9wn10NE+dMlL4+A7B2rPc/3rIzQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/6.16.3/1ce1e16ad2c2386a756e6e6d8a05dcd9564cae9b}
@@ -3644,7 +3644,7 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@6.16.3': {}
+  '@navikt/ds-tailwind@7.0.0': {}
 
   '@navikt/ds-tokens@6.16.3': {}
 
