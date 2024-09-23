@@ -156,6 +156,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <HvaErDette
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
+          importertFraArena={pamelding.importertFraArena}
           className="mt-8"
         />
 

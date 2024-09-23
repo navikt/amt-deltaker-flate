@@ -90,7 +90,15 @@ export const pameldingStatusSchema = z.object({
   opprettet: dateSchema
 })
 
+export const importertDeltakerFraArenaSchema = z.object({
+  innsoktDato: dateSchema
+})
+
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
+export type DeltakerStatus = z.infer<typeof pameldingStatusSchema>
+export type importertDeltakerFraArena = z.infer<
+  typeof importertDeltakerFraArenaSchema
+>

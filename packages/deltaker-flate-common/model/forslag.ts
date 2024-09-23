@@ -5,7 +5,8 @@ export enum HistorikkType {
   Vedtak = 'Vedtak',
   Endring = 'Endring',
   Forslag = 'Forslag',
-  EndringFraArrangor = 'EndringFraArrangor'
+  EndringFraArrangor = 'EndringFraArrangor',
+  ImportertFraArena = 'ImportertFraArena'
 }
 
 export enum ForslagStatusType {

@@ -170,6 +170,7 @@ export const TiltakPage = () => {
         <HvaErDette
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
+          importertFraArena={deltaker.importertFraArena}
           className="mt-8"
         />
 

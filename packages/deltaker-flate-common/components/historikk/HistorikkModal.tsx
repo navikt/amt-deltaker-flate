@@ -1,14 +1,15 @@
 import { Alert, Modal } from '@navikt/ds-react'
+import { Tiltakstype } from '../../model/deltaker'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
 } from '../../model/deltakerHistorikk'
 import { HistorikkType } from '../../model/forslag'
+import { HistorikkArrangorEndring } from './HistorikkArrangorEndring'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
+import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
 import { HistorikkVedtak } from './HistorikkVedtak'
-import { HistorikkArrangorEndring } from './HistorikkArrangorEndring'
-import { Tiltakstype } from '../../model/deltaker'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
@@ -32,6 +33,13 @@ const getHistorikkItem = (
       return <HistorikkForslag forslag={historikk} />
     case HistorikkType.EndringFraArrangor:
       return <HistorikkArrangorEndring deltakerEndringFraArrangor={historikk} />
+    case HistorikkType.ImportertFraArena:
+      return (
+        <HistorikkImportertFraArena
+          deltakelseVedImport={historikk}
+          tiltakstype={tiltakstype}
+        />
+      )
   }
 }
 
