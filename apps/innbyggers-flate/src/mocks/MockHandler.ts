@@ -136,7 +136,8 @@ export const createDeltaker = (
       sistEndretAvEnhet: 'NAV Fredrikstad'
     },
     adresseDelesMedArrangor: true,
-    forslag: []
+    forslag: [],
+    importertFraArena: null
   }
 }
 

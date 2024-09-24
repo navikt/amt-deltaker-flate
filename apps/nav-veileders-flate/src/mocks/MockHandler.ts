@@ -181,7 +181,8 @@ export class MockHandler {
       softMaxVarighet: dayjs
         .duration(softMaxVarighetMnd ?? 6, 'month')
         .asMilliseconds(),
-      forslag: []
+      forslag: [],
+      importertFraArena: null
     }
   }
 

@@ -2,7 +2,8 @@ import { z } from 'zod'
 import {
   deltakelsesinnholdSchema,
   deltakerStatusAarsakSchema,
-  innholdSchema
+  innholdSchema,
+  pameldingStatusSchema
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
@@ -139,11 +140,22 @@ export const endringFraArrangorSchema = z.object({
   endring: arrangorEndringSchema
 })
 
+export const importertFraArenaSchema = z.object({
+  type: z.literal(HistorikkType.ImportertFraArena),
+  importertDato: dateSchema,
+  startdato: nullableDateSchema,
+  sluttdato: nullableDateSchema,
+  deltakelsesprosent: z.number().nullable(),
+  dagerPerUke: z.number().nullable(),
+  status: pameldingStatusSchema
+})
+
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   vedtakSchema,
   deltakerEndringSchema,
   forslagSchema,
-  endringFraArrangorSchema
+  endringFraArrangorSchema,
+  importertFraArenaSchema
 ])
 
 export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
@@ -155,6 +167,7 @@ export type DeltakerEndringFraArrangor = z.infer<
   typeof endringFraArrangorSchema
 >
 export type Vedtak = z.infer<typeof vedtakSchema>
+export type importertFraArena = z.infer<typeof importertFraArenaSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
 export type DeltakerHistorikkListe = z.infer<
   typeof deltakerHistorikkListeSchema

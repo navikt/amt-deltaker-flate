@@ -1,18 +1,32 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
-import { Tiltakstype, Vedtaksinformasjon } from '../model/deltaker'
-import { formatDateStrWithMonthName } from '../utils/utils'
+import {
+  importertDeltakerFraArena,
+  Tiltakstype,
+  Vedtaksinformasjon
+} from '../model/deltaker'
+import { formatDate, formatDateStrWithMonthName } from '../utils/utils'
 
 interface Props {
   tiltakstype: Tiltakstype
   vedtaksinformasjon: Vedtaksinformasjon | null
+  importertFraArena: importertDeltakerFraArena | null
   className: string
 }
 
 export const HvaErDette = ({
   tiltakstype,
   vedtaksinformasjon,
+  importertFraArena,
   className
 }: Props) => {
+  const vedtakTekst = vedtaksinformasjon
+    ? ` Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`
+    : null
+  const importertTekst =
+    !vedtakTekst && importertFraArena
+      ? ` Søkt inn: ${formatDate(importertFraArena.innsoktDato)}`
+      : null
+
   return (
     <div className={className}>
       <Heading level="2" size="medium">
@@ -21,8 +35,7 @@ export const HvaErDette = ({
       <BodyLong size="small" className="mt-2">
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
 				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakstype]}.`}
-        {vedtaksinformasjon &&
-          ` Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`}
+        {vedtakTekst || importertTekst || ''}
       </BodyLong>
     </div>
   )

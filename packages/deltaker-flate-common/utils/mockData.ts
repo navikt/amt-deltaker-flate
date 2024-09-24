@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { v4 as uuidv4 } from 'uuid'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { DeltakerStatusAarsakType } from '../model/deltaker'
+import { DeltakerStatusAarsakType, DeltakerStatusType } from '../model/deltaker'
 import {
   ArrangorEndringsType,
   DeltakerHistorikkListe,
@@ -308,6 +308,22 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       opprettetAv: 'Navn Navnesen',
       opprettetAvEnhet: 'NAV Fredrikstad',
       opprettet: dayjs().subtract(3, 'day').toDate()
+    },
+    {
+      type: HistorikkType.ImportertFraArena,
+      importertDato: dayjs().subtract(10, 'days').toDate(),
+      dagerPerUke: null,
+      deltakelsesprosent: 100,
+      startdato: dayjs().subtract(3, 'day').toDate(),
+      sluttdato: dayjs().add(3, 'day').toDate(),
+      status: {
+        id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
+        type: DeltakerStatusType.DELTAR,
+        aarsak: null,
+        gyldigFra: dayjs().subtract(17, 'day').toDate(),
+        gyldigTil: null,
+        opprettet: dayjs().subtract(17, 'days').toDate()
+      }
     }
   ]
 }

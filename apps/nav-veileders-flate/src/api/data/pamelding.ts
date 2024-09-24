@@ -2,6 +2,7 @@ import {
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   forslagSchema,
+  importertDeltakerFraArenaSchema,
   pameldingStatusSchema,
   Tiltakstype,
   vedtaksinformasjonSchema
@@ -68,7 +69,8 @@ export const pameldingSchema = z.object({
   digitalBruker: z.boolean(),
   maxVarighet: z.number().nullable(),
   softMaxVarighet: z.number().nullable(),
-  forslag: z.array(forslagSchema)
+  forslag: z.array(forslagSchema),
+  importertFraArena: importertDeltakerFraArenaSchema.nullable()
 })
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
