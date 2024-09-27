@@ -39,13 +39,18 @@ export const App = () => {
       {isPrEvn && <PrBanner setDeltakerID={setDeltakerIDprSetting} />}
 
       {state === DeferredFetchState.LOADING && (
-        <main className="flex justify-center items-center h-screen">
+        <main
+          id="maincontent"
+          role="main"
+          tabIndex={-1}
+          className="flex justify-center items-center h-screen"
+        >
           <Loader size="3xlarge" title="Venter..." />
         </main>
       )}
 
       {(error || (state === DeferredFetchState.RESOLVED && !deltaker)) && (
-        <main>
+        <main id="maincontent" role="main" tabIndex={-1}>
           <Alert variant="error" className="mt-4">
             <Heading spacing size="small" level="3">
               Vi beklager, men noe gikk galt
@@ -58,7 +63,7 @@ export const App = () => {
         <DeltakerContextProvider initialDeltaker={deltaker}>
           {useMock && <DemoBanner />}
           <TilAktivitetsplanLenke />
-          <main>
+          <main id="maincontent" role="main" tabIndex={-1}>
             <DeltakerGuard />
           </main>
         </DeltakerContextProvider>
