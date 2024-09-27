@@ -85,7 +85,7 @@ const getEndringsDetaljer = (endring: Endring) => {
       return (
         <DeltakelseInnholdPanel
           deltakelsesinnhold={{
-            ledetekst: endring.ledetekst || '',
+            ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
           }}
           className="-mt-3 -mb-2"

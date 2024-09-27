@@ -100,9 +100,11 @@ export const EndreInnholdModal = ({
         Dette er innholdet
       </Heading>
       <section>
-        <BodyLong size="small">
-          {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
-        </BodyLong>
+        {pamelding.deltakelsesinnhold?.ledetekst && (
+          <BodyLong size="small">
+            {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
+          </BodyLong>
+        )}
       </section>
 
       <section className="mt-4">

@@ -108,9 +108,11 @@ export const PameldingForm = ({
             <Heading size="medium" level="3">
               Dette er innholdet
             </Heading>
-            <BodyLong size="small">
-              {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
-            </BodyLong>
+            {pamelding.deltakelsesinnhold?.ledetekst && (
+              <BodyLong size="small">
+                {pamelding.deltakelsesinnhold.ledetekst}
+              </BodyLong>
+            )}
           </section>
 
           <section className="mb-8 mt-4">
