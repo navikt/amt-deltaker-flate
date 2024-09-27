@@ -34,13 +34,17 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
       tittel={`Påmelding ${formatDateWithMonthName(fattet)}`}
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
-      <BodyLong size="small" weight="semibold">
-        Dette er innholdet
-      </BodyLong>
-      <DeltakelseInnholdPanel
-        deltakelsesinnhold={deltakelsesinnhold}
-        className="-mt-3 -mb-1"
-      />
+      {deltakelsesinnhold && (
+        <>
+          <BodyLong size="small" weight="semibold">
+            Dette er innholdet
+          </BodyLong>
+          <DeltakelseInnholdPanel
+            deltakelsesinnhold={deltakelsesinnhold}
+            className="-mt-3 -mb-1"
+          />
+        </>
+      )}
 
       {bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 && (
         <>

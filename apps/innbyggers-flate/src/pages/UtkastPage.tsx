@@ -82,14 +82,16 @@ export const UtkastPage = () => {
         </BodyLong>
       </GuidePanel>
 
-      <Heading level="3" size="medium" className="mt-6">
-        Dette er innholdet
-      </Heading>
-      {deltaker.deltakelsesinnhold?.innhold && (
-        <DeltakelseInnholdPanel
-          deltakelsesinnhold={deltaker.deltakelsesinnhold}
-          className="mt-2"
-        />
+      {deltaker.deltakelsesinnhold && (
+        <>
+          <Heading level="3" size="medium" className="mt-6">
+            Dette er innholdet
+          </Heading>
+          <DeltakelseInnholdPanel
+            deltakelsesinnhold={deltaker.deltakelsesinnhold}
+            className="mt-2"
+          />
+        </>
       )}
 
       {deltaker.bakgrunnsinformasjon && (

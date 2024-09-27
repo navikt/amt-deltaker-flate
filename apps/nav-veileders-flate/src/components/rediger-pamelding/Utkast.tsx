@@ -30,27 +30,35 @@ export const Utkast = ({
 
   return (
     <VStack>
-      <Heading level="3" size="small">
-        Dette er innholdet
-      </Heading>
-      <BodyLong className="mt-2" size="small">
-        {innhold?.ledetekst ?? ''}
-      </BodyLong>
-      {innhold?.innhold && (
-        <List
-          as="ul"
-          size="small"
-          className="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
-        >
-          {innhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => (
-              <List.Item key={i.innholdskode} className="whitespace-pre-wrap">
-                {`${i.tekst}${i.innholdskode === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
-              </List.Item>
-            ))}
-        </List>
+      {innhold && (
+        <>
+          <Heading level="3" size="small">
+            Dette er innholdet
+          </Heading>
+          <BodyLong className="mt-2" size="small">
+            {innhold.ledetekst}
+          </BodyLong>
+          {innhold.innhold.length > 0 && (
+            <List
+              as="ul"
+              size="small"
+              className="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
+            >
+              {innhold.innhold
+                .filter((i) => i.valgt)
+                .map((i) => (
+                  <List.Item
+                    key={i.innholdskode}
+                    className="whitespace-pre-wrap"
+                  >
+                    {`${i.tekst}${i.innholdskode === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
+                  </List.Item>
+                ))}
+            </List>
+          )}
+        </>
       )}
+
       <div className="mt-8">
         {bakgrunnsinformasjon && (
           <>
