@@ -1,4 +1,5 @@
 import {
+  deltakelsesinnholdSchema,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   forslagSchema,
@@ -19,18 +20,6 @@ export const deltakerlisteStatusSchema = z.nativeEnum(DeltakerlisteStatus)
 export const innholdselementSchema = z.object({
   tekst: z.string(),
   innholdskode: z.string()
-})
-
-export const innholdSchema = z.object({
-  tekst: z.string(),
-  innholdskode: z.string(),
-  valgt: z.boolean(),
-  beskrivelse: z.string().nullable()
-})
-
-export const deltakelsesinnholdSchema = z.object({
-  ledetekst: z.string(),
-  innhold: z.array(innholdSchema)
 })
 
 export const deltakerlisteSchema = z.object({
@@ -74,7 +63,6 @@ export const pameldingSchema = z.object({
 })
 
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
-export type Innhold = z.infer<typeof innholdSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type PameldingResponse = z.infer<typeof pameldingSchema>
 export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>

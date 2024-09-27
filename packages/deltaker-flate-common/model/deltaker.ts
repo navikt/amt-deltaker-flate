@@ -78,7 +78,7 @@ export const innholdSchema = z.object({
 })
 
 export const deltakelsesinnholdSchema = z.object({
-  ledetekst: z.string(),
+  ledetekst: z.string().nullable(),
   innhold: z.array(innholdSchema)
 })
 

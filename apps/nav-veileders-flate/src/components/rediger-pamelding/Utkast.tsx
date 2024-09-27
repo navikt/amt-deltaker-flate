@@ -35,9 +35,12 @@ export const Utkast = ({
           <Heading level="3" size="small">
             Dette er innholdet
           </Heading>
-          <BodyLong className="mt-2" size="small">
-            {innhold.ledetekst}
-          </BodyLong>
+          {innhold.ledetekst && (
+            <BodyLong className="mt-2" size="small">
+              {innhold.ledetekst}
+            </BodyLong>
+          )}
+
           {innhold.innhold.length > 0 && (
             <List
               as="ul"

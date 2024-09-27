@@ -13,7 +13,10 @@ export const DeltakelseInnholdPanel = ({
 }: Props) => {
   return (
     <>
-      <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
+      {deltakelsesinnhold?.ledetekst && (
+        <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
+      )}
+
       {deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small" className={className ?? ''}>
           {deltakelsesinnhold.innhold
