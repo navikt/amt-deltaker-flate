@@ -116,15 +116,18 @@ export const TiltakPage = () => {
 
       <AktiveForslag forslag={deltaker.forslag} />
 
-      <Heading level="2" size="medium" className="mt-8">
-        Dette er innholdet
-      </Heading>
       {deltaker.deltakelsesinnhold && (
-        <DeltakelseInnholdPanel
-          deltakelsesinnhold={deltaker.deltakelsesinnhold}
-          className="mt-2"
-        />
+        <>
+          <Heading level="2" size="medium" className="mt-8">
+            Dette er innholdet
+          </Heading>
+          <DeltakelseInnholdPanel
+            deltakelsesinnhold={deltaker.deltakelsesinnhold}
+            className="mt-2"
+          />
+        </>
       )}
+
       <div>
         {bakgrunnsinformasjon !== EMDASH && (
           <>

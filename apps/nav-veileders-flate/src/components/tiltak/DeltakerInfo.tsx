@@ -103,15 +103,19 @@ export const DeltakerInfo = ({ className }: Props) => {
         />
       )}
       <AktiveForslag forslag={pamelding.forslag} />
-      <Heading level="2" size="medium" className="mt-8">
-        Dette er innholdet
-      </Heading>
+
       {pamelding.deltakelsesinnhold && (
-        <DeltakelseInnholdPanel
-          deltakelsesinnhold={pamelding.deltakelsesinnhold}
-          className="mt-2"
-        />
+        <>
+          <Heading level="2" size="medium" className="mt-8">
+            Dette er innholdet
+          </Heading>
+          <DeltakelseInnholdPanel
+            deltakelsesinnhold={pamelding.deltakelsesinnhold}
+            className="mt-2"
+          />
+        </>
       )}
+
       <div>
         {bakgrunnsinformasjon !== EMDASH && (
           <>
