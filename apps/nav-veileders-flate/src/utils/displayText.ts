@@ -23,6 +23,8 @@ export const getDeltakerStatusAarsakTypeText = (
       return 'Utdanning'
     case DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT:
       return 'Samarbeidet med arrangøren er avbrutt'
+    case DeltakerStatusAarsakType.FIKK_IKKE_PLASS:
+      return 'Fikk ikke plass'
   }
 }
 
