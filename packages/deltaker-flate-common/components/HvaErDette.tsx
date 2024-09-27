@@ -24,7 +24,7 @@ export const HvaErDette = ({
     : null
   const importertTekst =
     !vedtakTekst && importertFraArena
-      ? ` Søkt inn: ${formatDate(importertFraArena.innsoktDato)}`
+      ? ` Søkt inn: ${formatDate(importertFraArena.innsoktDato)}.`
       : null
 
   return (
