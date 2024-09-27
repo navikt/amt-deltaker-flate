@@ -18,15 +18,35 @@ updates:
         patterns:
           - 'playwright'
           - '@playwright/test'
-      minor-and-patch:
+      nav-designsystem:
         patterns:
-          - '*'
+          - '@navikt/aksel-*'
+          - '@navikt/ds-*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
+      patches:
         update-types:
-          - 'minor'
           - 'patch'
         exclude-patterns:
           - 'playwright'
           - '@playwright/test'
+          - 'react'
+          - 'react-dom'
+          - '@navikt/aksel-*'
+          - '@navikt/ds-*'
+
+      minorversions:
+        update-types:
+          - 'minor'
+        exclude-patterns:
+          - 'playwright'
+          - '@playwright/test'
+          - 'react'
+          - 'react-dom'
+          - '@navikt/aksel-*'
+          - '@navikt/ds-*'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
