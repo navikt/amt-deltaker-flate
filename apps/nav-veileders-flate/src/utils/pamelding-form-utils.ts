@@ -13,10 +13,11 @@ export const generateInnholdFromResponse = (
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null
 ): InnholdDto[] => {
-  if (pamelding?.deltakelsesinnhold === null) {
+  if (pamelding === null) {
     return []
   }
-  return pamelding?.deltakerliste.tilgjengeligInnhold.flatMap((i) => {
+
+  return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
     const valgtInnhold = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
     )

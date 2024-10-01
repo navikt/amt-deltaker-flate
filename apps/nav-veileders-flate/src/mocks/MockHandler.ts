@@ -10,6 +10,7 @@ import {
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,
+  Innhold,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -125,6 +126,9 @@ export class MockHandler {
     const _startdato = startdato ? dayjs(startdato).toString() : null
     const _sluttdato = sluttdato ? dayjs(sluttdato).toString() : null
 
+    const ledetekst =
+      'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+
     return {
       deltakerId: uuidv4(),
       fornavn: 'Navn',
@@ -139,10 +143,13 @@ export class MockHandler {
         startdato: '2022-10-28',
         sluttdato: '2030-02-20',
         status: DeltakerlisteStatus.GJENNOMFORES,
-        tilgjengeligInnhold: this.innhold.map((i) => ({
-          tekst: i.tekst,
-          innholdskode: i.innholdskode
-        }))
+        tilgjengeligInnhold: {
+          innhold: this.innhold.map((i) => ({
+            tekst: i.tekst,
+            innholdskode: i.innholdskode
+          })),
+          ledetekst: ledetekst
+        }
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -159,8 +166,7 @@ export class MockHandler {
       bakgrunnsinformasjon:
         'Ønsker å bli kontaktet via sms\nKan ikke på onsdager',
       deltakelsesinnhold: {
-        ledetekst:
-          'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
+        ledetekst: ledetekst,
         innhold: this.innhold
       },
       vedtaksinformasjon: {
@@ -506,18 +512,35 @@ export class MockHandler {
   endreDeltakelseInnhold(request: EndreInnholdRequest) {
     const oppdatertPamelding = this.pamelding
 
-    if (oppdatertPamelding && oppdatertPamelding.deltakelsesinnhold) {
-      const nyListe = oppdatertPamelding.deltakelsesinnhold.innhold.map((i) => {
-        const nyInnhold = request.innhold.find(
-          (vi) => vi.innholdskode === i.innholdskode
+    if (oppdatertPamelding) {
+      const nyListe: Innhold[] =
+        oppdatertPamelding.deltakerliste.tilgjengeligInnhold.innhold.map(
+          (i) => {
+            const nyInnhold = request.innhold.find(
+              (vi) => vi.innholdskode === i.innholdskode
+            )
+            if (nyInnhold) {
+              return {
+                innholdskode: i.innholdskode,
+                tekst: i.tekst,
+                valgt: true,
+                beskrivelse: nyInnhold.beskrivelse
+              }
+            } else {
+              return {
+                innholdskode: i.innholdskode,
+                tekst: i.tekst,
+                valgt: false,
+                beskrivelse: null
+              }
+            }
+          }
         )
-        if (nyInnhold) {
-          return { ...i, valgt: true, beskrivelse: nyInnhold.beskrivelse }
-        } else {
-          return { ...i, valgt: false }
-        }
-      })
-      oppdatertPamelding.deltakelsesinnhold.innhold = nyListe
+      oppdatertPamelding.deltakelsesinnhold = {
+        ledetekst:
+          oppdatertPamelding.deltakerliste.tilgjengeligInnhold.ledetekst,
+        innhold: nyListe
+      }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)
     }
