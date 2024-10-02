@@ -1,7 +1,7 @@
-import { BodyLong, Heading, List, VStack } from '@navikt/ds-react'
+import { BodyLong, Heading, VStack } from '@navikt/ds-react'
 import {
+  DeltakelseInnhold,
   EMDASH,
-  INNHOLD_TYPE_ANNET,
   Tiltakstype,
   deltakerprosentText,
   visDeltakelsesmengde
@@ -30,37 +30,15 @@ export const Utkast = ({
 
   return (
     <VStack>
-      {innhold && (
-        <>
-          <Heading level="3" size="small">
+      <DeltakelseInnhold
+        deltakelsesinnhold={innhold}
+        heading={
+          <Heading level="3" size="small" className="mb-2">
             Dette er innholdet
           </Heading>
-          {innhold.ledetekst && (
-            <BodyLong className="mt-2" size="small">
-              {innhold.ledetekst}
-            </BodyLong>
-          )}
-
-          {innhold.innhold.length > 0 && (
-            <List
-              as="ul"
-              size="small"
-              className="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
-            >
-              {innhold.innhold
-                .filter((i) => i.valgt)
-                .map((i) => (
-                  <List.Item
-                    key={i.innholdskode}
-                    className="whitespace-pre-wrap"
-                  >
-                    {`${i.tekst}${i.innholdskode === INNHOLD_TYPE_ANNET ? ': ' + i.beskrivelse : ''}`}
-                  </List.Item>
-                ))}
-            </List>
-          )}
-        </>
-      )}
+        }
+        listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
+      />
 
       <div className="mt-8">
         {bakgrunnsinformasjon && (

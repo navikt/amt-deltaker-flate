@@ -1,5 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
+import { Tiltakstype } from '../../model/deltaker.ts'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { deltakerprosentText } from '../../utils/displayText'
 import {
@@ -7,9 +8,8 @@ import {
   formatDateWithMonthName,
   visDeltakelsesmengde
 } from '../../utils/utils'
-import { DeltakelseInnholdPanel } from '../DeltakelseInnholdPanel.tsx'
+import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { HistorikkElement } from './HistorikkElement'
-import { Tiltakstype } from '../../model/deltaker.ts'
 
 interface Props {
   endringsVedtak: Vedtak
@@ -34,28 +34,24 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
       tittel={`Påmelding ${formatDateWithMonthName(fattet)}`}
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
-      {deltakelsesinnhold && (
-        <>
+      <DeltakelseInnhold
+        deltakelsesinnhold={deltakelsesinnhold}
+        heading={
           <BodyLong size="small" weight="semibold">
             Dette er innholdet
           </BodyLong>
-          <DeltakelseInnholdPanel
-            deltakelsesinnhold={deltakelsesinnhold}
-            className="-mt-3 -mb-1"
-          />
-        </>
-      )}
+        }
+        listClassName="-mt-3 -mb-1"
+      />
 
       {bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 && (
         <>
-          <BodyLong
-            size="small"
-            weight="semibold"
-            className="mt-2 whitespace-pre-wrap"
-          >
+          <BodyLong size="small" weight="semibold" className="mt-2">
             Bakgrunnsinfo
           </BodyLong>
-          <BodyLong size="small">{bakgrunnsinformasjon}</BodyLong>
+          <BodyLong size="small" className=" whitespace-pre-wrap">
+            {bakgrunnsinformasjon}
+          </BodyLong>
         </>
       )}
 

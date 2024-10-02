@@ -1,6 +1,6 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
-  DeltakelseInnholdPanel,
+  DeltakelseInnhold,
   EMDASH,
   UtkastHeader,
   deltakerprosentText,
@@ -26,17 +26,15 @@ export const AvbruttUtkastPage = () => {
       </Heading>
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
 
-      {deltaker.deltakelsesinnhold && (
-        <>
-          <Heading level="3" size="medium" className="mt-2">
+      <DeltakelseInnhold
+        deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        heading={
+          <Heading level="3" size="medium" className="mt-2 mb-2">
             Dette er innholdet
           </Heading>
-          <DeltakelseInnholdPanel
-            deltakelsesinnhold={deltaker.deltakelsesinnhold}
-            className="mt-2"
-          />
-        </>
-      )}
+        }
+        listClassName="mt-2"
+      />
 
       {deltaker.bakgrunnsinformasjon && (
         <>
