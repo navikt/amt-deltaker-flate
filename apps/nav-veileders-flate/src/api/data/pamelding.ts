@@ -22,6 +22,11 @@ export const innholdselementSchema = z.object({
   innholdskode: z.string()
 })
 
+const tilgjengeligInnholdSchema = z.object({
+  ledetekst: z.string().nullable(),
+  innhold: z.array(innholdselementSchema)
+})
+
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   deltakerlisteNavn: z.string(),
@@ -31,7 +36,7 @@ export const deltakerlisteSchema = z.object({
   startdato: z.string(),
   sluttdato: z.string().nullable(),
   status: deltakerlisteStatusSchema,
-  tilgjengeligInnhold: z.array(innholdselementSchema)
+  tilgjengeligInnhold: tilgjengeligInnholdSchema
 })
 
 export const deltakerStatusAarsakSchema = z.object({

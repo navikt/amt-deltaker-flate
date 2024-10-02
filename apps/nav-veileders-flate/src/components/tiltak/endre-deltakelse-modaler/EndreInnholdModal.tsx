@@ -100,50 +100,48 @@ export const EndreInnholdModal = ({
         Dette er innholdet
       </Heading>
       <section>
-        {pamelding.deltakelsesinnhold?.ledetekst && (
+        {pamelding.deltakerliste.tilgjengeligInnhold?.ledetekst && (
           <BodyLong size="small">
-            {pamelding.deltakelsesinnhold?.ledetekst ?? ''}
+            {pamelding.deltakerliste.tilgjengeligInnhold.ledetekst}
           </BodyLong>
         )}
       </section>
 
       <section className="mt-4">
-        {innhold.length > 0 && (
-          <CheckboxGroup
-            defaultValue={valgteInnhold}
-            legend="Hva mer skal tiltaket inneholde?"
-            error={innholdError}
-            size="small"
-            aria-required
-            id="endreValgteInnhold"
-            onChange={(value: string[]) => {
-              setValgteInnhold(value)
-              setInnholdError(null)
-            }}
-          >
-            {pamelding.deltakerliste.tilgjengeligInnhold.map((e) => (
-              <div key={e.innholdskode}>
-                <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
-                {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
-                  <Textarea
-                    onChange={(e) => {
-                      setAnnetBeskrivelse(e.target.value)
-                      setAnnetError(null)
-                    }}
-                    label={null}
-                    value={annetBeskrivelse ?? ''}
-                    aria-label={'Beskrivelse av innhold "Annet"'}
-                    aria-required
-                    maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                    size="small"
-                    id="innholdAnnetBeskrivelse"
-                    error={annetError}
-                  />
-                )}
-              </div>
-            ))}
-          </CheckboxGroup>
-        )}
+        <CheckboxGroup
+          defaultValue={valgteInnhold}
+          legend="Hva mer skal tiltaket inneholde?"
+          error={innholdError}
+          size="small"
+          aria-required
+          id="endreValgteInnhold"
+          onChange={(value: string[]) => {
+            setValgteInnhold(value)
+            setInnholdError(null)
+          }}
+        >
+          {pamelding.deltakerliste.tilgjengeligInnhold.innhold.map((e) => (
+            <div key={e.innholdskode}>
+              <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
+              {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
+                <Textarea
+                  onChange={(e) => {
+                    setAnnetBeskrivelse(e.target.value)
+                    setAnnetError(null)
+                  }}
+                  label={null}
+                  value={annetBeskrivelse ?? ''}
+                  aria-label={'Beskrivelse av innhold "Annet"'}
+                  aria-required
+                  maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                  size="small"
+                  id="innholdAnnetBeskrivelse"
+                  error={annetError}
+                />
+              )}
+            </div>
+          ))}
+        </CheckboxGroup>
       </section>
     </Endringsmodal>
   )

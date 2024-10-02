@@ -100,7 +100,9 @@ export const generateValgtInnholdKoder = (
   pamelding: PameldingResponse
 ): string[] => {
   const tilgjengeligInnnholdskoder =
-    pamelding.deltakerliste.tilgjengeligInnhold.map((i) => i.innholdskode)
+    pamelding.deltakerliste.tilgjengeligInnhold.innhold.map(
+      (i) => i.innholdskode
+    )
 
   return (
     pamelding.deltakelsesinnhold?.innhold
@@ -133,7 +135,7 @@ export const generateFormDefaultValues = (
   }
 
   return {
-    tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold,
+    tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold.innhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
