@@ -116,7 +116,7 @@ export const PameldingForm = ({
           </section>
 
           <section className="mb-8 mt-4">
-            {innhold.length > 0 && (
+            {innhold.innhold.length > 0 && (
               <CheckboxGroup
                 defaultValue={defaultValues.valgteInnhold}
                 legend="Hva mer skal tiltaket inneholde?"
@@ -125,7 +125,7 @@ export const PameldingForm = ({
                 disabled={isDisabled}
                 id="valgteInnhold"
               >
-                {innhold.map((e) => (
+                {innhold.innhold.map((e) => (
                   <div key={e.innholdskode}>
                     <Checkbox
                       key={e.innholdskode}
