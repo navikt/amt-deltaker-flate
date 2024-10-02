@@ -47,6 +47,6 @@ export const DeltakelseInnhold = ({
   )
 }
 
-export const skalViseInnhold = (deltakelsesinnhold: Deltakelsesinnhold) => {
+const skalViseInnhold = (deltakelsesinnhold: Deltakelsesinnhold) => {
   return deltakelsesinnhold.innhold.length > 0 || deltakelsesinnhold.ledetekst
 }
