@@ -10,7 +10,7 @@ import {
   LinkPanel
 } from '@navikt/ds-react'
 import {
-  DeltakelseInnholdPanel,
+  DeltakelseInnhold,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -116,17 +116,15 @@ export const TiltakPage = () => {
 
       <AktiveForslag forslag={deltaker.forslag} />
 
-      {deltaker.deltakelsesinnhold && (
-        <>
-          <Heading level="2" size="medium" className="mt-8">
+      <DeltakelseInnhold
+        deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        heading={
+          <Heading level="2" size="medium" className="mt-8 mb-2">
             Dette er innholdet
           </Heading>
-          <DeltakelseInnholdPanel
-            deltakelsesinnhold={deltaker.deltakelsesinnhold}
-            className="mt-2"
-          />
-        </>
-      )}
+        }
+        listClassName="mt-2"
+      />
 
       <div>
         {bakgrunnsinformasjon !== EMDASH && (

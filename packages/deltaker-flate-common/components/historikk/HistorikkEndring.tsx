@@ -5,15 +5,15 @@ import {
   EndringType
 } from '../../model/deltakerHistorikk'
 import { EndreDeltakelseType } from '../../model/endre-deltaker'
+import { EMDASH } from '../../utils/constants'
 import {
   getDeltakerStatusAarsakText,
   getEndringsTittel
 } from '../../utils/displayText'
+import { formatDate } from '../../utils/utils'
+import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
-import { formatDate } from '../../utils/utils'
-import { EMDASH } from '../../utils/constants'
-import { DeltakelseInnholdPanel } from '../DeltakelseInnholdPanel.tsx'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -83,12 +83,13 @@ const getEndringsDetaljer = (endring: Endring) => {
     }
     case EndringType.EndreInnhold: {
       return (
-        <DeltakelseInnholdPanel
+        <DeltakelseInnhold
           deltakelsesinnhold={{
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
           }}
-          className="-mt-3 -mb-2"
+          listClassName="-mt-3 -mb-2"
+          heading={null}
         />
       )
     }
