@@ -37,7 +37,7 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.AvsluttDeltakelse:
         return (
           <>
-            {forslag.endring.harDeltatt && (
+            {forslag.endring.harDeltatt !== null && (
               <BodyLong size="small">
                 Har personen deltatt?{' '}
                 {forslag.endring.harDeltatt ? 'Ja' : 'Nei'}
