@@ -48,6 +48,7 @@ export const AvsluttDeltakelseModal = ({
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     getHarDeltatt(forslag)
   )
+  const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -83,6 +84,10 @@ export const AvsluttDeltakelseModal = ({
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
+    }
+    if (skalViseHarDeltatt && harDeltatt === null) {
+      hasError = true
+      setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
     if (!hasError && aarsak.aarsak !== undefined) {
@@ -134,10 +139,13 @@ export const AvsluttDeltakelseModal = ({
           <RadioGroup
             legend="Har personen deltatt?"
             size="small"
+            error={harDeltattError}
             defaultValue={
-              getHarDeltatt(forslag) === true
-                ? HarDeltattValg.JA
-                : HarDeltattValg.NEI
+              getHarDeltatt(forslag) === null
+                ? undefined
+                : getHarDeltatt(forslag)
+                  ? HarDeltattValg.JA
+                  : HarDeltattValg.NEI
             }
             onChange={(value: HarDeltattValg) => {
               if (value === HarDeltattValg.NEI) {
@@ -145,6 +153,7 @@ export const AvsluttDeltakelseModal = ({
               } else {
                 setHarDeltatt(true)
               }
+              setHarDeltattError(undefined)
             }}
           >
             <Radio value={HarDeltattValg.JA}>Ja</Radio>
