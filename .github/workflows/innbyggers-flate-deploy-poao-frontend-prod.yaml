@@ -1,16 +1,16 @@
-name: Deploy NAIS poao-frontend to PROD for nav-veileders-flate
+name: Deploy NAIS poao-frontend to PROD for innbyggers-flate
 on:
   workflow_dispatch:
   push:
     paths:
-      - apps/nav-veileders-flate/nais/nais-prod.yaml
-      - '.github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml'
+      - '.github/workflows/innbyggers-flate-deploy-poao-frontend-prod.yaml'
+      - apps/innbyggers-flate/nais/nais-prod.yaml
     branches:
       - main
 
 jobs:
   deploy-prod:
-    name: Deploy poao-frontend to PROD - nav-veileders-flate
+    name: Deploy poao-frontend to PROD - innbyggers-flate
     runs-on: ubuntu-latest
     permissions:
       id-token: 'write'
@@ -22,5 +22,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: apps/nav-veileders-flate/nais/nais-prod.yaml
+          RESOURCE: apps/innbyggers-flate/nais/nais-prod.yaml
           PRINT_PAYLOAD: true
