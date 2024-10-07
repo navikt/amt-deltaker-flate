@@ -45,7 +45,9 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: AvsluttDeltakelseModalProps) => {
   const defaultSluttdato = getSluttdato(pamelding, forslag)
-  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
+  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
+    getHarDeltatt(forslag)
+  )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -133,9 +135,7 @@ export const AvsluttDeltakelseModal = ({
             legend="Har personen deltatt?"
             size="small"
             defaultValue={
-              forslag &&
-              isAvsluttDeltakelseForslag(forslag.endring) &&
-              forslag.endring.harDeltatt === true
+              getHarDeltatt(forslag) === true
                 ? HarDeltattValg.JA
                 : HarDeltattValg.NEI
             }
@@ -214,11 +214,7 @@ const showHarDeltatt = (
   pamelding: PameldingResponse,
   forslag: Forslag | null
 ) => {
-  if (
-    forslag &&
-    isAvsluttDeltakelseForslag(forslag.endring) &&
-    forslag.endring.harDeltatt !== null
-  ) {
+  if (getHarDeltatt(forslag) !== null) {
     return true
   }
 
@@ -226,4 +222,11 @@ const showHarDeltatt = (
   const femtenDagerSiden = new Date()
   femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
   return statusdato > femtenDagerSiden
+}
+
+function getHarDeltatt(forslag: Forslag | null): boolean | null {
+  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+    return forslag.endring.harDeltatt
+  }
+  return null
 }
