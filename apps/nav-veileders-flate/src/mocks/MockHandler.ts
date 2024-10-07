@@ -250,7 +250,8 @@ export class MockHandler {
           sluttdato: dayjs(sluttdato).toDate(),
           aarsak: {
             type: ForslagEndringAarsakType.Syk
-          }
+          },
+          harDeltatt: true
         }
       })
       const forslagDeltakelsesmengde = aktivtForslag({

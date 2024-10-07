@@ -143,7 +143,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
           sluttdato: dayjs().add(1, 'month').toDate(),
           aarsak: {
             type: ForslagEndringAarsakType.FattJobb
-          }
+          },
+          harDeltatt: true
         },
         status: {
           type: ForslagStatusType.Godkjent,

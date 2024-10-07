@@ -37,13 +37,6 @@ interface AvsluttDeltakelseModalProps {
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-const showHarDeltatt = (pamelding: PameldingResponse) => {
-  const statusdato = pamelding.status.gyldigFra
-  const femtenDagerSiden = new Date()
-  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
-  return statusdato > femtenDagerSiden
-}
-
 export const AvsluttDeltakelseModal = ({
   pamelding,
   forslag,
@@ -62,7 +55,7 @@ export const AvsluttDeltakelseModal = ({
   const begrunnelse = useBegrunnelse(true)
   const sluttdato = useSluttdatoInput({
     deltaker: pamelding,
-    defaultDato: defaultSluttdato,
+    defaultDato: defaultSluttdato ?? undefined,
     startdato: useMemo(
       () => getDateFromString(pamelding.startdato),
       [pamelding.startdato]
@@ -71,7 +64,7 @@ export const AvsluttDeltakelseModal = ({
   const { enhetId } = useAppContext()
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt = showHarDeltatt(pamelding)
+  const skalViseHarDeltatt = showHarDeltatt(pamelding, forslag)
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
@@ -139,6 +132,13 @@ export const AvsluttDeltakelseModal = ({
           <RadioGroup
             legend="Har personen deltatt?"
             size="small"
+            defaultValue={
+              forslag &&
+              isAvsluttDeltakelseForslag(forslag.endring) &&
+              forslag.endring.harDeltatt === true
+                ? HarDeltattValg.JA
+                : HarDeltattValg.NEI
+            }
             onChange={(value: HarDeltattValg) => {
               if (value === HarDeltattValg.NEI) {
                 setHarDeltatt(false)
@@ -159,7 +159,7 @@ export const AvsluttDeltakelseModal = ({
             error={sluttdato.error}
             fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
             toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
-            defaultDate={defaultSluttdato}
+            defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}
           />
@@ -208,4 +208,22 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
     )
   }
+}
+
+const showHarDeltatt = (
+  pamelding: PameldingResponse,
+  forslag: Forslag | null
+) => {
+  if (
+    forslag &&
+    isAvsluttDeltakelseForslag(forslag.endring) &&
+    forslag.endring.harDeltatt !== null
+  ) {
+    return true
+  }
+
+  const statusdato = pamelding.status.gyldigFra
+  const femtenDagerSiden = new Date()
+  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
+  return statusdato > femtenDagerSiden
 }
