@@ -1,4 +1,4 @@
-import { Heading, Textarea } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading, Textarea } from '@navikt/ds-react'
 import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -57,6 +57,18 @@ export const EndreBakgrunnsinfoModal = ({
       forslag={null}
     >
       <>
+        <Alert variant="info" className="mb-6">
+          <Heading size="small" level="2">
+            Bakgrunnsinfo erstatter bestillingen fra Arena
+          </Heading>
+          <BodyLong size="small">
+            Hvis deltakeren er opprinnelig meldt på i Arena, så ser arrangør
+            bestillingsteksten fra Arena i Deltakeroversikten. Når du lagrer en
+            ny bakgrunnsinfo her så vil den erstatte bestillingen, og teksten
+            fra Arena vil ikke lenger vises.
+          </BodyLong>
+        </Alert>
+
         <Heading level="2" size="small" className="mb-4">
           Bakgrunnsinfo
         </Heading>
