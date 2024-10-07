@@ -37,6 +37,9 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.AvsluttDeltakelse:
         return (
           <>
+            <BodyLong size="small">
+              Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+            </BodyLong>
             {forslag.endring.harDeltatt !== null && (
               <BodyLong size="small">
                 Har personen deltatt?{' '}
@@ -48,9 +51,6 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
                 Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
               </BodyLong>
             )}
-            <BodyLong size="small">
-              Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
-            </BodyLong>
           </>
         )
       case ForslagEndringType.ForlengDeltakelse:
