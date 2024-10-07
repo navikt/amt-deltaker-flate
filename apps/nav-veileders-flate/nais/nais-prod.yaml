@@ -37,6 +37,7 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
+        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-deltaker-flate-prod
@@ -56,12 +57,12 @@ spec:
           "auth": {
             "loginProvider": "AZURE_AD"
           },
-          "proxies": [
-            {
-              "fromPath": "/amt-deltaker-bff", "toUrl": "http://amt-deltaker-bff",
-              "toApp": { "name": "amt-deltaker-bff", "namespace": "amt", "cluster": "prod-gcp" }
-            }
-          ]
+          "cors": {
+            "origin": [
+              "https://veilarbpersonflate.intern.nav.no",
+              "https://veilarbpersonflate.ansatt.nav.no"
+            ]
+          }
         }
 
   observability:
