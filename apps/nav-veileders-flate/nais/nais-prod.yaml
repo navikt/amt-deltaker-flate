@@ -61,18 +61,7 @@ spec:
             "origin": [
               "https://veilarbpersonflate.intern.nav.no"
             ]
-          },
-          "proxies": [
-            {
-              "fromPath": "/amt-deltaker-bff",
-              "toUrl": "http://amt-deltaker-bff",
-              "toApp": {
-                "name": "amt-deltaker-bff",
-                "namespace": "amt",
-                "cluster": "prod-gcp"
-              }
-            }
-          ]
+          }
         }
 
   observability:
