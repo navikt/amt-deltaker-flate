@@ -58,6 +58,7 @@ export const getDeltakerStatusAarsakTyperAsList = () => {
     .filter(
       (type) =>
         type !== DeltakerStatusAarsakType.ANNET &&
+        type !== DeltakerStatusAarsakType.FIKK_IKKE_PLASS &&
         type !== DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
     )
     .map((typeString) => {
