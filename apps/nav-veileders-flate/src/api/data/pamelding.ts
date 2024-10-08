@@ -1,7 +1,6 @@
 import {
   deltakelsesinnholdSchema,
   DeltakerlisteStatus,
-  DeltakerStatusAarsakType,
   forslagSchema,
   importertDeltakerFraArenaSchema,
   pameldingStatusSchema,
@@ -11,9 +10,6 @@ import {
 import { z } from 'zod'
 
 export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
-export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
-  DeltakerStatusAarsakType
-)
 
 export const deltakerlisteStatusSchema = z.nativeEnum(DeltakerlisteStatus)
 
@@ -39,11 +35,6 @@ export const deltakerlisteSchema = z.object({
   tilgjengeligInnhold: tilgjengeligInnholdSchema
 })
 
-export const deltakerStatusAarsakSchema = z.object({
-  type: deltakerStatusAarsakTypeSchema,
-  beskrivelse: z.string().nullable()
-})
-
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
   fornavn: z.string(),
@@ -67,7 +58,6 @@ export const pameldingSchema = z.object({
   importertFraArena: importertDeltakerFraArenaSchema.nullable()
 })
 
-export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type PameldingResponse = z.infer<typeof pameldingSchema>
 export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
