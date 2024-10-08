@@ -9,7 +9,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.04_13.21-c31f6e652a0c
   port: 8080
   ingresses:
-    - https://www.nav.no/amt/deltaker
+    - https://amt-deltaker-flate.intern.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
