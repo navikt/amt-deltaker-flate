@@ -57,17 +57,19 @@ export const EndreBakgrunnsinfoModal = ({
       forslag={null}
     >
       <>
-        <Alert variant="info" className="mb-6">
-          <Heading size="small" level="2">
-            Bakgrunnsinfo erstatter bestillingen fra Arena
-          </Heading>
-          <BodyLong size="small">
-            Hvis deltakeren er opprinnelig meldt på i Arena, så ser arrangør
-            bestillingsteksten fra Arena i Deltakeroversikten. Når du lagrer en
-            ny bakgrunnsinfo her så vil den erstatte bestillingen, og teksten
-            fra Arena vil ikke lenger vises.
-          </BodyLong>
-        </Alert>
+        {pamelding.importertFraArena && !pamelding.bakgrunnsinformasjon && (
+          <Alert variant="info" className="mb-6">
+            <Heading size="small" level="2">
+              Bakgrunnsinfo erstatter bestillingen fra Arena
+            </Heading>
+            <BodyLong size="small">
+              Fordi deltakeren er meldt på i Arena så ser arrangør
+              bestillingsteksten fra Arena i Deltakeroversikten. Når du lagrer
+              en ny bakgrunnsinfo her så vil den erstatte bestillingen, og
+              teksten fra Arena vil ikke lenger vises til arrangør.
+            </BodyLong>
+          </Alert>
+        )}
 
         <Heading level="2" size="small" className="mb-4">
           Bakgrunnsinfo
