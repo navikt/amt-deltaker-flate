@@ -37,13 +37,6 @@ interface AvsluttDeltakelseModalProps {
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-const showHarDeltatt = (pamelding: PameldingResponse) => {
-  const statusdato = pamelding.status.gyldigFra
-  const femtenDagerSiden = new Date()
-  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
-  return statusdato > femtenDagerSiden
-}
-
 export const AvsluttDeltakelseModal = ({
   pamelding,
   forslag,
@@ -52,7 +45,10 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: AvsluttDeltakelseModalProps) => {
   const defaultSluttdato = getSluttdato(pamelding, forslag)
-  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(null)
+  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
+    getHarDeltatt(forslag)
+  )
+  const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
@@ -62,7 +58,7 @@ export const AvsluttDeltakelseModal = ({
   const begrunnelse = useBegrunnelse(true)
   const sluttdato = useSluttdatoInput({
     deltaker: pamelding,
-    defaultDato: defaultSluttdato,
+    defaultDato: defaultSluttdato ?? undefined,
     startdato: useMemo(
       () => getDateFromString(pamelding.startdato),
       [pamelding.startdato]
@@ -71,7 +67,7 @@ export const AvsluttDeltakelseModal = ({
   const { enhetId } = useAppContext()
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt = showHarDeltatt(pamelding)
+  const skalViseHarDeltatt = showHarDeltatt(pamelding, forslag)
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
@@ -88,6 +84,10 @@ export const AvsluttDeltakelseModal = ({
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
+    }
+    if (skalViseHarDeltatt && harDeltatt === null) {
+      hasError = true
+      setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
     if (!hasError && aarsak.aarsak !== undefined) {
@@ -139,12 +139,21 @@ export const AvsluttDeltakelseModal = ({
           <RadioGroup
             legend="Har personen deltatt?"
             size="small"
+            error={harDeltattError}
+            defaultValue={
+              getHarDeltatt(forslag) === null
+                ? undefined
+                : getHarDeltatt(forslag)
+                  ? HarDeltattValg.JA
+                  : HarDeltattValg.NEI
+            }
             onChange={(value: HarDeltattValg) => {
               if (value === HarDeltattValg.NEI) {
                 setHarDeltatt(false)
               } else {
                 setHarDeltatt(true)
               }
+              setHarDeltattError(undefined)
             }}
           >
             <Radio value={HarDeltattValg.JA}>Ja</Radio>
@@ -159,7 +168,7 @@ export const AvsluttDeltakelseModal = ({
             error={sluttdato.error}
             fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
             toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
-            defaultDate={defaultSluttdato}
+            defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}
           />
@@ -208,4 +217,25 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
     )
   }
+}
+
+const showHarDeltatt = (
+  pamelding: PameldingResponse,
+  forslag: Forslag | null
+) => {
+  if (getHarDeltatt(forslag) !== null) {
+    return true
+  }
+
+  const statusdato = pamelding.status.gyldigFra
+  const femtenDagerSiden = new Date()
+  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
+  return statusdato > femtenDagerSiden
+}
+
+function getHarDeltatt(forslag: Forslag | null): boolean | null {
+  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+    return forslag.endring.harDeltatt
+  }
+  return null
 }
