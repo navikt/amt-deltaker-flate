@@ -48,6 +48,10 @@ export const createPamelding = async (
   })
     .then((response) => {
       if (response.status !== 200) {
+        console.error(
+          `Deltakelse kunne ikke hentes / opprettes for deltakerlisteId: ${deltakerlisteId}`,
+          response.status
+        )
         throw new Error(
           'Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere'
         )
@@ -77,11 +81,17 @@ export const getPamelding = async (
     body: JSON.stringify(request)
   })
     .then((response) => {
+      console.error('KUN TEST')
       if (response.status === 400) {
+        console.error(
+          `Deltakelse ${deltakerId} kunne ikke hentes.`,
+          response.status
+        )
         throw new Error(ERROR_PERSONIDENT)
       }
       if (response.status !== 200) {
-        throw new Error('Deltakelse kunne ikke hentes. Prøv igjen senere')
+        const message = 'Deltakelse kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -92,7 +102,13 @@ export const deletePamelding = (deltakerId: string): Promise<number> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'DELETE',
     credentials: 'include'
-  }).then((response) => response.status)
+  }).then((response) => {
+    if (response.status !== 200) {
+      const message = 'Kladd kunne ikke slettes.'
+      handleError(message, deltakerId, response.status)
+    }
+    return response.status
+  })
 }
 
 export const sendInnPamelding = async (
@@ -112,9 +128,8 @@ export const sendInnPamelding = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Påmeldingen kunne ikke sendes inn.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -137,11 +152,9 @@ export const sendInnPameldingUtenGodkjenning = (
     body: JSON.stringify(request)
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(
-        `Påmeldingen kunne ikke sendes inn. Prøv igjen senere. (${response.status})`
-      )
+      const message = 'Påmeldingen uten godkjenning kunne ikke sendes inn.'
+      handleError(message, deltakerId, response.status)
     }
-
     return response.status
   })
 }
@@ -163,9 +176,8 @@ export const endreDeltakelseIkkeAktuell = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke utføre endringen å sette til ikke aktuell. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke utføre endringen å sette til ikke aktuell.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -189,9 +201,8 @@ export const endreDeltakelseReaktiver = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre til aktiv deltakelse. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre til aktiv deltakelse.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -222,9 +233,8 @@ export const endreDeltakelseForleng = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke forlenge deltakelsen. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke forlenge deltakelsen.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -248,9 +258,8 @@ export const endreDeltakelseStartdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre oppstartsdato. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre oppstartsdato.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -274,9 +283,8 @@ export const endreDeltakelseSluttdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre sluttdato. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre sluttdato.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -300,9 +308,8 @@ export const endreDeltakelseSluttarsak = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre sluttårsak. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre sluttårsak.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -326,9 +333,8 @@ export const avsluttDeltakelse = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke avslutte deltakelse. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke avslutte deltakelsen.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -352,9 +358,8 @@ export const endreDeltakelseBakgrunnsinfo = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre bakgrunnsinfo. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre bakgrunnsinfo..'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -378,9 +383,8 @@ export const endreDeltakelseInnhold = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre innhold. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre innhold.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -404,9 +408,8 @@ export const endreDeltakelsesmengde = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke endre deltakelsesmengde. Prøv igjen senere. (${response.status})`
-        )
+        const message = 'Kunne ikke endre deltakelsesmengde.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -430,9 +433,11 @@ export const avvisForslag = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error(
-          `Kunne ikke avvise forslaget. Prøv igjen senere. (${response.status})`
+        console.error(
+          `Kunne ikke avvise forslaget. ForslagId: ${forslagId}`,
+          response.status
         )
+        throw new Error('Kunne ikke avvise forslaget. Prøv igjen senere.')
       }
       return response.json()
     })
@@ -453,9 +458,8 @@ export const avbrytUtkast = (
     }
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(
-        `Kunne ikke avbryte utkastet. Prøv igjen senere. (${response.status})`
-      )
+      const message = 'Kunne ikke avbryte utkastet.'
+      handleError(message, deltakerId, response.status)
     }
     return response.status
   })
@@ -477,9 +481,8 @@ export const oppdaterKladd = async (
     body: JSON.stringify(request)
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(
-        `Kunne ikke lagre kladd. Prøv igjen senere. (${response.status})`
-      )
+      const message = 'Kunne ikke lagre kladd.'
+      handleError(message, deltakerId, response.status)
     }
     return response.status
   })
@@ -498,7 +501,8 @@ export const getHistorikk = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Endringer kunne ikke hentes. Prøv igjen senere')
+        const message = 'Endringer kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -510,7 +514,7 @@ export const getHistorikk = async (
         if (error instanceof ZodError) {
           console.error('Issue', error.issues)
         }
-        throw error
+        throw new Error('Kunne ikke laste inn endringene. Prøv igjen senere')
       }
     })
 }
@@ -522,4 +526,13 @@ const parsePamelding = (json: string): PameldingResponse => {
     console.error('Kunne ikke parse pameldingSchema:', error)
     throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
   }
+}
+
+const handleError = (
+  message: string,
+  deltakerId: string,
+  responseStatus: number
+) => {
+  console.error(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  throw new Error(`${message} Prøv igjen senere.`)
 }
