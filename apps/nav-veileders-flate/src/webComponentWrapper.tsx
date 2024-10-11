@@ -10,7 +10,7 @@ if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: 'amt-deltaker-nav-veilderes-flate'
+      name: 'amt-deltaker-flate'
     },
     isolate: true
   })
