@@ -22,7 +22,8 @@ export const getDeltakelse = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Deltakelse kunne ikke hentes. Prøv igjen senere')
+        const message = 'Deltakelse kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -43,7 +44,8 @@ export const godkjennUtkast = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Kunne ikke godkjenne utkastet. Prøv igjen senere')
+        const message = 'Kunne ikke godkjenne utkastet.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -64,7 +66,8 @@ export const getHistorikk = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error('Endringer kunne ikke hentes. Prøv igjen senere')
+        const message = 'Endringer kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
       }
       return response.json()
     })
@@ -93,4 +96,13 @@ const parseDeltakelse = (json: string): DeltakerResponse => {
     }
     throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
   }
+}
+
+const handleError = (
+  message: string,
+  deltakerId: string,
+  responseStatus: number
+) => {
+  console.error(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  throw new Error(`${message} Prøv igjen senere.`)
 }
