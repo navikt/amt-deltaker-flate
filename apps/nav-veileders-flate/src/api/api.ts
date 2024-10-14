@@ -81,7 +81,6 @@ export const getPamelding = async (
     body: JSON.stringify(request)
   })
     .then((response) => {
-      console.error('KUN TEST')
       if (response.status === 400) {
         console.error(
           `Deltakelse ${deltakerId} kunne ikke hentes.`,
