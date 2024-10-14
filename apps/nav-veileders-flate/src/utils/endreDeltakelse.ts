@@ -29,6 +29,15 @@ const ikkeAktuellKanEndres = (
   statusdato > toMndSiden &&
   pamelding.kanEndres
 
+const harSluttetEllerFullfortKanEndres = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) =>
+  deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
+
 const harAvsluttendeStatusKanEndres = (
   pamelding: PameldingResponse,
   statusdato: Date,
@@ -96,7 +105,7 @@ const skalViseEndreOppstartsdato = (
 ) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
     pamelding.startdato) ||
-  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
+  harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden)
 
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
