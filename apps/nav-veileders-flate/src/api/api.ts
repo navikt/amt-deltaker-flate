@@ -47,6 +47,7 @@ export const createPamelding = async (
     body: JSON.stringify(request)
   })
     .then((response) => {
+      console.error('TEST createPamelding')
       if (response.status !== 200) {
         console.error(
           `Deltakelse kunne ikke hentes / opprettes for deltakerlisteId: ${deltakerlisteId}`,
@@ -81,6 +82,7 @@ export const getPamelding = async (
     body: JSON.stringify(request)
   })
     .then((response) => {
+      console.error('TEST getPamelding')
       if (response.status === 400) {
         console.error(
           `Deltakelse ${deltakerId} kunne ikke hentes.`,
