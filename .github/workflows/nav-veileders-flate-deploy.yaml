@@ -77,6 +77,8 @@ jobs:
         run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev-v2
 
   deploy-demo-nav-veileders-flate:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy nav-veileders-flate DEMO
     runs-on: ubuntu-latest
     needs: test-and-lint
     permissions:
