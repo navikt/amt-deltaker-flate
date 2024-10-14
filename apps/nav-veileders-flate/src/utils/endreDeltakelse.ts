@@ -94,12 +94,9 @@ const skalViseEndreOppstartsdato = (
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  // (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART && startdato) ||
-  // TODO når tiltakarrangor kan sette startDato skal vi bruke sjekken over:
-  // altså VENTER_PA_OPPSTART må ha startDato satt for at vi kan endre Oppstartsdato for den statusen
-  pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
-  (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-    harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden))
+  (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
+    pamelding.startdato) ||
+  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
 
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
