@@ -77,6 +77,8 @@ jobs:
         run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev
 
   deploy-demo-innbyggers-flate:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy innbyggers-flate DEMO
     runs-on: ubuntu-latest
     needs: test-and-lint
     permissions:
