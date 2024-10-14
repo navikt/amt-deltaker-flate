@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Opprett lenke til test applikasjon nav-veileders-flate for PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             URL for testing av nav-veileders-flate: https://amt-deltaker-flate.intern.dev.nav.no/pr-${{ github.event.number }}/index.html
