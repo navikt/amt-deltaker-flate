@@ -21,7 +21,6 @@ export const getDeltakelse = async (
     }
   })
     .then((response) => {
-      console.error('TEST i')
       if (response.status !== 200) {
         const message = 'Deltakelse kunne ikke hentes.'
         handleError(message, deltakerId, response.status)
