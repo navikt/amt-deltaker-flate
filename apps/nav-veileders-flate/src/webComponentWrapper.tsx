@@ -5,6 +5,7 @@ import appCss from './app.css?inline'
 import { AppContextProvider } from './AppContext.tsx'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { AppRoutes } from './Routes.tsx'
+import './utils/useConsoleLogs.ts'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
