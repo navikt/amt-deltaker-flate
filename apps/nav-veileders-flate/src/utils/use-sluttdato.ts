@@ -17,13 +17,15 @@ interface UseSluttdatoOpts {
   valgtVarighet: VarighetValg | undefined
   defaultAnnetDato?: Date
   startdato?: Date
+  erForleng?: boolean
 }
 
 export function useSluttdato({
   deltaker,
   valgtVarighet,
   defaultAnnetDato,
-  startdato
+  startdato,
+  erForleng
 }: UseSluttdatoOpts): {
   sluttdato: Date | undefined
   error: string | null
@@ -45,7 +47,8 @@ export function useSluttdato({
     onChange: onAnnetChange,
     defaultDato: defaultAnnetDato,
     startdato,
-    erSkjult: valgtVarighet !== VarighetValg.ANNET
+    erSkjult: valgtVarighet !== VarighetValg.ANNET,
+    erForleng
   })
 
   const kalkulerSluttdatoFra = (date: Date, varighetValg: VarighetValg) => {
@@ -65,7 +68,9 @@ export function useSluttdato({
 
   useEffect(() => {
     if (sluttdato && valgtVarighet !== VarighetValg.ANNET) {
-      setError(getSluttDatoFeilmelding(deltaker, sluttdato, startdato))
+      setError(
+        getSluttDatoFeilmelding(deltaker, sluttdato, startdato, erForleng)
+      )
     } else if (valgtVarighet === VarighetValg.ANNET || !startdato) {
       setError(null)
     }
@@ -109,20 +114,24 @@ interface SluttdatoInputOpts {
   defaultDato: Date | undefined
   startdato?: Date
   erSkjult?: boolean
+  erForleng?: boolean
 }
 export function useSluttdatoInput({
   deltaker,
   onChange,
   defaultDato,
   startdato,
-  erSkjult
+  erSkjult,
+  erForleng
 }: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (sluttdato) {
-      setError(getSluttDatoFeilmelding(deltaker, sluttdato, startdato))
+      setError(
+        getSluttDatoFeilmelding(deltaker, sluttdato, startdato, erForleng)
+      )
     } else {
       setError(null)
     }
@@ -138,14 +147,14 @@ export function useSluttdatoInput({
           : DATO_FØR_SLUTTDATO_FEILMELDING
       )
     } else if (newDate) {
-      setError(getSluttDatoFeilmelding(deltaker, newDate, startdato))
+      setError(getSluttDatoFeilmelding(deltaker, newDate, startdato, erForleng))
     }
   }
 
   const handleChange = (date: Date | undefined) => {
     if (date) {
       setSluttdato(date)
-      setError(getSluttDatoFeilmelding(deltaker, date, startdato))
+      setError(getSluttDatoFeilmelding(deltaker, date, startdato, erForleng))
     }
     if (onChange) {
       onChange(date)
