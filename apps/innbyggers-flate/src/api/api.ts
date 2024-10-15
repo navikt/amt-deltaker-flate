@@ -1,6 +1,7 @@
 import {
   DeltakerHistorikkListe,
-  deltakerHistorikkListeSchema
+  deltakerHistorikkListeSchema,
+  logError
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils'
@@ -75,9 +76,9 @@ export const getHistorikk = async (
       try {
         return deltakerHistorikkListeSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
+        logError('Kunne ikke parse deltakerHistorikkListeSchema:', error)
         if (error instanceof ZodError) {
-          console.error('Issue', error.issues)
+          logError('Issue', error.issues)
         }
         throw new Error(
           'Kunne ikke laste inn endringene for deltakelsen. Prøv igjen senere'
@@ -90,9 +91,9 @@ const parseDeltakelse = (json: string): DeltakerResponse => {
   try {
     return deltakerSchema.parse(json)
   } catch (error) {
-    console.error('Kunne ikke parse deltakerSchema:', error)
+    logError('Kunne ikke parse deltakerSchema:', error)
     if (error instanceof ZodError) {
-      console.error('Issue', error.issues)
+      logError('Issue', error.issues)
     }
     throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
   }
@@ -103,6 +104,6 @@ const handleError = (
   deltakerId: string,
   responseStatus: number
 ) => {
-  console.error(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
 }

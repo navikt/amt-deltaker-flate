@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { isLocal, useMock } from './utils/environment-utils.ts'
-import './utils/useConsoleLogs.ts'
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere

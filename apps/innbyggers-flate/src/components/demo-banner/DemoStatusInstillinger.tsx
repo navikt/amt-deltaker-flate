@@ -2,6 +2,7 @@ import { Select } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   getDeltakerStatusDisplayText,
+  logError,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -27,7 +28,7 @@ export const endreMockDeltakelseStatus = (
       try {
         return deltakerSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse deltakerSchema:', error)
+        logError('Kunne ikke parse deltakerSchema:', error)
         throw error
       }
     })

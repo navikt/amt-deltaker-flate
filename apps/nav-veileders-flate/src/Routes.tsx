@@ -8,7 +8,6 @@ import InngangSePaRediger from './InngangSePaRediger.tsx'
 import InngangMeldPa from './InngangMeldPa.tsx'
 import RedirectToDeltakeroversikt from './guards/RedirectToDeltakeroversikt.tsx'
 import InngangPrEnv from './InngangPrEnv.tsx'
-import './utils/useConsoleLogs.ts'
 
 export const AppRoutes = () => {
   return (

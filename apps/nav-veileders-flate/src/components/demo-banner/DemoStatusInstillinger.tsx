@@ -2,6 +2,7 @@ import { Select } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   getDeltakerStatusDisplayText,
+  logError,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -27,7 +28,7 @@ export const endreMockDeltakelseStatus = (
       try {
         return pameldingSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
+        logError('Kunne ikke parse pameldingSchema:', error)
         throw error
       }
     })
