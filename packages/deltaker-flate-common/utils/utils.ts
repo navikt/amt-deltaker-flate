@@ -98,3 +98,7 @@ export const formatDateFromString = (
 export const visDeltakelsesmengde = (tiltakstype: Tiltakstype) => {
   return tiltakstype === Tiltakstype.ARBFORB || tiltakstype === Tiltakstype.VASV
 }
+
+export const logError = (message: string, ...args: unknown[]) => {
+  console.error(`AMT_LOGS: ${message}`, args)
+}

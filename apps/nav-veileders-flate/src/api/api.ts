@@ -1,6 +1,7 @@
 import {
   DeltakerHistorikkListe,
-  deltakerHistorikkListeSchema
+  deltakerHistorikkListeSchema,
+  logError
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
@@ -48,7 +49,7 @@ export const createPamelding = async (
   })
     .then((response) => {
       if (response.status !== 200) {
-        console.error(
+        logError(
           `Deltakelse kunne ikke hentes / opprettes for deltakerlisteId: ${deltakerlisteId}`,
           response.status
         )
@@ -82,10 +83,7 @@ export const getPamelding = async (
   })
     .then((response) => {
       if (response.status === 400) {
-        console.error(
-          `Deltakelse ${deltakerId} kunne ikke hentes.`,
-          response.status
-        )
+        logError(`Deltakelse ${deltakerId} kunne ikke hentes.`, response.status)
         throw new Error(ERROR_PERSONIDENT)
       }
       if (response.status !== 200) {
@@ -209,7 +207,7 @@ export const endreDeltakelseReaktiver = (
       try {
         return pameldingSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse pameldingSchema:', error)
+        logError('Kunne ikke parse pameldingSchema:', error)
         throw error
       }
     })
@@ -432,7 +430,7 @@ export const avvisForslag = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        console.error(
+        logError(
           `Kunne ikke avvise forslaget. ForslagId: ${forslagId}`,
           response.status
         )
@@ -509,9 +507,9 @@ export const getHistorikk = async (
       try {
         return deltakerHistorikkListeSchema.parse(json)
       } catch (error) {
-        console.error('Kunne ikke parse deltakerHistorikkListeSchema:', error)
+        logError('Kunne ikke parse deltakerHistorikkListeSchema:', error)
         if (error instanceof ZodError) {
-          console.error('Issue', error.issues)
+          logError('Issue', error.issues)
         }
         throw new Error('Kunne ikke laste inn endringene. Prøv igjen senere')
       }
@@ -522,7 +520,7 @@ const parsePamelding = (json: string): PameldingResponse => {
   try {
     return pameldingSchema.parse(json)
   } catch (error) {
-    console.error('Kunne ikke parse pameldingSchema:', error)
+    logError('Kunne ikke parse pameldingSchema:', error)
     throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
   }
 }
@@ -532,6 +530,6 @@ const handleError = (
   deltakerId: string,
   responseStatus: number
 ) => {
-  console.error(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
 }
