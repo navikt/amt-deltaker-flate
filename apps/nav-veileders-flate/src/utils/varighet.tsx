@@ -320,7 +320,8 @@ export const getSkalBekrefteVarighet = (
 export const getSluttDatoFeilmelding = (
   pamelding: PameldingResponse,
   nySluttDato: Date,
-  nyStartdato?: Date
+  nyStartdato?: Date,
+  erForleng?: boolean
 ) => {
   const deltakerstartDato = getDateFromString(pamelding.startdato)
   const deltakerlisteSluttDato = dateStrToNullableDate(
@@ -336,6 +337,15 @@ export const getSluttDatoFeilmelding = (
       sluttDato.isBefore(deltakerstartDato, 'date'))
   ) {
     return SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
+  }
+
+  const opprinneligSluttdato = getDateFromString(pamelding.sluttdato)
+  if (
+    erForleng &&
+    opprinneligSluttdato &&
+    sluttDato.isBefore(opprinneligSluttdato)
+  ) {
+    return DATO_FØR_SLUTTDATO_FEILMELDING
   }
 
   if (!maxVarighetDato && !deltakerlisteSluttDato) {

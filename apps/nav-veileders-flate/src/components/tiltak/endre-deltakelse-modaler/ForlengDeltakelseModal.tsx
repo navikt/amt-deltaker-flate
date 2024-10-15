@@ -69,7 +69,8 @@ export const ForlengDeltakelseModal = ({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
     defaultAnnetDato:
-      sluttdatoFraForslag || getDateFromString(pamelding.sluttdato)
+      sluttdatoFraForslag || getDateFromString(pamelding.sluttdato),
+    erForleng: true
   })
 
   const skalHaBegrunnelse =
