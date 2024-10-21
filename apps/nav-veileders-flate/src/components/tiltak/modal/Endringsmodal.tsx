@@ -58,6 +58,7 @@ export function Endringsmodal<T extends EndringRequest>({
           : endringstekst(endringstype)
       }}
       onClose={onClose}
+      className="w-full"
     >
       {visAvvisningsmodal && forslag ? (
         <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
