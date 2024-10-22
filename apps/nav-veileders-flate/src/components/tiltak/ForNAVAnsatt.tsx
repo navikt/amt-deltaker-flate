@@ -55,7 +55,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
               pamelding.deltakerliste.arrangorNavn
             )}
           </BodyShort>
-          <Detail textColor="subtle">
+          <Detail textColor="subtle" className="mb-1">
             {pamelding.deltakerliste.deltakerlisteNavn}
           </Detail>
           <BodyShort size="small">
