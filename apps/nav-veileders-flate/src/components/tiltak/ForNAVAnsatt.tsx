@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Heading, LinkPanel } from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, Heading, LinkPanel } from '@navikt/ds-react'
 import {
   formatDateFromString,
   hentTiltakNavnHosArrangorTekst
@@ -55,6 +55,9 @@ export const ForNAVAnsatt = ({ className }: Props) => {
               pamelding.deltakerliste.arrangorNavn
             )}
           </BodyShort>
+          <Detail textColor="subtle">
+            {pamelding.deltakerliste.deltakerlisteNavn}
+          </Detail>
           <BodyShort size="small">
             {formatDateFromString(pamelding.deltakerliste.startdato)} -{' '}
             {formatDateFromString(pamelding.deltakerliste.sluttdato)}
