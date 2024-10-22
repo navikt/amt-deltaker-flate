@@ -104,6 +104,10 @@ const handleError = (
   deltakerId: string,
   responseStatus: number
 ) => {
-  logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  if (responseStatus !== 401) {
+    // Ignorerer 401 da det er brukersesjonfeil
+    logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  }
+
   throw new Error(`${message} Prøv igjen senere.`)
 }
