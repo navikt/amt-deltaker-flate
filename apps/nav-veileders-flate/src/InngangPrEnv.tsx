@@ -113,8 +113,8 @@ const InngangPrEnv = () => {
         </div>
       )}
 
-      {(lagNyPamelding && (errorCreate || !nyPamelding)) ||
-        (!lagNyPamelding && (errorHent || !pamelding) && (
+      {(lagNyPamelding && errorCreate) ||
+        (!lagNyPamelding && errorHent && (
           <ErrorPage message="Feil med henting av deltaker" />
         ))}
 
