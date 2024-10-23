@@ -47,11 +47,11 @@ const InngangPrEnv = () => {
   return (
     <>
       <Alert variant="warning" className="mb-4" size="small">
-        <BodyShort weight="semibold" size="small" className="mb-2">
+        <BodyShort weight="semibold" size="small" className="mb-1">
           Denne appen kjører i pr-modus i dev (Q2)
         </BodyShort>
 
-        <BodyLong size="small" className="mb-4">
+        <BodyLong size="small" className="mb-2">
           Feltene er forhandsutfylt for å hente en deltakelse for Egoistisk
           Maktperson.
         </BodyLong>
@@ -78,7 +78,7 @@ const InngangPrEnv = () => {
             label="Personident (fødselsnummer etc)"
             type="number"
             size="small"
-            className="mt-2"
+            className="mt-3"
             value={personident}
             onChange={(e) => setPersonident(e.target.value)}
           />
@@ -86,7 +86,7 @@ const InngangPrEnv = () => {
             <TextField
               label="Deltakerliste id"
               size="small"
-              className="mt-2"
+              className="mt-3"
               value={deltakerlisteId}
               onChange={(e) => setDeltakerlisteId(e.target.value)}
             />
@@ -94,13 +94,15 @@ const InngangPrEnv = () => {
             <TextField
               label="Deltaker-id"
               size="small"
-              className="mt-2"
+              className="mt-3"
               value={deltakerId}
               onChange={(e) => setDeltakerId(e.target.value)}
             />
           )}
 
-          <Button className="mt-2">Bruk</Button>
+          <Button size="small" className="mt-4">
+            Bruk
+          </Button>
         </form>
       </Alert>
 
