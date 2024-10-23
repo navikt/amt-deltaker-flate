@@ -32,7 +32,7 @@ export const EndreDeltakelsesmengdeModal = ({
 }: EndreDeltakelsesmengdeModalProps) => {
   const defaultMengde = getMengde(pamelding, forslag)
 
-  const [useDefaultValue, setUseDefaultVlaue] = useState(true)
+  const [useDefaultValue, setUseDefaultValue] = useState(true)
   const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(
     defaultMengde.deltakelsesprosent
   )
@@ -60,7 +60,7 @@ export const EndreDeltakelsesmengdeModal = ({
       return null
     }
     if (!validering.isValid) {
-      setUseDefaultVlaue(false)
+      setUseDefaultValue(false)
       return null
     }
     if (!begrunnelse.valider()) {
@@ -90,13 +90,14 @@ export const EndreDeltakelsesmengdeModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
+      ;
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"
         disabled={false}
         value={deltakelsesprosent || undefined}
         onChange={(e) => {
           setDeltakelsesprosent(e || null)
-          setUseDefaultVlaue(false)
+          setUseDefaultValue(false)
         }}
         error={useDefaultValue ? false : validering.deltakelsesprosentError}
         required
@@ -110,7 +111,7 @@ export const EndreDeltakelsesmengdeModal = ({
           value={dagerPerUke || undefined}
           onChange={(e) => {
             setDagerPerUke(e || null)
-            setUseDefaultVlaue(false)
+            setUseDefaultValue(false)
           }}
           error={useDefaultValue ? false : validering.dagerPerUkeError}
           className="[&>input]:w-16 mt-6"
