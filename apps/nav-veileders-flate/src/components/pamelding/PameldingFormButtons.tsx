@@ -42,7 +42,7 @@ export const PameldingFormButtons = ({
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
-  const kanDeleUtkast = pamelding.digitalBruker && pamelding.harAdresse
+  const kanDeleUtkast = pamelding.digitalBruker
   const harAdresse = pamelding.harAdresse
 
   const { doRedirect } = useModiaLink()
