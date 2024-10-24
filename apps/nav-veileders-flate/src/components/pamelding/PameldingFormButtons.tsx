@@ -1,4 +1,4 @@
-import { Alert, Button, HelpText, HStack } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, HelpText, HStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
@@ -43,6 +43,7 @@ export const PameldingFormButtons = ({
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
   const kanDeleUtkast = pamelding.digitalBruker
+  const harAdresse = pamelding.harAdresse
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -65,7 +66,7 @@ export const PameldingFormButtons = ({
     useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
 
-  const delEndringKappTekst = erUtkast
+  const delEndringKnappTekst = erUtkast
     ? 'Del endring'
     : 'Del utkast og gjør klar påmelding'
 
@@ -143,11 +144,11 @@ export const PameldingFormButtons = ({
               onClick={handleSubmit(handleFormSubmit, onSubmitError)}
               loading={sendSomForslagState === DeferredFetchState.LOADING}
             >
-              {delEndringKappTekst}
+              {delEndringKnappTekst}
             </Button>
             {erKladd && (
               <div className="ml-2">
-                <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
+                <HelpText aria-label={`Hjelpetekst: ${delEndringKnappTekst}`}>
                   Når utkastet deles med bruker så kan de lese gjennom hva du
                   foreslår å sende til arrangøren. Bruker blir varslet og kan
                   finne lenke på innlogget nav.no og gjennom aktivitetsplanen.
@@ -157,10 +158,22 @@ export const PameldingFormButtons = ({
             )}
           </div>
         )}
-        {!kanDeleUtkast && (
+        {!kanDeleUtkast && harAdresse && (
           <div className="flex items-center">
             <Alert variant="warning" size="small">
               Kan ikke kontaktes digitalt
+            </Alert>
+          </div>
+        )}
+        {!kanDeleUtkast && !harAdresse && (
+          <div className="flex items-center">
+            <Alert variant="warning" size="small">
+              <BodyLong className="mt-1" size="small">
+                Personen er reservert mot digital kommunikasjon, og har heller
+                ingen registrert kontaktadresse. De vil derfor ikke motta et
+                varsel om vedtaket. Vedtaket som journalføres i Gosys må skrives
+                ut og leveres til personen på annen måte.
+              </BodyLong>
             </Alert>
           </div>
         )}

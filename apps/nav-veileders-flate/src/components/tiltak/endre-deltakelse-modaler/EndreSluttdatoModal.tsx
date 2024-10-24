@@ -93,6 +93,7 @@ export const EndreSluttdatoModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_SLUTTDATO}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttdato}

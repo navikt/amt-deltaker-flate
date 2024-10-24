@@ -50,6 +50,7 @@ export const EndreBakgrunnsinfoModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseBakgrunnsinfo}

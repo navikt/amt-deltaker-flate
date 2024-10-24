@@ -56,6 +56,7 @@ export const IkkeAktuellModal = ({
       open={open}
       endringstype={EndreDeltakelseType.IKKE_AKTUELL}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseIkkeAktuell}

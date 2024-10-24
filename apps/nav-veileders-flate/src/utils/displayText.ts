@@ -28,7 +28,13 @@ export const getDeltakerStatusAarsakTypeText = (
   }
 }
 
-export const getEndrePameldingTekst = (digitalBruker: boolean) =>
-  digitalBruker
-    ? 'Bruker får beskjed på nav.no. Arrangør ser endringen i Deltakeroversikten.'
-    : 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet. Arrangør ser endringen i Deltakeroversikten.'
+export const getEndrePameldingTekst = (
+  digitalBruker: boolean,
+  harAdresse: boolean
+) => {
+  if (digitalBruker)
+    return 'Bruker får beskjed på nav.no. Arrangør ser endringen i Deltakeroversikten.'
+  return harAdresse
+    ? 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet. Arrangør ser endringen i Deltakeroversikten.'
+    : 'Arrangør ser endringen i Deltakeroversikten.'
+}

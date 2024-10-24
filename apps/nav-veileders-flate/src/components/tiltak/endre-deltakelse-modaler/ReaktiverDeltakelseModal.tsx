@@ -59,6 +59,7 @@ export const ReaktiverDeltakelseModal = ({
       open={open}
       endringstype={EndreDeltakelseType.REAKTIVER_DELTAKELSE}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseReaktiver}
