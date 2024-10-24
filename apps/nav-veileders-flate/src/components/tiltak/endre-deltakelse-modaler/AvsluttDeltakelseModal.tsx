@@ -119,6 +119,7 @@ export const AvsluttDeltakelseModal = ({
       open={open}
       endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={avsluttDeltakelse}

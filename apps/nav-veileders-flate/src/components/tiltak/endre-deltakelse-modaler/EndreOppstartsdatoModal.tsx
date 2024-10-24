@@ -158,6 +158,7 @@ export const EndreOppstartsdatoModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_OPPSTARTSDATO}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseStartdato}

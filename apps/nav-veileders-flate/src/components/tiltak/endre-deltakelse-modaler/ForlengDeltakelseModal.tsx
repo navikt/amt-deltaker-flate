@@ -124,6 +124,7 @@ export const ForlengDeltakelseModal = ({
       open={open}
       endringstype={EndreDeltakelseType.FORLENG_DELTAKELSE}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseForleng}

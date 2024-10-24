@@ -6,7 +6,7 @@ import {
   EndringTypeIkon,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { Detail, Modal } from '@navikt/ds-react'
+import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
 import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
@@ -26,6 +26,7 @@ interface Props<T extends EndringRequest> {
   open: boolean
   endringstype: EndreDeltakelseType
   digitalBruker: boolean
+  harAdresse: boolean
   onClose: () => void
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
@@ -37,6 +38,7 @@ export function Endringsmodal<T extends EndringRequest>({
   open,
   endringstype,
   digitalBruker,
+  harAdresse,
   onSend,
   onClose,
   apiFunction,
@@ -69,6 +71,7 @@ export function Endringsmodal<T extends EndringRequest>({
           validertRequest={validertRequest}
           forslag={forslag}
           digitalBruker={digitalBruker}
+          harAdresse={harAdresse}
         >
           {children}
         </EndringsmodalBody>
@@ -84,6 +87,7 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
   digitalBruker: boolean
+  harAdresse: boolean
   children: ReactNode
 }
 function EndringsmodalBody<T extends EndringRequest>({
@@ -93,6 +97,7 @@ function EndringsmodalBody<T extends EndringRequest>({
   validertRequest,
   forslag,
   digitalBruker,
+  harAdresse,
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
@@ -111,13 +116,25 @@ function EndringsmodalBody<T extends EndringRequest>({
       <Modal.Body>
         {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-6">
-          {getEndrePameldingTekst(digitalBruker)}
+          {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Detail>
         {forslag && (
           <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
         )}
 
         {children}
+        {!digitalBruker && !harAdresse && (
+          <div className="flex items-center mt-4">
+            <Alert variant="warning" size="small">
+              <BodyLong className="mt-1" size="small">
+                Personen er reservert mot digital kommunikasjon, og har heller
+                ingen registrert kontaktadresse. De vil derfor ikke motta et
+                varsel om vedtaket. Vedtaket som journalføres i Gosys må skrives
+                ut og leveres til personen på annen måte.
+              </BodyLong>
+            </Alert>
+          </div>
+        )}
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Lagre"

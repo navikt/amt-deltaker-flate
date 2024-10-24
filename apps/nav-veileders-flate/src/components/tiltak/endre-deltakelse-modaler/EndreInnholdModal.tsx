@@ -90,6 +90,7 @@ export const EndreInnholdModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_INNHOLD}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseInnhold}

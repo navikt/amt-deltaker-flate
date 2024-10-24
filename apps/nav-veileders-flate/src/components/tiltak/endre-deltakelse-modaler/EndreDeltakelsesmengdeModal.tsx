@@ -88,6 +88,7 @@ export const EndreDeltakelsesmengdeModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelsesmengde}

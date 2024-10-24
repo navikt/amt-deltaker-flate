@@ -67,6 +67,7 @@ export const EndreSluttarsakModal = ({
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_SLUTTARSAK}
       digitalBruker={pamelding.digitalBruker}
+      harAdresse={pamelding.harAdresse}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttarsak}
