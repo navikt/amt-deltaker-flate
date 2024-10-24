@@ -1,19 +1,22 @@
 import {
-  Forslag,
   DeltakelsesmengdeForslag,
   EndreDeltakelseType,
+  Forslag,
   ForslagEndring,
   ForslagEndringType
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { dagerPerUkeFeilmelding } from '../../../model/PameldingFormValues.ts'
-import { NumberTextField } from '../../NumberTextField.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import {
+  getDagerPerUkeError,
+  getProsentError
+} from '../../../utils/deltakelsesmengdeValidering.ts'
+import { NumberTextField } from '../../NumberTextField.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -38,9 +41,9 @@ export const EndreDeltakelsesmengdeModal = ({
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(
     defaultMengde.dagerPerUke
   )
-  const [hasErrorDeltakelsesprosent, setHasErrorDeltakelsesprosent] =
-    useState<boolean>(false)
-  const [hasErrorDagerPerUke, setHasErrorDagerPerUke] = useState<boolean>(false)
+  const [deltakelsesprosentError, setDeltakelsesprosentError] =
+    useState<string>()
+  const [dagerPerUkeError, setDagerPerUkeError] = useState<string>()
 
   const erBegrunnelseValgfri =
     forslag !== null &&
@@ -50,21 +53,15 @@ export const EndreDeltakelsesmengdeModal = ({
   const begrunnelse = useBegrunnelse(erBegrunnelseValgfri)
   const { enhetId } = useAppContext()
 
-  const gyldigDeltakelsesprosent =
-    deltakelsesprosent !== null &&
-    0 < deltakelsesprosent &&
-    deltakelsesprosent <= 100
-
-  const gyldigDagerPerUke =
-    dagerPerUke !== null ? 0 < dagerPerUke && dagerPerUke <= 5 : true
-
   const validertRequest = () => {
-    if (!gyldigDeltakelsesprosent) {
-      setHasErrorDeltakelsesprosent(true)
+    if (!deltakelsesprosent) {
       return null
     }
-    if (!gyldigDagerPerUke) {
-      setHasErrorDagerPerUke(true)
+    if (
+      deltakelsesprosentError ||
+      dagerPerUkeError ||
+      !validerDeltakelsesMengde(deltakelsesprosent, dagerPerUke)
+    ) {
       return null
     }
     if (!begrunnelse.valider()) {
@@ -81,6 +78,37 @@ export const EndreDeltakelsesmengdeModal = ({
       forslagId: forslag?.id ?? null
     }
     return { deltakerId: pamelding.deltakerId, enhetId, body }
+  }
+
+  const handleProsentEndret = (nyProsent: number | undefined) => {
+    validerDeltakelsesMengde(nyProsent ?? null, dagerPerUke)
+  }
+  const handleDagerPerUkeEndret = (nyDager: number | undefined) => {
+    validerDeltakelsesMengde(deltakelsesprosent, nyDager ?? null)
+  }
+
+  const validerDeltakelsesMengde = (
+    prosent: number | null,
+    dagerPerUke: number | null
+  ) => {
+    const errorProsent = getProsentError(
+      prosent,
+      dagerPerUke,
+      pamelding.dagerPerUke,
+      pamelding.deltakelsesprosent
+    )
+    const errorDager = getDagerPerUkeError(
+      prosent,
+      dagerPerUke,
+      pamelding.dagerPerUke,
+      pamelding.deltakelsesprosent
+    )
+    setDeltakelsesprosentError(errorProsent)
+    setDagerPerUkeError(errorDager)
+    if (errorDager || errorProsent) {
+      return false
+    }
+    return true
   }
 
   return (
@@ -101,13 +129,9 @@ export const EndreDeltakelsesmengdeModal = ({
         value={deltakelsesprosent || undefined}
         onChange={(e) => {
           setDeltakelsesprosent(e || null)
-          setHasErrorDeltakelsesprosent(false)
+          handleProsentEndret(e)
         }}
-        error={
-          hasErrorDeltakelsesprosent &&
-          !gyldigDeltakelsesprosent &&
-          'Deltakelsesprosent må være et helt tall fra 1 til 100'
-        }
+        error={deltakelsesprosentError}
         required
         id="deltakelsesprosent"
         className="[&>input]:w-16 mt-4"
@@ -119,11 +143,9 @@ export const EndreDeltakelsesmengdeModal = ({
           value={dagerPerUke || undefined}
           onChange={(e) => {
             setDagerPerUke(e || null)
-            setHasErrorDagerPerUke(false)
+            handleDagerPerUkeEndret(e)
           }}
-          error={
-            hasErrorDagerPerUke && !gyldigDagerPerUke && dagerPerUkeFeilmelding
-          }
+          error={dagerPerUkeError}
           className="[&>input]:w-16 mt-6"
           id="dagerPerUke"
         />
