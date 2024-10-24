@@ -90,7 +90,6 @@ export const EndreDeltakelsesmengdeModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      ;
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"
         disabled={false}
