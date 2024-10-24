@@ -33,14 +33,14 @@ importers:
         specifier: ^1.10.2
         version: 1.10.2
       '@navikt/aksel-icons':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       '@navikt/ds-css':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       '@navikt/ds-react':
-        specifier: ^7.2.1
-        version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^2.1.6
         version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
@@ -136,17 +136,17 @@ importers:
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@navikt/aksel-icons':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       '@navikt/ds-css':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       '@navikt/ds-react':
-        specifier: ^7.2.1
-        version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/ds-tailwind':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -251,11 +251,11 @@ importers:
   packages/deltaker-flate-common:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       '@navikt/ds-react':
-        specifier: ^7.2.1
-        version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -316,8 +316,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^7.2.1
-        version: 7.2.1
+        specifier: ^7.3.1
+        version: 7.3.1
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.47)
@@ -352,8 +352,8 @@ packages:
     resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/code-frame@7.25.7':
-    resolution: {integrity: sha512-0xZJFNE5XMpENsgfHYTw8FbX4kv53mFLn2i3XPoq69LyhYSCBJtitaHx9QnsVTrsogI4Z3+HtEfZ2/GFPOtf5g==}
+  '@babel/code-frame@7.25.9':
+    resolution: {integrity: sha512-z88xeGxnzehn2sqZ8UdGQEvYErF1odv2CftxInpSYJt6uHuPe9YjahKZITGs3l5LeI9d2ROG+obuDAoSlqbNfQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/compat-data@7.25.2':
@@ -398,8 +398,8 @@ packages:
     resolution: {integrity: sha512-rR+PBcQ1SMQDDyF6X0wxtG8QyLCgUB0eRAGguqRLfkCA87l7yAP7ehq8SNj96OOGTO8OBV70KhuFYcIkHXOg0w==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-validator-identifier@7.25.7':
-    resolution: {integrity: sha512-AM6TzwYqGChO45oiuPqwL2t20/HdMC1rTPAesnBCgPCSF1x3oN9MVUwQV2iyz4xqWrctwK5RNC8LV22kaQCNYg==}
+  '@babel/helper-validator-identifier@7.25.9':
+    resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-option@7.24.8':
@@ -414,8 +414,8 @@ packages:
     resolution: {integrity: sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/highlight@7.25.7':
-    resolution: {integrity: sha512-iYyACpW3iW8Fw+ZybQK+drQre+ns/tKpXbNESfrhNnPLIklLbXr7MYJ6gPEd0iETGLOK+SxMjVvKb/ffmk+FEw==}
+  '@babel/highlight@7.25.9':
+    resolution: {integrity: sha512-llL88JShoCsth8fF8R4SJnIn+WLvR6ccFxu1H3FlMhDontdcmZWf2HgIZ7AIqV3Xcck1idlohrN4EUBQz6klbw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/parser@7.25.3':
@@ -443,8 +443,8 @@ packages:
     resolution: {integrity: sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@7.25.7':
-    resolution: {integrity: sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==}
+  '@babel/runtime@7.25.9':
+    resolution: {integrity: sha512-4zpTHZ9Cm6L9L+uIqghQX8ZXg8HKFcjYO3qHoO8zTmRm6HQUJ8SSJ+KRvbMBZn0EGVlT4DRYeQ/6hjlyXBh+Kg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.0':
@@ -733,23 +733,23 @@ packages:
     resolution: {integrity: sha512-SSnyl/4ni/2ViHKkiZb8eajA/eN1DNFaHjhGiLUdZvDz6PKF4COSf/17xqSz64nOo2Ia29SA6B2KNCsyCbVmaQ==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@7.2.1':
-    resolution: {integrity: sha512-AQNR2ld5Kjx1A8LA7TnRxztbNf27UFMFt9vitSIlHGVHvWppSzIrxRhBESsldUDRxMQUjJrFY72o53whF0lhxQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.2.1/8cc80c4d03f7d22428f72fd4cb6a93946b087db1}
+  '@navikt/aksel-icons@7.3.1':
+    resolution: {integrity: sha512-FqARFTIvjOVyyYQ2BFS8ba3GEu/M53d7MUle5/NP838ZG4CY3O+Ea453dxPGuGCu2EIG8CX8sQ3VFmVqCYu9mQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.3.1/579d009ffc9063af4afd5000a9e73dfba39a1f1c}
 
-  '@navikt/ds-css@7.2.1':
-    resolution: {integrity: sha512-0SRFwm2Iyuz4noxL98h5LObklJ9oaxiLsCSECOY2LohMy+XcfOoQQ/6eeGhTURqmLSnJYsdTFs2peV0ZX+Ukig==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.2.1/4201a8c184239da9b0c546a94a25ee985c89fc3c}
+  '@navikt/ds-css@7.3.1':
+    resolution: {integrity: sha512-Q/vzLpPvtzUEmrK2s6dH/gtPTcj11AlEBFxG6tMzLUcynB7R0olXgYBfdD7kTPy3F2Y6PWr5ihQvV4tXPIgpww==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.3.1/ed21257bbfa4a5615ce55bfe7f5175b20bf42d8f}
 
-  '@navikt/ds-react@7.2.1':
-    resolution: {integrity: sha512-zVewWWjBCiHd1TchuzBlQVYBYjBJ0v5vbnvXvDaP0I4zbG4b+Fb71F+Oxn7HyaboXEkXk0TlZjerylEdtc28zg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.2.1/d8283fca0fea8efb9281f54dc08e424d4f4e0078}
+  '@navikt/ds-react@7.3.1':
+    resolution: {integrity: sha512-5HetHrvZHwjTr/CfOy9fES018vYgU5Jgb+VE+P+U0SuLU2k+86+mJ5fhsXQn6ipSqBDPGOB0IMw0LY8n/eVkFw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.3.1/0aa76367ae5294f4ed2f598218240efa7a51e136}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
 
-  '@navikt/ds-tailwind@7.2.1':
-    resolution: {integrity: sha512-7bqcrrXi2rjxNKi5WJU4qrFL2dCMkOH351vPvLh9I0bAlI3fW82UAHETBqzcCawau/bEzPbiwyYu6oghF8P1Gg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.2.1/7638ffa8beb7bef0d8cf7989cb2bf610e21b652e}
+  '@navikt/ds-tailwind@7.3.1':
+    resolution: {integrity: sha512-0EL3ora3SQFDu4srJVIOjXzAQ6faqo0sGTn6KTtXXP8o783DTNND2lORNYEzRyq6JBL+rS4nHdaPr0y6IXSj9A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.3.1/4848a8f400c30e54563e03ff1dbd12e55d3dc010}
 
-  '@navikt/ds-tokens@7.2.1':
-    resolution: {integrity: sha512-u2Aog1I10uWKJra4aFwXiMvgo/f23E7No9l0RhzCRIatQ9qFjaaV1koEtftGBS0VbkVmRgjSeSkGb4SzgiUSbw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.2.1/0df577b32219208add6ca8646449fb558faad282}
+  '@navikt/ds-tokens@7.3.1':
+    resolution: {integrity: sha512-zYoEz4YMfKiyi2CwYFWRjPTkzmeNZqE5XRb8CL0xkZMj3ESkn0M7XSEk2AKfe7BIN7q3kItD4bMsmCruTmr1pQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.3.1/806b85e70ee44c469422bf5b415a4e9c026d981d}
 
   '@navikt/nav-dekoratoren-moduler@2.1.6':
     resolution: {integrity: sha512-P9c+a8/HuIY6XScNr/DVS7lZ0UtndzYAMEaIVdAzCOrG4SudY4tXSp+44g1V58GKml1RjdzOfGVF4hxmFv3SiA==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/2.1.6/049e1daeecff43519e41e387f21fd7e3634c2bd3}
@@ -3305,9 +3305,9 @@ snapshots:
       '@babel/highlight': 7.24.7
       picocolors: 1.1.0
 
-  '@babel/code-frame@7.25.7':
+  '@babel/code-frame@7.25.9':
     dependencies:
-      '@babel/highlight': 7.25.7
+      '@babel/highlight': 7.25.9
       picocolors: 1.1.1
 
   '@babel/compat-data@7.25.2': {}
@@ -3377,7 +3377,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.24.7': {}
 
-  '@babel/helper-validator-identifier@7.25.7': {}
+  '@babel/helper-validator-identifier@7.25.9': {}
 
   '@babel/helper-validator-option@7.24.8': {}
 
@@ -3393,9 +3393,9 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.1.0
 
-  '@babel/highlight@7.25.7':
+  '@babel/highlight@7.25.9':
     dependencies:
-      '@babel/helper-validator-identifier': 7.25.7
+      '@babel/helper-validator-identifier': 7.25.9
       chalk: 2.4.2
       js-tokens: 4.0.0
       picocolors: 1.1.1
@@ -3422,7 +3422,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@babel/runtime@7.25.7':
+  '@babel/runtime@7.25.9':
     dependencies:
       regenerator-runtime: 0.14.1
 
@@ -3686,16 +3686,16 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@7.2.1': {}
+  '@navikt/aksel-icons@7.3.1': {}
 
-  '@navikt/ds-css@7.2.1': {}
+  '@navikt/ds-css@7.3.1': {}
 
-  '@navikt/ds-react@7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@navikt/ds-react@7.3.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/aksel-icons': 7.2.1
-      '@navikt/ds-tokens': 7.2.1
+      '@navikt/aksel-icons': 7.3.1
+      '@navikt/ds-tokens': 7.3.1
       '@types/react': 18.3.11
       clsx: 2.1.1
       date-fns: 3.6.0
@@ -3704,9 +3704,9 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@7.2.1': {}
+  '@navikt/ds-tailwind@7.3.1': {}
 
-  '@navikt/ds-tokens@7.2.1': {}
+  '@navikt/ds-tokens@7.3.1': {}
 
   '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.1)(react@18.3.1)':
     dependencies:
@@ -3921,8 +3921,8 @@ snapshots:
 
   '@testing-library/dom@10.4.0':
     dependencies:
-      '@babel/code-frame': 7.25.7
-      '@babel/runtime': 7.25.7
+      '@babel/code-frame': 7.25.9
+      '@babel/runtime': 7.25.9
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
