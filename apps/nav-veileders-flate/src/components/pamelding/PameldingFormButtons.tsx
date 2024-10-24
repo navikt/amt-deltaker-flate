@@ -43,6 +43,7 @@ export const PameldingFormButtons = ({
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
   const kanDeleUtkast = pamelding.digitalBruker && pamelding.harAdresse
+  const harAdresse = pamelding.harAdresse
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -65,7 +66,7 @@ export const PameldingFormButtons = ({
     useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
 
-  const delEndringKappTekst = erUtkast
+  const delEndringKnappTekst = erUtkast
     ? 'Del endring'
     : 'Del utkast og gjør klar påmelding'
 
@@ -143,11 +144,11 @@ export const PameldingFormButtons = ({
               onClick={handleSubmit(handleFormSubmit, onSubmitError)}
               loading={sendSomForslagState === DeferredFetchState.LOADING}
             >
-              {delEndringKappTekst}
+              {delEndringKnappTekst}
             </Button>
             {erKladd && (
               <div className="ml-2">
-                <HelpText aria-label={`Hjelpetekst: ${delEndringKappTekst}`}>
+                <HelpText aria-label={`Hjelpetekst: ${delEndringKnappTekst}`}>
                   Når utkastet deles med bruker så kan de lese gjennom hva du
                   foreslår å sende til arrangøren. Bruker blir varslet og kan
                   finne lenke på innlogget nav.no og gjennom aktivitetsplanen.
@@ -157,7 +158,14 @@ export const PameldingFormButtons = ({
             )}
           </div>
         )}
-        {!kanDeleUtkast && (
+        {!kanDeleUtkast && harAdresse && (
+          <div className="flex items-center">
+            <Alert variant="warning" size="small">
+              Kan ikke kontaktes digitalt
+            </Alert>
+          </div>
+        )}
+        {!kanDeleUtkast && !harAdresse && (
           <div className="flex items-center">
             <Alert variant="warning" size="small">
               <BodyLong className="mt-1" size="small">
