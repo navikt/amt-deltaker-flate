@@ -52,6 +52,7 @@ export const pameldingSchema = z.object({
   adresseDelesMedArrangor: z.boolean(),
   kanEndres: z.boolean(),
   digitalBruker: z.boolean(),
+  harAdresse: z.boolean(),
   maxVarighet: z.number().nullable(),
   softMaxVarighet: z.number().nullable(),
   forslag: z.array(forslagSchema),

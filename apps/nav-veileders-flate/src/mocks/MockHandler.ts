@@ -181,6 +181,7 @@ export class MockHandler {
       adresseDelesMedArrangor: true,
       kanEndres: true,
       digitalBruker: true,
+      harAdresse: true,
       maxVarighet: dayjs
         .duration(maxVarighetMnd ?? 12, 'month')
         .asMilliseconds(),

@@ -1,4 +1,4 @@
-import { Alert, Button, HelpText, HStack } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, HelpText, HStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
@@ -42,7 +42,7 @@ export const PameldingFormButtons = ({
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
   const erKladd = !erUtkast
-  const kanDeleUtkast = pamelding.digitalBruker
+  const kanDeleUtkast = pamelding.digitalBruker && pamelding.harAdresse
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -160,7 +160,12 @@ export const PameldingFormButtons = ({
         {!kanDeleUtkast && (
           <div className="flex items-center">
             <Alert variant="warning" size="small">
-              Kan ikke kontaktes digitalt
+              <BodyLong className="mt-1" size="small">
+                Personen er reservert mot digital kommunikasjon, og har heller
+                ingen registrert kontaktadresse. De vil derfor ikke motta et
+                varsel om vedtaket. Vedtaket som journalføres i Gosys må skrives
+                ut og leveres til personen på annen måte.
+              </BodyLong>
             </Alert>
           </div>
         )}
