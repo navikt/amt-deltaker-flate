@@ -60,6 +60,7 @@ export function Endringsmodal<T extends EndringRequest>({
           : endringstekst(endringstype)
       }}
       onClose={onClose}
+      className="w-[600px]"
     >
       {visAvvisningsmodal && forslag ? (
         <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
