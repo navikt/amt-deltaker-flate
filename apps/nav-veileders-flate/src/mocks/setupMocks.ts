@@ -16,6 +16,7 @@ import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
+import { KOMET_ER_MASTER } from '../api/data/feature-toggle.ts'
 
 const handler = new MockHandler()
 
@@ -238,5 +239,12 @@ export const worker = setupWorker(
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
     await delay(1000)
     return handler.getHistorikk()
+  }),
+  http.get('/amt-deltaker-bff/unleash/api/feature', async () => {
+    await delay(1000)
+    const toggles = {
+      [KOMET_ER_MASTER]: true
+    }
+    return HttpResponse.json(toggles)
   })
 )

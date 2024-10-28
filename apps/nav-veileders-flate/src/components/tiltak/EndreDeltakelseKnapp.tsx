@@ -12,6 +12,7 @@ import {
 } from 'deltaker-flate-common'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
+import { useFeatureToggle } from '../../hooks/useFeatureToggle.ts'
 
 export const EndreDeltakelseKnapp = () => {
   const { pamelding, setPamelding } = usePameldingContext()
@@ -19,6 +20,10 @@ export const EndreDeltakelseKnapp = () => {
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [forslag, setForslag] = useState<Forslag | null>(null)
+  const { erKometMasterForTiltak } = useFeatureToggle()
+  const enableEndreDeltakelse = erKometMasterForTiltak(
+    pamelding.deltakerliste.tiltakstype
+  )
 
   const openModal = (type: EndreDeltakelseType) => {
     setModalType(type)
@@ -47,17 +52,19 @@ export const EndreDeltakelseKnapp = () => {
   return (
     <>
       <Dropdown>
-        <Button
-          ref={endreDeltakelseRef}
-          as={Dropdown.Toggle}
-          variant="secondary"
-          size="small"
-          className="w-fit"
-          data-testid="endre_deltakelse_knapp"
-          icon={<PencilIcon aria-hidden />}
-        >
-          Endre deltakelse
-        </Button>
+        {enableEndreDeltakelse && (
+          <Button
+            ref={endreDeltakelseRef}
+            as={Dropdown.Toggle}
+            variant="secondary"
+            size="small"
+            className="w-fit"
+            data-testid="endre_deltakelse_knapp"
+            icon={<PencilIcon aria-hidden />}
+          >
+            Endre deltakelse
+          </Button>
+        )}
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             {getEndreDeltakelsesValg(pamelding).map((valgType) => (
