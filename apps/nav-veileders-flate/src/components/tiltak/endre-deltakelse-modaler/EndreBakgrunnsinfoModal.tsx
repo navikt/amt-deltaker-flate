@@ -36,6 +36,10 @@ export const EndreBakgrunnsinfoModal = ({
       )
       return null
     }
+    if (bakgrunnsinformasjon === pamelding.bakgrunnsinformasjon) {
+      setError('Bakgrunnsinfo inneholder ingen endringer')
+      return null
+    }
     return {
       deltakerId: pamelding.deltakerId,
       enhetId,

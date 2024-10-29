@@ -64,6 +64,9 @@ export const ForlengDeltakelseModal = ({
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
+  const [errorIngenEndring, setErrorIngenEndring] = useState<string | null>(
+    null
+  )
 
   const sluttdato = useSluttdato({
     deltaker: pamelding,
@@ -98,6 +101,14 @@ export const ForlengDeltakelseModal = ({
     }
 
     if (!begrunnelse.valider()) {
+      hasError = true
+    }
+
+    if (
+      sluttdato.sluttdato &&
+      formatDateToDtoStr(sluttdato.sluttdato) === pamelding.sluttdato
+    ) {
+      setErrorIngenEndring('Ny sluttdato kan ikke være den samme som før')
       hasError = true
     }
 
@@ -137,7 +148,7 @@ export const ForlengDeltakelseModal = ({
         startDato={sluttdatoFraDeltaker || undefined}
         sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
         errorVarighet={sluttdato.error}
-        errorSluttDato={null}
+        errorSluttDato={errorIngenEndring}
         defaultVarighet={valgtVarighet}
         defaultAnnetDato={
           sluttdatoFraForslag || getDateFromString(pamelding.sluttdato)
