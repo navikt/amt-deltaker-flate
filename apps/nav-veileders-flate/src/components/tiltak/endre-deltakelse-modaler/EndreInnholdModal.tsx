@@ -51,6 +51,18 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
+  const erInnholdLikt = () => {
+    const opprinneligInnhold = generateValgtInnholdKoder(pamelding)
+    return (
+      valgteInnhold.every((i) => opprinneligInnhold.includes(i)) &&
+      opprinneligInnhold.every((i) => valgteInnhold.includes(i))
+    ) // O(n2) ... fix...
+  }
+
+  const opprinneligAnnetBeskrivelse = innhold
+    .filter((i) => i.valgt)
+    .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+
   const validertRequest = () => {
     if (valgteInnhold.length <= 0) {
       setInnholdError('Du må velge innhold før du kan fortsette.')
@@ -68,6 +80,12 @@ export const EndreInnholdModal = ({
       setAnnetError(
         'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
       )
+      return null
+    } else if (
+      erInnholdLikt() &&
+      annetBeskrivelse === opprinneligAnnetBeskrivelse
+    ) {
+      setInnholdError('Ingen endring i innhold')
       return null
     } else {
       const endring: EndreInnholdRequest = {
