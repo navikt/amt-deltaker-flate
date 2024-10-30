@@ -1,19 +1,18 @@
+import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
 import {
-  Forslag,
   ApiFunction,
   DeferredFetchState,
   EndreDeltakelseType,
   EndringTypeIkon,
+  Forslag,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
 import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
-import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
+import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import AvvisningsmodalBody from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
@@ -115,7 +114,6 @@ function EndringsmodalBody<T extends EndringRequest>({
   return (
     <>
       <Modal.Body>
-        {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-6">
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Detail>
@@ -142,6 +140,11 @@ function EndringsmodalBody<T extends EndringRequest>({
         onConfirm={sendEndring}
         confirmLoading={state === DeferredFetchState.LOADING}
         disabled={state === DeferredFetchState.LOADING}
+        error={
+          error
+            ? `${error}${forslag ? '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, kan du avvise forslaget fra tiltaksarrangør øverst i skjemaet.' : ''}`
+            : undefined
+        }
       />
     </>
   )

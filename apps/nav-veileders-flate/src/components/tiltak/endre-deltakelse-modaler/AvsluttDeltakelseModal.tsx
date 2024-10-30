@@ -28,6 +28,7 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import dayjs from 'dayjs'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -229,9 +230,8 @@ const showHarDeltatt = (
   }
 
   const statusdato = pamelding.status.gyldigFra
-  const femtenDagerSiden = new Date()
-  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
-  return statusdato > femtenDagerSiden
+  const femtenDagerSiden = dayjs().subtract(15, 'days')
+  return dayjs(statusdato).isAfter(femtenDagerSiden)
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {

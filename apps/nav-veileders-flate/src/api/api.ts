@@ -173,6 +173,7 @@ export const endreDeltakelseIkkeAktuell = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke utføre endringen å sette til ikke aktuell.'
         handleError(message, deltakerId, response.status)
       }
@@ -198,6 +199,7 @@ export const endreDeltakelseReaktiver = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre til aktiv deltakelse.'
         handleError(message, deltakerId, response.status)
       }
@@ -230,6 +232,7 @@ export const endreDeltakelseForleng = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke forlenge deltakelsen.'
         handleError(message, deltakerId, response.status)
       }
@@ -255,6 +258,7 @@ export const endreDeltakelseStartdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre oppstartsdato.'
         handleError(message, deltakerId, response.status)
       }
@@ -280,6 +284,7 @@ export const endreDeltakelseSluttdato = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre sluttdato.'
         handleError(message, deltakerId, response.status)
       }
@@ -305,6 +310,7 @@ export const endreDeltakelseSluttarsak = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre sluttårsak.'
         handleError(message, deltakerId, response.status)
       }
@@ -330,6 +336,7 @@ export const avsluttDeltakelse = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke avslutte deltakelsen.'
         handleError(message, deltakerId, response.status)
       }
@@ -355,6 +362,7 @@ export const endreDeltakelseBakgrunnsinfo = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre bakgrunnsinfo..'
         handleError(message, deltakerId, response.status)
       }
@@ -380,6 +388,7 @@ export const endreDeltakelseInnhold = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre innhold.'
         handleError(message, deltakerId, response.status)
       }
@@ -405,6 +414,7 @@ export const endreDeltakelsesmengde = (
   })
     .then((response) => {
       if (response.status !== 200) {
+        handleNoChangeError(response.status)
         const message = 'Kunne ikke endre deltakelsesmengde.'
         handleError(message, deltakerId, response.status)
       }
@@ -532,4 +542,13 @@ const handleError = (
 ) => {
   logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
+}
+
+const handleNoChangeError = (responseStatus: number) => {
+  if (responseStatus === 409) {
+    throw new Error(
+      'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket. \nFor å lagre må minst ett felt i skjemaet være ulikt nåværende deltakelse.'
+    )
+  }
+  return null
 }
