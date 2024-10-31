@@ -17,6 +17,7 @@ export const fetchToggles = (): Promise<FeatureToggles> => {
       Accept: 'application/json'
     }
   })
+    .then((response) => response.json())
     .then(featureToggleSchema.parse)
     .catch((error) => {
       logError('Kunne ikke parse featureToggleSchema:', error)
