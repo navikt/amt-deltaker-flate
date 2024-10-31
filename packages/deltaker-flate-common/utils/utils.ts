@@ -102,3 +102,11 @@ export const visDeltakelsesmengde = (tiltakstype: Tiltakstype) => {
 export const logError = (message: string, ...args: unknown[]) => {
   console.error(`AMT_LOGS: ${message}`, args)
 }
+
+export const haveSameContents = (list1: unknown[], list2: unknown[]) =>
+  list1.length === list2.length &&
+  [...new Set([...list1, ...list2])].every(
+    (v) =>
+      list1.filter((e) => e === v).length ===
+      list2.filter((e) => e === v).length
+  )

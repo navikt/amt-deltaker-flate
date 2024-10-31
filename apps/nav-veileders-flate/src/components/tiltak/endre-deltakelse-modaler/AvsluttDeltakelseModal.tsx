@@ -106,10 +106,18 @@ export const AvsluttDeltakelseModal = ({
         forslagId: forslag ? forslag.id : null
       }
 
+      const harEndring = !(
+        aarsak.aarsak === pamelding.status.aarsak?.type &&
+        (skalViseSluttDato
+          ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+          : false)
+      )
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring: harEndring
       }
     }
     return null

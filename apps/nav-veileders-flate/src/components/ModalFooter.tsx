@@ -50,8 +50,9 @@ export const ModalFooter = ({
           size="small"
           variant="error"
           className="w-auto !ml-0 whitespace-pre-wrap"
+          role="alert"
         >
-          <Heading size="xsmall" level="3">
+          <Heading size="xsmall" level="2">
             {errorHeading ?? 'Kunne ikke lagre'}
           </Heading>
           {error}

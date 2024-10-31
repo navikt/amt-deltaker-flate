@@ -137,6 +137,11 @@ export const EndreOppstartsdatoModal = ({
     }
 
     if (!hasError && !errorStartdato && startdato) {
+      const harEndring = !(
+        dayjs(startdato).isSame(pamelding.startdato, 'day') &&
+        dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+      )
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
@@ -147,7 +152,8 @@ export const EndreOppstartsdatoModal = ({
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id
-        }
+        },
+        harEndring: harEndring
       }
     }
     return null

@@ -45,7 +45,8 @@ export const IkkeAktuellModal = ({
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring: true
       }
     }
     return null

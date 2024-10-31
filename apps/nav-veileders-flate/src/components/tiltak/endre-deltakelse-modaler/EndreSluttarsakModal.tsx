@@ -53,10 +53,16 @@ export const EndreSluttarsakModal = ({
         forslagId: forslag?.id
       }
 
+      const harEndring = !(
+        aarsak.aarsak === pamelding.status.aarsak?.type &&
+        aarsak.beskrivelse === pamelding.status.aarsak.beskrivelse
+      )
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring: harEndring
       }
     }
     return null
