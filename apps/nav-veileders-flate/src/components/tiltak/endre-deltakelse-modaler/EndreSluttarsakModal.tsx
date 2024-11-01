@@ -44,10 +44,11 @@ export const EndreSluttarsakModal = ({
       aarsak.valider() &&
       aarsak.aarsak !== undefined
     ) {
+      const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       const endring: EndreSluttarsakRequest = {
         aarsak: {
           type: aarsak.aarsak,
-          beskrivelse: aarsak.beskrivelse ?? null
+          beskrivelse: nyArsakBeskrivelse
         },
         begrunnelse: begrunnelse.begrunnelse,
         forslagId: forslag?.id
@@ -55,7 +56,7 @@ export const EndreSluttarsakModal = ({
 
       const harEndring = !(
         aarsak.aarsak === pamelding.status.aarsak?.type &&
-        aarsak.beskrivelse === pamelding.status.aarsak.beskrivelse
+        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
       )
 
       return {

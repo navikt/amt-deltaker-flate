@@ -43,9 +43,9 @@ export const EndreInnholdModal = ({
   const [innholdError, setInnholdError] = useState<string | null>(null)
   const { enhetId } = useAppContext()
 
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<
-    string | null | undefined
-  >(getAnnetBeskrivelseFraInnhold(innhold))
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null>(
+    getAnnetBeskrivelseFraInnhold(innhold)
+  )
   const [annetError, setAnnetError] = useState<string | null>(null)
 
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
@@ -157,7 +157,8 @@ export const EndreInnholdModal = ({
 }
 
 const getAnnetBeskrivelseFraInnhold = (innhold: Innhold[]) => {
-  return innhold
+  const annetBeskrivelse = innhold
     .filter((i) => i.valgt)
     .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+  return annetBeskrivelse ?? null
 }

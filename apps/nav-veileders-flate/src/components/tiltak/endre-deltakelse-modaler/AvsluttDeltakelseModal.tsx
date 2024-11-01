@@ -92,10 +92,11 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (!hasError && aarsak.aarsak !== undefined) {
+      const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       const endring: AvsluttDeltakelseRequest = {
         aarsak: {
           type: aarsak.aarsak,
-          beskrivelse: aarsak.beskrivelse ?? null
+          beskrivelse: nyArsakBeskrivelse
         },
         sluttdato:
           skalViseSluttDato && sluttdato.sluttdato
@@ -108,6 +109,7 @@ export const AvsluttDeltakelseModal = ({
 
       const harEndring = !(
         aarsak.aarsak === pamelding.status.aarsak?.type &&
+        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse &&
         (skalViseSluttDato
           ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
           : false)
