@@ -29,6 +29,7 @@ import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import dayjs from 'dayjs'
+import { deltakerHarSluttetEllerFullfort } from '../../../utils/statusutils.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -107,9 +108,15 @@ export const AvsluttDeltakelseModal = ({
         forslagId: forslag ? forslag.id : null
       }
 
-      const harEndring = !(skalViseSluttDato
-        ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-        : false)
+      const harLikArsak = deltakerHarSluttetEllerFullfort(pamelding.status.type)
+        ? pamelding.status.aarsak?.type === aarsak.aarsak &&
+          pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
+        : false
+      const harEndring =
+        !harLikArsak &&
+        !(skalViseSluttDato
+          ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+          : false)
 
       return {
         deltakerId: pamelding.deltakerId,
