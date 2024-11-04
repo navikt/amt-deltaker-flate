@@ -1,6 +1,7 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AvsluttDeltakelseForslag,
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
@@ -112,8 +113,10 @@ export const AvsluttDeltakelseModal = ({
         ? pamelding.status.aarsak?.type === aarsak.aarsak &&
           pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
         : false
+
       const harEndring =
-        !harLikArsak &&
+        !harLikArsak ||
+        pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
         !(skalViseSluttDato
           ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
           : false)

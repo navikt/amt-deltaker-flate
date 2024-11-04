@@ -102,10 +102,6 @@ export const ForlengDeltakelseModal = ({
     }
 
     if (!hasError && sluttdato.sluttdato) {
-      const harEndring = !dayjs(sluttdato.sluttdato).isSame(
-        pamelding.sluttdato,
-        'day'
-      )
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
@@ -114,7 +110,10 @@ export const ForlengDeltakelseModal = ({
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null
         },
-        harEndring: harEndring
+        harEndring: !dayjs(sluttdato.sluttdato).isSame(
+          pamelding.sluttdato,
+          'day'
+        )
       }
     }
     return null

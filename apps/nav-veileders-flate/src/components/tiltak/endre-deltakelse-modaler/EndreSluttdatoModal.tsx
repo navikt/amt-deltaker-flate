@@ -81,16 +81,14 @@ export const EndreSluttdatoModal = ({
         begrunnelse: begrunnelse.begrunnelse || null
       }
 
-      const harEndring = !dayjs(sluttdato.sluttdato).isSame(
-        pamelding.sluttdato,
-        'day'
-      )
-
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
         body: endring,
-        harEndring: harEndring
+        harEndring: !dayjs(sluttdato.sluttdato).isSame(
+          pamelding.sluttdato,
+          'day'
+        )
       }
     }
     return null
