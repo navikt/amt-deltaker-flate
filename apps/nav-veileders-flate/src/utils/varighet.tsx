@@ -1,9 +1,9 @@
-import { BodyLong } from '@navikt/ds-react'
+import { BodyLong, List } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  Tiltakstype,
   getDateFromString,
-  isValidDate
+  isValidDate,
+  Tiltakstype
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import { dateStrToNullableDate } from './utils'
@@ -241,6 +241,29 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
       </BodyLong>
     )
   }
+  if (
+    tiltakstype === Tiltakstype.ARBRRHDAG ||
+    tiltakstype === Tiltakstype.AVKLARAG ||
+    tiltakstype === Tiltakstype.DIGIOPPARB
+  ) {
+    return (
+      <BodyLong size="small">
+        Ny sluttdato er utenfor hovedregelen for maks varighet. Denne godkjennes
+        kun dersom minst ett av følgende krav er oppfylt:
+        <br></br>
+        <List as="ul" size="small">
+          <List.Item>
+            Deltakeren har rett på lovbestemt ferie, og skal stå innmeldt på
+            tiltaket i ferieperioden.
+          </List.Item>
+          <List.Item>
+            Arrangøren har stengt, og deltakeren skal stå innmeldt på tiltaket i
+            stengeperioden.
+          </List.Item>
+        </List>
+      </BodyLong>
+    )
+  }
   return null
 }
 
@@ -298,10 +321,16 @@ export const getSkalBekrefteVarighet = (
       ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')
       : null
   const maxVarighetDato = getSisteGyldigeSluttDato(pamelding, startdato)
+  const tiltakstyperMedSoftMaxVarighet = [
+    Tiltakstype.ARBFORB,
+    Tiltakstype.INDOPPFAG,
+    Tiltakstype.ARBRRHDAG,
+    Tiltakstype.AVKLARAG,
+    Tiltakstype.DIGIOPPARB
+  ]
 
   if (
-    (tiltakstype === Tiltakstype.ARBFORB ||
-      tiltakstype === Tiltakstype.INDOPPFAG) &&
+    tiltakstyperMedSoftMaxVarighet.includes(tiltakstype) &&
     nySluttDato &&
     softMaxVarighetDato
   ) {
