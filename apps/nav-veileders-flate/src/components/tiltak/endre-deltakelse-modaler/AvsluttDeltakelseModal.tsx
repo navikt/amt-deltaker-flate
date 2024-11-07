@@ -114,12 +114,14 @@ export const AvsluttDeltakelseModal = ({
           pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
         : false
 
+      const harEndretSluttDato = !(skalViseSluttDato
+        ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+        : false)
+
       const harEndring =
-        !harLikArsak ||
-        pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
-        !(skalViseSluttDato
-          ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-          : false)
+        pamelding.status.type === DeltakerStatusType.DELTAR
+          ? true
+          : !harLikArsak || harEndretSluttDato
 
       return {
         deltakerId: pamelding.deltakerId,
