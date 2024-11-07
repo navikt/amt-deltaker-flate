@@ -149,7 +149,7 @@ function EndringsmodalBody<T extends EndringRequest>({
         disabled={state === DeferredFetchState.LOADING}
         error={
           requestError
-            ? `${requestError}${forslag ? '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, kan du avvise forslaget fra tiltaksarrangør øverst i skjemaet.' : ''}`
+            ? `${requestError}${forslag ? '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.' : ''}`
             : (error ?? undefined)
         }
       />
