@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
 
 export interface PameldingContextProps {
@@ -35,6 +35,12 @@ const PameldingContextProvider = ({
     pamelding,
     setPamelding
   }
+
+  useEffect(() => {
+    if (initialPamelding.deltakerId !== pamelding.deltakerId) {
+      setPamelding(initialPamelding)
+    }
+  }, [initialPamelding])
 
   return (
     <PameldingContext.Provider value={contextValue}>
