@@ -43,7 +43,7 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 export const TiltakPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
   const [searchParams, setSearchParams] = useSearchParams()
-  const showEndrnger = searchParams.get('showEndrnger') === ''
+  const visEndringer = searchParams.get('vis_endringer') === ''
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -160,7 +160,7 @@ export const TiltakPage = () => {
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
-          open={showEndrnger}
+          open={visEndringer}
           onModalClose={() => {
             setSearchParams()
           }}
