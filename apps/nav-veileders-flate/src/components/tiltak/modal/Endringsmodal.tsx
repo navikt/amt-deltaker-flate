@@ -1,25 +1,25 @@
+import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
 import {
-  Forslag,
   ApiFunction,
   DeferredFetchState,
   EndreDeltakelseType,
   EndringTypeIkon,
+  Forslag,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
 import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
-import { ErrorPage } from '../../../pages/ErrorPage'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { ModalFooter } from '../../ModalFooter'
+import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import AvvisningsmodalBody from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
   enhetId: string
   body: T
+  harEndring: boolean
 }
 
 interface Props<T extends EndringRequest> {
@@ -102,12 +102,18 @@ function EndringsmodalBody<T extends EndringRequest>({
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
+  const [requestError, setRequestError] = useState<string>()
 
   const sendEndring = () => {
     const request = validertRequest()
-    if (request) {
+    if (request && request.harEndring) {
       doFetch(request.deltakerId, request.enhetId, request.body).then((data) =>
         onSend(data)
+      )
+      setRequestError(undefined)
+    } else if (request && !request.harEndring) {
+      setRequestError(
+        'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket. \nFor å lagre må minst ett felt i skjemaet være ulikt nåværende deltakelse.'
       )
     }
   }
@@ -115,7 +121,6 @@ function EndringsmodalBody<T extends EndringRequest>({
   return (
     <>
       <Modal.Body>
-        {state === DeferredFetchState.ERROR && <ErrorPage message={error} />}
         <Detail className="mb-6">
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Detail>
@@ -142,6 +147,11 @@ function EndringsmodalBody<T extends EndringRequest>({
         onConfirm={sendEndring}
         confirmLoading={state === DeferredFetchState.LOADING}
         disabled={state === DeferredFetchState.LOADING}
+        error={
+          requestError
+            ? `${requestError}${forslag ? '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.' : ''}`
+            : (error ?? undefined)
+        }
       />
     </>
   )

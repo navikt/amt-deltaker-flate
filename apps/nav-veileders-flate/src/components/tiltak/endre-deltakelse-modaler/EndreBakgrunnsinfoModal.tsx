@@ -41,7 +41,8 @@ export const EndreBakgrunnsinfoModal = ({
       enhetId,
       body: {
         bakgrunnsinformasjon
-      }
+      },
+      harEndring: bakgrunnsinformasjon !== pamelding.bakgrunnsinformasjon
     }
   }
 

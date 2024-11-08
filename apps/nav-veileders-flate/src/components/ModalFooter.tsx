@@ -1,10 +1,12 @@
-import { Button, Modal } from '@navikt/ds-react'
+import { Alert, Button, Heading, Modal } from '@navikt/ds-react'
 
 interface Props {
   confirmButtonText: string
   cancelButtonText?: string
   disabled?: boolean
   confirmLoading?: boolean
+  errorHeading?: string
+  error?: string
   onConfirm: () => void
   onCancel?: () => void
 }
@@ -14,11 +16,13 @@ export const ModalFooter = ({
   cancelButtonText,
   disabled,
   confirmLoading,
+  errorHeading,
+  error,
   onConfirm,
   onCancel
 }: Props) => {
   return (
-    <Modal.Footer className=" flex-wrap flex-row  ">
+    <Modal.Footer className="flex-wrap flex-col">
       <div className="flex gap-4 items-center justify-start">
         <Button
           type="button"
@@ -41,6 +45,19 @@ export const ModalFooter = ({
           </Button>
         )}
       </div>
+      {error && (
+        <Alert
+          size="small"
+          variant="error"
+          className="w-auto !ml-0 whitespace-pre-wrap"
+          role="alert"
+        >
+          <Heading size="xsmall" level="2">
+            {errorHeading ?? 'Kunne ikke lagre'}
+          </Heading>
+          {error}
+        </Alert>
+      )}
     </Modal.Footer>
   )
 }

@@ -68,6 +68,11 @@ export const EndreDeltakelsesmengdeModal = ({
       return null
     }
 
+    const harEndring = !(
+      deltakelsesprosent === pamelding.deltakelsesprosent &&
+      dagerPerUke === pamelding.dagerPerUke
+    )
+
     const body: EndreDeltakelsesmengdeRequest = {
       deltakelsesprosent: deltakelsesprosent,
       dagerPerUke:
@@ -77,7 +82,12 @@ export const EndreDeltakelsesmengdeModal = ({
       begrunnelse: begrunnelse.begrunnelse ?? null,
       forslagId: forslag?.id ?? null
     }
-    return { deltakerId: pamelding.deltakerId, enhetId, body }
+    return {
+      deltakerId: pamelding.deltakerId,
+      enhetId,
+      body,
+      harEndring: harEndring
+    }
   }
 
   const handleProsentEndret = (nyProsent: number | undefined) => {
@@ -91,18 +101,8 @@ export const EndreDeltakelsesmengdeModal = ({
     prosent: number | null,
     dagerPerUke: number | null
   ) => {
-    const errorProsent = getProsentError(
-      prosent,
-      dagerPerUke,
-      pamelding.dagerPerUke,
-      pamelding.deltakelsesprosent
-    )
-    const errorDager = getDagerPerUkeError(
-      prosent,
-      dagerPerUke,
-      pamelding.dagerPerUke,
-      pamelding.deltakelsesprosent
-    )
+    const errorProsent = getProsentError(prosent)
+    const errorDager = getDagerPerUkeError(prosent, dagerPerUke)
     setDeltakelsesprosentError(errorProsent)
     setDagerPerUkeError(errorDager)
     if (errorDager || errorProsent) {

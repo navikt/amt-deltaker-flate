@@ -1,11 +1,15 @@
-import { Forslag, EndreDeltakelseType } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  EndreDeltakelseType,
+  Forslag
+} from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse
@@ -28,6 +32,9 @@ export const IkkeAktuellModal = ({
   const { enhetId } = useAppContext()
 
   const validertRequest = () => {
+    if (pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL) {
+      return null
+    }
     if (
       aarsak.valider() &&
       begrunnelse.valider() &&
@@ -45,7 +52,9 @@ export const IkkeAktuellModal = ({
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring:
+          pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART
       }
     }
     return null

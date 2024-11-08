@@ -1,6 +1,7 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AvsluttDeltakelseForslag,
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
@@ -28,6 +29,8 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import dayjs from 'dayjs'
+import { deltakerHarSluttetEllerFullfort } from '../../../utils/statusutils.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -91,10 +94,11 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (!hasError && aarsak.aarsak !== undefined) {
+      const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       const endring: AvsluttDeltakelseRequest = {
         aarsak: {
           type: aarsak.aarsak,
-          beskrivelse: aarsak.beskrivelse ?? null
+          beskrivelse: nyArsakBeskrivelse
         },
         sluttdato:
           skalViseSluttDato && sluttdato.sluttdato
@@ -105,10 +109,25 @@ export const AvsluttDeltakelseModal = ({
         forslagId: forslag ? forslag.id : null
       }
 
+      const harLikArsak = deltakerHarSluttetEllerFullfort(pamelding.status.type)
+        ? pamelding.status.aarsak?.type === aarsak.aarsak &&
+          pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
+        : false
+
+      const harEndretSluttDato = !(skalViseSluttDato
+        ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+        : false)
+
+      const harEndring =
+        pamelding.status.type === DeltakerStatusType.DELTAR
+          ? true
+          : !harLikArsak || harEndretSluttDato
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring: harEndring
       }
     }
     return null
@@ -229,9 +248,8 @@ const showHarDeltatt = (
   }
 
   const statusdato = pamelding.status.gyldigFra
-  const femtenDagerSiden = new Date()
-  femtenDagerSiden.setDate(femtenDagerSiden.getDate() - 15)
-  return statusdato > femtenDagerSiden
+  const femtenDagerSiden = dayjs().subtract(15, 'days')
+  return dayjs(statusdato).isAfter(femtenDagerSiden)
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {

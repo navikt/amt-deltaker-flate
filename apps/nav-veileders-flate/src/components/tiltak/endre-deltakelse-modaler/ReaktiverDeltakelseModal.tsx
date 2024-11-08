@@ -48,7 +48,8 @@ export const ReaktiverDeltakelseModal = ({
         enhetId,
         body: {
           begrunnelse: begrunnelse.begrunnelse
-        }
+        },
+        harEndring: true
       }
     }
     return null

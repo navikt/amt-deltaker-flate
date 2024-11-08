@@ -26,6 +26,7 @@ import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-reques
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
+import dayjs from 'dayjs'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -79,10 +80,15 @@ export const EndreSluttdatoModal = ({
         forslagId: forslag?.id,
         begrunnelse: begrunnelse.begrunnelse || null
       }
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring
+        body: endring,
+        harEndring: !dayjs(sluttdato.sluttdato).isSame(
+          pamelding.sluttdato,
+          'day'
+        )
       }
     }
     return null

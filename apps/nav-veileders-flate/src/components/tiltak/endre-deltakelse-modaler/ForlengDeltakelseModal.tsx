@@ -109,7 +109,11 @@ export const ForlengDeltakelseModal = ({
           sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null
-        }
+        },
+        harEndring: !dayjs(sluttdato.sluttdato).isSame(
+          pamelding.sluttdato,
+          'day'
+        )
       }
     }
     return null

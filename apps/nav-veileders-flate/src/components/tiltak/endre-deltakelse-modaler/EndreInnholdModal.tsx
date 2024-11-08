@@ -5,7 +5,12 @@ import {
   Heading,
   Textarea
 } from '@navikt/ds-react'
-import { EndreDeltakelseType, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
+import {
+  EndreDeltakelseType,
+  haveSameContents,
+  Innhold,
+  INNHOLD_TYPE_ANNET
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
@@ -38,12 +43,8 @@ export const EndreInnholdModal = ({
   const [innholdError, setInnholdError] = useState<string | null>(null)
   const { enhetId } = useAppContext()
 
-  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<
-    string | null | undefined
-  >(
-    innhold
-      .filter((i) => i.valgt)
-      .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+  const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null>(
+    getAnnetBeskrivelseFraInnhold(innhold)
   )
   const [annetError, setAnnetError] = useState<string | null>(null)
 
@@ -77,10 +78,17 @@ export const EndreInnholdModal = ({
           annetBeskrivelse
         )
       }
+
+      const harEndring = !(
+        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
+        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
+      )
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
-        body: endring
+        body: endring,
+        harEndring: harEndring
       }
     }
   }
@@ -146,4 +154,11 @@ export const EndreInnholdModal = ({
       </section>
     </Endringsmodal>
   )
+}
+
+const getAnnetBeskrivelseFraInnhold = (innhold: Innhold[]) => {
+  const annetBeskrivelse = innhold
+    .filter((i) => i.valgt)
+    .find((i) => i.innholdskode === INNHOLD_TYPE_ANNET)?.beskrivelse
+  return annetBeskrivelse ?? null
 }
