@@ -254,7 +254,8 @@ export class MockHandler {
           sluttdato: dayjs(sluttdato).toDate(),
           aarsak: {
             type: ForslagEndringAarsakType.Syk
-          }
+          },
+          harDeltatt: true
         },
         status: {
           type: ForslagStatusType.VenterPaSvar

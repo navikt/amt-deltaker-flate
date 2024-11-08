@@ -1,7 +1,7 @@
 import { Alert, Button } from '@navikt/ds-react'
 import { HistorikkModal } from './HistorikkModal'
 import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   DeferredFetchState,
   useDeferredFetch
@@ -11,17 +11,21 @@ import { Tiltakstype } from '../../model/deltaker'
 interface Props {
   deltakerId: string
   tiltakstype: Tiltakstype
+  open?: boolean
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
+  onModalClose: () => void
 }
 
 export const SeEndringer = ({
   deltakerId,
   tiltakstype,
+  open,
   className,
-  fetchHistorikk
+  fetchHistorikk,
+  onModalClose
 }: Props) => {
-  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
+  const [historikkModalOpen, setHistorikkModalOpen] = useState(open ?? false)
 
   const {
     data: historikk,
@@ -30,9 +34,15 @@ export const SeEndringer = ({
     doFetch: doFetchHistorikk
   } = useDeferredFetch(fetchHistorikk)
 
-  const seEndringer = () => {
+  const hentEndringer = () => {
     doFetchHistorikk(deltakerId).then(() => setHistorikkModalOpen(true))
   }
+
+  useEffect(() => {
+    if (open && !historikk && state === DeferredFetchState.NOT_STARTED) {
+      hentEndringer()
+    }
+  }, [])
 
   return (
     <>
@@ -40,7 +50,7 @@ export const SeEndringer = ({
         className={className ?? ''}
         variant="secondary"
         size="small"
-        onClick={seEndringer}
+        onClick={hentEndringer}
         loading={state === DeferredFetchState.LOADING}
         disabled={state === DeferredFetchState.LOADING}
       >
@@ -57,7 +67,11 @@ export const SeEndringer = ({
         historikk={historikk}
         tiltakstype={tiltakstype}
         open={historikkModalOpen}
-        onClose={() => setHistorikkModalOpen(false)}
+        loading={state === DeferredFetchState.LOADING}
+        onClose={() => {
+          setHistorikkModalOpen(false)
+          onModalClose()
+        }}
       />
     </>
   )
