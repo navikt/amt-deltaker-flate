@@ -14,7 +14,7 @@ interface Props {
   open?: boolean
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
-  onModalClose: () => void
+  onModalClose?: () => void
 }
 
 export const SeEndringer = ({
@@ -70,7 +70,7 @@ export const SeEndringer = ({
         loading={state === DeferredFetchState.LOADING}
         onClose={() => {
           setHistorikkModalOpen(false)
-          onModalClose()
+          if (onModalClose) onModalClose()
         }}
       />
     </>
