@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import {
   dateStrToNullableDate,
@@ -33,7 +34,6 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -142,7 +142,7 @@ export const EndreOppstartsdatoModal = ({
         dayjs(startdato).isSame(pamelding.startdato, 'day') &&
         dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
       ) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       return {

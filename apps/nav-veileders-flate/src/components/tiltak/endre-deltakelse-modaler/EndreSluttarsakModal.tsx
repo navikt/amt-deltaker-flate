@@ -1,16 +1,16 @@
 import {
-  Forslag,
   DeltakerStatusType,
-  EndreDeltakelseType
+  EndreDeltakelseType,
+  Forslag
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
 import { EndreSluttarsakRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
@@ -50,7 +50,7 @@ export const EndreSluttarsakModal = ({
         aarsak.aarsak === pamelding.status.aarsak?.type &&
         nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
       ) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       const endring: EndreSluttarsakRequest = {

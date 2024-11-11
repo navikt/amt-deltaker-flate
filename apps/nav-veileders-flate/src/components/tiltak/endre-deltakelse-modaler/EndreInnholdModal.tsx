@@ -14,15 +14,15 @@ import {
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
+import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -76,7 +76,7 @@ export const EndreInnholdModal = ({
         haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
         annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
       ) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(false))
       }
 
       const endring: EndreInnholdRequest = {

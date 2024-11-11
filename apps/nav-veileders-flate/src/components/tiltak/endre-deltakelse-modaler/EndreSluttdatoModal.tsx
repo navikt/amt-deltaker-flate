@@ -1,7 +1,8 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import {
-  Forslag,
   EndreDeltakelseType,
+  Forslag,
   ForslagEndring,
   ForslagEndringType,
   SluttdatoForslag,
@@ -10,7 +11,10 @@ import {
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttdato } from '../../../api/api.ts'
+import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   dateStrToNullableDate,
   formatDateToDtoStr
@@ -21,13 +25,9 @@ import {
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { EndreSluttdatoRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
-import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import dayjs from 'dayjs'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
+import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -77,7 +77,7 @@ export const EndreSluttdatoModal = ({
     }
     if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       const endring: EndreSluttdatoRequest = {

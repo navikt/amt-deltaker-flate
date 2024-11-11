@@ -42,20 +42,11 @@ export const IkkeAktuellModal = ({
       begrunnelse.valider() &&
       aarsak.aarsak !== undefined
     ) {
-      // eslint-disable-next-line no-console
-      console.log(
-        'pamelding.status.type === DeltakerStatusType.DELTAR',
-        pamelding.status.type === DeltakerStatusType.DELTAR
-      )
-      // eslint-disable-next-line no-console
-      console.log('forslag', forslag)
       if (
         pamelding.status.type === DeltakerStatusType.DELTAR &&
         forslag &&
         harDeltattFemtenDagerEllerMer(pamelding)
       ) {
-        // eslint-disable-next-line no-console
-        console.log(' throw new Error(FEILMELDING_15_DAGER_SIDEN)')
         throw new Error(FEILMELDING_15_DAGER_SIDEN)
       }
 
@@ -110,14 +101,5 @@ export const IkkeAktuellModal = ({
 const harDeltattFemtenDagerEllerMer = (pamelding: PameldingResponse) => {
   const statusdato = pamelding.status.gyldigFra
   const femtenDagerSiden = dayjs().subtract(15, 'days')
-  // eslint-disable-next-line no-console
-  console.log('statusdato', statusdato)
-  // eslint-disable-next-line no-console
-  console.log('femtenDagerSiden', femtenDagerSiden)
-  // eslint-disable-next-line no-console
-  console.log(
-    'harDeltattFemtenDagerEllerMer',
-    dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
-  )
   return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
 }

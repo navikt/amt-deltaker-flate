@@ -1,9 +1,17 @@
 import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
-import { EndreDeltakelseType, getDateFromString } from 'deltaker-flate-common'
+import dayjs from 'dayjs'
+import {
+  EndreDeltakelseType,
+  Forslag,
+  ForslagEndringType,
+  getDateFromString
+} from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import {
   dateStrToNullableDate,
   formatDateToDtoStr,
@@ -18,12 +26,8 @@ import {
   VarighetValg
 } from '../../../utils/varighet.tsx'
 import { VarighetField } from '../VarighetField.tsx'
-import { Forslag, ForslagEndringType } from 'deltaker-flate-common'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
-import dayjs from 'dayjs'
-import { useSluttdato } from '../../../utils/use-sluttdato.ts'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -104,7 +108,7 @@ export const ForlengDeltakelseModal = ({
 
     if (!hasError && sluttdato.sluttdato) {
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       return {

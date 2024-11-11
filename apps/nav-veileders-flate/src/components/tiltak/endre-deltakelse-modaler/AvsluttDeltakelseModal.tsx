@@ -31,7 +31,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import dayjs from 'dayjs'
 import { deltakerHarSluttetEllerFullfort } from '../../../utils/statusutils.ts'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -124,7 +124,7 @@ export const AvsluttDeltakelseModal = ({
         harLikArsak &&
         harLikSluttDato
       ) {
-        throw new Error(FEILMELDING_INGEN_ENDRING)
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       return {

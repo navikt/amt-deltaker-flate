@@ -5,8 +5,8 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -39,7 +39,7 @@ export const EndreBakgrunnsinfoModal = ({
     }
 
     if (bakgrunnsinformasjon === pamelding.bakgrunnsinformasjon) {
-      throw new Error(FEILMELDING_INGEN_ENDRING)
+      throw new Error(getFeilmeldingIngenEndring(false))
     }
 
     return {

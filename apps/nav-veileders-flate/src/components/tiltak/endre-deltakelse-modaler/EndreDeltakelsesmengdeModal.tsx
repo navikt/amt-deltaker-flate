@@ -14,10 +14,10 @@ import {
   getDagerPerUkeError,
   getProsentError
 } from '../../../utils/deltakelsesmengdeValidering.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { NumberTextField } from '../../NumberTextField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -73,7 +73,7 @@ export const EndreDeltakelsesmengdeModal = ({
       deltakelsesprosent === pamelding.deltakelsesprosent &&
       (deltakelsesprosent === 100 || dagerPerUke === pamelding.dagerPerUke)
     ) {
-      throw new Error(FEILMELDING_INGEN_ENDRING)
+      throw new Error(getFeilmeldingIngenEndring(forslag !== null))
     }
 
     const body: EndreDeltakelsesmengdeRequest = {
