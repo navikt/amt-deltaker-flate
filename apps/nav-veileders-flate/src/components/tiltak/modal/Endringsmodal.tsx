@@ -100,7 +100,7 @@ function EndringsmodalBody<T extends EndringRequest>({
   harAdresse,
   children
 }: EndrinsmodalBodyProps<T>) {
-  const { state, error: fetchError, doFetch } = useDeferredFetch(apiFunction)
+  const { state, error, doFetch } = useDeferredFetch(apiFunction)
   const [requestError, setRequestError] = useState<string>()
 
   const sendEndring = () => {
@@ -113,8 +113,8 @@ function EndringsmodalBody<T extends EndringRequest>({
 
         setRequestError(undefined)
       }
-    } catch (error) {
-      if (error as Error) setRequestError((error as Error).message)
+    } catch (e) {
+      if (e as Error) setRequestError((e as Error).message)
     }
   }
 
@@ -150,7 +150,7 @@ function EndringsmodalBody<T extends EndringRequest>({
         error={
           requestError
             ? `${requestError}${forslag ? '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.' : ''}`
-            : (fetchError ?? undefined)
+            : (error ?? undefined)
         }
       />
     </>
