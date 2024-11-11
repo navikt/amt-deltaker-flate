@@ -1,4 +1,5 @@
 import {
+  dateSchema,
   deltakelsesinnholdSchema,
   DeltakerlisteStatus,
   forslagSchema,
@@ -35,6 +36,17 @@ export const deltakerlisteSchema = z.object({
   tilgjengeligInnhold: tilgjengeligInnholdSchema
 })
 
+const deltakelsesmengdeSchema = z.object({
+  deltakelsesprosent: z.number(),
+  dagerPerUke: z.number().nullable(),
+  gyldigFra: dateSchema
+})
+
+const deltakelsesmengderSchema = z.object({
+  nesteDeltakelsesmengde: deltakelsesmengdeSchema.nullable(),
+  sisteDeltakelsesmengde: deltakelsesmengdeSchema.nullable()
+})
+
 export const pameldingSchema = z.object({
   deltakerId: z.string().uuid(),
   fornavn: z.string(),
@@ -57,10 +69,12 @@ export const pameldingSchema = z.object({
   softMaxVarighet: z.number().nullable(),
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
-  erUnderOppfolging: z.boolean()
+  erUnderOppfolging: z.boolean(),
+  deltakelsesmengder: deltakelsesmengderSchema
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type PameldingResponse = z.infer<typeof pameldingSchema>
 export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
 export type Innholdselement = z.infer<typeof innholdselementSchema>
+export type Deltakelsesmengde = z.infer<typeof deltakelsesmengdeSchema>

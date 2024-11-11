@@ -19,6 +19,8 @@ import { NumberTextField } from '../../NumberTextField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
+import { dateStrToNullableDate } from '../../../utils/utils.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -43,9 +45,13 @@ export const EndreDeltakelsesmengdeModal = ({
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(
     defaultMengde.dagerPerUke
   )
+  const [gyldigFra, setGyldigFra] = useState<Date | undefined>(
+    defaultMengde.gyldigFra
+  )
   const [deltakelsesprosentError, setDeltakelsesprosentError] =
     useState<string>()
   const [dagerPerUkeError, setDagerPerUkeError] = useState<string>()
+  const [gyldigFraError, setgyldigFraError] = useState<string>()
 
   const erBegrunnelseValgfri =
     forslag !== null &&
@@ -62,6 +68,7 @@ export const EndreDeltakelsesmengdeModal = ({
     if (
       deltakelsesprosentError ||
       dagerPerUkeError ||
+      gyldigFraError ||
       !validerDeltakelsesMengde(deltakelsesprosent, dagerPerUke)
     ) {
       return null
@@ -69,11 +76,26 @@ export const EndreDeltakelsesmengdeModal = ({
     if (!begrunnelse.valider()) {
       return null
     }
+    if (gyldigFra === undefined) {
+      return null
+    }
 
-    if (
-      deltakelsesprosent === pamelding.deltakelsesprosent &&
-      (deltakelsesprosent === 100 || dagerPerUke === pamelding.dagerPerUke)
-    ) {
+    const harEndring = () => {
+      const siste = pamelding.deltakelsesmengder.sisteDeltakelsesmengde
+      if (siste === null) {
+        return true
+      }
+      if (
+        deltakelsesprosent !== siste.deltakelsesprosent ||
+        dagerPerUke !== siste.dagerPerUke
+      ) {
+        return true
+      } else {
+        return gyldigFra < siste.gyldigFra
+      }
+    }
+
+    if (!harEndring()) {
       throw new Error(getFeilmeldingIngenEndring(forslag !== null))
     }
 
@@ -85,6 +107,7 @@ export const EndreDeltakelsesmengdeModal = ({
         dagerPerUke != null && deltakelsesprosent !== 100
           ? dagerPerUke
           : undefined,
+      gyldigFra: gyldigFra,
       begrunnelse: begrunnelse.begrunnelse ?? null,
       forslagId: forslag?.id ?? null
     }
@@ -156,6 +179,32 @@ export const EndreDeltakelsesmengdeModal = ({
           id="dagerPerUke"
         />
       )}
+      {pamelding.startdato && (
+        <SimpleDatePicker
+          label="Fra når gjelder ny deltakelsesmengde?"
+          defaultDate={gyldigFra}
+          fromDate={dateStrToNullableDate(pamelding.startdato) ?? undefined}
+          toDate={dateStrToNullableDate(pamelding.sluttdato) ?? undefined}
+          error={gyldigFraError ?? null}
+          onValidate={(validation) => {
+            if (validation.isBefore) {
+              setgyldigFraError(
+                'Datoen kan ikke velges fordi den er før deltakers startsdato'
+              )
+            } else if (validation.isAfter) {
+              setgyldigFraError(
+                'Datoen kan ikke velges fordi den er etter deltakers sluttdato'
+              )
+            } else if (validation.isInvalid) {
+              setgyldigFraError('Ugyldig dato')
+            } else {
+              setgyldigFraError(undefined)
+            }
+          }}
+          onChange={(date: Date | undefined) => setGyldigFra(date)}
+          className="mt-4"
+        />
+      )}
       <BegrunnelseInput
         onChange={begrunnelse.handleChange}
         type={erBegrunnelseValgfri ? 'valgfri' : 'obligatorisk'}
@@ -176,12 +225,14 @@ function getMengde(deltaker: PameldingResponse, forslag: Forslag | null) {
   if (forslag === null)
     return {
       deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,
-      dagerPerUke: deltaker.dagerPerUke
+      dagerPerUke: deltaker.dagerPerUke,
+      gyldigFra: new Date()
     }
   if (isDeltakelsesmengde(forslag.endring)) {
     return {
       deltakelsesprosent: forslag.endring.deltakelsesprosent,
-      dagerPerUke: forslag.endring.dagerPerUke
+      dagerPerUke: forslag.endring.dagerPerUke,
+      gyldigFra: forslag.endring.gyldigFra ?? new Date()
     }
   } else {
     throw new Error(

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
+import { dateSchema, DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
 export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
@@ -75,6 +75,7 @@ export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 export const endreDeltakelsesmengdeSchema = z.object({
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional(),
+  gyldigFra: dateSchema,
   begrunnelse: z.string().nullable(),
   forslagId: z.string().nullable()
 })

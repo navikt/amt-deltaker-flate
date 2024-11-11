@@ -14,6 +14,7 @@ interface Props {
   disabled?: boolean
   onValidate: (validation: DateValidationT, newDate?: Date) => void
   onChange: (date: Date | undefined) => void
+  className?: string
 }
 
 export function SimpleDatePicker({
@@ -25,7 +26,8 @@ export function SimpleDatePicker({
   defaultMonth,
   disabled,
   onValidate,
-  onChange
+  onChange,
+  className
 }: Props) {
   const [dateInput, setDateInput] = useState<string>(
     defaultDate ? formatDateToInputStr(defaultDate) : ''
@@ -55,8 +57,13 @@ export function SimpleDatePicker({
 
     const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
     if (date.isValid()) {
+      const isBefore = fromDate ? date.isBefore(fromDate) : false
+      const isAfter = toDate ? date.isAfter(toDate) : false
       onChange(date.toDate())
-      onValidate(dateValidation({ isValidDate: true }), date.toDate())
+      onValidate(
+        dateValidation({ isValidDate: true, isBefore, isAfter }),
+        date.toDate()
+      )
     } else {
       onValidate(dateValidation({ isInvalid: true }))
       onChange(undefined)
@@ -66,6 +73,7 @@ export function SimpleDatePicker({
   return (
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
+        className={className ?? ''}
         value={dateInput}
         ref={datePickerRef}
         label={label}
