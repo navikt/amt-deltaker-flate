@@ -22,6 +22,7 @@ import {
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -71,6 +72,13 @@ export const EndreInnholdModal = ({
       )
       return null
     } else {
+      if (
+        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
+        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
+      ) {
+        throw new Error(FEILMELDING_INGEN_ENDRING)
+      }
+
       const endring: EndreInnholdRequest = {
         innhold: generateInnholdFromResponse(
           pamelding,
@@ -79,16 +87,10 @@ export const EndreInnholdModal = ({
         )
       }
 
-      const harEndring = !(
-        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
-        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
-      )
-
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
-        body: endring,
-        harEndring: harEndring
+        body: endring
       }
     }
   }

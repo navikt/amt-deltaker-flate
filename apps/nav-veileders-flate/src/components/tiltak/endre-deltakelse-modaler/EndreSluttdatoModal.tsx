@@ -27,6 +27,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import dayjs from 'dayjs'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -75,6 +76,10 @@ export const EndreSluttdatoModal = ({
       return null
     }
     if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
+      if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
+        throw new Error(FEILMELDING_INGEN_ENDRING)
+      }
+
       const endring: EndreSluttdatoRequest = {
         sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
         forslagId: forslag?.id,
@@ -84,11 +89,7 @@ export const EndreSluttdatoModal = ({
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring,
-        harEndring: !dayjs(sluttdato.sluttdato).isSame(
-          pamelding.sluttdato,
-          'day'
-        )
+        body: endring
       }
     }
     return null

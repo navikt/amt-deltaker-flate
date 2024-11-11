@@ -10,6 +10,7 @@ import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
@@ -45,6 +46,13 @@ export const EndreSluttarsakModal = ({
       aarsak.aarsak !== undefined
     ) {
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
+      if (
+        aarsak.aarsak === pamelding.status.aarsak?.type &&
+        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
+      ) {
+        throw new Error(FEILMELDING_INGEN_ENDRING)
+      }
+
       const endring: EndreSluttarsakRequest = {
         aarsak: {
           type: aarsak.aarsak,
@@ -54,16 +62,10 @@ export const EndreSluttarsakModal = ({
         forslagId: forslag?.id
       }
 
-      const harEndring = !(
-        aarsak.aarsak === pamelding.status.aarsak?.type &&
-        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
-      )
-
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring,
-        harEndring: harEndring
+        body: endring
       }
     }
     return null

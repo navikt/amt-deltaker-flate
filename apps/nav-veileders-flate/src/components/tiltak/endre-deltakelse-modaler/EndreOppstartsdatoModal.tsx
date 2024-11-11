@@ -33,6 +33,7 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -137,10 +138,12 @@ export const EndreOppstartsdatoModal = ({
     }
 
     if (!hasError && !errorStartdato && startdato) {
-      const harEndring = !(
+      if (
         dayjs(startdato).isSame(pamelding.startdato, 'day') &&
         dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-      )
+      ) {
+        throw new Error(FEILMELDING_INGEN_ENDRING)
+      }
 
       return {
         deltakerId: pamelding.deltakerId,
@@ -152,8 +155,7 @@ export const EndreOppstartsdatoModal = ({
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id
-        },
-        harEndring: harEndring
+        }
       }
     }
     return null

@@ -6,6 +6,7 @@ import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -36,13 +37,17 @@ export const EndreBakgrunnsinfoModal = ({
       )
       return null
     }
+
+    if (bakgrunnsinformasjon === pamelding.bakgrunnsinformasjon) {
+      throw new Error(FEILMELDING_INGEN_ENDRING)
+    }
+
     return {
       deltakerId: pamelding.deltakerId,
       enhetId,
       body: {
         bakgrunnsinformasjon
-      },
-      harEndring: bakgrunnsinformasjon !== pamelding.bakgrunnsinformasjon
+      }
     }
   }
 

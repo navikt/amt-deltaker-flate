@@ -1,6 +1,11 @@
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 
+export const FEILMELDING_INGEN_ENDRING =
+  'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket. \nFor å lagre må minst ett felt i skjemaet være ulikt nåværende deltakelse.'
+export const FEILMELDING_15_DAGER_SIDEN =
+  'Det er mer enn 15 dager siden statusen ble “Deltar”, og du kan ikke lenger lagre denne endringen. Du må derfor avvise forslaget.'
+
 export const getDeltakerNavn = (pamelding: PameldingResponse) => {
   return `${pamelding.fornavn} ${pamelding.mellomnavn ? pamelding.mellomnavn + ' ' : ''}${pamelding.etternavn}`
 }

@@ -10,6 +10,8 @@ import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { FEILMELDING_15_DAGER_SIDEN } from '../../../utils/displayText.ts'
+import dayjs from 'dayjs'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse
@@ -40,6 +42,14 @@ export const IkkeAktuellModal = ({
       begrunnelse.valider() &&
       aarsak.aarsak !== undefined
     ) {
+      if (
+        pamelding.status.type === DeltakerStatusType.DELTAR &&
+        forslag &&
+        harDeltattFemtenDagerEllerMer(pamelding)
+      ) {
+        throw new Error(FEILMELDING_15_DAGER_SIDEN)
+      }
+
       const endring: IkkeAktuellRequest = {
         aarsak: {
           type: aarsak.aarsak,
@@ -52,9 +62,7 @@ export const IkkeAktuellModal = ({
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring,
-        harEndring:
-          pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART
+        body: endring
       }
     }
     return null
@@ -88,4 +96,10 @@ export const IkkeAktuellModal = ({
       />
     </Endringsmodal>
   )
+}
+
+const harDeltattFemtenDagerEllerMer = (pamelding: PameldingResponse) => {
+  const statusdato = pamelding.status.gyldigFra
+  const femtenDagerSiden = dayjs().subtract(15, 'days')
+  return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
 }

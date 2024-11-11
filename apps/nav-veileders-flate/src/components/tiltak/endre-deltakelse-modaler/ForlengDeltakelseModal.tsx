@@ -23,6 +23,7 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import dayjs from 'dayjs'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
+import { FEILMELDING_INGEN_ENDRING } from '../../../utils/displayText.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -102,6 +103,10 @@ export const ForlengDeltakelseModal = ({
     }
 
     if (!hasError && sluttdato.sluttdato) {
+      if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
+        throw new Error(FEILMELDING_INGEN_ENDRING)
+      }
+
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
@@ -109,11 +114,7 @@ export const ForlengDeltakelseModal = ({
           sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null
-        },
-        harEndring: !dayjs(sluttdato.sluttdato).isSame(
-          pamelding.sluttdato,
-          'day'
-        )
+        }
       }
     }
     return null
