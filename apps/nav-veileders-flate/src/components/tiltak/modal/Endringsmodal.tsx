@@ -111,7 +111,7 @@ function EndringsmodalBody<T extends EndringRequest>({
           (data) => onSend(data)
         )
 
-        if (fetchError) setRequestError(fetchError)
+        setRequestError(undefined)
       }
     } catch (error) {
       if (error as Error) setRequestError((error as Error).message)
