@@ -20,6 +20,7 @@ import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
 import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import assertNever = util.assertNever
+import React from 'react'
 
 interface Props {
   forslag: Forslag
@@ -61,13 +62,20 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
         )
       case ForslagEndringType.Deltakelsesmengde:
         return (
-          <BodyShort size="small">
-            Ny deltakelsesmengde:{' '}
-            {deltakerprosentText(
-              forslag.endring.deltakelsesprosent,
-              forslag.endring.dagerPerUke
+          <>
+            <BodyShort size="small">
+              Ny deltakelsesmengde:{' '}
+              {deltakerprosentText(
+                forslag.endring.deltakelsesprosent,
+                forslag.endring.dagerPerUke
+              )}
+            </BodyShort>
+            {forslag.endring.gyldigFra && (
+              <BodyShort size="small">
+                Gjelder fra: {formatDate(forslag.endring.gyldigFra)}
+              </BodyShort>
             )}
-          </BodyShort>
+          </>
         )
       case ForslagEndringType.Sluttdato:
         return (

@@ -202,7 +202,8 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
           deltakelsesprosent: 42,
-          dagerPerUke: 3
+          dagerPerUke: 3,
+          gyldigFra: new Date()
         }
       })
       const forslagStartdato = aktivtForslag({

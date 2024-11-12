@@ -235,7 +235,23 @@ export class MockHandler {
           type: ForslagStatusType.VenterPaSvar
         }
       }
-      return [forslag, forslagAvslutt]
+      const forslagMengde: Forslag = {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Må avslutte deltakelsen',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.Deltakelsesmengde,
+          gyldigFra: dayjs().add(2, 'weeks').toDate(),
+          deltakelsesprosent: 42,
+          dagerPerUke: 3
+        },
+        status: {
+          type: ForslagStatusType.VenterPaSvar
+        }
+      }
+      return [forslag, forslagAvslutt, forslagMengde]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {
       const forslagIkkeAktuell: Forslag = {
