@@ -27,6 +27,7 @@ import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
+import { DeltakelsesmengdeInfo } from './DeltakelsesmengdeInfo.tsx'
 
 interface Props {
   className: string
@@ -128,17 +129,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           </>
         )}
         {visDeltakelsesmengde(pamelding.deltakerliste.tiltakstype) && (
-          <>
-            <Heading level="2" size="medium" className="mt-8">
-              Deltakelsesmengde
-            </Heading>
-            <BodyLong size="small" className="mt-2">
-              {deltakerprosentText(
-                pamelding.deltakelsesprosent,
-                pamelding.dagerPerUke
-              )}
-            </BodyLong>
-          </>
+          <DeltakelsesmengdeInfo deltaker={pamelding} />
         )}
 
         <SeEndringer

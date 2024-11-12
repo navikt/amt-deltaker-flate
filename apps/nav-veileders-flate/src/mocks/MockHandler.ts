@@ -546,10 +546,17 @@ export class MockHandler {
         nesteDeltakelsesmengde === null ||
         request.gyldigFra <= nesteDeltakelsesmengde.gyldigFra
       ) {
-        oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
-          gyldigFra: request.gyldigFra,
-          deltakelsesprosent: request.deltakelsesprosent ?? 100,
-          dagerPerUke: request.dagerPerUke ?? null
+        if (
+          request.dagerPerUke != oppdatertPamelding.dagerPerUke ||
+          request.deltakelsesprosent != oppdatertPamelding.deltakelsesprosent
+        ) {
+          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
+            gyldigFra: request.gyldigFra,
+            deltakelsesprosent: request.deltakelsesprosent ?? 100,
+            dagerPerUke: request.dagerPerUke ?? null
+          }
+        } else {
+          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = null
         }
       }
       oppdatertPamelding.deltakelsesmengder.sisteDeltakelsesmengde = {
