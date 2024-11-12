@@ -17,7 +17,6 @@ import {
   HvaDelesMedArrangor,
   VedtakInfo,
   SeEndringer,
-  deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
