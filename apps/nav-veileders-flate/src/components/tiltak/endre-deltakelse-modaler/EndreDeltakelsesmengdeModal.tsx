@@ -21,6 +21,7 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { dateStrToNullableDate } from '../../../utils/utils.ts'
+import dayjs from 'dayjs'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -91,7 +92,9 @@ export const EndreDeltakelsesmengdeModal = ({
       ) {
         return true
       } else {
-        return gyldigFra < siste.gyldigFra
+        return dayjs(gyldigFra)
+          .startOf('day')
+          .isBefore(dayjs(siste.gyldigFra).startOf('day'))
       }
     }
 
