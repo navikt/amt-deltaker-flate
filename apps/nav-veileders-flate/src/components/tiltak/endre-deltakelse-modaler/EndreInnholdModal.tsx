@@ -14,14 +14,15 @@ import {
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
+import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -71,6 +72,13 @@ export const EndreInnholdModal = ({
       )
       return null
     } else {
+      if (
+        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
+        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
+      ) {
+        throw new Error(getFeilmeldingIngenEndring(false))
+      }
+
       const endring: EndreInnholdRequest = {
         innhold: generateInnholdFromResponse(
           pamelding,
@@ -79,16 +87,10 @@ export const EndreInnholdModal = ({
         )
       }
 
-      const harEndring = !(
-        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
-        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
-      )
-
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,
-        body: endring,
-        harEndring: harEndring
+        body: endring
       }
     }
   }

@@ -31,6 +31,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import dayjs from 'dayjs'
 import { deltakerHarSluttetEllerFullfort } from '../../../utils/statusutils.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -114,20 +115,22 @@ export const AvsluttDeltakelseModal = ({
           pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
         : false
 
-      const harEndretSluttDato = !(skalViseSluttDato
+      const harLikSluttDato = skalViseSluttDato
         ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-        : false)
+        : false
 
-      const harEndring =
-        pamelding.status.type === DeltakerStatusType.DELTAR
-          ? true
-          : !harLikArsak || harEndretSluttDato
+      if (
+        pamelding.status.type !== DeltakerStatusType.DELTAR &&
+        harLikArsak &&
+        harLikSluttDato
+      ) {
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
+      }
 
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring,
-        harEndring: harEndring
+        body: endring
       }
     }
     return null
@@ -249,7 +252,7 @@ const showHarDeltatt = (
 
   const statusdato = pamelding.status.gyldigFra
   const femtenDagerSiden = dayjs().subtract(15, 'days')
-  return dayjs(statusdato).isAfter(femtenDagerSiden)
+  return dayjs(statusdato).isAfter(femtenDagerSiden, 'day')
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {

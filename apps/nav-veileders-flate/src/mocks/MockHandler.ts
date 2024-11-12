@@ -155,7 +155,7 @@ export class MockHandler {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
         type: this.statusType,
         aarsak: null,
-        gyldigFra: dayjs().subtract(17, 'day').toDate(),
+        gyldigFra: dayjs().subtract(30, 'day').toDate(),
         gyldigTil: null,
         opprettet: yesterday.toDate()
       },
@@ -269,11 +269,21 @@ export class MockHandler {
           sluttdato: dayjs(sluttdato).toDate()
         }
       })
+      const forslagIkkeAktuell = aktivtForslag({
+        endring: {
+          type: ForslagEndringType.IkkeAktuell,
+          aarsak: {
+            type: ForslagEndringAarsakType.Annet,
+            beskrivelse: 'Fordi...'
+          }
+        }
+      })
       return [
         forslagStartdato,
         forslagDeltakelsesmengde,
         forslag,
-        forslagAvslutt
+        forslagAvslutt,
+        forslagIkkeAktuell
       ]
     }
     if (this.statusType === DeltakerStatusType.VENTER_PA_OPPSTART) {

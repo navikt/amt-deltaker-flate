@@ -1,15 +1,16 @@
 import {
-  Forslag,
   DeltakerStatusType,
-  EndreDeltakelseType
+  EndreDeltakelseType,
+  Forslag
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
 import { EndreSluttarsakRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
@@ -45,6 +46,13 @@ export const EndreSluttarsakModal = ({
       aarsak.aarsak !== undefined
     ) {
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
+      if (
+        aarsak.aarsak === pamelding.status.aarsak?.type &&
+        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
+      ) {
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
+      }
+
       const endring: EndreSluttarsakRequest = {
         aarsak: {
           type: aarsak.aarsak,
@@ -54,16 +62,10 @@ export const EndreSluttarsakModal = ({
         forslagId: forslag?.id
       }
 
-      const harEndring = !(
-        aarsak.aarsak === pamelding.status.aarsak?.type &&
-        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
-      )
-
       return {
         deltakerId: pamelding.deltakerId,
         enhetId: enhetId,
-        body: endring,
-        harEndring: harEndring
+        body: endring
       }
     }
     return null

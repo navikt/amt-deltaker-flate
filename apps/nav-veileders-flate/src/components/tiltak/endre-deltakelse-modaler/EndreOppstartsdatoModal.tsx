@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import {
   dateStrToNullableDate,
@@ -137,10 +138,12 @@ export const EndreOppstartsdatoModal = ({
     }
 
     if (!hasError && !errorStartdato && startdato) {
-      const harEndring = !(
+      if (
         dayjs(startdato).isSame(pamelding.startdato, 'day') &&
         dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-      )
+      ) {
+        throw new Error(getFeilmeldingIngenEndring(forslag !== null))
+      }
 
       return {
         deltakerId: pamelding.deltakerId,
@@ -152,8 +155,7 @@ export const EndreOppstartsdatoModal = ({
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id
-        },
-        harEndring: harEndring
+        }
       }
     }
     return null
