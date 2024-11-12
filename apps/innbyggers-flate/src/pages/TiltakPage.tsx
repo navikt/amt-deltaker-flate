@@ -29,6 +29,7 @@ import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
+import { useSearchParams } from 'react-router-dom'
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
   return (
@@ -41,6 +42,8 @@ const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 
 export const TiltakPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const visEndringer = searchParams.get('vis_endringer') === ''
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -157,6 +160,10 @@ export const TiltakPage = () => {
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
+          open={visEndringer}
+          onModalClose={() => {
+            setSearchParams()
+          }}
         />
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">

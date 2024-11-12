@@ -10,11 +10,13 @@ import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
 import { HistorikkVedtak } from './HistorikkVedtak'
+import { HistorikkSkeleton } from './HistorikkSkeleton'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
   tiltakstype: Tiltakstype
   open: boolean
+  loading: boolean
   onClose: () => void
 }
 
@@ -45,20 +47,29 @@ const getHistorikkItem = (
 
 export const HistorikkModal = ({
   open,
+  loading,
   historikk,
   tiltakstype,
   onClose
 }: Props) => {
   return (
-    <Modal open={open} header={{ heading: 'Endringer' }} onClose={onClose}>
+    <Modal
+      open={open}
+      placement="top"
+      header={{ heading: 'Endringer' }}
+      onClose={onClose}
+      className="w-full"
+    >
       <Modal.Body>
-        {historikk &&
+        {loading && <HistorikkSkeleton />}
+        {!loading &&
+          historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
               {getHistorikkItem(i, tiltakstype)}
             </div>
           ))}
-        {(!historikk || historikk.length < 0) && (
+        {!loading && (!historikk || historikk.length < 0) && (
           <Alert variant="info" size="small">
             Ingen historikk å vise.
           </Alert>
