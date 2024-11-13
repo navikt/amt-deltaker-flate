@@ -49,6 +49,10 @@ export const EndreDeltakelsesmengdeModal = ({
   const [gyldigFra, setGyldigFra] = useState<Date | undefined>(
     defaultMengde.gyldigFra
   )
+
+  // eslint-disable-next-line no-console
+  console.log(gyldigFra)
+
   const [deltakelsesprosentError, setDeltakelsesprosentError] =
     useState<string>()
   const [dagerPerUkeError, setDagerPerUkeError] = useState<string>()
