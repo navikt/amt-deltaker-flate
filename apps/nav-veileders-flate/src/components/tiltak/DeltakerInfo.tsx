@@ -10,6 +10,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
+  DeltakelsesmengdeInfo,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -26,7 +27,6 @@ import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
-import { DeltakelsesmengdeInfo } from './DeltakelsesmengdeInfo.tsx'
 
 interface Props {
   className: string
@@ -128,7 +128,13 @@ export const DeltakerInfo = ({ className }: Props) => {
           </>
         )}
         {visDeltakelsesmengde(pamelding.deltakerliste.tiltakstype) && (
-          <DeltakelsesmengdeInfo deltaker={pamelding} />
+          <DeltakelsesmengdeInfo
+            deltakelsesprosent={pamelding.deltakelsesprosent}
+            dagerPerUke={pamelding.dagerPerUke}
+            nesteDeltakelsesmengde={
+              pamelding.deltakelsesmengder.nesteDeltakelsesmengde
+            }
+          />
         )}
 
         <SeEndringer

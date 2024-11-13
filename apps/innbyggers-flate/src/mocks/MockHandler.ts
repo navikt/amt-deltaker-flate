@@ -33,6 +33,14 @@ export const createDeltaker = (
 ): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const innhold = getInnholdForTiltaksType(tiltakstype)
+  const dagerPerUke = 1
+  const deltakelsesprosent = 10
+
+  const sisteDeltakelsesmengde = {
+    gyldigFra: dayjs().add(1, 'week').toDate(),
+    deltakelsesprosent: 100,
+    dagerPerUke: null
+  }
 
   return {
     deltakerId: uuidv4(),
@@ -55,8 +63,8 @@ export const createDeltaker = (
     },
     startdato: EMDASH,
     sluttdato: EMDASH,
-    dagerPerUke: 1,
-    deltakelsesprosent: 10,
+    dagerPerUke: dagerPerUke,
+    deltakelsesprosent: deltakelsesprosent,
     bakgrunnsinformasjon: bakgrunnsinformasjon,
     deltakelsesinnhold: {
       ledetekst: getLedetekst(tiltakstype),
@@ -73,7 +81,11 @@ export const createDeltaker = (
     },
     adresseDelesMedArrangor: true,
     forslag: [],
-    importertFraArena: null
+    importertFraArena: null,
+    deltakelsesmengder: {
+      nesteDeltakelsesmengde: sisteDeltakelsesmengde,
+      sisteDeltakelsesmengde: sisteDeltakelsesmengde
+    }
   }
 }
 
