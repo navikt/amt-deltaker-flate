@@ -106,24 +106,22 @@ export const VarighetField = ({
             {getVarighet(v).navn}
           </Radio>
         ))}
-        <Radio value={VarighetValg.ANNET}>
-          Annet - velg dato
-          {visDatovelger && (
-            <div className="mt-2">
-              <DatePicker {...datepickerProps}>
-                <DatePicker.Input
-                  value={dateInput}
-                  ref={datePickerRef}
-                  label="Annet - velg dato"
-                  size="small"
-                  hideLabel={true}
-                  error={errorSluttDato}
-                  onChange={handleDateInputChange}
-                />
-              </DatePicker>
-            </div>
-          )}
-        </Radio>
+        <Radio value={VarighetValg.ANNET}>Annet - velg dato</Radio>
+        {visDatovelger && (
+          <div className="mt-2 ml-7">
+            <DatePicker {...datepickerProps}>
+              <DatePicker.Input
+                value={dateInput}
+                ref={datePickerRef}
+                label="Annet - velg dato"
+                size="small"
+                hideLabel={true}
+                error={errorSluttDato}
+                onChange={handleDateInputChange}
+              />
+            </DatePicker>
+          </div>
+        )}
       </>
     </RadioGroup>
   )
