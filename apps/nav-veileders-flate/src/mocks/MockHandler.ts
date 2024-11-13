@@ -538,20 +538,21 @@ export class MockHandler {
     if (oppdatertPamelding) {
       const nesteDeltakelsesmengde =
         oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde
-      if (request.gyldigFra <= new Date()) {
+      const gyldigFra = dayjs(request.gyldigFra).toDate()
+      if (gyldigFra <= new Date()) {
         oppdatertPamelding.deltakelsesprosent =
           request.deltakelsesprosent || null
         oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
       } else if (
         nesteDeltakelsesmengde === null ||
-        request.gyldigFra <= nesteDeltakelsesmengde.gyldigFra
+        gyldigFra <= nesteDeltakelsesmengde.gyldigFra
       ) {
         if (
           request.dagerPerUke != oppdatertPamelding.dagerPerUke ||
           request.deltakelsesprosent != oppdatertPamelding.deltakelsesprosent
         ) {
           oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
-            gyldigFra: request.gyldigFra,
+            gyldigFra: gyldigFra,
             deltakelsesprosent: request.deltakelsesprosent ?? 100,
             dagerPerUke: request.dagerPerUke ?? null
           }
@@ -560,7 +561,7 @@ export class MockHandler {
         }
       }
       oppdatertPamelding.deltakelsesmengder.sisteDeltakelsesmengde = {
-        gyldigFra: request.gyldigFra,
+        gyldigFra: gyldigFra,
         deltakelsesprosent: request.deltakelsesprosent ?? 100,
         dagerPerUke: request.dagerPerUke ?? null
       }

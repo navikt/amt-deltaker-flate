@@ -20,7 +20,10 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import { dateStrToNullableDate } from '../../../utils/utils.ts'
+import {
+  dateStrToNullableDate,
+  formatDateToDtoStr
+} from '../../../utils/utils.ts'
 import dayjs from 'dayjs'
 
 interface EndreDeltakelsesmengdeModalProps {
@@ -49,9 +52,6 @@ export const EndreDeltakelsesmengdeModal = ({
   const [gyldigFra, setGyldigFra] = useState<Date | undefined>(
     defaultMengde.gyldigFra
   )
-
-  // eslint-disable-next-line no-console
-  console.log(gyldigFra)
 
   const [deltakelsesprosentError, setDeltakelsesprosentError] =
     useState<string>()
@@ -114,7 +114,7 @@ export const EndreDeltakelsesmengdeModal = ({
         dagerPerUke != null && deltakelsesprosent !== 100
           ? dagerPerUke
           : undefined,
-      gyldigFra: gyldigFra,
+      gyldigFra: formatDateToDtoStr(gyldigFra),
       begrunnelse: begrunnelse.begrunnelse ?? null,
       forslagId: forslag?.id ?? null
     }
