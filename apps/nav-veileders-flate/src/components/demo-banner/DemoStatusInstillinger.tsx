@@ -109,7 +109,7 @@ const DemoStatusInstillinger = () => {
         label="Velg tiltakstype"
         size="small"
         className="w-64"
-        data-testid="select_status"
+        data-testid="select_tiltakstype"
         onChange={(e) =>
           handleTiltakstypeChanged(e.target.value as Tiltakstype)
         }
