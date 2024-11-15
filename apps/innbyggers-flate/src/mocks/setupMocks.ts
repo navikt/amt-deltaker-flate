@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
 import { HttpResponse, delay, http } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { MockHandler } from './MockHandler.ts'
@@ -28,6 +28,15 @@ export const worker = setupWorker(
     const response = handler.setStatus(status as DeltakerStatusType)
     return response
   }),
+  http.post(
+    'amt-deltaker-bff/setup/tiltakstype/:tiltakstype',
+    async ({ params }) => {
+      const { tiltakstype } = params
+
+      const response = handler.setTiltakstype(tiltakstype as Tiltakstype)
+      return response
+    }
+  ),
   http.get('amt-deltaker-bff/innbygger/:deltakerId', async () => {
     await delay(1000)
     return handler.getDeltaker()
