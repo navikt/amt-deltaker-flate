@@ -51,7 +51,7 @@ export const PameldingForm = ({
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
-  const viseInnholdSjekkbokser = tiltakstype !== Tiltakstype.VASV
+  const skalViseInnholdSjekkbokser = tiltakstype !== Tiltakstype.VASV
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -118,22 +118,20 @@ export const PameldingForm = ({
 
           <section className="mb-8 mt-4">
             {tiltakstype === Tiltakstype.VASV && (
-              <>
-                <Textarea
-                  label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
-                  {...register('innholdAnnetBeskrivelse')}
-                  value={watch('innholdAnnetBeskrivelse')}
-                  error={errors.innholdAnnetBeskrivelse?.message}
-                  disabled={isDisabled}
-                  aria-label="Annet innhold beskrivelse"
-                  aria-required
-                  maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                  size="small"
-                  id="innholdAnnetBeskrivelse"
-                />
-              </>
+              <Textarea
+                label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
+                {...register('innholdAnnetBeskrivelse')}
+                value={watch('innholdAnnetBeskrivelse')}
+                error={errors.innholdAnnetBeskrivelse?.message}
+                disabled={isDisabled}
+                aria-label="Annet innhold beskrivelse"
+                aria-required
+                maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                size="small"
+                id="innholdAnnetBeskrivelse"
+              />
             )}
-            {viseInnholdSjekkbokser && innhold.innhold.length > 0 && (
+            {skalViseInnholdSjekkbokser && innhold.innhold.length > 0 && (
               <CheckboxGroup
                 defaultValue={defaultValues.valgteInnhold}
                 legend="Hva mer skal tiltaket inneholde?"
