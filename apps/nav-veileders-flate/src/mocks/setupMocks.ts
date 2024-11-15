@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import {
@@ -30,6 +30,15 @@ export const worker = setupWorker(
     const response = handler.setStatus(status as DeltakerStatusType)
     return response
   }),
+  http.post(
+    '/amt-deltaker-bff/setup/tiltakstype/:tiltakstype',
+    async ({ params }) => {
+      const { tiltakstype } = params
+
+      const response = handler.setTiltakstype(tiltakstype as Tiltakstype)
+      return response
+    }
+  ),
   http.post('/amt-deltaker-bff/pamelding', async ({ request }) => {
     await delay(1000)
     const response = await request
@@ -44,36 +53,27 @@ export const worker = setupWorker(
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
   }),
-  http.post(
-    '/amt-deltaker-bff/pamelding/:deltakerId',
-    async ({ request, params }) => {
-      await delay(1000)
+  http.post('/amt-deltaker-bff/pamelding/:deltakerId', async ({ request }) => {
+    await delay(1000)
 
-      const { deltakerId } = params
+    const response = await request
+      .json()
+      .then((json) => sendInnPameldingRequestSchema.parse(json))
+      .then((body) => handler.sendInnPamelding(body))
 
-      const response = await request
-        .json()
-        .then((json) => sendInnPameldingRequestSchema.parse(json))
-        .then((body) => handler.sendInnPamelding(deltakerId as string, body))
-
-      return response
-    }
-  ),
+    return response
+  }),
   http.post(
     '/amt-deltaker-bff/pamelding/:deltakerId/utenGodkjenning',
-    async ({ request, params }) => {
+    async ({ request }) => {
       await delay(1000)
-
-      const { deltakerId } = params
 
       const response = await request
         .json()
         .then((json) =>
           sendInnPameldingUtenGodkjenningRequestSchema.parse(json)
         )
-        .then((body) =>
-          handler.sendInnPameldingUtenGodkjenning(deltakerId as string, body)
-        )
+        .then(() => new HttpResponse(null, { status: 200 }))
 
       return response
     }

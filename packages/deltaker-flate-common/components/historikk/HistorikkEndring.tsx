@@ -54,7 +54,7 @@ const getEndringsDetaljer = (endring: Endring) => {
           </BodyLong>
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
-              NAVs begrunnelse: {endring.begrunnelse}
+              Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
         </>
@@ -68,7 +68,7 @@ const getEndringsDetaljer = (endring: Endring) => {
           </BodyLong>
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
-              NAVs begrunnelse: {endring.begrunnelse}
+              Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
         </>
@@ -96,7 +96,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     case EndringType.ReaktiverDeltakelse: {
       return (
         <BodyLong size="small" className="whitespace-pre-wrap">
-          NAVs begrunnelse: {endring.begrunnelse}
+          Navs begrunnelse: {endring.begrunnelse}
         </BodyLong>
       )
     }
@@ -106,7 +106,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
         <BodyLong size="small" className="whitespace-pre-wrap">
-          NAVs begrunnelse: {endring.begrunnelse}
+          Navs begrunnelse: {endring.begrunnelse}
         </BodyLong>
       ) : (
         <div className="-mb-1" />
@@ -120,7 +120,7 @@ const getEndringsDetaljer = (endring: Endring) => {
           </BodyLong>
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
-              NAVs begrunnelse: {endring.begrunnelse}
+              Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
         </>

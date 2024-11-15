@@ -22,11 +22,11 @@ export const VilIkkeGodkjenneExpansionCard = ({
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         <BodyShort>
-          Gi beskjed til NAV-veilederen din hvis du ikke ønsker at dette skal
+          Gi beskjed til Nav-veilederen din hvis du ikke ønsker at dette skal
           deles til arrangøren.
         </BodyShort>
         <Link className="mt-2" href={DIALOG_URL}>
-          Send melding til NAV-veilederen din her
+          Send melding til Nav-veilederen din her
         </Link>
       </ExpansionCard.Content>
     </ExpansionCard>

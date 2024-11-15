@@ -1,6 +1,6 @@
 # amt-deltaker
 
-Dett er et monorepo for amt deltaker flater for NAV-veileder og innbygger.
+Dett er et monorepo for amt deltaker flater for Nav-veileder og innbygger.
 
 ## monorepo
 
@@ -46,6 +46,6 @@ nye workspaces må defineres i `pnpm-workspace.yaml`
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på github.
 
-## For NAV-ansatte
+## For Nav-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #team_komet.

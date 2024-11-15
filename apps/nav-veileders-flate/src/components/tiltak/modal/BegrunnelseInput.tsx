@@ -12,14 +12,14 @@ type BegrunnelseType = 'valgfri' | 'obligatorisk' | 'avvis'
 const labels: { [Key in BegrunnelseType]: BegrunnelseLabel } = {
   valgfri: {
     label: 'Vil du legge til noe mer begrunnelse? (valgfritt)',
-    desc: 'Her kan NAV legge til mer info om hvorfor endringen er riktig for deltakeren.'
+    desc: 'Her kan Nav legge til mer info om hvorfor endringen er riktig for deltakeren.'
   },
   obligatorisk: {
-    label: 'NAVs begrunnelse',
+    label: 'Navs begrunnelse',
     desc: 'Beskriv kort hvorfor endringen er riktig for deltakeren.'
   },
   avvis: {
-    label: 'NAVs begrunnelse',
+    label: 'Navs begrunnelse',
     desc: 'Beskriv kort hvorfor endring ikke gjøres.'
   }
 }

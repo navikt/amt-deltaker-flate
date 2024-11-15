@@ -6,11 +6,11 @@ export enum Tiltakstype {
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
   AVKLARAG = 'AVKLARAG', // Avklaring
   INDOPPFAG = 'INDOPPFAG', // Oppfølging
-  DIGIOPPARB = 'DIGIOPPARB', // Digitalt oppfølgingstiltak
+  DIGIOPPARB = 'DIGIOPPARB', // Digitalt oppfølgingstiltak / jobbsøkerkurs
+  VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK', // Jobbklubb / er kurs
-  VASV = 'VASV' // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
+  JOBBK = 'JOBBK' // Jobbklubb / er kurs
 }
 
 export enum DeltakerStatusType {

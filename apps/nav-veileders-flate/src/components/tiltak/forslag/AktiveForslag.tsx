@@ -20,7 +20,7 @@ export const AktiveForslag = ({ forslag }: Props) => {
             >
               <HStack gap="2" className="items-center">
                 <Heading level="3" size="xsmall">
-                  For NAV-ansatt:
+                  For Nav-ansatt:
                 </Heading>
                 <BehandleForslagKnapp forslag={f} />
               </HStack>
