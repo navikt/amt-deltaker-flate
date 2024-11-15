@@ -139,6 +139,7 @@ export const ForlengDeltakelseModal = ({
       apiFunction={endreDeltakelseForleng}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
@@ -154,6 +155,7 @@ export const ForlengDeltakelseModal = ({
         onChangeVarighet={handleChangeVarighet}
         onChangeSluttDato={sluttdato.handleChange}
         onValidateSluttDato={sluttdato.validerDato}
+        disabled={!pamelding.erUnderOppfolging}
       />
       {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
         <BodyShort className="mt-2" size="small">
@@ -179,6 +181,7 @@ export const ForlengDeltakelseModal = ({
         type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

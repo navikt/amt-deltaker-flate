@@ -56,7 +56,8 @@ export const pameldingSchema = z.object({
   maxVarighet: z.number().nullable(),
   softMaxVarighet: z.number().nullable(),
   forslag: z.array(forslagSchema),
-  importertFraArena: importertDeltakerFraArenaSchema.nullable()
+  importertFraArena: importertDeltakerFraArenaSchema.nullable(),
+  erUnderOppfolging: z.boolean()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

@@ -11,6 +11,7 @@ interface Props {
   toDate?: Date
   defaultDate?: Date
   defaultMonth?: Date
+  disabled?: boolean
   onValidate: (validation: DateValidationT, newDate?: Date) => void
   onChange: (date: Date | undefined) => void
 }
@@ -22,6 +23,7 @@ export function SimpleDatePicker({
   toDate,
   defaultDate,
   defaultMonth,
+  disabled,
   onValidate,
   onChange
 }: Props) {
@@ -70,6 +72,7 @@ export function SimpleDatePicker({
         error={error}
         size="small"
         onChange={handleDateInputChange}
+        disabled={disabled}
       />
     </DatePicker>
   )

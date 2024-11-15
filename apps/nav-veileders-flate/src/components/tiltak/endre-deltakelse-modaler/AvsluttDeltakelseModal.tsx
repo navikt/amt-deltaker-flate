@@ -147,6 +147,7 @@ export const AvsluttDeltakelseModal = ({
       apiFunction={avsluttDeltakelse}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <AarsakRadioGroup
         legend="Hva er årsaken til avslutning?"
@@ -156,6 +157,7 @@ export const AvsluttDeltakelseModal = ({
         beskrivelseError={aarsak.beskrivelseError}
         onChange={aarsak.handleChange}
         onBeskrivelse={aarsak.handleBeskrivelse}
+        disabled={!pamelding.erUnderOppfolging}
       />
       {skalViseHarDeltatt && (
         <section className="mt-4">
@@ -164,6 +166,7 @@ export const AvsluttDeltakelseModal = ({
             size="small"
             description="Dersom personen ikke har deltatt på tiltaket, vil statusen på tiltaket endres til “Ikke aktuell”."
             error={harDeltattError}
+            disabled={!pamelding.erUnderOppfolging}
             defaultValue={
               getHarDeltatt(forslag) === null
                 ? undefined
@@ -189,6 +192,7 @@ export const AvsluttDeltakelseModal = ({
         <section className="mt-6">
           <SimpleDatePicker
             label="Hva er ny sluttdato?"
+            disabled={!pamelding.erUnderOppfolging}
             error={sluttdato.error}
             fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
             toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
@@ -219,6 +223,7 @@ export const AvsluttDeltakelseModal = ({
         type="valgfri"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

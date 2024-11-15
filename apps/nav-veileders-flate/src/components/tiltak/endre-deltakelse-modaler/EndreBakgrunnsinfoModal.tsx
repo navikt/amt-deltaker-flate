@@ -62,6 +62,7 @@ export const EndreBakgrunnsinfoModal = ({
       apiFunction={endreDeltakelseBakgrunnsinfo}
       validertRequest={validertRequest}
       forslag={null}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <>
         {pamelding.importertFraArena && !pamelding.bakgrunnsinformasjon && (
@@ -94,6 +95,7 @@ export const EndreBakgrunnsinfoModal = ({
           size="small"
           aria-label={'Bagrunnsinfo'}
           error={error}
+          disabled={!pamelding.erUnderOppfolging}
         />
       </>
     </Endringsmodal>

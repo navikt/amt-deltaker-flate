@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Detail, Modal } from '@navikt/ds-react'
+import { Alert, BodyLong, Detail, Heading, Modal } from '@navikt/ds-react'
 import {
   ApiFunction,
   DeferredFetchState,
@@ -31,6 +31,7 @@ interface Props<T extends EndringRequest> {
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
+  erUnderOppfolging: boolean
   children: ReactNode
 }
 export function Endringsmodal<T extends EndringRequest>({
@@ -43,6 +44,7 @@ export function Endringsmodal<T extends EndringRequest>({
   apiFunction,
   validertRequest,
   forslag,
+  erUnderOppfolging,
   children
 }: Props<T>) {
   const [visAvvisningsmodal, setAvvisningsmodal] = useState(false)
@@ -62,7 +64,11 @@ export function Endringsmodal<T extends EndringRequest>({
       className="w-[600px]"
     >
       {visAvvisningsmodal && forslag ? (
-        <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
+        <AvvisningsmodalBody
+          disabled={!erUnderOppfolging}
+          onSend={onSend}
+          forslag={forslag}
+        />
       ) : (
         <EndringsmodalBody
           onSend={onSend}
@@ -72,6 +78,7 @@ export function Endringsmodal<T extends EndringRequest>({
           forslag={forslag}
           digitalBruker={digitalBruker}
           harAdresse={harAdresse}
+          erUnderOppfolging={erUnderOppfolging}
         >
           {children}
         </EndringsmodalBody>
@@ -88,6 +95,7 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   forslag: Forslag | null
   digitalBruker: boolean
   harAdresse: boolean
+  erUnderOppfolging: boolean
   children: ReactNode
 }
 function EndringsmodalBody<T extends EndringRequest>({
@@ -98,6 +106,7 @@ function EndringsmodalBody<T extends EndringRequest>({
   forslag,
   digitalBruker,
   harAdresse,
+  erUnderOppfolging,
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
@@ -125,7 +134,21 @@ function EndringsmodalBody<T extends EndringRequest>({
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Detail>
         {forslag && (
-          <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
+          <ModalForslagDetaljer
+            disabled={!erUnderOppfolging}
+            forslag={forslag}
+            onClick={onAvvis}
+          />
+        )}
+
+        {!erUnderOppfolging && (
+          <Alert variant="error" size="small" className="mb-6">
+            <Heading level="2" size="xsmall">
+              Det kan ikke gjøres endringer på deltakelsen
+            </Heading>
+            Brukeren er ikke registrert som “under oppfølging”. Det må fattes et
+            14a-vedtak før deltakelsen på tiltaket kan endres.
+          </Alert>
         )}
 
         {children}
@@ -146,7 +169,7 @@ function EndringsmodalBody<T extends EndringRequest>({
         confirmButtonText="Lagre"
         onConfirm={sendEndring}
         confirmLoading={state === DeferredFetchState.LOADING}
-        disabled={state === DeferredFetchState.LOADING}
+        disabled={state === DeferredFetchState.LOADING || !erUnderOppfolging}
         error={valideringsError ?? error ?? undefined}
       />
     </>

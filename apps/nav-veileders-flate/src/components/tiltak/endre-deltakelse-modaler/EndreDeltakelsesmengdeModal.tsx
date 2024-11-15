@@ -124,10 +124,11 @@ export const EndreDeltakelsesmengdeModal = ({
       apiFunction={endreDeltakelsesmengde}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"
-        disabled={false}
+        disabled={!pamelding.erUnderOppfolging}
         value={deltakelsesprosent || undefined}
         onChange={(e) => {
           setDeltakelsesprosent(e || null)
@@ -141,7 +142,7 @@ export const EndreDeltakelsesmengdeModal = ({
       {deltakelsesprosent && deltakelsesprosent != 100 && (
         <NumberTextField
           label="Hvor mange dager i uka? (valgfritt)"
-          disabled={false}
+          disabled={!pamelding.erUnderOppfolging}
           value={dagerPerUke || undefined}
           onChange={(e) => {
             setDagerPerUke(e || null)
@@ -156,6 +157,7 @@ export const EndreDeltakelsesmengdeModal = ({
         onChange={begrunnelse.handleChange}
         type={erBegrunnelseValgfri ? 'valgfri' : 'obligatorisk'}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

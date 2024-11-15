@@ -63,6 +63,7 @@ export const BehandleForslagKnapp = ({ forslag }: Props) => {
           <AvvisModal
             forslag={forslag}
             open={modalOpen}
+            erUnderOppfolging={deltaker.erUnderOppfolging}
             onSend={handleEndringUtfort}
             onClose={handleCloseModal}
           />

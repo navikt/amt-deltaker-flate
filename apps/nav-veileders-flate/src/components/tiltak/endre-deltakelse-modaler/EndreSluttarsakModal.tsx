@@ -82,6 +82,7 @@ export const EndreSluttarsakModal = ({
       apiFunction={endreDeltakelseSluttarsak}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <AarsakRadioGroup
         legend={sluttarsakSporsmalTekst(pamelding.status.type)}
@@ -91,11 +92,13 @@ export const EndreSluttarsakModal = ({
         beskrivelseError={aarsak.beskrivelseError}
         onChange={aarsak.handleChange}
         onBeskrivelse={aarsak.handleBeskrivelse}
+        disabled={!pamelding.erUnderOppfolging}
       />
       <BegrunnelseInput
         type="valgfri"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

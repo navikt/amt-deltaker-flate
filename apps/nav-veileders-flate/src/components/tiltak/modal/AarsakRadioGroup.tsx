@@ -18,6 +18,7 @@ interface Props {
   beskrivelse: string | undefined
   beskrivelseError: string | undefined
   legend: string
+  disabled?: boolean
   onChange: (value: DeltakerStatusAarsakType) => void
   onBeskrivelse: (beskrivelse: string) => void
 }
@@ -29,7 +30,8 @@ export function AarsakRadioGroup({
   beskrivelseError,
   onChange,
   onBeskrivelse,
-  legend
+  legend,
+  disabled
 }: Props) {
   return (
     <RadioGroup
@@ -38,6 +40,7 @@ export function AarsakRadioGroup({
       error={aarsakError}
       onChange={onChange}
       value={aarsak ?? ''}
+      disabled={disabled}
     >
       <>
         {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (

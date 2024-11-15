@@ -16,6 +16,7 @@ import { useAppContext } from '../../../AppContext'
 interface Props {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
   forslag: Forslag
+  disabled: boolean
   children?: ReactNode
 }
 
@@ -25,6 +26,7 @@ export const RUTINE_NAVET_LINK =
 export default function AvvisningsmodalBody({
   onSend,
   forslag,
+  disabled,
   children
 }: Props) {
   const { doFetch, state, error } = useDeferredFetch(avvisForslag)
@@ -46,7 +48,7 @@ export default function AvvisningsmodalBody({
         <Detail className="mb-4">
           Infoen vil vises for bruker og arrangør.
         </Detail>
-        <ModalForslagDetaljer forslag={forslag} />
+        <ModalForslagDetaljer disabled={disabled} forslag={forslag} />
 
         <BegrunnelseInput
           type="avvis"

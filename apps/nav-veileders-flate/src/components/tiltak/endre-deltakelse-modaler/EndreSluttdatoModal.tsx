@@ -106,6 +106,7 @@ export const EndreSluttdatoModal = ({
       apiFunction={endreDeltakelseSluttdato}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <SimpleDatePicker
         label="Ny sluttdato"
@@ -115,6 +116,7 @@ export const EndreSluttdatoModal = ({
         defaultDate={sluttdato.defaultDato}
         onValidate={sluttdato.validate}
         onChange={sluttdato.onChange}
+        disabled={!pamelding.erUnderOppfolging}
       />
       {skalBekrefteVarighet && (
         <ConfirmationPanel
@@ -137,6 +139,7 @@ export const EndreSluttdatoModal = ({
         type={valgfriBegrunnelse ? 'valgfri' : 'obligatorisk'}
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )
