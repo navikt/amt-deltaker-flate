@@ -22,12 +22,12 @@ export const HvaDelesMedArrangor = ({
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         <BodyLong size="small">
-          NAV samarbeider med {arrangorNavn}. Arrangøren behandler opplysninger
-          på vegne av NAV.
+          Nav samarbeider med {arrangorNavn}. Arrangøren behandler opplysninger
+          på vegne av Nav.
         </BodyLong>
         <List as="ul" size="small">
           <List.Item>
-            Navn og kontaktinformasjonen til NAV-veilederen din
+            Navn og kontaktinformasjonen til Nav-veilederen din
           </List.Item>
           <List.Item>
             Innholdet og bakgrunnsinformasjonen i påmeldingen
@@ -37,7 +37,7 @@ export const HvaDelesMedArrangor = ({
           {adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
         </List>
         <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
-          Se her hvilke opplysninger NAV har om deg.
+          Se her hvilke opplysninger Nav har om deg.
         </Link>
       </ExpansionCard.Content>
     </ExpansionCard>

@@ -58,7 +58,7 @@ export const SeEndringer = ({
       </Button>
 
       {error && (
-        <Alert variant="error" className="mt-4" size="small">
+        <Alert variant="error" className="mt-4" size="small" role="alert">
           Beklager, vi kunne ikke hente historiske endringer på tiltaket.
         </Alert>
       )}

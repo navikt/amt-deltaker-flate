@@ -9,9 +9,11 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
+  getInnholdForTiltaksType,
+  getLedetekst,
+  getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -29,7 +31,6 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
@@ -43,75 +44,7 @@ export class MockHandler {
   pamelding: PameldingResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  innhold = [
-    {
-      tekst: 'Støtte til jobbsøking',
-      innholdskode: 'type1',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Karriereveiledning',
-      innholdskode: 'type2',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
-      innholdskode: 'type3',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst:
-        'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
-      innholdskode: 'type4',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Kartlegge dine forventninger til å jobbe',
-      innholdskode: 'type5',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Veiledning i sosial mestring',
-      innholdskode: 'type6',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
-      innholdskode: 'type7',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Veiledning til arbeidsgiver',
-      innholdskode: 'type8',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Oppfølging på arbeidsplassen',
-      innholdskode: 'type9',
-      valgt: true,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Arbeidspraksis',
-      innholdskode: 'type10',
-      valgt: false,
-      beskrivelse: null
-    },
-    {
-      tekst: 'Annet',
-      innholdskode: INNHOLD_TYPE_ANNET,
-      valgt: true,
-      beskrivelse: 'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
-    }
-  ]
+  tiltakstype = Tiltakstype.ARBFORB
 
   createDeltaker(
     deltakerlisteId: string,
@@ -126,8 +59,8 @@ export class MockHandler {
     const _startdato = startdato ? dayjs(startdato).toString() : null
     const _sluttdato = sluttdato ? dayjs(sluttdato).toString() : null
 
-    const ledetekst =
-      'Du får tett oppfølging og støtte av en veileder. Sammen Kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+    const ledetekst = getLedetekst(this.tiltakstype)
+    const innhold = getInnholdForTiltaksType(this.tiltakstype)
 
     return {
       deltakerId: uuidv4(),
@@ -137,17 +70,14 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: Tiltakstype.ARBFORB,
+        tiltakstype: this.tiltakstype,
         arrangorNavn: 'Den Beste Arrangøren AS',
         oppstartstype: 'LOPENDE',
         startdato: '2022-10-28',
         sluttdato: '2030-02-20',
         status: DeltakerlisteStatus.GJENNOMFORES,
         tilgjengeligInnhold: {
-          innhold: this.innhold.map((i) => ({
-            tekst: i.tekst,
-            innholdskode: i.innholdskode
-          })),
+          innhold: innhold,
           ledetekst: ledetekst
         }
       },
@@ -157,7 +87,7 @@ export class MockHandler {
         aarsak: null,
         gyldigFra: dayjs().subtract(30, 'day').toDate(),
         gyldigTil: null,
-        opprettet: yesterday.toDate()
+        opprettet: dayjs().subtract(30, 'day').toDate()
       },
       startdato: _startdato,
       sluttdato: _sluttdato,
@@ -167,7 +97,7 @@ export class MockHandler {
         'Ønsker å bli kontaktet via sms\nKan ikke på onsdager',
       deltakelsesinnhold: {
         ledetekst: ledetekst,
-        innhold: this.innhold
+        innhold: getUtvidetInnhold(innhold)
       },
       vedtaksinformasjon: {
         fattet: harVedtak(this.statusType) ? yesterday.toString() : null,
@@ -176,7 +106,7 @@ export class MockHandler {
         opprettetAv: 'Navn Navnesen',
         sistEndret: today.toString(),
         sistEndretAv: 'Navn Navnesen',
-        sistEndretAvEnhet: 'NAV Fredrikstad'
+        sistEndretAvEnhet: 'Nav Fredrikstad'
       },
       adresseDelesMedArrangor: true,
       kanEndres: true,
@@ -332,12 +262,7 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(
-    deltakerId: string,
-    request: SendInnPameldingRequest
-  ): HttpResponse {
-    // eslint-disable-next-line no-console
-    console.log(deltakerId, request)
+  sendInnPamelding(request: SendInnPameldingRequest): HttpResponse {
     if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
 
     this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null
@@ -366,15 +291,6 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  sendInnPameldingUtenGodkjenning(
-    deltakerId: string,
-    request: SendInnPameldingUtenGodkjenningRequest
-  ): HttpResponse {
-    // eslint-disable-next-line no-console
-    console.log(deltakerId, request)
-    return new HttpResponse(null, { status: 200 })
-  }
-
   setStatus(status: DeltakerStatusType) {
     this.statusType = status
     const oppdatertPamelding = this.pamelding
@@ -397,6 +313,40 @@ export class MockHandler {
       oppdatertPamelding.startdato = this.getStartdato()
       oppdatertPamelding.sluttdato = this.getSluttdato()
       oppdatertPamelding.forslag = this.getForslag()
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+    return HttpResponse.json(this.pamelding)
+  }
+
+  setTiltakstype(tiltakstype: Tiltakstype) {
+    this.tiltakstype = tiltakstype
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.tiltakstype = tiltakstype
+
+      const ledetekst = getLedetekst(tiltakstype)
+      const innhold = getInnholdForTiltaksType(tiltakstype)
+      oppdatertPamelding.deltakerliste.tilgjengeligInnhold = {
+        innhold,
+        ledetekst
+      }
+      oppdatertPamelding.deltakelsesinnhold = {
+        innhold: getUtvidetInnhold(innhold),
+        ledetekst
+      }
+
+      if (
+        tiltakstype === Tiltakstype.ARBFORB ||
+        tiltakstype === Tiltakstype.VASV
+      ) {
+        oppdatertPamelding.deltakelsesprosent = 80
+        oppdatertPamelding.dagerPerUke = 4
+      } else {
+        oppdatertPamelding.deltakelsesprosent = null
+        oppdatertPamelding.dagerPerUke = null
+      }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
