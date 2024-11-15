@@ -172,6 +172,7 @@ export const EndreOppstartsdatoModal = ({
       apiFunction={endreDeltakelseStartdato}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <SimpleDatePicker
         label="Ny oppstartsdato"
@@ -186,6 +187,7 @@ export const EndreOppstartsdatoModal = ({
         defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}
         onChange={(date) => setStartdato(date)}
+        disabled={!pamelding.erUnderOppfolging}
       />
       {skalVelgeVarighet && (
         <>
@@ -202,6 +204,7 @@ export const EndreOppstartsdatoModal = ({
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
+            disabled={!pamelding.erUnderOppfolging}
           />
           {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
             <BodyShort className="mt-2" size="small">
@@ -229,6 +232,7 @@ export const EndreOppstartsdatoModal = ({
             type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
             onChange={begrunnelse.handleChange}
             error={begrunnelse.error}
+            disabled={!pamelding.erUnderOppfolging}
           />
         </>
       )}

@@ -4,10 +4,11 @@ import { ArrowRightIcon } from '@navikt/aksel-icons'
 
 interface Props {
   forslag: Forslag
+  disabled: boolean
   onClick?: () => void
 }
 
-export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
+export const ModalForslagDetaljer = ({ forslag, disabled, onClick }: Props) => {
   return (
     <div className="mb-6">
       <Box
@@ -26,6 +27,7 @@ export const ModalForslagDetaljer = ({ forslag, onClick }: Props) => {
               variant="secondary"
               className="sm:mt-0 mt-1"
               onClick={onClick}
+              disabled={disabled}
             >
               <div className="flex flex-row items-center">
                 Avvis forslag <ArrowRightIcon height={24} width={24} />

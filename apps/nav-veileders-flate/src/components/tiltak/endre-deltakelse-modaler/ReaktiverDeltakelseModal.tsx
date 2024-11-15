@@ -65,6 +65,7 @@ export const ReaktiverDeltakelseModal = ({
       apiFunction={endreDeltakelseReaktiver}
       validertRequest={validertRequest}
       forslag={null}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <ConfirmationPanel
         size="small"
@@ -81,6 +82,7 @@ export const ReaktiverDeltakelseModal = ({
       <BegrunnelseInput
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

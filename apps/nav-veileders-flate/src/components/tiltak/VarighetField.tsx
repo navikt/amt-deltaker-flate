@@ -25,6 +25,7 @@ interface Props {
   errorSluttDato: string | null
   defaultVarighet?: VarighetValg | null
   defaultAnnetDato?: Date | null
+  disabled?: boolean
   onChangeVarighet: (valg: VarighetValg) => void
   onChangeSluttDato: (date: Date | undefined) => void
   onValidateSluttDato: (dateValidation: DateValidationT, newDate?: Date) => void
@@ -40,6 +41,7 @@ export const VarighetField = ({
   errorSluttDato,
   defaultVarighet,
   defaultAnnetDato,
+  disabled,
   onChangeVarighet,
   onChangeSluttDato,
   onValidateSluttDato
@@ -96,6 +98,7 @@ export const VarighetField = ({
       legend={title}
       size="small"
       onChange={handleChangeVarighet}
+      disabled={disabled}
       value={valgtVarighet}
       error={errorVarighet}
       className={className || ''}
@@ -117,6 +120,7 @@ export const VarighetField = ({
                 size="small"
                 hideLabel={true}
                 error={errorSluttDato}
+                disabled={disabled}
                 onChange={handleDateInputChange}
               />
             </DatePicker>

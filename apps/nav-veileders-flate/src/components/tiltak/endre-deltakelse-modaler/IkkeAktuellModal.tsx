@@ -79,6 +79,7 @@ export const IkkeAktuellModal = ({
       apiFunction={endreDeltakelseIkkeAktuell}
       validertRequest={validertRequest}
       forslag={forslag}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <AarsakRadioGroup
         legend="Hva er årsaken til at deltakeren ikke er aktuell?"
@@ -88,11 +89,13 @@ export const IkkeAktuellModal = ({
         beskrivelseError={aarsak.beskrivelseError}
         onChange={aarsak.handleChange}
         onBeskrivelse={aarsak.handleBeskrivelse}
+        disabled={!pamelding.erUnderOppfolging}
       />
       <BegrunnelseInput
         type="valgfri"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
       />
     </Endringsmodal>
   )

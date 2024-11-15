@@ -106,6 +106,7 @@ export const EndreInnholdModal = ({
       apiFunction={endreDeltakelseInnhold}
       validertRequest={validertRequest}
       forslag={null}
+      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <Heading level="2" size="small" className="mb-4">
         Dette er innholdet
@@ -124,6 +125,7 @@ export const EndreInnholdModal = ({
           legend="Hva mer skal tiltaket inneholde?"
           error={innholdError}
           size="small"
+          disabled={!pamelding.erUnderOppfolging}
           aria-required
           id="endreValgteInnhold"
           onChange={(value: string[]) => {
@@ -144,6 +146,7 @@ export const EndreInnholdModal = ({
                   value={annetBeskrivelse ?? ''}
                   aria-label={'Beskrivelse av innhold "Annet"'}
                   aria-required
+                  disabled={!pamelding.erUnderOppfolging}
                   maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                   size="small"
                   id="innholdAnnetBeskrivelse"

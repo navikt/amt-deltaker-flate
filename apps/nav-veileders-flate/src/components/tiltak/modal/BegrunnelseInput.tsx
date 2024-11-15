@@ -29,9 +29,10 @@ interface Props {
   onChange: (value: string) => void
   error?: string
   type?: BegrunnelseType
+  disabled: boolean
 }
 
-export function BegrunnelseInput({ onChange, error, type }: Props) {
+export function BegrunnelseInput({ onChange, error, type, disabled }: Props) {
   const label = type ? labels[type] : labels['obligatorisk']
 
   const [begrunnelse, setBegrunnelse] = useState<string>('')
@@ -54,6 +55,7 @@ export function BegrunnelseInput({ onChange, error, type }: Props) {
       id="begrunnelse"
       size="small"
       aria-label={'Begrunnelse'}
+      disabled={disabled}
     />
   )
 }

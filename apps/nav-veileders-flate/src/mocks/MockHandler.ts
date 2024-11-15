@@ -119,7 +119,8 @@ export class MockHandler {
         .duration(softMaxVarighetMnd ?? 6, 'month')
         .asMilliseconds(),
       forslag: [],
-      importertFraArena: null
+      importertFraArena: null,
+      erUnderOppfolging: false
     }
   }
 
