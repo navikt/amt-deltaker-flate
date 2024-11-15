@@ -2,7 +2,11 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { v4 as uuidv4 } from 'uuid'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { DeltakerStatusAarsakType, DeltakerStatusType } from '../model/deltaker'
+import {
+  DeltakerStatusAarsakType,
+  DeltakerStatusType,
+  Tiltakstype
+} from '../model/deltaker'
 import {
   ArrangorEndringsType,
   DeltakerHistorikkListe,
@@ -14,6 +18,7 @@ import {
   ForslagStatusType,
   HistorikkType
 } from '../model/forslag'
+import { INNHOLD_TYPE_ANNET } from './constants'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
@@ -28,7 +33,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: {
         id: uuidv4(),
@@ -73,7 +78,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: null
     },
@@ -86,7 +91,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: {
         id: uuidv4(),
@@ -114,7 +119,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
           'Det var en feil at deltakelsen ble satt til ikke aktuell, dette er nå rettet.'
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: null
     },
@@ -130,7 +135,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: {
         id: uuidv4(),
@@ -163,7 +168,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: null
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: null
     },
@@ -175,7 +180,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: 'Forlenger fordi vi må'
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: {
         id: uuidv4(),
@@ -220,7 +225,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         dagerPerUke: 4
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: {
         id: uuidv4(),
@@ -257,7 +262,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         bakgrunnsinformasjon: ''
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: null
     },
@@ -283,7 +288,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         ]
       },
       endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'NAV Fredrikstad',
+      endretAvEnhet: 'Nav Fredrikstad',
       endret: dayjs().subtract(2, 'day').toDate(),
       forslag: null
     },
@@ -307,7 +312,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         ]
       },
       opprettetAv: 'Navn Navnesen',
-      opprettetAvEnhet: 'NAV Fredrikstad',
+      opprettetAvEnhet: 'Nav Fredrikstad',
       opprettet: dayjs().subtract(3, 'day').toDate()
     },
     {
@@ -328,3 +333,203 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
     }
   ]
 }
+
+export const getLedetekst = (tiltakstype: Tiltakstype) => {
+  switch (tiltakstype) {
+    case Tiltakstype.ARBFORB:
+      return 'Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+    case Tiltakstype.ARBRRHDAG:
+      return 'Arbeidsrettet rehabilitering fokuserer på din helse og muligheter i arbeidslivet. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din helse, kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+    case Tiltakstype.AVKLARAG:
+      return 'Avklaring skal hjelpe deg med å se hva du kan jobbe med. Du har samtaler med en veileder. Sammen kartlegger dere hvordan kompetanse, opplevelser fra tidligere arbeidsplass, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+    case Tiltakstype.INDOPPFAG:
+      return 'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
+    case Tiltakstype.VASV:
+      return 'Varig tilrettelagt arbeid er et tilbud for deg som får uføretrygd. Du jobber i en skjermet bedrift med arbeidsoppgaver som er tilpasset deg.'
+    case Tiltakstype.DIGIOPPARB:
+      return 'Du får oppfølging og støtte til jobbsøkingen. På kurset får du karriereveiledning, hjelp til å orientere deg på arbeidsmarkedet, skrive CV og jobbsøknad og trene på jobbintervju.'
+    default:
+      return ''
+  }
+}
+
+type TilgjengeligInnhold = {
+  tekst: string
+  innholdskode: string
+}
+
+export const getInnholdForTiltaksType = (
+  tiltakstype: Tiltakstype
+): TilgjengeligInnhold[] => {
+  switch (tiltakstype) {
+    case Tiltakstype.ARBFORB:
+      return [
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
+        {
+          tekst:
+            'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          innholdskode: 'kartlegge-helse'
+        },
+        {
+          tekst:
+            'Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin',
+          innholdskode: 'kartlegge-grunnleggende-ferdigheter'
+        },
+        {
+          tekst: 'Veiledning i sosial mestring',
+          innholdskode: 'veiledning-sosialt'
+        },
+        {
+          tekst: 'Oppfølging på arbeidsplassen',
+          innholdskode: 'oppfolging-arbeidsplassen'
+        },
+        {
+          tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+          innholdskode: 'tilpasse-arbeidsoppgaver'
+        },
+        { tekst: 'Annet', innholdskode: 'annet' }
+      ]
+    case Tiltakstype.ARBRRHDAG:
+      return [
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        {
+          tekst:
+            'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          innholdskode: 'kartlegge-helse'
+        },
+        {
+          tekst: 'Kartlegge dine forventninger til å jobbe',
+          innholdskode: 'kartlegge-forventninger'
+        },
+        {
+          tekst:
+            'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+          innholdskode: 'kartlegge-arbeidsplassen'
+        },
+        {
+          tekst: 'Veiledning om livsstil og kosthold',
+          innholdskode: 'veiledning-livsstil'
+        },
+        {
+          tekst: 'Motivasjons- og mestringsaktiviteter',
+          innholdskode: 'motivasjon'
+        },
+        {
+          tekst: 'Veiledning i sosial mestring',
+          innholdskode: 'veiledning-sosialt'
+        },
+        {
+          tekst: 'Individuelt treningsopplegg med veiledning',
+          innholdskode: 'veiledning-trening'
+        },
+        {
+          tekst: 'Oppfølging på arbeidsplassen',
+          innholdskode: 'oppfolging-arbeidsplassen'
+        },
+        {
+          tekst: 'Veiledning til arbeidsgiver',
+          innholdskode: 'veiledning-arbeidsgiver'
+        },
+        {
+          tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+          innholdskode: 'tilpasse-arbeidsoppgaver'
+        },
+        { tekst: 'Annet', innholdskode: 'annet' }
+      ]
+    case Tiltakstype.AVKLARAG:
+      return [
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
+        {
+          tekst:
+            'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          innholdskode: 'kartlegge-helse'
+        },
+        {
+          tekst: 'Kartlegge dine forventninger til å jobbe',
+          innholdskode: 'kartlegge-forventninger'
+        },
+        {
+          tekst:
+            'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+          innholdskode: 'kartlegge-arbeidsplassen'
+        },
+        {
+          tekst:
+            'Kartlegge hvilken støtte du trenger for å delta på et arbeidsmarkedstiltak',
+          innholdskode: 'kartlegge-delta-tiltak'
+        },
+        {
+          tekst:
+            'Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin',
+          innholdskode: 'kartlegge-grunnleggende-ferdigheter'
+        },
+        {
+          tekst: 'Oppfølging på arbeidsplassen',
+          innholdskode: 'oppfolging-arbeidsplassen'
+        },
+        {
+          tekst: 'Veiledning til arbeidsgiver',
+          innholdskode: 'veiledning-arbeidsgiver'
+        },
+        { tekst: 'Annet', innholdskode: 'annet' }
+      ]
+    case Tiltakstype.INDOPPFAG:
+      return [
+        { tekst: 'Støtte til å søke jobber', innholdskode: 'jobbsoking' },
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
+        {
+          tekst:
+            'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
+          innholdskode: 'kartlegge-helse'
+        },
+        {
+          tekst: 'Kartlegge dine forventninger til å jobbe',
+          innholdskode: 'kartlegge-forventninger'
+        },
+        {
+          tekst:
+            'Kartlegge hvilken støtte og tilpasning du trenger på arbeidsplassen',
+          innholdskode: 'kartlegge-arbeidsplassen'
+        },
+        {
+          tekst: 'Veiledning i sosial mestring',
+          innholdskode: 'veiledning-sosialt'
+        },
+        {
+          tekst: 'Oppfølging på arbeidsplassen',
+          innholdskode: 'oppfolging-arbeidsplassen'
+        },
+        {
+          tekst: 'Veiledning til arbeidsgiver',
+          innholdskode: 'veiledning-arbeidsgiver'
+        },
+        {
+          tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
+          innholdskode: 'tilpasse-arbeidsoppgaver'
+        },
+        { tekst: 'Annet', innholdskode: 'annet' }
+      ]
+    case Tiltakstype.VASV:
+    case Tiltakstype.DIGIOPPARB:
+    default:
+      return []
+  }
+}
+
+export const getUtvidetInnhold = (innhold: TilgjengeligInnhold[]) =>
+  innhold.map((i) => {
+    const valgt = Math.random() >= 0.5
+    const erAnnet = i.innholdskode === INNHOLD_TYPE_ANNET
+    return {
+      tekst: i.tekst,
+      innholdskode: i.innholdskode,
+      valgt: valgt,
+      beskrivelse:
+        valgt && erAnnet
+          ? 'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
+          : null
+    }
+  })

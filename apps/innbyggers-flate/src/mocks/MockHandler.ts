@@ -133,7 +133,7 @@ export const createDeltaker = (
       opprettetAv: 'Navn Navnesen',
       sistEndret: dayjs().toString(),
       sistEndretAv: 'Navn Navnesen',
-      sistEndretAvEnhet: 'NAV Fredrikstad'
+      sistEndretAvEnhet: 'Nav Fredrikstad'
     },
     adresseDelesMedArrangor: true,
     forslag: [],

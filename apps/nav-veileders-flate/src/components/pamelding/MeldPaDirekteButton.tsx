@@ -115,7 +115,7 @@ export const MeldPaDirekteButton = ({
         <Button
           size="small"
           variant="secondary"
-          icon={<ArrowForwardIcon />}
+          icon={<ArrowForwardIcon aria-hidden />}
           loading={sendDirekteState === DeferredFetchState.LOADING}
           disabled={isDisabled}
           type="button"

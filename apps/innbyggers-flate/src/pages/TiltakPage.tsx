@@ -168,9 +168,9 @@ export const TiltakPage = () => {
 
         <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
           <div className="grid grid-flow-col items-center gap-4">
-            <ChatElipsisIcon className="text-2xl" />
+            <ChatElipsisIcon className="text-2xl" aria-hidden />
             <span>
-              Send en melding her til NAV-veilederen din hvis noe skal endres.
+              Send en melding her til Nav-veilederen din hvis noe skal endres.
             </span>
           </div>
         </LinkPanel>

@@ -35,7 +35,7 @@ export const FeilregistrertInfo = ({
       </HStack>
 
       <BodyShort className="mt-4">
-        Innholdet er slettet av NAV fordi arbeidsmarkedstiltaket ble registrert
+        Innholdet er slettet av Nav fordi arbeidsmarkedstiltaket ble registrert
         feil.
       </BodyShort>
 
@@ -51,7 +51,7 @@ export const FeilregistrertInfo = ({
         <div className="grid grid-flow-col items-center gap-4">
           <ChatElipsisIcon className="text-2xl" />
           <span>
-            Send en melding her til NAV-veilederen din hvis du har spørsmål.
+            Send en melding her til Nav-veilederen din hvis du har spørsmål.
           </span>
         </div>
       </LinkPanel>

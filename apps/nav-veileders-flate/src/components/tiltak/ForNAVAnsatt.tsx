@@ -26,7 +26,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
   return (
     <div className={`bg-white p-4 h-fit ${className} flex flex-col`}>
       <Heading level="2" size="medium" className="mb-4 ">
-        For NAV-ansatt
+        For Nav-ansatt
       </Heading>
       {kanEndres ? (
         <EndreDeltakelseKnapp />

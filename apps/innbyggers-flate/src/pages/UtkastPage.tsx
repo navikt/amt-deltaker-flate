@@ -121,8 +121,8 @@ export const UtkastPage = () => {
         Kontaktinformasjon
       </Heading>
       <BodyLong size="small" className="mt-2">
-        NAV samarbeider med {arrangorNavn}. Arrangøren behandler
-        personopplysninger på vegne av NAV.
+        Nav samarbeider med {arrangorNavn}. Arrangøren behandler
+        personopplysninger på vegne av Nav.
       </BodyLong>
       <List as="ul" size="small" className="-mt-1 -mb-2">
         <List.Item className="mt-2 whitespace-pre-wrap">
@@ -136,7 +136,7 @@ export const UtkastPage = () => {
         )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
-        Se her hvilke opplysninger NAV har om deg.
+        Se her hvilke opplysninger Nav har om deg.
       </Link>
 
       <ConfirmationPanel
@@ -156,7 +156,7 @@ export const UtkastPage = () => {
         <BodyLong className="mt-4">
           Hvis du har et spørsmål, innspill eller ikke ønsker at dette deles,{' '}
           <Link href={DIALOG_URL} inlineText>
-            så send en melding til NAV-veilederen din her.
+            så send en melding til Nav-veilederen din her.
           </Link>
         </BodyLong>
       </ConfirmationPanel>
