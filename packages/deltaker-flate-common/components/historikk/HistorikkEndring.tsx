@@ -105,19 +105,19 @@ const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
       )
     }
     case EndringType.EndreDeltakelsesmengde:
-      return endring.begrunnelse ? (
+      return (
         <>
           {endring.gyldigFra && (
             <BodyShort size="small">
               Gjelder fra: {formatDate(endring.gyldigFra)}
             </BodyShort>
           )}
-          <BodyLong size="small" className="whitespace-pre-wrap">
-            NAVs begrunnelse: {endring.begrunnelse}
-          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
         </>
-      ) : (
-        <div className="-mb-1" />
       )
     case EndringType.ForlengDeltakelse:
     case EndringType.EndreSluttdato:
