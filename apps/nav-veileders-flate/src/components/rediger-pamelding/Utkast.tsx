@@ -31,6 +31,7 @@ export const Utkast = ({
   return (
     <VStack>
       <DeltakelseInnhold
+        tiltakstype={tiltakstype}
         deltakelsesinnhold={innhold}
         heading={
           <Heading level="3" size="small" className="mb-2">

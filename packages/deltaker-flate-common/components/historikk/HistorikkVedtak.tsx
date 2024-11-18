@@ -35,6 +35,7 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
       <DeltakelseInnhold
+        tiltakstype={tiltakstype}
         deltakelsesinnhold={deltakelsesinnhold}
         heading={
           <BodyLong size="small" weight="semibold">

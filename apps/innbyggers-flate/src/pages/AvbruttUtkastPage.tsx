@@ -27,6 +27,7 @@ export const AvbruttUtkastPage = () => {
       <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
 
       <DeltakelseInnhold
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-2 mb-2">

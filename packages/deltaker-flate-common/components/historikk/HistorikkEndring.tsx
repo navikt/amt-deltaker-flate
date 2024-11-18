@@ -14,9 +14,11 @@ import { formatDate } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
+import { Tiltakstype } from '../../model/deltaker.ts'
 
 interface Props {
   deltakerEndring: DeltakerEndring
+  tiltakstype: Tiltakstype
 }
 
 const mapEndringsType = (endringType: EndringType) => {
@@ -44,7 +46,7 @@ const mapEndringsType = (endringType: EndringType) => {
   }
 }
 
-const getEndringsDetaljer = (endring: Endring) => {
+const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (
@@ -84,6 +86,7 @@ const getEndringsDetaljer = (endring: Endring) => {
     case EndringType.EndreInnhold: {
       return (
         <DeltakelseInnhold
+          tiltakstype={tiltakstype}
           deltakelsesinnhold={{
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
@@ -129,7 +132,7 @@ const getEndringsDetaljer = (endring: Endring) => {
   }
 }
 
-export const HistorikkEndring = ({ deltakerEndring }: Props) => {
+export const HistorikkEndring = ({ deltakerEndring, tiltakstype }: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
 
   return (
@@ -138,7 +141,7 @@ export const HistorikkEndring = ({ deltakerEndring }: Props) => {
       icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
       forslag={deltakerEndring.forslag}
     >
-      {getEndringsDetaljer(deltakerEndring.endring)}
+      {getEndringsDetaljer(deltakerEndring.endring, tiltakstype)}
       <Detail className="mt-1" textColor="subtle">
         {`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
       </Detail>

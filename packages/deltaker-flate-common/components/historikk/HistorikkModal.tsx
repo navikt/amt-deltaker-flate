@@ -30,7 +30,12 @@ const getHistorikkItem = (
         <HistorikkVedtak endringsVedtak={historikk} tiltakstype={tiltakstype} />
       )
     case HistorikkType.Endring:
-      return <HistorikkEndring deltakerEndring={historikk} />
+      return (
+        <HistorikkEndring
+          deltakerEndring={historikk}
+          tiltakstype={tiltakstype}
+        />
+      )
     case HistorikkType.Forslag:
       return <HistorikkForslag forslag={historikk} />
     case HistorikkType.EndringFraArrangor:
