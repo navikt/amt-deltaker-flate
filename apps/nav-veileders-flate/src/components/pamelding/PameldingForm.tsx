@@ -118,8 +118,8 @@ export const PameldingForm = ({
             )}
           </section>
 
-          <section className="mb-8 mt-4">
-            {tiltakstype === Tiltakstype.VASV && (
+          {tiltakstype === Tiltakstype.VASV && (
+            <section className="mb-8 mt-4">
               <Textarea
                 label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
                 {...register('innholdAnnetBeskrivelse')}
@@ -132,8 +132,10 @@ export const PameldingForm = ({
                 size="small"
                 id="innholdAnnetBeskrivelse"
               />
-            )}
-            {skalViseInnholdSjekkbokser && innhold.innhold.length > 0 && (
+            </section>
+          )}
+          {skalViseInnholdSjekkbokser && innhold.innhold.length > 0 && (
+            <section className="mb-8 mt-4">
               <CheckboxGroup
                 defaultValue={defaultValues.valgteInnhold}
                 legend="Hva mer skal tiltaket inneholde?"
@@ -172,8 +174,8 @@ export const PameldingForm = ({
                   </div>
                 ))}
               </CheckboxGroup>
-            )}
-          </section>
+            </section>
+          )}
 
           {tiltakstype !== Tiltakstype.DIGIOPPARB && (
             <section className="mb-8">
