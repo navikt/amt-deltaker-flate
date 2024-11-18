@@ -113,6 +113,34 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
     {
       type: HistorikkType.Endring,
       endring: {
+        type: EndringType.EndreStartdato,
+        sluttdato: null,
+        startdato: dayjs().toDate(),
+        begrunnelse: null
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.Startdato,
+          sluttdato: dayjs().add(4, 'month').toDate(),
+          startdato: dayjs().add(1, 'month').toDate()
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
         type: EndringType.ReaktiverDeltakelse,
         reaktivertDato: dayjs().toDate(),
         begrunnelse:

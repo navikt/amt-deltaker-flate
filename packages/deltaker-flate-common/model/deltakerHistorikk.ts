@@ -46,7 +46,7 @@ export const endreDeltakelsesmengdeSchema = z.object({
 export const endreStartdatoSchema = z.object({
   type: z.literal(EndringType.EndreStartdato),
   startdato: dateSchema,
-  sluttdato: dateSchema,
+  sluttdato: nullableDateSchema,
   begrunnelse: z.string().nullable()
 })
 
@@ -103,7 +103,7 @@ const endringSchema = z.discriminatedUnion('type', [
 const arrangorLeggTilOppstartSchema = z.object({
   type: z.literal(ArrangorEndringsType.LeggTilOppstartsdato),
   startdato: dateSchema,
-  sluttdato: dateSchema
+  sluttdato: nullableDateSchema
 })
 
 const arrangorEndringSchema = z.discriminatedUnion('type', [
