@@ -36,7 +36,7 @@ export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
     case Tiltakstype.INDOPPFAG:
       return 'Oppfølging'
     case Tiltakstype.DIGIOPPARB:
-      return 'Digitalt oppfølgingstiltak'
+      return 'Digitalt jobbsøkerkurs'
     case Tiltakstype.GRUFAGYRKE:
       return 'Fag- og yrkesopplæring'
     case Tiltakstype.GRUPPEAMO:
