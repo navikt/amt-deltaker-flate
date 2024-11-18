@@ -513,6 +513,7 @@ export const getInnholdForTiltaksType = (
         { tekst: 'Annet', innholdskode: 'annet' }
       ]
     case Tiltakstype.VASV:
+      return [{ tekst: 'Annet', innholdskode: 'annet' }]
     case Tiltakstype.DIGIOPPARB:
     default:
       return []

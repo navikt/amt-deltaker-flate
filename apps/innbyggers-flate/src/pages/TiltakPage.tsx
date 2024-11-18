@@ -16,7 +16,7 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
-  HvaErDette,
+  VedtakInfo,
   SeEndringer,
   deltakerprosentText,
   formatDateFromString,
@@ -111,8 +111,9 @@ export const TiltakPage = () => {
       )}
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
         <DeltakerStatusInfoTekst
+          tiltakstype={deltaker.deltakerliste.tiltakstype}
           statusType={deltaker.status.type}
-          tiltakOgStedTekst={tiltakOgStedTekst}
+          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           oppstartsdato={deltaker.startdato}
         />
       )}
@@ -120,6 +121,7 @@ export const TiltakPage = () => {
       <AktiveForslag forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -175,7 +177,7 @@ export const TiltakPage = () => {
           </div>
         </LinkPanel>
 
-        <HvaErDette
+        <VedtakInfo
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
           importertFraArena={deltaker.importertFraArena}

@@ -1,5 +1,5 @@
 export * from './components/DeltakerStatusTag'
-export * from './components/HvaErDette'
+export * from './components/VedtakInfo.tsx'
 export * from './components/DeltakerStatusInfoTekst'
 export * from './components/UtkastHeader'
 export * from './components/HvaDelesMedArrangor'
