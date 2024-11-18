@@ -1,4 +1,8 @@
-import { INNHOLD_TYPE_ANNET, visDeltakelsesmengde } from 'deltaker-flate-common'
+import {
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype,
+  visDeltakelsesmengde
+} from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import {
   InnholdDto,
@@ -13,6 +17,14 @@ export const generateInnholdFromResponse = (
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null
 ): InnholdDto[] => {
+  if (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV) {
+    return [
+      {
+        innholdskode: INNHOLD_TYPE_ANNET,
+        beskrivelse: innholdAnnetBeskrivelse || null
+      }
+    ]
+  }
   return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
     const valgtInnhold = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
