@@ -361,6 +361,7 @@ type TilgjengeligInnhold = {
 export const getInnholdForTiltaksType = (
   tiltakstype: Tiltakstype
 ): TilgjengeligInnhold[] => {
+  const annet = { tekst: 'Annet', innholdskode: INNHOLD_TYPE_ANNET }
   switch (tiltakstype) {
     case Tiltakstype.ARBFORB:
       return [
@@ -388,7 +389,7 @@ export const getInnholdForTiltaksType = (
           tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
           innholdskode: 'tilpasse-arbeidsoppgaver'
         },
-        { tekst: 'Annet', innholdskode: 'annet' }
+        annet
       ]
     case Tiltakstype.ARBRRHDAG:
       return [
@@ -435,7 +436,7 @@ export const getInnholdForTiltaksType = (
           tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
           innholdskode: 'tilpasse-arbeidsoppgaver'
         },
-        { tekst: 'Annet', innholdskode: 'annet' }
+        annet
       ]
     case Tiltakstype.AVKLARAG:
       return [
@@ -473,7 +474,7 @@ export const getInnholdForTiltaksType = (
           tekst: 'Veiledning til arbeidsgiver',
           innholdskode: 'veiledning-arbeidsgiver'
         },
-        { tekst: 'Annet', innholdskode: 'annet' }
+        annet
       ]
     case Tiltakstype.INDOPPFAG:
       return [
@@ -510,10 +511,10 @@ export const getInnholdForTiltaksType = (
           tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
           innholdskode: 'tilpasse-arbeidsoppgaver'
         },
-        { tekst: 'Annet', innholdskode: 'annet' }
+        annet
       ]
     case Tiltakstype.VASV:
-      return [{ tekst: 'Annet', innholdskode: 'annet' }]
+      return [annet]
     case Tiltakstype.DIGIOPPARB:
     default:
       return []
