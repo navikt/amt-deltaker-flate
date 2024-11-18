@@ -51,7 +51,9 @@ export const PameldingForm = ({
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
-  const skalViseInnholdSjekkbokser = tiltakstype !== Tiltakstype.VASV
+  const skalViseInnholdSjekkbokser = !(
+    tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.DIGIOPPARB
+  )
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -173,22 +175,24 @@ export const PameldingForm = ({
             )}
           </section>
 
-          <section className="mb-8">
-            <Heading size="medium" level="3" className="mb-4">
-              Bakgrunnsinfo
-            </Heading>
-            <Textarea
-              label="Er det noe mer dere ønsker å informere arrangøren om?"
-              description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
-              {...register('bakgrunnsinformasjon')}
-              value={watch('bakgrunnsinformasjon')}
-              error={errors.bakgrunnsinformasjon?.message}
-              disabled={isDisabled}
-              maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
-              id="bakgrunnsinformasjon"
-              size="small"
-            />
-          </section>
+          {tiltakstype !== Tiltakstype.DIGIOPPARB && (
+            <section className="mb-8">
+              <Heading size="medium" level="3" className="mb-4">
+                Bakgrunnsinfo
+              </Heading>
+              <Textarea
+                label="Er det noe mer dere ønsker å informere arrangøren om?"
+                description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
+                {...register('bakgrunnsinformasjon')}
+                value={watch('bakgrunnsinformasjon')}
+                error={errors.bakgrunnsinformasjon?.message}
+                disabled={isDisabled}
+                maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
+                id="bakgrunnsinformasjon"
+                size="small"
+              />
+            </section>
+          )}
 
           {(tiltakstype === Tiltakstype.VASV ||
             tiltakstype === Tiltakstype.ARBFORB) && (
