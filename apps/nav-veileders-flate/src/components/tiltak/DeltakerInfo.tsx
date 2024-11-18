@@ -15,7 +15,7 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
-  HvaErDette,
+  VedtakInfo,
   SeEndringer,
   deltakerprosentText,
   formatDateFromString,
@@ -97,14 +97,16 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
         <DeltakerStatusInfoTekst
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
           statusType={pamelding.status.type}
-          tiltakOgStedTekst={tiltakOgStedTekst}
+          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}
         />
       )}
       <AktiveForslag forslag={pamelding.forslag} />
 
       <DeltakelseInnhold
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
         deltakelsesinnhold={pamelding.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -155,7 +157,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           </div>
         </LinkPanel>
 
-        <HvaErDette
+        <VedtakInfo
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
           importertFraArena={pamelding.importertFraArena}

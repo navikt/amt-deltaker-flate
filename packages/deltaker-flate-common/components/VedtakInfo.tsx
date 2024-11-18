@@ -13,7 +13,7 @@ interface Props {
   className: string
 }
 
-export const HvaErDette = ({
+export const VedtakInfo = ({
   tiltakstype,
   vedtaksinformasjon,
   importertFraArena,

@@ -1,9 +1,15 @@
 import { Alert, BodyLong } from '@navikt/ds-react'
-import { DeltakerStatusType, isValidDate } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  getTiltakstypeDisplayText,
+  isValidDate,
+  Tiltakstype
+} from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
+  tiltakstype: Tiltakstype
   statusType: DeltakerStatusType
-  tiltakOgStedTekst: string
+  arrangorNavn: string
   oppstartsdato: string | null
 }
 
@@ -24,21 +30,25 @@ const getInfoTekst = (
 }
 
 export const DeltakerStatusInfoTekst = ({
+  tiltakstype,
   statusType,
-  tiltakOgStedTekst,
+  arrangorNavn,
   oppstartsdato
 }: DeltakerStatusInfoTekstProps) => {
   const harOppstartsDato = isValidDate(oppstartsdato)
+  const tiltakNavn = getTiltakstypeDisplayText(tiltakstype)
+
   return (
     <>
       <BodyLong size="small" className="mt-4">
-        {getInfoTekst(statusType, tiltakOgStedTekst)}
+        {getInfoTekst(statusType, `${tiltakNavn} hos ${arrangorNavn}`)}
       </BodyLong>
       {!harOppstartsDato &&
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
-            Når arrangøren har en ledig plass så vil de ta kontakt med deg for å
-            avtale oppstart.
+            {tiltakstype === Tiltakstype.VASV
+              ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
+              : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'}
           </Alert>
         )}
     </>

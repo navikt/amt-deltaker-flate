@@ -83,6 +83,7 @@ export const UtkastPage = () => {
       </GuidePanel>
 
       <DeltakelseInnhold
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6 mb-2">
