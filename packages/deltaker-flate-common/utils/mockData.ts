@@ -129,7 +129,7 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         arrangorNavn: 'Muligheter As',
         endring: {
           type: ForslagEndringType.Startdato,
-          sluttdato: dayjs().add(4, 'month').toDate(),
+          sluttdato: null,
           startdato: dayjs().add(1, 'month').toDate()
         },
         status: {

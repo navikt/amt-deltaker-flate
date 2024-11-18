@@ -115,9 +115,11 @@ const getEndringsDetaljer = (endring: Endring) => {
     case EndringType.EndreStartdato: {
       return (
         <>
-          <BodyLong size="small">
-            Forventet sluttdato: {formatDate(endring.sluttdato)}
-          </BodyLong>
+          {endring.sluttdato && (
+            <BodyLong size="small">
+              Forventet sluttdato: {formatDate(endring.sluttdato)}
+            </BodyLong>
+          )}
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}
