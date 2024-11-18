@@ -234,7 +234,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     )
 
     expect(result.current.sluttdato?.getTime()).toBe(
-      dayjs(deltakerMedDatoer.sluttdato).add(3, 'months').toDate().getTime()
+      dayjs(deltakerMedDatoer.sluttdato)
+        .subtract(1, 'day')
+        .add(3, 'months')
+        .toDate()
+        .getTime()
     )
   })
 
@@ -251,7 +255,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     )
 
     expect(result.current.sluttdato?.getTime()).toBe(
-      dayjs(startdato).add(3, 'months').toDate().getTime()
+      dayjs(startdato).subtract(1, 'day').add(3, 'months').toDate().getTime()
     )
   })
 
