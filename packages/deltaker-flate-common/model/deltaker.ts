@@ -6,7 +6,7 @@ export enum Tiltakstype {
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
   AVKLARAG = 'AVKLARAG', // Avklaring
   INDOPPFAG = 'INDOPPFAG', // Oppfølging
-  DIGIOPPARB = 'DIGIOPPARB', // Digitalt oppfølgingstiltak / jobbsøkerkurs
+  DIGIOPPARB = 'DIGIOPPARB', // Digitalt jobbsøkerkurs (oppfølgingstiltak)
   VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
