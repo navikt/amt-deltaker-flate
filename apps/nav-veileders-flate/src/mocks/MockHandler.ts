@@ -32,6 +32,9 @@ import {
 import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 
+const bakgrunnsinformasjon =
+  'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
+
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
     statusType !== DeltakerStatusType.KLADD &&
@@ -93,8 +96,7 @@ export class MockHandler {
       sluttdato: _sluttdato,
       dagerPerUke: null,
       deltakelsesprosent: 100,
-      bakgrunnsinformasjon:
-        'Ønsker å bli kontaktet via sms\nKan ikke på onsdager',
+      bakgrunnsinformasjon: bakgrunnsinformasjon,
       deltakelsesinnhold: {
         ledetekst: ledetekst,
         innhold: getUtvidetInnhold(innhold)
@@ -347,6 +349,14 @@ export class MockHandler {
       } else {
         oppdatertPamelding.deltakelsesprosent = null
         oppdatertPamelding.dagerPerUke = null
+      }
+      if (
+        tiltakstype === Tiltakstype.DIGIOPPARB ||
+        tiltakstype === Tiltakstype.VASV
+      ) {
+        oppdatertPamelding.bakgrunnsinformasjon = null
+      } else {
+        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)

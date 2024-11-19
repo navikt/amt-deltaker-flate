@@ -177,6 +177,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <HvaDelesMedArrangor
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
+          tiltaksType={pamelding.deltakerliste.tiltakstype}
           className="mt-8"
         />
       </div>

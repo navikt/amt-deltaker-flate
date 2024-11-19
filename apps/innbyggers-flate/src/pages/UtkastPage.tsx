@@ -13,6 +13,7 @@ import {
   DeltakelseInnhold,
   EMDASH,
   PERSONOPPLYSNINGER_URL,
+  Tiltakstype,
   UtkastHeader,
   deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
@@ -132,9 +133,10 @@ export const UtkastPage = () => {
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {deltaker.adresseDelesMedArrangor && (
-          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
-        )}
+        {deltaker.adresseDelesMedArrangor &&
+          deltaker.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB && (
+            <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+          )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.
