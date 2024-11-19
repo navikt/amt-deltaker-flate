@@ -6,12 +6,13 @@ import { Tiltakstype } from 'deltaker-flate-common'
 
 let cachedFeatureToggles: FeatureToggles | undefined = undefined
 
-const masterForTiltakstyper = [Tiltakstype.ARBFORB]
-const nyeTiltakstyper = [
+const masterForTiltakstyper = [
+  Tiltakstype.ARBFORB,
   Tiltakstype.AVKLARAG,
   Tiltakstype.INDOPPFAG,
   Tiltakstype.ARBRRHDAG
 ]
+const nyeTiltakstyper = []
 
 export const useFeatureToggle = () => {
   const [toggles, setToggles] = useState<FeatureToggles>()
