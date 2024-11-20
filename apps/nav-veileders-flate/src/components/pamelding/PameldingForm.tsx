@@ -9,6 +9,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
+  fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -67,6 +68,7 @@ export const PameldingForm = ({
 
   const {
     register,
+    setValue,
     watch,
     clearErrors,
     formState: { errors }
@@ -123,6 +125,13 @@ export const PameldingForm = ({
               <Textarea
                 label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
                 {...register('innholdAnnetBeskrivelse')}
+                onChange={(e) => {
+                  setValue(
+                    'innholdAnnetBeskrivelse',
+                    fjernUgyldigeTegn(e.target.value),
+                    { shouldValidate: true }
+                  )
+                }}
                 value={watch('innholdAnnetBeskrivelse')}
                 error={errors.innholdAnnetBeskrivelse?.message}
                 disabled={isDisabled}
@@ -162,6 +171,13 @@ export const PameldingForm = ({
                           label={null}
                           {...register('innholdAnnetBeskrivelse')}
                           value={watch('innholdAnnetBeskrivelse')}
+                          onChange={(e) => {
+                            setValue(
+                              'innholdAnnetBeskrivelse',
+                              fjernUgyldigeTegn(e.target.value),
+                              { shouldValidate: true }
+                            )
+                          }}
                           error={errors.innholdAnnetBeskrivelse?.message}
                           disabled={isDisabled}
                           aria-label="Annet innhold beskrivelse"
@@ -187,6 +203,13 @@ export const PameldingForm = ({
                 description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
                 {...register('bakgrunnsinformasjon')}
                 value={watch('bakgrunnsinformasjon')}
+                onChange={(e) => {
+                  setValue(
+                    'bakgrunnsinformasjon',
+                    fjernUgyldigeTegn(e.target.value),
+                    { shouldValidate: true }
+                  )
+                }}
                 error={errors.bakgrunnsinformasjon?.message}
                 disabled={isDisabled}
                 maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}

@@ -110,3 +110,8 @@ export const haveSameContents = (list1: unknown[], list2: unknown[]) =>
       list1.filter((e) => e === v).length ===
       list2.filter((e) => e === v).length
   )
+
+export const fjernUgyldigeTegn = (str: string) => {
+  const gyldigeTegnRegex = /[^a-zA-ZæøåÆØÅ0-9 \s.,<>'`!"#$%&/()=?*<:>*§_-]/g
+  return str.replace(gyldigeTegnRegex, '')
+}

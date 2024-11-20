@@ -1,5 +1,5 @@
 import { Alert, BodyLong, Heading, Textarea } from '@navikt/ds-react'
-import { EndreDeltakelseType } from 'deltaker-flate-common'
+import { EndreDeltakelseType, fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
@@ -87,7 +87,7 @@ export const EndreBakgrunnsinfoModal = ({
         <Textarea
           onChange={(e) => {
             setError(null)
-            setBakgrunnsinformasjon(e.target.value)
+            setBakgrunnsinformasjon(fjernUgyldigeTegn(e.target.value))
           }}
           label="Er det noe mer dere ønsker å informere arrangøren om?"
           description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"

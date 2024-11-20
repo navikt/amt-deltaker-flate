@@ -4,7 +4,8 @@ import {
   DeltakerStatusAarsakType,
   ForslagEndringAarsakType,
   ForslagEndringType,
-  getDeltakerStatusAarsak
+  getDeltakerStatusAarsak,
+  fjernUgyldigeTegn
 } from 'deltaker-flate-common'
 
 import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
@@ -50,7 +51,7 @@ export function AarsakRadioGroup({
         ))}
         {aarsak === DeltakerStatusAarsakType.ANNET && (
           <Textarea
-            onChange={(e) => onBeskrivelse(e.target.value)}
+            onChange={(e) => onBeskrivelse(fjernUgyldigeTegn(e.target.value))}
             value={beskrivelse ?? ''}
             minRows={1}
             rows={1}

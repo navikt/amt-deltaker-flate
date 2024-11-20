@@ -9,7 +9,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint --fix '*.{ts,tsx}'"
+    "lint:fix": "eslint --fix '*.{ts,tsx}'",
+    "test": "vitest"
   },
   "dependencies": {
     "@navikt/aksel-icons": "^7.5.2",
@@ -24,6 +25,7 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^18.3.12",
-    "@types/uuid": "^10.0.0"
+    "@types/uuid": "^10.0.0",
+    "vitest": "^2.1.5"
   }
 }
