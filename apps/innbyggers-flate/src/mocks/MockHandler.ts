@@ -17,6 +17,8 @@ import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 
+const bakgrunnsinformasjon =
+  'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
 const harVedtak = (statusType: DeltakerStatusType) => {
   return (
     statusType !== DeltakerStatusType.KLADD &&
@@ -55,7 +57,7 @@ export const createDeltaker = (
     sluttdato: EMDASH,
     dagerPerUke: 1,
     deltakelsesprosent: 10,
-    bakgrunnsinformasjon: null,
+    bakgrunnsinformasjon: bakgrunnsinformasjon,
     deltakelsesinnhold: {
       ledetekst: getLedetekst(tiltakstype),
       innhold: getUtvidetInnhold(innhold)
@@ -152,6 +154,14 @@ export class MockHandler {
       } else {
         oppdatertDeltaker.deltakelsesprosent = null
         oppdatertDeltaker.dagerPerUke = null
+      }
+      if (
+        tiltakstype === Tiltakstype.DIGIOPPARB ||
+        tiltakstype === Tiltakstype.VASV
+      ) {
+        oppdatertDeltaker.bakgrunnsinformasjon = null
+      } else {
+        oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
       this.deltaker = oppdatertDeltaker
       return HttpResponse.json(oppdatertDeltaker)

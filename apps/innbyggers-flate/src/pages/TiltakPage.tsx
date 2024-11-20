@@ -201,6 +201,7 @@ export const TiltakPage = () => {
         <HvaDelesMedArrangor
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
+          tiltaksType={deltaker.deltakerliste.tiltakstype}
           className="mt-8"
         />
       </div>

@@ -1,15 +1,18 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
+import { Tiltakstype } from '../model/deltaker'
 
 interface Props {
   adresseDelesMedArrangor: boolean
   arrangorNavn: string
+  tiltaksType: Tiltakstype
   className?: string
 }
 
 export const HvaDelesMedArrangor = ({
   adresseDelesMedArrangor,
   arrangorNavn,
+  tiltaksType,
   className
 }: Props) => {
   return (
@@ -29,12 +32,20 @@ export const HvaDelesMedArrangor = ({
           <List.Item>
             Navn og kontaktinformasjonen til Nav-veilederen din
           </List.Item>
-          <List.Item>
-            Innholdet og bakgrunnsinformasjonen i påmeldingen
-          </List.Item>
+
+          {tiltaksType !== Tiltakstype.DIGIOPPARB && (
+            <List.Item>
+              Innholdet og bakgrunnsinformasjonen i påmeldingen
+            </List.Item>
+          )}
+
           <List.Item>Navn og fødselsnummer</List.Item>
           <List.Item>Telefonnummer og e-postadresse</List.Item>
-          {adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
+
+          {adresseDelesMedArrangor &&
+            tiltaksType !== Tiltakstype.DIGIOPPARB && (
+              <List.Item>Adresse</List.Item>
+            )}
         </List>
         <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
           Se her hvilke opplysninger Nav har om deg.
