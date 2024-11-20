@@ -12,7 +12,7 @@ const masterForTiltakstyper = [
   Tiltakstype.INDOPPFAG,
   Tiltakstype.ARBRRHDAG
 ]
-const nyeTiltakstyper = []
+const nyeTiltakstyper = [Tiltakstype.DIGIOPPARB, Tiltakstype.VASV]
 
 export const useFeatureToggle = () => {
   const [toggles, setToggles] = useState<FeatureToggles>()
