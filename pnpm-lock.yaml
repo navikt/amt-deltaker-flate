@@ -42,8 +42,8 @@ importers:
         specifier: ^7.5.2
         version: 7.5.2(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/nav-dekoratoren-moduler':
-        specifier: ^2.1.6
-        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
+        specifier: ^3.1.1
+        version: 3.1.1(csp-header@5.2.1)(html-react-parser@3.0.16(react@18.3.1))(jsdom@25.0.1)(react@18.3.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -747,12 +747,14 @@ packages:
   '@navikt/ds-tokens@7.5.2':
     resolution: {integrity: sha512-lKXBo2JSyWsTZq1ksTlakFNq361s3wxfWjUFMvKmwuZAf+3c2u0QoQLzM0DV5SDYFnmw8YedmRSVwUHqeiHL4g==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.5.2/ba7825c6d6a08922d766708f204281040a3076b2}
 
-  '@navikt/nav-dekoratoren-moduler@2.1.6':
-    resolution: {integrity: sha512-P9c+a8/HuIY6XScNr/DVS7lZ0UtndzYAMEaIVdAzCOrG4SudY4tXSp+44g1V58GKml1RjdzOfGVF4hxmFv3SiA==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/2.1.6/049e1daeecff43519e41e387f21fd7e3634c2bd3}
+  '@navikt/nav-dekoratoren-moduler@3.1.1':
+    resolution: {integrity: sha512-t64ByXXWVWEs1NGggClq6CVRUD648s0XWkA8imyUva9Mo48BNly4eHz6QbYewuuqvTjPn3k0gYIiF+DE+vYbYQ==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.1.1/b630f2cd32677c2fb0ab67655ee559951bd3d3d4}
     engines: {node: '>=18'}
     peerDependencies:
+      csp-header: '>=5.x'
+      html-react-parser: '>=5.x'
       jsdom: '>=16.x'
-      react: 17.x || 18.x
+      react: '>=17.x'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1446,10 +1448,6 @@ packages:
   cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
     engines: {node: '>=12'}
-
-  clone@2.1.2:
-    resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
-    engines: {node: '>=0.8'}
 
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
@@ -2346,10 +2344,6 @@ packages:
 
   nested-error-stacks@2.1.1:
     resolution: {integrity: sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==}
-
-  node-cache@5.1.2:
-    resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
-    engines: {node: '>= 8.0.0'}
 
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
@@ -3662,12 +3656,11 @@ snapshots:
 
   '@navikt/ds-tokens@7.5.2': {}
 
-  '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.1)(react@18.3.1)':
+  '@navikt/nav-dekoratoren-moduler@3.1.1(csp-header@5.2.1)(html-react-parser@3.0.16(react@18.3.1))(jsdom@25.0.1)(react@18.3.1)':
     dependencies:
       csp-header: 5.2.1
       html-react-parser: 3.0.16(react@18.3.1)
       jsdom: 25.0.1
-      node-cache: 5.1.2
       react: 18.3.1
 
   '@nodelib/fs.scandir@2.1.5':
@@ -4364,8 +4357,6 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-
-  clone@2.1.2: {}
 
   clsx@2.1.1: {}
 
@@ -5371,10 +5362,6 @@ snapshots:
   natural-compare@1.4.0: {}
 
   nested-error-stacks@2.1.1: {}
-
-  node-cache@5.1.2:
-    dependencies:
-      clone: 2.1.2
 
   node-releases@2.0.18: {}
 
