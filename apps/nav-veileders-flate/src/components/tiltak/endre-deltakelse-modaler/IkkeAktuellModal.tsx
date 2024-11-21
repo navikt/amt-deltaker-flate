@@ -1,7 +1,8 @@
 import {
   DeltakerStatusType,
   EndreDeltakelseType,
-  Forslag
+  Forslag,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
@@ -12,6 +13,7 @@ import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { FEILMELDING_15_DAGER_SIDEN } from '../../../utils/displayText.ts'
 import dayjs from 'dayjs'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface IkkeAktuellModalProps {
   pamelding: PameldingResponse
@@ -34,20 +36,26 @@ export const IkkeAktuellModal = ({
   const { enhetId } = useAppContext()
 
   const validertRequest = () => {
-    if (pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL) {
-      return null
-    }
     if (
       aarsak.valider() &&
       begrunnelse.valider() &&
       aarsak.aarsak !== undefined
     ) {
-      if (
-        pamelding.status.type === DeltakerStatusType.DELTAR &&
-        forslag &&
-        harDeltattFemtenDagerEllerMer(pamelding)
-      ) {
-        throw new Error(FEILMELDING_15_DAGER_SIDEN)
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanSetteTilIkkeAktuell(pamelding.status.type)) {
+        throw new Error(
+          `Kan ikke sette deltakelse til ikke aktuell for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+        )
+      }
+      if (pamelding.status.type === DeltakerStatusType.DELTAR) {
+        if (harDeltattFemtenDagerEllerMer(pamelding)) {
+          throw new Error(FEILMELDING_15_DAGER_SIDEN)
+        }
+        if (!forslag) {
+          throw new Error(
+            'Kan bare sette deltaker som deltar til ikke aktuell hvis det foreligger et forslag.'
+          )
+        }
       }
 
       const endring: IkkeAktuellRequest = {
@@ -106,3 +114,8 @@ const harDeltattFemtenDagerEllerMer = (pamelding: PameldingResponse) => {
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
 }
+
+const harStatusSomKanSetteTilIkkeAktuell = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.VENTER_PA_OPPSTART ||
+  statusType === DeltakerStatusType.DELTAR ||
+  statusType === DeltakerStatusType.IKKE_AKTUELL

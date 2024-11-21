@@ -10,6 +10,7 @@ import {
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
+import dayjs from 'dayjs'
 
 const harSluttetKanEndres = (
   pamelding: PameldingResponse,
@@ -146,4 +147,23 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   }
 
   return valg
+}
+
+export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
+  if (deltaker.status.type === DeltakerStatusType.FEILREGISTRERT) {
+    throw new Error('Kan ikke endre feilregistrert deltaker.')
+  }
+  if (deltakerHarAvsluttendeStatus(deltaker.status.type)) {
+    if (!deltaker.kanEndres) {
+      throw new Error(
+        'Kan ikke endre avsluttet deltakelse når det finnes aktiv deltakelse på samme tiltak.'
+      )
+    }
+    const toMndSiden = dayjs().subtract(2, 'months')
+    if (dayjs(deltaker.status.gyldigFra).isSameOrBefore(toMndSiden)) {
+      throw new Error(
+        'Kan ikke endre deltaker som fikk avsluttende status for mer enn to måneder siden.'
+      )
+    }
+  }
 }

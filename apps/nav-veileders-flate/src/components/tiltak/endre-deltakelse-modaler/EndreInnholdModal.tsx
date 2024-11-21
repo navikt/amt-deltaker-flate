@@ -23,6 +23,7 @@ import {
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreInnholdModalProps {
   pamelding: PameldingResponse
@@ -72,6 +73,7 @@ export const EndreInnholdModal = ({
       )
       return null
     } else {
+      validerDeltakerKanEndres(pamelding)
       if (
         haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
         annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)

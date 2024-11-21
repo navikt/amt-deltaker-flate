@@ -1,10 +1,12 @@
 import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndringType,
-  getDateFromString
+  getDateFromString,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -28,6 +30,7 @@ import {
 import { VarighetField } from '../VarighetField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -107,6 +110,12 @@ export const ForlengDeltakelseModal = ({
     }
 
     if (!hasError && sluttdato.sluttdato) {
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanForlengeDeltakelse(pamelding.status.type)) {
+        throw new Error(
+          `Kan ikke forlenge deltakelse for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+        )
+      }
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
@@ -186,3 +195,7 @@ export const ForlengDeltakelseModal = ({
     </Endringsmodal>
   )
 }
+
+const harStatusSomKanForlengeDeltakelse = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.DELTAR ||
+  statusType === DeltakerStatusType.HAR_SLUTTET

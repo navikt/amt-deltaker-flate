@@ -1,6 +1,7 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
@@ -28,6 +29,7 @@ import {
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -76,6 +78,12 @@ export const EndreSluttdatoModal = ({
       return null
     }
     if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanEndreSluttdato(pamelding.status.type)) {
+        throw new Error(
+          'Kan ikke endre sluttdato for deltaker som ikke har sluttet.'
+        )
+      }
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
@@ -163,3 +171,8 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
     )
   }
 }
+
+const harStatusSomKanEndreSluttdato = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.AVBRUTT ||
+  statusType === DeltakerStatusType.FULLFORT

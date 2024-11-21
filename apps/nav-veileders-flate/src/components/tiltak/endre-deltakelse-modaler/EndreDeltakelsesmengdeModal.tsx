@@ -18,6 +18,7 @@ import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { NumberTextField } from '../../NumberTextField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: PameldingResponse
@@ -75,6 +76,8 @@ export const EndreDeltakelsesmengdeModal = ({
     ) {
       throw new Error(getFeilmeldingIngenEndring(forslag !== null))
     }
+
+    validerDeltakerKanEndres(pamelding)
 
     const body: EndreDeltakelsesmengdeRequest = {
       deltakelsesprosent: deltakelsesprosent,
