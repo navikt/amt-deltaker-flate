@@ -81,7 +81,7 @@ export const EndreSluttdatoModal = ({
       validerDeltakerKanEndres(pamelding)
       if (!harStatusSomKanEndreSluttdato(pamelding.status.type)) {
         throw new Error(
-          'Kan ikke endre sluttdato for deltaker som ikke har sluttet.'
+          'Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som "Deltar".\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.'
         )
       }
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
