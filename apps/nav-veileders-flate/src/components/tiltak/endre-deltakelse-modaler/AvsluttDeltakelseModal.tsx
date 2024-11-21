@@ -111,12 +111,7 @@ export const AvsluttDeltakelseModal = ({
       }
 
       validerDeltakerKanEndres(pamelding)
-      if (
-        !(
-          pamelding.status.type === DeltakerStatusType.DELTAR ||
-          pamelding.status.type === DeltakerStatusType.HAR_SLUTTET
-        )
-      ) {
+      if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
         throw new Error(
           'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar" eller "Har sluttet"'
         )
@@ -288,3 +283,7 @@ function getHarDeltatt(forslag: Forslag | null): boolean | null {
   }
   return null
 }
+
+const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.DELTAR ||
+  statusType === DeltakerStatusType.HAR_SLUTTET
