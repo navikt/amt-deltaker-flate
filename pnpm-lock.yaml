@@ -30,8 +30,8 @@ importers:
   apps/innbyggers-flate:
     dependencies:
       '@grafana/faro-web-sdk':
-        specifier: ^1.12.1
-        version: 1.12.1
+        specifier: ^1.12.2
+        version: 1.12.2
       '@navikt/aksel-icons':
         specifier: ^7.5.2
         version: 7.5.2
@@ -130,8 +130,8 @@ importers:
   apps/nav-veileders-flate:
     dependencies:
       '@grafana/faro-web-sdk':
-        specifier: ^1.12.1
-        version: 1.12.1
+        specifier: ^1.12.2
+        version: 1.12.2
       '@hookform/resolvers':
         specifier: ^3.9.1
         version: 3.9.1(react-hook-form@7.53.2(react@18.3.1))
@@ -652,11 +652,11 @@ packages:
   '@floating-ui/utils@0.2.7':
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
-  '@grafana/faro-core@1.12.1':
-    resolution: {integrity: sha512-5kZMwFMK+vaWXb2jIds18Fbb36hMOqYEFLkg3MrPxEqMh7uGzMpwrgftVQz0vNM9JAkg8BIO0cBJmR65ThHZXA==}
+  '@grafana/faro-core@1.12.2':
+    resolution: {integrity: sha512-ddE7px/6T1NvVHDl5tpop3mBgSnSjg2XyKcI9V9xOUSQRWderMi91YRF+MXfyenYHbY5gpHXzl+eBMIXk2I17g==}
 
-  '@grafana/faro-web-sdk@1.12.1':
-    resolution: {integrity: sha512-uypcWtPG1kj7ZVenl4nTF2gy7conn32MQZM2F4/S7/e2W4Y3J8Sni4RruekQCbgbfF/7LGQls4Sa+LhUXvzXwA==}
+  '@grafana/faro-web-sdk@1.12.2':
+    resolution: {integrity: sha512-vrMaeyJUEkXvRsO3POQgVfHkmMjFdXGqRnPRR60WsvYh7bDzd4M5B2n44cPN7qL1+pTG70g3CcCSX6Kfr4c34Q==}
 
   '@hookform/resolvers@3.9.1':
     resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
@@ -3551,14 +3551,14 @@ snapshots:
 
   '@floating-ui/utils@0.2.7': {}
 
-  '@grafana/faro-core@1.12.1':
+  '@grafana/faro-core@1.12.2':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/otlp-transformer': 0.53.0(@opentelemetry/api@1.9.0)
 
-  '@grafana/faro-web-sdk@1.12.1':
+  '@grafana/faro-web-sdk@1.12.2':
     dependencies:
-      '@grafana/faro-core': 1.12.1
+      '@grafana/faro-core': 1.12.2
       ua-parser-js: 1.0.38
       web-vitals: 4.2.3
 
