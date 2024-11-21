@@ -7,7 +7,8 @@ import {
   ForslagEndring,
   ForslagEndringType,
   SluttdatoForslag,
-  getDateFromString
+  getDateFromString,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -81,7 +82,7 @@ export const EndreSluttdatoModal = ({
       validerDeltakerKanEndres(pamelding)
       if (!harStatusSomKanEndreSluttdato(pamelding.status.type)) {
         throw new Error(
-          'Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som "Deltar".\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.'
+          `Kunne ikke lagre\nKan ikke endre sluttdato for en deltaker som står som ${getDeltakerStatusDisplayText(pamelding.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
         )
       }
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {

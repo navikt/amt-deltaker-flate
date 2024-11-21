@@ -1,7 +1,8 @@
 import {
   DeltakerStatusType,
   EndreDeltakelseType,
-  Forslag
+  Forslag,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
@@ -56,7 +57,7 @@ export const EndreSluttarsakModal = ({
       }
       if (!harStatusSomKanEndreSluttarsak(pamelding.status.type)) {
         throw new Error(
-          'Kan ikke endre sluttårsak for deltaker som ikke har sluttet eller er ikke aktuell.'
+          `Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som ${getDeltakerStatusDisplayText(pamelding.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
         )
       }
 

@@ -151,18 +151,20 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
 
 export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
   if (deltaker.status.type === DeltakerStatusType.FEILREGISTRERT) {
-    throw new Error('Kan ikke endre feilregistrert deltaker.')
+    throw new Error(
+      'Deltakeren er feilregistrert, og kan derfor ikke redigeres.'
+    )
   }
   if (deltakerHarAvsluttendeStatus(deltaker.status.type)) {
     if (!deltaker.kanEndres) {
       throw new Error(
-        'Kan ikke endre avsluttet deltakelse når det finnes aktiv deltakelse på samme tiltak.'
+        'Det finnes en annen aktiv deltakelse på samme tiltak. Denne deltakelsen kan ikke endres.'
       )
     }
     const toMndSiden = dayjs().subtract(2, 'months')
     if (dayjs(deltaker.status.gyldigFra).isSameOrBefore(toMndSiden)) {
       throw new Error(
-        'Kan ikke endre deltaker som fikk avsluttende status for mer enn to måneder siden.'
+        'Deltaker fikk avsluttende status for mer enn to måneder siden, og kan derfor ikke redigeres.'
       )
     }
   }

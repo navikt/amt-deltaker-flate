@@ -118,7 +118,7 @@ export const AvsluttDeltakelseModal = ({
         )
       ) {
         throw new Error(
-          'Kan ikke avslutte deltakelse for deltaker som ikke har status DELTAR eller HAR_SLUTTET'
+          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar" eller "Har sluttet"'
         )
       }
 
@@ -126,7 +126,7 @@ export const AvsluttDeltakelseModal = ({
         !skalViseSluttDato &&
         pamelding.status.type !== DeltakerStatusType.DELTAR
       ) {
-        throw new Error('Deltaker som ikke har status DELTAR må ha deltatt.')
+        throw new Error('Deltaker som ikke har status "Deltar" må ha deltatt.')
       }
 
       const femtenDagerSiden = dayjs().subtract(15, 'days')

@@ -44,7 +44,7 @@ export const IkkeAktuellModal = ({
       validerDeltakerKanEndres(pamelding)
       if (!harStatusSomKanSetteTilIkkeAktuell(pamelding.status.type)) {
         throw new Error(
-          `Kan ikke sette deltakelse til ikke aktuell for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+          `Kan ikke sette deltakelse til "Ikke aktuell" for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
         )
       }
       if (pamelding.status.type === DeltakerStatusType.DELTAR) {
