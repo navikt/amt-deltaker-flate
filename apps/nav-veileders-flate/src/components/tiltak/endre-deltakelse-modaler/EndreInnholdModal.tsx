@@ -7,6 +7,7 @@ import {
 } from '@navikt/ds-react'
 import {
   EndreDeltakelseType,
+  fjernUgyldigeTegn,
   haveSameContents,
   Innhold,
   INNHOLD_TYPE_ANNET
@@ -141,7 +142,7 @@ export const EndreInnholdModal = ({
               {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
                 <Textarea
                   onChange={(e) => {
-                    setAnnetBeskrivelse(e.target.value)
+                    setAnnetBeskrivelse(fjernUgyldigeTegn(e.target.value))
                     setAnnetError(null)
                   }}
                   label={null}

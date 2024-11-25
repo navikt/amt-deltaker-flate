@@ -1,6 +1,7 @@
 import { Textarea } from '@navikt/ds-react'
 import { useState } from 'react'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues'
+import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 
 type BegrunnelseLabel = {
   label: string
@@ -39,7 +40,7 @@ export function BegrunnelseInput({ onChange, error, type, disabled }: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
-    setBegrunnelse(value)
+    setBegrunnelse(fjernUgyldigeTegn(value))
     onChange(value)
   }
 
