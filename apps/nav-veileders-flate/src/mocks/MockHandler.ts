@@ -185,7 +185,7 @@ export class MockHandler {
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           },
-          harDeltatt: null
+          harDeltatt: false
         }
       })
       const forslagDeltakelsesmengde = aktivtForslag({
