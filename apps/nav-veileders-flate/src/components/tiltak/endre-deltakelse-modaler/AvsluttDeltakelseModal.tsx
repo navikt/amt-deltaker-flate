@@ -121,7 +121,9 @@ export const AvsluttDeltakelseModal = ({
         !skalViseSluttDato &&
         pamelding.status.type !== DeltakerStatusType.DELTAR
       ) {
-        throw new Error('Deltaker som ikke har status "Deltar" må ha deltatt.')
+        throw new Error(
+          'Deltakeren har allerede sluttet på tiltaket, og kan derfor ikke settes til “Ikke deltatt”.'
+        )
       }
 
       const femtenDagerSiden = dayjs().subtract(15, 'days')
@@ -130,7 +132,7 @@ export const AvsluttDeltakelseModal = ({
         dayjs(pamelding.status.gyldigFra).isSameOrBefore(femtenDagerSiden)
       ) {
         throw new Error(
-          'Deltaker med deltar-status mer enn 15 dager tilbake i tid må ha deltatt.'
+          'Deltakeren har hatt status “Deltar” i mer enn 15 dager, og kan derfor ikke settes til “Ikke deltatt”.'
         )
       }
 
