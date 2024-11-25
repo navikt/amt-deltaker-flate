@@ -2,15 +2,21 @@ import { describe, it, expect } from 'vitest'
 import { fjernUgyldigeTegn, haveSameContents } from './utils'
 
 describe('fjernUgyldigeTegn', () => {
-  it('Fjerner ingenting fra 100æøåÅ', () =>
-    expect(fjernUgyldigeTegn('100æøåÅ')).toEqual('100æøåÅ'))
+  it('Fjerner ingenting fra abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ1234567890!"#$%&/()=?,.;:-_', () =>
+    expect(
+      fjernUgyldigeTegn(
+        'abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ1234567890!"#$%&/()=?,.;:-_'
+      )
+    ).toEqual(
+      'abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ1234567890!"#$%&/()=?,.;:-_'
+    ))
   it('Fjerner ingenting fra !"#$%&/()=?*<>', () =>
     expect(fjernUgyldigeTegn('!"#$%&/()=?*<><>\'`')).toEqual(
       '!"#$%&/()=?*<><>\'`'
     ))
   it('Fjerner 👍 fra 👍', () => expect(fjernUgyldigeTegn('👍')).toEqual(''))
-  it('Fjerner 🎄; fra a🎄b;', () =>
-    expect(fjernUgyldigeTegn('a🎄b;')).toEqual('ab'))
+  it('Fjerner 🎄 fra a🎄b;', () =>
+    expect(fjernUgyldigeTegn('a🎄b;')).toEqual('ab;'))
 })
 
 describe('haveSameContents', () => {
