@@ -30,8 +30,8 @@ import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import dayjs from 'dayjs'
-import { deltakerHarSluttetEllerFullfort } from '../../../utils/statusutils.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -110,20 +110,38 @@ export const AvsluttDeltakelseModal = ({
         forslagId: forslag ? forslag.id : null
       }
 
-      const harLikArsak = deltakerHarSluttetEllerFullfort(pamelding.status.type)
-        ? pamelding.status.aarsak?.type === aarsak.aarsak &&
-          pamelding.status.aarsak?.beskrivelse === nyArsakBeskrivelse
-        : false
-
-      const harLikSluttDato = skalViseSluttDato
-        ? dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
-        : false
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
+        throw new Error(
+          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar" eller "Har sluttet"'
+        )
+      }
 
       if (
-        pamelding.status.type !== DeltakerStatusType.DELTAR &&
-        harLikArsak &&
-        harLikSluttDato
+        !skalViseSluttDato &&
+        pamelding.status.type !== DeltakerStatusType.DELTAR
       ) {
+        throw new Error(
+          'Deltakeren har allerede sluttet på tiltaket, og kan derfor ikke settes til “Ikke deltatt”.'
+        )
+      }
+
+      const femtenDagerSiden = dayjs().subtract(15, 'days')
+      if (
+        !skalViseSluttDato &&
+        dayjs(pamelding.status.gyldigFra).isSameOrBefore(femtenDagerSiden)
+      ) {
+        throw new Error(
+          'Deltakeren har hatt status “Deltar” i mer enn 15 dager, og kan derfor ikke settes til “Ikke deltatt”.'
+        )
+      }
+
+      const deltakerErEndret =
+        pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
+        !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
+        pamelding.status.aarsak?.type !== aarsak.aarsak ||
+        pamelding.status.aarsak?.beskrivelse !== nyArsakBeskrivelse
+      if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
@@ -267,3 +285,7 @@ function getHarDeltatt(forslag: Forslag | null): boolean | null {
   }
   return null
 }
+
+const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.DELTAR ||
+  statusType === DeltakerStatusType.HAR_SLUTTET

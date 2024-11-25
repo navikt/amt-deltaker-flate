@@ -6,6 +6,7 @@ import { endreDeltakelseReaktiver } from '../../../api/api.ts'
 import { BodyLong, ConfirmationPanel } from '@navikt/ds-react'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface ReaktiverDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -43,6 +44,7 @@ export const ReaktiverDeltakelseModal = ({
     }
 
     if (!hasError && confirmed && begrunnelse.begrunnelse) {
+      validerDeltakerKanEndres(pamelding)
       return {
         deltakerId: pamelding.deltakerId,
         enhetId,

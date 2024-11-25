@@ -1,12 +1,14 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
   ForslagEndringType,
   SluttdatoForslag,
-  getDateFromString
+  getDateFromString,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -28,6 +30,7 @@ import {
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreSluttdatoModalProps {
   pamelding: PameldingResponse
@@ -76,6 +79,12 @@ export const EndreSluttdatoModal = ({
       return null
     }
     if (!sluttdato.error && sluttdato.sluttdato && begrunnelse.valider()) {
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanEndreSluttdato(pamelding.status.type)) {
+        throw new Error(
+          `Kunne ikke lagre\nKan ikke endre sluttdato for en deltaker som står som ${getDeltakerStatusDisplayText(pamelding.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
+        )
+      }
       if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
@@ -163,3 +172,8 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
     )
   }
 }
+
+const harStatusSomKanEndreSluttdato = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.AVBRUTT ||
+  statusType === DeltakerStatusType.FULLFORT

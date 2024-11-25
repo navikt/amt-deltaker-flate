@@ -1,13 +1,15 @@
 import { BodyShort, ConfirmationPanel, DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
   ForslagEndringType,
   StartdatoForslag,
   Tiltakstype,
-  getDateFromString
+  getDateFromString,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -34,6 +36,7 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -143,6 +146,12 @@ export const EndreOppstartsdatoModal = ({
         dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
       ) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
+      }
+      validerDeltakerKanEndres(pamelding)
+      if (!harStatusSomKanEndreStartDato(pamelding.status.type)) {
+        throw new Error(
+          `Kan ikke endre oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+        )
       }
 
       return {
@@ -264,3 +273,8 @@ function getDatoer(deltaker: PameldingResponse, forslag: Forslag | null) {
     )
   }
 }
+
+const harStatusSomKanEndreStartDato = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.VENTER_PA_OPPSTART ||
+  statusType === DeltakerStatusType.DELTAR ||
+  statusType === DeltakerStatusType.HAR_SLUTTET

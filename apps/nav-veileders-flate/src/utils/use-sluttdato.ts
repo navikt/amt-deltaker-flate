@@ -14,7 +14,7 @@ import {
 
 interface UseSluttdatoOpts {
   deltaker: PameldingResponse
-  valgtVarighet: VarighetValg | undefined
+  valgtVarighet?: VarighetValg
   defaultAnnetDato?: Date
   startdato?: Date
   erForleng?: boolean

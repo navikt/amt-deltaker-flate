@@ -1,7 +1,8 @@
 import {
   DeltakerStatusType,
   EndreDeltakelseType,
-  Forslag
+  Forslag,
+  getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
@@ -11,6 +12,7 @@ import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
 import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreSluttarsakModalProps {
   pamelding: PameldingResponse
@@ -45,12 +47,18 @@ export const EndreSluttarsakModal = ({
       aarsak.valider() &&
       aarsak.aarsak !== undefined
     ) {
+      validerDeltakerKanEndres(pamelding)
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       if (
         aarsak.aarsak === pamelding.status.aarsak?.type &&
         nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
       ) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
+      }
+      if (!harStatusSomKanEndreSluttarsak(pamelding.status.type)) {
+        throw new Error(
+          `Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som ${getDeltakerStatusDisplayText(pamelding.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
+        )
       }
 
       const endring: EndreSluttarsakRequest = {
@@ -103,3 +111,7 @@ export const EndreSluttarsakModal = ({
     </Endringsmodal>
   )
 }
+
+const harStatusSomKanEndreSluttarsak = (statusType: DeltakerStatusType) =>
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.IKKE_AKTUELL

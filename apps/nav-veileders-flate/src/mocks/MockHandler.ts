@@ -185,7 +185,7 @@ export class MockHandler {
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           },
-          harDeltatt: null
+          harDeltatt: false
         }
       })
       const forslagDeltakelsesmengde = aktivtForslag({
@@ -570,7 +570,7 @@ function aktivtForslag({
   return {
     type: HistorikkType.Forslag,
     id: uuidv4(),
-    opprettet: dayjs().toDate(),
+    opprettet: dayjs().subtract(20, 'days').toDate(),
     begrunnelse: b,
     endring: endring,
     arrangorNavn: 'Muligheter As',

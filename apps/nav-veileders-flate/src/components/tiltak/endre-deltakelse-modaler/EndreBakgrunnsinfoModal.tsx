@@ -7,6 +7,7 @@ import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreBakgrunnsinfoModalProps {
   pamelding: PameldingResponse
@@ -38,6 +39,7 @@ export const EndreBakgrunnsinfoModal = ({
       return null
     }
 
+    validerDeltakerKanEndres(pamelding)
     if (bakgrunnsinformasjon === pamelding.bakgrunnsinformasjon) {
       throw new Error(getFeilmeldingIngenEndring(false))
     }
