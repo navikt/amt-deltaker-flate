@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Detail, Heading, Modal } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading, Modal } from '@navikt/ds-react'
 import {
   ApiFunction,
   DeferredFetchState,
@@ -130,9 +130,9 @@ function EndringsmodalBody<T extends EndringRequest>({
   return (
     <>
       <Modal.Body>
-        <Detail className="mb-6">
+        <Alert className="mb-6" variant="info" size="small">
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
-        </Detail>
+        </Alert>
         {forslag && (
           <ModalForslagDetaljer
             disabled={!erUnderOppfolging}
