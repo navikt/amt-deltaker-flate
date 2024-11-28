@@ -122,7 +122,7 @@ export class MockHandler {
         .asMilliseconds(),
       forslag: [],
       importertFraArena: null,
-      erUnderOppfolging: true
+      erUnderOppfolging: false
     }
   }
 

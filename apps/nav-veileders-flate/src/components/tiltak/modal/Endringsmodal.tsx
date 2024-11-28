@@ -64,11 +64,7 @@ export function Endringsmodal<T extends EndringRequest>({
       className="w-[600px]"
     >
       {visAvvisningsmodal && forslag ? (
-        <AvvisningsmodalBody
-          disabled={!erUnderOppfolging}
-          onSend={onSend}
-          forslag={forslag}
-        />
+        <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
       ) : (
         <EndringsmodalBody
           onSend={onSend}
@@ -134,11 +130,7 @@ function EndringsmodalBody<T extends EndringRequest>({
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Alert>
         {forslag && (
-          <ModalForslagDetaljer
-            disabled={!erUnderOppfolging}
-            forslag={forslag}
-            onClick={onAvvis}
-          />
+          <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
         )}
 
         {!erUnderOppfolging && (
