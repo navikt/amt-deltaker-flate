@@ -10,7 +10,8 @@ import {
   fjernUgyldigeTegn,
   haveSameContents,
   Innhold,
-  INNHOLD_TYPE_ANNET
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
@@ -49,17 +50,27 @@ export const EndreInnholdModal = ({
   const [annetBeskrivelse, setAnnetBeskrivelse] = useState<string | null>(
     getAnnetBeskrivelseFraInnhold(innhold)
   )
+  const [innholdsTekst, setInnholdsTekst] = useState<string | null>(
+    getAnnetBeskrivelseFraInnhold(innhold)
+  )
   const [annetError, setAnnetError] = useState<string | null>(null)
+  const [innholdsTekstError, setInnholdsTekstError] = useState<string | null>(
+    null
+  )
 
   const harAnnetBeskrivelse = annetBeskrivelse && annetBeskrivelse.length > 0
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
+  const visCheckbokser =
+    pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV
+
   const validertRequest = () => {
-    if (valgteInnhold.length <= 0) {
+    if (visCheckbokser && valgteInnhold.length <= 0) {
       setInnholdError('Du må velge innhold før du kan fortsette.')
       return null
     } else if (
+      visCheckbokser &&
       erAnnetValgt &&
       harAnnetBeskrivelse &&
       annetBeskrivelse.length > BESKRIVELSE_ANNET_MAX_TEGN
@@ -68,16 +79,31 @@ export const EndreInnholdModal = ({
         `Tiltaksinnholdet "Annet" kan ikke være mer enn ${BESKRIVELSE_ANNET_MAX_TEGN} tegn.`
       )
       return null
-    } else if (erAnnetValgt && !harAnnetBeskrivelse) {
+    } else if (visCheckbokser && erAnnetValgt && !harAnnetBeskrivelse) {
       setAnnetError(
         'Du må fylle ut for beskrivelse for "annet" før du kan fortsette.'
+      )
+      return null
+    } else if (
+      !visCheckbokser &&
+      innholdsTekst &&
+      innholdsTekst.length > BESKRIVELSE_ANNET_MAX_TEGN
+    ) {
+      setInnholdsTekstError(
+        `Tiltaksinnholdet kan ikke være mer enn ${BESKRIVELSE_ANNET_MAX_TEGN} tegn.`
       )
       return null
     } else {
       validerDeltakerKanEndres(pamelding)
       if (
-        haveSameContents(valgteInnhold, generateValgtInnholdKoder(pamelding)) &&
-        annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)
+        (visCheckbokser &&
+          haveSameContents(
+            valgteInnhold,
+            generateValgtInnholdKoder(pamelding)
+          ) &&
+          annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)) ||
+        (!visCheckbokser &&
+          innholdsTekst === getAnnetBeskrivelseFraInnhold(innhold))
       ) {
         throw new Error(getFeilmeldingIngenEndring(false))
       }
@@ -86,7 +112,8 @@ export const EndreInnholdModal = ({
         innhold: generateInnholdFromResponse(
           pamelding,
           valgteInnhold,
-          annetBeskrivelse
+          annetBeskrivelse,
+          innholdsTekst
         )
       }
 
@@ -123,42 +150,58 @@ export const EndreInnholdModal = ({
       </section>
 
       <section className="mt-4">
-        <CheckboxGroup
-          defaultValue={valgteInnhold}
-          legend="Hva mer skal tiltaket inneholde?"
-          error={innholdError}
-          size="small"
-          disabled={!pamelding.erUnderOppfolging}
-          aria-required
-          id="endreValgteInnhold"
-          onChange={(value: string[]) => {
-            setValgteInnhold(value)
-            setInnholdError(null)
-          }}
-        >
-          {pamelding.deltakerliste.tilgjengeligInnhold.innhold.map((e) => (
-            <div key={e.innholdskode}>
-              <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
-              {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
-                <Textarea
-                  onChange={(e) => {
-                    setAnnetBeskrivelse(fjernUgyldigeTegn(e.target.value))
-                    setAnnetError(null)
-                  }}
-                  label={null}
-                  value={annetBeskrivelse ?? ''}
-                  aria-label={'Beskrivelse av innhold "Annet"'}
-                  aria-required
-                  disabled={!pamelding.erUnderOppfolging}
-                  maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                  size="small"
-                  id="innholdAnnetBeskrivelse"
-                  error={annetError}
-                />
-              )}
-            </div>
-          ))}
-        </CheckboxGroup>
+        {visCheckbokser && (
+          <CheckboxGroup
+            defaultValue={valgteInnhold}
+            legend="Hva mer skal tiltaket inneholde?"
+            error={innholdError}
+            size="small"
+            disabled={!pamelding.erUnderOppfolging}
+            aria-required
+            id="endreValgteInnhold"
+            onChange={(value: string[]) => {
+              setValgteInnhold(value)
+              setInnholdError(null)
+            }}
+          >
+            {pamelding.deltakerliste.tilgjengeligInnhold.innhold.map((e) => (
+              <div key={e.innholdskode}>
+                <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
+                {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
+                  <Textarea
+                    onChange={(e) => {
+                      setAnnetBeskrivelse(fjernUgyldigeTegn(e.target.value))
+                      setAnnetError(null)
+                    }}
+                    label={null}
+                    value={annetBeskrivelse ?? ''}
+                    aria-label={'Beskrivelse av innhold "Annet"'}
+                    aria-required
+                    disabled={!pamelding.erUnderOppfolging}
+                    maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+                    size="small"
+                    error={annetError}
+                  />
+                )}
+              </div>
+            ))}
+          </CheckboxGroup>
+        )}
+
+        {!visCheckbokser && (
+          <Textarea
+            onChange={(e) => {
+              setInnholdsTekst(fjernUgyldigeTegn(e.target.value))
+              setInnholdsTekstError(null)
+            }}
+            label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
+            value={innholdsTekst ?? ''}
+            disabled={!pamelding.erUnderOppfolging}
+            maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
+            size="small"
+            error={innholdsTekstError}
+          />
+        )}
       </section>
     </Endringsmodal>
   )
