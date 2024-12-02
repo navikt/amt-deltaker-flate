@@ -7,7 +7,7 @@ export const innholdDtoSchema = z.object({
 
 export const sendInnPameldingRequestSchema = z.object({
   deltakerlisteId: z.string().uuid(),
-  innhold: z.array(innholdDtoSchema).nullable(),
+  innhold: z.array(innholdDtoSchema),
   bakgrunnsinformasjon: z.string().optional(),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional()
