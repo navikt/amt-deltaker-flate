@@ -15,16 +15,20 @@ import { DeltakelsesprosentValg } from './utils.ts'
 export const generateInnholdFromResponse = (
   pamelding: PameldingResponse,
   valgteInnhold: string[],
-  innholdAnnetBeskrivelse?: string | null
+  innholdAnnetBeskrivelse?: string | null,
+  innholdsTekst?: string | null
 ): InnholdDto[] => {
   if (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV) {
-    return [
-      {
-        innholdskode: INNHOLD_TYPE_ANNET,
-        beskrivelse: innholdAnnetBeskrivelse || null
-      }
-    ]
+    return innholdsTekst
+      ? [
+          {
+            innholdskode: INNHOLD_TYPE_ANNET,
+            beskrivelse: innholdsTekst || null
+          }
+        ]
+      : []
   }
+
   return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
     const valgtInnhold = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
@@ -73,7 +77,8 @@ export const generatePameldingRequestFromForm = (
     innhold: generateInnholdFromResponse(
       pamelding,
       data.valgteInnhold,
-      data.innholdAnnetBeskrivelse
+      data.innholdAnnetBeskrivelse,
+      data.innholdsTekst
     )
   }
 }
@@ -93,7 +98,8 @@ export const generateDirektePameldingRequestForm = (
     innhold: generateInnholdFromResponse(
       pamelding,
       data.valgteInnhold,
-      data.innholdAnnetBeskrivelse
+      data.innholdAnnetBeskrivelse,
+      data.innholdsTekst
     )
   }
 }
