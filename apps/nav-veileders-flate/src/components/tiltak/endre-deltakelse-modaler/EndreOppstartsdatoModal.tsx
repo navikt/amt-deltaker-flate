@@ -237,14 +237,14 @@ export const EndreOppstartsdatoModal = ({
               {getSoftMaxVarighetBekreftelseText(tiltakstype)}
             </ConfirmationPanel>
           )}
-          <BegrunnelseInput
-            type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
-            onChange={begrunnelse.handleChange}
-            error={begrunnelse.error}
-            disabled={!pamelding.erUnderOppfolging}
-          />
         </>
       )}
+      <BegrunnelseInput
+        type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+        disabled={!pamelding.erUnderOppfolging}
+      />
     </Endringsmodal>
   )
 }
