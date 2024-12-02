@@ -3,7 +3,7 @@ import { innholdDtoSchema } from './send-inn-pamelding-request.ts'
 
 export const sendInnPameldingUtenGodkjenningRequestSchema = z.object({
   deltakerlisteId: z.string().uuid(),
-  innhold: z.array(innholdDtoSchema),
+  innhold: z.array(innholdDtoSchema).nullable(),
   bakgrunnsinformasjon: z.string().optional(),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional()

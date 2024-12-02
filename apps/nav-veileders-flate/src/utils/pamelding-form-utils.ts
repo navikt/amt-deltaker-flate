@@ -17,7 +17,10 @@ export const generateInnholdFromResponse = (
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null,
   innholdsTekst?: string | null
-): InnholdDto[] => {
+): InnholdDto[] | null => {
+  if (pamelding.deltakerliste.tiltakstype === Tiltakstype.DIGIOPPARB) {
+    return null
+  }
   if (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV) {
     return innholdsTekst
       ? [
@@ -26,7 +29,7 @@ export const generateInnholdFromResponse = (
             beskrivelse: innholdsTekst || null
           }
         ]
-      : []
+      : null
   }
 
   return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
