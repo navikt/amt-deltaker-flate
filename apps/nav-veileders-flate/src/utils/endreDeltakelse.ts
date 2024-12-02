@@ -72,7 +72,16 @@ const skalViseEndreInnholdKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV
+  pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV &&
+  pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
+
+const skalViseEndreBakgrunnsinfoKnapp = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) =>
+  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
+  pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
 
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
@@ -130,7 +139,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (skalViseEndreInnholdKnapp(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
   }
-  if (venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreBakgrunnsinfoKnapp(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)
   }
   if (pamelding.status.type === DeltakerStatusType.DELTAR) {
