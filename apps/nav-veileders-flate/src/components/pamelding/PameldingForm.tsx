@@ -20,6 +20,7 @@ import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   BESKRIVELSE_ANNET_MAX_TEGN,
   PameldingFormValues,
+  erInnholdPakrevd,
   generateFormDefaultValues,
   pameldingFormSchema
 } from '../../model/PameldingFormValues.ts'
@@ -52,9 +53,7 @@ export const PameldingForm = ({
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
-  const skalViseInnholdSjekkbokser = !(
-    tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.DIGIOPPARB
-  )
+  const skalViseInnholdSjekkbokser = erInnholdPakrevd(tiltakstype)
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -124,15 +123,13 @@ export const PameldingForm = ({
             <section className="mb-8 mt-4">
               <Textarea
                 label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
-                {...register('innholdAnnetBeskrivelse')}
+                {...register('innholdsTekst')}
                 onChange={(e) => {
-                  setValue(
-                    'innholdAnnetBeskrivelse',
-                    fjernUgyldigeTegn(e.target.value),
-                    { shouldValidate: true }
-                  )
+                  setValue('innholdsTekst', fjernUgyldigeTegn(e.target.value), {
+                    shouldValidate: true
+                  })
                 }}
-                value={watch('innholdAnnetBeskrivelse')}
+                value={watch('innholdsTekst')}
                 error={errors.innholdAnnetBeskrivelse?.message}
                 disabled={isDisabled}
                 aria-label="Annet innhold beskrivelse"

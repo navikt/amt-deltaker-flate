@@ -72,7 +72,6 @@ const skalViseEndreInnholdKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== Tiltakstype.VASV &&
   pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
 
 const skalViseEndreBakgrunnsinfoKnapp = (

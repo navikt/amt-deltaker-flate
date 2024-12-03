@@ -1,10 +1,14 @@
+import {
+  INNHOLD_TYPE_ANNET,
+  Tiltakstype,
+  tiltakstypeSchema
+} from 'deltaker-flate-common'
 import { string, z } from 'zod'
 import {
   PameldingResponse,
   innholdselementSchema
 } from '../api/data/pamelding.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
-import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 
 export const BESKRIVELSE_MAX_TEGN = 250
 export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
@@ -17,9 +21,19 @@ export const deltakelsesprosentFeilmelding =
 export const dagerPerUkeFeilmelding =
   'Dager per uke må være et helt tall fra 1 til 5.'
 
+export const erInnholdPakrevd = (tiltakstype: Tiltakstype) =>
+  !(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.DIGIOPPARB)
+
 export const pameldingFormSchema = z
   .object({
+    tiltakstype: tiltakstypeSchema,
     tilgjengeligInnhold: innholdselementSchema.array(),
+    innholdsTekst: string()
+      .max(
+        BESKRIVELSE_ANNET_MAX_TEGN,
+        `Tiltaksinnholdet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`
+      )
+      .optional(),
     valgteInnhold: string().array(),
     innholdAnnetBeskrivelse: z
       .string()
@@ -55,7 +69,10 @@ export const pameldingFormSchema = z
   })
   .refine(
     (schema) => {
-      if (schema.tilgjengeligInnhold.length > 0) {
+      if (
+        schema.tilgjengeligInnhold.length > 0 &&
+        erInnholdPakrevd(schema.tiltakstype)
+      ) {
         return schema.valgteInnhold.length > 0
       } else return true
     },
@@ -67,6 +84,7 @@ export const pameldingFormSchema = z
   .refine(
     (schema) => {
       if (
+        erInnholdPakrevd(schema.tiltakstype) &&
         schema.valgteInnhold?.find(
           (valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET
         )
@@ -135,9 +153,11 @@ export const generateFormDefaultValues = (
   }
 
   return {
+    tiltakstype: pamelding.deltakerliste.tiltakstype,
     tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold.innhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
+    innholdsTekst: getInnholdAnnetBeskrivelse(),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,
