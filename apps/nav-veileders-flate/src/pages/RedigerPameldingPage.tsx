@@ -3,6 +3,7 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  Tiltakstype,
   UtkastHeader,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -36,6 +37,8 @@ export const RedigerPameldingPage = () => {
   const erUtkastAvbrutt =
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   const tittel = erUtkastAvbrutt ? 'Avbrutt utkast' : 'Utkast til påmelding'
+  const kanEndreUtkast =
+    pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -98,16 +101,18 @@ export const RedigerPameldingPage = () => {
             {pamelding.status.type ===
               DeltakerStatusType.UTKAST_TIL_PAMELDING && (
               <>
-                <Button
-                  size="small"
-                  variant="secondary"
-                  icon={<PencilIcon />}
-                  disabled={idDisabled}
-                  onClick={() => setRedigerUtkast(true)}
-                  className="mt-8"
-                >
-                  Endre utkastet
-                </Button>
+                {kanEndreUtkast && (
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    icon={<PencilIcon />}
+                    disabled={idDisabled}
+                    onClick={() => setRedigerUtkast(true)}
+                    className="mt-8"
+                  >
+                    Endre utkastet
+                  </Button>
+                )}
                 <HorisontalLine className="mt-8 mb-8" />
                 <MeldPaDirekteButton
                   className="mb-2"

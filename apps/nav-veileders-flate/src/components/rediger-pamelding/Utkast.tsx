@@ -41,18 +41,16 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      <div className="mt-8">
-        {bakgrunnsinformasjon && (
-          <>
-            <Heading level="3" size="small">
-              Bakgrunnsinfo
-            </Heading>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-              {bakgrunnsinfoVisningstekst}
-            </BodyLong>
-          </>
-        )}
-      </div>
+      {bakgrunnsinformasjon && (
+        <div className="mt-8">
+          <Heading level="3" size="small">
+            Bakgrunnsinfo
+          </Heading>
+          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            {bakgrunnsinfoVisningstekst}
+          </BodyLong>
+        </div>
+      )}
 
       {visDeltakelsesmengde(tiltakstype) && (
         <>
