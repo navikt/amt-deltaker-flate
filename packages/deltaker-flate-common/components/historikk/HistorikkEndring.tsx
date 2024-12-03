@@ -1,4 +1,4 @@
-import { BodyLong, Detail } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
 import {
   DeltakerEndring,
   Endring,
@@ -15,6 +15,7 @@ import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
 import { Tiltakstype } from '../../model/deltaker.ts'
+import React from 'react'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -103,9 +104,23 @@ const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
         </BodyLong>
       )
     }
+    case EndringType.EndreDeltakelsesmengde:
+      return (
+        <>
+          {endring.gyldigFra && (
+            <BodyShort size="small">
+              Gjelder fra: {formatDate(endring.gyldigFra)}
+            </BodyShort>
+          )}
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
     case EndringType.ForlengDeltakelse:
     case EndringType.EndreSluttdato:
-    case EndringType.EndreDeltakelsesmengde:
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
         <BodyLong size="small" className="whitespace-pre-wrap">

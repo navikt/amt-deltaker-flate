@@ -11,6 +11,7 @@ import {
 } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
+  DeltakelsesmengdeInfo,
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -18,7 +19,6 @@ import {
   HvaDelesMedArrangor,
   VedtakInfo,
   SeEndringer,
-  deltakerprosentText,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
@@ -144,17 +144,13 @@ export const TiltakPage = () => {
         )}
 
         {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
-          <>
-            <Heading level="2" size="medium" className="mt-8">
-              Deltakelsesmengde
-            </Heading>
-            <BodyLong size="small" className="mt-2">
-              {deltakerprosentText(
-                deltaker.deltakelsesprosent,
-                deltaker.dagerPerUke
-              )}
-            </BodyLong>
-          </>
+          <DeltakelsesmengdeInfo
+            deltakelsesprosent={deltaker.deltakelsesprosent}
+            dagerPerUke={deltaker.dagerPerUke}
+            nesteDeltakelsesmengde={
+              deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+            }
+          />
         )}
 
         <SeEndringer

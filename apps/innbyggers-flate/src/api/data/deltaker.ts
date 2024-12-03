@@ -1,5 +1,6 @@
 import {
   deltakelsesinnholdSchema,
+  deltakelsesmengderSchema,
   forslagSchema,
   importertDeltakerFraArenaSchema,
   pameldingStatusSchema,
@@ -31,7 +32,8 @@ export const deltakerSchema = z.object({
   vedtaksinformasjon: vedtaksinformasjonSchema.nullable(),
   adresseDelesMedArrangor: z.boolean(),
   forslag: z.array(forslagSchema),
-  importertFraArena: importertDeltakerFraArenaSchema.nullable()
+  importertFraArena: importertDeltakerFraArenaSchema.nullable(),
+  deltakelsesmengder: deltakelsesmengderSchema
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

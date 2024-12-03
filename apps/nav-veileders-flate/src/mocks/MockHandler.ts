@@ -29,7 +29,7 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../api/data/pamelding.ts'
+import { Deltakelsesmengde, PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 
 const bakgrunnsinformasjon =
@@ -65,6 +65,12 @@ export class MockHandler {
     const ledetekst = getLedetekst(this.tiltakstype)
     const innhold = getInnholdForTiltaksType(this.tiltakstype)
 
+    const sisteDeltakelsesmengde: Deltakelsesmengde = {
+      gyldigFra: startdato ?? new Date(),
+      dagerPerUke: null,
+      deltakelsesprosent: 100
+    }
+
     return {
       deltakerId: uuidv4(),
       fornavn: 'Navn',
@@ -94,8 +100,8 @@ export class MockHandler {
       },
       startdato: _startdato,
       sluttdato: _sluttdato,
-      dagerPerUke: null,
-      deltakelsesprosent: 100,
+      dagerPerUke: sisteDeltakelsesmengde.dagerPerUke,
+      deltakelsesprosent: sisteDeltakelsesmengde.deltakelsesprosent,
       bakgrunnsinformasjon: bakgrunnsinformasjon,
       deltakelsesinnhold: {
         ledetekst: ledetekst,
@@ -122,7 +128,11 @@ export class MockHandler {
         .asMilliseconds(),
       forslag: [],
       importertFraArena: null,
-      erUnderOppfolging: true
+      erUnderOppfolging: true,
+      deltakelsesmengder: {
+        sisteDeltakelsesmengde,
+        nesteDeltakelsesmengde: null
+      }
     }
   }
 
@@ -192,7 +202,8 @@ export class MockHandler {
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
           deltakelsesprosent: 42,
-          dagerPerUke: 3
+          dagerPerUke: 3,
+          gyldigFra: new Date()
         }
       })
       const forslagStartdato = aktivtForslag({
@@ -525,8 +536,35 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.deltakelsesprosent = request.deltakelsesprosent || null
-      oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
+      const nesteDeltakelsesmengde =
+        oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde
+      const gyldigFra = dayjs(request.gyldigFra).toDate()
+      if (gyldigFra <= new Date()) {
+        oppdatertPamelding.deltakelsesprosent =
+          request.deltakelsesprosent || null
+        oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
+      } else if (
+        nesteDeltakelsesmengde === null ||
+        gyldigFra <= nesteDeltakelsesmengde.gyldigFra
+      ) {
+        if (
+          request.dagerPerUke != oppdatertPamelding.dagerPerUke ||
+          request.deltakelsesprosent != oppdatertPamelding.deltakelsesprosent
+        ) {
+          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
+            gyldigFra: gyldigFra,
+            deltakelsesprosent: request.deltakelsesprosent ?? 100,
+            dagerPerUke: request.dagerPerUke ?? null
+          }
+        } else {
+          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = null
+        }
+      }
+      oppdatertPamelding.deltakelsesmengder.sisteDeltakelsesmengde = {
+        gyldigFra: gyldigFra,
+        deltakelsesprosent: request.deltakelsesprosent ?? 100,
+        dagerPerUke: request.dagerPerUke ?? null
+      }
       this.pamelding = oppdatertPamelding
       this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(this.pamelding)

@@ -1,5 +1,6 @@
 import {
   deltakelsesinnholdSchema,
+  deltakelsesmengderSchema,
   DeltakerlisteStatus,
   forslagSchema,
   importertDeltakerFraArenaSchema,
@@ -57,7 +58,8 @@ export const pameldingSchema = z.object({
   softMaxVarighet: z.number().nullable(),
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
-  erUnderOppfolging: z.boolean()
+  erUnderOppfolging: z.boolean(),
+  deltakelsesmengder: deltakelsesmengderSchema
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

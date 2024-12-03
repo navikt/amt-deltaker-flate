@@ -250,7 +250,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         type: EndringType.EndreDeltakelsesmengde,
         begrunnelse: 'Det er ok.',
         deltakelsesprosent: 80,
-        dagerPerUke: 4
+        dagerPerUke: 4,
+        gyldigFra: dayjs().toDate()
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -264,7 +265,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
           deltakelsesprosent: 80,
-          dagerPerUke: 4
+          dagerPerUke: 4,
+          gyldigFra: dayjs().toDate()
         },
         status: {
           type: ForslagStatusType.Godkjent,

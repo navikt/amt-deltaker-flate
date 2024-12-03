@@ -95,6 +95,17 @@ export const importertDeltakerFraArenaSchema = z.object({
   innsoktDato: dateSchema
 })
 
+export const deltakelsesmengdeSchema = z.object({
+  deltakelsesprosent: z.number(),
+  dagerPerUke: z.number().nullable(),
+  gyldigFra: dateSchema
+})
+
+export const deltakelsesmengderSchema = z.object({
+  nesteDeltakelsesmengde: deltakelsesmengdeSchema.nullable(),
+  sisteDeltakelsesmengde: deltakelsesmengdeSchema.nullable()
+})
+
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>
@@ -103,3 +114,4 @@ export type DeltakerStatus = z.infer<typeof pameldingStatusSchema>
 export type importertDeltakerFraArena = z.infer<
   typeof importertDeltakerFraArenaSchema
 >
+export type Deltakelsesmengde = z.infer<typeof deltakelsesmengdeSchema>
