@@ -1,12 +1,19 @@
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
 
+const hvisForslagTekst =
+  '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.'
+
+export const getFeilmeldingIngenEndringTekst = (harForslag: boolean) => {
+  const feilmelding =
+    'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket.\nFor å lagre må du endre på beskrivelsen.'
+  return harForslag ? `${feilmelding}${hvisForslagTekst}` : feilmelding
+}
+
 export const getFeilmeldingIngenEndring = (harForslag: boolean) => {
   const feilmelding =
-    'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket. \nFor å lagre må minst ett felt i skjemaet være ulikt nåværende deltakelse.'
-  return harForslag
-    ? `${feilmelding}\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.`
-    : feilmelding
+    'Innholdet i skjemaet medfører ingen endringer i deltakelsen på tiltaket.\nFor å lagre må minst ett felt i skjemaet være ulikt nåværende deltakelse.'
+  return harForslag ? `${feilmelding}${hvisForslagTekst}` : feilmelding
 }
 
 export const FEILMELDING_15_DAGER_SIDEN =

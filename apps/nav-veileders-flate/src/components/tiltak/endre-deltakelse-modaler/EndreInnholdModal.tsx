@@ -22,7 +22,10 @@ import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
 } from '../../../model/PameldingFormValues'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import {
+  getFeilmeldingIngenEndring,
+  getFeilmeldingIngenEndringTekst
+} from '../../../utils/displayText.ts'
 import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
@@ -105,7 +108,11 @@ export const EndreInnholdModal = ({
         (!visCheckbokser &&
           innholdsTekst === getAnnetBeskrivelseFraInnhold(innhold))
       ) {
-        throw new Error(getFeilmeldingIngenEndring(false))
+        throw new Error(
+          pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV
+            ? getFeilmeldingIngenEndringTekst(false)
+            : getFeilmeldingIngenEndring(false)
+        )
       }
 
       const endring: EndreInnholdRequest = {
