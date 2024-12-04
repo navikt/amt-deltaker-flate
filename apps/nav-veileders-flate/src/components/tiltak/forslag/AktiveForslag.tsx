@@ -1,6 +1,6 @@
 import { Forslag, AktivtForslagBox, ForslagInfo } from 'deltaker-flate-common'
-import { Box, Heading, HStack } from '@navikt/ds-react'
-import { BehandleForslagKnapp } from './BehandleForslagKnapp.tsx'
+import { Box, Heading } from '@navikt/ds-react'
+import { BehandleForslagKnapper } from './BehandleForslagKnapper.tsx'
 
 interface Props {
   forslag: Forslag[]
@@ -18,12 +18,12 @@ export const AktiveForslag = ({ forslag }: Props) => {
               className="p-2"
               borderRadius="0 0 medium medium"
             >
-              <HStack gap="2" className="items-center">
+              <div className="flex items-center">
                 <Heading level="3" size="xsmall">
                   For Nav-ansatt:
                 </Heading>
-                <BehandleForslagKnapp forslag={f} />
-              </HStack>
+                <BehandleForslagKnapper forslag={f} />
+              </div>
             </Box>
           </AktivtForslagBox>
         )

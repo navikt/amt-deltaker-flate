@@ -13,7 +13,6 @@ import { PameldingResponse } from '../../../api/data/pamelding'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
-import AvvisningsmodalBody from './Avvisningsmodal'
 
 export type EndringsmodalRequest<T extends EndringRequest> = {
   deltakerId: string
@@ -47,45 +46,33 @@ export function Endringsmodal<T extends EndringRequest>({
   erUnderOppfolging,
   children
 }: Props<T>) {
-  const [visAvvisningsmodal, setAvvisningsmodal] = useState(false)
-
   return (
     <Modal
       open={open}
       header={{
-        icon: visAvvisningsmodal ? undefined : (
-          <EndringTypeIkon type={endringstype} />
-        ),
-        heading: visAvvisningsmodal
-          ? 'Avvis forslag'
-          : endringstekst(endringstype)
+        icon: <EndringTypeIkon type={endringstype} />,
+        heading: endringstekst(endringstype)
       }}
       onClose={onClose}
       className="w-[600px]"
     >
-      {visAvvisningsmodal && forslag ? (
-        <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
-      ) : (
-        <EndringsmodalBody
-          onSend={onSend}
-          onAvvis={() => setAvvisningsmodal(true)}
-          apiFunction={apiFunction}
-          validertRequest={validertRequest}
-          forslag={forslag}
-          digitalBruker={digitalBruker}
-          harAdresse={harAdresse}
-          erUnderOppfolging={erUnderOppfolging}
-        >
-          {children}
-        </EndringsmodalBody>
-      )}
+      <EndringsmodalBody
+        onSend={onSend}
+        apiFunction={apiFunction}
+        validertRequest={validertRequest}
+        forslag={forslag}
+        digitalBruker={digitalBruker}
+        harAdresse={harAdresse}
+        erUnderOppfolging={erUnderOppfolging}
+      >
+        {children}
+      </EndringsmodalBody>
     </Modal>
   )
 }
 
 interface EndrinsmodalBodyProps<T extends EndringRequest> {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
-  onAvvis: () => void
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
@@ -96,7 +83,6 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
 }
 function EndringsmodalBody<T extends EndringRequest>({
   onSend,
-  onAvvis,
   apiFunction,
   validertRequest,
   forslag,
@@ -129,9 +115,7 @@ function EndringsmodalBody<T extends EndringRequest>({
         <Alert className="mb-6" variant="info" size="small">
           {getEndrePameldingTekst(digitalBruker, harAdresse)}
         </Alert>
-        {forslag && (
-          <ModalForslagDetaljer forslag={forslag} onClick={onAvvis} />
-        )}
+        {forslag && <ModalForslagDetaljer forslag={forslag} />}
 
         {!erUnderOppfolging && (
           <Alert variant="error" size="small" className="mb-6">
