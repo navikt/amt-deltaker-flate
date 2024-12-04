@@ -1,4 +1,4 @@
-import { Alert, Detail, Modal } from '@navikt/ds-react'
+import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   Forslag,
@@ -57,7 +57,10 @@ export default function AvvisningsmodalBody({
         {children}
         <Alert variant="info" className="mt-4" size="small">
           Brukeren mottar ikke varsel når forslaget avvises. Vurder om det er
-          behov for et avslagsbrev.
+          behov for et{' '}
+          <Link href={RUTINE_NAVET_LINK} inlineText target="_blank">
+            avslagsbrev (åpner i en ny fane).
+          </Link>
         </Alert>
       </Modal.Body>
       <ModalFooter

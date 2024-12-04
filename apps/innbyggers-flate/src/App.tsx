@@ -62,8 +62,8 @@ export const App = () => {
       {!error && deltaker && (
         <DeltakerContextProvider initialDeltaker={deltaker}>
           {useMock && <DemoBanner />}
-          <TilAktivitetsplanLenke />
           <main id="maincontent" role="main" tabIndex={-1}>
+            <TilAktivitetsplanLenke />
             <DeltakerGuard />
           </main>
         </DeltakerContextProvider>
