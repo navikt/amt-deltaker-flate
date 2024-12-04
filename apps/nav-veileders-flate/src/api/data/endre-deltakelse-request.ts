@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { dateSchema, DeltakerStatusAarsakType } from 'deltaker-flate-common'
+import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
 export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
