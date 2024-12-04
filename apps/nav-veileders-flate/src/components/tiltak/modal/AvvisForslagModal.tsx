@@ -1,5 +1,5 @@
 import { Modal } from '@navikt/ds-react'
-import AvvisningsmodalBody from '../modal/Avvisningsmodal'
+import AvvisningsmodalBody from './AvvisningsmodalBody'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { Forslag } from 'deltaker-flate-common'
 

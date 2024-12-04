@@ -8,7 +8,7 @@ import {
   EndreDeltakelseType,
   getEndreDeltakelsesType
 } from 'deltaker-flate-common'
-import { AvvisForslagModal } from './AvvisForslagModal.tsx'
+import { AvvisForslagModal } from '../modal/AvvisForslagModal.tsx'
 
 interface Props {
   forslag: Forslag
