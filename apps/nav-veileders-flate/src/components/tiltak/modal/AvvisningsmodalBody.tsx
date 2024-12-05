@@ -1,17 +1,17 @@
+import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
 import {
-  Forslag,
   DeferredFetchState,
+  Forslag,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { PameldingResponse } from '../../../api/data/pamelding'
 import { ReactNode } from 'react'
-import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
-import { ErrorPage } from '../../../pages/ErrorPage'
-import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 import { avvisForslag } from '../../../api/api'
-import { ModalFooter } from '../../ModalFooter'
-import { BegrunnelseInput, useBegrunnelse } from './BegrunnelseInput'
+import { PameldingResponse } from '../../../api/data/pamelding'
 import { useAppContext } from '../../../AppContext'
+import { ErrorPage } from '../../../pages/ErrorPage'
+import { ModalFooter } from '../../ModalFooter'
+import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
+import { BegrunnelseInput, useBegrunnelse } from './BegrunnelseInput'
 
 interface Props {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
@@ -23,8 +23,8 @@ export const RUTINE_NAVET_LINK =
   'https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-tiltak-og-virkemidler/SitePages/Klage-p%C3%A5-arbeidsmarkedstiltak.aspx'
 
 export default function AvvisningsmodalBody({
-  onSend,
   forslag,
+  onSend,
   children
 }: Props) {
   const { doFetch, state, error } = useDeferredFetch(avvisForslag)
@@ -52,14 +52,14 @@ export default function AvvisningsmodalBody({
           type="avvis"
           onChange={begrunnelse.handleChange}
           error={begrunnelse.error}
+          disabled={false}
         />
         {children}
-        <Alert variant="info" className="mt-4">
-          Vurder om dette er et ønske fra brukeren og om du skal sende et
-          avslagsbrev. Les mer på Navet om{' '}
+        <Alert variant="info" className="mt-4" size="small">
+          Brukeren mottar ikke varsel når forslaget avvises. Vurder om det er
+          behov for et{' '}
           <Link href={RUTINE_NAVET_LINK} inlineText target="_blank">
-            rutinen for avslag og klage på arbeidsmarkedstiltak (åpner i en ny
-            fane).
+            avslagsbrev (åpner i en ny fane).
           </Link>
         </Alert>
       </Modal.Body>

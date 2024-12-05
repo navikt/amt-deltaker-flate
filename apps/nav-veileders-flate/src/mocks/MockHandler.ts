@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import {
   createHistorikk,
+  Deltakelsesmengde,
   DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
@@ -29,7 +30,7 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { Deltakelsesmengde, PameldingResponse } from '../api/data/pamelding.ts'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
 
 const bakgrunnsinformasjon =

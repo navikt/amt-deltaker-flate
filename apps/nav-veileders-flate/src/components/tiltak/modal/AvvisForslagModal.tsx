@@ -1,5 +1,5 @@
 import { Modal } from '@navikt/ds-react'
-import AvvisningsmodalBody from '../modal/Avvisningsmodal'
+import AvvisningsmodalBody from './AvvisningsmodalBody'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { Forslag } from 'deltaker-flate-common'
 
@@ -11,20 +11,10 @@ interface Props {
   onClose: () => void
 }
 
-export function AvvisModal({
-  open,
-  forslag,
-  erUnderOppfolging,
-  onSend,
-  onClose
-}: Props) {
+export function AvvisForslagModal({ open, forslag, onSend, onClose }: Props) {
   return (
     <Modal open={open} header={{ heading: 'Avvis forslag' }} onClose={onClose}>
-      <AvvisningsmodalBody
-        disabled={!erUnderOppfolging}
-        onSend={onSend}
-        forslag={forslag}
-      />
+      <AvvisningsmodalBody onSend={onSend} forslag={forslag} />
     </Modal>
   )
 }
