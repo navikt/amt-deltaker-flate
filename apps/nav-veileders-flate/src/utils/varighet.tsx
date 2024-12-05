@@ -90,7 +90,7 @@ export const varighetValgForType = (
     case Tiltakstype.DIGIOPPARB:
       return [VarighetValg.FIRE_UKER]
     case Tiltakstype.VASV:
-      return [VarighetValg.SEKS_MANEDER, VarighetValg.TOLV_MANEDER]
+      return []
     case Tiltakstype.GRUFAGYRKE:
     default:
       return [
@@ -174,8 +174,11 @@ export function finnVarighetValgForTiltakstype(
   tilDato: Date,
   tiltakstype: Tiltakstype
 ) {
-  const varighet = finnVarighetValg(fraDato, tilDato)
   const varigheter = varighetValgForType(tiltakstype)
+
+  if (varigheter.length == 0) return undefined
+
+  const varighet = finnVarighetValg(fraDato, tilDato)
 
   if (varigheter.includes(varighet.uker)) {
     return varighet.uker
