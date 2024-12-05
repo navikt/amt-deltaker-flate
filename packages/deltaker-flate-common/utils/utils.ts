@@ -112,6 +112,7 @@ export const haveSameContents = (list1: unknown[], list2: unknown[]) =>
   )
 
 export const fjernUgyldigeTegn = (str: string) => {
-  const gyldigeTegnRegex = /[^a-zA-ZæøåÆØÅ0-9 \s.,@<>'`!"#$%&/()=?*<;:>*§_-]/g
-  return str.replace(gyldigeTegnRegex, '')
+  const ugyldigeTegnRegex = /[^a-zA-ZæøåÆØÅ0-9 \s.,@<>'`!"#$%&/()=?*<;:>*§_-]/g // ^ gjør det ugyldig
+  const stringUtenNonBreakingSace = str.replace(/\u00A0/g, ' ')
+  return stringUtenNonBreakingSace.replace(ugyldigeTegnRegex, '')
 }
