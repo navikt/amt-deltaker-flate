@@ -10,9 +10,11 @@ const masterForTiltakstyper = [
   Tiltakstype.ARBFORB,
   Tiltakstype.AVKLARAG,
   Tiltakstype.INDOPPFAG,
-  Tiltakstype.ARBRRHDAG
+  Tiltakstype.ARBRRHDAG,
+  Tiltakstype.DIGIOPPARB,
+  Tiltakstype.VASV
 ]
-const nyeTiltakstyper = [Tiltakstype.DIGIOPPARB, Tiltakstype.VASV]
+const nyeTiltakstyper = []
 
 export const useFeatureToggle = () => {
   const [toggles, setToggles] = useState<FeatureToggles>()
