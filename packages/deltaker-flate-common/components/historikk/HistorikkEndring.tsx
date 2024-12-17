@@ -148,6 +148,17 @@ const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
         </>
       )
     }
+    case EndringType.FjernOppstartsdato: {
+      return (
+        <>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
   }
 }
 
