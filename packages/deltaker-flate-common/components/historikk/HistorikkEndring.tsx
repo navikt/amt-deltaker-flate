@@ -44,6 +44,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.ENDRE_SLUTTARSAK
     case EndringType.EndreStartdato:
       return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
+    case EndringType.FjernOppstartsdato:
+      return EndreDeltakelseType.FJERN_OPPSTARTSDATO
   }
 }
 

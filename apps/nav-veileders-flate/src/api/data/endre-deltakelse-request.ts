@@ -25,6 +25,13 @@ export const forlengDeltakelseSchema = z.object({
 
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
+export const fjernOppstartsdatoSchema = z.object({
+  begrunnelse: z.string().nullable(),
+  forslagId: z.string().uuid().nullable()
+})
+
+export type FjernOppstartsdatoRequest = z.infer<typeof fjernOppstartsdatoSchema>
+
 export const endreStartdatoSchema = z.object({
   startdato: z.string().nullable(),
   sluttdato: z.string().nullable(),

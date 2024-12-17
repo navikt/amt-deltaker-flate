@@ -9,6 +9,7 @@ import {
   endreSluttarsakSchema,
   endreSluttdatoSchema,
   endreStartdatoSchema,
+  fjernOppstartsdatoSchema,
   forlengDeltakelseSchema,
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
@@ -142,6 +143,19 @@ export const worker = setupWorker(
         .json()
         .then((json) => endreSluttdatoSchema.parse(json))
         .then((body) => handler.endreDeltakelseSluttdato(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/fjern-oppstartsdato',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => fjernOppstartsdatoSchema.parse(json))
+        .then((body) => handler.endreDeltakelseFjernOppstartsdato(body))
 
       return response
     }

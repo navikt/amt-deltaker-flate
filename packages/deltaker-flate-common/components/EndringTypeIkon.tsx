@@ -43,6 +43,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         />
       )
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
+    case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return (
         <MinusCircleFillIcon

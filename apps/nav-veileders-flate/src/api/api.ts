@@ -14,6 +14,7 @@ import {
   EndreSluttarsakRequest,
   EndreSluttdatoRequest,
   EndreStartdatoRequest,
+  FjernOppstartsdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest,
   ReaktiverDeltakelseRequest
@@ -231,6 +232,31 @@ export const endreDeltakelseForleng = (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Kunne ikke forlenge deltakelsen.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
+export const endreDeltakelseFjernOppstartsdato = (
+  deltakerId: string,
+  enhetId: string,
+  request: FjernOppstartsdatoRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/fjern-oppstartsdato`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Kunne ikke fjerne oppstartsdato.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

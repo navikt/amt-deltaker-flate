@@ -174,6 +174,8 @@ function endringstekst(endringstype: EndreDeltakelseType) {
       return 'Endre deltakelsesmengde'
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return 'Endre til aktiv deltakelse'
+    case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
+      return 'Fjern oppstartsdato'
     default:
       throw new Error(`Endringstekst for ${endringstype} er ikke implementert`)
   }
