@@ -27,6 +27,7 @@ import {
   EndreSluttarsakRequest,
   EndreSluttdatoRequest,
   EndreStartdatoRequest,
+  FjernOppstartsdatoRequest,
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
@@ -241,7 +242,13 @@ export class MockHandler {
           }
         }
       })
-      return [forslagIkkeAktuell]
+      const forslagFjernOppstartsdato = aktivtForslag({
+        endring: {
+          type: ForslagEndringType.FjernOppstartsdato
+        },
+        begrunnelse: 'Begrunnelse'
+      })
+      return [forslagIkkeAktuell, forslagFjernOppstartsdato]
     }
     if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
       const sluttdatoForslag = aktivtForslag({
@@ -450,6 +457,20 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.sluttdato = request.sluttdato
+      this.pamelding = oppdatertPamelding
+      this.fjernAktivtForslag(request.forslagId)
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseFjernOppstartsdato(request: FjernOppstartsdatoRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.startdato = null
+      oppdatertPamelding.sluttdato = null
       this.pamelding = oppdatertPamelding
       this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)

@@ -44,6 +44,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.ENDRE_SLUTTARSAK
     case EndringType.EndreStartdato:
       return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
+    case EndringType.FjernOppstartsdato:
+      return EndreDeltakelseType.FJERN_OPPSTARTSDATO
   }
 }
 
@@ -138,6 +140,17 @@ const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
               Forventet sluttdato: {formatDate(endring.sluttdato)}
             </BodyLong>
           )}
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.FjernOppstartsdato: {
+      return (
+        <>
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}

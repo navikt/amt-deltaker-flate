@@ -180,6 +180,8 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Endre deltakelsesmengde'
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return 'Endre til aktiv deltakelse'
+    case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
+      return 'Fjern oppstartsdato'
   }
 }
 
@@ -199,6 +201,8 @@ export const getForslagTittel = (endringstype: ForslagEndringType) => {
       return 'Endre sluttdato'
     case ForslagEndringType.Startdato:
       return 'Endre oppstartsdato'
+    case ForslagEndringType.FjernOppstartsdato:
+      return 'Fjern oppstartsdato'
   }
 }
 
@@ -223,5 +227,7 @@ export const getEndringsTittel = (endring: Endring) => {
       return `Sluttårsak er endret til: ${getDeltakerStatusAarsakText(endring.aarsak)}`
     case EndringType.EndreStartdato:
       return `Oppstartsdato er endret til ${formatDateWithMonthName(endring.startdato)}`
+    case EndringType.FjernOppstartsdato:
+      return 'Oppstartsdato er fjernet'
   }
 }

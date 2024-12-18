@@ -102,6 +102,8 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
             Ny sluttårsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
           </BodyLong>
         )
+      case 'FjernOppstartsdato':
+        return null
       default:
         assertNever(forslag.endring)
     }

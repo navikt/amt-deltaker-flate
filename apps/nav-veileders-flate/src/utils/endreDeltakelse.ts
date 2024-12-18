@@ -1,5 +1,6 @@
 import {
   DeltakerStatusType,
+  EMDASH,
   EndreDeltakelseType,
   Tiltakstype
 } from 'deltaker-flate-common'
@@ -116,6 +117,11 @@ const skalViseEndreOppstartsdato = (
     pamelding.startdato) ||
   harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden)
 
+const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
+  pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
+  pamelding.startdato &&
+  pamelding.startdato !== EMDASH
+
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
@@ -152,6 +158,9 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   }
   if (skalViseEndreDeltakelsesmengde(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE)
+  }
+  if (skalViseFjernOppstartsdato(pamelding)) {
+    valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
   }
 
   return valg

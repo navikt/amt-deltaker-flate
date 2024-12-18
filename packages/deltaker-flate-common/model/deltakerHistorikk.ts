@@ -18,7 +18,8 @@ export enum EndringType {
   ForlengDeltakelse = 'ForlengDeltakelse',
   AvsluttDeltakelse = 'AvsluttDeltakelse',
   EndreSluttarsak = 'EndreSluttarsak',
-  ReaktiverDeltakelse = 'ReaktiverDeltakelse'
+  ReaktiverDeltakelse = 'ReaktiverDeltakelse',
+  FjernOppstartsdato = 'FjernOppstartsdato'
 }
 
 export enum ArrangorEndringsType {
@@ -88,6 +89,11 @@ export const reaktiverDeltakelseSchema = z.object({
   begrunnelse: z.string()
 })
 
+export const fjernOppstartsdatoSchema = z.object({
+  type: z.literal(EndringType.FjernOppstartsdato),
+  begrunnelse: z.string().nullable()
+})
+
 const endringSchema = z.discriminatedUnion('type', [
   endreBakgrunnsinformasjonSchema,
   endreInnholdSchema,
@@ -98,7 +104,8 @@ const endringSchema = z.discriminatedUnion('type', [
   ikkeAktuellSchema,
   avsluttDeltakelseSchema,
   endreSluttarsakSchema,
-  reaktiverDeltakelseSchema
+  reaktiverDeltakelseSchema,
+  fjernOppstartsdatoSchema
 ])
 
 const arrangorLeggTilOppstartSchema = z.object({

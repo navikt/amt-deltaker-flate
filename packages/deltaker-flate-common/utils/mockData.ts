@@ -299,6 +299,30 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
     {
       type: HistorikkType.Endring,
       endring: {
+        type: EndringType.FjernOppstartsdato,
+        begrunnelse: 'Fjerner oppstartsdato'
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(20, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Ikke helt klart ennå',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.FjernOppstartsdato
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
         type: EndringType.EndreInnhold,
         ledetekst:
           'Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.',
