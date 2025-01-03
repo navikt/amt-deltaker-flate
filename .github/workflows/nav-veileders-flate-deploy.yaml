@@ -75,6 +75,15 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
       - name: Upload files to GCS
         run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev-v2
+      - name: Upload files to CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: amt
+          source: apps/nav-veileders-flate/build
+          destination: amt-deltaker-flate-veileder-dev
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
 
   deploy-demo-nav-veileders-flate:
     if: github.ref == 'refs/heads/main'
