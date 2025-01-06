@@ -43,6 +43,8 @@ spec:
     buckets:
       - name: amt-deltaker-flate-dev-v2
         cascadingDelete: false
+      - name: amt-deltaker-flate-veileder-dev
+        cascadingDelete: false
   accessPolicy:
     outbound:
       rules:
