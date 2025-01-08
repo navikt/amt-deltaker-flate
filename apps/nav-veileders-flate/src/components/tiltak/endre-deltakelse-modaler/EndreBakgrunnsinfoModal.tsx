@@ -89,8 +89,9 @@ export const EndreBakgrunnsinfoModal = ({
             setError(null)
             setBakgrunnsinformasjon(fjernUgyldigeTegn(e.target.value))
           }}
-          label="Er det noe mer dere ønsker å informere arrangøren om?"
-          description="Er det noe rundt personens behov eller situasjon som kan påvirke deltakelsen på tiltaket?"
+          label="Er det noe mer du ønsker å informere arrangøren om?"
+          description="Skriv en kortfattet oppsummering av relevant historikk og forhold ved personens situasjon
+          og behov som kan påvirke deltakelsen på tiltaket."
           value={bakgrunnsinformasjon ?? ''}
           maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
           id="bakgrunnsinformasjon"
