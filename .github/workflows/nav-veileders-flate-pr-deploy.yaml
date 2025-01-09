@@ -55,6 +55,7 @@ jobs:
         with:
           team: amt
           source: apps/nav-veileders-flate/build/
+          source_keep_parent_name: false
           destination: amt-deltaker-flate-veileder-dev/pr-${{ github.event.number }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
