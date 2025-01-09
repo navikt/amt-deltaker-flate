@@ -49,7 +49,7 @@ jobs:
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build Pull Request Application
-        run: pnpm build:pull-request --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/amt-deltaker-flate-veileder-dev/pr-${{ github.event.number }}
+        run: pnpm build:pull-request --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/amt-deltaker-flate-veileder-dev/pr-${{ github.event.number }}/
       - name: Upload files to CDN
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
