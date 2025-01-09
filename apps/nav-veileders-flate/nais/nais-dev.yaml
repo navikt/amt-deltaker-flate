@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.10.04_13.21-c31f6e652a0c
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.11.21_09.54-0ac322d0d0af
   port: 8080
   ingresses:
     - https://amt-deltaker-flate.intern.dev.nav.no
@@ -55,9 +55,7 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-veileder-dev",
-            "bucketContextPath": "nais-cdn-nav-amt-a889/amt"
-
+            "bucketName": "amt-deltaker-flate-veileder-dev"
           },
           "auth": {
             "loginProvider": "AZURE_AD"
