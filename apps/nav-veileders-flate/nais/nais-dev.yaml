@@ -55,7 +55,9 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-veileder-dev"
+            "bucketName": "amt-deltaker-flate-veileder-dev",
+            "bucketContextPath": "nais-cdn-nav-amt-a889/amt"
+
           },
           "auth": {
             "loginProvider": "AZURE_AD"
