@@ -55,7 +55,8 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-dev-v2"
+            "bucketName": "nais-cdn-nav-amt-a889",
+            "bucketContextPath": "amt/amt-deltaker-flate-veileder-dev"
           },
           "auth": {
             "loginProvider": "AZURE_AD"
@@ -68,7 +69,7 @@ spec:
           },
           "proxies": [
             {
-              "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
+              "fromPath": "/amt-deltaker-bff",
               "toUrl": "http://amt-deltaker-bff",
               "toApp": {
                 "name": "amt-deltaker-bff",
