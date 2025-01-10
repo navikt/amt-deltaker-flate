@@ -55,7 +55,8 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-veileder-dev"
+            "bucketName": "amt"
+            "bucketContextPath": "amt-deltaker-flate-veileder-dev/pr-[0-9]+"
           },
           "auth": {
             "loginProvider": "AZURE_AD"
