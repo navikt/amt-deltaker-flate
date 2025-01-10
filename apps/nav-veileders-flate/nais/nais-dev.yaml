@@ -55,7 +55,7 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt",
+            "bucketName": "nais-cdn-nav-amt-a889",
             "bucketContextPath": "amt-deltaker-flate-veileder-dev/pr-[0-9]+"
           },
           "auth": {
