@@ -38,42 +38,10 @@ const pamelding: PameldingResponse = {
     startdato: startdato,
     sluttdato: sluttdato,
     status: DeltakerlisteStatus.GJENNOMFORES,
-    tilgjengeligInnhold: [
-      {
-        tekst: 'Arbeidspraksis',
-        innholdskode: 'arbeidspraksis'
-      },
-      {
-        tekst: 'Karriereveiledning',
-        innholdskode: 'karriereveiledning'
-      },
-      {
-        tekst:
-          'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
-        innholdskode: 'kartlegge-helse'
-      },
-      {
-        tekst:
-          'Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin',
-        innholdskode: 'kartlegge-grunnleggende-ferdigheter'
-      },
-      {
-        tekst: 'Veiledning i sosial mestring',
-        innholdskode: 'veiledning-sosialt'
-      },
-      {
-        tekst: 'Oppfølging på arbeidsplassen',
-        innholdskode: 'oppfolging-arbeidsplassen'
-      },
-      {
-        tekst: 'Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen',
-        innholdskode: 'tilpasse-arbeidsoppgaver'
-      },
-      {
-        tekst: 'Annet',
-        innholdskode: 'annet'
-      }
-    ]
+    tilgjengeligInnhold: {
+      innhold: [],
+      ledetekst: ''
+    }
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -95,7 +63,14 @@ const pamelding: PameldingResponse = {
   digitalBruker: true,
   maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
   softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds(),
-  forslag: []
+  forslag: [],
+  importertFraArena: null,
+  harAdresse: false,
+  deltakelsesmengder: {
+    sisteDeltakelsesmengde: null,
+    nesteDeltakelsesmengde: null
+  },
+  erUnderOppfolging: true
 }
 
 describe('kalkulerSluttdato', () => {
@@ -248,7 +223,7 @@ describe('getSkalBekrefteVarighet', () => {
       {
         ...pamelding,
         startdato: '2024-03-20',
-        sluttdato: '2025-10-28',
+        sluttdato: '2024-04-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
@@ -266,7 +241,7 @@ describe('getSkalBekrefteVarighet', () => {
       {
         ...pamelding,
         startdato: '2024-01-20',
-        sluttdato: '2025-10-28',
+        sluttdato: '2024-02-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakstype: Tiltakstype.ARBFORB
