@@ -72,7 +72,7 @@ jobs:
           team: amt
           source: apps/nav-veileders-flate/build
           destination: amt-deltaker-flate-veileder-dev
-          no_cache_paths: amt-deltaker-flate-veileder-dev/build/index.html
+          no_cache_paths: amt-deltaker-flate-veileder-dev/build/asset-manifest.json
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
       - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}

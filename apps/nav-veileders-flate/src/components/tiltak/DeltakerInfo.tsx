@@ -110,7 +110,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         deltakelsesinnhold={pamelding.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
-            Dette er innholdet
+            Dette er innholdet.
           </Heading>
         }
         listClassName="mt-2"
