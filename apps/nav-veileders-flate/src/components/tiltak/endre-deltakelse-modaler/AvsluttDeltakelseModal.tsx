@@ -180,7 +180,7 @@ export const AvsluttDeltakelseModal = ({
       {skalViseHarDeltatt && (
         <section className="mt-4">
           <RadioGroup
-            legend="Har personen deltatt på tiltaket? (SANITY CHECK)"
+            legend="Har personen deltatt på tiltaket?"
             size="small"
             description="Dersom personen ikke har deltatt på tiltaket, vil statusen på tiltaket endres til “Ikke aktuell”."
             error={harDeltattError}
