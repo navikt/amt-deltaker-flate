@@ -306,6 +306,9 @@ export const getSisteGyldigeSluttDato = (
   } else if (!maxVarighetDato) {
     return deltakerlisteSluttDato
   } else if (dayjs(deltakerlisteSluttDato).isAfter(maxVarighetDato, 'date')) {
+    if (maxVarighetDato.isBefore(pamelding.sluttdato)) {
+      return dayjs(pamelding.sluttdato).toDate()
+    }
     return maxVarighetDato.toDate()
   } else {
     return deltakerlisteSluttDato
@@ -389,6 +392,12 @@ export const getSluttDatoFeilmelding = (
   }
 
   if (!deltakerlisteSluttDato && sluttDato.isAfter(maxVarighetDato, 'date')) {
+    if (
+      maxVarighetDato?.isBefore(pamelding.sluttdato, 'date') &&
+      sluttDato.isSameOrBefore(pamelding.sluttdato, 'date')
+    ) {
+      return null
+    }
     return VARGIHET_VALG_FEILMELDING
   }
 
@@ -398,7 +407,9 @@ export const getSluttDatoFeilmelding = (
     (!maxVarighetDato &&
       sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date')) ||
     (!deltakerlisteSluttDato &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date'))
+      sluttDato.isSameOrBefore(maxVarighetDato, 'date')) ||
+    (maxVarighetDato?.isBefore(pamelding.sluttdato, 'date') &&
+      sluttDato.isSameOrBefore(pamelding.sluttdato, 'date'))
   ) {
     return null
   }
