@@ -126,14 +126,18 @@ export const AvsluttDeltakelseModal = ({
         )
       }
 
-      const femtenDagerSiden = dayjs().subtract(15, 'days')
-      if (
-        !skalViseSluttDato &&
-        dayjs(pamelding.status.gyldigFra).isSameOrBefore(femtenDagerSiden)
-      ) {
-        throw new Error(
-          'Deltakeren har hatt status “Deltar” i mer enn 15 dager, og kan derfor ikke settes til “Ikke deltatt”.'
-        )
+      const harDeltattErIkkeSpesifisertIForslag =
+        getHarDeltatt(forslag) === null
+      if (harDeltattErIkkeSpesifisertIForslag) {
+        const femtenDagerSiden = dayjs().subtract(15, 'days')
+        if (
+          !skalViseSluttDato &&
+          dayjs(pamelding.status.gyldigFra).isSameOrBefore(femtenDagerSiden)
+        ) {
+          throw new Error(
+            'Deltakeren har hatt status “Deltar” i mer enn 15 dager, og kan derfor ikke settes til “Ikke deltatt”.'
+          )
+        }
       }
 
       const deltakerErEndret =
