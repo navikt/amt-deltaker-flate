@@ -26,6 +26,6 @@
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/uuid": "^10.0.0",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.1"
   }
 }
