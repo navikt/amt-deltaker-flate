@@ -1,7 +1,7 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
-import { DeltakerlisteContextProvider } from './DeltakerListeContext'
+import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { isPrEnv } from './utils/environment-utils'
