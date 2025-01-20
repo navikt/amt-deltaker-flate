@@ -1,0 +1,25 @@
+name: Deploy NAIS poao-frontend to DEV for tiltakskoordinator-flate
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml'
+      - apps/tiltakskoordinator-flate/nais/nais-dev-pr.yaml
+    branches:
+      - main
+
+jobs:
+  deploy-dev:
+    name: Deploy poao-frontend to DEV - tiltakskoordinator-flate
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: 'write' # Needed for `nais/deploy/actions/deploy`
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy application
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: apps/tiltakskoordinator-flate/nais/nais-dev-pr.yaml
+          PRINT_PAYLOAD: true

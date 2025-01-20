@@ -10,6 +10,12 @@ on:
       - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
       - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
       - apps/nav-veileders-flate/**
+      - .github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-cleanup.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-comment-link.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+      - apps/tiltakskoordinator-flate/**
     branches:
       - main
 env:

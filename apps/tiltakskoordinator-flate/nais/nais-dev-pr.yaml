@@ -1,0 +1,86 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: amt-tiltakskoordinator-flate
+  namespace: amt
+  labels:
+    team: amt
+spec:
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2024.11.21_09.54-0ac322d0d0af
+  port: 8080
+  ingresses:
+    - https://amt-tiltakskoordinator-flate.intern.dev.nav.no
+    - https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no
+  liveness:
+    path: /internal/alive
+    initialDelay: 10
+  readiness:
+    path: /internal/ready
+    initialDelay: 10
+  replicas:
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 75
+  resources:
+    limits:
+      cpu: '1'
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /assets/*
+        - /asset-manifest.json
+        - /amt-deltaker-bff/**
+  gcp:
+    buckets:
+      - name: amt-tiltakskoordinator-flate-dev-pr
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      rules:
+        - application: amt-deltaker-bff
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "amt-tiltakskoordinator-flate-dev-pr"
+          },
+          "auth": {
+            "loginProvider": "AZURE_AD"
+          },
+          "cors": {
+            "origin": [
+              "https://tiltaksadministrasjon.intern.dev.nav.no/",
+              "https://tiltaksadministrasjon.ansatt.dev.nav.no/"
+          },
+          "proxies": [
+            {
+              "fromPath": "/pr-[0-9]+/amt-deltaker-bff",
+              "toUrl": "http://amt-deltaker-bff",
+              "toApp": {
+                "name": "amt-deltaker-bff",
+                "namespace": "amt",
+                "cluster": "dev-gcp"
+              }
+            }
+          ]
+        }
+
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki

@@ -9,18 +9,19 @@ on:
       - .github/workflows/innbyggers-flate-pr-comment-link.yaml
       - .github/workflows/innbyggers-flate-pr-cleanup.yaml
       - apps/innbyggers-flate/**
-      - .github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml
-      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-cleanup.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-comment-link.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
-      - apps/tiltakskoordinator-flate/**
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-pr-cleanup.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
+      - apps/nav-veileders-flate/**
     branches:
       - main
     types:
       - closed
 jobs:
-  cleanup-pr-nav-veileders-flate:
+  cleanup-pr-tiltakskoordinator-flate:
     if: github.event.pull_request.head.repo.fork != true
     name: Rydd applikasjon for PR
     runs-on: ubuntu-latest
@@ -35,4 +36,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Delete files on GCS
-        run: gsutil rm -r gs://amt-deltaker-flate-dev-v2/pr-${{ github.event.number }}
+        run: gsutil rm -r gs://amt-tiltakskoordinator-flate-dev-pr/pr-${{ github.event.number }}

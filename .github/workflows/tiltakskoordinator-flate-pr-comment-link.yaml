@@ -1,0 +1,36 @@
+name: Opprett lenke til test applikasjon tiltakskoordinator-flate for PR
+on:
+  pull_request:
+    paths-ignore:
+      - .github/workflows/innbyggers-flate-deploy.yaml
+      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml
+      - .github/workflows/innbyggers-flate-pr-deploy.yaml
+      - .github/workflows/innbyggers-flate-pr-comment-link.yaml
+      - .github/workflows/innbyggers-flate-pr-cleanup.yaml
+      - apps/innbyggers-flate/**
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
+      - .github/workflows/nav-veileders-flate-pr-cleanup.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
+      - apps/nav-veileders-flate/**
+    branches:
+      - main
+    types:
+      - opened
+jobs:
+  create-link-to-app:
+    permissions:
+      pull-requests: 'write'
+    name: Opprett lenke til test applikasjon for PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Opprett lenke til test applikasjon tiltakskoordinator-flate for PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            URLer for testing av tiltakskoordinator-flate:
+              https://amt-tiltakskoordinator-flate.intern.dev.nav.no/pr-${{ github.event.number }}/index.html
+              https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no/pr-${{ github.event.number }}/index.html
