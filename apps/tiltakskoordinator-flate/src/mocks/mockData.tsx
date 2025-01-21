@@ -43,6 +43,7 @@ export const createMockDeltakerlisteDetaljer = (
     deltakerlisteId: uuidv4(),
     tiltakstype: tiltakstype,
     startdato: dayjs().subtract(1, 'month').toDate(),
-    sluttdato: dayjs().add(1, 'year').toDate()
+    sluttdato: dayjs().add(1, 'year').toDate(),
+    apenForPamelding: true
   }
 }

@@ -3,7 +3,7 @@ import { DeltakerlisteTabell } from '../components/DeltakerlisteTabell'
 
 export const DeltakerlistePage = () => {
   return (
-    <div className="flex flex-row gap-4">
+    <div className="flex flex-row gap-8">
       <DeltakerlisteDetaljer />
       <DeltakerlisteTabell />
     </div>

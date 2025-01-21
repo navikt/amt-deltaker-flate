@@ -17,7 +17,8 @@ export const deltakerlisteDetaljerSchema = z.object({
   deltakerlisteId: z.string().uuid(),
   tiltakstype: tiltakstypeSchema,
   startdato: nullableDateSchema,
-  sluttdato: nullableDateSchema
+  sluttdato: nullableDateSchema,
+  apenForPamelding: z.boolean()
 })
 
 export type Deltaker = z.infer<typeof deltakerSchema>
