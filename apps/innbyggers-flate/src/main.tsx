@@ -1,11 +1,11 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { isLocal, useMock } from './utils/environment-utils.ts'
+import { createRoot } from 'react-dom/client'
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
@@ -18,7 +18,10 @@ const renderApp = () => {
     }
   })
 
-  ReactDOM.createRoot(document.getElementById('root')!).render(
+  const container = document.getElementById('root')
+  const root = createRoot(container!)
+
+  root.render(
     <React.StrictMode>
       <BrowserRouter>
         <AppRoutes />
