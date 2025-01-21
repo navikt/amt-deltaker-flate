@@ -3,10 +3,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-.deltakelse-wrapper {
-  background: var(--a-surface-subtle);
-}
-
 p,
 li {
   overflow-wrap: break-word;
