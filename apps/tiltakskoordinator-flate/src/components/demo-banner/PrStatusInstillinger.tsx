@@ -17,12 +17,12 @@ export const PrStatusInstillinger = ({ setDeltakerlisteId }: Props) => {
     >
       <TextField
         size="small"
-        label="Deltakerid"
+        label="Deltakerliste-id"
         value={nyDeltkerlisteId}
         onChange={(e) => setNyDeltakerlisteId(e.target.value)}
       />
       <Button size="small" className="mt-4">
-        Bruk deltkerlisteId
+        Bruk deltkerliste-id
       </Button>
     </form>
   )

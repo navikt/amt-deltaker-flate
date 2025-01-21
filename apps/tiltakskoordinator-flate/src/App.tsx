@@ -1,13 +1,14 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
-import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { isPrEnv } from './utils/environment-utils'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import PrBanner from './components/demo-banner/PrBanner'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
+import DemoBanner from './components/demo-banner/DemoBanner'
+import PrBanner from './components/demo-banner/PrBanner'
+import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
+import { isPrEnv, useMock } from './utils/environment-utils'
 
 dayjs.locale(nb)
 
@@ -76,6 +77,7 @@ export const App = () => {
           initialDeltakere={deltakere}
         >
           <div data-testid="page_deltakerliste">
+            {useMock && <DemoBanner />}
             <Heading size="medium" level="2">
               Hei!
             </Heading>
