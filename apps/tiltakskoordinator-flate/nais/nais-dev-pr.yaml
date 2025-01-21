@@ -62,6 +62,7 @@ spec:
             "origin": [
               "https://tiltaksadministrasjon.intern.dev.nav.no/",
               "https://tiltaksadministrasjon.ansatt.dev.nav.no/"
+            ]
           },
           "proxies": [
             {
