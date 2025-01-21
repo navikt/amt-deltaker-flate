@@ -17,6 +17,11 @@ export const AppRoutes = () => {
           }
         />
       )}
+      {
+        // TODO redirect to valp gjennomforinger
+        // !isEnvLocalDemoOrPr &&
+        // <Route path={'/*'} element={<RedirectToDeltakeroversikt />} />
+      }
     </Routes>
   )
 }
