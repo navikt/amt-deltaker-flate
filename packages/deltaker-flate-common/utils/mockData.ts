@@ -419,7 +419,7 @@ export const getInnholdForTiltaksType = (
   switch (tiltakstype) {
     case Tiltakstype.ARBFORB:
       return [
-        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
         {
           tekst:
@@ -533,7 +533,7 @@ export const getInnholdForTiltaksType = (
     case Tiltakstype.INDOPPFAG:
       return [
         { tekst: 'Støtte til å søke jobber', innholdskode: 'jobbsoking' },
-        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
+        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
         {
           tekst:
