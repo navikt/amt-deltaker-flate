@@ -9,6 +9,12 @@ on:
       - .github/workflows/innbyggers-flate-pr-comment-link.yaml
       - .github/workflows/innbyggers-flate-pr-cleanup.yaml
       - apps/innbyggers-flate/**
+      - .github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml
+      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-cleanup.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-comment-link.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+      - apps/tiltakskoordinator-flate/**
     branches:
       - main
     types:
@@ -24,6 +30,6 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
-            URLer for testing av nav-veileders-flate: 
+            URLer for testing av nav-veileders-flate:
               https://amt-deltaker-flate.intern.dev.nav.no/pr-${{ github.event.number }}/index.html
               https://amt-deltaker-flate.ansatt.dev.nav.no/pr-${{ github.event.number }}/index.html
