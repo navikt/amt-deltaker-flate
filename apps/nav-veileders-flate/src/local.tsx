@@ -23,8 +23,9 @@ export async function enableMocking() {
 const renderAsReactRoot = () => {
   /*  TEST webcomponent lokalt:
 
-const renderAsReactRoot = (appElement: HTMLElement) => {
-  const rootElement = ReactDOM.createRoot(appElement)
+const renderAsReactRoot = () => {
+  const container = document.getElementById('root')
+  const rootElement = createRoot(container!)
 
   rootElement.render(
     React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
@@ -55,6 +56,6 @@ const renderAsReactRoot = (appElement: HTMLElement) => {
 }
 
 enableMocking().then(() => {
-  // renderAsReactRoot(document.getElementById('root')!)
+  // renderAsReactRoot()
   renderAsReactRoot()
 })

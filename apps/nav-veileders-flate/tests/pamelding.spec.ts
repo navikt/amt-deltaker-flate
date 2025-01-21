@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright'
-import { expect, test } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto(
