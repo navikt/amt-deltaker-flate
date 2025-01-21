@@ -419,7 +419,7 @@ export const getInnholdForTiltaksType = (
   switch (tiltakstype) {
     case Tiltakstype.ARBFORB:
       return [
-        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
         {
           tekst:
@@ -447,7 +447,7 @@ export const getInnholdForTiltaksType = (
       ]
     case Tiltakstype.ARBRRHDAG:
       return [
-        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         {
           tekst:
             'Kartlegge hvordan helsen din påvirker muligheten din til å jobbe',
@@ -494,7 +494,7 @@ export const getInnholdForTiltaksType = (
       ]
     case Tiltakstype.AVKLARAG:
       return [
-        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
         {
           tekst:
@@ -533,7 +533,7 @@ export const getInnholdForTiltaksType = (
     case Tiltakstype.INDOPPFAG:
       return [
         { tekst: 'Støtte til å søke jobber', innholdskode: 'jobbsoking' },
-        { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
+        { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
         {
           tekst:
@@ -585,7 +585,7 @@ export const getUtvidetInnhold = (innhold: TilgjengeligInnhold[]) =>
       valgt: valgt,
       beskrivelse:
         valgt && erAnnet
-          ? 'Ønsker å kartlegge arbeidspraksis \nTeste ulike verktøy'
+          ? 'Ønsker å kartlegge arbeidsutprøving \nTeste ulike verktøy'
           : null
     }
   })
