@@ -27,7 +27,7 @@ const renderAsReactRoot = () => {
   root.render(
     <React.StrictMode>
       <AppContextProvider initialDeltakerlisteId={''}>
-        <div className="m-auto">
+        <div className="m-auto max-w-[1920px]">
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>

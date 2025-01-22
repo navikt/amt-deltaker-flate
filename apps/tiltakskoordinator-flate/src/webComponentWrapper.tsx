@@ -49,7 +49,7 @@ export class Deltakerliste extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
+      <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
         <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
           <BrowserRouter>
             <AppRoutes />

@@ -45,6 +45,7 @@ export const App = () => {
   return (
     <>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteIDprSetting} />}
+      {useMock && <DemoBanner />}
 
       {(stateDeltakerlisteDetaljer === DeferredFetchState.LOADING ||
         stateDeltakere === DeferredFetchState.LOADING) && (
@@ -77,10 +78,7 @@ export const App = () => {
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
           initialDeltakere={deltakere}
         >
-          <div data-testid="page_deltakerliste">
-            {useMock && <DemoBanner />}
-            <DeltakerlistePage />
-          </div>
+          <DeltakerlistePage />
         </DeltakerlisteContextProvider>
       )}
     </>
