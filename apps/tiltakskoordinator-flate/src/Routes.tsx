@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { App } from './App.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
 
-const APP_ROUTE = `${import.meta.env.BASE_URL}/gjennomforinger/deltakerliste/:deltakerlisteId`
+const APP_ROUTE = `${import.meta.env.BASE_URL}/gjennomforinger/:deltakerlisteId/deltakerliste`
 
 export const AppRoutes = () => {
   return (
@@ -13,7 +13,7 @@ export const AppRoutes = () => {
         <Route
           path={'/*'}
           element={
-            <Navigate replace to={'/gjennomforinger/deltakerliste/d48'} />
+            <Navigate replace to={'/gjennomforinger/d48/deltakerliste'} />
           }
         />
       )}
