@@ -8,7 +8,7 @@ import {
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
 
-const APP_NAME = 'amt-deltakerliste-flate'
+const APP_NAME = 'amt-tiltakskoordinato-flate'
 
 export const getDeltakerlisteDetaljer = async (
   deltakerlisteId: string
