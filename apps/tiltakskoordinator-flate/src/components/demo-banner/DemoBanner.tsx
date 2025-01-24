@@ -2,7 +2,7 @@ import { Alert, BodyLong, BodyShort } from '@navikt/ds-react'
 
 const DemoBanner = () => {
   return (
-    <Alert variant="warning" className="mb-4" size="small">
+    <Alert variant="warning" size="small">
       <BodyShort weight="semibold" size="small">
         Dette er en demo-tjeneste
       </BodyShort>

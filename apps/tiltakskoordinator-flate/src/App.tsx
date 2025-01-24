@@ -9,6 +9,7 @@ import DemoBanner from './components/demo-banner/DemoBanner'
 import PrBanner from './components/demo-banner/PrBanner'
 import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
 import { isPrEnv, useMock } from './utils/environment-utils'
+import { DeltakerlistePage } from './pages/DeltakerlistePage'
 
 dayjs.locale(nb)
 
@@ -44,6 +45,7 @@ export const App = () => {
   return (
     <>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteIDprSetting} />}
+      {useMock && <DemoBanner />}
 
       {(stateDeltakerlisteDetaljer === DeferredFetchState.LOADING ||
         stateDeltakere === DeferredFetchState.LOADING) && (
@@ -76,13 +78,7 @@ export const App = () => {
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
           initialDeltakere={deltakere}
         >
-          <div data-testid="page_deltakerliste">
-            {useMock && <DemoBanner />}
-            <Heading size="medium" level="2">
-              Hei!
-            </Heading>
-            <Alert variant="info">Designsystemet fungerer</Alert>
-          </div>
+          <DeltakerlistePage />
         </DeltakerlisteContextProvider>
       )}
     </>
