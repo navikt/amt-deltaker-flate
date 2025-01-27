@@ -4,7 +4,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
 import './index.css'
-import { isLocal, useMock } from './utils/environment-utils.ts'
+import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
 
 const renderApp = () => {
@@ -13,7 +13,6 @@ const renderApp = () => {
     env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
     params: {
       level: 'Level4',
-      enforceLogin: isLocal ? false : true,
       logoutWarning: true
     }
   })
