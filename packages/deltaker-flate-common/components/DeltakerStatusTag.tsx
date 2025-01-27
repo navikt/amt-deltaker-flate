@@ -16,13 +16,14 @@ const getTagType = (status: DeltakerStatusType) => {
       return 'info'
     case DeltakerStatusType.VURDERES:
       return 'alt2'
+    case DeltakerStatusType.SOKT_INN:
+      return 'alt2'
     case DeltakerStatusType.DELTAR:
     case DeltakerStatusType.AVBRUTT:
     case DeltakerStatusType.AVBRUTT_UTKAST:
     case DeltakerStatusType.IKKE_AKTUELL:
     case DeltakerStatusType.FEILREGISTRERT:
     case DeltakerStatusType.PABEGYNT_REGISTRERING:
-    case DeltakerStatusType.SOKT_INN:
       return 'neutral'
   }
 }
