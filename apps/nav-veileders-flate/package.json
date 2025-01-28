@@ -25,6 +25,7 @@
     "@navikt/ds-css": "^7.10.0",
     "@navikt/ds-react": "^7.10.0",
     "@navikt/ds-tailwind": "^7.10.0",
+    "@tailwindcss/vite": "^4.0.0",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
     "msw": "^2.7.0",
