@@ -13,15 +13,18 @@ export const worker = setupWorker(
       return handler.setTiltakstype(tiltakstype as Tiltakstype)
     }
   ),
-  http.get('/amt-deltaker-bff/deltakerliste/:deltakerlisteId', async () => {
-    await delay(1000)
-    return handler.getGjennomforing()
-  }),
   http.get(
-    '/amt-deltaker-bff/deltakerliste/:deltakerlisteId/deltakere',
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId',
     async () => {
       await delay(1000)
-      return handler.getDeltakerliste()
+      return handler.getDeltakerlisteDetaljer()
+    }
+  ),
+  http.get(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere',
+    async () => {
+      await delay(1000)
+      return handler.getDeltakere()
     }
   )
 )

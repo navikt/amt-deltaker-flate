@@ -7,30 +7,32 @@ import {
 } from './mockData.tsx'
 
 export class MockHandler {
-  gjennomforing: DeltakerlisteDetaljer | null = null
-  deltakerliste: Deltakere | null = null
+  deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
+  deltakere: Deltakere | null = null
   tiltakstype = Tiltakstype.JOBBK
 
-  getGjennomforing() {
-    this.gjennomforing = createMockDeltakerlisteDetaljer(this.tiltakstype)
-    return HttpResponse.json(this.gjennomforing)
+  getDeltakerlisteDetaljer() {
+    this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer(
+      this.tiltakstype
+    )
+    return HttpResponse.json(this.deltakerlisteDetaljer)
   }
 
-  getDeltakerliste() {
-    this.deltakerliste = createMockDeltakere()
-    return HttpResponse.json(this.deltakerliste)
+  getDeltakere() {
+    this.deltakere = createMockDeltakere()
+    return HttpResponse.json(this.deltakere)
   }
 
   setTiltakstype(tiltakstype: Tiltakstype) {
     this.tiltakstype = tiltakstype
-    const oppdatertGjennomforing = this.gjennomforing
+    const oppdatertGjennomforing = this.deltakerlisteDetaljer
 
     if (oppdatertGjennomforing) {
-      oppdatertGjennomforing.tiltakstype = tiltakstype
+      //oppdatertGjennomforing.tiltakstype = tiltakstype
 
-      this.gjennomforing = oppdatertGjennomforing
+      this.deltakerlisteDetaljer = oppdatertGjennomforing
       return HttpResponse.json(oppdatertGjennomforing)
     }
-    return HttpResponse.json(this.gjennomforing)
+    return HttpResponse.json(this.deltakerlisteDetaljer)
   }
 }

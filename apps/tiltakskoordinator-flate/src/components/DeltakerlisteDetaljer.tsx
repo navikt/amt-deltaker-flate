@@ -16,13 +16,13 @@ export const DeltakerlisteDetaljer = () => {
       <Detail weight="semibold" className="mt-3">
         Antall plasser
       </Detail>
-      <BodyShort size="small">TODO</BodyShort>
+      <BodyShort size="small">{deltakerlisteDetaljer.antallPlasser}</BodyShort>
 
       <Detail weight="semibold" className="mt-3">
         Åpent for påmelding
       </Detail>
       <BodyShort size="small">
-        {deltakerlisteDetaljer.apenForPamelding ? 'Ja' : 'Nei'}
+        {deltakerlisteDetaljer.apentForPamelding ? 'Ja' : 'Nei'}
       </BodyShort>
     </div>
   )
