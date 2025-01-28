@@ -1,4 +1,4 @@
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import {
   Deltaker,
   Deltakere,
@@ -32,12 +32,9 @@ export const createMockDeltakere = (): Deltakere => {
   return deltakere
 }
 
-export const createMockDeltakerlisteDetaljer = (
-  tiltakstype: Tiltakstype
-): DeltakerlisteDetaljer => {
+export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
   return {
     id: uuidv4(),
-    //tiltakstype: tiltakstype,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
     apentForPamelding: true,
