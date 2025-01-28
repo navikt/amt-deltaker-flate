@@ -1,4 +1,4 @@
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 import {
   Deltaker,
   Deltakere,
@@ -8,18 +8,14 @@ import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 
 const createMockDeltaker = (statusType: DeltakerStatusType): Deltaker => {
-  const yesterday = dayjs().subtract(1, 'day')
-
   return {
-    deltakerId: uuidv4(),
-    navn: 'Navn Navnesen',
+    id: uuidv4(),
+    fornavn: 'Navn',
+    mellomnavn: null,
+    etternavn: 'Naversen',
     status: {
-      id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
       type: statusType,
-      aarsak: null,
-      gyldigFra: yesterday.toDate(),
-      gyldigTil: null,
-      opprettet: yesterday.toDate()
+      aarsak: null
     }
   }
 }
@@ -36,14 +32,12 @@ export const createMockDeltakere = (): Deltakere => {
   return deltakere
 }
 
-export const createMockDeltakerlisteDetaljer = (
-  tiltakstype: Tiltakstype
-): DeltakerlisteDetaljer => {
+export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
   return {
-    deltakerlisteId: uuidv4(),
-    tiltakstype: tiltakstype,
+    id: uuidv4(),
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
-    apenForPamelding: true
+    apentForPamelding: true,
+    antallPlasser: 42
   }
 }

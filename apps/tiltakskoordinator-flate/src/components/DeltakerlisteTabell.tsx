@@ -1,6 +1,7 @@
 import { BodyShort, Label, Table } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { DeltakerStatusTag } from 'deltaker-flate-common'
+import { Deltaker } from '../api/data/deltakerliste'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere } = useDeltakerlisteContext()
@@ -20,9 +21,9 @@ export const DeltakerlisteTabell = () => {
       <Table.Body>
         {deltakere.map((deltaker) => {
           return (
-            <Table.Row key={deltaker.deltakerId}>
+            <Table.Row key={`${deltaker.id}`}>
               <Table.DataCell className="pl-4 pr-4">
-                <BodyShort size="small">{deltaker.navn}</BodyShort>
+                <BodyShort size="small">{deltakerNavn(deltaker)}</BodyShort>
               </Table.DataCell>
               <Table.DataCell className="pl-4 pr-4">
                 <DeltakerStatusTag statusType={deltaker.status.type} />
@@ -33,4 +34,11 @@ export const DeltakerlisteTabell = () => {
       </Table.Body>
     </Table>
   )
+}
+
+function deltakerNavn({ fornavn, mellomnavn, etternavn }: Deltaker): string {
+  if (!fornavn && !etternavn) {
+    return 'Adressebeskyttet'
+  }
+  return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }

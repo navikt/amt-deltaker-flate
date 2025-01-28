@@ -1,24 +1,35 @@
 import {
-  nullableDateSchema,
-  pameldingStatusSchema,
-  tiltakstypeSchema
+  deltakerStatusAarsakTypeSchema,
+  deltakerStatusTypeSchema,
+  nullableDateSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
+const deltakerStatusAarsakSchema = z.object({
+  type: deltakerStatusAarsakTypeSchema
+})
+
+const deltakerStatusSchema = z.object({
+  type: deltakerStatusTypeSchema,
+  aarsak: deltakerStatusAarsakSchema.nullable()
+})
+
 export const deltakerSchema = z.object({
-  deltakerId: z.string().uuid(),
-  navn: z.string(),
-  status: pameldingStatusSchema
+  id: z.string().uuid(),
+  fornavn: z.string(),
+  mellomnavn: z.string().nullable(),
+  etternavn: z.string(),
+  status: deltakerStatusSchema
 })
 
 export const deltakereSchema = z.array(deltakerSchema)
 
 export const deltakerlisteDetaljerSchema = z.object({
-  deltakerlisteId: z.string().uuid(),
-  tiltakstype: tiltakstypeSchema,
+  id: z.string().uuid(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  apenForPamelding: z.boolean()
+  apentForPamelding: z.boolean(),
+  antallPlasser: z.number()
 })
 
 export type Deltaker = z.infer<typeof deltakerSchema>

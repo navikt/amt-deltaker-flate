@@ -8,12 +8,16 @@ import {
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
 
-const APP_NAME = 'amt-tiltakskoordinato-flate'
+const APP_NAME = 'amt-tiltakskoordinator-flate'
+
+function apiUrl(deltakerlisteId: string) {
+  return `${API_URL}/tiltakskoordinator/deltakerliste/${deltakerlisteId}`
+}
 
 export const getDeltakerlisteDetaljer = async (
   deltakerlisteId: string
 ): Promise<DeltakerlisteDetaljer> => {
-  return fetch(`${API_URL}/deltakerliste/${deltakerlisteId}`, {
+  return fetch(`${apiUrl(deltakerlisteId)}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -47,7 +51,7 @@ export const getDeltakerlisteDetaljer = async (
 export const getDeltakere = async (
   deltakerlisteId: string
 ): Promise<Deltakere> => {
-  return fetch(`${API_URL}/deltakerliste/${deltakerlisteId}/deltakere`, {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere`, {
     method: 'GET',
     credentials: 'include',
     headers: {
