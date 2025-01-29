@@ -15,6 +15,12 @@ export const HvaDelesMedArrangor = ({
   tiltaksType,
   className
 }: Props) => {
+  const erKurs = [
+    Tiltakstype.DIGIOPPARB,
+    Tiltakstype.JOBBK,
+    Tiltakstype.GRUPPEAMO,
+    Tiltakstype.GRUFAGYRKE
+  ].includes(tiltaksType)
   return (
     <ExpansionCard
       aria-label="Dette deles med arrangøren"
@@ -33,7 +39,7 @@ export const HvaDelesMedArrangor = ({
             Navn og kontaktinformasjonen til Nav-veilederen din
           </List.Item>
 
-          {tiltaksType !== Tiltakstype.DIGIOPPARB && (
+          {!erKurs && (
             <List.Item>
               Innholdet og bakgrunnsinformasjonen i påmeldingen
             </List.Item>
@@ -42,10 +48,7 @@ export const HvaDelesMedArrangor = ({
           <List.Item>Navn og fødselsnummer</List.Item>
           <List.Item>Telefonnummer og e-postadresse</List.Item>
 
-          {adresseDelesMedArrangor &&
-            tiltaksType !== Tiltakstype.DIGIOPPARB && (
-              <List.Item>Adresse</List.Item>
-            )}
+          {adresseDelesMedArrangor && !erKurs && <List.Item>Adresse</List.Item>}
         </List>
         <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
           Se her hvilke opplysninger Nav har om deg.

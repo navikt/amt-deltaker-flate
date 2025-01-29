@@ -132,6 +132,15 @@ const DemoStatusInstillinger = () => {
         <option value={Tiltakstype.VASV}>
           {getTiltakstypeDisplayText(Tiltakstype.VASV)}
         </option>
+        <option value={Tiltakstype.GRUPPEAMO}>
+          {getTiltakstypeDisplayText(Tiltakstype.GRUPPEAMO)}
+        </option>
+        <option value={Tiltakstype.JOBBK}>
+          {getTiltakstypeDisplayText(Tiltakstype.JOBBK)}
+        </option>
+        <option value={Tiltakstype.GRUFAGYRKE}>
+          {getTiltakstypeDisplayText(Tiltakstype.GRUFAGYRKE)}
+        </option>
       </Select>
       <Select
         value={pameldingStatus}
