@@ -110,3 +110,30 @@ jobs:
           environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-prod-tiltakskoordinator-flate:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy tiltakskoordinator-flate to PROD
+    runs-on: ubuntu-latest
+    needs: test-and-lint
+    permissions:
+      id-token: 'write' # Used to authenticate with Google Cloud
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Build
+        run: pnpm build --filter=tiltakskoordinator-flate
+      - name: Upload files to CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: amt
+          source: apps/tiltakskoordinator-flate/build
+          destination: amt-tiltakskoordinator-flate-prod
+          no_cache_paths: amt-tiltakskoordinator-flate-prod/build/asset-manifest.json
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
