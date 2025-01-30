@@ -10,6 +10,8 @@ import PrBanner from './components/demo-banner/PrBanner'
 import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
 import { isPrEnv, useMock } from './utils/environment-utils'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
+import { Deltakere } from './api/data/deltakerliste'
+import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
 
 dayjs.locale(nb)
 
@@ -29,7 +31,7 @@ export const App = () => {
   } = useDeferredFetch(getDeltakerlisteDetaljer)
 
   const {
-    data: deltakere,
+    data: deltakereResponse,
     state: stateDeltakere,
     error: errorDeltakere,
     doFetch: doFetchDeltakere
@@ -41,6 +43,15 @@ export const App = () => {
       doFetchDeltakelisteDetaljer(deltakerlisteId)
     }
   }, [deltakerlisteId])
+
+  if (deltakereResponse === 'FeilADGruppe') {
+    return <IngenAdGruppePage />
+  }
+  if (deltakereResponse === 'IkkeTilgangTilDeltakerliste') {
+    return <h1>Ingen tilgang</h1>
+  }
+
+  const deltakere: Deltakere | null = deltakereResponse
 
   return (
     <>
@@ -63,7 +74,8 @@ export const App = () => {
         errorDeltakere ||
         (stateDeltakerlisteDetaljer === DeferredFetchState.RESOLVED &&
           !deltakerlisteDetaljer) ||
-        (stateDeltakere === DeferredFetchState.RESOLVED && !deltakere)) && (
+        (stateDeltakere === DeferredFetchState.RESOLVED &&
+          !deltakereResponse)) && (
         <div id="maincontent" role="main" tabIndex={-1}>
           <Alert variant="error" className="mt-4">
             <Heading spacing size="small" level="3">
