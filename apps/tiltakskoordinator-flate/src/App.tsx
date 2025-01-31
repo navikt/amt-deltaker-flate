@@ -12,6 +12,7 @@ import { isPrEnv, useMock } from './utils/environment-utils'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { Deltakere } from './api/data/deltakerliste'
 import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
+import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
 
 dayjs.locale(nb)
 
@@ -37,18 +38,31 @@ export const App = () => {
     doFetch: doFetchDeltakere
   } = useDeferredFetch(getDeltakere)
 
-  useEffect(() => {
+  const fetchDeltakerliste = () => {
     if (deltakerlisteId) {
       doFetchDeltakere(deltakerlisteId)
       doFetchDeltakelisteDetaljer(deltakerlisteId)
     }
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(deltakereResponse)
+
+  useEffect(() => {
+    fetchDeltakerliste()
   }, [deltakerlisteId])
 
   if (deltakereResponse === 'FeilADGruppe') {
     return <IngenAdGruppePage />
   }
+
   if (deltakereResponse === 'IkkeTilgangTilDeltakerliste') {
-    return <h1>Ingen tilgang</h1>
+    return (
+      <IkkeTilgangTilDeltakerlistePage
+        deltakerlisteId={deltakerlisteId!}
+        onConfirm={fetchDeltakerliste}
+      />
+    )
   }
 
   const deltakere: Deltakere | null = deltakereResponse

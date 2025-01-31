@@ -1,10 +1,9 @@
 import { BodyLong, Box, VStack } from '@navikt/ds-react'
-import React from 'react'
 
 export function IngenAdGruppePage() {
   return (
     <Box className="flex justify-center pt-16">
-      <VStack gap="2" className="max-w-screen-sm">
+      <VStack gap="4" className="max-w-screen-sm">
         <h2 className="text-xl font-semibold">
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen
         </h2>

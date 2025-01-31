@@ -62,7 +62,7 @@ export const getDeltakere = async (
       Accept: 'application/json',
       'Nav-Consumer-Id': APP_NAME
     }
-  }).then((response) => {
+  }).then(async (response) => {
     if (response.status === 401) {
       return 'FeilADGruppe'
     }
@@ -75,7 +75,7 @@ export const getDeltakere = async (
     }
 
     try {
-      return deltakereSchema.parse(response.json())
+      return deltakereSchema.parse(await response.json())
     } catch (error) {
       logError('Kunne ikke parse deltakereSchema:', error)
       if (error instanceof ZodError) {
@@ -84,6 +84,23 @@ export const getDeltakere = async (
       throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
     }
   })
+}
+
+export async function leggTilTilgang(deltakerlisteId: string) {
+  const response = await fetch(`${apiUrl(deltakerlisteId)}/tilgang/legg-til`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+
+  if (response.status !== 200) {
+    const message = 'Tilgang kunne ikke legges til'
+    handleError(message, deltakerlisteId, response.status)
+  }
 }
 
 const handleError = (
