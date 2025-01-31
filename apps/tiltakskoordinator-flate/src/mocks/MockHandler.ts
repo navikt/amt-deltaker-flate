@@ -6,7 +6,7 @@ import {
 } from './mockData.tsx'
 
 export class MockHandler {
-  tilgang = false
+  tilgang = true
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
   deltakere: Deltakere | null = null
 
