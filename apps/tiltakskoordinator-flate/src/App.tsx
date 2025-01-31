@@ -45,9 +45,6 @@ export const App = () => {
     }
   }
 
-  // eslint-disable-next-line no-console
-  console.log(deltakereResponse)
-
   useEffect(() => {
     fetchDeltakerliste()
   }, [deltakerlisteId])
