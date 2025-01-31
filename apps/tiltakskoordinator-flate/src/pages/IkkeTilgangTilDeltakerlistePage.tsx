@@ -6,7 +6,7 @@ import {
   VStack
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { leggTilTilgang } from '../api/api'
 
 interface Props {
@@ -24,12 +24,15 @@ export function IkkeTilgangTilDeltakerlistePage({
   >(undefined)
   const { error, state, doFetch } = useDeferredFetch(leggTilTilgang)
 
-  const handleClick = () => {
+  useEffect(() => {
+    if (!error && state === DeferredFetchState.RESOLVED) onConfirm()
+  }, [error, state])
+
+  const handleClick = async () => {
     if (!confirmation) {
       setConfirmationError('Du må bekrefte ditt behov')
     } else {
       doFetch(deltakerlisteId)
-      onConfirm()
     }
   }
 
