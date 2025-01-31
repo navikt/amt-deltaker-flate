@@ -5,3 +5,8 @@ p,
 li {
   overflow-wrap: break-word;
 }
+
+dialog {
+  margin-left: auto;
+  margin-right: auto;
+}
