@@ -22,7 +22,7 @@ export const PrStatusInstillinger = ({ setDeltakerID }: Props) => {
         onChange={(e) => setNyDeltakerId(e.target.value)}
       />
       <Button size="small" className="mt-4">
-        Bruk deltkerid
+        Bruk deltakerid
       </Button>
     </form>
   )

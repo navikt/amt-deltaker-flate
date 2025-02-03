@@ -24,7 +24,7 @@ export const PrStatusInstillinger = ({ setDeltakerlisteId }: Props) => {
         onChange={(e) => setNyDeltakerlisteId(e.target.value)}
       />
       <Button size="small" className="mt-4">
-        Bruk deltkerliste-id
+        Bruk deltakerliste-id
       </Button>
     </form>
   )
