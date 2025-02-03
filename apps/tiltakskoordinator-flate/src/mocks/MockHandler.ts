@@ -6,6 +6,7 @@ import {
 } from './mockData.tsx'
 
 export class MockHandler {
+  tilgang = true
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
   deltakere: Deltakere | null = null
 
@@ -15,7 +16,15 @@ export class MockHandler {
   }
 
   getDeltakere() {
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
     this.deltakere = createMockDeltakere()
     return HttpResponse.json(this.deltakere)
+  }
+
+  leggTilTilgang() {
+    this.tilgang = true
+    return new HttpResponse()
   }
 }

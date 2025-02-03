@@ -18,5 +18,12 @@ export const worker = setupWorker(
       await delay(1000)
       return handler.getDeltakere()
     }
+  ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/tilgang/legg-til',
+    async () => {
+      await delay(1000)
+      return handler.leggTilTilgang()
+    }
   )
 )

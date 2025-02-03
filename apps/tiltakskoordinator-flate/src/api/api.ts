@@ -48,9 +48,12 @@ export const getDeltakerlisteDetaljer = async (
     })
 }
 
+export type TilgangsFeil = 'FeilADGruppe' | 'IkkeTilgangTilDeltakerliste'
+export type DeltakereResponse = Deltakere | TilgangsFeil
+
 export const getDeltakere = async (
   deltakerlisteId: string
-): Promise<Deltakere> => {
+): Promise<DeltakereResponse> => {
   return fetch(`${apiUrl(deltakerlisteId)}/deltakere`, {
     method: 'GET',
     credentials: 'include',
@@ -59,25 +62,45 @@ export const getDeltakere = async (
       Accept: 'application/json',
       'Nav-Consumer-Id': APP_NAME
     }
+  }).then(async (response) => {
+    if (response.status === 401) {
+      return 'FeilADGruppe'
+    }
+    if (response.status === 403) {
+      return 'IkkeTilgangTilDeltakerliste'
+    }
+    if (response.status !== 200) {
+      const message = 'Deltakere kunne ikke hentes.'
+      handleError(message, deltakerlisteId, response.status)
+    }
+
+    try {
+      return deltakereSchema.parse(await response.json())
+    } catch (error) {
+      logError('Kunne ikke parse deltakereSchema:', error)
+      if (error instanceof ZodError) {
+        logError('Issue', error.issues)
+      }
+      throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
+    }
   })
-    .then((response) => {
-      if (response.status !== 200) {
-        const message = 'Deltakere kunne ikke hentes.'
-        handleError(message, deltakerlisteId, response.status)
-      }
-      return response.json()
-    })
-    .then((json: string) => {
-      try {
-        return deltakereSchema.parse(json)
-      } catch (error) {
-        logError('Kunne ikke parse deltakereSchema:', error)
-        if (error instanceof ZodError) {
-          logError('Issue', error.issues)
-        }
-        throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
-      }
-    })
+}
+
+export async function leggTilTilgang(deltakerlisteId: string) {
+  const response = await fetch(`${apiUrl(deltakerlisteId)}/tilgang/legg-til`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+
+  if (response.status !== 200) {
+    const message = 'Tilgang kunne ikke legges til'
+    handleError(message, deltakerlisteId, response.status)
+  }
 }
 
 const handleError = (
