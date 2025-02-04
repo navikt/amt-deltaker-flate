@@ -77,10 +77,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.50.1)
+        version: 4.10.1(playwright-core@1.50.0)
       '@playwright/test':
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -112,8 +112,8 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0(@types/node@22.12.0)(typescript@5.7.3)
       playwright:
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
@@ -186,10 +186,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.50.1)
+        version: 4.10.1(playwright-core@1.50.0)
       '@playwright/test':
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -221,8 +221,8 @@ importers:
         specifier: ^26.0.0
         version: 26.0.0
       playwright:
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
@@ -289,10 +289,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.50.1)
+        version: 4.10.1(playwright-core@1.50.0)
       '@playwright/test':
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -324,8 +324,8 @@ importers:
         specifier: ^26.0.0
         version: 26.0.0
       playwright:
-        specifier: ^1.50.1
-        version: 1.50.1
+        specifier: ^1.50.0
+        version: 1.50.0
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
@@ -864,6 +864,9 @@ packages:
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@7.10.0':
     resolution: {integrity: sha512-MPEhaA4tV7MJ4Xqf5681wEowrWnM5hMbzDewOcdfyRED6JM/lYRIkcIarEwIt5f4/tP6GL1kLbUySDXoPsvyig==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.10.0/b2a81fc795e866e9964be0101001ab2247e51c1a}
@@ -949,8 +952,8 @@ packages:
     resolution: {integrity: sha512-lp4qAiMTD4sNWW4DbKLBkfiMZ4jbAboJIGOQr5DvciMRI494OapieI9qiODpOt0XBr1LjIDy1xAGAnVs5supTA==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.50.1':
-    resolution: {integrity: sha512-Jii3aBg+CEDpgnuDxEp/h7BimHcUTDlpEtce89xEumlJ5ef2hqepZ+PWp1DDpYC/VO9fmWVI1IlEaoI5fK9FXQ==}
+  '@playwright/test@1.50.0':
+    resolution: {integrity: sha512-ZGNXbt+d65EGjBORQHuYKj+XhCewlwpnSd/EDuLPZGSiEWmgOJB5RmMCCYGy5aMfTs9wx61RivfDKi8H/hcMvw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2593,13 +2596,13 @@ packages:
     engines: {node: '>=0.10'}
     hasBin: true
 
-  playwright-core@1.50.1:
-    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
+  playwright-core@1.50.0:
+    resolution: {integrity: sha512-CXkSSlr4JaZs2tZHI40DsZUN/NIwgaUPsyLuOAaIZp2CyF2sN5MM5NJsyB188lFSSozFxQ5fPT4qM+f0tH/6wQ==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.50.1:
-    resolution: {integrity: sha512-G8rwsOQJ63XG6BbKj2w5rHeavFjy5zynBA9zsJMMtBoe/Uf757oG12NXz6e6OirF7RCrTVAKFXbLmn1RbL7Qaw==}
+  playwright@1.50.0:
+    resolution: {integrity: sha512-+GinGfGTrd2IfX1TA4N2gNmeIksSb+IAe589ZH+FlmpV3MYTx6+buChGIuDLQwrGNCw2lWibqV50fU510N7S+w==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3296,10 +3299,10 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
 
-  '@axe-core/playwright@4.10.1(playwright-core@1.50.1)':
+  '@axe-core/playwright@4.10.1(playwright-core@1.50.0)':
     dependencies:
       axe-core: 4.10.2
-      playwright-core: 1.50.1
+      playwright-core: 1.50.0
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -3686,11 +3689,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@navikt/aksel-icons': 7.10.0
       '@navikt/ds-tokens': 7.10.0
-      '@types/react': 19.0.8
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 19.0.0
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@19.0.0)
+    optionalDependencies:
+      '@types/react': 19.0.8
     transitivePeerDependencies:
       - react-dom
 
@@ -3777,9 +3781,9 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.28.0': {}
 
-  '@playwright/test@1.50.1':
+  '@playwright/test@1.50.0':
     dependencies:
-      playwright: 1.50.1
+      playwright: 1.50.0
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -5531,11 +5535,11 @@ snapshots:
 
   pidtree@0.6.0: {}
 
-  playwright-core@1.50.1: {}
+  playwright-core@1.50.0: {}
 
-  playwright@1.50.1:
+  playwright@1.50.0:
     dependencies:
-      playwright-core: 1.50.1
+      playwright-core: 1.50.0
     optionalDependencies:
       fsevents: 2.3.2
 
