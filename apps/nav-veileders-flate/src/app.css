@@ -1,5 +1,7 @@
-@import 'tailwindcss';
-@import '@navikt/ds-css' layer(components);
+@import 'tailwindcss/base';
+@import '@navikt/ds-css';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 .deltakelse-wrapper {
   background: var(--a-surface-subtle);
@@ -8,9 +10,4 @@
 p,
 li {
   overflow-wrap: break-word;
-}
-
-dialog {
-  margin-left: auto;
-  margin-right: auto;
 }
