@@ -1,12 +1,4 @@
-@import 'tailwindcss';
-@import '@navikt/ds-css' layer(components);
-
-p,
-li {
-  overflow-wrap: break-word;
-}
-
-dialog {
-  margin-left: auto;
-  margin-right: auto;
-}
+@import 'tailwindcss/base';
+@import '@navikt/ds-css';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
