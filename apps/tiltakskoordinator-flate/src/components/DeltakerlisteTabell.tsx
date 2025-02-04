@@ -37,8 +37,5 @@ export const DeltakerlisteTabell = () => {
 }
 
 function deltakerNavn({ fornavn, mellomnavn, etternavn }: Deltaker): string {
-  if (!fornavn && !etternavn) {
-    return 'Adressebeskyttet'
-  }
   return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }
