@@ -14,12 +14,22 @@ const deltakerStatusSchema = z.object({
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
 
+export enum Beskyttelsesmarkering {
+  FORTROLIG = 'FORTROLIG',
+  STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
+  STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
+  SKJERMET = 'SKJERMET'
+}
+
+const beskyttelsesmarkeringSchema = z.nativeEnum(Beskyttelsesmarkering)
+
 export const deltakerSchema = z.object({
   id: z.string().uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
-  status: deltakerStatusSchema
+  status: deltakerStatusSchema,
+  beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema)
 })
 
 export const deltakereSchema = z.array(deltakerSchema)

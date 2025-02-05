@@ -1,7 +1,8 @@
-import { BodyShort, Label, Table } from '@navikt/ds-react'
+import { BodyShort, HStack, Label, Table } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { DeltakerStatusTag } from 'deltaker-flate-common'
 import { Deltaker } from '../api/data/deltakerliste'
+import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere } = useDeltakerlisteContext()
@@ -23,7 +24,12 @@ export const DeltakerlisteTabell = () => {
           return (
             <Table.Row key={`${deltaker.id}`}>
               <Table.DataCell className="pl-4 pr-4">
-                <BodyShort size="small">{deltakerNavn(deltaker)}</BodyShort>
+                <HStack gap="1" className="items-center">
+                  <BodyShort size="small">{deltakerNavn(deltaker)}</BodyShort>
+                  <BeskyttelsesmarkeringIkoner
+                    beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
+                  />
+                </HStack>
               </Table.DataCell>
               <Table.DataCell className="pl-4 pr-4">
                 <DeltakerStatusTag statusType={deltaker.status.type} />
