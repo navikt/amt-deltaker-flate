@@ -48,7 +48,10 @@ export const getDeltakerlisteDetaljer = async (
     })
 }
 
-export type TilgangsFeil = 'FeilADGruppe' | 'IkkeTilgangTilDeltakerliste'
+export type TilgangsFeil =
+  | 'FeilADGruppe'
+  | 'IkkeTilgangTilDeltakerliste'
+  | 'DeltakerlisteStengt'
 export type DeltakereResponse = Deltakere | TilgangsFeil
 
 export const getDeltakere = async (
@@ -68,6 +71,9 @@ export const getDeltakere = async (
     }
     if (response.status === 403) {
       return 'IkkeTilgangTilDeltakerliste'
+    }
+    if (response.status === 410) {
+      return 'DeltakerlisteStengt'
     }
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke hentes.'
