@@ -7,6 +7,7 @@ import {
 
 export class MockHandler {
   tilgang = true
+  stengt = false
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
   deltakere: Deltakere | null = null
 
@@ -16,6 +17,12 @@ export class MockHandler {
   }
 
   getDeltakere() {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }

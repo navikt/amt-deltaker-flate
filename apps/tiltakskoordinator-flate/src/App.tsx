@@ -13,6 +13,7 @@ import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { Deltakere } from './api/data/deltakerliste'
 import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
 import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
+import { DeltakerlisteStengtPage } from './pages/DeltakerlisteStengtPage'
 
 dayjs.locale(nb)
 
@@ -51,6 +52,10 @@ export const App = () => {
 
   if (deltakereResponse === 'FeilADGruppe') {
     return <IngenAdGruppePage />
+  }
+
+  if (deltakereResponse === 'DeltakerlisteStengt') {
+    return <DeltakerlisteStengtPage />
   }
 
   if (deltakereResponse === 'IkkeTilgangTilDeltakerliste') {
