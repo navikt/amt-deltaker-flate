@@ -55,6 +55,16 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
     apentForPamelding: true,
-    antallPlasser: 42
+    antallPlasser: 42,
+    koordinatorer: [
+      {
+        id: uuidv4(),
+        navn: 'Navn Navnesen'
+      },
+      {
+        id: uuidv4(),
+        navn: 'To Navn Etternavn'
+      }
+    ]
   }
 }
