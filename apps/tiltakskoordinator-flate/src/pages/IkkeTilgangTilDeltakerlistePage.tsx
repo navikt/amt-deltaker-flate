@@ -43,21 +43,18 @@ export function IkkeTilgangTilDeltakerlistePage({
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen
         </h2>
         <BodyLong>
-          Deltakerlisten er kun tilgjengelig for deg som skal administrere eller
-          prioritere deltakerene på listen.
+          Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
+          prioritere deltakere til kurs.
         </BodyLong>
         <BodyLong>
           Dersom du har et behov for å administrere listen, kan du registrere
           deg som koordinator for gjennomføringen her.
         </BodyLong>
-        <BodyLong>
-          Navnet på koordinator vil bli vist ved deltakerlisten til
-          gjennomføringen i Tiltaksadministrasjon.
-        </BodyLong>
+        <BodyLong>Navnet ditt vil vises ved deltakerlisten.</BodyLong>
         <ConfirmationPanel
           checked={confirmation}
           error={error ?? confirmationError}
-          label="Jeg bekrefter at jeg har et tjenstlig behov for å se og administrere deltakerlisten for gjennomføringen"
+          label="Jeg bekrefter at jeg har tjenstlig behov for å se og administrere denne deltakerlisten."
           onChange={() =>
             setConfirmation((x) => {
               setConfirmationError(undefined)
@@ -70,7 +67,7 @@ export function IkkeTilgangTilDeltakerlistePage({
           className="w-fit"
           onClick={handleClick}
         >
-          Be om tilgang
+          Gi meg tilgang
         </Button>
       </VStack>
     </Box>
