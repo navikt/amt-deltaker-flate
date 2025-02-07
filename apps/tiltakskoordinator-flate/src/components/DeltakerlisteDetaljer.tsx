@@ -24,6 +24,12 @@ export const DeltakerlisteDetaljer = () => {
       <BodyShort size="small">
         {deltakerlisteDetaljer.apentForPamelding ? 'Ja' : 'Nei'}
       </BodyShort>
+      <Detail weight="semibold" className="mt-3">
+        Koordinator for deltakerliste:
+      </Detail>
+      {deltakerlisteDetaljer.koordinatorer.map((koordinator) => (
+        <div key={koordinator.id}>{koordinator.navn}</div>
+      ))}
     </div>
   )
 }
