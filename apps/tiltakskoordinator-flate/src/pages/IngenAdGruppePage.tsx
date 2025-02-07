@@ -11,7 +11,6 @@ export function IngenAdGruppePage() {
           Deltakerlisten er kun tilgjengelig for deg som skal administrere eller
           prioritere deltakerene på listen.
         </BodyLong>
-        <BodyLong>Info om AD-gruppen?</BodyLong>
       </VStack>
     </Box>
   )
