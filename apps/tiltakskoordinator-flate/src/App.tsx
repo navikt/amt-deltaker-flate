@@ -4,7 +4,7 @@ import nb from 'dayjs/locale/nb'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
+import { getDeltakere, getDeltakerlisteDetaljer, TilgangsFeil } from './api/api'
 import DemoBanner from './components/demo-banner/DemoBanner'
 import PrBanner from './components/demo-banner/PrBanner'
 import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
@@ -13,6 +13,7 @@ import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { Deltakere } from './api/data/deltakerliste'
 import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
 import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
+import { DeltakerlisteStengtPage } from './pages/DeltakerlisteStengtPage'
 
 dayjs.locale(nb)
 
@@ -49,11 +50,15 @@ export const App = () => {
     fetchDeltakerliste()
   }, [deltakerlisteId])
 
-  if (deltakereResponse === 'FeilADGruppe') {
+  if (deltakereResponse === TilgangsFeil.ManglerADGruppe) {
     return <IngenAdGruppePage />
   }
 
-  if (deltakereResponse === 'IkkeTilgangTilDeltakerliste') {
+  if (deltakereResponse === TilgangsFeil.DeltakerlisteStengt) {
+    return <DeltakerlisteStengtPage />
+  }
+
+  if (deltakereResponse === TilgangsFeil.IkkeTilgangTilDeltakerliste) {
     return (
       <IkkeTilgangTilDeltakerlistePage
         deltakerlisteId={deltakerlisteId!}
