@@ -43,7 +43,6 @@ export function IkkeTilgangTilDeltakerlistePage({
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen
         </h2>
         <BodyLong>
-          Du har ikke tilgang til deltakerlisten for denne gjennomføringen
           Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
           prioritere deltakere til kurs.
         </BodyLong>
