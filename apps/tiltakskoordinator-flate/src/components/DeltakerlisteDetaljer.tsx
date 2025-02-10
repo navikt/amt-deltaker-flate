@@ -1,12 +1,22 @@
-import { BodyShort, Detail, List } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  Button,
+  Detail,
+  Link,
+  List
+} from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { formatDate } from 'deltaker-flate-common'
+import { useParams } from 'react-router-dom'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const { deltakerlisteId } = useParams()
+  const endringsmeldingerLenke = `https://arbeidsmarkedstiltak.intern.dev.nav.no/gjennomforing/${deltakerlisteId}`
 
   return (
-    <div>
+    <div className="w-1/5">
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}
@@ -32,6 +42,17 @@ export const DeltakerlisteDetaljer = () => {
           <List.Item key={koordinator.id}>{koordinator.navn}</List.Item>
         ))}
       </List>
+      <div className="mt-6">
+        <BodyLong>
+          For å se vurderinger og endringsmeldinger må du foreløpig bruke den
+          gamle oversikten.
+        </BodyLong>
+        <Link href={endringsmeldingerLenke} className="mt-3">
+          <Button size="small" variant="secondary" as="a">
+            Se endringsmeldinger
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }
