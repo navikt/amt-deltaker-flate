@@ -9,11 +9,12 @@ import {
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { formatDate } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
+import { TILTAKSANSVARLIG_FLATE_URL } from '../../utils/environment-utils.ts'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { deltakerlisteId } = useParams()
-  const endringsmeldingerLenke = `https://arbeidsmarkedstiltak.intern.dev.nav.no/gjennomforing/${deltakerlisteId}`
+  const endringsmeldingerLenke = `https://${TILTAKSANSVARLIG_FLATE_URL}/gjennomforing/${deltakerlisteId}`
 
   return (
     <div className="w-1/5">
