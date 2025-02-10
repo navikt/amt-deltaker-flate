@@ -2,7 +2,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "env": ["VITE_FARO_URL", "TILTAKSANSVARLIG_FLATE_URL"]
+      "env": ["VITE_FARO_URL", "VITE_TILTAKSANSVARLIG_URL"]
     }
   }
 }
