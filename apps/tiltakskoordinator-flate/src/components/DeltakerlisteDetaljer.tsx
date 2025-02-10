@@ -27,7 +27,7 @@ export const DeltakerlisteDetaljer = () => {
       <Detail weight="semibold" className="mt-3">
         Koordinator for deltakerliste:
       </Detail>
-      <List as="ul" size="small" className={deltakerlisteDetaljer.id ?? ''}>
+      <List as="ul" size="small">
         {deltakerlisteDetaljer.koordinatorer.map((koordinator) => (
           <List.Item key={koordinator.id}>{koordinator.navn}</List.Item>
         ))}
