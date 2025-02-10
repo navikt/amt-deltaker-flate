@@ -14,7 +14,7 @@ import { TILTAKSANSVARLIG_URL } from '../../utils/environment-utils.ts'
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { deltakerlisteId } = useParams()
-  const endringsmeldingerLenke = `https://${TILTAKSANSVARLIG_URL}/gjennomforing/${deltakerlisteId}`
+  const endringsmeldingerLenke = `${TILTAKSANSVARLIG_URL}/gjennomforing/${deltakerlisteId}`
 
   return (
     <div className="w-1/5">
