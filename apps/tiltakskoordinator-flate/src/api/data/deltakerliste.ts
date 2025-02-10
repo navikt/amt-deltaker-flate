@@ -34,12 +34,18 @@ export const deltakerSchema = z.object({
 
 export const deltakereSchema = z.array(deltakerSchema)
 
+const koordinator = z.object({
+  id: z.string().uuid(),
+  navn: z.string()
+})
+
 export const deltakerlisteDetaljerSchema = z.object({
   id: z.string().uuid(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   apentForPamelding: z.boolean(),
-  antallPlasser: z.number()
+  antallPlasser: z.number(),
+  koordinatorer: z.array(koordinator)
 })
 
 export type Deltaker = z.infer<typeof deltakerSchema>
