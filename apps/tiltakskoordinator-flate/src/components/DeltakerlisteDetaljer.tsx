@@ -44,11 +44,11 @@ export const DeltakerlisteDetaljer = () => {
         ))}
       </List>
       <div className="mt-6">
-        <BodyLong>
+        <BodyLong size="small">
           For å se vurderinger og endringsmeldinger må du foreløpig bruke den
           gamle oversikten.
         </BodyLong>
-        <Link href={endringsmeldingerLenke} className="mt-3">
+        <Link href={endringsmeldingerLenke} className="mt-3 no-underline">
           <Button size="small" variant="secondary" as="a">
             Se endringsmeldinger
           </Button>
@@ -57,3 +57,8 @@ export const DeltakerlisteDetaljer = () => {
     </div>
   )
 }
+/*
+ <Button size="small" variant="secondary" as="a">
+            Se endringsmeldinger
+          </Button>
+ */
