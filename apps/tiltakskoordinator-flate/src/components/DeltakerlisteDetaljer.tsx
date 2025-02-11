@@ -57,8 +57,3 @@ export const DeltakerlisteDetaljer = () => {
     </div>
   )
 }
-/*
- <Button size="small" variant="secondary" as="a">
-            Se endringsmeldinger
-          </Button>
- */
