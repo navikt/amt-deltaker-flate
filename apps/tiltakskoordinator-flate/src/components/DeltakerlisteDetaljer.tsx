@@ -1,15 +1,9 @@
-import {
-  BodyLong,
-  BodyShort,
-  Button,
-  Detail,
-  Link,
-  List
-} from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, Link, List } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { formatDate } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { TILTAKSANSVARLIG_URL } from '../../utils/environment-utils.ts'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -48,10 +42,9 @@ export const DeltakerlisteDetaljer = () => {
           For å se vurderinger og endringsmeldinger må du foreløpig bruke den
           gamle oversikten.
         </BodyLong>
-        <Link href={endringsmeldingerLenke} className="mt-3 no-underline">
-          <Button size="small" variant="secondary" as="a">
-            Se endringsmeldinger
-          </Button>
+        <Link href={endringsmeldingerLenke} className="mt-3">
+          Se endringsmeldinger
+          <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
         </Link>
       </div>
     </div>
