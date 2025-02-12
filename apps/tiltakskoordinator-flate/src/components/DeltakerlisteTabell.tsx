@@ -8,7 +8,7 @@ export const DeltakerlisteTabell = () => {
   const { deltakere } = useDeltakerlisteContext()
 
   return (
-    <Table className="w-fit">
+    <Table className="w-fit h-fit">
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell scope="col" className="pl-4 pr-4">
