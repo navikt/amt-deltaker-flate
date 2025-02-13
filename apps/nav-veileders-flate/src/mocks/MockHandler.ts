@@ -3,6 +3,7 @@ import {
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
+  DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
   Forslag,
@@ -332,6 +333,14 @@ export class MockHandler {
         oppdatertPamelding.vedtaksinformasjon.fattet = null
       }
       oppdatertPamelding.status.type = status
+      if (status === DeltakerStatusType.AVBRUTT_UTKAST) {
+        oppdatertPamelding.status.aarsak = {
+          type: DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT,
+          beskrivelse: null
+        }
+      } else {
+        oppdatertPamelding.status.aarsak = null
+      }
       oppdatertPamelding.startdato = this.getStartdato()
       oppdatertPamelding.sluttdato = this.getSluttdato()
       oppdatertPamelding.forslag = this.getForslag()

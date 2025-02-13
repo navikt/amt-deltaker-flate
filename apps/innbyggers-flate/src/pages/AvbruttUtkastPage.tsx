@@ -24,7 +24,10 @@ export const AvbruttUtkastPage = () => {
       <Heading level="2" size="large" className="mt-4">
         Avbrutt utkast
       </Heading>
-      <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
+      <UtkastHeader
+        vedtaksinformasjon={deltaker.vedtaksinformasjon}
+        deltakerStatus={deltaker.status}
+      />
 
       <DeltakelseInnhold
         tiltakstype={deltaker.deltakerliste.tiltakstype}
