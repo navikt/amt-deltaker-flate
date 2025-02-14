@@ -30,10 +30,9 @@ export const DeltakerlisteDetaljer = () => {
       </Detail>
       <List as="ul" size="small">
         {deltakerlisteDetaljer.koordinatorer.map((koordinator) => (
-          <BodyShort key={koordinator.id}>
-            <PersonIcon className="inline" title="Koordinators navn" />{' '}
+          <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
             {koordinator.navn}
-          </BodyShort>
+          </List.Item>
         ))}
       </List>
     </div>
