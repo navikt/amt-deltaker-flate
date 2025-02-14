@@ -1,13 +1,17 @@
-import { BodyShort, Detail, List } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, Link, List } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { formatDate } from 'deltaker-flate-common'
-import { PersonIcon } from '@navikt/aksel-icons'
+import { useParams } from 'react-router-dom'
+import { TILTAKSANSVARLIG_URL } from '../../utils/environment-utils.ts'
+import { ExternalLinkIcon, PersonIcon } from '@navikt/aksel-icons'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const { deltakerlisteId } = useParams()
+  const endringsmeldingerLenke = `${TILTAKSANSVARLIG_URL}/gjennomforing/${deltakerlisteId}`
 
   return (
-    <div>
+    <div className="w-1/5">
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}
@@ -35,6 +39,16 @@ export const DeltakerlisteDetaljer = () => {
           </List.Item>
         ))}
       </List>
+      <div className="mt-6">
+        <BodyLong size="small">
+          For å se vurderinger og endringsmeldinger må du foreløpig bruke den
+          gamle oversikten.
+        </BodyLong>
+        <Link href={endringsmeldingerLenke} className="mt-3">
+          Se endringsmeldinger
+          <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
+        </Link>
+      </div>
     </div>
   )
 }
