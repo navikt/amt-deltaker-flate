@@ -3,7 +3,7 @@ import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { formatDate } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { TILTAKSANSVARLIG_URL } from '../../utils/environment-utils.ts'
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, PersonIcon } from '@navikt/aksel-icons'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -34,7 +34,9 @@ export const DeltakerlisteDetaljer = () => {
       </Detail>
       <List as="ul" size="small">
         {deltakerlisteDetaljer.koordinatorer.map((koordinator) => (
-          <List.Item key={koordinator.id}>{koordinator.navn}</List.Item>
+          <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
+            {koordinator.navn}
+          </List.Item>
         ))}
       </List>
       <div className="mt-6">
