@@ -3,6 +3,7 @@ import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { DeltakerStatusTag } from 'deltaker-flate-common'
 import { Deltaker } from '../api/data/deltakerliste'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
+import { Vurdering } from './Vurdering.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere } = useDeltakerlisteContext()
@@ -16,6 +17,9 @@ export const DeltakerlisteTabell = () => {
           </Table.HeaderCell>
           <Table.HeaderCell scope="col" className="pl-4 pr-4">
             <Label size="medium">Status deltakelse</Label>
+          </Table.HeaderCell>
+          <Table.HeaderCell scope="col" className="pl-4 pr-4">
+            <Label size="medium">Vurdering, arrangør</Label>
           </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
@@ -33,6 +37,9 @@ export const DeltakerlisteTabell = () => {
               </Table.DataCell>
               <Table.DataCell className="pl-4 pr-4">
                 <DeltakerStatusTag statusType={deltaker.status.type} />
+              </Table.DataCell>
+              <Table.DataCell className="pl-4 pr-4">
+                <Vurdering vurdering={deltaker.vurdering} />
               </Table.DataCell>
             </Table.Row>
           )

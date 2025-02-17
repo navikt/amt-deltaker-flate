@@ -24,12 +24,19 @@ const deltakerStatusSchema = z.object({
 
 const beskyttelsesmarkeringSchema = z.nativeEnum(Beskyttelsesmarkering)
 
+export enum Vurderingstype {
+  OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
+  OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
+}
+export const vurderingstypeSchema = z.nativeEnum(Vurderingstype)
+
 export const deltakerSchema = z.object({
   id: z.string().uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
   status: deltakerStatusSchema,
+  vurdering: vurderingstypeSchema.nullable(),
   beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema)
 })
 
