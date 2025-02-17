@@ -71,7 +71,10 @@ export const UtkastPage = () => {
       >
         Utkast til påmelding
       </Heading>
-      <UtkastHeader vedtaksinformasjon={deltaker.vedtaksinformasjon} />
+      <UtkastHeader
+        vedtaksinformasjon={deltaker.vedtaksinformasjon}
+        deltakerStatus={deltaker.status}
+      />
       <GuidePanel poster illustration={svg}>
         <Heading level="3" size="small">
           {`Dette er et utkast til påmelding til ${navnHosArrangorTekst}`}

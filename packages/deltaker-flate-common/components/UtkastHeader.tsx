@@ -1,21 +1,32 @@
 import { Detail, HStack, Tag } from '@navikt/ds-react'
 import {
   Vedtaksinformasjon,
+  DeltakerStatus,
+  DeltakerStatusAarsakType
+} from '../model/deltaker'
+import {
   formatDateFromString,
-  formatDateStrWithMonthName
-} from 'deltaker-flate-common'
+  formatDateStrWithMonthName,
+  formatDateWithMonthName
+} from '../utils/utils'
+import React from 'react'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
+  deltakerStatus: DeltakerStatus
   visStatusVenterPaaBruker?: boolean
   erNAVVeileder?: boolean
 }
 
 export const UtkastHeader = ({
   vedtaksinformasjon,
+  deltakerStatus,
   visStatusVenterPaaBruker,
   erNAVVeileder
 }: Props) => {
+  const avbruttPgaGjennomforing =
+    deltakerStatus.aarsak?.type ===
+    DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
   const erEndret =
     vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
     vedtaksinformasjon?.sistEndretAv !== vedtaksinformasjon?.opprettetAv
@@ -46,15 +57,22 @@ export const UtkastHeader = ({
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </HStack>
-            {!erEndretSammeDag && (
+            {(!erEndretSammeDag || avbruttPgaGjennomforing) && (
               <HStack gap="2" className="mt-2" aria-atomic>
                 <Detail as="span" weight="semibold" textColor={detailTextColor}>
                   Sist endret:
                 </Detail>
-                <Detail as="span">
-                  {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
-                  {vedtaksinformasjon.sistEndretAv}
-                </Detail>
+                {avbruttPgaGjennomforing ? (
+                  <Detail as="span">
+                    {formatDateWithMonthName(deltakerStatus.gyldigFra)} -
+                    Samarbeidet med arrangøren er avsluttet
+                  </Detail>
+                ) : (
+                  <Detail as="span">
+                    {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
+                    {vedtaksinformasjon.sistEndretAv}
+                  </Detail>
+                )}
               </HStack>
             )}
           </>

@@ -73,6 +73,7 @@ export const RedigerPameldingPage = () => {
         <UtkastHeader
           visStatusVenterPaaBruker={!erUtkastAvbrutt}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
+          deltakerStatus={pamelding.status}
           erNAVVeileder
         />
       </div>
