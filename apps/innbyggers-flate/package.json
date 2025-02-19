@@ -20,18 +20,18 @@
     "playwright:codegen": "playwright codegen playwright.dev"
   },
   "dependencies": {
-    "@grafana/faro-web-sdk": "^1.13.1",
+    "@grafana/faro-web-sdk": "^1.13.3",
     "@navikt/aksel-icons": "^7.13.0",
     "@navikt/ds-css": "^7.13.0",
     "@navikt/ds-react": "^7.13.0",
-    "@navikt/nav-dekoratoren-moduler": "^3.2.1",
+    "@navikt/nav-dekoratoren-moduler": "^3.2.2",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.5",
+    "react-router-dom": "^7.2.0",
     "uuid": "^11.0.5",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -41,9 +41,9 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^22.13.1",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.4",
@@ -51,8 +51,8 @@
     "playwright": "^1.50.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
-    "vite": "^6.0.10",
-    "vitest": "^3.0.5"
+    "vite": "^6.1.1",
+    "vitest": "^3.0.6"
   },
   "msw": {
     "workerDirectory": [
