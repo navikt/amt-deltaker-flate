@@ -1,12 +1,15 @@
 import { BodyShort, HStack, Label, Table } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
-import { DeltakerStatusTag } from 'deltaker-flate-common'
+import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
 import { Deltaker } from '../api/data/deltakerliste'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
 import { Vurdering } from './Vurdering.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { deltakere } = useDeltakerlisteContext()
+  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const skalViseVurderinger =
+    deltakerlisteDetaljer.tiltakskode ==
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
   return (
     <Table className="w-fit h-fit">
@@ -18,9 +21,11 @@ export const DeltakerlisteTabell = () => {
           <Table.HeaderCell scope="col" className="pl-4 pr-4">
             <Label size="medium">Status deltakelse</Label>
           </Table.HeaderCell>
-          <Table.HeaderCell scope="col" className="pl-4 pr-4">
-            <Label size="medium">Vurdering, arrangør</Label>
-          </Table.HeaderCell>
+          {skalViseVurderinger && (
+            <Table.HeaderCell scope="col" className="pl-4 pr-4">
+              <Label size="medium">Vurdering, arrangør</Label>
+            </Table.HeaderCell>
+          )}
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -38,9 +43,11 @@ export const DeltakerlisteTabell = () => {
               <Table.DataCell className="pl-4 pr-4">
                 <DeltakerStatusTag statusType={deltaker.status.type} />
               </Table.DataCell>
-              <Table.DataCell className="pl-4 pr-4">
-                <Vurdering vurdering={deltaker.vurdering} />
-              </Table.DataCell>
+              {skalViseVurderinger && (
+                <Table.DataCell className="pl-4 pr-4">
+                  <Vurdering vurdering={deltaker.vurdering} />
+                </Table.DataCell>
+              )}
             </Table.Row>
           )
         })}
