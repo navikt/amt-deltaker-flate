@@ -25,9 +25,9 @@ export const Vurdering = ({ vurdering }: Props) => {
 function ikonFarge(vurdering: Vurderingstype | null) {
   switch (vurdering) {
     case Vurderingstype.OPPFYLLER_KRAVENE:
-      return 'var(--a-nav-red)'
-    case Vurderingstype.OPPFYLLER_IKKE_KRAVENE:
       return 'var(--a-surface-success)'
+    case Vurderingstype.OPPFYLLER_IKKE_KRAVENE:
+      return 'var(--a-nav-red)'
     default:
       return ''
   }
