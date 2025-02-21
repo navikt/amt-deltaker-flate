@@ -55,13 +55,14 @@ jobs:
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build Pull Request Application
-        run: pnpm build:pull-request --filter=nav-veileders-flate -- --base=/pr-${{ github.event.number }}/
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        run: pnpm build:pull-request --filter=nav-veileders-flate -- --base=https://cdn.nav.no/amt/amt-deltaker-flate-veileder-dev/pr-${{ github.event.number }}/
+      - name: Upload files to CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
         with:
-          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
-          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-      - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/nav-veileders-flate/build gs://amt-deltaker-flate-dev-v2/pr-${{ github.event.number }}
+          team: amt
+          source: apps/nav-veileders-flate/build/
+          source_keep_parent_name: false
+          destination: amt-deltaker-flate-veileder-dev/pr-${{ github.event.number }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
