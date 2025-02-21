@@ -11,7 +11,7 @@ import {
   DeltakerStatusType,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -119,7 +119,7 @@ export const PameldingForm = ({
             )}
           </section>
 
-          {tiltakstype === Tiltakstype.VASV && (
+          {tiltakstype === ArenaTiltakskode.VASV && (
             <section className="mb-8 mt-4">
               <Textarea
                 label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
@@ -190,7 +190,7 @@ export const PameldingForm = ({
             </section>
           )}
 
-          {tiltakstype !== Tiltakstype.DIGIOPPARB && (
+          {tiltakstype !== ArenaTiltakskode.DIGIOPPARB && (
             <section className="mb-8">
               <Heading size="medium" level="3" className="mb-4">
                 Bakgrunnsinfo
@@ -217,8 +217,8 @@ export const PameldingForm = ({
             </section>
           )}
 
-          {(tiltakstype === Tiltakstype.VASV ||
-            tiltakstype === Tiltakstype.ARBFORB) && (
+          {(tiltakstype === ArenaTiltakskode.VASV ||
+            tiltakstype === ArenaTiltakskode.ARBFORB) && (
             <>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde

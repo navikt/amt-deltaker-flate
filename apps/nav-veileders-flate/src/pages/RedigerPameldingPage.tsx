@@ -3,7 +3,7 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  Tiltakstype,
+  ArenaTiltakskode,
   UtkastHeader,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -38,7 +38,7 @@ export const RedigerPameldingPage = () => {
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   const tittel = erUtkastAvbrutt ? 'Avbrutt utkast' : 'Utkast til påmelding'
   const kanEndreUtkast =
-    pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
+    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)

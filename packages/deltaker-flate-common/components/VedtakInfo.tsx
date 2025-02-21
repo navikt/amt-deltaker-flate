@@ -1,13 +1,13 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   importertDeltakerFraArena,
-  Tiltakstype,
+  ArenaTiltakskode,
   Vedtaksinformasjon
 } from '../model/deltaker'
 import { formatDate, formatDateStrWithMonthName } from '../utils/utils'
 
 interface Props {
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null
   className: string
@@ -47,14 +47,14 @@ const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
   return `${vedtaksinformasjon.sistEndretAv}, ${vedtaksinformasjon.sistEndretAvEnhet}`
 }
 
-const forskriftskapitler: { [Key in Tiltakstype]: string } = {
-  [Tiltakstype.ARBFORB]: '13',
-  [Tiltakstype.ARBRRHDAG]: '12',
-  [Tiltakstype.AVKLARAG]: '2',
-  [Tiltakstype.INDOPPFAG]: '4',
-  [Tiltakstype.DIGIOPPARB]: '4',
-  [Tiltakstype.GRUFAGYRKE]: '7',
-  [Tiltakstype.GRUPPEAMO]: '7',
-  [Tiltakstype.JOBBK]: '4',
-  [Tiltakstype.VASV]: '14'
+const forskriftskapitler: { [Key in ArenaTiltakskode]: string } = {
+  [ArenaTiltakskode.ARBFORB]: '13',
+  [ArenaTiltakskode.ARBRRHDAG]: '12',
+  [ArenaTiltakskode.AVKLARAG]: '2',
+  [ArenaTiltakskode.INDOPPFAG]: '4',
+  [ArenaTiltakskode.DIGIOPPARB]: '4',
+  [ArenaTiltakskode.GRUFAGYRKE]: '7',
+  [ArenaTiltakskode.GRUPPEAMO]: '7',
+  [ArenaTiltakskode.JOBBK]: '4',
+  [ArenaTiltakskode.VASV]: '14'
 }

@@ -1,4 +1,4 @@
-import { DeltakerStatusType, Tiltakstype } from 'deltaker-flate-common'
+import { DeltakerStatusType, ArenaTiltakskode } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import {
@@ -36,7 +36,7 @@ export const worker = setupWorker(
     async ({ params }) => {
       const { tiltakstype } = params
 
-      const response = handler.setTiltakstype(tiltakstype as Tiltakstype)
+      const response = handler.setTiltakstype(tiltakstype as ArenaTiltakskode)
       return response
     }
   ),

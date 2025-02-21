@@ -1,5 +1,5 @@
 import { Alert, Modal } from '@navikt/ds-react'
-import { Tiltakstype } from '../../model/deltaker'
+import { ArenaTiltakskode } from '../../model/deltaker'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
@@ -14,7 +14,7 @@ import { HistorikkSkeleton } from './HistorikkSkeleton'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   open: boolean
   loading: boolean
   onClose: () => void
@@ -22,7 +22,7 @@ interface Props {
 
 const getHistorikkItem = (
   historikk: DeltakerHistorikk,
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:

@@ -1,6 +1,6 @@
 import {
   INNHOLD_TYPE_ANNET,
-  Tiltakstype,
+  ArenaTiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
@@ -18,7 +18,7 @@ export const generateInnholdFromResponse = (
   innholdAnnetBeskrivelse?: string | null,
   innholdsTekst?: string | null
 ): InnholdDto[] => {
-  if (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV) {
+  if (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV) {
     return innholdsTekst
       ? [
           {

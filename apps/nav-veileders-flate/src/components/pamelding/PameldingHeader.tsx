@@ -1,14 +1,14 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import {
-  Tiltakstype,
+  ArenaTiltakskode,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {
   title: string
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   arrangorNavn: string
   deltakerlisteId: string
 }

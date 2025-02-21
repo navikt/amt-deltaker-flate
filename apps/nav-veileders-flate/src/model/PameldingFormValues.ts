@@ -1,7 +1,7 @@
 import {
   INNHOLD_TYPE_ANNET,
-  Tiltakstype,
-  tiltakstypeSchema
+  ArenaTiltakskode,
+  arenaTiltakstypeSchema
 } from 'deltaker-flate-common'
 import { string, z } from 'zod'
 import {
@@ -21,12 +21,15 @@ export const deltakelsesprosentFeilmelding =
 export const dagerPerUkeFeilmelding =
   'Dager per uke må være et helt tall fra 1 til 5.'
 
-export const erInnholdPakrevd = (tiltakstype: Tiltakstype) =>
-  !(tiltakstype === Tiltakstype.VASV || tiltakstype === Tiltakstype.DIGIOPPARB)
+export const erInnholdPakrevd = (tiltakstype: ArenaTiltakskode) =>
+  !(
+    tiltakstype === ArenaTiltakskode.VASV ||
+    tiltakstype === ArenaTiltakskode.DIGIOPPARB
+  )
 
 export const pameldingFormSchema = z
   .object({
-    tiltakstype: tiltakstypeSchema,
+    tiltakstype: arenaTiltakstypeSchema,
     tilgjengeligInnhold: innholdselementSchema.array(),
     innholdsTekst: string()
       .max(

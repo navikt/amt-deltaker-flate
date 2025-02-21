@@ -2,7 +2,7 @@ import { BodyLong, Heading, VStack } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   EMDASH,
-  Tiltakstype,
+  ArenaTiltakskode,
   deltakerprosentText,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -13,7 +13,7 @@ interface Props {
   bakgrunnsinformasjon: string | null
   deltakelsesprosent: number | null
   dagerPerUke: number | null
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 }
 
 export const Utkast = ({

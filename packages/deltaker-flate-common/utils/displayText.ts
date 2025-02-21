@@ -3,7 +3,7 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   DeltakerlisteStatus,
-  Tiltakstype
+  ArenaTiltakskode
 } from '../model/deltaker'
 import { Endring, EndringType } from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
@@ -25,31 +25,31 @@ export const deltakerprosentText = (
   return `${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`
 }
 
-export const getTiltakstypeDisplayText = (type: Tiltakstype): string => {
+export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
   switch (type) {
-    case Tiltakstype.ARBFORB:
+    case ArenaTiltakskode.ARBFORB:
       return 'Arbeidsforberedende trening'
-    case Tiltakstype.ARBRRHDAG:
+    case ArenaTiltakskode.ARBRRHDAG:
       return 'Arbeidsrettet rehabilitering'
-    case Tiltakstype.AVKLARAG:
+    case ArenaTiltakskode.AVKLARAG:
       return 'Avklaring'
-    case Tiltakstype.INDOPPFAG:
+    case ArenaTiltakskode.INDOPPFAG:
       return 'Oppfølging'
-    case Tiltakstype.DIGIOPPARB:
+    case ArenaTiltakskode.DIGIOPPARB:
       return 'Digitalt jobbsøkerkurs'
-    case Tiltakstype.GRUFAGYRKE:
+    case ArenaTiltakskode.GRUFAGYRKE:
       return 'Fag- og yrkesopplæring'
-    case Tiltakstype.GRUPPEAMO:
+    case ArenaTiltakskode.GRUPPEAMO:
       return 'Arbeidsmarkedsopplæring'
-    case Tiltakstype.JOBBK:
+    case ArenaTiltakskode.JOBBK:
       return 'Jobbklubb'
-    case Tiltakstype.VASV:
+    case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid'
   }
 }
 
 export const hentTiltakNavnHosArrangorTekst = (
-  tiltakstype: Tiltakstype,
+  tiltakstype: ArenaTiltakskode,
   arrangorNavn: string
 ) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 

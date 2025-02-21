@@ -4,7 +4,7 @@ import {
   getDeltakerStatusDisplayText,
   getTiltakstypeDisplayText,
   logError,
-  Tiltakstype,
+  ArenaTiltakskode,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ import { API_URL, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 
 export const endreMockTiltakstype = (
-  nyTiltakstype: Tiltakstype
+  nyTiltakstype: ArenaTiltakskode
 ): Promise<PameldingResponse> => {
   return fetch(`${API_URL}/setup/tiltakstype/${nyTiltakstype}`, {
     method: 'POST'
@@ -63,8 +63,8 @@ export const endreMockDeltakelseStatus = (
 const DemoStatusInstillinger = () => {
   const { setPamelding } = usePameldingContext()
 
-  const [tiltaksType, setTiltaksType] = useState<Tiltakstype>(
-    Tiltakstype.ARBFORB
+  const [tiltaksType, setTiltaksType] = useState<ArenaTiltakskode>(
+    ArenaTiltakskode.ARBFORB
   )
   const [pameldingStatus, setPameldingStatus] = useState<DeltakerStatusType>(
     DeltakerStatusType.KLADD
@@ -87,7 +87,7 @@ const DemoStatusInstillinger = () => {
     }
   }
 
-  const handleTiltakstypeChanged = (nyTiltakstype: Tiltakstype) => {
+  const handleTiltakstypeChanged = (nyTiltakstype: ArenaTiltakskode) => {
     setTiltaksType(nyTiltakstype)
     if (useMock) {
       doFetchEndreMockTiltakstype(nyTiltakstype).then((data) => {
@@ -111,35 +111,35 @@ const DemoStatusInstillinger = () => {
         className="w-64"
         data-testid="select_tiltakstype"
         onChange={(e) =>
-          handleTiltakstypeChanged(e.target.value as Tiltakstype)
+          handleTiltakstypeChanged(e.target.value as ArenaTiltakskode)
         }
       >
-        <option value={Tiltakstype.ARBFORB}>
-          {getTiltakstypeDisplayText(Tiltakstype.ARBFORB)}
+        <option value={ArenaTiltakskode.ARBFORB}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.ARBFORB)}
         </option>
-        <option value={Tiltakstype.ARBRRHDAG}>
-          {getTiltakstypeDisplayText(Tiltakstype.ARBRRHDAG)}
+        <option value={ArenaTiltakskode.ARBRRHDAG}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.ARBRRHDAG)}
         </option>
-        <option value={Tiltakstype.AVKLARAG}>
-          {getTiltakstypeDisplayText(Tiltakstype.AVKLARAG)}
+        <option value={ArenaTiltakskode.AVKLARAG}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.AVKLARAG)}
         </option>
-        <option value={Tiltakstype.INDOPPFAG}>
-          {getTiltakstypeDisplayText(Tiltakstype.INDOPPFAG)}
+        <option value={ArenaTiltakskode.INDOPPFAG}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.INDOPPFAG)}
         </option>
-        <option value={Tiltakstype.DIGIOPPARB}>
-          {getTiltakstypeDisplayText(Tiltakstype.DIGIOPPARB)}
+        <option value={ArenaTiltakskode.DIGIOPPARB}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.DIGIOPPARB)}
         </option>
-        <option value={Tiltakstype.VASV}>
-          {getTiltakstypeDisplayText(Tiltakstype.VASV)}
+        <option value={ArenaTiltakskode.VASV}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.VASV)}
         </option>
-        <option value={Tiltakstype.GRUPPEAMO}>
-          {getTiltakstypeDisplayText(Tiltakstype.GRUPPEAMO)}
+        <option value={ArenaTiltakskode.GRUPPEAMO}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUPPEAMO)}
         </option>
-        <option value={Tiltakstype.JOBBK}>
-          {getTiltakstypeDisplayText(Tiltakstype.JOBBK)}
+        <option value={ArenaTiltakskode.JOBBK}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.JOBBK)}
         </option>
-        <option value={Tiltakstype.GRUFAGYRKE}>
-          {getTiltakstypeDisplayText(Tiltakstype.GRUFAGYRKE)}
+        <option value={ArenaTiltakskode.GRUFAGYRKE}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUFAGYRKE)}
         </option>
       </Select>
       <Select

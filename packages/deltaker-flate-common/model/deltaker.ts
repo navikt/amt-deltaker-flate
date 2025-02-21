@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { dateSchema, nullableDateSchema } from './utils'
 
-export enum Tiltakstype {
+export enum ArenaTiltakskode {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
   AVKLARAG = 'AVKLARAG', // Avklaring
@@ -11,6 +11,18 @@ export enum Tiltakstype {
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
   JOBBK = 'JOBBK' // Jobbklubb / er kurs
+}
+
+export enum Tiltakskode {
+  ARBEIDSFORBEREDENDE_TRENING = 'ARBEIDSFORBEREDENDE_TRENING',
+  ARBEIDSRETTET_REHABILITERING = 'ARBEIDSRETTET_REHABILITERING',
+  AVKLARING = 'AVKLARING',
+  DIGITALT_OPPFOLGINGSTILTAK = 'DIGITALT_OPPFOLGINGSTILTAK',
+  GRUPPE_ARBEIDSMARKEDSOPPLAERING = 'GRUPPE_ARBEIDSMARKEDSOPPLAERING',
+  GRUPPE_FAG_OG_YRKESOPPLAERING = 'GRUPPE_FAG_OG_YRKESOPPLAERING',
+  JOBBKLUBB = 'JOBBKLUBB',
+  OPPFOLGING = 'OPPFOLGING',
+  VARIG_TILRETTELAGT_ARBEID_SKJERMET = 'VARIG_TILRETTELAGT_ARBEID_SKJERMET'
 }
 
 export enum DeltakerStatusType {
@@ -49,7 +61,8 @@ export enum DeltakerlisteStatus {
   AVSLUTTET = 'AVSLUTTET'
 }
 
-export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
+export const arenaTiltakstypeSchema = z.nativeEnum(ArenaTiltakskode)
+export const tiltakskodeSchema = z.nativeEnum(Tiltakskode)
 export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType

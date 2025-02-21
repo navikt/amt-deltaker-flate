@@ -6,11 +6,11 @@ import {
   DeferredFetchState,
   useDeferredFetch
 } from '../../hooks/useDeferredFetch'
-import { Tiltakstype } from '../../model/deltaker'
+import { ArenaTiltakskode } from '../../model/deltaker'
 
 interface Props {
   deltakerId: string
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   open?: boolean
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>

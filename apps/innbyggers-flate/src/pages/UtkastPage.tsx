@@ -13,7 +13,7 @@ import {
   DeltakelseInnhold,
   EMDASH,
   PERSONOPPLYSNINGER_URL,
-  Tiltakstype,
+  ArenaTiltakskode,
   UtkastHeader,
   deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
@@ -137,7 +137,8 @@ export const UtkastPage = () => {
           Telefonnummer og e-postadresse
         </List.Item>
         {deltaker.adresseDelesMedArrangor &&
-          deltaker.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB && (
+          deltaker.deltakerliste.tiltakstype !==
+            ArenaTiltakskode.DIGIOPPARB && (
             <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
           )}
       </List>
