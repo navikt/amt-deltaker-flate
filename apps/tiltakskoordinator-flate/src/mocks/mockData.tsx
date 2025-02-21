@@ -3,14 +3,16 @@ import {
   Beskyttelsesmarkering,
   Deltaker,
   Deltakere,
-  DeltakerlisteDetaljer
+  DeltakerlisteDetaljer,
+  Vurderingstype
 } from '../api/data/deltakerliste'
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 
 const createMockDeltaker = (
   statusType: DeltakerStatusType,
-  beskyttelsesmarkering: Beskyttelsesmarkering[]
+  beskyttelsesmarkering: Beskyttelsesmarkering[],
+  vurdering: Vurderingstype | null
 ): Deltaker => {
   return {
     id: uuidv4(),
@@ -21,6 +23,7 @@ const createMockDeltaker = (
       type: statusType,
       aarsak: null
     },
+    vurdering: vurdering,
     beskyttelsesmarkering: beskyttelsesmarkering
   }
 }
@@ -29,8 +32,14 @@ export const createMockDeltakere = (): Deltakere => {
   const deltakere = []
   for (let i = 0; i < 15; i++) {
     let statusType = DeltakerStatusType.SOKT_INN
-    if (i < 3) statusType = DeltakerStatusType.VENTER_PA_OPPSTART
-    else if (i < 6) statusType = DeltakerStatusType.IKKE_AKTUELL
+    let vurdering = null
+    if (i < 3) {
+      statusType = DeltakerStatusType.VENTER_PA_OPPSTART
+      vurdering = Vurderingstype.OPPFYLLER_KRAVENE
+    } else if (i < 6) {
+      statusType = DeltakerStatusType.IKKE_AKTUELL
+      vurdering = Vurderingstype.OPPFYLLER_IKKE_KRAVENE
+    }
     let beskyttelsesmarkering: Beskyttelsesmarkering[] = []
     if (i === 10) beskyttelsesmarkering = [Beskyttelsesmarkering.SKJERMET]
     if (i === 11) beskyttelsesmarkering = [Beskyttelsesmarkering.FORTROLIG]
@@ -44,7 +53,9 @@ export const createMockDeltakere = (): Deltakere => {
         Beskyttelsesmarkering.SKJERMET
       ]
 
-    deltakere.push(createMockDeltaker(statusType, beskyttelsesmarkering))
+    deltakere.push(
+      createMockDeltaker(statusType, beskyttelsesmarkering, vurdering)
+    )
   }
   return deltakere
 }
