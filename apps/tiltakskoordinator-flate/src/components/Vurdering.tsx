@@ -9,16 +9,14 @@ interface Props {
 export const Vurdering = ({ vurdering }: Props) => {
   if (!vurdering) return null
   return (
-    <>
-      <BodyShort size="small">
-        <XMarkOctagonIcon
-          color={ikonFarge(vurdering)}
-          fontSize="1.5rem"
-          className="inline pb-0.5"
-        />
-        <>{vurderingDisplayTekst(vurdering)}</>
-      </BodyShort>
-    </>
+    <BodyShort size="small">
+      <XMarkOctagonIcon
+        color={ikonFarge(vurdering)}
+        fontSize="1.5rem"
+        className="inline pb-0.5"
+      />
+      {vurderingDisplayTekst(vurdering)}
+    </BodyShort>
   )
 }
 
