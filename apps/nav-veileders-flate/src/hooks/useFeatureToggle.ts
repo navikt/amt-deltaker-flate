@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react'
 
 import { FeatureToggles, KOMET_ER_MASTER } from '../api/data/feature-toggle'
 import { fetchToggles } from '../api/feature-toggle-api'
-import { Tiltakstype } from 'deltaker-flate-common'
+import { ArenaTiltakskode } from 'deltaker-flate-common'
 
 let cachedFeatureToggles: FeatureToggles | undefined = undefined
 
 const masterForTiltakstyper = [
-  Tiltakstype.ARBFORB,
-  Tiltakstype.AVKLARAG,
-  Tiltakstype.INDOPPFAG,
-  Tiltakstype.ARBRRHDAG,
-  Tiltakstype.DIGIOPPARB,
-  Tiltakstype.VASV
+  ArenaTiltakskode.ARBFORB,
+  ArenaTiltakskode.AVKLARAG,
+  ArenaTiltakskode.INDOPPFAG,
+  ArenaTiltakskode.ARBRRHDAG,
+  ArenaTiltakskode.DIGIOPPARB,
+  ArenaTiltakskode.VASV
 ]
-const nyeTiltakstyper = []
+const nyeTiltakstyper: ArenaTiltakskode[] = []
 
 export const useFeatureToggle = () => {
   const [toggles, setToggles] = useState<FeatureToggles>()
@@ -30,7 +30,7 @@ export const useFeatureToggle = () => {
     })
   }, [])
 
-  const erKometMasterForTiltak = (tiltakstype: Tiltakstype) => {
+  const erKometMasterForTiltak = (tiltakstype: ArenaTiltakskode) => {
     if (
       masterForTiltakstyper.includes(tiltakstype) ||
       (toggles?.[KOMET_ER_MASTER] && nyeTiltakstyper.includes(tiltakstype))

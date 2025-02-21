@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import {
   getDateFromString,
   isValidDate,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import { dateStrToNullableDate } from './utils'
@@ -68,30 +68,30 @@ export const getVarighet = (valg: VarighetValg): Varighet => {
 }
 
 export const varighetValgForType = (
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ): VarighetValg[] => {
   switch (tiltakstype) {
-    case Tiltakstype.ARBFORB:
+    case ArenaTiltakskode.ARBFORB:
       return [
         VarighetValg.TRE_MANEDER,
         VarighetValg.SEKS_MANEDER,
         VarighetValg.TOLV_MANEDER
       ]
-    case Tiltakstype.ARBRRHDAG:
+    case ArenaTiltakskode.ARBRRHDAG:
       return [
         VarighetValg.FIRE_UKER,
         VarighetValg.ATTE_UKER,
         VarighetValg.TOLV_UKER
       ]
-    case Tiltakstype.AVKLARAG:
+    case ArenaTiltakskode.AVKLARAG:
       return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER]
-    case Tiltakstype.INDOPPFAG:
+    case ArenaTiltakskode.INDOPPFAG:
       return [VarighetValg.TRE_MANEDER, VarighetValg.SEKS_MANEDER]
-    case Tiltakstype.DIGIOPPARB:
+    case ArenaTiltakskode.DIGIOPPARB:
       return [VarighetValg.FIRE_UKER]
-    case Tiltakstype.VASV:
+    case ArenaTiltakskode.VASV:
       return []
-    case Tiltakstype.GRUFAGYRKE:
+    case ArenaTiltakskode.GRUFAGYRKE:
     default:
       return [
         VarighetValg.FIRE_UKER,
@@ -162,7 +162,7 @@ export function finnVarighetValg(
 export function finnValgtVarighet(
   fraDato: Date | null | undefined,
   tilDato: Date | null | undefined,
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ) {
   return fraDato && tilDato
     ? finnVarighetValgForTiltakstype(fraDato, tilDato, tiltakstype)
@@ -172,7 +172,7 @@ export function finnValgtVarighet(
 export function finnVarighetValgForTiltakstype(
   fraDato: Date,
   tilDato: Date,
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ) {
   const varigheter = varighetValgForType(tiltakstype)
 
@@ -216,8 +216,10 @@ export const getMaxVarighetDato = (
   }
 }
 
-export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
-  if (tiltakstype === Tiltakstype.INDOPPFAG) {
+export const getSoftMaxVarighetBekreftelseText = (
+  tiltakstype: ArenaTiltakskode
+) => {
+  if (tiltakstype === ArenaTiltakskode.INDOPPFAG) {
     return (
       <BodyLong>
         Sluttdatoen er utenfor hovedregelen for maks varighet.<br></br>
@@ -231,7 +233,7 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
       </BodyLong>
     )
   }
-  if (tiltakstype === Tiltakstype.ARBFORB) {
+  if (tiltakstype === ArenaTiltakskode.ARBFORB) {
     return (
       <BodyLong>
         Sluttdatoen er utenfor hovedregelen for maks varighet. <br></br>
@@ -245,9 +247,9 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakstype: Tiltakstype) => {
     )
   }
   if (
-    tiltakstype === Tiltakstype.ARBRRHDAG ||
-    tiltakstype === Tiltakstype.AVKLARAG ||
-    tiltakstype === Tiltakstype.DIGIOPPARB
+    tiltakstype === ArenaTiltakskode.ARBRRHDAG ||
+    tiltakstype === ArenaTiltakskode.AVKLARAG ||
+    tiltakstype === ArenaTiltakskode.DIGIOPPARB
   ) {
     return (
       <BodyLong size="small">
@@ -328,11 +330,11 @@ export const getSkalBekrefteVarighet = (
       : null
   const maxVarighetDato = getSisteGyldigeSluttDato(pamelding, startdato)
   const tiltakstyperMedSoftMaxVarighet = [
-    Tiltakstype.ARBFORB,
-    Tiltakstype.INDOPPFAG,
-    Tiltakstype.ARBRRHDAG,
-    Tiltakstype.AVKLARAG,
-    Tiltakstype.DIGIOPPARB
+    ArenaTiltakskode.ARBFORB,
+    ArenaTiltakskode.INDOPPFAG,
+    ArenaTiltakskode.ARBRRHDAG,
+    ArenaTiltakskode.AVKLARAG,
+    ArenaTiltakskode.DIGIOPPARB
   ]
 
   if (

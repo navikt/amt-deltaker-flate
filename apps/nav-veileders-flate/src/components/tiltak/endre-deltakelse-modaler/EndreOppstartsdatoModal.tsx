@@ -7,7 +7,7 @@ import {
   ForslagEndring,
   ForslagEndringType,
   StartdatoForslag,
-  Tiltakstype,
+  ArenaTiltakskode,
   getDateFromString,
   getDeltakerStatusDisplayText
 } from 'deltaker-flate-common'
@@ -71,7 +71,7 @@ export const EndreOppstartsdatoModal = ({
 
   const tiltakstype = pamelding.deltakerliste.tiltakstype
 
-  const skalVelgeVarighet = tiltakstype !== Tiltakstype.VASV
+  const skalVelgeVarighet = tiltakstype !== ArenaTiltakskode.VASV
 
   const [startdato, setStartdato] = useState<Date | undefined>(
     defaultDatoer.startdato

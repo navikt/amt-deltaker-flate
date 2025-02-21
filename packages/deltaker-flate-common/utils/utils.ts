@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { EMDASH } from './constants'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { Tiltakstype } from '../model/deltaker'
+import { ArenaTiltakskode } from '../model/deltaker'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
@@ -95,8 +95,11 @@ export const formatDateFromString = (
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }
 
-export const visDeltakelsesmengde = (tiltakstype: Tiltakstype) => {
-  return tiltakstype === Tiltakstype.ARBFORB || tiltakstype === Tiltakstype.VASV
+export const visDeltakelsesmengde = (tiltakstype: ArenaTiltakskode) => {
+  return (
+    tiltakstype === ArenaTiltakskode.ARBFORB ||
+    tiltakstype === ArenaTiltakskode.VASV
+  )
 }
 
 export const logError = (message: string, ...args: unknown[]) => {

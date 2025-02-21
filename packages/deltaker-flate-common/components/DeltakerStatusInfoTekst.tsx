@@ -3,11 +3,11 @@ import {
   DeltakerStatusType,
   getTiltakstypeDisplayText,
   isValidDate,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   statusType: DeltakerStatusType
   arrangorNavn: string
   oppstartsdato: string | null
@@ -46,7 +46,7 @@ export const DeltakerStatusInfoTekst = ({
       {!harOppstartsDato &&
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
-            {tiltakstype === Tiltakstype.VASV
+            {tiltakstype === ArenaTiltakskode.VASV
               ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
               : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'}
           </Alert>

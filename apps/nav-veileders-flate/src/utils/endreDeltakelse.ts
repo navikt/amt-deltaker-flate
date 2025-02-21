@@ -2,7 +2,7 @@ import {
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
@@ -73,7 +73,7 @@ const skalViseEndreInnholdKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
+  pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
 
 const skalViseEndreBakgrunnsinfoKnapp = (
   pamelding: PameldingResponse,
@@ -81,7 +81,7 @@ const skalViseEndreBakgrunnsinfoKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== Tiltakstype.DIGIOPPARB
+  pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
 
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
@@ -104,8 +104,8 @@ const skalViseEndreDeltakelsesmengde = (
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  (pamelding.deltakerliste.tiltakstype === Tiltakstype.VASV ||
-    pamelding.deltakerliste.tiltakstype === Tiltakstype.ARBFORB) &&
+  (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV ||
+    pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.ARBFORB) &&
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
 
 const skalViseEndreOppstartsdato = (

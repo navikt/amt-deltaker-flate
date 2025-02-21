@@ -14,12 +14,11 @@ import { formatDate } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
-import { Tiltakstype } from '../../model/deltaker.ts'
-import React from 'react'
+import { ArenaTiltakskode } from '../../model/deltaker.ts'
 
 interface Props {
   deltakerEndring: DeltakerEndring
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 }
 
 const mapEndringsType = (endringType: EndringType) => {
@@ -49,7 +48,10 @@ const mapEndringsType = (endringType: EndringType) => {
   }
 }
 
-const getEndringsDetaljer = (endring: Endring, tiltakstype: Tiltakstype) => {
+const getEndringsDetaljer = (
+  endring: Endring,
+  tiltakstype: ArenaTiltakskode
+) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (

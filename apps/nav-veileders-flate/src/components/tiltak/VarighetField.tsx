@@ -6,7 +6,7 @@ import {
   useDatepicker
 } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import { Tiltakstype } from 'deltaker-flate-common'
+import { ArenaTiltakskode } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { formatDateToInputStr } from '../../utils/utils.ts'
 import {
@@ -20,7 +20,7 @@ interface Props {
   title: string
   startDato?: Date
   sluttdato?: Date
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   errorVarighet: string | null
   errorSluttDato: string | null
   defaultVarighet?: VarighetValg | null

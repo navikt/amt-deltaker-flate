@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import {
   DeltakerlisteStatus,
   DeltakerStatusType,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
@@ -32,7 +32,7 @@ const pamelding: PameldingResponse = {
   deltakerliste: {
     deltakerlisteId: uuidv4(),
     deltakerlisteNavn: 'Testliste',
-    tiltakstype: Tiltakstype.ARBFORB,
+    tiltakstype: ArenaTiltakskode.ARBFORB,
     arrangorNavn: 'Den Beste Arrangøren AS',
     oppstartstype: 'LOPENDE',
     startdato: startdato,
@@ -193,7 +193,7 @@ describe('getSkalBekrefteVarighet', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.VASV
+          tiltakstype: ArenaTiltakskode.VASV
         }
       },
       dayjs('2024-03-20').toDate()
@@ -208,7 +208,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.ARBFORB
+          tiltakstype: ArenaTiltakskode.ARBFORB
         },
         maxVarighet: null,
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -226,7 +226,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: '2024-04-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.ARBFORB
+          tiltakstype: ArenaTiltakskode.ARBFORB
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -244,7 +244,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: '2024-02-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.ARBFORB
+          tiltakstype: ArenaTiltakskode.ARBFORB
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -262,7 +262,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.ARBFORB
+          tiltakstype: ArenaTiltakskode.ARBFORB
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -280,7 +280,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: '2025-10-28',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakstype: Tiltakstype.ARBFORB
+          tiltakstype: ArenaTiltakskode.ARBFORB
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: null

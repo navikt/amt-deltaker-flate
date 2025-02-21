@@ -1,11 +1,11 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
-import { Tiltakstype } from '../model/deltaker'
+import { ArenaTiltakskode } from '../model/deltaker'
 
 interface Props {
   adresseDelesMedArrangor: boolean
   arrangorNavn: string
-  tiltaksType: Tiltakstype
+  tiltaksType: ArenaTiltakskode
   className?: string
 }
 
@@ -16,10 +16,10 @@ export const HvaDelesMedArrangor = ({
   className
 }: Props) => {
   const erKurs = [
-    Tiltakstype.DIGIOPPARB,
-    Tiltakstype.JOBBK,
-    Tiltakstype.GRUPPEAMO,
-    Tiltakstype.GRUFAGYRKE
+    ArenaTiltakskode.DIGIOPPARB,
+    ArenaTiltakskode.JOBBK,
+    ArenaTiltakskode.GRUPPEAMO,
+    ArenaTiltakskode.GRUFAGYRKE
   ].includes(tiltaksType)
   return (
     <ExpansionCard

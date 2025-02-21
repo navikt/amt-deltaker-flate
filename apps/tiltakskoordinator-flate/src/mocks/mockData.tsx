@@ -1,4 +1,4 @@
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import {
   Beskyttelsesmarkering,
   Deltaker,
@@ -52,6 +52,7 @@ export const createMockDeltakere = (): Deltakere => {
 export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
   return {
     id: uuidv4(),
+    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
     apentForPamelding: true,

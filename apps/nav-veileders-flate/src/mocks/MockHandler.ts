@@ -16,7 +16,7 @@ import {
   getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  Tiltakstype
+  ArenaTiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -50,7 +50,7 @@ export class MockHandler {
   pamelding: PameldingResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakstype = Tiltakstype.ARBFORB
+  tiltakstype = ArenaTiltakskode.ARBFORB
 
   createDeltaker(
     deltakerlisteId: string,
@@ -350,7 +350,7 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  setTiltakstype(tiltakstype: Tiltakstype) {
+  setTiltakstype(tiltakstype: ArenaTiltakskode) {
     this.tiltakstype = tiltakstype
     const oppdatertPamelding = this.pamelding
 
@@ -369,8 +369,8 @@ export class MockHandler {
       }
 
       if (
-        tiltakstype === Tiltakstype.ARBFORB ||
-        tiltakstype === Tiltakstype.VASV
+        tiltakstype === ArenaTiltakskode.ARBFORB ||
+        tiltakstype === ArenaTiltakskode.VASV
       ) {
         oppdatertPamelding.deltakelsesprosent = 80
         oppdatertPamelding.dagerPerUke = 4
@@ -379,8 +379,8 @@ export class MockHandler {
         oppdatertPamelding.dagerPerUke = null
       }
       if (
-        tiltakstype === Tiltakstype.DIGIOPPARB ||
-        tiltakstype === Tiltakstype.VASV
+        tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
+        tiltakstype === ArenaTiltakskode.VASV
       ) {
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else {

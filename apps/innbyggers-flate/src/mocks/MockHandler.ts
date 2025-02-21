@@ -7,7 +7,7 @@ import {
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,
-  Tiltakstype,
+  ArenaTiltakskode,
   createHistorikk,
   getInnholdForTiltaksType,
   getLedetekst,
@@ -29,7 +29,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 
 export const createDeltaker = (
   statusType: DeltakerStatusType,
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
   const innhold = getInnholdForTiltaksType(tiltakstype)
@@ -93,7 +93,7 @@ export class MockHandler {
   deltaker: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.UTKAST_TIL_PAMELDING
-  tiltakstype = Tiltakstype.ARBFORB
+  tiltakstype = ArenaTiltakskode.ARBFORB
 
   getDeltaker() {
     this.deltaker = createDeltaker(this.statusType, this.tiltakstype)
@@ -144,7 +144,7 @@ export class MockHandler {
     return HttpResponse.json(this.deltaker)
   }
 
-  setTiltakstype(tiltakstype: Tiltakstype) {
+  setTiltakstype(tiltakstype: ArenaTiltakskode) {
     this.tiltakstype = tiltakstype
     const oppdatertDeltaker = this.deltaker
 
@@ -158,8 +158,8 @@ export class MockHandler {
       }
 
       if (
-        tiltakstype === Tiltakstype.ARBFORB ||
-        tiltakstype === Tiltakstype.VASV
+        tiltakstype === ArenaTiltakskode.ARBFORB ||
+        tiltakstype === ArenaTiltakskode.VASV
       ) {
         oppdatertDeltaker.deltakelsesprosent = 80
         oppdatertDeltaker.dagerPerUke = 4
@@ -168,8 +168,8 @@ export class MockHandler {
         oppdatertDeltaker.dagerPerUke = null
       }
       if (
-        tiltakstype === Tiltakstype.DIGIOPPARB ||
-        tiltakstype === Tiltakstype.VASV
+        tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
+        tiltakstype === ArenaTiltakskode.VASV
       ) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
       } else {

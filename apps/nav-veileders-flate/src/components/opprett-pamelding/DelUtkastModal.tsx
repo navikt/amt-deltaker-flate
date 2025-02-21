@@ -1,6 +1,6 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
 import {
-  Tiltakstype,
+  ArenaTiltakskode,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { ModalFooter } from '../ModalFooter'
@@ -10,7 +10,7 @@ interface Props {
   onConfirm: () => void
   onCancel: () => void
   deltakerNavn: string
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
   arrangorNavn: string
 }
 

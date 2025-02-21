@@ -5,12 +5,12 @@ import {
   forslagSchema,
   importertDeltakerFraArenaSchema,
   pameldingStatusSchema,
-  Tiltakstype,
+  ArenaTiltakskode,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
-export const tiltakstypeSchema = z.nativeEnum(Tiltakstype)
+export const tiltakstypeSchema = z.nativeEnum(ArenaTiltakskode)
 
 export const deltakerlisteStatusSchema = z.nativeEnum(DeltakerlisteStatus)
 

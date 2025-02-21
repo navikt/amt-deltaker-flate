@@ -5,7 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  Tiltakstype
+  ArenaTiltakskode
 } from '../model/deltaker'
 import {
   ArrangorEndringsType,
@@ -388,19 +388,19 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
   ]
 }
 
-export const getLedetekst = (tiltakstype: Tiltakstype) => {
+export const getLedetekst = (tiltakstype: ArenaTiltakskode) => {
   switch (tiltakstype) {
-    case Tiltakstype.ARBFORB:
+    case ArenaTiltakskode.ARBFORB:
       return 'Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case Tiltakstype.ARBRRHDAG:
+    case ArenaTiltakskode.ARBRRHDAG:
       return 'Arbeidsrettet rehabilitering fokuserer på din helse og muligheter i arbeidslivet. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din helse, kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case Tiltakstype.AVKLARAG:
+    case ArenaTiltakskode.AVKLARAG:
       return 'Avklaring skal hjelpe deg med å se hva du kan jobbe med. Du har samtaler med en veileder. Sammen kartlegger dere hvordan kompetanse, opplevelser fra tidligere arbeidsplass, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case Tiltakstype.INDOPPFAG:
+    case ArenaTiltakskode.INDOPPFAG:
       return 'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case Tiltakstype.VASV:
+    case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid er et tilbud for deg som får uføretrygd. Du jobber i en skjermet bedrift med arbeidsoppgaver som er tilpasset deg.'
-    case Tiltakstype.DIGIOPPARB:
+    case ArenaTiltakskode.DIGIOPPARB:
       return 'Du får oppfølging og støtte til jobbsøkingen. På kurset får du karriereveiledning, hjelp til å orientere deg på arbeidsmarkedet, skrive CV og jobbsøknad og trene på jobbintervju.'
     default:
       return ''
@@ -413,11 +413,11 @@ type TilgjengeligInnhold = {
 }
 
 export const getInnholdForTiltaksType = (
-  tiltakstype: Tiltakstype
+  tiltakstype: ArenaTiltakskode
 ): TilgjengeligInnhold[] => {
   const annet = { tekst: 'Annet', innholdskode: INNHOLD_TYPE_ANNET }
   switch (tiltakstype) {
-    case Tiltakstype.ARBFORB:
+    case ArenaTiltakskode.ARBFORB:
       return [
         { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
@@ -445,7 +445,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case Tiltakstype.ARBRRHDAG:
+    case ArenaTiltakskode.ARBRRHDAG:
       return [
         { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         {
@@ -492,7 +492,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case Tiltakstype.AVKLARAG:
+    case ArenaTiltakskode.AVKLARAG:
       return [
         { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
@@ -530,7 +530,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case Tiltakstype.INDOPPFAG:
+    case ArenaTiltakskode.INDOPPFAG:
       return [
         { tekst: 'Støtte til å søke jobber', innholdskode: 'jobbsoking' },
         { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
@@ -567,9 +567,9 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case Tiltakstype.VASV:
+    case ArenaTiltakskode.VASV:
       return [annet]
-    case Tiltakstype.DIGIOPPARB:
+    case ArenaTiltakskode.DIGIOPPARB:
     default:
       return []
   }
