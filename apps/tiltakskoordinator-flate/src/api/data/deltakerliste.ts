@@ -37,7 +37,8 @@ export const deltakerSchema = z.object({
   etternavn: z.string(),
   status: deltakerStatusSchema,
   vurdering: vurderingstypeSchema.nullable(),
-  beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema)
+  beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema),
+  navEnhet: z.string().nullable()
 })
 
 export const deltakereSchema = z.array(deltakerSchema)

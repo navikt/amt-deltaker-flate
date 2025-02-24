@@ -19,6 +19,9 @@ export const DeltakerlisteTabell = () => {
             <Label size="medium">Navn</Label>
           </Table.HeaderCell>
           <Table.HeaderCell scope="col" className="pl-4 pr-4">
+            <Label size="medium">Nav-enhet</Label>
+          </Table.HeaderCell>
+          <Table.HeaderCell scope="col" className="pl-4 pr-4">
             <Label size="medium">Status deltakelse</Label>
           </Table.HeaderCell>
           {skalViseVurderinger && (
@@ -39,6 +42,9 @@ export const DeltakerlisteTabell = () => {
                     beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
                   />
                 </HStack>
+              </Table.DataCell>
+              <Table.DataCell className="pl-4 pr-4">
+                <BodyShort size="small">{deltaker.navEnhet}</BodyShort>
               </Table.DataCell>
               <Table.DataCell className="pl-4 pr-4">
                 <DeltakerStatusTag statusType={deltaker.status.type} />
