@@ -12,7 +12,8 @@ import { v4 as uuidv4 } from 'uuid'
 const createMockDeltaker = (
   statusType: DeltakerStatusType,
   beskyttelsesmarkering: Beskyttelsesmarkering[],
-  vurdering: Vurderingstype | null
+  vurdering: Vurderingstype | null,
+  navEnhet: string | null
 ): Deltaker => {
   return {
     id: uuidv4(),
@@ -23,8 +24,9 @@ const createMockDeltaker = (
       type: statusType,
       aarsak: null
     },
-    vurdering: vurdering,
-    beskyttelsesmarkering: beskyttelsesmarkering
+    vurdering,
+    beskyttelsesmarkering,
+    navEnhet
   }
 }
 
@@ -53,8 +55,15 @@ export const createMockDeltakere = (): Deltakere => {
         Beskyttelsesmarkering.SKJERMET
       ]
 
+    const navEnheter = ['Nav Grünerløkka', 'Nav Lade', 'Nav Madla', 'Nav Fana']
+
     deltakere.push(
-      createMockDeltaker(statusType, beskyttelsesmarkering, vurdering)
+      createMockDeltaker(
+        statusType,
+        beskyttelsesmarkering,
+        vurdering,
+        navEnheter[i % navEnheter.length]
+      )
     )
   }
   return deltakere
