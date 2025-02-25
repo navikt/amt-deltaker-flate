@@ -10,6 +10,10 @@ interface Props {
 }
 export const HistorikkVurderingFraArrangor = ({ vurdering }: Props) => {
   const vurderingstypeTekst = getVurderingstypeTekst(vurdering.vurderingstype)
+  const vurderingsdato = formatDateFromString(
+    vurdering.opprettetDato.toString()
+  )
+
   return (
     <HistorikkElement
       tittel={'Vurdering fra arrangør'}
@@ -22,8 +26,7 @@ export const HistorikkVurderingFraArrangor = ({ vurdering }: Props) => {
         <BodyShort size="small">Begrunnelse: {vurdering.begrunnelse}</BodyShort>
       )}
       <Detail className="mt-1" textColor="subtle">
-        Endret {formatDateFromString(vurdering.opprettetDato.toString())} av{' '}
-        {vurdering.endretAv}
+        Endret {vurderingsdato} av {vurdering.endretAv}
       </Detail>
     </HistorikkElement>
   )
