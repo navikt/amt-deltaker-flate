@@ -19,7 +19,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@grafana/faro-web-sdk": "^1.13.3",
+    "@grafana/faro-web-sdk": "^1.14.0",
     "@hookform/resolvers": "^3.10.0",
     "@navikt/aksel-icons": "^7.14.1",
     "@navikt/ds-css": "^7.14.1",
@@ -27,7 +27,7 @@
     "@navikt/ds-tailwind": "^7.14.1",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.7.1",
+    "msw": "^2.7.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
@@ -54,7 +54,7 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "vite": "^6.1.1",
-    "vitest": "^3.0.6"
+    "vitest": "^3.0.7"
   },
   "msw": {
     "workerDirectory": [
