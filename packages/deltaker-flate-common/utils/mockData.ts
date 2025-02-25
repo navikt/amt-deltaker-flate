@@ -5,7 +5,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  ArenaTiltakskode
+  ArenaTiltakskode,
+  Vurderingstype
 } from '../model/deltaker'
 import {
   ArrangorEndringsType,
@@ -384,6 +385,13 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         gyldigTil: null,
         opprettet: dayjs().subtract(17, 'days').toDate()
       }
+    },
+    {
+      type: HistorikkType.VurderingFraArrangor,
+      vurderingstype: Vurderingstype.OPPFYLLER_IKKE_KRAVENE,
+      begrunnelse: 'Oppfyller ikke kravene',
+      opprettetDato: dayjs().subtract(17, 'day').toDate(),
+      endretAv: 'Nav'
     }
   ]
 }

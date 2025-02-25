@@ -61,12 +61,17 @@ export enum DeltakerlisteStatus {
   AVSLUTTET = 'AVSLUTTET'
 }
 
+export enum Vurderingstype {
+  OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
+  OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
+}
 export const arenaTiltakstypeSchema = z.nativeEnum(ArenaTiltakskode)
 export const tiltakskodeSchema = z.nativeEnum(Tiltakskode)
 export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
 export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
   DeltakerStatusAarsakType
 )
+export const vurderingstypeSchema = z.nativeEnum(Vurderingstype)
 
 export const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema,
