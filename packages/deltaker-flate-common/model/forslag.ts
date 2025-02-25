@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { dateSchema, nullableDateSchema } from './utils'
+import { vurderingFraArrangorSchema } from './deltakerHistorikk.ts'
 
 export enum HistorikkType {
   Vedtak = 'Vedtak',
@@ -177,3 +178,4 @@ export type DeltakelsesmengdeForslag = z.infer<
 export type SluttdatoForslag = z.infer<typeof sluttdatoForslagSchema>
 export type StartdatoForslag = z.infer<typeof startdatoForslagSchema>
 export type SluttarsakForslag = z.infer<typeof sluttarsakForslagSchema>
+export type VurderingFraArrangor = z.infer<typeof vurderingFraArrangorSchema>
