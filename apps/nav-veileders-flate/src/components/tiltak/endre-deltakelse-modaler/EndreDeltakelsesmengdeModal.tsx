@@ -229,17 +229,20 @@ function isDeltakelsesmengde(
 }
 
 function getMengde(deltaker: PameldingResponse, forslag: Forslag | null) {
+  const defaultGyldigFra = dayjs().isAfter(deltaker.sluttdato)
+    ? deltaker.sluttdato
+    : dayjs().toDate()
   if (forslag === null)
     return {
       deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,
       dagerPerUke: deltaker.dagerPerUke,
-      gyldigFra: new Date()
+      gyldigFra: defaultGyldigFra
     }
   if (isDeltakelsesmengde(forslag.endring)) {
     return {
       deltakelsesprosent: forslag.endring.deltakelsesprosent,
       dagerPerUke: forslag.endring.dagerPerUke,
-      gyldigFra: forslag.endring.gyldigFra ?? new Date()
+      gyldigFra: forslag.endring.gyldigFra ?? defaultGyldigFra
     }
   } else {
     throw new Error(
