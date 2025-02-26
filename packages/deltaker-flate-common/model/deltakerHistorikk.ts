@@ -3,7 +3,8 @@ import {
   deltakelsesinnholdSchema,
   deltakerStatusAarsakSchema,
   innholdSchema,
-  pameldingStatusSchema
+  pameldingStatusSchema,
+  vurderingstypeSchema
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
@@ -158,12 +159,21 @@ export const importertFraArenaSchema = z.object({
   status: pameldingStatusSchema
 })
 
+export const vurderingFraArrangorSchema = z.object({
+  type: z.literal(HistorikkType.VurderingFraArrangor),
+  vurderingstype: vurderingstypeSchema,
+  begrunnelse: z.string().nullable(),
+  opprettetDato: dateSchema,
+  endretAv: z.string()
+})
+
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   vedtakSchema,
   deltakerEndringSchema,
   forslagSchema,
   endringFraArrangorSchema,
-  importertFraArenaSchema
+  importertFraArenaSchema,
+  vurderingFraArrangorSchema
 ])
 
 export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
