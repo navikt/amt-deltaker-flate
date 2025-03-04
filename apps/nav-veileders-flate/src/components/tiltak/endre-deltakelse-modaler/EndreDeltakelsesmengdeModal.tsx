@@ -230,7 +230,7 @@ function isDeltakelsesmengde(
 
 function getMengde(deltaker: PameldingResponse, forslag: Forslag | null) {
   const defaultGyldigFra = dayjs().isAfter(deltaker.sluttdato)
-    ? deltaker.sluttdato
+    ? dayjs(deltaker.sluttdato).toDate()
     : dayjs().toDate()
   if (forslag === null)
     return {

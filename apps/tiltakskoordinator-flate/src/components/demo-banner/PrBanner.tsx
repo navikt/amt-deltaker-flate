@@ -2,7 +2,7 @@ import { Alert, BodyShort } from '@navikt/ds-react'
 import { PrStatusInstillinger } from './PrStatusInstillinger'
 
 interface Props {
-  setDeltakerlisteId?: (deltkerlisteId: string) => void
+  setDeltakerlisteId?: (deltakerlisteId: string) => void
 }
 
 const PrBanner = ({ setDeltakerlisteId }: Props) => {
