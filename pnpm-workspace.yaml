@@ -1,4 +1,9 @@
 packages:
-  - 'apps/*'
-  - 'shared-config/*'
-  - 'packages/*'
+  - apps/*
+  - shared-config/*
+  - packages/*
+onlyBuiltDependencies:
+  - '@swc/core'
+  - esbuild
+  - msw
+  - protobufjs
