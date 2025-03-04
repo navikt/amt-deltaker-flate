@@ -30,13 +30,6 @@ updates:
         update-types:
           - 'patch'
           - 'minor'
-        exclude-patterns:
-          - 'playwright'
-          - '@playwright/test'
-          - 'react'
-          - 'react-dom'
-          - '@navikt/aksel-*'
-          - '@navikt/ds-*'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
