@@ -9,13 +9,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@v3
+    - uses: pnpm/action-setup@v4
       with:
-        version: 9.15.4
+        version: 10.5.2
     - name: Setup node
       uses: actions/setup-node@v4
       with:
-        node-version: '21'
+        node-version: '23'
         cache: 'pnpm'
         registry-url: 'https://npm.pkg.github.com'
     - name: Install dependencies
