@@ -1,6 +1,6 @@
 import { Vurderingstype } from '../api/data/deltakerliste.ts'
 import { BodyShort } from '@navikt/ds-react'
-import { XMarkOctagonIcon } from '@navikt/aksel-icons'
+import { XMarkOctagonIcon, CheckmarkCircleIcon } from '@navikt/aksel-icons'
 
 interface Props {
   vurdering: Vurderingstype | null
@@ -8,7 +8,16 @@ interface Props {
 
 export const Vurdering = ({ vurdering }: Props) => {
   if (!vurdering) return null
-  return (
+  return vurdering === Vurderingstype.OPPFYLLER_KRAVENE ? (
+    <BodyShort size="small">
+      <CheckmarkCircleIcon
+        color={ikonFarge(vurdering)}
+        fontSize="1.5rem"
+        className="inline pb-0.5"
+      />
+      {vurderingDisplayTekst(vurdering)}
+    </BodyShort>
+  ) : (
     <BodyShort size="small">
       <XMarkOctagonIcon
         color={ikonFarge(vurdering)}
