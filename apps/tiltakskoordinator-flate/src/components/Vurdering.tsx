@@ -14,6 +14,7 @@ export const Vurdering = ({ vurdering }: Props) => {
         color={ikonFarge(vurdering)}
         fontSize="1.5rem"
         className="inline pb-0.5"
+        aria-hidden
       />
       {vurderingDisplayTekst(vurdering)}
     </BodyShort>
@@ -23,6 +24,7 @@ export const Vurdering = ({ vurdering }: Props) => {
         color={ikonFarge(vurdering)}
         fontSize="1.5rem"
         className="inline pb-0.5"
+        aria-hidden
       />
       {vurderingDisplayTekst(vurdering)}
     </BodyShort>
