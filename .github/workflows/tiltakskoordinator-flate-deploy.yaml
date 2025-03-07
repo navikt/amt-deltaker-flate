@@ -101,13 +101,12 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:demo --filter=tiltakskoordinator-flate
-      - uses: nais/deploy/actions/spa-deploy/v2@master
+      - uses: nais/deploy/actions/cdn-upload/v2@master
         with:
-          app: amt-tiltakskoordinator-flate
           team: amt
           source: apps/tiltakskoordinator-flate/build
+          destination: amt-tiltakskoordinator-flate-demo
           ingress: https://amt-tiltakskoordinator-flate.ekstern.dev.nav.no
-          environment: dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
