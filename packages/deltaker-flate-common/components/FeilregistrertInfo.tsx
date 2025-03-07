@@ -1,8 +1,8 @@
-import { ChatElipsisIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Heading, Label, LinkPanel } from '@navikt/ds-react'
+import { BodyShort, HStack, Heading, Label } from '@navikt/ds-react'
 import { DeltakerStatusType } from '../model/deltaker'
 import { formatDateWithMonthName } from '../utils/utils'
 import { DeltakerStatusTag } from './DeltakerStatusTag'
+import { DialogLenke } from './DialogLenke'
 
 interface Props {
   className: string
@@ -47,14 +47,7 @@ export const FeilregistrertInfo = ({
         {`Feilen ble registrert: ${formatDateWithMonthName(feilregistrertDato)}`}
       </BodyShort>
 
-      <LinkPanel href={dialogUrl} className="mt-8 mb-4 rounded-lg">
-        <div className="grid grid-flow-col items-center gap-4">
-          <ChatElipsisIcon className="text-2xl" />
-          <span>
-            Send en melding her til Nav-veilederen din hvis du har spørsmål.
-          </span>
-        </div>
-      </LinkPanel>
+      <DialogLenke dialogUrl={dialogUrl} className="mt-8 mb-4" />
     </div>
   )
 }
