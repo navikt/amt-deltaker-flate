@@ -1,4 +1,4 @@
 packages:
-  - 'apps/*'
-  - 'shared-config/*'
-  - 'packages/*'
+  - apps/*
+  - shared-config/*
+  - packages/*

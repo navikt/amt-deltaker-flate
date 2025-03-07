@@ -2,7 +2,7 @@ import { TextField, Button } from '@navikt/ds-react'
 import { useState } from 'react'
 
 interface Props {
-  setDeltakerlisteId?: (deltkerlisteId: string) => void
+  setDeltakerlisteId?: (deltakerlisteId: string) => void
 }
 
 export const PrStatusInstillinger = ({ setDeltakerlisteId }: Props) => {
@@ -24,7 +24,7 @@ export const PrStatusInstillinger = ({ setDeltakerlisteId }: Props) => {
         onChange={(e) => setNyDeltakerlisteId(e.target.value)}
       />
       <Button size="small" className="mt-4">
-        Bruk deltkerliste-id
+        Bruk deltakerliste-id
       </Button>
     </form>
   )

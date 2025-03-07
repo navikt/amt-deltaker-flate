@@ -105,7 +105,7 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <VStack className="p-4 border rounded border-[var(--a-surface-alt-3)] mb-4">
+        <VStack className="p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
           <section>
