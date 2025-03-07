@@ -1,4 +1,3 @@
-import { ChatElipsisIcon } from '@navikt/aksel-icons'
 import {
   Alert,
   BodyLong,
@@ -6,8 +5,7 @@ import {
   HStack,
   Heading,
   Label,
-  Link,
-  LinkPanel
+  Link
 } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
@@ -17,19 +15,20 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
-  VedtakInfo,
   SeEndringer,
+  VedtakInfo,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { DialogLenke } from '../../../../packages/deltaker-flate-common/components/DialogLenke.tsx'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
-import { useSearchParams } from 'react-router-dom'
 
 const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
   return (
@@ -164,14 +163,7 @@ export const TiltakPage = () => {
           }}
         />
 
-        <LinkPanel href={DIALOG_URL} className="mt-8 rounded-lg">
-          <div className="grid grid-flow-col items-center gap-4">
-            <ChatElipsisIcon className="text-2xl" aria-hidden />
-            <span>
-              Send en melding her til Nav-veilederen din hvis noe skal endres.
-            </span>
-          </div>
-        </LinkPanel>
+        <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
         <VedtakInfo
           tiltakstype={deltaker.deltakerliste.tiltakstype}
