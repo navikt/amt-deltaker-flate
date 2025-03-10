@@ -104,8 +104,8 @@ jobs:
         with:
           team: amt
           source: apps/nav-veileders-flate/build
-          destination: amt-deltaker-nav-veilderes-flate-demo
-          ingress: https://amt-deltaker-nav-veileders-flate.ekstern.dev.nav.no
+          source_keep_parent_name: false
+          destination: amt-deltaker-nav-veilderes-flate/dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 

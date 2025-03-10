@@ -7,4 +7,4 @@
 
 ## Demo applikasjon
 
-https://amt.ekstern.dev.nav.no/arbeidsmarkedstiltak/1
+https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no

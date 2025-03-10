@@ -12,3 +12,7 @@ Web component blir lastet inn i team VALP sin løsning for tiltaksadministrasjon
 
 1. Intstaller tiltakskoordinator-flate `pnpm i`
 2. Start appen lokalt: `pnpm start`
+
+## Demo applikasjon
+
+https://amt-tiltakskoordinator-flate.ekstern.dev.nav.no

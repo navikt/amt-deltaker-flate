@@ -105,8 +105,8 @@ jobs:
         with:
           team: amt
           source: apps/tiltakskoordinator-flate/build
+          source_keep_parent_name: false
           destination: amt-tiltakskoordinator-flate/dev
-          ingress: https://amt-tiltakskoordinator-flate.ekstern.dev.nav.no
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
