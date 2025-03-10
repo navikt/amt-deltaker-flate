@@ -22,6 +22,10 @@ updates:
         patterns:
           - '@navikt/aksel-*'
           - '@navikt/ds-*'
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
       react:
         patterns:
           - 'react'
