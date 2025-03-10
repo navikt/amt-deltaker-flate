@@ -20,3 +20,7 @@ Inngang fra oversikten til VALP for allerede opprettede påmeldinger
 ### /arbeidsmarkedstiltak/deltakelse/:deltakerlisteId
 
 Inngang fra "Start påmelding" knappen, for å opprette påmeldinger
+
+## Demo applikasjon
+
+https://amt-deltaker-nav-veileders-flate.ekstern.dev.nav.no

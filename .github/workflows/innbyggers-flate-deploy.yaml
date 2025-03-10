@@ -103,8 +103,8 @@ jobs:
         with:
           team: amt
           source: apps/innbyggers-flate/build
-          destination: amt-deltaker-innbyggers-flate-demo
-          ingress: https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no
+          source_keep_parent_name: false
+          destination: amt-deltaker-innbyggers-flate/dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
