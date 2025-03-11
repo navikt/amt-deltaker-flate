@@ -7,6 +7,7 @@ import {
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
+import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 
 const APP_NAME = 'amt-tiltakskoordinator-flate'
 
@@ -43,6 +44,40 @@ export const getDeltakerlisteDetaljer = async (
         }
         throw new Error(
           'Kunne ikke laste inn detaljer om gjennomføringen. Prøv igjen senere'
+        )
+      }
+    })
+}
+
+export const getDeltaker = async (
+  deltakerId: string
+): Promise<DeltakerDetaljer> => {
+  return fetch(`${API_URL}/tiltakskoordinator/deltaker/${deltakerId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Deltaker detaljer kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then((json: string) => {
+      try {
+        return deltakerDetaljerSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse deltakerDetaljerSchema:', error)
+        if (error instanceof ZodError) {
+          logError('Issue', error.issues)
+        }
+        throw new Error(
+          'Kunne ikke laste inn detaljer om deltaker. Prøv igjen senere'
         )
       }
     })

@@ -17,18 +17,17 @@ const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema
 })
 
-const deltakerStatusSchema = z.object({
+export const deltakerStatusSchema = z.object({
   type: deltakerStatusTypeSchema,
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
 
-const beskyttelsesmarkeringSchema = z.nativeEnum(Beskyttelsesmarkering)
+export const beskyttelsesmarkeringSchema = z.nativeEnum(Beskyttelsesmarkering)
 
 export enum Vurderingstype {
   OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
   OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
 }
-export const vurderingstypeSchema = z.nativeEnum(Vurderingstype)
 
 export const deltakerSchema = z.object({
   id: z.string().uuid(),
@@ -36,7 +35,7 @@ export const deltakerSchema = z.object({
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
   status: deltakerStatusSchema,
-  vurdering: vurderingstypeSchema.nullable(),
+  vurdering: z.nativeEnum(Vurderingstype).nullable(),
   beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema),
   navEnhet: z.string().nullable()
 })

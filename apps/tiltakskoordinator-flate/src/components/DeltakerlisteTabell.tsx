@@ -1,9 +1,11 @@
-import { BodyShort, HStack, Label, Table } from '@navikt/ds-react'
+import { BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
 import { Deltaker } from '../api/data/deltakerliste'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
 import { Vurdering } from './Vurdering.tsx'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import { getDeltakerUrl } from '../navigation.ts'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -35,9 +37,16 @@ export const DeltakerlisteTabell = () => {
         {deltakere.map((deltaker) => {
           return (
             <Table.Row key={`${deltaker.id}`}>
-              <Table.DataCell className="pl-4 pr-4">
+              <Table.DataCell className="pl-4 pr-4 hover:text-green-500">
                 <HStack gap="1" className="items-center">
-                  <BodyShort size="small">{deltakerNavn(deltaker)}</BodyShort>
+                  <BodyShort size="small">
+                    <Link
+                      as={ReactRouterLink}
+                      to={getDeltakerUrl(deltaker.id, deltakerlisteDetaljer.id)}
+                    >
+                      {deltakerNavn(deltaker)}
+                    </Link>
+                  </BodyShort>
                   <BeskyttelsesmarkeringIkoner
                     beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
                   />

@@ -25,5 +25,13 @@ export const worker = setupWorker(
       await delay(1000)
       return handler.leggTilTilgang()
     }
+  ),
+  http.get(
+    '/amt-deltaker-bff/tiltakskoordinator/deltaker/:deltakerId',
+    async ({ params }) => {
+      await delay(1000)
+      const { deltakerId } = params
+      return handler.getDeltaker(deltakerId as string)
+    }
   )
 )

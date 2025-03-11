@@ -1,14 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { App } from './App.tsx'
+import { DeltakerListePageWrapper } from './DeltakerListePageWrapper.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
-
-const APP_ROUTE = `${import.meta.env.BASE_URL}/gjennomforinger/:deltakerlisteId/deltakerliste`
+import { DeltakerPage } from './pages/DeltakerPage.tsx'
+import { APP_ROUTE, DELTAKER_ROUTE } from './navigation.ts'
 
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={APP_ROUTE} element={<App />} />
-      {isPrEnv && <Route path={'/*'} element={<App />} />}
+      <Route path={APP_ROUTE} element={<DeltakerListePageWrapper />} />
+      <Route path={DELTAKER_ROUTE} element={<DeltakerPage />} />
+      {isPrEnv && <Route path={'/*'} element={<DeltakerListePageWrapper />} />}
       {useMock && (
         <Route
           path={'/*'}

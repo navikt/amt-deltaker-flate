@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import appCss from './app.css?inline'
 import { AppContextProvider } from './AppContext.tsx'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
-import { AppRoutes } from './Routes.tsx'
+import { App } from './App.tsx'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
@@ -52,7 +52,7 @@ export class Deltakerliste extends HTMLElement {
       <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
         <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
           <BrowserRouter>
-            <AppRoutes />
+            <App />
           </BrowserRouter>
         </AppContextProvider>
       </div>
