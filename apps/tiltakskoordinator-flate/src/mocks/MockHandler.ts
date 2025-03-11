@@ -49,7 +49,7 @@ export class MockHandler {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
     const deltaker = this.deltakere.find(
-      (deltaker) => (deltaker.id = deltakerId)
+      (deltaker) => deltaker.id === deltakerId
     )
     return HttpResponse.json(deltaker)
   }

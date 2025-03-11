@@ -12,6 +12,7 @@ import {
   InnsatsbehovType,
   Vurdering
 } from '../api/data/deltaker.ts'
+import { faker } from '@faker-js/faker/locale/nb_NO'
 
 export const mapDeltakerDeltaljerToDeltaker = (
   deltakerDetaljer: DeltakerDetaljer
@@ -30,9 +31,9 @@ const createMockDeltaker = (
 ): DeltakerDetaljer => {
   return {
     id: uuidv4(),
-    fornavn: 'Navn',
+    fornavn: faker.person.firstName(),
     mellomnavn: null,
-    etternavn: 'Naversen',
+    etternavn: faker.person.lastName(),
     fodselsnummer: '3490823094',
     status: {
       type: statusType,

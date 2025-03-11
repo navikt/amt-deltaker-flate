@@ -1,11 +1,11 @@
 import { BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
-import { useDeltakerlisteContext } from '../DeltakerlisteContext'
 import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
-import { Deltaker } from '../api/data/deltakerliste'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import { useDeltakerlisteContext } from '../DeltakerlisteContext'
+import { getDeltakerUrl } from '../navigation.ts'
+import { lagDeltakerNavn } from '../utils/utils.ts'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
 import { Vurdering } from './Vurdering.tsx'
-import { Link as ReactRouterLink } from 'react-router-dom'
-import { getDeltakerUrl } from '../navigation.ts'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -42,9 +42,13 @@ export const DeltakerlisteTabell = () => {
                   <BodyShort size="small">
                     <Link
                       as={ReactRouterLink}
-                      to={getDeltakerUrl(deltaker.id, deltakerlisteDetaljer.id)}
+                      to={getDeltakerUrl(deltakerlisteDetaljer.id, deltaker.id)}
                     >
-                      {deltakerNavn(deltaker)}
+                      {lagDeltakerNavn(
+                        deltaker.fornavn,
+                        deltaker.mellomnavn,
+                        deltaker.etternavn
+                      )}
                     </Link>
                   </BodyShort>
                   <BeskyttelsesmarkeringIkoner
@@ -69,8 +73,4 @@ export const DeltakerlisteTabell = () => {
       </Table.Body>
     </Table>
   )
-}
-
-function deltakerNavn({ fornavn, mellomnavn, etternavn }: Deltaker): string {
-  return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }

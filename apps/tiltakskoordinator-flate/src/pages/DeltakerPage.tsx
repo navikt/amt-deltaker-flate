@@ -9,7 +9,11 @@ import { Tilbakelenke } from '../Tilbakelenke.tsx'
 
 export const DeltakerPage = () => {
   const { deltakerId } = useParams()
-  const { error, doFetch: fetchDeltaker } = useDeferredFetch(getDeltaker)
+  const {
+    data: deltaker,
+    error,
+    doFetch: fetchDeltaker
+  } = useDeferredFetch(getDeltaker)
 
   useEffect(() => {
     if (deltakerId) {
@@ -20,10 +24,12 @@ export const DeltakerPage = () => {
   return (
     <>
       <Tilbakelenke />
-      <DeltakerDetaljerHeader />
-      <DeltakerDetaljer />
+
       {!deltakerId && <Alert variant="error">Noe gikk galt</Alert>}
       {error && <Alert variant="error">Noe gikk galt</Alert>}
+
+      <DeltakerDetaljerHeader deltaker={deltaker} />
+      <DeltakerDetaljer />
     </>
   )
 }
