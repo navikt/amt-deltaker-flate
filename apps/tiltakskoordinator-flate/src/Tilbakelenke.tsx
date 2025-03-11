@@ -8,9 +8,9 @@ export const Tilbakelenke = () => {
   if (!deltakerlisteId) return null
 
   return (
-    <BodyShort size="small">
+    <BodyShort size="small" className="font-[var(--a-font-weight-bold)]">
       <Link as={ReactRouterLink} to={getDeltakerlisteUrl(deltakerlisteId)}>
-        <ChevronLeftIcon className="h-auto w-[20px]" />
+        <ChevronLeftIcon className="h-auto w-[20px] mr-[-0.25rem]" />
         <Label as="span" size="small">
           Tilbake
         </Label>
