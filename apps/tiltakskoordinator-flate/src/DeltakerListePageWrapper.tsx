@@ -1,29 +1,17 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
-import dayjs from 'dayjs'
-import nb from 'dayjs/locale/nb'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import { getDeltakere, getDeltakerlisteDetaljer, TilgangsFeil } from './api/api'
-import DemoBanner from './components/demo-banner/DemoBanner'
-import PrBanner from './components/demo-banner/PrBanner'
-import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
-import { isPrEnv, useMock } from './utils/environment-utils'
-import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { Deltakere } from './api/data/deltakerliste'
-import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
-import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
+import { useAppContext } from './AppContext'
+import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
+import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { DeltakerlisteStengtPage } from './pages/DeltakerlisteStengtPage'
-
-dayjs.locale(nb)
+import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
+import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
 
 export const DeltakerListePageWrapper = () => {
-  const deltakerlisteIdFraUrl = useParams().deltakerlisteId
-  const [deltakerlisteIdPrSetting, setDeltakerlisteIDprSetting] = useState('')
-
-  const deltakerlisteId = isPrEnv
-    ? deltakerlisteIdPrSetting
-    : deltakerlisteIdFraUrl
+  const { deltakerlisteId } = useAppContext()
 
   const {
     data: deltakerlisteDetaljer,
@@ -40,10 +28,8 @@ export const DeltakerListePageWrapper = () => {
   } = useDeferredFetch(getDeltakere)
 
   const fetchDeltakerliste = () => {
-    if (deltakerlisteId) {
-      doFetchDeltakere(deltakerlisteId)
-      doFetchDeltakelisteDetaljer(deltakerlisteId)
-    }
+    doFetchDeltakere(deltakerlisteId)
+    doFetchDeltakelisteDetaljer(deltakerlisteId)
   }
 
   useEffect(() => {
@@ -71,9 +57,6 @@ export const DeltakerListePageWrapper = () => {
 
   return (
     <>
-      {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteIDprSetting} />}
-      {useMock && <DemoBanner />}
-
       {(stateDeltakerlisteDetaljer === DeferredFetchState.LOADING ||
         stateDeltakere === DeferredFetchState.LOADING) && (
         <div

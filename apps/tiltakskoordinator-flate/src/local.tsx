@@ -1,10 +1,9 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import './app.css'
+import { App } from './App.tsx'
 import { AppContextProvider } from './AppContext.tsx'
 import { worker } from './mocks/setupMocks.ts'
-import { AppRoutes } from './Routes.tsx'
 import { useMock } from './utils/environment-utils.ts'
 import './webComponentWrapper.tsx'
 
@@ -26,11 +25,9 @@ const renderAsReactRoot = () => {
 
   root.render(
     <React.StrictMode>
-      <AppContextProvider initialDeltakerlisteId={''}>
+      <AppContextProvider initialDeltakerlisteId={'abc'}>
         <div className="m-auto max-w-[1920px]">
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <App />
         </div>
       </AppContextProvider>
     </React.StrictMode>
