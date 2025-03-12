@@ -30,8 +30,8 @@ export const DeltakerPage = () => {
       {error && <Alert variant="error">Noe gikk galt</Alert>}
 
       <DeltakerDetaljerHeader deltaker={deltaker} />
-      <div className="flex justify-between p-10">
-        <DeltakerDetaljer />
+      <div className="flex justify-between pl-10 pr-10">
+        <DeltakerDetaljer deltaker={deltaker} />
         <Kontaktinformasjon deltaker={deltaker} />
       </div>
     </>

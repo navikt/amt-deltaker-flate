@@ -1,9 +1,10 @@
-import { z } from 'zod'
 import {
   deltakerStatusAarsakSchema,
   deltakerStatusTypeSchema,
+  nullableDateSchema,
   vurderingstypeSchema
 } from 'deltaker-flate-common'
+import { z } from 'zod'
 import { beskyttelsesmarkeringSchema } from './deltakerliste.ts'
 
 export const kontaktInfomasjonSchema = z.object({
@@ -45,8 +46,8 @@ export const deltakerDetaljerSchema = z.object({
   etternavn: z.string(),
   fodselsnummer: z.string(),
   status: deltakerStatusSchema,
-  startdato: z.string().nullable(),
-  sluttdato: z.string().nullable(),
+  startdato: nullableDateSchema,
+  sluttdato: nullableDateSchema,
   kontaktinformasjon: kontaktInfomasjonSchema,
   navEnhet: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
