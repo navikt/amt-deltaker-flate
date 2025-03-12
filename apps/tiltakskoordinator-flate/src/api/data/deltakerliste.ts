@@ -22,8 +22,6 @@ export const deltakerStatusSchema = z.object({
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
 
-export const beskyttelsesmarkeringSchema = z.nativeEnum(Beskyttelsesmarkering)
-
 export enum Vurderingstype {
   OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
   OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
@@ -36,7 +34,7 @@ export const deltakerSchema = z.object({
   etternavn: z.string(),
   status: deltakerStatusSchema,
   vurdering: z.nativeEnum(Vurderingstype).nullable(),
-  beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema),
+  beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   navEnhet: z.string().nullable()
 })
 

@@ -5,7 +5,7 @@ import {
   vurderingstypeSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { beskyttelsesmarkeringSchema } from './deltakerliste.ts'
+import { Beskyttelsesmarkering } from './deltakerliste.ts'
 
 export const kontaktInfomasjonSchema = z.object({
   telefonnummer: z.string().nullable(),
@@ -51,7 +51,7 @@ export const deltakerDetaljerSchema = z.object({
   kontaktinformasjon: kontaktInfomasjonSchema,
   navEnhet: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
-  beskyttelsesmarkering: z.array(beskyttelsesmarkeringSchema),
+  beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
   innsatsgruppe: innsatsbehovSchema
 })

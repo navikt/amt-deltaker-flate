@@ -23,7 +23,7 @@ export const mapDeltakerDeltaljerToDeltaker = (
   }
 }
 
-const createMockDeltaker = (
+export const createMockDeltaker = (
   statusType: DeltakerStatusType,
   beskyttelsesmarkering: Beskyttelsesmarkering[],
   vurdering: Vurdering | null,
@@ -42,8 +42,8 @@ const createMockDeltaker = (
     vurdering,
     beskyttelsesmarkering,
     navEnhet,
-    startdato: null,
-    sluttdato: null,
+    startdato: faker.date.past(),
+    sluttdato: faker.date.future(),
     kontaktinformasjon: {
       telefonnummer: '12345678',
       epost: 'tralala@epost.no',

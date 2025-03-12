@@ -32,7 +32,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
       <Detail title="Dato">
         <BodyShort size="small">
           {deltaker.startdato
-            ? `${formatDate(deltaker.startdato)} - ${deltaker.sluttdato ? formatDate(deltaker.sluttdato) : ''}`
+            ? `${formatDate(deltaker.startdato)} — ${deltaker.sluttdato ? formatDate(deltaker.sluttdato) : ''}`
             : EMDASH}
         </BodyShort>
       </Detail>
@@ -45,10 +45,10 @@ interface DetailProps {
   children: React.ReactNode
 }
 
-export const Detail = ({ title, children }: DetailProps) => {
+const Detail = ({ title, children }: DetailProps) => {
   return (
     <div className="flex gap-2">
-      <Label>{title}:</Label>
+      <Label size="small">{title}:</Label>
       {children}
     </div>
   )
