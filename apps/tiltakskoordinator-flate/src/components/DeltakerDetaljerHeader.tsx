@@ -36,7 +36,11 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
 }
 
 const HeaderSkille = () => (
-  <BodyShort size="medium" className="mr-2 ml-2 text-[var(--a-text-subtle)]">
+  <BodyShort
+    aria-hidden
+    size="medium"
+    className="mr-2 ml-2 text-[var(--a-text-subtle)]"
+  >
     /
   </BodyShort>
 )

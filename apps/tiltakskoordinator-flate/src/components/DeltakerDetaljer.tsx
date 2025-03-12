@@ -13,7 +13,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
   }
 
   return (
-    <div className="flex flex-col pt-6 pb-6 h-fit gap-4 border-b border-[var(--a-border-divider)]">
+    <div className="flex flex-col pt-6 pb-6 h-fit gap-4 w-full mr-4 border-b border-[var(--a-border-divider)]">
       <Detail title="Status">
         <DeltakerStatusTag statusType={deltaker.status.type} />
       </Detail>
@@ -21,9 +21,11 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         {deltaker.vurdering ? (
           <div className="flex flex-col gap-2">
             <Vurdering vurdering={deltaker.vurdering.type} />
-            <BodyShort size="small">
-              {deltaker.vurdering.begrunnelse ?? EMDASH}
-            </BodyShort>
+            {deltaker.vurdering.begrunnelse && (
+              <BodyShort size="small">
+                {deltaker.vurdering.begrunnelse}
+              </BodyShort>
+            )}
           </div>
         ) : (
           <BodyShort size="small">{EMDASH}</BodyShort>

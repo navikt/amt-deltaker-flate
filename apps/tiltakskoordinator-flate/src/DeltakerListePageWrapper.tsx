@@ -1,17 +1,17 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect } from 'react'
-import { getDeltakere, getDeltakerlisteDetaljer, TilgangsFeil } from './api/api'
+import { useNavigate } from 'react-router-dom'
+import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
 import { Deltakere } from './api/data/deltakerliste'
 import { useAppContext } from './AppContext'
 import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
-import { DeltakerlisteStengtPage } from './pages/DeltakerlisteStengtPage'
-import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage'
-import { IngenAdGruppePage } from './pages/IngenAdGruppePage'
+import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsfeil'
 
 export const DeltakerListePageWrapper = () => {
   const { deltakerlisteId } = useAppContext()
+  const navigate = useNavigate()
 
   const {
     data: deltakerlisteDetaljer,
@@ -36,49 +36,33 @@ export const DeltakerListePageWrapper = () => {
     fetchDeltakerliste()
   }, [deltakerlisteId])
 
-  if (deltakereResponse === TilgangsFeil.ManglerADGruppe) {
-    return <IngenAdGruppePage />
+  if (isTilgangsFeil(deltakereResponse)) {
+    handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
   }
 
-  if (deltakereResponse === TilgangsFeil.DeltakerlisteStengt) {
-    return <DeltakerlisteStengtPage />
-  }
+  const visFeilmelding =
+    errorDeltakerlisteDetaljer ||
+    errorDeltakere ||
+    (stateDeltakerlisteDetaljer === DeferredFetchState.RESOLVED &&
+      !deltakerlisteDetaljer) ||
+    (stateDeltakere === DeferredFetchState.RESOLVED && !deltakereResponse)
 
-  if (deltakereResponse === TilgangsFeil.IkkeTilgangTilDeltakerliste) {
-    return (
-      <IkkeTilgangTilDeltakerlistePage
-        deltakerlisteId={deltakerlisteId!}
-        onConfirm={fetchDeltakerliste}
-      />
-    )
-  }
-
-  const deltakere: Deltakere | null = deltakereResponse
+  const deltakere: Deltakere | null = deltakereResponse as Deltakere | null
 
   return (
     <>
       {(stateDeltakerlisteDetaljer === DeferredFetchState.LOADING ||
         stateDeltakere === DeferredFetchState.LOADING) && (
-        <div
-          id="maincontent"
-          role="main"
-          tabIndex={-1}
-          className="flex justify-center items-center h-screen"
-        >
+        <div className="flex justify-center items-center h-screen">
           <Loader size="3xlarge" title="Venter..." />
         </div>
       )}
 
-      {(errorDeltakerlisteDetaljer ||
-        errorDeltakere ||
-        (stateDeltakerlisteDetaljer === DeferredFetchState.RESOLVED &&
-          !deltakerlisteDetaljer) ||
-        (stateDeltakere === DeferredFetchState.RESOLVED &&
-          !deltakereResponse)) && (
+      {visFeilmelding && (
         <div id="maincontent" role="main" tabIndex={-1}>
           <Alert variant="error" className="mt-4">
             <Heading spacing size="small" level="3">
-              Vi beklager, men noe gikk galt
+              Kunne ikke hente deltakere. Vennligst prøv igjen.
             </Heading>
           </Alert>
         </div>

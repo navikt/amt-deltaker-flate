@@ -1,4 +1,4 @@
-import { BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
+import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { useDeltakerlisteContext } from '../DeltakerlisteContext'
@@ -12,6 +12,14 @@ export const DeltakerlisteTabell = () => {
   const skalViseVurderinger =
     deltakerlisteDetaljer.tiltakskode ==
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+
+  if (deltakere.length === 0) {
+    return (
+      <Alert inline variant="info" size="small" className="h-fit">
+        Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere.
+      </Alert>
+    )
+  }
 
   return (
     <Table className="w-fit h-fit">
