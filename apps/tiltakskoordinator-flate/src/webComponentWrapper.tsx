@@ -3,13 +3,16 @@ import { createRoot, Root } from 'react-dom/client'
 import appCss from './app.css?inline'
 import { App } from './App.tsx'
 import { AppContextProvider } from './context-providers/AppContext.tsx'
-import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
+import {
+  APPLICATION_NAME,
+  APPLICATION_WEB_COMPONENT_NAME
+} from './utils/constants.ts'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: 'amt-tiltakskoordinator-flate'
+      name: APPLICATION_NAME
     },
     isolate: true
   })
