@@ -13,7 +13,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
   }
 
   return (
-    <div className="flex flex-col pt-6 pb-6 h-fit gap-4 w-full mr-4 border-b border-[var(--a-border-divider)]">
+    <div className="flex flex-col pb-6 h-fit gap-4 w-full mr-4 border-b border-[var(--a-border-divider)]">
       <Detail title="Status">
         <DeltakerStatusTag statusType={deltaker.status.type} />
       </Detail>
