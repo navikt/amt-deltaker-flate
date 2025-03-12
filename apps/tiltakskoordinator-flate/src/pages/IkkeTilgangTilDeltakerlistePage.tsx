@@ -8,7 +8,7 @@ import {
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { leggTilTilgang } from '../api/api'
-import { useAppContext } from '../AppContext'
+import { useAppContext } from '../context-providers/AppContext'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakerlisteUrl } from '../navigation'
 

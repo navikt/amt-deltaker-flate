@@ -1,17 +1,23 @@
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { getDeltaker } from '../api/api.ts'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import { Alert, Loader } from '@navikt/ds-react'
 import { DeltakerDetaljerHeader } from '../components/DeltakerDetaljerHeader.tsx'
 import { DeltakerDetaljer } from '../components/DeltakerDetaljer.tsx'
 import { Tilbakelenke } from '../components/Tilbakelenke.tsx'
 import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
+import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil.ts'
+import { useAppContext } from '../context-providers/AppContext.tsx'
+import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker.ts'
 
 export const DeltakerPage = () => {
+  const { deltakerlisteId } = useAppContext()
   const { deltakerId } = useParams()
+  const navigate = useNavigate()
+
   const {
-    data: deltaker,
+    data: deltakerResponse,
     error,
     state,
     doFetch: fetchDeltaker
@@ -30,6 +36,12 @@ export const DeltakerPage = () => {
       fetchDeltaker(deltakerId)
     }
   }, [deltakerId])
+
+  if (isTilgangsFeil(deltakerResponse)) {
+    handterTilgangsFeil(deltakerResponse, deltakerlisteId, navigate)
+  }
+
+  const deltaker = deltakerResponse as DeltakerDetaljerDomene | null
 
   return (
     <>

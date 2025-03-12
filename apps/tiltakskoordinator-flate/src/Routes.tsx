@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { DeltakerListePageWrapper } from './DeltakerListePageWrapper.tsx'
+import { DeltakerListeGuard } from './DeltakerListeGuard.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
 import { DeltakerPage } from './pages/DeltakerPage.tsx'
 import {
@@ -16,7 +16,7 @@ import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerl
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={APP_ROUTE} element={<DeltakerListePageWrapper />} />
+      <Route path={APP_ROUTE} element={<DeltakerListeGuard />} />
       <Route path={DELTAKER_ROUTE} element={<DeltakerPage />} />
       <Route path={INNGANG_AD_GRUPPE_ROUTE} element={<IngenAdGruppePage />} />
       <Route
@@ -28,7 +28,7 @@ export const AppRoutes = () => {
         element={<IkkeTilgangTilDeltakerlistePage />}
       />
 
-      {isPrEnv && <Route path={'/*'} element={<DeltakerListePageWrapper />} />}
+      {isPrEnv && <Route path={'/*'} element={<DeltakerListeGuard />} />}
       {useMock && (
         <Route
           path={'/*'}

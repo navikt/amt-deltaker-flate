@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
 import { Deltakere } from './api/data/deltakerliste'
-import { useAppContext } from './AppContext'
-import { DeltakerlisteContextProvider } from './DeltakerlisteContext'
+import { useAppContext } from './context-providers/AppContext'
+import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
-import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsfeil'
+import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsFeil'
 
-export const DeltakerListePageWrapper = () => {
+export const DeltakerListeGuard = () => {
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
 

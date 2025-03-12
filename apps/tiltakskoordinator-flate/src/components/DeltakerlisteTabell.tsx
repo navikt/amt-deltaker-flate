@@ -1,7 +1,7 @@
 import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { useDeltakerlisteContext } from '../DeltakerlisteContext'
+import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
 import { getDeltakerUrl } from '../navigation.ts'
 import { lagDeltakerNavn } from '../utils/utils.ts'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'

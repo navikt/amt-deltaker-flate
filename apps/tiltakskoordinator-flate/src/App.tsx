@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { BrowserRouter } from 'react-router-dom'
-import { useAppContext } from './AppContext.tsx'
+import { useAppContext } from './context-providers/AppContext.tsx'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import PrBanner from './components/demo-banner/PrBanner.tsx'
 import { AppRoutes } from './Routes.tsx'

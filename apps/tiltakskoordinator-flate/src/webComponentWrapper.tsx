@@ -2,7 +2,7 @@ import { initializeFaro } from '@grafana/faro-web-sdk'
 import { createRoot, Root } from 'react-dom/client'
 import appCss from './app.css?inline'
 import { App } from './App.tsx'
-import { AppContextProvider } from './AppContext.tsx'
+import { AppContextProvider } from './context-providers/AppContext.tsx'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 
 if (import.meta.env.VITE_FARO_URL) {

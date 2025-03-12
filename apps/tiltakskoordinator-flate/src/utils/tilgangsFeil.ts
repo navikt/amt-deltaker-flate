@@ -1,5 +1,5 @@
 import { NavigateFunction } from 'react-router-dom'
-import { DeltakereResponse, TilgangsFeil } from '../api/api'
+import { DeltakereResponse, DeltakerResponse, TilgangsFeil } from '../api/api'
 import {
   getDeltakerlisteStengtUrl,
   getIkkeTilgangTilDeltakerlisteUrl,
@@ -7,7 +7,7 @@ import {
 } from '../navigation'
 
 export const isTilgangsFeil = (
-  obj: DeltakereResponse | null
+  obj: DeltakereResponse | DeltakerResponse | null
 ): obj is TilgangsFeil => {
   return (
     obj === TilgangsFeil.ManglerADGruppe ||
