@@ -67,7 +67,7 @@ export const DeltakerPage = () => {
 
         <DeltakerDetaljerHeader deltaker={deltaker} />
 
-        <div className="flex flex-col justify-between pl-10 pr-10 pt-6 md:flex-row gap-6 md:gap-0">
+        <div className="flex flex-col justify-between pl-10 pr-10 pt-6 md:flex-row gap-6">
           <DeltakerDetaljer deltaker={deltaker} />
           <Kontaktinformasjon deltaker={deltaker} />
         </div>
