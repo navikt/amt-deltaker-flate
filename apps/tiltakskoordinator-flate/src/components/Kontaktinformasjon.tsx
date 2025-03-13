@@ -19,7 +19,7 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
   }
 
   return (
-    <div>
+    <div className="w-fit">
       <Box>
         <>
           <Heading level="3" size="xsmall">
