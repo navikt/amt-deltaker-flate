@@ -1,14 +1,8 @@
 import { BodyLong, Box, Heading } from '@navikt/ds-react'
-import { useEffect, useRef } from 'react'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
 export function IngenAdGruppePage() {
-  const headingRef = useRef<HTMLHeadingElement>(null)
-
-  useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
-    }
-  }, [])
+  const { ref } = useFocusPageLoad('Deltakerliste - Ingen ad-gruppe')
 
   return (
     <Box className="flex justify-center pt-16">
@@ -17,7 +11,7 @@ export function IngenAdGruppePage() {
           size="small"
           level="2"
           tabIndex={-1}
-          ref={headingRef}
+          ref={ref}
           className="outline-none"
         >
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen

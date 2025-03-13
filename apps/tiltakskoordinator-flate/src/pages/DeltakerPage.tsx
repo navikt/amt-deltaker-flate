@@ -1,17 +1,19 @@
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { getDeltaker } from '../api/api.ts'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
 import { Alert, Loader } from '@navikt/ds-react'
-import { DeltakerDetaljerHeader } from '../components/DeltakerDetaljerHeader.tsx'
-import { DeltakerDetaljer } from '../components/DeltakerDetaljer.tsx'
-import { Tilbakelenke } from '../components/Tilbakelenke.tsx'
-import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
-import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil.ts'
-import { useAppContext } from '../context-providers/AppContext.tsx'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getDeltaker } from '../api/api.ts'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker.ts'
+import { DeltakerDetaljer } from '../components/DeltakerDetaljer.tsx'
+import { DeltakerDetaljerHeader } from '../components/DeltakerDetaljerHeader.tsx'
+import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
+import { Tilbakelenke } from '../components/Tilbakelenke.tsx'
+import { useAppContext } from '../context-providers/AppContext.tsx'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad.tsx'
+import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil.ts'
 
 export const DeltakerPage = () => {
+  const { ref } = useFocusPageLoad('Deltaker detaljer')
   const { deltakerlisteId } = useAppContext()
   const { deltakerId } = useParams()
   const navigate = useNavigate()
@@ -22,14 +24,6 @@ export const DeltakerPage = () => {
     state,
     doFetch: fetchDeltaker
   } = useDeferredFetch(getDeltaker)
-
-  document.title = 'Deltaker detaljer'
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
-    }
-  }, [])
 
   useEffect(() => {
     if (deltakerId) {
@@ -46,7 +40,7 @@ export const DeltakerPage = () => {
   return (
     <>
       <Tilbakelenke />
-      <h2 className="sr-only" tabIndex={-1} ref={headingRef}>
+      <h2 className="sr-only" tabIndex={-1} ref={ref}>
         Deltakerdetaljer
       </h2>
 

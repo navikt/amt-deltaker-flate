@@ -6,13 +6,15 @@ import {
   Heading
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { leggTilTilgang } from '../api/api'
 import { useAppContext } from '../context-providers/AppContext'
-import { useNavigate } from 'react-router-dom'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { getDeltakerlisteUrl } from '../navigation'
 
 export function IkkeTilgangTilDeltakerlistePage() {
+  const { ref } = useFocusPageLoad('Deltakerliste - Ikke tilgang')
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
   const [confirmation, setConfirmation] = useState(false)
@@ -20,13 +22,6 @@ export function IkkeTilgangTilDeltakerlistePage() {
     string | undefined
   >(undefined)
   const { error, state, doFetch } = useDeferredFetch(leggTilTilgang)
-
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
-    }
-  }, [])
 
   useEffect(() => {
     if (!error && state === DeferredFetchState.RESOLVED) {
@@ -49,7 +44,7 @@ export function IkkeTilgangTilDeltakerlistePage() {
           size="small"
           level="2"
           tabIndex={-1}
-          ref={headingRef}
+          ref={ref}
           className="outline-none"
         >
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen

@@ -1,19 +1,13 @@
-import { useEffect, useRef } from 'react'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
 import { DeltakerlisteTabell } from '../components/DeltakerlisteTabell'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
 export const DeltakerlistePage = () => {
-  document.title = 'Deltakerliste'
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
-    }
-  }, [])
+  const { ref } = useFocusPageLoad('Deltakerliste')
 
   return (
     <div className="flex flex-row gap-16 p-4" data-testid="page_deltakerliste">
-      <h2 className="sr-only" tabIndex={-1} ref={headingRef}>
+      <h2 className="sr-only" tabIndex={-1} ref={ref}>
         Deltakerliste - detaljer
       </h2>
       <DeltakerlisteDetaljer />

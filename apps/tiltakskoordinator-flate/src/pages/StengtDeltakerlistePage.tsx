@@ -1,13 +1,8 @@
 import { BodyLong, Box, Heading } from '@navikt/ds-react'
-import { useEffect, useRef } from 'react'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
 export function StengtDeltakerlistePage() {
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
-    }
-  }, [])
+  const { ref } = useFocusPageLoad('Deltakerliste - stengt')
 
   return (
     <Box className="flex justify-center pt-16">
@@ -16,7 +11,7 @@ export function StengtDeltakerlistePage() {
           size="small"
           level="2"
           tabIndex={-1}
-          ref={headingRef}
+          ref={ref}
           className="outline-none"
         >
           Deltakerlisten for gjennomføringen er stengt
