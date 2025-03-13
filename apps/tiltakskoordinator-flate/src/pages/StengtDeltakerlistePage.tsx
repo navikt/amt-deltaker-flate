@@ -1,7 +1,7 @@
 import { BodyLong, Box, Heading } from '@navikt/ds-react'
 import { useEffect, useRef } from 'react'
 
-export function DeltakerlisteStengtPage() {
+export function StengtDeltakerlistePage() {
   const headingRef = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     if (headingRef.current) {

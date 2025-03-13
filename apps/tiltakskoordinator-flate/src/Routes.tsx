@@ -6,11 +6,12 @@ import {
   APP_ROUTE,
   DELTAKER_ROUTE,
   DELTAKERLISTE_STENGT_ROUTE,
+  getDeltakerlisteUrl,
   IKKE_TILGANG_TIL_DELTAKERLISTE_ROUTE,
   INNGANG_AD_GRUPPE_ROUTE
 } from './navigation.ts'
 import { IngenAdGruppePage } from './pages/IngenAdGruppePage.tsx'
-import { DeltakerlisteStengtPage } from './pages/DeltakerlisteStengtPage.tsx'
+import { StengtDeltakerlistePage } from './pages/StengtDeltakerlistePage.tsx'
 import { IkkeTilgangTilDeltakerlistePage } from './pages/IkkeTilgangTilDeltakerlistePage.tsx'
 
 export const AppRoutes = () => {
@@ -21,7 +22,7 @@ export const AppRoutes = () => {
       <Route path={INNGANG_AD_GRUPPE_ROUTE} element={<IngenAdGruppePage />} />
       <Route
         path={DELTAKERLISTE_STENGT_ROUTE}
-        element={<DeltakerlisteStengtPage />}
+        element={<StengtDeltakerlistePage />}
       />
       <Route
         path={IKKE_TILGANG_TIL_DELTAKERLISTE_ROUTE}
@@ -32,16 +33,9 @@ export const AppRoutes = () => {
       {useMock && (
         <Route
           path={'/*'}
-          element={
-            <Navigate replace to={'/gjennomforinger/d48/deltakerliste'} />
-          }
+          element={<Navigate replace to={getDeltakerlisteUrl('d48')} />}
         />
       )}
-      {
-        // TODO redirect to valp gjennomforinger
-        // !isEnvLocalDemoOrPr &&
-        // <Route path={'/*'} element={<RedirectToDeltakeroversikt />} />
-      }
     </Routes>
   )
 }
