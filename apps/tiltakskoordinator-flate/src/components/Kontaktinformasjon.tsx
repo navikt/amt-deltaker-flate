@@ -7,7 +7,7 @@ import {
   PersonIcon,
   PhoneIcon
 } from '@navikt/aksel-icons'
-import { formatTelefonnummer } from '../utils/utils'
+import { formaterTelefonnummer } from '../utils/utils'
 
 interface Props {
   deltaker: DeltakerDetaljer | null
@@ -29,7 +29,7 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
             <Item
               icon={PhoneIcon}
               title="Telefonnummer"
-              detail={formatTelefonnummer(
+              detail={formaterTelefonnummer(
                 deltaker.kontaktinformasjon.telefonnummer
               )}
             />
@@ -54,7 +54,7 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
       <Box>
         <>
           <Heading level="3" size="xsmall">
-            NAV-kontor
+            Nav-kontor
           </Heading>
           {deltaker.navEnhet && (
             <Item
@@ -65,7 +65,7 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
           )}
 
           <Heading level="3" size="xsmall">
-            NAV-veileder
+            Nav-veileder
           </Heading>
           {deltaker.navVeileder?.navn && (
             <Item
@@ -78,7 +78,9 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
             <Item
               icon={PhoneIcon}
               title="Nav-veileder telefonnummer"
-              detail={formatTelefonnummer(deltaker.navVeileder?.telefonnummer)}
+              detail={formaterTelefonnummer(
+                deltaker.navVeileder?.telefonnummer
+              )}
             />
           )}
           {deltaker.navVeileder?.epost && (

@@ -24,13 +24,14 @@ export const mapDeltakerDeltaljerToDeltaker = (
 }
 
 export const createMockDeltaker = (
+  id: string,
   statusType: DeltakerStatusType,
   beskyttelsesmarkering: Beskyttelsesmarkering[],
   vurdering: Vurdering | null,
   navEnhet: string | null
 ): DeltakerDetaljer => {
   return {
-    id: uuidv4(),
+    id,
     fornavn: faker.person.firstName(),
     mellomnavn: null,
     etternavn: faker.person.lastName(),
@@ -102,6 +103,7 @@ export const createMockDeltakere = (): DeltakerDetaljer[] => {
 
     deltakere.push(
       createMockDeltaker(
+        `86a60e8c-888e-4f5c-8f55-1c83ee9949${i < 10 ? '0' : ''}${i}`,
         createStatus(i),
         createBeskyttelsesmarkering(i),
         createVurdering(i),
