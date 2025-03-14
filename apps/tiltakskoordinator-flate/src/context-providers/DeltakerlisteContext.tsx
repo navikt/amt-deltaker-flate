@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { Deltakere, DeltakerlisteDetaljer } from './api/data/deltakerliste'
+import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste'
 
 export interface DeltakerListeContextProps {
   deltakerlisteDetaljer: DeltakerlisteDetaljer

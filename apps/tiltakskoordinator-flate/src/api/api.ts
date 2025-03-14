@@ -7,6 +7,7 @@ import {
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
+import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 
 const APP_NAME = 'amt-tiltakskoordinator-flate'
 
@@ -68,20 +69,13 @@ export const getDeltakere = async (
       'Nav-Consumer-Id': APP_NAME
     }
   }).then(async (response) => {
-    if (response.status === 401) {
-      return TilgangsFeil.ManglerADGruppe
-    }
-    if (response.status === 403) {
-      return TilgangsFeil.IkkeTilgangTilDeltakerliste
-    }
-    if (response.status === 410) {
-      return TilgangsFeil.DeltakerlisteStengt
+    if (harTilgansfeil(response)) {
+      return handleTilgangsfeil(response)
     }
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke hentes.'
       handleError(message, deltakerlisteId, response.status)
     }
-
     try {
       return deltakereSchema.parse(await response.json())
     } catch (error) {
@@ -92,6 +86,45 @@ export const getDeltakere = async (
       throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
     }
   })
+}
+
+export type DeltakerResponse = DeltakerDetaljer | TilgangsFeil
+
+export const getDeltaker = async (
+  deltakerId: string
+): Promise<DeltakerResponse> => {
+  return fetch(`${API_URL}/tiltakskoordinator/deltaker/${deltakerId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+    .then((response) => {
+      if (harTilgansfeil(response)) {
+        return handleTilgangsfeil(response)
+      }
+      if (response.status !== 200) {
+        const message = 'Deltaker detaljer kunne ikke hentes.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then((json: string) => {
+      try {
+        return deltakerDetaljerSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse deltakerDetaljerSchema:', error)
+        if (error instanceof ZodError) {
+          logError('Issue', error.issues)
+        }
+        throw new Error(
+          'Kunne ikke laste inn detaljer om deltaker. Prøv igjen senere'
+        )
+      }
+    })
 }
 
 export async function leggTilTilgang(deltakerlisteId: string) {
@@ -109,6 +142,23 @@ export async function leggTilTilgang(deltakerlisteId: string) {
     const message = 'Tilgang kunne ikke legges til'
     handleError(message, deltakerlisteId, response.status)
   }
+}
+
+const harTilgansfeil = (response: Response) => {
+  return [401, 403, 410].includes(response.status)
+}
+
+const handleTilgangsfeil = (response: Response): TilgangsFeil => {
+  if (response.status === 401) {
+    return TilgangsFeil.ManglerADGruppe
+  }
+  if (response.status === 403) {
+    return TilgangsFeil.IkkeTilgangTilDeltakerliste
+  }
+  if (response.status === 410) {
+    return TilgangsFeil.DeltakerlisteStengt
+  }
+  throw new Error('Ukjent tilgangsfeil')
 }
 
 const handleError = (

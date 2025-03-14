@@ -1,8 +1,8 @@
 import { BodyLong, Box, Heading } from '@navikt/ds-react'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
-export function IngenAdGruppePage() {
-  const { ref } = useFocusPageLoad('Deltakerliste - Ingen ad-gruppe')
+export function StengtDeltakerlistePage() {
+  const { ref } = useFocusPageLoad('Deltakerliste - stengt')
 
   return (
     <Box className="flex justify-center pt-16">
@@ -14,11 +14,11 @@ export function IngenAdGruppePage() {
           ref={ref}
           className="outline-none"
         >
-          Du har ikke tilgang til deltakerlisten for denne gjennomføringen
+          Deltakerlisten for gjennomføringen er stengt
         </Heading>
         <BodyLong>
-          Deltakerlisten er kun tilgjengelig for deg som skal administrere eller
-          prioritere deltakerene på listen.
+          Deltakerlisten for prioritering av deltakere er stengt, fordi
+          gjennomføringen er fullført eller avsluttet.
         </BodyLong>
       </div>
     </Box>
