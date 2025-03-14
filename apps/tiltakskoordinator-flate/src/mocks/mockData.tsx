@@ -13,6 +13,7 @@ import {
   Vurdering
 } from '../api/data/deltaker.ts'
 import { faker } from '@faker-js/faker/locale/nb_NO'
+import { erAdresseBeskyttet } from '../utils/utils.ts'
 
 export const mapDeltakerDeltaljerToDeltaker = (
   deltakerDetaljer: DeltakerDetaljer
@@ -30,6 +31,7 @@ export const createMockDeltaker = (
   vurdering: Vurdering | null,
   navEnhet: string | null
 ): DeltakerDetaljer => {
+  const adresseBeskyttet = erAdresseBeskyttet(beskyttelsesmarkering)
   return {
     id,
     fornavn: faker.person.firstName(),
@@ -46,13 +48,13 @@ export const createMockDeltaker = (
     startdato: faker.date.past(),
     sluttdato: faker.date.future(),
     kontaktinformasjon: {
-      telefonnummer: '12345678',
-      epost: 'tralala@epost.no',
-      adresse: 'helsfyr 3, 3048 Oslo'
+      telefonnummer: adresseBeskyttet ? null : '12345678',
+      epost: adresseBeskyttet ? null : 'navn@epost.no',
+      adresse: adresseBeskyttet ? null : 'helsfyr 3, 3048 Oslo'
     },
     navVeileder: {
-      navn: 'Veileder veiledersen',
-      telefonnummer: '87654321',
+      navn: adresseBeskyttet ? null : 'Veileder veiledersen',
+      telefonnummer: adresseBeskyttet ? null : '87654321',
       epost: 'veileder.veiledersen@epost.no'
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS
@@ -76,7 +78,7 @@ const createVurdering = (index: number): Vurdering | null => {
   } else if (index < 6) {
     return {
       type: Vurderingstype.OPPFYLLER_IKKE_KRAVENE,
-      begrunnelse: 'Passer ikke'
+      begrunnelse: 'Deltakeren oppfyller ikek kravene.'
     }
   }
   return null

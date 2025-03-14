@@ -14,7 +14,7 @@ export const kontaktInfomasjonSchema = z.object({
 })
 
 export const navVeilederSchema = z.object({
-  navn: z.string(),
+  navn: z.string().nullable(),
   telefonnummer: z.string().nullable(),
   epost: z.string().nullable()
 })

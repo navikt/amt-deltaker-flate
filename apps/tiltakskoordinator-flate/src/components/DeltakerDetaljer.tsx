@@ -1,6 +1,6 @@
 import { BodyShort, Label } from '@navikt/ds-react'
-import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
 import { DeltakerStatusTag, EMDASH, formatDate } from 'deltaker-flate-common'
+import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
 import { Vurdering } from './Vurdering'
 
 interface Props {

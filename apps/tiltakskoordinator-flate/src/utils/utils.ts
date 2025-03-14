@@ -1,3 +1,5 @@
+import { Beskyttelsesmarkering } from '../api/data/deltakerliste'
+
 export const lagDeltakerNavn = (
   fornavn: string,
   mellomnavn: string | null,
@@ -6,11 +8,22 @@ export const lagDeltakerNavn = (
   return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }
 
+export const erAdresseBeskyttet = (
+  beskyttelsesmarkering: Beskyttelsesmarkering[]
+) => {
+  return beskyttelsesmarkering.some(
+    (b) =>
+      b === Beskyttelsesmarkering.FORTROLIG ||
+      b === Beskyttelsesmarkering.STRENGT_FORTROLIG ||
+      b === Beskyttelsesmarkering.STRENGT_FORTROLIG_UTLAND
+  )
+}
+
 export const formaterTelefonnummer = (
   telefonnummer: string | undefined | null
-): string => {
+): string | null => {
   if (!telefonnummer) {
-    return ''
+    return null
   }
 
   let tlf = telefonnummer

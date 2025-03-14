@@ -1,8 +1,8 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { DeltakerDetaljer } from '../api/data/deltaker'
+import { erAdresseBeskyttet, lagDeltakerNavn } from '../utils/utils'
 import { DeltakerMarkering } from './DeltakerMarkering'
 import { Fodselsnummer } from './Fodselsnummer'
-import { lagDeltakerNavn } from '../utils/utils'
 
 interface Props {
   deltaker: DeltakerDetaljer | null
@@ -13,19 +13,26 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
     return null
   }
 
+  const adresseBeskyttet = erAdresseBeskyttet(deltaker.beskyttelsesmarkering)
+  const navn = adresseBeskyttet
+    ? 'Adressebeskyttet'
+    : lagDeltakerNavn(deltaker.fornavn, deltaker.mellomnavn, deltaker.etternavn)
+
   return (
     <div className="pt-4 pb-4 border-t border-b border-[var(--a-border-divider)]">
       <div className="flex items-center flex-wrap gap-2 pl-10 pr-10">
         <Heading level="2" size="small">
-          {lagDeltakerNavn(
-            deltaker.fornavn,
-            deltaker.mellomnavn,
-            deltaker.etternavn
-          )}
+          {navn}
         </Heading>
         <HeaderSkille />
-        <Fodselsnummer fnr={deltaker.fodselsnummer} />
-        <HeaderSkille />
+
+        {!adresseBeskyttet && (
+          <>
+            <Fodselsnummer fnr={deltaker.fodselsnummer} />
+            <HeaderSkille />
+          </>
+        )}
+
         <DeltakerMarkering
           beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
           innsatsgruppe={deltaker.innsatsgruppe}
