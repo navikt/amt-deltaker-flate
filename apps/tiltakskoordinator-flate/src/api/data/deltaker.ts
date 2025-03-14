@@ -37,14 +37,12 @@ export enum InnsatsbehovType {
   GRADERT_VARIG_TILPASSET_INNSATS = 'GRADERT_VARIG_TILPASSET_INNSATS'
 }
 
-const innsatsbehovSchema = z.nativeEnum(InnsatsbehovType)
-
 export const deltakerDetaljerSchema = z.object({
   id: z.string().uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
-  fodselsnummer: z.string(),
+  fodselsnummer: z.string().nullable(),
   status: deltakerStatusSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
@@ -53,7 +51,7 @@ export const deltakerDetaljerSchema = z.object({
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
-  innsatsgruppe: innsatsbehovSchema
+  innsatsgruppe: z.nativeEnum(InnsatsbehovType)
 })
 
 export type DeltakerDetaljer = z.infer<typeof deltakerDetaljerSchema>

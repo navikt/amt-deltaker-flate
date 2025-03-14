@@ -34,10 +34,10 @@ export const createMockDeltaker = (
   const adresseBeskyttet = erAdresseBeskyttet(beskyttelsesmarkering)
   return {
     id,
-    fornavn: faker.person.firstName(),
+    fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
     mellomnavn: null,
     etternavn: faker.person.lastName(),
-    fodselsnummer: '3490823094',
+    fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
       aarsak: null
