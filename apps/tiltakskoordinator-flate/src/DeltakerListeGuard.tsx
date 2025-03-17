@@ -1,17 +1,23 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
 import { Deltakere } from './api/data/deltakerliste'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsFeil'
+import { isPrEnv } from './utils/environment-utils'
 
 export const DeltakerListeGuard = () => {
-  const { deltakerlisteId } = useAppContext()
+  const { deltakerlisteId: deltakerlisteIdFraContext } = useAppContext()
+  const deltakerlisteIdFraUrl = useParams().deltakerlisteId
   const navigate = useNavigate()
+
+  const deltakerlisteId = isPrEnv
+    ? deltakerlisteIdFraContext
+    : (deltakerlisteIdFraUrl ?? '')
 
   const {
     data: deltakerlisteDetaljer,
@@ -33,8 +39,6 @@ export const DeltakerListeGuard = () => {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('deltakerlisteId', deltakerlisteId)
     if (deltakerlisteId.length > 0) {
       fetchDeltakerliste()
     }
