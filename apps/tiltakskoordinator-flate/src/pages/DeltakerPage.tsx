@@ -11,12 +11,18 @@ import { Tilbakelenke } from '../components/Tilbakelenke.tsx'
 import { useAppContext } from '../context-providers/AppContext.tsx'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad.tsx'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil.ts'
+import { isPrEnv } from '../utils/environment-utils.ts'
 
 export const DeltakerPage = () => {
   const { ref } = useFocusPageLoad('Deltaker detaljer')
-  const { deltakerlisteId } = useAppContext()
   const { deltakerId } = useParams()
+  const { deltakerlisteId: deltakerlisteIdFraContext } = useAppContext()
+  const deltakerlisteIdFraUrl = useParams().deltakerlisteId
   const navigate = useNavigate()
+
+  const deltakerlisteId = isPrEnv
+    ? deltakerlisteIdFraContext
+    : (deltakerlisteIdFraUrl ?? '')
 
   const {
     data: deltakerResponse,

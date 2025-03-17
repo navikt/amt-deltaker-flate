@@ -7,16 +7,23 @@ import {
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { leggTilTilgang } from '../api/api'
 import { useAppContext } from '../context-providers/AppContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { getDeltakerlisteUrl } from '../navigation'
+import { isPrEnv } from '../utils/environment-utils'
 
 export function IkkeTilgangTilDeltakerlistePage() {
   const { ref } = useFocusPageLoad('Deltakerliste - Ikke tilgang')
-  const { deltakerlisteId } = useAppContext()
+  const { deltakerlisteId: deltakerlisteIdFraContext } = useAppContext()
+  const deltakerlisteIdFraUrl = useParams().deltakerlisteId
   const navigate = useNavigate()
+
+  const deltakerlisteId = isPrEnv
+    ? deltakerlisteIdFraContext
+    : (deltakerlisteIdFraUrl ?? '')
+
   const [confirmation, setConfirmation] = useState(false)
   const [confirmationError, setConfirmationError] = useState<
     string | undefined
