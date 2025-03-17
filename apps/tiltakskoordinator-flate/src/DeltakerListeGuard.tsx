@@ -33,7 +33,9 @@ export const DeltakerListeGuard = () => {
   }
 
   useEffect(() => {
-    fetchDeltakerliste()
+    if (deltakerlisteId.length > 0) {
+      fetchDeltakerliste()
+    }
   }, [deltakerlisteId])
 
   if (isTilgangsFeil(deltakereResponse)) {

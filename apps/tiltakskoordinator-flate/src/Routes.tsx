@@ -33,7 +33,7 @@ export const AppRoutes = () => {
       {useMock && (
         <Route
           path={'/*'}
-          element={<Navigate replace to={getDeltakerlisteUrl('d48')} />}
+          element={<Navigate replace to={getDeltakerlisteUrl('abc')} />}
         />
       )}
     </Routes>

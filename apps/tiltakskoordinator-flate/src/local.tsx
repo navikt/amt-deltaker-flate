@@ -4,7 +4,7 @@ import './app.css'
 import { App } from './App.tsx'
 import { AppContextProvider } from './context-providers/AppContext.tsx'
 import { worker } from './mocks/setupMocks.ts'
-import { useMock } from './utils/environment-utils.ts'
+import { isPrEnv, useMock } from './utils/environment-utils.ts'
 import './webComponentWrapper.tsx'
 
 export async function enableMocking() {
@@ -25,7 +25,7 @@ const renderAsReactRoot = () => {
 
   root.render(
     <React.StrictMode>
-      <AppContextProvider initialDeltakerlisteId={'abc'}>
+      <AppContextProvider initialDeltakerlisteId={isPrEnv ? '' : 'abs'}>
         <div className="m-auto max-w-[1920px]">
           <App />
         </div>
