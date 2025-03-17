@@ -19,7 +19,7 @@ if (import.meta.env.VITE_FARO_URL) {
 }
 
 export class Deltakerliste extends HTMLElement {
-  static DELTAKERLISTE_ID_PROP = 'data-deltakerlisteId'
+  static DELTAKERLISTE_ID_PROP = 'gjennomforingid'
 
   private readonly root: HTMLDivElement
   private reactRoot?: Root
