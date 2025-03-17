@@ -33,6 +33,7 @@ export const DeltakerListeGuard = () => {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log('deltakerlisteId', deltakerlisteId)
     if (deltakerlisteId.length > 0) {
       fetchDeltakerliste()

@@ -12,7 +12,8 @@ dayjs.locale(nb)
 export const App = () => {
   const { setDeltakerlisteId } = useAppContext()
 
-    console.log('App, isPrEnv', isPrEnv)
+  // eslint-disable-next-line no-console
+  console.log('App, isPrEnv', isPrEnv)
   return (
     <>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteId} />}

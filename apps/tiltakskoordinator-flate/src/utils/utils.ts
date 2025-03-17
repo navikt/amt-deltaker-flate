@@ -26,7 +26,7 @@ export const formaterTelefonnummer = (
     return null
   }
 
-  let tlf = telefonnummer
+  let tlf = telefonnummer.trim()
 
   if (tlf.startsWith('+47')) {
     tlf = tlf.replace('+47', '')
@@ -39,8 +39,6 @@ export const formaterTelefonnummer = (
   if (tlf.startsWith('0047') && tlf.length === 12) {
     tlf = tlf.replace('0047', '')
   }
-
-  tlf = tlf.trim()
 
   if (tlf.length === 8) {
     // Formater telefonnummer til: 11 22 33 44
