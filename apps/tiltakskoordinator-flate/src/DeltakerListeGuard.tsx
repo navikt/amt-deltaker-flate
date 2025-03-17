@@ -33,6 +33,7 @@ export const DeltakerListeGuard = () => {
   }
 
   useEffect(() => {
+    console.log('deltakerlisteId', deltakerlisteId)
     if (deltakerlisteId.length > 0) {
       fetchDeltakerliste()
     }

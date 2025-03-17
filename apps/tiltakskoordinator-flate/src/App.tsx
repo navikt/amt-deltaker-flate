@@ -12,6 +12,7 @@ dayjs.locale(nb)
 export const App = () => {
   const { setDeltakerlisteId } = useAppContext()
 
+    console.log('App, isPrEnv', isPrEnv)
   return (
     <>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteId} />}
