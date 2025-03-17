@@ -10,10 +10,8 @@ import { isPrEnv, useMock } from './utils/environment-utils.ts'
 dayjs.locale(nb)
 
 export const App = () => {
-  const { deltakerlisteId, setDeltakerlisteId } = useAppContext()
+  const { setDeltakerlisteId } = useAppContext()
 
-  // eslint-disable-next-line no-console
-  console.log('deltakerlisteId', deltakerlisteId)
   return (
     <>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteId} />}
