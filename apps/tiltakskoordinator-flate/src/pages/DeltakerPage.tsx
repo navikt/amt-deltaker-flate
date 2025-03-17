@@ -44,6 +44,11 @@ export const DeltakerPage = () => {
         Deltakerdetaljer
       </h2>
 
+      <Alert variant="info" size="small" className="ml-8 mr-8 mb-6">
+        Denne siden er under arbeid. Deltakers kontaktinformasjon og
+        opplysninger om Nav-veileder vil komme etterhvert.
+      </Alert>
+
       {state === DeferredFetchState.LOADING && (
         <div className="flex justify-center mt-10">
           <Loader size="3xlarge" title="Venter..." />
