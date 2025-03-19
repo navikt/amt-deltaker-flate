@@ -7,12 +7,6 @@ import {
 import { z } from 'zod'
 import { Beskyttelsesmarkering } from './deltakerliste.ts'
 
-export const kontaktInfomasjonSchema = z.object({
-  telefonnummer: z.string().nullable(),
-  epost: z.string().nullable(),
-  adresse: z.string().nullable()
-})
-
 export const navVeilederSchema = z.object({
   navn: z.string().nullable(),
   telefonnummer: z.string().nullable(),
@@ -46,7 +40,6 @@ export const deltakerDetaljerSchema = z.object({
   status: deltakerStatusSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  kontaktinformasjon: kontaktInfomasjonSchema,
   navEnhet: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),

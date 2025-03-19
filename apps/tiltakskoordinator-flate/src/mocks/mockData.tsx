@@ -47,11 +47,6 @@ export const createMockDeltaker = (
     navEnhet,
     startdato: faker.date.past(),
     sluttdato: faker.date.future(),
-    kontaktinformasjon: {
-      telefonnummer: adresseBeskyttet ? null : '12345678',
-      epost: adresseBeskyttet ? null : 'navn@epost.no',
-      adresse: adresseBeskyttet ? null : 'helsfyr 3, 3048 Oslo'
-    },
     navVeileder: {
       navn: adresseBeskyttet ? null : 'Veileder veiledersen',
       telefonnummer: adresseBeskyttet ? null : '87654321',
