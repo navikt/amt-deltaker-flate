@@ -7,6 +7,7 @@ import {
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
+import { ZodError } from 'zod'
 
 const APP_NAME = 'amt-tiltakskoordinator-flate'
 
@@ -36,11 +37,16 @@ export const getDeltakerlisteDetaljer = async (
     .then((json: string) => {
       try {
         return deltakerlisteDetaljerSchema.parse(json)
-      } catch {
-        logError(
-          'Kunne ikke parse deltakerlisteDetaljerSchema for getDeltakerlisteDetaljer',
-          deltakerlisteId
-        )
+      } catch (error) {
+        if (error instanceof ZodError) {
+          logError('ZodError', error.issues)
+        } else {
+          logError(
+            'Kunne ikke parse deltakerlisteDetaljerSchema for getDeltakerlisteDetaljer',
+            deltakerlisteId
+          )
+        }
+
         throw new Error(
           'Kunne ikke laste inn detaljer om gjennomføringen. Prøv igjen senere'
         )
@@ -77,11 +83,16 @@ export const getDeltakere = async (
     }
     try {
       return deltakereSchema.parse(await response.json())
-    } catch {
-      logError(
-        'Kunne ikke parse deltakereSchema for getDeltakere',
-        deltakerlisteId
-      )
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakereSchema for getDeltakere',
+          deltakerlisteId
+        )
+      }
+
       throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
     }
   })
@@ -114,11 +125,16 @@ export const getDeltaker = async (
     .then((json: string) => {
       try {
         return deltakerDetaljerSchema.parse(json)
-      } catch {
-        logError(
-          'Kunne ikke parse deltakerDetaljerSchema for getDeltaker',
-          deltakerId
-        )
+      } catch (error) {
+        if (error instanceof ZodError) {
+          logError('ZodError', error.issues)
+        } else {
+          logError(
+            'Kunne ikke parse deltakerlisteDetaljerSchema for getDeltaker',
+            deltakerId
+          )
+        }
+
         throw new Error(
           'Kunne ikke laste inn detaljer om deltaker. Prøv igjen senere'
         )
