@@ -1,13 +1,12 @@
 import { logError } from 'deltaker-flate-common'
-import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils'
+import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 import {
   Deltakere,
   deltakereSchema,
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema
 } from './data/deltakerliste'
-import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 
 const APP_NAME = 'amt-tiltakskoordinator-flate'
 
@@ -30,18 +29,18 @@ export const getDeltakerlisteDetaljer = async (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Detaljer om gjennomføringen kunne ikke hentes.'
-        handleError(message, deltakerlisteId, response.status)
+        handleError(message, deltakerlisteId, response.status, null)
       }
       return response.json()
     })
     .then((json: string) => {
       try {
         return deltakerlisteDetaljerSchema.parse(json)
-      } catch (error) {
-        logError('Kunne ikke parse deltakerlisteDetaljerSchema:', error)
-        if (error instanceof ZodError) {
-          logError('Issue', error.issues)
-        }
+      } catch {
+        logError(
+          'Kunne ikke parse deltakerlisteDetaljerSchema for getDeltakerlisteDetaljer',
+          deltakerlisteId
+        )
         throw new Error(
           'Kunne ikke laste inn detaljer om gjennomføringen. Prøv igjen senere'
         )
@@ -74,15 +73,15 @@ export const getDeltakere = async (
     }
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke hentes.'
-      handleError(message, deltakerlisteId, response.status)
+      handleError(message, deltakerlisteId, response.status, null)
     }
     try {
       return deltakereSchema.parse(await response.json())
-    } catch (error) {
-      logError('Kunne ikke parse deltakereSchema:', error)
-      if (error instanceof ZodError) {
-        logError('Issue', error.issues)
-      }
+    } catch {
+      logError(
+        'Kunne ikke parse deltakereSchema for getDeltakere',
+        deltakerlisteId
+      )
       throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
     }
   })
@@ -108,18 +107,18 @@ export const getDeltaker = async (
       }
       if (response.status !== 200) {
         const message = 'Deltaker detaljer kunne ikke hentes.'
-        handleError(message, deltakerId, response.status)
+        handleError(message, null, response.status, deltakerId)
       }
       return response.json()
     })
     .then((json: string) => {
       try {
         return deltakerDetaljerSchema.parse(json)
-      } catch (error) {
-        logError('Kunne ikke parse deltakerDetaljerSchema:', error)
-        if (error instanceof ZodError) {
-          logError('Issue', error.issues)
-        }
+      } catch {
+        logError(
+          'Kunne ikke parse deltakerDetaljerSchema for getDeltaker',
+          deltakerId
+        )
         throw new Error(
           'Kunne ikke laste inn detaljer om deltaker. Prøv igjen senere'
         )
@@ -140,7 +139,7 @@ export async function leggTilTilgang(deltakerlisteId: string) {
 
   if (response.status !== 200) {
     const message = 'Tilgang kunne ikke legges til'
-    handleError(message, deltakerlisteId, response.status)
+    handleError(message, deltakerlisteId, response.status, null)
   }
 }
 
@@ -163,12 +162,20 @@ const handleTilgangsfeil = (response: Response): TilgangsFeil => {
 
 const handleError = (
   message: string,
-  deltakerlisteId: string,
-  responseStatus: number
+  deltakerlisteId: string | null,
+  responseStatus: number,
+  deltakerId: string | null
 ) => {
+  // Ignorerer 401 da det er brukersesjonfeil
   if (responseStatus !== 401) {
-    // Ignorerer 401 da det er brukersesjonfeil
-    logError(`${message} DeltakerlisteId: ${deltakerlisteId}`, responseStatus)
+    const deltakerlisteIdString = deltakerlisteId
+      ? `DeltakerlisteId: ${deltakerlisteId}`
+      : ''
+    const deltakerIdString = deltakerId ? `deltakerId ${deltakerId}` : ''
+    logError(
+      `${message} ${deltakerlisteIdString} ${deltakerIdString}`,
+      responseStatus
+    )
   }
 
   throw new Error(`${message} Prøv igjen senere.`)

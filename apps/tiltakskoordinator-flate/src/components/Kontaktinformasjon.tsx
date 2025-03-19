@@ -1,14 +1,13 @@
-import { BodyLong, Heading } from '@navikt/ds-react'
-import { DeltakerDetaljer } from '../api/data/deltaker'
 import {
   Buildings3Icon,
   EnvelopeClosedIcon,
-  HouseIcon,
   PersonIcon,
   PhoneIcon
 } from '@navikt/aksel-icons'
-import { erAdresseBeskyttet, formaterTelefonnummer } from '../utils/utils'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import { EMDASH } from 'deltaker-flate-common'
+import { DeltakerDetaljer } from '../api/data/deltaker'
+import { formaterTelefonnummer } from '../utils/utils'
 
 interface Props {
   deltaker: DeltakerDetaljer | null
@@ -19,35 +18,8 @@ export const Kontaktinformasjon = ({ deltaker }: Props) => {
     return null
   }
 
-  const adresseBeskyttet = erAdresseBeskyttet(deltaker.beskyttelsesmarkering)
-
   return (
     <div className="w-fit">
-      {!adresseBeskyttet && (
-        <Box>
-          <Heading level="3" size="xsmall">
-            Kontaktinformasjon
-          </Heading>
-          <Item
-            icon={PhoneIcon}
-            title="Telefonnummer"
-            detail={formaterTelefonnummer(
-              deltaker.kontaktinformasjon.telefonnummer
-            )}
-          />
-          <Item
-            icon={EnvelopeClosedIcon}
-            title="Epost"
-            detail={deltaker.kontaktinformasjon.epost}
-          />
-          <Item
-            icon={HouseIcon}
-            title="Adresse"
-            detail={deltaker.kontaktinformasjon.adresse}
-          />
-        </Box>
-      )}
-
       <Box>
         <Heading level="3" size="xsmall">
           Nav-kontor
