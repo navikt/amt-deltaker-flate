@@ -1,6 +1,6 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { DeltakerDetaljer } from '../api/data/deltaker'
-import { erAdresseBeskyttet, lagDeltakerNavn } from '../utils/utils'
+import { lagDeltakerNavn } from '../utils/utils'
 import { DeltakerMarkering } from './DeltakerMarkering'
 import { Fodselsnummer } from './Fodselsnummer'
 
@@ -12,8 +12,6 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
   if (!deltaker) {
     return null
   }
-
-  const adresseBeskyttet = erAdresseBeskyttet(deltaker.beskyttelsesmarkering)
 
   return (
     <div className="pt-4 pb-4 border-t border-b border-[var(--a-border-divider)]">
@@ -27,7 +25,7 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
         </Heading>
         <HeaderSkille />
 
-        {!adresseBeskyttet && deltaker.fodselsnummer && (
+        {deltaker.fodselsnummer && (
           <>
             <Fodselsnummer fnr={deltaker.fodselsnummer} />
             <HeaderSkille />
