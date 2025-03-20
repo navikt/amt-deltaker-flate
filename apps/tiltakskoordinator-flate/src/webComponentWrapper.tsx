@@ -1,23 +1,25 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
 import { createRoot, Root } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import appCss from './app.css?inline'
-import { AppContextProvider } from './AppContext.tsx'
-import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
-import { AppRoutes } from './Routes.tsx'
+import { App } from './App.tsx'
+import { AppContextProvider } from './context-providers/AppContext.tsx'
+import {
+  APPLICATION_NAME,
+  APPLICATION_WEB_COMPONENT_NAME
+} from './utils/constants.ts'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: 'amt-tiltakskoordinator-flate'
+      name: APPLICATION_NAME
     },
     isolate: true
   })
 }
 
 export class Deltakerliste extends HTMLElement {
-  static DELTAKERLISTE_ID_PROP = 'data-deltakerlisteId'
+  static DELTAKERLISTE_ID_PROP = 'gjennomforingid'
 
   private readonly root: HTMLDivElement
   private reactRoot?: Root
@@ -51,9 +53,7 @@ export class Deltakerliste extends HTMLElement {
     this.reactRoot.render(
       <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
         <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <App />
         </AppContextProvider>
       </div>
     )

@@ -1,16 +1,18 @@
 import { HttpResponse } from 'msw'
-import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
+import { DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
 import {
   createMockDeltakere,
-  createMockDeltakerlisteDetaljer
+  createMockDeltakerlisteDetaljer,
+  mapDeltakerDeltaljerToDeltaker
 } from './mockData.tsx'
+import { DeltakerDetaljer } from '../api/data/deltaker.ts'
 
 export class MockHandler {
   tilgang = true
   stengt = false
   harAdRolle = true
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
-  deltakere: Deltakere | null = null
+  deltakere: DeltakerDetaljer[] = createMockDeltakere()
 
   getDeltakerlisteDetaljer() {
     this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer()
@@ -30,9 +32,26 @@ export class MockHandler {
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
+    return HttpResponse.json(this.deltakere.map(mapDeltakerDeltaljerToDeltaker))
+  }
 
-    this.deltakere = createMockDeltakere()
-    return HttpResponse.json(this.deltakere)
+  getDeltaker(deltakerId: string) {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+    const deltaker = this.deltakere.find(
+      (deltaker) => deltaker.id === deltakerId
+    )
+    return HttpResponse.json(deltaker)
   }
 
   leggTilTilgang() {

@@ -9,7 +9,6 @@ import {
   formatDateStrWithMonthName,
   formatDateWithMonthName
 } from '../utils/utils'
-import React from 'react'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null

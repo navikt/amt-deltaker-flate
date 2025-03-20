@@ -219,40 +219,20 @@ export const worker = setupWorker(
       return await request.json().then(() => handler.avvisForslag(forslagId))
     }
   ),
-  http.post(
-    '/amt-deltaker-bff/pamelding/:deltakerId/avbryt',
-    async ({ request, params }) => {
-      await delay(1000)
+  http.post('/amt-deltaker-bff/pamelding/:deltakerId/avbryt', async () => {
+    await delay(1000)
 
-      const { deltakerId } = params
+    return new HttpResponse(null, {
+      status: 200
+    })
+  }),
+  http.post('/amt-deltaker-bff/pamelding/:deltakerId/kladd', async () => {
+    await delay(1000)
 
-      const response = await request
-        .json()
-        .then((json) => ikkeAktuellSchema.parse(json))
-
-      // eslint-disable-next-line no-console
-      console.log('Deltaker ' + { deltakerId } + ':', response)
-
-      return new HttpResponse(null, {
-        status: 200
-      })
-    }
-  ),
-  http.post(
-    '/amt-deltaker-bff/pamelding/:deltakerId/kladd',
-    async ({ request, params }) => {
-      await delay(1000)
-      const { deltakerId } = params
-      const requestBody = await request.json()
-
-      // eslint-disable-next-line no-console
-      console.log('Kladd stored', deltakerId, requestBody)
-
-      return new HttpResponse(null, {
-        status: 200
-      })
-    }
-  ),
+    return new HttpResponse(null, {
+      status: 200
+    })
+  }),
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
     await delay(1000)
     return handler.getHistorikk()

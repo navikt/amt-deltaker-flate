@@ -1,7 +1,9 @@
-import { BodyShort, HStack, Label, Table } from '@navikt/ds-react'
-import { useDeltakerlisteContext } from '../DeltakerlisteContext'
+import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
-import { Deltaker } from '../api/data/deltakerliste'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
+import { getDeltakerUrl } from '../navigation.ts'
+import { lagDeltakerNavn } from '../utils/utils.ts'
 import { BeskyttelsesmarkeringIkoner } from './BeskyttelsesmarkeringIkoner'
 import { Vurdering } from './Vurdering.tsx'
 
@@ -10,6 +12,14 @@ export const DeltakerlisteTabell = () => {
   const skalViseVurderinger =
     deltakerlisteDetaljer.tiltakskode ==
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+
+  if (deltakere.length === 0) {
+    return (
+      <Alert inline variant="info" size="small" className="h-fit">
+        Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere.
+      </Alert>
+    )
+  }
 
   return (
     <Table className="w-fit h-fit">
@@ -35,9 +45,20 @@ export const DeltakerlisteTabell = () => {
         {deltakere.map((deltaker) => {
           return (
             <Table.Row key={`${deltaker.id}`}>
-              <Table.DataCell className="pl-4 pr-4">
+              <Table.DataCell className="pl-4 pr-4 hover:text-green-500">
                 <HStack gap="1" className="items-center">
-                  <BodyShort size="small">{deltakerNavn(deltaker)}</BodyShort>
+                  <BodyShort size="small">
+                    <Link
+                      as={ReactRouterLink}
+                      to={getDeltakerUrl(deltakerlisteDetaljer.id, deltaker.id)}
+                    >
+                      {lagDeltakerNavn(
+                        deltaker.fornavn,
+                        deltaker.mellomnavn,
+                        deltaker.etternavn
+                      )}
+                    </Link>
+                  </BodyShort>
                   <BeskyttelsesmarkeringIkoner
                     beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
                   />
@@ -60,8 +81,4 @@ export const DeltakerlisteTabell = () => {
       </Table.Body>
     </Table>
   )
-}
-
-function deltakerNavn({ fornavn, mellomnavn, etternavn }: Deltaker): string {
-  return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }

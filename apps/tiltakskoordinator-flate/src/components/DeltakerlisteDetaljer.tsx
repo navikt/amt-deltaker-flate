@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Detail, Link, List } from '@navikt/ds-react'
-import { useDeltakerlisteContext } from '../DeltakerlisteContext'
+import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
 import { formatDate } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { TILTAKSANSVARLIG_URL } from '../../utils/environment-utils.ts'

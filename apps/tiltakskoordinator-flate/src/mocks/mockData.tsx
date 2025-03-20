@@ -2,66 +2,108 @@ import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import {
   Beskyttelsesmarkering,
   Deltaker,
-  Deltakere,
   DeltakerlisteDetaljer,
   Vurderingstype
 } from '../api/data/deltakerliste'
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
+import {
+  DeltakerDetaljer,
+  InnsatsbehovType,
+  Vurdering
+} from '../api/data/deltaker.ts'
+import { faker } from '@faker-js/faker/locale/nb_NO'
+import { erAdresseBeskyttet } from '../utils/utils.ts'
 
-const createMockDeltaker = (
-  statusType: DeltakerStatusType,
-  beskyttelsesmarkering: Beskyttelsesmarkering[],
-  vurdering: Vurderingstype | null,
-  navEnhet: string | null
+export const mapDeltakerDeltaljerToDeltaker = (
+  deltakerDetaljer: DeltakerDetaljer
 ): Deltaker => {
   return {
-    id: uuidv4(),
-    fornavn: 'Navn',
+    ...deltakerDetaljer,
+    vurdering: deltakerDetaljer.vurdering?.type ?? null
+  }
+}
+
+export const createMockDeltaker = (
+  id: string,
+  statusType: DeltakerStatusType,
+  beskyttelsesmarkering: Beskyttelsesmarkering[],
+  vurdering: Vurdering | null,
+  navEnhet: string | null
+): DeltakerDetaljer => {
+  const adresseBeskyttet = erAdresseBeskyttet(beskyttelsesmarkering)
+  return {
+    id,
+    fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
     mellomnavn: null,
-    etternavn: 'Naversen',
+    etternavn: faker.person.lastName(),
+    fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
       aarsak: null
     },
     vurdering,
     beskyttelsesmarkering,
-    navEnhet
+    navEnhet,
+    startdato: faker.date.past(),
+    sluttdato: faker.date.future(),
+    navVeileder: {
+      navn: adresseBeskyttet ? null : 'Veileder veiledersen',
+      telefonnummer: adresseBeskyttet ? null : '87654321',
+      epost: 'veileder.veiledersen@epost.no'
+    },
+    innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS
   }
 }
+const createStatus = (index: number) => {
+  if (index < 3) {
+    return DeltakerStatusType.VENTER_PA_OPPSTART
+  } else if (index < 6) {
+    return DeltakerStatusType.IKKE_AKTUELL
+  }
+  return DeltakerStatusType.SOKT_INN
+}
 
-export const createMockDeltakere = (): Deltakere => {
+const createVurdering = (index: number): Vurdering | null => {
+  if (index < 3) {
+    return {
+      type: Vurderingstype.OPPFYLLER_KRAVENE,
+      begrunnelse: null
+    }
+  } else if (index < 6) {
+    return {
+      type: Vurderingstype.OPPFYLLER_IKKE_KRAVENE,
+      begrunnelse: 'Deltakeren oppfyller ikek kravene.'
+    }
+  }
+  return null
+}
+
+const createBeskyttelsesmarkering = (index: number) => {
+  if (index === 10) return [Beskyttelsesmarkering.SKJERMET]
+  if (index === 11) return [Beskyttelsesmarkering.FORTROLIG]
+  if (index === 12) return [Beskyttelsesmarkering.STRENGT_FORTROLIG]
+  if (index === 13) return [Beskyttelsesmarkering.STRENGT_FORTROLIG_UTLAND]
+  if (index === 14)
+    return [
+      Beskyttelsesmarkering.STRENGT_FORTROLIG,
+      Beskyttelsesmarkering.SKJERMET
+    ]
+
+  return []
+}
+
+export const createMockDeltakere = (): DeltakerDetaljer[] => {
   const deltakere = []
   for (let i = 0; i < 15; i++) {
-    let statusType = DeltakerStatusType.SOKT_INN
-    let vurdering = null
-    if (i < 3) {
-      statusType = DeltakerStatusType.VENTER_PA_OPPSTART
-      vurdering = Vurderingstype.OPPFYLLER_KRAVENE
-    } else if (i < 6) {
-      statusType = DeltakerStatusType.IKKE_AKTUELL
-      vurdering = Vurderingstype.OPPFYLLER_IKKE_KRAVENE
-    }
-    let beskyttelsesmarkering: Beskyttelsesmarkering[] = []
-    if (i === 10) beskyttelsesmarkering = [Beskyttelsesmarkering.SKJERMET]
-    if (i === 11) beskyttelsesmarkering = [Beskyttelsesmarkering.FORTROLIG]
-    if (i === 12)
-      beskyttelsesmarkering = [Beskyttelsesmarkering.STRENGT_FORTROLIG]
-    if (i === 13)
-      beskyttelsesmarkering = [Beskyttelsesmarkering.STRENGT_FORTROLIG_UTLAND]
-    if (i === 14)
-      beskyttelsesmarkering = [
-        Beskyttelsesmarkering.STRENGT_FORTROLIG,
-        Beskyttelsesmarkering.SKJERMET
-      ]
-
     const navEnheter = ['Nav Grünerløkka', 'Nav Lade', 'Nav Madla', 'Nav Fana']
 
     deltakere.push(
       createMockDeltaker(
-        statusType,
-        beskyttelsesmarkering,
-        vurdering,
+        `86a60e8c-888e-4f5c-8f55-1c83ee9949${i < 10 ? '0' : ''}${i}`,
+        createStatus(i),
+        createBeskyttelsesmarkering(i),
+        createVurdering(i),
         navEnheter[i % navEnheter.length]
       )
     )

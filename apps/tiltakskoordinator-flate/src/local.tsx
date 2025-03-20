@@ -1,11 +1,10 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import './app.css'
-import { AppContextProvider } from './AppContext.tsx'
+import { App } from './App.tsx'
+import { AppContextProvider } from './context-providers/AppContext.tsx'
 import { worker } from './mocks/setupMocks.ts'
-import { AppRoutes } from './Routes.tsx'
-import { useMock } from './utils/environment-utils.ts'
+import { isPrEnv, useMock } from './utils/environment-utils.ts'
 import './webComponentWrapper.tsx'
 
 export async function enableMocking() {
@@ -26,11 +25,9 @@ const renderAsReactRoot = () => {
 
   root.render(
     <React.StrictMode>
-      <AppContextProvider initialDeltakerlisteId={''}>
+      <AppContextProvider initialDeltakerlisteId={isPrEnv ? '' : 'abs'}>
         <div className="m-auto max-w-[1920px]">
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <App />
         </div>
       </AppContextProvider>
     </React.StrictMode>

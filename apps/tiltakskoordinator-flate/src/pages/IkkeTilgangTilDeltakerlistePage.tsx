@@ -3,21 +3,20 @@ import {
   Box,
   Button,
   ConfirmationPanel,
-  VStack
+  Heading
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { leggTilTilgang } from '../api/api'
+import { useAppContext } from '../context-providers/AppContext'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
+import { getDeltakerlisteUrl } from '../navigation'
 
-interface Props {
-  deltakerlisteId: string
-  onConfirm: () => void
-}
-
-export function IkkeTilgangTilDeltakerlistePage({
-  deltakerlisteId,
-  onConfirm: onConfirm
-}: Props) {
+export function IkkeTilgangTilDeltakerlistePage() {
+  const { ref } = useFocusPageLoad('Deltakerliste - Ikke tilgang')
+  const { deltakerlisteId } = useAppContext()
+  const navigate = useNavigate()
   const [confirmation, setConfirmation] = useState(false)
   const [confirmationError, setConfirmationError] = useState<
     string | undefined
@@ -25,7 +24,9 @@ export function IkkeTilgangTilDeltakerlistePage({
   const { error, state, doFetch } = useDeferredFetch(leggTilTilgang)
 
   useEffect(() => {
-    if (!error && state === DeferredFetchState.RESOLVED) onConfirm()
+    if (!error && state === DeferredFetchState.RESOLVED) {
+      navigate(getDeltakerlisteUrl(deltakerlisteId))
+    }
   }, [error, state])
 
   const handleClick = async () => {
@@ -38,10 +39,16 @@ export function IkkeTilgangTilDeltakerlistePage({
 
   return (
     <Box className="flex justify-center pt-16">
-      <VStack gap="4" className="max-w-screen-sm">
-        <h2 className="text-xl font-semibold">
+      <div className="flex flex-col gap-4 max-w-screen-sm">
+        <Heading
+          size="small"
+          level="2"
+          tabIndex={-1}
+          ref={ref}
+          className="outline-none"
+        >
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen
-        </h2>
+        </Heading>
         <BodyLong>
           Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
           prioritere deltakere til kurs.
@@ -69,7 +76,7 @@ export function IkkeTilgangTilDeltakerlistePage({
         >
           Gi meg tilgang
         </Button>
-      </VStack>
+      </div>
     </Box>
   )
 }
