@@ -18,18 +18,26 @@ updates:
         patterns:
           - 'playwright'
           - '@playwright/test'
+        update-types:
+          - 'major'
       nav-designsystem:
         patterns:
           - '@navikt/aksel-*'
           - '@navikt/ds-*'
+        update-types:
+          - 'major'
       tailwindcss:
         patterns:
           - 'tailwindcss'
           - '@tailwindcss/*'
+        update-types:
+          - 'major'
       react:
         patterns:
           - 'react'
           - 'react-dom'
+        update-types:
+          - 'major'
       minor-and-patch:
         patterns:
           - '*'
