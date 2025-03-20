@@ -24,8 +24,8 @@
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@types/react": "^19.0.10",
+    "@types/react": "^19.0.12",
     "@types/uuid": "^10.0.0",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.9"
   }
 }
