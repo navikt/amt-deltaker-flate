@@ -70,6 +70,6 @@ export class MockHandler {
       return deltaker
     })
     this.deltakere = oppdaterteDeltakere
-    return new HttpResponse()
+    return HttpResponse.json(this.deltakere)
   }
 }

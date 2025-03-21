@@ -6,6 +6,7 @@ import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import PrBanner from './components/demo-banner/PrBanner.tsx'
 import { AppRoutes } from './Routes.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
+import { HandlingContextProvider } from './context-providers/HandlingContext.tsx'
 
 dayjs.locale(nb)
 
@@ -17,9 +18,11 @@ export const App = () => {
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteId} />}
       {useMock && <DemoBanner />}
 
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <HandlingContextProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </HandlingContextProvider>
     </>
   )
 }

@@ -37,7 +37,7 @@ export const createMockDeltaker = (
     id,
     fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
     mellomnavn: null,
-    etternavn: faker.person.lastName(),
+    etternavn: adresseBeskyttet ? '' : faker.person.lastName(),
     fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
@@ -120,6 +120,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     sluttdato: dayjs().add(1, 'year').toDate(),
     apentForPamelding: true,
     antallPlasser: 42,
+    arrangorNavn: 'Muligheter AS',
     koordinatorer: [
       {
         id: uuidv4(),

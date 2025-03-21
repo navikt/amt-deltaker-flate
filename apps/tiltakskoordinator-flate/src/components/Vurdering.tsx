@@ -1,13 +1,32 @@
 import { Vurderingstype } from '../api/data/deltakerliste.ts'
 import { BodyShort } from '@navikt/ds-react'
-import { XMarkOctagonIcon, CheckmarkCircleIcon } from '@navikt/aksel-icons'
+import {
+  XMarkOctagonIcon,
+  CheckmarkCircleIcon,
+  QuestionmarkDiamondIcon
+} from '@navikt/aksel-icons'
 
 interface Props {
   vurdering: Vurderingstype | null
+  erManueltDeltMedArrangor: boolean
 }
 
-export const Vurdering = ({ vurdering }: Props) => {
-  if (!vurdering) return null
+export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {
+  if (!vurdering && !erManueltDeltMedArrangor) return null
+
+  if (!vurdering && erManueltDeltMedArrangor) {
+    return (
+      <BodyShort size="small">
+        <QuestionmarkDiamondIcon
+          fontSize="1.5rem"
+          className="inline pb-0.5"
+          aria-hidden
+        />
+        Ubehandlet
+      </BodyShort>
+    )
+  }
+
   return vurdering === Vurderingstype.OPPFYLLER_KRAVENE ? (
     <BodyShort size="small">
       <CheckmarkCircleIcon

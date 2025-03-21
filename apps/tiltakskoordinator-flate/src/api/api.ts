@@ -162,25 +162,38 @@ export async function leggTilTilgang(deltakerlisteId: string) {
 export async function delDeltakereMedArrangor(
   deltakerlisteId: string,
   deltakerIder: string[]
-) {
-  const response = await fetch(
-    `${apiUrl(deltakerlisteId)}/deltakere/del-med-arrangor`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(deltakerIder),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Nav-Consumer-Id': APP_NAME
-      }
+): Promise<Deltakere> {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/del-med-arrangor`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(deltakerIder),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
     }
-  )
+  }).then(async (response) => {
+    if (response.status !== 200) {
+      const message = 'Deltakere kunne ikke deles med arrangør'
+      handleError(message, deltakerlisteId, response.status, null)
+    }
+    try {
+      return deltakereSchema.parse(await response.json())
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakereSchema for getDeltakere',
+          deltakerlisteId
+        )
+      }
 
-  if (response.status !== 200) {
-    const message = 'Deltakere kunne ikke deles med arrangør'
-    handleError(message, deltakerlisteId, response.status, null)
-  }
+      throw new Error(
+        'Deltakerne ble delt med arrangør, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
+      )
+    }
+  })
 }
 
 const harTilgansfeil = (response: Response) => {

@@ -48,6 +48,7 @@ const koordinator = z.object({
 
 export const deltakerlisteDetaljerSchema = z.object({
   id: z.string().uuid(),
+  arrangorNavn: z.string(),
   tiltakskode: tiltakskodeSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
