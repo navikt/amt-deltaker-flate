@@ -35,7 +35,8 @@ export const deltakerSchema = z.object({
   status: deltakerStatusSchema,
   vurdering: z.nativeEnum(Vurderingstype).nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
-  navEnhet: z.string().nullable()
+  navEnhet: z.string().nullable(),
+  erManueltDeltMedArrangor: z.boolean()
 })
 
 export const deltakereSchema = z.array(deltakerSchema)

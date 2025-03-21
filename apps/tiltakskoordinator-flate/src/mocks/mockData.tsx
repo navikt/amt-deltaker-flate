@@ -20,7 +20,8 @@ export const mapDeltakerDeltaljerToDeltaker = (
 ): Deltaker => {
   return {
     ...deltakerDetaljer,
-    vurdering: deltakerDetaljer.vurdering?.type ?? null
+    vurdering: deltakerDetaljer.vurdering?.type ?? null,
+    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering
   }
 }
 

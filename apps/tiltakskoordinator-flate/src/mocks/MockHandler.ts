@@ -1,5 +1,5 @@
 import { HttpResponse } from 'msw'
-import { DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
+import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
@@ -12,7 +12,10 @@ export class MockHandler {
   stengt = false
   harAdRolle = true
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
-  deltakere: DeltakerDetaljer[] = createMockDeltakere()
+  deltakereMedDetaljer: DeltakerDetaljer[] = createMockDeltakere()
+  deltakere: Deltakere = this.deltakereMedDetaljer.map(
+    mapDeltakerDeltaljerToDeltaker
+  )
 
   getDeltakerlisteDetaljer() {
     this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer()
@@ -32,7 +35,7 @@ export class MockHandler {
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
-    return HttpResponse.json(this.deltakere.map(mapDeltakerDeltaljerToDeltaker))
+    return HttpResponse.json(this.deltakere)
   }
 
   getDeltaker(deltakerId: string) {
@@ -48,7 +51,7 @@ export class MockHandler {
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
-    const deltaker = this.deltakere.find(
+    const deltaker = this.deltakereMedDetaljer.find(
       (deltaker) => deltaker.id === deltakerId
     )
     return HttpResponse.json(deltaker)
@@ -56,6 +59,17 @@ export class MockHandler {
 
   leggTilTilgang() {
     this.tilgang = true
+    return new HttpResponse()
+  }
+
+  delMedArrangor(delteDeltakerIder: string[]) {
+    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+      if (delteDeltakerIder.includes(deltaker.id)) {
+        deltaker.erManueltDeltMedArrangor = true
+      }
+      return deltaker
+    })
+    this.deltakere = oppdaterteDeltakere
     return new HttpResponse()
   }
 }

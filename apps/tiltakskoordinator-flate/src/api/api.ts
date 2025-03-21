@@ -159,6 +159,30 @@ export async function leggTilTilgang(deltakerlisteId: string) {
   }
 }
 
+export async function delDeltakereMedArrangor(
+  deltakerlisteId: string,
+  deltakerIder: string[]
+) {
+  const response = await fetch(
+    `${apiUrl(deltakerlisteId)}/deltakere/del-med-arrangor`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(deltakerIder),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Nav-Consumer-Id': APP_NAME
+      }
+    }
+  )
+
+  if (response.status !== 200) {
+    const message = 'Deltakere kunne ikke deles med arrangør'
+    handleError(message, deltakerlisteId, response.status, null)
+  }
+}
+
 const harTilgansfeil = (response: Response) => {
   return [401, 403, 410].includes(response.status)
 }
