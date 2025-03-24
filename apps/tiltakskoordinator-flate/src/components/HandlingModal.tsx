@@ -6,15 +6,15 @@ import {
   List,
   Modal
 } from '@navikt/ds-react'
+import { useState } from 'react'
 import { delDeltakereMedArrangor } from '../api/api'
-import { Deltaker, DeltakerlisteDetaljer } from '../api/data/deltakerliste'
+import { Deltaker } from '../api/data/deltakerliste'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
 import {
   HandlingValg,
   useHandlingContext
 } from '../context-providers/HandlingContext'
 import { lagDeltakerNavn } from '../utils/utils'
-import { useState } from 'react'
 
 interface Props {
   open: boolean
@@ -58,7 +58,7 @@ export const HandlingModal = ({ open, onClose, onSend }: Props) => {
       onClose={onClose}
     >
       <Modal.Body>
-        {getHandlingBody(handlingValg, deltakerlisteDetaljer, valgteDeltakere)}
+        {getHandlingBody(handlingValg, valgteDeltakere)}
 
         <ExpansionCard className="mt-6" size="small">
           <ExpansionCard.Header>
@@ -101,7 +101,6 @@ export const HandlingModal = ({ open, onClose, onSend }: Props) => {
 
 const getHandlingBody = (
   handlingValg: HandlingValg,
-  deltakerlisteDetaljer: DeltakerlisteDetaljer,
   valgteDeltakere: Deltaker[]
 ) => {
   switch (handlingValg) {
@@ -109,14 +108,9 @@ const getHandlingBody = (
       return (
         <>
           <BodyShort>
-            {`Alle personer med status “Søkt inn” (${valgteDeltakere.length} stk)
-            deles med ${deltakerlisteDetaljer.arrangorNavn} for vurdering. Disse blir synlige i
-            Deltakeroversikten til arrangør.`}
+            {`${valgteDeltakere.length} person${valgteDeltakere.length > 1 ? 'er' : ''} deles med arrangør for vurdering. Disse blir synlige i Deltakeroversikten til arrangør.`}
           </BodyShort>
           <BodyShort className="mb-4 mt-4">
-            Deltakere som søkes inn på et senere tidspunkt må ettersendes.
-          </BodyShort>
-          <BodyShort>
             Informasjon om at personinformasjon er delt med arrangør, er synlig
             for deltakerne på nav.no, og for deres Nav-veiledere i Modia.
           </BodyShort>

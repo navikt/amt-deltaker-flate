@@ -32,7 +32,7 @@ export const DeltakerlisteTabell = () => {
   const toggleSelectedRow = (deltaker: Deltaker) =>
     setValgteDeltakere((list) =>
       list.find((it) => it.id === deltaker.id)
-        ? list.filter((id) => id !== deltaker)
+        ? list.filter((it) => it.id !== deltaker.id)
         : [...list, deltaker]
     )
 

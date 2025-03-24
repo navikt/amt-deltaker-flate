@@ -1,4 +1,4 @@
-import { TasklistIcon } from '@navikt/aksel-icons'
+import { TasklistIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { useState } from 'react'
 import {
@@ -22,10 +22,14 @@ export const HandlingerKnapp = ({ className }: Props) => {
         <>
           <Button
             size="small"
-            variant="tertiary"
-            onClick={() => setHandlingValg(null)}
+            variant="secondary"
+            icon={<XMarkIcon aria-hidden />}
+            onClick={() => {
+              setHandlingValg(null)
+              setValgteDeltakere([])
+            }}
           >
-            Avbryt handling
+            Avbryt
           </Button>
           {handlingValg === HandlingValg.DEL_DELTAKERE && (
             <Button size="small" onClick={() => setModalOpen(true)}>

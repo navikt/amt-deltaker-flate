@@ -120,7 +120,6 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     sluttdato: dayjs().add(1, 'year').toDate(),
     apentForPamelding: true,
     antallPlasser: 42,
-    arrangorNavn: 'Muligheter AS',
     koordinatorer: [
       {
         id: uuidv4(),
