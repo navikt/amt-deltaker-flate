@@ -8,7 +8,7 @@ import {
 
 interface Props {
   vurdering: Vurderingstype | null
-  erManueltDeltMedArrangor: boolean
+  erManueltDeltMedArrangor?: boolean
 }
 
 export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {

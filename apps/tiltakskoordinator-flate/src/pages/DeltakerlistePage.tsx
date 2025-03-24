@@ -1,6 +1,6 @@
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
 import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/DeltakerlisteTabell'
-import { HandlingerKnapp } from '../components/HandlingerKnapp'
+import { HandlingerKnapp } from '../components/handling/HandlingerKnapp'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
 export const DeltakerlistePage = () => {

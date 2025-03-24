@@ -4,8 +4,8 @@ import { useState } from 'react'
 import {
   HandlingValg,
   useHandlingContext
-} from '../context-providers/HandlingContext'
-import { HandlingModal } from './HandlingModal'
+} from '../../context-providers/HandlingContext'
+import { HandlingModalController } from './HandlingModalController'
 
 interface Props {
   className?: string
@@ -17,7 +17,7 @@ export const HandlingerKnapp = ({ className }: Props) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
-    <div className={`flex gap-2 ${className ?? ''}`}>
+    <div className={`flex gap-3 ${className ?? ''}`}>
       {handlingValg !== null && (
         <>
           <Button
@@ -63,17 +63,18 @@ export const HandlingerKnapp = ({ className }: Props) => {
         </ActionMenu>
       )}
 
-      <HandlingModal
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false)
-        }}
-        onSend={() => {
-          setModalOpen(false)
-          setValgteDeltakere([])
-          setHandlingValg(null)
-        }}
-      />
+      {handlingValg && (
+        <HandlingModalController
+          handlingValg={handlingValg}
+          modalOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSend={() => {
+            setModalOpen(false)
+            setValgteDeltakere([])
+            setHandlingValg(null)
+          }}
+        />
+      )}
     </div>
   )
 }
