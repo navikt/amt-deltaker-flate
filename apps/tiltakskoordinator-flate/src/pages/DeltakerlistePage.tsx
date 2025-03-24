@@ -1,5 +1,5 @@
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
-import { DeltakerlisteTabell } from '../components/DeltakerlisteTabell'
+import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/DeltakerlisteTabell'
 import { HandlingerKnapp } from '../components/HandlingerKnapp'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 

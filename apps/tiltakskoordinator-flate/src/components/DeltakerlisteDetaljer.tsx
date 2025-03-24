@@ -46,7 +46,7 @@ export const DeltakerlisteDetaljer = () => {
         </BodyLong>
         <Link href={endringsmeldingerLenke} className="mt-3">
           Se endringsmeldinger
-          <ExternalLinkIcon fontSize="1.5rem" />
+          <ExternalLinkIcon fontSize="1.5rem" aria-hidden />
         </Link>
       </div>
     </div>
