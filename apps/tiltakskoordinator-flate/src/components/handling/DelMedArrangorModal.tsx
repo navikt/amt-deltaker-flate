@@ -31,7 +31,7 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
         onSend()
       })
       .catch(() => {
-        setError('Feil ved deling av deltakere. Prøv igjen senere.')
+        setError('Kunne ikke dele med arrangør. Vennligst prøv igjen.')
       })
   }
 

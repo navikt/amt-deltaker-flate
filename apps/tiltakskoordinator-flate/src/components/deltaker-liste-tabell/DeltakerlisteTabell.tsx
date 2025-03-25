@@ -17,10 +17,26 @@ import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { Vurdering } from '../Vurdering.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
+import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
+import { useEffect, useRef } from 'react'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { handlingValg, valgteDeltakere } = useHandlingContext()
+
+  const handlingValgRef = useRef<HandlingValg | null>(null)
+  const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (handlingValg === handlingValgRef.current) {
+      return
+    } else {
+      handlingValgRef.current = handlingValg
+    }
+    if (handlingInfoAlertRef.current) {
+      handlingInfoAlertRef.current.focus()
+    }
+  }, [handlingValg])
 
   const skalViseVurderinger =
     deltakerlisteDetaljer.tiltakskode ==
@@ -36,8 +52,16 @@ export const DeltakerlisteTabell = () => {
 
   return (
     <div className="flex flex-col gap-3">
+      <HandlingerKnapp className="place-self-end mt-2 mb-2" />
+
       {handlingValg !== null && (
-        <Alert variant="info" size="small">
+        <Alert
+          variant="info"
+          size="small"
+          ref={handlingInfoAlertRef}
+          className="outline-none"
+          tabIndex={-1}
+        >
           {getHandlingInfoText(handlingValg)}
         </Alert>
       )}
@@ -99,7 +123,7 @@ export const DeltakerlisteTabell = () => {
                   />
                 </HStack>
               </TableDataCell>
-              <TableDataCell>{deltaker.navEnhet}</TableDataCell>
+              <TableDataCell text={deltaker.navEnhet} />
               <TableDataCell>
                 <DeltakerStatusTag statusType={deltaker.status.type} />
               </TableDataCell>
@@ -132,14 +156,16 @@ const TableHeaderCell = ({ label }: TableHeaderCellProps) => {
 }
 
 interface TableDataCellProps {
-  children: React.ReactNode | string
+  text?: string | null
+  children?: React.ReactNode
   className?: string
 }
 
-const TableDataCell = ({ children, className }: TableDataCellProps) => {
+const TableDataCell = ({ text, children, className }: TableDataCellProps) => {
   return (
     <Table.DataCell className={`pl-4 pr-4 ${className}`}>
-      <BodyShort size="small">{children}</BodyShort>
+      {children ?? null}
+      {text && <BodyShort size="small">{text}</BodyShort>}
     </Table.DataCell>
   )
 }

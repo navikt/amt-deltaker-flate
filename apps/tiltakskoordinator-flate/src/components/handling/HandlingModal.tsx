@@ -47,7 +47,7 @@ export const HandlingModal = ({
               </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-              <List>
+              <List className="-mt-4 -mb-4">
                 {valgteDeltakere.map((deltaker) => (
                   <List.Item key={deltaker.id}>
                     {lagDeltakerNavn(
@@ -70,9 +70,11 @@ export const HandlingModal = ({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button form="skjema" onClick={onUtforHandling}>
-          {getHandlingKnappSendTekst(handlingValg)}
-        </Button>
+        {valgteDeltakere.length > 0 && (
+          <Button form="skjema" onClick={onUtforHandling}>
+            {getHandlingKnappSendTekst(handlingValg)}
+          </Button>
+        )}
         <Button type="button" variant="secondary" onClick={onClose}>
           Avbryt
         </Button>
