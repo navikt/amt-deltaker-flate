@@ -70,6 +70,11 @@ export class MockHandler {
       return deltaker
     })
     this.deltakere = oppdaterteDeltakere
-    return HttpResponse.json(this.deltakere)
+
+    return HttpResponse.json(
+      this.deltakere.filter((deltaker) =>
+        delteDeltakerIder.includes(deltaker.id)
+      )
+    )
   }
 }

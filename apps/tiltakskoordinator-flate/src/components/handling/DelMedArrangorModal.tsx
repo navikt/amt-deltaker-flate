@@ -27,8 +27,15 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
-      .then((deltakere) => {
-        setDelakere(deltakere ?? [])
+      .then((oppdaterteDeltakere) => {
+        setDelakere((deltakere) =>
+          deltakere.map((deltaker) => {
+            const oppdatertDeltaker = oppdaterteDeltakere.find(
+              (oppdaterteDeltaker) => oppdaterteDeltaker.id === deltaker.id
+            )
+            return oppdatertDeltaker ?? deltaker
+          })
+        )
         setError(null)
         onSend()
 
