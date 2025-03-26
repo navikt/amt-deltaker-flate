@@ -176,7 +176,7 @@ const TableDataCell = ({ text, children, className }: TableDataCellProps) => {
 const getHandlingInfoText = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
-      return 'Velg deltakere som skal tilbys plass.'
+      return 'Velg deltakere som skal deles med arrangør for vurdering.'
   }
 }
 

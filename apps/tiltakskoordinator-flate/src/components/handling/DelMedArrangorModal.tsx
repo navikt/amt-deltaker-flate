@@ -59,7 +59,7 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
         {`${valgteDeltakere.length} person${valgteDeltakere.length === 1 ? '' : 'er'} deles med arrangør for vurdering. Disse blir synlige i Deltakeroversikten til arrangør.`}
       </BodyShort>
       <BodyShort className="mb-4 mt-4">
-        Informasjon om at personinformasjon er delt med arrangør, er synlig for
+        Informasjon om at opplysninger er delt med arrangør, blir synlig for
         deltakerne på nav.no, og for deres Nav-veiledere i Modia.
       </BodyShort>
     </HandlingModal>
