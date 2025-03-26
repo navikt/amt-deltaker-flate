@@ -10,6 +10,8 @@ export interface HandlingContextProps {
   setHandlingValg: React.Dispatch<React.SetStateAction<HandlingValg | null>>
   valgteDeltakere: Deltaker[]
   setValgteDeltakere: React.Dispatch<React.SetStateAction<Deltaker[]>>
+  handlingUtfortText: string | null
+  setHandlingUtfortText: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const HandlingContext = createContext<HandlingContextProps | undefined>(
@@ -35,12 +37,17 @@ const HandlingContextProvider = ({
 }) => {
   const [handlingValg, setHandlingValg] = useState<HandlingValg | null>(null)
   const [valgteDeltakere, setValgteDeltakere] = useState<Deltaker[]>([])
+  const [handlingUtfortText, setHandlingUtfortText] = useState<string | null>(
+    null
+  )
 
   const contextValue: HandlingContextProps = {
     handlingValg,
     valgteDeltakere,
+    handlingUtfortText,
     setHandlingValg,
-    setValgteDeltakere
+    setValgteDeltakere,
+    setHandlingUtfortText
   }
 
   return (

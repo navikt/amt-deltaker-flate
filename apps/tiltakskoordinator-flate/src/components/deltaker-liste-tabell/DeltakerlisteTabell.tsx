@@ -19,6 +19,7 @@ import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
 import { useEffect, useRef } from 'react'
+import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -139,6 +140,8 @@ export const DeltakerlisteTabell = () => {
           ))}
         </Table.Body>
       </Table>
+
+      <HandlingFullfortAlert />
     </div>
   )
 }

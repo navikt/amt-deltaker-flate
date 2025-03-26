@@ -13,7 +13,9 @@ interface Props {
 
 export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
   const { deltakerlisteDetaljer, setDelakere } = useDeltakerlisteContext()
-  const { valgteDeltakere, handlingValg } = useHandlingContext()
+  const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
+    useHandlingContext()
+
   const [error, setError] = useState<string | null>(null)
 
   if (!handlingValg) {
@@ -29,6 +31,10 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
         setDelakere(deltakere ?? [])
         setError(null)
         onSend()
+
+        setHandlingUtfortText(
+          `${valgteDeltakere.length} deltaker${valgteDeltakere.length === 1 ? '' : 'e'} ble delt med arrangør.`
+        )
       })
       .catch(() => {
         setError('Kunne ikke dele med arrangør. Vennligst prøv igjen.')

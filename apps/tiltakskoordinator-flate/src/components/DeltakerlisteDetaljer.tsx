@@ -11,7 +11,7 @@ export const DeltakerlisteDetaljer = () => {
   const endringsmeldingerLenke = `${TILTAKSANSVARLIG_URL}/gjennomforing/${deltakerlisteId}`
 
   return (
-    <div className="md:w-1/5 w-full">
+    <div className="md:w-1/5 w-full mt-14">
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}
