@@ -1,6 +1,5 @@
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
 import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/DeltakerlisteTabell'
-import { HandlingContextProvider } from '../context-providers/HandlingContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 
 export const DeltakerlistePage = () => {
@@ -18,9 +17,7 @@ export const DeltakerlistePage = () => {
         <DeltakerlisteDetaljer />
 
         <h2 className="sr-only">Deltakerliste</h2>
-        <HandlingContextProvider>
-          <DeltakerlisteTabell />
-        </HandlingContextProvider>
+        <DeltakerlisteTabell />
       </div>
     </div>
   )
