@@ -42,7 +42,9 @@ export const DeltakerlisteTabell = () => {
 
   const skalViseVurderinger =
     deltakerlisteDetaljer.tiltakskode ==
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+    deltakerlisteDetaljer.tiltakskode ==
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
   if (deltakere.length === 0) {
     return (

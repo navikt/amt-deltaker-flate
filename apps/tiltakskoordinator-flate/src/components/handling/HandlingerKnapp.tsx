@@ -6,12 +6,15 @@ import {
   useHandlingContext
 } from '../../context-providers/HandlingContext'
 import { HandlingModalController } from './HandlingModalController'
+import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
+import { Tiltakskode } from 'deltaker-flate-common'
 
 interface Props {
   className?: string
 }
 
 export const HandlingerKnapp = ({ className }: Props) => {
+  const { deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { handlingValg, setHandlingValg, setValgteDeltakere } =
     useHandlingContext()
   const [modalOpen, setModalOpen] = useState(false)
@@ -28,6 +31,15 @@ export const HandlingerKnapp = ({ className }: Props) => {
       handlingKnappRef.current.focus()
     }
   }, [handlingValg])
+
+  const kanDeleMedArrangor =
+    deltakerlisteDetaljer.tiltakskode ==
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+    deltakerlisteDetaljer.tiltakskode ==
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  if (!kanDeleMedArrangor) {
+    return <div className="mt-8"></div>
+  }
 
   return (
     <div className={`flex gap-3 ${className ?? ''}`}>
