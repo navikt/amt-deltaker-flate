@@ -23,19 +23,24 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
             deltaker.etternavn
           )}
         </Heading>
-        <HeaderSkille />
 
         {deltaker.fodselsnummer && (
           <>
-            <Fodselsnummer fnr={deltaker.fodselsnummer} />
             <HeaderSkille />
+            <Fodselsnummer fnr={deltaker.fodselsnummer} />
           </>
         )}
 
-        <DeltakerMarkering
-          beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
-          innsatsgruppe={deltaker.innsatsgruppe}
-        />
+        {(deltaker.innsatsgruppe ||
+          deltaker.beskyttelsesmarkering.length > 0) && (
+          <>
+            <HeaderSkille />
+            <DeltakerMarkering
+              beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
+              innsatsgruppe={deltaker.innsatsgruppe}
+            />
+          </>
+        )}
       </div>
     </div>
   )

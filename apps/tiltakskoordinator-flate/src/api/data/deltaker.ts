@@ -44,7 +44,7 @@ export const deltakerDetaljerSchema = z.object({
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
-  innsatsgruppe: z.nativeEnum(InnsatsbehovType)
+  innsatsgruppe: z.nativeEnum(InnsatsbehovType).nullable()
 })
 
 export type DeltakerDetaljer = z.infer<typeof deltakerDetaljerSchema>
