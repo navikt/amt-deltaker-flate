@@ -1,17 +1,41 @@
 import { Vurderingstype } from '../api/data/deltakerliste.ts'
 import { BodyShort } from '@navikt/ds-react'
-import { XMarkOctagonIcon, CheckmarkCircleIcon } from '@navikt/aksel-icons'
+import {
+  XMarkOctagonIcon,
+  CheckmarkCircleIcon,
+  QuestionmarkDiamondIcon
+} from '@navikt/aksel-icons'
 
 interface Props {
   vurdering: Vurderingstype | null
+  erManueltDeltMedArrangor?: boolean
+  disabled?: boolean | null
 }
 
-export const Vurdering = ({ vurdering }: Props) => {
-  if (!vurdering) return null
+export const Vurdering = ({
+  vurdering,
+  erManueltDeltMedArrangor,
+  disabled
+}: Props) => {
+  if (!vurdering && !erManueltDeltMedArrangor) return null
+
+  if (!vurdering && erManueltDeltMedArrangor) {
+    return (
+      <BodyShort size="small">
+        <QuestionmarkDiamondIcon
+          fontSize="1.5rem"
+          className="inline pb-0.5"
+          aria-hidden
+        />
+        Ubehandlet
+      </BodyShort>
+    )
+  }
+
   return vurdering === Vurderingstype.OPPFYLLER_KRAVENE ? (
     <BodyShort size="small">
       <CheckmarkCircleIcon
-        color={ikonFarge(vurdering)}
+        color={ikonFarge(vurdering, disabled)}
         fontSize="1.5rem"
         className="inline pb-0.5"
         aria-hidden
@@ -21,7 +45,7 @@ export const Vurdering = ({ vurdering }: Props) => {
   ) : (
     <BodyShort size="small">
       <XMarkOctagonIcon
-        color={ikonFarge(vurdering)}
+        color={ikonFarge(vurdering, disabled)}
         fontSize="1.5rem"
         className="inline pb-0.5"
         aria-hidden
@@ -31,7 +55,13 @@ export const Vurdering = ({ vurdering }: Props) => {
   )
 }
 
-function ikonFarge(vurdering: Vurderingstype | null) {
+function ikonFarge(
+  vurdering: Vurderingstype | null,
+  disabled?: boolean | null
+) {
+  if (disabled) {
+    return 'var(--a-border-subtle-hover)'
+  }
   switch (vurdering) {
     case Vurderingstype.OPPFYLLER_KRAVENE:
       return 'var(--a-surface-success)'

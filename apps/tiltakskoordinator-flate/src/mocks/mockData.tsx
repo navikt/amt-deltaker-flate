@@ -20,7 +20,8 @@ export const mapDeltakerDeltaljerToDeltaker = (
 ): Deltaker => {
   return {
     ...deltakerDetaljer,
-    vurdering: deltakerDetaljer.vurdering?.type ?? null
+    vurdering: deltakerDetaljer.vurdering?.type ?? null,
+    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering
   }
 }
 
@@ -36,7 +37,7 @@ export const createMockDeltaker = (
     id,
     fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
     mellomnavn: null,
-    etternavn: faker.person.lastName(),
+    etternavn: adresseBeskyttet ? '' : faker.person.lastName(),
     fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,

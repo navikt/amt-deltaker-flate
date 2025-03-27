@@ -11,7 +11,7 @@ export const DeltakerlisteDetaljer = () => {
   const endringsmeldingerLenke = `${TILTAKSANSVARLIG_URL}/gjennomforing/${deltakerlisteId}`
 
   return (
-    <div className="w-1/5">
+    <div className="md:w-1/5 w-full mt-14">
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}
@@ -46,7 +46,7 @@ export const DeltakerlisteDetaljer = () => {
         </BodyLong>
         <Link href={endringsmeldingerLenke} className="mt-3">
           Se endringsmeldinger
-          <ExternalLinkIcon fontSize="1.5rem" />
+          <ExternalLinkIcon fontSize="1.5rem" aria-hidden />
         </Link>
       </div>
     </div>

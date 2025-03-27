@@ -9,7 +9,7 @@ import {
 
 interface Props {
   beskyttelsesmarkering: Beskyttelsesmarkering[]
-  innsatsgruppe: InnsatsbehovType
+  innsatsgruppe: InnsatsbehovType | null
 }
 
 export const DeltakerMarkering = ({
@@ -23,11 +23,13 @@ export const DeltakerMarkering = ({
           {getBeskyttelsesMarkeringTekst(markering)}
         </Tag>
       ))}
-      <Tooltip content={getInsatsGruppeGammelTekst(innsatsgruppe)}>
-        <Tag variant="warning" size="small">
-          {getInsatsGruppeTekst(innsatsgruppe)}
-        </Tag>
-      </Tooltip>
+      {innsatsgruppe && (
+        <Tooltip content={getInsatsGruppeGammelTekst(innsatsgruppe)}>
+          <Tag variant="warning" size="small">
+            {getInsatsGruppeTekst(innsatsgruppe)}
+          </Tag>
+        </Tooltip>
+      )}
     </div>
   )
 }
