@@ -1,10 +1,7 @@
 import { Checkbox } from '@navikt/ds-react'
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
-import {
-  HandlingValg,
-  useHandlingContext
-} from '../../context-providers/HandlingContext.tsx'
+import { useHandlingContext } from '../../context-providers/HandlingContext.tsx'
 
 interface Props {
   deltaker: Deltaker
@@ -22,12 +19,7 @@ export const VelgDeltakerCheckbox = ({ deltaker, labelId }: Props) => {
         : [...list, deltaker]
     )
 
-  const disabled =
-    handlingValg === HandlingValg.DEL_DELTAKERE
-      ? deltaker.status.type !== DeltakerStatusType.SOKT_INN ||
-        deltaker.erManueltDeltMedArrangor ||
-        deltaker.vurdering !== null
-      : false
+  const disabled = !kanVelges(handlingValg, deltaker)
 
   return (
     <Checkbox

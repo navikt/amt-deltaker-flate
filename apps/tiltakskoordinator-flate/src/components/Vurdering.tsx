@@ -9,9 +9,14 @@ import {
 interface Props {
   vurdering: Vurderingstype | null
   erManueltDeltMedArrangor?: boolean
+  disabled?: boolean | null
 }
 
-export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {
+export const Vurdering = ({
+  vurdering,
+  erManueltDeltMedArrangor,
+  disabled
+}: Props) => {
   if (!vurdering && !erManueltDeltMedArrangor) return null
 
   if (!vurdering && erManueltDeltMedArrangor) {
@@ -30,7 +35,7 @@ export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {
   return vurdering === Vurderingstype.OPPFYLLER_KRAVENE ? (
     <BodyShort size="small">
       <CheckmarkCircleIcon
-        color={ikonFarge(vurdering)}
+        color={ikonFarge(vurdering, disabled)}
         fontSize="1.5rem"
         className="inline pb-0.5"
         aria-hidden
@@ -40,7 +45,7 @@ export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {
   ) : (
     <BodyShort size="small">
       <XMarkOctagonIcon
-        color={ikonFarge(vurdering)}
+        color={ikonFarge(vurdering, disabled)}
         fontSize="1.5rem"
         className="inline pb-0.5"
         aria-hidden
@@ -50,7 +55,13 @@ export const Vurdering = ({ vurdering, erManueltDeltMedArrangor }: Props) => {
   )
 }
 
-function ikonFarge(vurdering: Vurderingstype | null) {
+function ikonFarge(
+  vurdering: Vurderingstype | null,
+  disabled?: boolean | null
+) {
+  if (disabled) {
+    return 'var(--a-border-subtle-hover)'
+  }
   switch (vurdering) {
     case Vurderingstype.OPPFYLLER_KRAVENE:
       return 'var(--a-surface-success)'

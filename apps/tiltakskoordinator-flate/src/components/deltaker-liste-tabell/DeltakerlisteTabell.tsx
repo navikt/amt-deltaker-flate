@@ -20,6 +20,7 @@ import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
 import { useEffect, useRef } from 'react'
 import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
+import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -89,55 +90,77 @@ export const DeltakerlisteTabell = () => {
           </Table.Row>
         </Table.Header>
 
-        <Table.Body>
-          {deltakere.map((deltaker) => (
-            <Table.Row
-              key={`${deltaker.id}`}
-              selected={!!valgteDeltakere.find((it) => it.id === deltaker.id)}
-            >
-              {handlingValg !== null && (
-                <Table.DataCell>
-                  <VelgDeltakerCheckbox
-                    deltaker={deltaker}
-                    labelId={`id${deltaker.id}`}
-                  />
-                </Table.DataCell>
-              )}
-              <TableDataCell>
-                <HStack
-                  id={`id${deltaker.id}`}
-                  gap="1"
-                  className="items-center"
-                >
-                  <Link
-                    as={ReactRouterLink}
-                    to={getDeltakerUrl(deltakerlisteDetaljer.id, deltaker.id)}
-                  >
-                    {lagDeltakerNavn(
-                      deltaker.fornavn,
-                      deltaker.mellomnavn,
-                      deltaker.etternavn
-                    )}
-                  </Link>
-                  <BeskyttelsesmarkeringIkoner
-                    beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
-                  />
-                </HStack>
-              </TableDataCell>
-              <TableDataCell text={deltaker.navEnhet} />
-              <TableDataCell>
-                <DeltakerStatusTag statusType={deltaker.status.type} />
-              </TableDataCell>
-              {skalViseVurderinger && (
+        <Table.Body className="">
+          {deltakere.map((deltaker) => {
+            const disabled = !kanVelges(handlingValg, deltaker)
+            const navn = lagDeltakerNavn(
+              deltaker.fornavn,
+              deltaker.mellomnavn,
+              deltaker.etternavn
+            )
+            return (
+              <Table.Row
+                key={`${deltaker.id}`}
+                selected={!!valgteDeltakere.find((it) => it.id === deltaker.id)}
+                className={
+                  disabled ? 'text-[var(--a-border-subtle-hover)]' : ''
+                }
+              >
+                {handlingValg !== null && (
+                  <Table.DataCell>
+                    <VelgDeltakerCheckbox
+                      deltaker={deltaker}
+                      labelId={`id${deltaker.id}`}
+                    />
+                  </Table.DataCell>
+                )}
+
                 <TableDataCell>
-                  <Vurdering
-                    vurdering={deltaker.vurdering}
-                    erManueltDeltMedArrangor={deltaker.erManueltDeltMedArrangor}
-                  />
+                  <HStack
+                    id={`id${deltaker.id}`}
+                    gap="1"
+                    className="items-center"
+                  >
+                    {disabled ? (
+                      <BodyShort size="small">{navn}</BodyShort>
+                    ) : (
+                      <Link
+                        as={ReactRouterLink}
+                        to={getDeltakerUrl(
+                          deltakerlisteDetaljer.id,
+                          deltaker.id
+                        )}
+                      >
+                        {navn}
+                      </Link>
+                    )}
+
+                    <BeskyttelsesmarkeringIkoner
+                      beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
+                    />
+                  </HStack>
                 </TableDataCell>
-              )}
-            </Table.Row>
-          ))}
+
+                <TableDataCell text={deltaker.navEnhet} />
+
+                <TableDataCell>
+                  <DeltakerStatusTag statusType={deltaker.status.type} />
+                </TableDataCell>
+
+                {skalViseVurderinger && (
+                  <TableDataCell>
+                    <Vurdering
+                      vurdering={deltaker.vurdering}
+                      erManueltDeltMedArrangor={
+                        deltaker.erManueltDeltMedArrangor
+                      }
+                      disabled={disabled}
+                    />
+                  </TableDataCell>
+                )}
+              </Table.Row>
+            )
+          })}
         </Table.Body>
       </Table>
 
