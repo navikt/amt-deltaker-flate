@@ -18,7 +18,8 @@ import {
   deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
-  visDeltakelsesmengde
+  visDeltakelsesmengde,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -32,6 +33,8 @@ export const UtkastPage = () => {
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
 
+  const erFellesOppstart =
+    deltaker.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -69,7 +72,7 @@ export const UtkastPage = () => {
         className="mt-6"
         data-testid="heading_utkast"
       >
-        Utkast til påmelding
+        {erFellesOppstart ? 'Utkast til søknad' : 'Utkast til påmelding'}
       </Heading>
       <UtkastHeader
         vedtaksinformasjon={deltaker.vedtaksinformasjon}

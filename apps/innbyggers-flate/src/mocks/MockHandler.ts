@@ -11,7 +11,8 @@ import {
   createHistorikk,
   getInnholdForTiltaksType,
   getLedetekst,
-  getUtvidetInnhold
+  getUtvidetInnhold,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -49,7 +50,7 @@ export const createDeltaker = (
       deltakerlisteNavn: 'Testliste',
       tiltakstype: tiltakstype,
       arrangorNavn: 'Den Beste Arrangøren AS',
-      oppstartstype: 'løpende',
+      oppstartstype: Oppstartstype.LOPENDE,
       startdato: '2022-10-28',
       sluttdato: '2027-12-20'
     },

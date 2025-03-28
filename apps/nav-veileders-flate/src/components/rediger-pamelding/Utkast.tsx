@@ -6,14 +6,15 @@ import {
   deltakerprosentText,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
-import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
+import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
+import { OmKurset } from '../pamelding/OmKurset.tsx'
 
 interface Props {
   innhold: Deltakelsesinnhold | null
   bakgrunnsinformasjon: string | null
   deltakelsesprosent: number | null
   dagerPerUke: number | null
-  tiltakstype: ArenaTiltakskode
+  deltakerliste: Deltakerliste
 }
 
 export const Utkast = ({
@@ -21,12 +22,20 @@ export const Utkast = ({
   bakgrunnsinformasjon,
   deltakelsesprosent,
   dagerPerUke,
-  tiltakstype
+  deltakerliste
 }: Props) => {
+  const tiltakstype = deltakerliste.tiltakstype
   const bakgrunnsinfoVisningstekst =
     bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
       ? bakgrunnsinformasjon
       : EMDASH
+
+  const visBakgrunnsinfoVisn = !(
+    tiltakstype === ArenaTiltakskode.JOBBK ||
+    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+    tiltakstype === ArenaTiltakskode.DIGIOPPARB
+  )
 
   return (
     <VStack>
@@ -41,7 +50,7 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      {bakgrunnsinformasjon && (
+      {visBakgrunnsinfoVisn && (
         <div className="mt-8">
           <Heading level="3" size="small">
             Bakgrunnsinfo
@@ -62,6 +71,12 @@ export const Utkast = ({
           </BodyLong>
         </>
       )}
+
+      <OmKurset
+        deltakerliste={deltakerliste}
+        size="small"
+        className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
+      />
     </VStack>
   )
 }

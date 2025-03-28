@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import { dateSchema, nullableDateSchema } from './utils'
 
+export enum Oppstartstype {
+  LOPENDE = 'LOPENDE',
+  FELLES = 'FELLES'
+}
+
 export enum ArenaTiltakskode {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR

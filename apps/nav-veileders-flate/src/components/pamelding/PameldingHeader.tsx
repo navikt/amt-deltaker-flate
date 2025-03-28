@@ -1,8 +1,9 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import {
   ArenaTiltakskode,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakNavnHosArrangorTekst,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
@@ -11,18 +12,27 @@ interface Props {
   tiltakstype: ArenaTiltakskode
   arrangorNavn: string
   deltakerlisteId: string
+  oppstartstype: Oppstartstype
 }
 
 export const PameldingHeader = ({
   title,
   tiltakstype,
   arrangorNavn,
-  deltakerlisteId
+  deltakerlisteId,
+  oppstartstype
 }: Props) => {
+  const label = oppstartstype === Oppstartstype.FELLES ? 'Kurs: ' : ''
+  const erKursMedLopendeOppstart =
+    oppstartstype === Oppstartstype.LOPENDE &&
+    (tiltakstype === ArenaTiltakskode.JOBBK ||
+      tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+      tiltakstype === ArenaTiltakskode.GRUFAGYRKE)
+
   return (
     <div>
       <Heading level="1" size="large">
-        {hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}
+        {`${label}${hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}`}
       </Heading>
       <Heading level="2" size="medium">
         {title}
@@ -33,6 +43,14 @@ export const PameldingHeader = ({
           <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
         </div>
       </TiltaksgjennomforingLink>
+
+      {erKursMedLopendeOppstart && (
+        <Alert variant="info" size="small" className="mt-3">
+          Dette tiltaket har løpende inntak, som betyr at det ikke utføres noen
+          ytterligere vurdering av om deltakeren er kvalifisert for kurset før
+          oppstart. Denne vurderingen må derfor utføres av Nav-veileder.
+        </Alert>
+      )}
     </div>
   )
 }

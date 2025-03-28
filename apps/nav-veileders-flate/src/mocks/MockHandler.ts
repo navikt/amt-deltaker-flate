@@ -16,7 +16,8 @@ import {
   getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  ArenaTiltakskode
+  ArenaTiltakskode,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -83,10 +84,10 @@ export class MockHandler {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
         tiltakstype: this.tiltakstype,
+        oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: 'Den Beste Arrangøren AS',
-        oppstartstype: 'LOPENDE',
-        startdato: '2022-10-28',
-        sluttdato: '2030-02-20',
+        startdato: dayjs('2022-10-28').toDate(),
+        sluttdato: dayjs('2030-02-20').toDate(),
         status: DeltakerlisteStatus.GJENNOMFORES,
         tilgjengeligInnhold: {
           innhold: innhold,
@@ -386,6 +387,18 @@ export class MockHandler {
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
+
+      if (
+        tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+        tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+        tiltakstype === ArenaTiltakskode.JOBBK
+      ) {
+        // Obs disse kan ha løpende oppstart også.
+        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else {
+        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+      }
+
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

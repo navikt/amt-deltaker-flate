@@ -4,6 +4,7 @@ import {
   DeferredFetchState,
   DeltakerStatusType,
   hentTiltakNavnHosArrangorTekst,
+  Oppstartstype,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -49,18 +50,28 @@ export const MeldPaDirekteButton = ({
   const [newPameldingValues, setNewPameldingValues] = useState(
     useOldPamelding ? generateFormDefaultValues(pamelding) : undefined
   )
-
+  const erFellesOppstart =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const methods = useFormContext<PameldingFormValues>()
+
+  const meldPaText = erFellesOppstart ? 'Søk inn' : 'Meld på'
+
   const meldPaDirekteTekst =
     pamelding.status.type === DeltakerStatusType.KLADD
-      ? 'Meld på uten å dele utkast'
-      : 'Meld på uten godkjent utkast'
+      ? `${meldPaText} uten å dele utkast`
+      : `${meldPaText} uten godkjent utkast`
 
   const returnToFrontpage = () => {
-    doRedirect(DELTAKELSESOVERSIKT_LINK, {
-      heading: 'Bruker er meldt på',
-      body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
-    })
+    const body = erFellesOppstart
+      ? {
+          heading: 'Bruker er søkt inn',
+          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+        }
+      : {
+          heading: 'Bruker er meldt på',
+          body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
+        }
+    doRedirect(DELTAKELSESOVERSIKT_LINK, body)
   }
 
   const {
@@ -129,8 +140,7 @@ export const MeldPaDirekteButton = ({
         </Button>
         <div className="ml-2">
           <HelpText aria-label={`Hjelpetekst: ${meldPaDirekteTekst}`}>
-            Meld på uten digital godkjenning av utkastet. Brukeren skal allerede
-            vite hvilke opplysninger som blir delt med arrangøren.
+            {`${meldPaText} uten digital godkjenning av utkastet. Brukeren skal allerede vite hvilke opplysninger som blir delt med arrangøren.`}
           </HelpText>
         </div>
       </div>

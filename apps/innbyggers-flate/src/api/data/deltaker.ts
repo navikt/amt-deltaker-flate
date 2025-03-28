@@ -5,7 +5,8 @@ import {
   importertDeltakerFraArenaSchema,
   pameldingStatusSchema,
   arenaTiltakstypeSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -14,7 +15,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: arenaTiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.string(),
+  oppstartstype: z.nativeEnum(Oppstartstype),
   startdato: z.string(), // har format "YYYY-MM-DD"
   sluttdato: z.string().nullable() // har format "YYYY-MM-DD"
 })

@@ -14,6 +14,7 @@ export const OpprettPameldingPage = () => {
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
         deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
+        oppstartstype={pamelding.deltakerliste.oppstartstype}
       />
 
       <PameldingForm

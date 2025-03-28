@@ -5,7 +5,8 @@ import {
   DeltakerStatusType,
   ArenaTiltakskode,
   UtkastHeader,
-  useDeferredFetch
+  useDeferredFetch,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
@@ -34,11 +35,18 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
+  const erFellesOppstart =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const erUtkastAvbrutt =
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
-  const tittel = erUtkastAvbrutt ? 'Avbrutt utkast' : 'Utkast til påmelding'
+  const tittel = erUtkastAvbrutt
+    ? 'Avbrutt utkast'
+    : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
   const kanEndreUtkast =
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
+    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB &&
+    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.GRUFAGYRKE &&
+    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.GRUPPEAMO &&
+    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.JOBBK
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -69,6 +77,7 @@ export const RedigerPameldingPage = () => {
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
         />
         <UtkastHeader
           visStatusVenterPaaBruker={!erUtkastAvbrutt}
@@ -97,7 +106,7 @@ export const RedigerPameldingPage = () => {
               bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
               deltakelsesprosent={pamelding.deltakelsesprosent}
               dagerPerUke={pamelding.dagerPerUke}
-              tiltakstype={pamelding.deltakerliste.tiltakstype}
+              deltakerliste={pamelding.deltakerliste}
             />
             {pamelding.status.type ===
               DeltakerStatusType.UTKAST_TIL_PAMELDING && (
@@ -135,7 +144,7 @@ export const RedigerPameldingPage = () => {
                   loading={avbrytUtkastState === DeferredFetchState.LOADING}
                   icon={<XMarkIcon />}
                 >
-                  Avbryt utkast til påmelding
+                  {`Avbryt utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`}
                 </Button>
               </>
             )}

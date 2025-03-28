@@ -3,6 +3,7 @@ import {
   DeferredFetchState,
   DeltakerStatusType,
   hentTiltakNavnHosArrangorTekst,
+  Oppstartstype,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -45,6 +46,12 @@ export const PameldingFormButtons = ({
   const kanDeleUtkast = pamelding.digitalBruker
   const harAdresse = pamelding.harAdresse
 
+  const erFellesOppstart =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const delEndringKnappTekst = erUtkast
+    ? 'Del endring'
+    : `Del utkast og gjør klar ${erFellesOppstart ? 'søknad' : 'påmelding'}`
+
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
   const returnToFrontpage = () => {
@@ -53,7 +60,9 @@ export const PameldingFormButtons = ({
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
-      body: `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+      body: erFellesOppstart
+        ? `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+        : `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -65,10 +74,6 @@ export const PameldingFormButtons = ({
   const [forkastUtkastEndringModalOpen, setForkastUtkastEndringModalOpen] =
     useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
-
-  const delEndringKnappTekst = erUtkast
-    ? 'Del endring'
-    : 'Del utkast og gjør klar påmelding'
 
   const {
     state: sendSomForslagState,
@@ -149,10 +154,7 @@ export const PameldingFormButtons = ({
             {erKladd && (
               <div className="ml-2">
                 <HelpText aria-label={`Hjelpetekst: ${delEndringKnappTekst}`}>
-                  Når utkastet deles med bruker så kan de lese gjennom hva du
-                  foreslår å sende til arrangøren. Bruker blir varslet og kan
-                  finne lenke på innlogget nav.no og gjennom aktivitetsplanen.
-                  Når brukeren godtar utkastet, så fattes vedtaket.
+                  {`Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når brukeren godtar utkastet, så ${erFellesOppstart ? 'søkes de inn' : 'fattes vedtaket'}.`}
                 </HelpText>
               </div>
             )}
@@ -171,8 +173,8 @@ export const PameldingFormButtons = ({
               <BodyLong className="mt-1" size="small">
                 Personen er reservert mot digital kommunikasjon, og har heller
                 ingen registrert kontaktadresse. De vil derfor ikke motta et
-                varsel om vedtaket. Vedtaket som journalføres i Gosys må skrives
-                ut og leveres til personen på annen måte.
+                varsel. Brevet som journalføres i Gosys må skrives ut og leveres
+                til personen på annen måte.
               </BodyLong>
             </Alert>
           </div>
@@ -216,6 +218,7 @@ export const PameldingFormButtons = ({
 
       <SlettKladdModal
         open={slettKladdModalOpen}
+        oppstartstype={pamelding.deltakerliste.oppstartstype}
         onConfirm={() => {
           doFetchSlettKladd(pamelding.deltakerId)
           setSlettKladdModalOpen(false)
@@ -237,6 +240,7 @@ export const PameldingFormButtons = ({
         deltakerNavn={getDeltakerNavn(pamelding)}
         tiltakstype={pamelding.deltakerliste.tiltakstype}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
+        oppstartstype={pamelding.deltakerliste.oppstartstype}
       />
     </>
   )
