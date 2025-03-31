@@ -74,6 +74,7 @@ export const Utkast = ({
         startdato={deltakerliste.startdato}
         sluttdato={deltakerliste.sluttdato}
         size="small"
+        visDelMedArrangorInfo
         className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
       />
     </VStack>
