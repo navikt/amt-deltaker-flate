@@ -5,7 +5,8 @@ import {
   ArenaTiltakskode,
   deltakerprosentText,
   visDeltakelsesmengde,
-  OmKurset
+  OmKurset,
+  erKursEllerDigitalt
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
@@ -30,12 +31,7 @@ export const Utkast = ({
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfo = !(
-    tiltakstype === ArenaTiltakskode.JOBBK ||
-    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB
-  )
+  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
 
   return (
     <VStack>

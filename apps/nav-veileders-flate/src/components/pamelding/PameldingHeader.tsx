@@ -2,6 +2,7 @@ import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import {
   ArenaTiltakskode,
+  erKursTiltak,
   hentTiltakNavnHosArrangorTekst,
   Oppstartstype
 } from 'deltaker-flate-common'
@@ -24,10 +25,7 @@ export const PameldingHeader = ({
 }: Props) => {
   const label = oppstartstype === Oppstartstype.FELLES ? 'Kurs: ' : ''
   const erKursMedLopendeOppstart =
-    oppstartstype === Oppstartstype.LOPENDE &&
-    (tiltakstype === ArenaTiltakskode.JOBBK ||
-      tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-      tiltakstype === ArenaTiltakskode.GRUFAGYRKE)
+    oppstartstype === Oppstartstype.LOPENDE && erKursTiltak(tiltakstype)
 
   return (
     <div>

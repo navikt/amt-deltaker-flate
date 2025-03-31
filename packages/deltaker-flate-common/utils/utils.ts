@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { EMDASH } from './constants'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { ArenaTiltakskode } from '../model/deltaker'
+import { ArenaTiltakskode, Oppstartstype } from '../model/deltaker'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
@@ -124,3 +124,26 @@ export const fjernUgyldigeTegn = (str: string) => {
   )
   return stringUtenZeroWidthNonBreakingSace.replace(ugyldigeTegnRegex, '')
 }
+
+export const kanDeleDeltakerMedArrangor = (tiltaksType: ArenaTiltakskode) =>
+  [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
+    tiltaksType
+  )
+
+export const erKursEllerDigitalt = (tiltaksType: ArenaTiltakskode) =>
+  [
+    ArenaTiltakskode.DIGIOPPARB,
+    ArenaTiltakskode.JOBBK,
+    ArenaTiltakskode.GRUPPEAMO,
+    ArenaTiltakskode.GRUFAGYRKE
+  ].includes(tiltaksType)
+
+export const erKursTiltak = (tiltaksType: ArenaTiltakskode) =>
+  [
+    ArenaTiltakskode.JOBBK,
+    ArenaTiltakskode.GRUPPEAMO,
+    ArenaTiltakskode.GRUFAGYRKE
+  ].includes(tiltaksType)
+
+export const harFellesOppstart = (oppstartstype: Oppstartstype) =>
+  oppstartstype === Oppstartstype.FELLES

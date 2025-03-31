@@ -170,6 +170,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
           tiltaksType={pamelding.deltakerliste.tiltakstype}
+          statusType={pamelding.status.type}
           className="mt-8"
         />
       </div>

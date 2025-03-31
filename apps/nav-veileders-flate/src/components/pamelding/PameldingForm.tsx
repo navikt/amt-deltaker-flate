@@ -3,6 +3,7 @@ import { Heading, Textarea, VStack } from '@navikt/ds-react'
 import {
   ArenaTiltakskode,
   DeltakerStatusType,
+  erKursEllerDigitalt,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
   OmKurset
@@ -45,12 +46,7 @@ export const PameldingForm = ({
   const errorSummaryRef = useRef<HTMLDivElement>(null)
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
-  const skalViseBakgrunnsinfo = !(
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-    tiltakstype === ArenaTiltakskode.JOBBK ||
-    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-    tiltakstype === ArenaTiltakskode.GRUPPEAMO
-  )
+  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -111,6 +107,7 @@ export const PameldingForm = ({
             oppstartstype={pamelding.deltakerliste.oppstartstype}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
+            visDelMedArrangorInfo
           />
 
           {skalViseBakgrunnsinfo && (

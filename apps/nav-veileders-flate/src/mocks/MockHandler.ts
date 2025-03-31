@@ -17,7 +17,8 @@ import {
   HistorikkType,
   Innhold,
   ArenaTiltakskode,
-  Oppstartstype
+  Oppstartstype,
+  erKursTiltak
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -389,11 +390,7 @@ export class MockHandler {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
-      if (
-        tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-        tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-        tiltakstype === ArenaTiltakskode.JOBBK
-      ) {
+      if (erKursTiltak(tiltakstype)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES

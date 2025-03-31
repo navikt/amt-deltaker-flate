@@ -1,6 +1,10 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import { ArenaTiltakskode, Oppstartstype } from '../model/deltaker'
-import { formatDate } from '../utils/utils'
+import {
+  erKursTiltak,
+  formatDate,
+  kanDeleDeltakerMedArrangor
+} from '../utils/utils'
 
 interface Props {
   tiltakstype: ArenaTiltakskode
@@ -8,6 +12,7 @@ interface Props {
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
+  visDelMedArrangorInfo?: boolean
   className?: string
 }
 
@@ -17,13 +22,10 @@ export const OmKurset = ({
   startdato,
   sluttdato,
   size,
+  visDelMedArrangorInfo,
   className
 }: Props) => {
-  if (
-    tiltakstype !== ArenaTiltakskode.JOBBK &&
-    tiltakstype !== ArenaTiltakskode.GRUPPEAMO &&
-    tiltakstype !== ArenaTiltakskode.GRUFAGYRKE
-  ) {
+  if (!erKursTiltak(tiltakstype)) {
     return null
   }
 
@@ -31,7 +33,7 @@ export const OmKurset = ({
     oppstartstype === Oppstartstype.LOPENDE &&
     tiltakstype === ArenaTiltakskode.JOBBK
   ) {
-    return null
+    return null // Jobbklubb har innhold ledetekst.
   }
 
   return (
@@ -64,7 +66,7 @@ export const OmKurset = ({
             avslag på søknaden.
           </BodyLong>
 
-          {tiltakstype === ArenaTiltakskode.GRUPPEAMO && (
+          {kanDeleDeltakerMedArrangor(tiltakstype) && visDelMedArrangorInfo && (
             <>
               <BodyLong size="small" className="mt-4">
                 For å avgjøre hvem som skal få plass, kan Nav be om hjelp til

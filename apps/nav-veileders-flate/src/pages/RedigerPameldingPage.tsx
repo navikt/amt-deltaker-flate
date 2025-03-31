@@ -3,14 +3,15 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  ArenaTiltakskode,
+  Oppstartstype,
   UtkastHeader,
-  useDeferredFetch,
-  Oppstartstype
+  erKursEllerDigitalt,
+  useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { avbrytUtkast } from '../api/api.ts'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
@@ -24,7 +25,6 @@ import {
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
-import { PameldingResponse } from '../api/data/pamelding.ts'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
@@ -42,11 +42,9 @@ export const RedigerPameldingPage = () => {
   const tittel = erUtkastAvbrutt
     ? 'Avbrutt utkast'
     : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
-  const kanEndreUtkast =
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB &&
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.GRUFAGYRKE &&
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.GRUPPEAMO &&
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.JOBBK
+  const kanEndreUtkast = !erKursEllerDigitalt(
+    pamelding.deltakerliste.tiltakstype
+  )
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)

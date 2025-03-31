@@ -12,7 +12,8 @@ import {
   getInnholdForTiltaksType,
   getLedetekst,
   getUtvidetInnhold,
-  Oppstartstype
+  Oppstartstype,
+  erKursTiltak
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -179,11 +180,7 @@ export class MockHandler {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
-      if (
-        tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-        tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-        tiltakstype === ArenaTiltakskode.JOBBK
-      ) {
+      if (erKursTiltak(tiltakstype)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertDeltaker.bakgrunnsinformasjon = null
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES

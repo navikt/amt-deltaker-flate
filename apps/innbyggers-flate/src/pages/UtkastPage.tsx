@@ -12,15 +12,16 @@ import {
   DeferredFetchState,
   DeltakelseInnhold,
   EMDASH,
+  OmKurset,
+  Oppstartstype,
   PERSONOPPLYSNINGER_URL,
-  ArenaTiltakskode,
   UtkastHeader,
   deltakerprosentText,
+  erKursEllerDigitalt,
   hentTiltakNavnHosArrangorTekst,
+  kanDeleDeltakerMedArrangor,
   useDeferredFetch,
-  visDeltakelsesmengde,
-  Oppstartstype,
-  OmKurset
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -63,11 +64,6 @@ export const UtkastPage = () => {
   }
 
   const tiltakstype = deltaker.deltakerliste.tiltakstype
-  const erKurs =
-    tiltakstype === ArenaTiltakskode.JOBBK ||
-    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB
 
   return (
     <div className="flex flex-col items-start mb-8">
@@ -94,8 +90,7 @@ export const UtkastPage = () => {
           <>
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
-              {tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-              tiltakstype === ArenaTiltakskode.GRUPPEAMO
+              {kanDeleDeltakerMedArrangor(tiltakstype)
                 ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
                 : ''}
             </BodyLong>
@@ -123,7 +118,7 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {!erKurs && deltaker.bakgrunnsinformasjon && (
+      {!erKursEllerDigitalt(tiltakstype) && deltaker.bakgrunnsinformasjon && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Bakgrunnsinfo
@@ -173,9 +168,10 @@ export const UtkastPage = () => {
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {deltaker.adresseDelesMedArrangor && !erKurs && (
-          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
-        )}
+        {deltaker.adresseDelesMedArrangor &&
+          !erKursEllerDigitalt(tiltakstype) && (
+            <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+          )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.
