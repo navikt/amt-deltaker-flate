@@ -4,10 +4,10 @@ import {
   EMDASH,
   ArenaTiltakskode,
   deltakerprosentText,
-  visDeltakelsesmengde
+  visDeltakelsesmengde,
+  OmKurset
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
-import { OmKurset } from '../pamelding/OmKurset.tsx'
 
 interface Props {
   innhold: Deltakelsesinnhold | null
@@ -30,7 +30,7 @@ export const Utkast = ({
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfoVisn = !(
+  const visBakgrunnsinfo = !(
     tiltakstype === ArenaTiltakskode.JOBBK ||
     tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
     tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
@@ -50,7 +50,7 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      {visBakgrunnsinfoVisn && (
+      {visBakgrunnsinfo && (
         <div className="mt-8">
           <Heading level="3" size="small">
             Bakgrunnsinfo
@@ -73,7 +73,10 @@ export const Utkast = ({
       )}
 
       <OmKurset
-        deltakerliste={deltakerliste}
+        tiltakstype={deltakerliste.tiltakstype}
+        oppstartstype={deltakerliste.oppstartstype}
+        startdato={deltakerliste.startdato}
+        sluttdato={deltakerliste.sluttdato}
         size="small"
         className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
       />

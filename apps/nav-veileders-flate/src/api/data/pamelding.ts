@@ -62,7 +62,8 @@ export const pameldingSchema = z.object({
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
   erUnderOppfolging: z.boolean(),
-  deltakelsesmengder: deltakelsesmengderSchema
+  deltakelsesmengder: deltakelsesmengderSchema,
+  erManueltDeltMedArrangor: z.boolean()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

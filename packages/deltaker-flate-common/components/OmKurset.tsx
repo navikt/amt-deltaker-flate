@@ -1,20 +1,24 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
-import {
-  ArenaTiltakskode,
-  formatDate,
-  Oppstartstype
-} from 'deltaker-flate-common'
-import { Deltakerliste } from '../../api/data/pamelding.ts'
+import { ArenaTiltakskode, Oppstartstype } from '../model/deltaker'
+import { formatDate } from '../utils/utils'
 
 interface Props {
-  deltakerliste: Deltakerliste
+  tiltakstype: ArenaTiltakskode
+  oppstartstype: Oppstartstype
+  startdato: Date | null
+  sluttdato: Date | null
   size?: 'medium' | 'small'
   className?: string
 }
 
-export const OmKurset = ({ deltakerliste, size, className }: Props) => {
-  const tiltakstype = deltakerliste.tiltakstype
-
+export const OmKurset = ({
+  tiltakstype,
+  oppstartstype,
+  startdato,
+  sluttdato,
+  size,
+  className
+}: Props) => {
   if (
     tiltakstype !== ArenaTiltakskode.JOBBK &&
     tiltakstype !== ArenaTiltakskode.GRUPPEAMO &&
@@ -24,7 +28,7 @@ export const OmKurset = ({ deltakerliste, size, className }: Props) => {
   }
 
   if (
-    deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+    oppstartstype === Oppstartstype.LOPENDE &&
     tiltakstype === ArenaTiltakskode.JOBBK
   ) {
     return null
@@ -36,16 +40,16 @@ export const OmKurset = ({ deltakerliste, size, className }: Props) => {
         Om kurset
       </Heading>
 
-      {deltakerliste.oppstartstype === Oppstartstype.LOPENDE ? (
+      {oppstartstype === Oppstartstype.LOPENDE ? (
         <BodyLong size="small">
           Når arrangøren har en ledig plass, vil de ta kontakt med deg for å
           avtale oppstart.
         </BodyLong>
       ) : (
         <>
-          <BodyLong size="small">{`Kursets oppstartsdato: ${formatDate(deltakerliste.startdato)}`}</BodyLong>
+          <BodyLong size="small">{`Kursets oppstartsdato: ${formatDate(startdato)}`}</BodyLong>
           <BodyLong size="small">
-            {`Sluttdato: ${formatDate(deltakerliste.sluttdato)}`}
+            {`Sluttdato: ${formatDate(sluttdato)}`}
           </BodyLong>
 
           <BodyLong size="small" className="mt-4">

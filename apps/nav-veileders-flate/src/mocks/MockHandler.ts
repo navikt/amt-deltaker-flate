@@ -136,7 +136,8 @@ export class MockHandler {
       deltakelsesmengder: {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
-      }
+      },
+      erManueltDeltMedArrangor: false
     }
   }
 
@@ -394,8 +395,10 @@ export class MockHandler {
         tiltakstype === ArenaTiltakskode.JOBBK
       ) {
         // Obs disse kan ha løpende oppstart også.
+        oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
       } else {
+        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
       }
 

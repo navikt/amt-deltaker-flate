@@ -25,6 +25,7 @@ import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
 import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 
+const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
 export const ERROR_PERSONIDENT =
   'Deltakelsen kunen ikke hentes fordi den tilhører en annen person enn den som er i kontekst.'
 
@@ -48,15 +49,23 @@ export const createPamelding = async (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status !== 200) {
         logError(
           `Deltakelse kunne ikke hentes / opprettes for deltakerlisteId: ${deltakerlisteId}`,
           response.status
         )
-        throw new Error(
-          'Deltakelse kunne ikke hentes / opprettes. Prøv igjen senere'
-        )
+
+        const data = await response.text()
+        if (data.includes(DELTAKER_FOR_UNG_ERROR)) {
+          throw new Error(
+            'Brukeren har ikke fylt 19 år når tiltaket starter, og kan derfor ikke delta.'
+          )
+        } else {
+          throw new Error(
+            'Kunne ikke opprette kladd for påmelding. Prøv igjen senere'
+          )
+        }
       }
       return response.json()
     })

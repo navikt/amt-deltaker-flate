@@ -4,8 +4,7 @@ import {
   BodyShort,
   HStack,
   Heading,
-  Label,
-  Link
+  Label
 } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
@@ -15,11 +14,14 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
+  OmKurset,
+  Oppstartstype,
   SeEndringer,
-  VedtakInfo,
+  VedtakOgKlage,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
+  skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
@@ -30,27 +32,23 @@ import { getHistorikk } from '../api/api.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 
-const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
-  return (
-    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
-    status === DeltakerStatusType.DELTAR ||
-    status === DeltakerStatusType.HAR_SLUTTET ||
-    status === DeltakerStatusType.IKKE_AKTUELL
-  )
-}
-
 export const TiltakPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''
 
+  const erFellesOppstart =
+    deltaker.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.arrangorNavn
   )
   const skalViseDato =
     deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
-    deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST
+    deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
+    deltaker.status.type !== DeltakerStatusType.SOKT_INN &&
+    deltaker.status.type !== DeltakerStatusType.VENTELISTE
+
   const bakgrunnsinformasjon =
     deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
       ? deltaker.bakgrunnsinformasjon
@@ -72,12 +70,19 @@ export const TiltakPage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
 
+  const visDeltMedArrangor =
+    deltaker.erManueltDeltMedArrangor &&
+    (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
+      deltaker.status.type === DeltakerStatusType.VURDERES)
+
   return (
     <div className={'bg-white w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            Du er nå meldt på {tiltakOgStedTekst} og vedtaket er fattet.
+            {erFellesOppstart
+              ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
+              : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}
           </BodyShort>
         </Alert>
       )}
@@ -108,12 +113,20 @@ export const TiltakPage = () => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
+
+      {visDeltMedArrangor && (
+        <Alert variant="info" size="small" className="mt-4">
+          Informasjon er delt med arrangør for vurdering.
+        </Alert>
+      )}
+
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
         <DeltakerStatusInfoTekst
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           statusType={deltaker.status.type}
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           oppstartsdato={deltaker.startdato}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
         />
       )}
 
@@ -128,6 +141,14 @@ export const TiltakPage = () => {
           </Heading>
         }
         listClassName="mt-2"
+      />
+
+      <OmKurset
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        startdato={deltaker.deltakerliste.startdato}
+        sluttdato={deltaker.deltakerliste.sluttdato}
+        className="mt-8"
       />
 
       <div>
@@ -165,26 +186,12 @@ export const TiltakPage = () => {
 
         <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
-        <VedtakInfo
+        <VedtakOgKlage
+          statusType={deltaker.status.type}
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
           importertFraArena={deltaker.importertFraArena}
-          className="mt-8"
         />
-
-        <Heading level="2" size="medium" className="mt-8">
-          Du har rett til å klage
-        </Heading>
-        <BodyLong size="small" className="mt-2">
-          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
-          deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
-          å klage er seks uker etter du mottok informasjonen.{' '}
-          {
-            <Link href="https://www.nav.no/klage">
-              Les mer om retten til å klage her.
-            </Link>
-          }
-        </BodyLong>
 
         <HvaDelesMedArrangor
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}

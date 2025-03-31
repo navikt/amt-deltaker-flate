@@ -21,6 +21,7 @@ export const HvaDelesMedArrangor = ({
     ArenaTiltakskode.GRUPPEAMO,
     ArenaTiltakskode.GRUFAGYRKE
   ].includes(tiltaksType)
+
   return (
     <ExpansionCard
       aria-label="Dette deles med arrangøren"

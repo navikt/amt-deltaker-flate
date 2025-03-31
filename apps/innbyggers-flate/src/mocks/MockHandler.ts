@@ -51,8 +51,8 @@ export const createDeltaker = (
       tiltakstype: tiltakstype,
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
-      startdato: '2022-10-28',
-      sluttdato: '2027-12-20'
+      startdato: dayjs('2022-10-28').toDate(),
+      sluttdato: dayjs('2027-12-20').toDate()
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -86,7 +86,8 @@ export const createDeltaker = (
     deltakelsesmengder: {
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
-    }
+    },
+    erManueltDeltMedArrangor: false
   }
 }
 
@@ -135,6 +136,7 @@ export class MockHandler {
           oppdatertPamelding.vedtaksinformasjon.fattet = null
         }
       }
+
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
       oppdatertPamelding.sluttdato = this.getSluttdato(status)
@@ -176,6 +178,20 @@ export class MockHandler {
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
+
+      if (
+        tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+        tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+        tiltakstype === ArenaTiltakskode.JOBBK
+      ) {
+        // Obs disse kan ha løpende oppstart også.
+        oppdatertDeltaker.bakgrunnsinformasjon = null
+        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else {
+        oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
+        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+      }
+
       this.deltaker = oppdatertDeltaker
       return HttpResponse.json(oppdatertDeltaker)
     }

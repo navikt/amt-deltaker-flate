@@ -4,7 +4,8 @@ import {
   ArenaTiltakskode,
   DeltakerStatusType,
   fjernUgyldigeTegn,
-  INNHOLD_TYPE_ANNET
+  INNHOLD_TYPE_ANNET,
+  OmKurset
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -19,7 +20,6 @@ import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
-import { OmKurset } from './OmKurset.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
 
@@ -106,7 +106,12 @@ export const PameldingForm = ({
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
-          <OmKurset deltakerliste={pamelding.deltakerliste} />
+          <OmKurset
+            tiltakstype={pamelding.deltakerliste.tiltakstype}
+            oppstartstype={pamelding.deltakerliste.oppstartstype}
+            startdato={pamelding.deltakerliste.startdato}
+            sluttdato={pamelding.deltakerliste.sluttdato}
+          />
 
           {skalViseBakgrunnsinfo && (
             <section className="mb-8">

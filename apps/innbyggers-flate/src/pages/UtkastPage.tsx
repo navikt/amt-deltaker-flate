@@ -19,7 +19,8 @@ import {
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
   visDeltakelsesmengde,
-  Oppstartstype
+  Oppstartstype,
+  OmKurset
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -61,6 +62,13 @@ export const UtkastPage = () => {
     }
   }
 
+  const tiltakstype = deltaker.deltakerliste.tiltakstype
+  const erKurs =
+    tiltakstype === ArenaTiltakskode.JOBBK ||
+    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+    tiltakstype === ArenaTiltakskode.DIGIOPPARB
+
   return (
     <div className="flex flex-col items-start mb-8">
       <Heading level="1" size="xlarge">
@@ -80,13 +88,28 @@ export const UtkastPage = () => {
       />
       <GuidePanel poster illustration={svg}>
         <Heading level="3" size="small">
-          {`Dette er et utkast til påmelding til ${navnHosArrangorTekst}`}
+          {`Dette er et utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
         </Heading>
-        <BodyLong className="mt-2">
-          Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
-          gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtaket fattes
-          og {arrangorNavn} mottar informasjon.
-        </BodyLong>
+        {erFellesOppstart ? (
+          <>
+            <BodyLong className="mt-2">
+              Før søknaden sendes, vil vi gjerne at du leser gjennom.
+              {tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+              tiltakstype === ArenaTiltakskode.GRUPPEAMO
+                ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
+                : ''}
+            </BodyLong>
+            <BodyLong className="mt-2">
+              Hvis du godkjenner utkastet blir søknaden sendt inn.{' '}
+            </BodyLong>
+          </>
+        ) : (
+          <BodyLong className="mt-2">
+            Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
+            gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtaket
+            fattes og {arrangorNavn} mottar informasjon.
+          </BodyLong>
+        )}
       </GuidePanel>
 
       <DeltakelseInnhold
@@ -100,7 +123,7 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {deltaker.bakgrunnsinformasjon && (
+      {!erKurs && deltaker.bakgrunnsinformasjon && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Bakgrunnsinfo
@@ -125,6 +148,14 @@ export const UtkastPage = () => {
         </>
       )}
 
+      <OmKurset
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        startdato={deltaker.deltakerliste.startdato}
+        sluttdato={deltaker.deltakerliste.sluttdato}
+        className="mt-6"
+      />
+
       <Heading level="3" size="medium" className="mt-6">
         Kontaktinformasjon
       </Heading>
@@ -134,16 +165,17 @@ export const UtkastPage = () => {
       </BodyLong>
       <List as="ul" size="small" className="-mt-1 -mb-2">
         <List.Item className="mt-2 whitespace-pre-wrap">
+          Navn og kontaktinformasjonen til NAV-veilederen din
+        </List.Item>
+        <List.Item className="mt-2 whitespace-pre-wrap">
           Navn og fødselsnummer
         </List.Item>
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {deltaker.adresseDelesMedArrangor &&
-          deltaker.deltakerliste.tiltakstype !==
-            ArenaTiltakskode.DIGIOPPARB && (
-            <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
-          )}
+        {deltaker.adresseDelesMedArrangor && !erKurs && (
+          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+        )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.
@@ -183,14 +215,15 @@ export const UtkastPage = () => {
       <div aria-live="polite">
         {error && (
           <Alert variant="error" className="mt-4">
-            Det skjedde en feil ved godkjenning av utkastet. Prøv igjen senere
+            Det skjedde en feil ved godkjenning av utkastet. Prøv igjen senere.
           </Alert>
         )}
       </div>
 
       <Alert inline variant="info" className="mt-4">
-        Når du godkjenner utkastet blir du meldt på, vedtaket fattes og{' '}
-        {arrangorNavn} mottar informasjonen.
+        {erFellesOppstart
+          ? 'Når du godkjenner utkastet blir søknaden sendt inn.'
+          : `Når du godkjenner utkastet blir du meldt på, vedtaket fattes og ${arrangorNavn} mottar informasjonen.`}
       </Alert>
     </div>
   )

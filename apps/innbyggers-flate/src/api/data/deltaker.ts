@@ -6,7 +6,9 @@ import {
   pameldingStatusSchema,
   arenaTiltakstypeSchema,
   vedtaksinformasjonSchema,
-  Oppstartstype
+  Oppstartstype,
+  dateSchema,
+  nullableDateSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -16,8 +18,8 @@ export const deltakerlisteSchema = z.object({
   tiltakstype: arenaTiltakstypeSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.nativeEnum(Oppstartstype),
-  startdato: z.string(), // har format "YYYY-MM-DD"
-  sluttdato: z.string().nullable() // har format "YYYY-MM-DD"
+  startdato: dateSchema,
+  sluttdato: nullableDateSchema
 })
 
 export const deltakerSchema = z.object({
@@ -34,7 +36,8 @@ export const deltakerSchema = z.object({
   adresseDelesMedArrangor: z.boolean(),
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
-  deltakelsesmengder: deltakelsesmengderSchema
+  deltakelsesmengder: deltakelsesmengderSchema,
+  erManueltDeltMedArrangor: z.boolean()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

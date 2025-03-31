@@ -1,10 +1,10 @@
 import {
+  Alert,
   BodyLong,
   BodyShort,
   HStack,
   Heading,
-  Label,
-  Link
+  Label
 } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
@@ -14,30 +14,23 @@ import {
   DeltakerStatusType,
   EMDASH,
   HvaDelesMedArrangor,
+  OmKurset,
   SeEndringer,
-  VedtakInfo,
+  VedtakOgKlage,
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
+  skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { DialogLenke } from '../../../../../packages/deltaker-flate-common/components/DialogLenke.tsx'
 import { getHistorikk } from '../../api/api.ts'
-import { DIALOG_URL, KLAGE_URL } from '../../utils/environment-utils.ts'
+import { DIALOG_URL } from '../../utils/environment-utils.ts'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
 
 interface Props {
   className: string
-}
-
-const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
-  return (
-    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
-    status === DeltakerStatusType.DELTAR ||
-    status === DeltakerStatusType.HAR_SLUTTET ||
-    status === DeltakerStatusType.IKKE_AKTUELL
-  )
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
@@ -65,6 +58,11 @@ export const DeltakerInfo = ({ className }: Props) => {
   } else if (pamelding.startdato && pamelding.startdato !== EMDASH) {
     dato = formatDateFromString(pamelding.startdato)
   }
+
+  const visDeltMedArrangor =
+    pamelding.erManueltDeltMedArrangor &&
+    (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
+      pamelding.status.type === DeltakerStatusType.VURDERES)
 
   return (
     <div className={`bg-white px-4 py-4 md:px-12 ${className}`}>
@@ -94,14 +92,22 @@ export const DeltakerInfo = ({ className }: Props) => {
           <BodyShort>{dato}</BodyShort>
         </HStack>
       )}
+      {visDeltMedArrangor && (
+        <Alert variant="info" size="small" className="mt-4">
+          Informasjon er delt med arrangør for vurdering.
+        </Alert>
+      )}
+
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
         <DeltakerStatusInfoTekst
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           statusType={pamelding.status.type}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
         />
       )}
+
       <AktiveForslag forslag={pamelding.forslag} />
 
       <DeltakelseInnhold
@@ -136,6 +142,14 @@ export const DeltakerInfo = ({ className }: Props) => {
           />
         )}
 
+        <OmKurset
+          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
+          startdato={pamelding.deltakerliste.startdato}
+          sluttdato={pamelding.deltakerliste.sluttdato}
+          className="mt-8"
+        />
+
         <SeEndringer
           className="mt-8"
           tiltakstype={pamelding.deltakerliste.tiltakstype}
@@ -145,22 +159,12 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
-        <VedtakInfo
+        <VedtakOgKlage
+          statusType={pamelding.status.type}
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
           importertFraArena={pamelding.importertFraArena}
-          className="mt-8"
         />
-
-        <Heading level="2" size="medium" className="mt-8">
-          Du har rett til å klage
-        </Heading>
-        <BodyLong size="small" className="mt-2">
-          Du kan klage hvis du ikke ønsker å delta, er uenig i endringer på
-          deltakelsen eller du ønsker et annet arbeidsmarkedstiltak. Fristen for
-          å klage er seks uker etter du mottok informasjonen. Les mer om{' '}
-          {<Link href={KLAGE_URL}>retten til å klage her.</Link>}
-        </BodyLong>
 
         <HvaDelesMedArrangor
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
