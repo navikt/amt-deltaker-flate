@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Heading, Textarea, VStack } from '@navikt/ds-react'
+import { Heading, Textarea } from '@navikt/ds-react'
 import {
   ArenaTiltakskode,
   DeltakerStatusType,
@@ -66,6 +66,8 @@ export const PameldingForm = ({
     formState: { errors }
   } = methods
 
+  console.log('errors', errors)
+
   const valgteInnhold = watch('valgteInnhold')
 
   const handleDisableForm = (disable: boolean) => {
@@ -98,7 +100,7 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <VStack className="p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
+        <div className="flex flex-col gap-8 p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
@@ -114,7 +116,7 @@ export const PameldingForm = ({
           />
 
           {skalViseBakgrunnsinfo && (
-            <section className="mb-8">
+            <section>
               <Heading size="medium" level="3" className="mb-4">
                 Bakgrunnsinfo
               </Heading>
@@ -142,12 +144,12 @@ export const PameldingForm = ({
 
           {(tiltakstype === ArenaTiltakskode.VASV ||
             tiltakstype === ArenaTiltakskode.ARBFORB) && (
-            <>
+            <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde
               </Heading>
               <Deltakelsesprosent disabled={isDisabled} />
-            </>
+            </div>
           )}
 
           <PameldingFormButtons
@@ -158,7 +160,7 @@ export const PameldingForm = ({
             onDelEndring={onDelEndring}
             onSubmitError={onSubmitError}
           />
-        </VStack>
+        </div>
 
         <div className="flex justify-between items-center">
           <MeldPaDirekteButton

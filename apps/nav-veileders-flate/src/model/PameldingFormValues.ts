@@ -79,6 +79,8 @@ export const pameldingFormSchema = z
         schema.tilgjengeligInnhold.length > 0 &&
         erInnholdPakrevd(schema.tiltakstype)
       ) {
+
+      console.log('innhold påkrevd. valgteInnhold', schema.valgteInnhold)
         return schema.valgteInnhold.length > 0
       } else return true
     },
@@ -95,6 +97,7 @@ export const pameldingFormSchema = z
           (valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET
         )
       ) {
+        console.log('JA, annet må velges', schema.innholdAnnetBeskrivelse)
         return schema.innholdAnnetBeskrivelse
           ? schema.innholdAnnetBeskrivelse?.length > 0
           : false

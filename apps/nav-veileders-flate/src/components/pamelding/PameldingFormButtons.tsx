@@ -75,38 +75,42 @@ export const PameldingFormButtons = ({
     useState(false)
   const [isDisabled, setIsDisabled] = useState(disabled)
 
-  const {
-    state: sendSomForslagState,
-    error: sendSomForslagError,
-    doFetch: doFetchSendSomForslag
-  } = useDeferredFetch(
-    sendInnPamelding,
-    erUtkast ? undefined : returnToFrontpageWithSuccessMessage
-  )
-  const {
-    state: slettKladdState,
-    error: slettKladdError,
-    doFetch: doFetchSlettKladd
-  } = useDeferredFetch(deletePamelding, returnToFrontpage)
+    console.log('formData', formData)
 
-  const delUtkast = (newFormData: PameldingFormValues) => {
-    doFetchSendSomForslag(
-      pamelding.deltakerId,
-      enhetId,
-      generatePameldingRequestFromForm(pamelding, newFormData)
-    ).then((res) => {
-      if (onDelEndring !== undefined && res !== null) {
-        onDelEndring(res)
-      }
-    })
-  }
+    const {
+      state: sendSomForslagState,
+      error: sendSomForslagError,
+      doFetch: doFetchSendSomForslag
+    } = useDeferredFetch(
+      sendInnPamelding,
+      erUtkast ? undefined : returnToFrontpageWithSuccessMessage
+    )
+    const {
+      state: slettKladdState,
+      error: slettKladdError,
+      doFetch: doFetchSlettKladd
+    } = useDeferredFetch(deletePamelding, returnToFrontpage)
 
-  const handleFormSubmit = (newFormData: PameldingFormValues) => {
-    setFormData(newFormData)
-    if (pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
-      delUtkast(newFormData)
-    } else setDelUtkastModalOpen(true)
-  }
+    const delUtkast = (newFormData: PameldingFormValues) => {
+      console.log('delUtkast', newFormData)
+      doFetchSendSomForslag(
+        pamelding.deltakerId,
+        enhetId,
+        generatePameldingRequestFromForm(pamelding, newFormData)
+      ).then((res) => {
+        if (onDelEndring !== undefined && res !== null) {
+          onDelEndring(res)
+        }
+      })
+    }
+
+    const handleFormSubmit = (newFormData: PameldingFormValues) => {
+      console.log('handleFormSubmit', newFormData)
+      setFormData(newFormData)
+      if (pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
+        delUtkast(newFormData)
+      } else setDelUtkastModalOpen(true)
+    }
 
   useEffect(() => {
     const isLoading =

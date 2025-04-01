@@ -52,7 +52,9 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const valgteInnhold = watch('valgteInnhold')
 
   useEffect(() => {
+    console.log('valgteInnhold', valgteInnhold)
     if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
+      console.log('fjern feil for innholdAnnetBeskrivelse')
       clearErrors('innholdAnnetBeskrivelse')
     }
   }, [valgteInnhold])
@@ -67,7 +69,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
   }
 
   return (
-    <>
+    <div>
       <section>
         <Heading size="medium" level="3">
           Dette er innholdet
@@ -80,7 +82,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
       </section>
 
       {tiltakstype === ArenaTiltakskode.VASV && (
-        <section className="mb-8 mt-4">
+        <section className="mt-4">
           <Textarea
             label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
             {...register('innholdsTekst')}
@@ -102,13 +104,16 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
       )}
 
       {skalViseInnholdSjekkbokser && (
-        <section className="mb-8 mt-4">
+        <section className="mt-4">
           <CheckboxGroup
             defaultValue={defaultValues.valgteInnhold}
             legend="Hva mer skal tiltaket inneholde?"
             error={errors.valgteInnhold?.message}
             size="small"
             disabled={isDisabled}
+            onChange={(e: string[]) => {
+              console.log('endre innhold', e)
+            }}
             id="valgteInnhold"
           >
             {innhold.innhold.map((e) => (
@@ -130,6 +135,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
                       {...register('innholdAnnetBeskrivelse')}
                       value={watch('innholdAnnetBeskrivelse')}
                       onChange={(e) => {
+                        console.log('endre annet besrkivelse')
                         setValue(
                           'innholdAnnetBeskrivelse',
                           fjernUgyldigeTegn(e.target.value),
@@ -150,6 +156,6 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
           </CheckboxGroup>
         </section>
       )}
-    </>
+    </div>
   )
 }
