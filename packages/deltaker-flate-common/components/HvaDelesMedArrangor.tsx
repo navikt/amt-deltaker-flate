@@ -1,6 +1,10 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
-import { ArenaTiltakskode, DeltakerStatusType } from '../model/deltaker'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusType,
+  Oppstartstype
+} from '../model/deltaker'
 import { erKursEllerDigitalt, kanDeleDeltakerMedArrangor } from '../utils/utils'
 
 interface Props {
@@ -8,6 +12,7 @@ interface Props {
   statusType: DeltakerStatusType
   arrangorNavn: string
   tiltaksType: ArenaTiltakskode
+  oppstartstype: Oppstartstype
   className?: string
 }
 
@@ -16,11 +21,12 @@ export const HvaDelesMedArrangor = ({
   statusType,
   arrangorNavn,
   tiltaksType,
+  oppstartstype,
   className
 }: Props) => {
   const erKurs = erKursEllerDigitalt(tiltaksType)
   const visDelMedArrangorInfo =
-    kanDeleDeltakerMedArrangor(tiltaksType) &&
+    kanDeleDeltakerMedArrangor(tiltaksType, oppstartstype) &&
     (statusType === DeltakerStatusType.SOKT_INN ||
       statusType === DeltakerStatusType.VURDERES)
 

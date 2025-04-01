@@ -88,7 +88,7 @@ export const createDeltaker = (
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
-    erManueltDeltMedArrangor: false
+    erManueltDeltMedArrangor: true
   }
 }
 

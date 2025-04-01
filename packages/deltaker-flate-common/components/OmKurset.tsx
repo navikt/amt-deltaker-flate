@@ -1,5 +1,9 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
-import { ArenaTiltakskode, Oppstartstype } from '../model/deltaker'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusType,
+  Oppstartstype
+} from '../model/deltaker'
 import {
   erKursTiltak,
   formatDate,
@@ -8,21 +12,25 @@ import {
 
 interface Props {
   tiltakstype: ArenaTiltakskode
+  statusType: DeltakerStatusType
   oppstartstype: Oppstartstype
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
   visDelMedArrangorInfo?: boolean
+  visForUtkast?: boolean
   className?: string
 }
 
 export const OmKurset = ({
   tiltakstype,
+  statusType,
   oppstartstype,
   startdato,
   sluttdato,
   size,
   visDelMedArrangorInfo,
+  visForUtkast,
   className
 }: Props) => {
   if (!erKursTiltak(tiltakstype)) {
@@ -34,6 +42,24 @@ export const OmKurset = ({
     tiltakstype === ArenaTiltakskode.JOBBK
   ) {
     return null // Jobbklubb har innhold ledetekst.
+  }
+
+  const statuserForVIsKurs = [
+    DeltakerStatusType.KLADD,
+    DeltakerStatusType.UTKAST_TIL_PAMELDING,
+    DeltakerStatusType.SOKT_INN,
+    DeltakerStatusType.VURDERES,
+    DeltakerStatusType.VENTELISTE
+  ]
+
+  const skalViseOmKurset =
+    statusType === DeltakerStatusType.KLADD ||
+    (statusType === DeltakerStatusType.UTKAST_TIL_PAMELDING && visForUtkast) ||
+    (statuserForVIsKurs.includes(statusType) &&
+      oppstartstype === Oppstartstype.FELLES)
+
+  if (!skalViseOmKurset) {
+    return null
   }
 
   return (
@@ -66,19 +92,20 @@ export const OmKurset = ({
             avslag på søknaden.
           </BodyLong>
 
-          {kanDeleDeltakerMedArrangor(tiltakstype) && visDelMedArrangorInfo && (
-            <>
-              <BodyLong size="small" className="mt-4">
-                For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
-                vurdering fra arrangøren av kurset. Arrangør eller koordinator
-                hos Nav vil kontakte deg hvis det er behov for et møte.
-              </BodyLong>
-              <BodyLong size="small" className="mt-4">
-                Du vil få beskjed dersom det oversendes informasjon til
-                arrangør.
-              </BodyLong>
-            </>
-          )}
+          {kanDeleDeltakerMedArrangor(tiltakstype, oppstartstype) &&
+            visDelMedArrangorInfo && (
+              <>
+                <BodyLong size="small" className="mt-4">
+                  For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
+                  vurdering fra arrangøren av kurset. Arrangør eller koordinator
+                  hos Nav vil kontakte deg hvis det er behov for et møte.
+                </BodyLong>
+                <BodyLong size="small" className="mt-4">
+                  Du vil få beskjed dersom det oversendes informasjon til
+                  arrangør.
+                </BodyLong>
+              </>
+            )}
         </>
       )}
     </section>

@@ -138,7 +138,7 @@ export class MockHandler {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
       },
-      erManueltDeltMedArrangor: false
+      erManueltDeltMedArrangor: true
     }
   }
 

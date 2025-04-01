@@ -20,6 +20,7 @@ import {
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
+  kanDeleDeltakerMedArrangor,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -61,6 +62,10 @@ export const DeltakerInfo = ({ className }: Props) => {
 
   const visDeltMedArrangor =
     pamelding.erManueltDeltMedArrangor &&
+    kanDeleDeltakerMedArrangor(
+      pamelding.deltakerliste.tiltakstype,
+      pamelding.deltakerliste.oppstartstype
+    ) &&
     (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
       pamelding.status.type === DeltakerStatusType.VURDERES)
 
@@ -144,6 +149,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <OmKurset
           tiltakstype={pamelding.deltakerliste.tiltakstype}
+          statusType={pamelding.status.type}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           startdato={pamelding.deltakerliste.startdato}
           sluttdato={pamelding.deltakerliste.sluttdato}
@@ -162,6 +168,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <VedtakOgKlage
           statusType={pamelding.status.type}
           tiltakstype={pamelding.deltakerliste.tiltakstype}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
           importertFraArena={pamelding.importertFraArena}
         />
@@ -171,6 +178,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
           tiltaksType={pamelding.deltakerliste.tiltakstype}
           statusType={pamelding.status.type}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
           className="mt-8"
         />
       </div>

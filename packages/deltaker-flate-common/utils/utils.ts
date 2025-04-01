@@ -125,7 +125,11 @@ export const fjernUgyldigeTegn = (str: string) => {
   return stringUtenZeroWidthNonBreakingSace.replace(ugyldigeTegnRegex, '')
 }
 
-export const kanDeleDeltakerMedArrangor = (tiltaksType: ArenaTiltakskode) =>
+export const kanDeleDeltakerMedArrangor = (
+  tiltaksType: ArenaTiltakskode,
+  oppstartstype: Oppstartstype
+) =>
+  oppstartstype === Oppstartstype.FELLES &&
   [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
     tiltaksType
   )

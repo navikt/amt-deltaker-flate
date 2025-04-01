@@ -68,13 +68,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
 
   return (
     <>
-      <section
-        className={
-          !skalViseInnholdSjekkbokser && tiltakstype !== ArenaTiltakskode.VASV
-            ? 'mb-8'
-            : ''
-        }
-      >
+      <section>
         <Heading size="medium" level="3">
           Dette er innholdet
         </Heading>

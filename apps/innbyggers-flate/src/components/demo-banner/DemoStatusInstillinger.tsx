@@ -153,17 +153,17 @@ const DemoStatusInstillinger = () => {
             DeltakerStatusType.UTKAST_TIL_PAMELDING
           )}
         </option>
-        <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>
-          {getDeltakerStatusDisplayText(DeltakerStatusType.VENTER_PA_OPPSTART)}
-        </option>
-        <option value={DeltakerStatusType.DELTAR}>
-          {getDeltakerStatusDisplayText(DeltakerStatusType.DELTAR)}
-        </option>
         <option value={DeltakerStatusType.SOKT_INN}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.SOKT_INN)}
         </option>
         <option value={DeltakerStatusType.VENTELISTE}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.VENTELISTE)}
+        </option>
+        <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.VENTER_PA_OPPSTART)}
+        </option>
+        <option value={DeltakerStatusType.DELTAR}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.DELTAR)}
         </option>
         <option value={DeltakerStatusType.HAR_SLUTTET}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.HAR_SLUTTET)}

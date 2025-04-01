@@ -21,6 +21,7 @@ import {
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
+  kanDeleDeltakerMedArrangor,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -49,6 +50,15 @@ export const TiltakPage = () => {
     deltaker.status.type !== DeltakerStatusType.SOKT_INN &&
     deltaker.status.type !== DeltakerStatusType.VENTELISTE
 
+  const visDeltMedArrangor =
+    deltaker.erManueltDeltMedArrangor &&
+    kanDeleDeltakerMedArrangor(
+      deltaker.deltakerliste.tiltakstype,
+      deltaker.deltakerliste.oppstartstype
+    ) &&
+    (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
+      deltaker.status.type === DeltakerStatusType.VURDERES)
+
   const bakgrunnsinformasjon =
     deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
       ? deltaker.bakgrunnsinformasjon
@@ -69,11 +79,6 @@ export const TiltakPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
-
-  const visDeltMedArrangor =
-    deltaker.erManueltDeltMedArrangor &&
-    (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
-      deltaker.status.type === DeltakerStatusType.VURDERES)
 
   return (
     <div className={'bg-white w-full mb-8'}>
@@ -145,6 +150,7 @@ export const TiltakPage = () => {
 
       <OmKurset
         tiltakstype={deltaker.deltakerliste.tiltakstype}
+        statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
@@ -189,6 +195,7 @@ export const TiltakPage = () => {
         <VedtakOgKlage
           statusType={deltaker.status.type}
           tiltakstype={deltaker.deltakerliste.tiltakstype}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
           importertFraArena={deltaker.importertFraArena}
         />
@@ -198,6 +205,7 @@ export const TiltakPage = () => {
           adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
           tiltaksType={deltaker.deltakerliste.tiltakstype}
           statusType={deltaker.status.type}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
           className="mt-8"
         />
       </div>

@@ -90,7 +90,10 @@ export const UtkastPage = () => {
           <>
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
-              {kanDeleDeltakerMedArrangor(tiltakstype)
+              {kanDeleDeltakerMedArrangor(
+                tiltakstype,
+                deltaker.deltakerliste.oppstartstype
+              )
                 ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
                 : ''}
             </BodyLong>
@@ -145,6 +148,7 @@ export const UtkastPage = () => {
 
       <OmKurset
         tiltakstype={deltaker.deltakerliste.tiltakstype}
+        statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}

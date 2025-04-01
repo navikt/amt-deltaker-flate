@@ -6,7 +6,8 @@ import {
   deltakerprosentText,
   visDeltakelsesmengde,
   OmKurset,
-  erKursEllerDigitalt
+  erKursEllerDigitalt,
+  DeltakerStatusType
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
@@ -70,11 +71,13 @@ export const Utkast = ({
 
       <OmKurset
         tiltakstype={deltakerliste.tiltakstype}
+        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
         startdato={deltakerliste.startdato}
         sluttdato={deltakerliste.sluttdato}
         size="small"
         visDelMedArrangorInfo
+        visForUtkast
         className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
       />
     </VStack>

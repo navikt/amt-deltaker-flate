@@ -102,12 +102,15 @@ export const PameldingForm = ({
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
+
           <OmKurset
             tiltakstype={pamelding.deltakerliste.tiltakstype}
+            statusType={pamelding.status.type}
             oppstartstype={pamelding.deltakerliste.oppstartstype}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
             visDelMedArrangorInfo
+            visForUtkast
           />
 
           {skalViseBakgrunnsinfo && (
