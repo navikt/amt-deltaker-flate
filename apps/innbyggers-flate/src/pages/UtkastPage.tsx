@@ -159,10 +159,26 @@ export const UtkastPage = () => {
       <Heading level="3" size="medium" className="mt-6">
         Kontaktinformasjon
       </Heading>
-      <BodyLong size="small" className="mt-2">
-        Nav samarbeider med {arrangorNavn}. Arrangøren behandler
-        personopplysninger på vegne av Nav.
-      </BodyLong>
+      {kanDeleDeltakerMedArrangor(
+        tiltakstype,
+        deltaker.deltakerliste.oppstartstype
+      ) ? (
+        <>
+          <BodyLong size="small" className="mt-2">
+            Du vil få beskjed dersom det oversendes informasjon om deg til
+            arrangør. Arrangøren behandler opplysninger på vegne av NAV.
+          </BodyLong>
+          <BodyLong size="small" className="mt-2">
+            Dette deles med {deltaker.deltakerliste.arrangorNavn}:
+          </BodyLong>
+        </>
+      ) : (
+        <BodyLong size="small" className="mt-2">
+          Nav samarbeider med {arrangorNavn}. Arrangøren behandler
+          personopplysninger på vegne av Nav.
+        </BodyLong>
+      )}
+
       <List as="ul" size="small" className="-mt-1 -mb-2">
         <List.Item className="mt-2 whitespace-pre-wrap">
           Navn og kontaktinformasjonen til NAV-veilederen din
