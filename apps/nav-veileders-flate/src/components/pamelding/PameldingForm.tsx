@@ -66,8 +66,6 @@ export const PameldingForm = ({
     formState: { errors }
   } = methods
 
-  console.log('errors', errors)
-
   const valgteInnhold = watch('valgteInnhold')
 
   const handleDisableForm = (disable: boolean) => {

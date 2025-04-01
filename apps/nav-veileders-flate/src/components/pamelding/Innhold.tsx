@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   BodyLong,
   Checkbox,
@@ -12,13 +11,12 @@ import {
   INNHOLD_TYPE_ANNET
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   erInnholdPakrevd,
   generateFormDefaultValues,
-  pameldingFormSchema,
   PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 
@@ -35,26 +33,18 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
 
   const defaultValues = generateFormDefaultValues(pamelding)
 
-  const methods = useForm<PameldingFormValues>({
-    defaultValues,
-    resolver: zodResolver(pameldingFormSchema),
-    shouldFocusError: false
-  })
-
   const {
-    register,
-    setValue,
     watch,
+    setValue,
+    register,
     clearErrors,
     formState: { errors }
-  } = methods
+  } = useFormContext<PameldingFormValues>()
 
   const valgteInnhold = watch('valgteInnhold')
 
   useEffect(() => {
-    console.log('valgteInnhold', valgteInnhold)
     if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
-      console.log('fjern feil for innholdAnnetBeskrivelse')
       clearErrors('innholdAnnetBeskrivelse')
     }
   }, [valgteInnhold])
@@ -111,9 +101,6 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
             error={errors.valgteInnhold?.message}
             size="small"
             disabled={isDisabled}
-            onChange={(e: string[]) => {
-              console.log('endre innhold', e)
-            }}
             id="valgteInnhold"
           >
             {innhold.innhold.map((e) => (
@@ -135,7 +122,6 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
                       {...register('innholdAnnetBeskrivelse')}
                       value={watch('innholdAnnetBeskrivelse')}
                       onChange={(e) => {
-                        console.log('endre annet besrkivelse')
                         setValue(
                           'innholdAnnetBeskrivelse',
                           fjernUgyldigeTegn(e.target.value),
