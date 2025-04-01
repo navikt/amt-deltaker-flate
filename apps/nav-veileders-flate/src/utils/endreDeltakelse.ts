@@ -132,7 +132,14 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (skalViseEndreOppstartsdato(pamelding, statusdato, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_OPPSTARTSDATO)
   }
-  if (pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART) {
+  if (
+    [
+      DeltakerStatusType.VENTER_PA_OPPSTART,
+      DeltakerStatusType.SOKT_INN,
+      DeltakerStatusType.VURDERES,
+      DeltakerStatusType.VENTELISTE
+    ].includes(pamelding.status.type)
+  ) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
   }
   if (ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)) {
