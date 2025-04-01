@@ -15,11 +15,11 @@ import {
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
-  Oppstartstype,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
   getDeltakerStatusAarsakText,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangor,
   skalViseDeltakerStatusInfoTekst,
@@ -38,8 +38,6 @@ export const TiltakPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''
 
-  const erFellesOppstart =
-    deltaker.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.arrangorNavn
@@ -85,7 +83,7 @@ export const TiltakPage = () => {
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            {erFellesOppstart
+            {harFellesOppstart(deltaker.deltakerliste.oppstartstype)
               ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
               : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}
           </BodyShort>

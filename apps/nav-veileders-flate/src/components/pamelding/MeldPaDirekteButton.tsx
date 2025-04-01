@@ -3,8 +3,8 @@ import { Alert, Button, HelpText } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  Oppstartstype,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -17,8 +17,8 @@ import {
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
 import {
-  PameldingFormValues,
-  generateFormDefaultValues
+  generateFormDefaultValues,
+  PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
 import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
@@ -50,8 +50,9 @@ export const MeldPaDirekteButton = ({
   const [newPameldingValues, setNewPameldingValues] = useState(
     useOldPamelding ? generateFormDefaultValues(pamelding) : undefined
   )
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const methods = useFormContext<PameldingFormValues>()
 
   const meldPaText = erFellesOppstart ? 'Søk inn' : 'Meld på'

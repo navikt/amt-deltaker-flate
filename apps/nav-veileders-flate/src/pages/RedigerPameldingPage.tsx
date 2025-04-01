@@ -3,9 +3,9 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  Oppstartstype,
   UtkastHeader,
   erKursEllerDigitalt,
+  harFellesOppstart,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -35,8 +35,9 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const erUtkastAvbrutt =
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   const tittel = erUtkastAvbrutt

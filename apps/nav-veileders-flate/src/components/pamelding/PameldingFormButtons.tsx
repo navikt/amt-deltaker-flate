@@ -2,8 +2,8 @@ import { Alert, BodyLong, Button, HelpText, HStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  Oppstartstype,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -46,8 +46,9 @@ export const PameldingFormButtons = ({
   const kanDeleUtkast = pamelding.digitalBruker
   const harAdresse = pamelding.harAdresse
 
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const delEndringKnappTekst = erUtkast
     ? 'Del endring'
     : `Del utkast og gjør klar ${erFellesOppstart ? 'søknad' : 'påmelding'}`

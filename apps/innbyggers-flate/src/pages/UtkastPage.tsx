@@ -13,11 +13,11 @@ import {
   DeltakelseInnhold,
   EMDASH,
   OmKurset,
-  Oppstartstype,
   PERSONOPPLYSNINGER_URL,
   UtkastHeader,
   deltakerprosentText,
   erKursEllerDigitalt,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangor,
   useDeferredFetch,
@@ -35,8 +35,9 @@ export const UtkastPage = () => {
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
 
-  const erFellesOppstart =
-    deltaker.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(
+    deltaker.deltakerliste.oppstartstype
+  )
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -98,7 +99,7 @@ export const UtkastPage = () => {
                 : ''}
             </BodyLong>
             <BodyLong className="mt-2">
-              Hvis du godkjenner utkastet blir søknaden sendt inn.{' '}
+              Hvis du godkjenner utkastet blir søknaden sendt inn.
             </BodyLong>
           </>
         ) : (

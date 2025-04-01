@@ -1,7 +1,7 @@
 import { BodyLong, BodyShort, ConfirmationPanel, Modal } from '@navikt/ds-react'
 import {
-  hentTiltakNavnHosArrangorTekst,
-  Oppstartstype
+  harFellesOppstart,
+  hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding'
@@ -29,8 +29,9 @@ export const MeldPaDirekteModal = ({
   const [confirmed, setConfirmed] = useState(false)
   const [hasError, setHasError] = useState<boolean>(false)
 
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const meldPaText = erFellesOppstart ? 'Søk inn' : 'Meld på'
 
   const handleMeldPaDirekte = () => {

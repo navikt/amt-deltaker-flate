@@ -1,6 +1,7 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
 import {
   ArenaTiltakskode,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   Oppstartstype
 } from 'deltaker-flate-common'
@@ -25,7 +26,7 @@ export const DelUtkastModal = ({
   arrangorNavn,
   oppstartstype
 }: Props) => {
-  const erFellesOppstart = oppstartstype === Oppstartstype.FELLES
+  const erFellesOppstart = harFellesOppstart(oppstartstype)
 
   return (
     <Modal
