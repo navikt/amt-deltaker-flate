@@ -139,7 +139,7 @@ export const PameldingFormButtons = ({
         </Alert>
       )}
 
-      <HStack gap="4" className="mt-8">
+      <HStack gap="4">
         {kanDeleUtkast && (
           <div className="flex items-center">
             <Button
