@@ -41,7 +41,7 @@ export const OmKurset = ({
     oppstartstype === Oppstartstype.LOPENDE &&
     tiltakstype === ArenaTiltakskode.JOBBK
   ) {
-    return null // Jobbklubb har innhold ledetekst.
+    return null // Jøbbsøkerkurs har innhold ledetekst.
   }
 
   const statuserForVIsKurs = [
