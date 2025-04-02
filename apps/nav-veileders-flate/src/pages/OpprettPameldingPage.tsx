@@ -11,10 +11,7 @@ export const OpprettPameldingPage = () => {
       <Tilbakeknapp />
       <PameldingHeader
         title="Kladd til påmelding"
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
-        arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-        deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
+        deltakerliste={pamelding.deltakerliste}
       />
 
       <PameldingForm

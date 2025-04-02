@@ -4,11 +4,13 @@ import {
   getTiltakstypeDisplayText,
   isValidDate,
   ArenaTiltakskode,
-  Oppstartstype
+  Oppstartstype,
+  erKursTiltak
 } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
   tiltakstype: ArenaTiltakskode
+  deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
   oppstartsdato: string | null
@@ -47,19 +49,22 @@ const getInfoTekst = (
     case DeltakerStatusType.SOKT_INN:
       return `Du er søkt inn på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.VENTELISTE:
-      return `Du er satt på venteliste for ${tiltakOgStedTekst}.`
+      return `Du er satt på venteliste for arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
   }
 }
 
 export const DeltakerStatusInfoTekst = ({
   tiltakstype,
+  deltakerlisteNavn,
   statusType,
   arrangorNavn,
   oppstartsdato,
   oppstartstype
 }: DeltakerStatusInfoTekstProps) => {
   const harOppstartsDato = isValidDate(oppstartsdato)
-  const tiltakNavn = getTiltakstypeDisplayText(tiltakstype)
+  const tiltakNavn = erKursTiltak(tiltakstype)
+    ? `${deltakerlisteNavn} hos ${arrangorNavn}`
+    : getTiltakstypeDisplayText(tiltakstype)
 
   return (
     <>

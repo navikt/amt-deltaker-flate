@@ -1,9 +1,9 @@
 import {
+  ArenaTiltakskode,
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  DeltakerlisteStatus,
-  ArenaTiltakskode
+  DeltakerlisteStatus
 } from '../model/deltaker'
 import { Endring, EndringType } from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
@@ -46,6 +46,20 @@ export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
     case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid'
   }
+}
+
+export const hentTiltakGjennomforingNavnArrangorTekst = (
+  navnPaGjennomforing: string,
+  tiltakstype: ArenaTiltakskode,
+  arrangorNavn: string
+) => {
+  if (tiltakstype === ArenaTiltakskode.GRUPPEAMO) {
+    return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
+  }
+  if (tiltakstype === ArenaTiltakskode.GRUFAGYRKE) {
+    return `${navnPaGjennomforing} hos ${arrangorNavn}`
+  }
+  return hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)
 }
 
 export const hentTiltakNavnHosArrangorTekst = (

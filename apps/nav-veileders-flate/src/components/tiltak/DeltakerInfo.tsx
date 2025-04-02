@@ -106,6 +106,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
         <DeltakerStatusInfoTekst
           tiltakstype={pamelding.deltakerliste.tiltakstype}
+          deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
           statusType={pamelding.status.type}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}

@@ -73,10 +73,7 @@ export const RedigerPameldingPage = () => {
       <div>
         <PameldingHeader
           title={tittel}
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
-          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
-          oppstartstype={pamelding.deltakerliste.oppstartstype}
+          deltakerliste={pamelding.deltakerliste}
         />
         <UtkastHeader
           visStatusVenterPaaBruker={!erUtkastAvbrutt}

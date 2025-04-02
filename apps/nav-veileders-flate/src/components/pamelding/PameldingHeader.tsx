@@ -1,41 +1,36 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
   erKursTiltak,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakGjennomforingNavnArrangorTekst,
   Oppstartstype
 } from 'deltaker-flate-common'
+import { Deltakerliste } from '../../api/data/pamelding.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {
   title: string
-  tiltakstype: ArenaTiltakskode
-  arrangorNavn: string
-  deltakerlisteId: string
-  oppstartstype: Oppstartstype
+  deltakerliste: Deltakerliste
 }
 
-export const PameldingHeader = ({
-  title,
-  tiltakstype,
-  arrangorNavn,
-  deltakerlisteId,
-  oppstartstype
-}: Props) => {
-  const label = oppstartstype === Oppstartstype.FELLES ? 'Kurs: ' : ''
+export const PameldingHeader = ({ title, deltakerliste }: Props) => {
   const erKursMedLopendeOppstart =
-    oppstartstype === Oppstartstype.LOPENDE && erKursTiltak(tiltakstype)
+    deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+    erKursTiltak(deltakerliste.tiltakstype)
 
   return (
     <div>
       <Heading level="1" size="large">
-        {`${label}${hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}`}
+        {hentTiltakGjennomforingNavnArrangorTekst(
+          deltakerliste.deltakerlisteNavn,
+          deltakerliste.tiltakstype,
+          deltakerliste.arrangorNavn
+        )}
       </Heading>
       <Heading level="2" size="medium">
         {title}
       </Heading>
-      <TiltaksgjennomforingLink deltakerlisteId={deltakerlisteId}>
+      <TiltaksgjennomforingLink deltakerlisteId={deltakerliste.deltakerlisteId}>
         <div className="flex mt-2">
           <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
           <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
