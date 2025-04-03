@@ -125,7 +125,7 @@ export const TiltakPage = () => {
 
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
         <DeltakerStatusInfoTekst
-          tiltakstype={deltaker.deltakerliste.tiltakstype}
+          tiltaksType={deltaker.deltakerliste.tiltakstype}
           deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
           statusType={deltaker.status.type}
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
