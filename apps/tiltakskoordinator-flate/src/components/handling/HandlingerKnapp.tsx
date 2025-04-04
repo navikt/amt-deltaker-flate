@@ -72,24 +72,23 @@ export const HandlingerKnapp = ({ className }: Props) => {
               Handlinger
             </Button>
           </ActionMenu.Trigger>
-          <ActionMenu.Content>
-            <ActionMenu.Group className="w-[16rem]">
-              <ActionMenu.Item
-                onSelect={(e: React.MouseEvent) => {
-                  e.preventDefault()
-                  setHandlingValg(HandlingValg.DEL_DELTAKERE)
-                }}
-              >
-                <div className="p-1 flex items-start">
-                  <TasklistIcon
-                    width="1.125rem"
-                    height="1.125rem"
-                    className="mt-[0.15rem] mr-1"
-                  />
-                  Velg deltakere som skal deles med arrangør
-                </div>
-              </ActionMenu.Item>
-            </ActionMenu.Group>
+          <ActionMenu.Content className="w-[16rem]">
+            <ActionMenu.Item
+              onSelect={(e: Event) => {
+                e.preventDefault()
+                setHandlingValg(HandlingValg.DEL_DELTAKERE)
+              }}
+            >
+              <div className="p-1 flex items-start">
+                <TasklistIcon
+                  width="1.125rem"
+                  height="1.125rem"
+                  className="mt-[0.15rem] mr-1"
+                  aria-hidden
+                />
+                Velg deltakere som skal deles med arrangør
+              </div>
+            </ActionMenu.Item>
           </ActionMenu.Content>
         </ActionMenu>
       )}

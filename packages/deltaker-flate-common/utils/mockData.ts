@@ -409,9 +409,10 @@ export const getLedetekst = (tiltakstype: ArenaTiltakskode) => {
     case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid er et tilbud for deg som får uføretrygd. Du jobber i en skjermet bedrift med arbeidsoppgaver som er tilpasset deg.'
     case ArenaTiltakskode.DIGIOPPARB:
+    case ArenaTiltakskode.JOBBK:
       return 'Du får oppfølging og støtte til jobbsøkingen. På kurset får du karriereveiledning, hjelp til å orientere deg på arbeidsmarkedet, skrive CV og jobbsøknad og trene på jobbintervju.'
     default:
-      return ''
+      return null
   }
 }
 

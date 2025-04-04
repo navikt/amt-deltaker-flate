@@ -1,26 +1,35 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
-import { ArenaTiltakskode } from '../model/deltaker'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusType,
+  Oppstartstype
+} from '../model/deltaker'
+import { erKursEllerDigitalt, kanDeleDeltakerMedArrangor } from '../utils/utils'
 
 interface Props {
   adresseDelesMedArrangor: boolean
+  statusType: DeltakerStatusType
   arrangorNavn: string
   tiltaksType: ArenaTiltakskode
+  oppstartstype: Oppstartstype
   className?: string
 }
 
 export const HvaDelesMedArrangor = ({
   adresseDelesMedArrangor,
+  statusType,
   arrangorNavn,
   tiltaksType,
+  oppstartstype,
   className
 }: Props) => {
-  const erKurs = [
-    ArenaTiltakskode.DIGIOPPARB,
-    ArenaTiltakskode.JOBBK,
-    ArenaTiltakskode.GRUPPEAMO,
-    ArenaTiltakskode.GRUFAGYRKE
-  ].includes(tiltaksType)
+  const erKurs = erKursEllerDigitalt(tiltaksType)
+  const visDelMedArrangorInfo =
+    kanDeleDeltakerMedArrangor(tiltaksType, oppstartstype) &&
+    (statusType === DeltakerStatusType.SOKT_INN ||
+      statusType === DeltakerStatusType.VURDERES)
+
   return (
     <ExpansionCard
       aria-label="Dette deles med arrangøren"
@@ -30,10 +39,28 @@ export const HvaDelesMedArrangor = ({
         <ExpansionCard.Title>Dette deles med arrangøren</ExpansionCard.Title>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
-        <BodyLong size="small">
-          Nav samarbeider med {arrangorNavn}. Arrangøren behandler opplysninger
-          på vegne av Nav.
-        </BodyLong>
+        {visDelMedArrangorInfo ? (
+          <>
+            <BodyLong size="small">
+              For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
+              vurdering fra arrangøren av kurset. Arrangør eller Nav vil
+              kontakte deg hvis det er behov for et møte.
+            </BodyLong>
+            <BodyLong size="small" className="mt-4">
+              Du vil få beskjed dersom det oversendes informasjon om deg til
+              arrangør. Arrangøren behandler opplysninger på vegne av NAV.
+            </BodyLong>
+            <BodyLong size="small" className="mt-4">
+              Dette deles {arrangorNavn}:
+            </BodyLong>
+          </>
+        ) : (
+          <BodyLong size="small">
+            Nav samarbeider med {arrangorNavn}. Arrangøren behandler
+            opplysninger på vegne av Nav.
+          </BodyLong>
+        )}
+
         <List as="ul" size="small">
           <List.Item>
             Navn og kontaktinformasjonen til Nav-veilederen din

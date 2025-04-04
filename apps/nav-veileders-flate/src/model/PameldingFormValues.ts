@@ -24,7 +24,10 @@ export const dagerPerUkeFeilmelding =
 export const erInnholdPakrevd = (tiltakstype: ArenaTiltakskode) =>
   !(
     tiltakstype === ArenaTiltakskode.VASV ||
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB
+    tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
+    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
+    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
+    tiltakstype === ArenaTiltakskode.JOBBK
   )
 
 export const pameldingFormSchema = z

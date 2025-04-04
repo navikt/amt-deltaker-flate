@@ -160,6 +160,12 @@ const DemoStatusInstillinger = () => {
             DeltakerStatusType.UTKAST_TIL_PAMELDING
           )}
         </option>
+        <option value={DeltakerStatusType.SOKT_INN}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.SOKT_INN)}
+        </option>
+        <option value={DeltakerStatusType.VENTELISTE}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.VENTELISTE)}
+        </option>
         <option value={DeltakerStatusType.AVBRUTT_UTKAST}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT_UTKAST)}
         </option>

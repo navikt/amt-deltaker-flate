@@ -1,31 +1,25 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Heading, Textarea } from '@navikt/ds-react'
 import {
-  BodyLong,
-  Checkbox,
-  CheckboxGroup,
-  Heading,
-  Textarea,
-  VStack
-} from '@navikt/ds-react'
-import {
+  ArenaTiltakskode,
   DeltakerStatusType,
+  erKursEllerDigitalt,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
-  ArenaTiltakskode
+  OmKurset
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
-  BESKRIVELSE_ANNET_MAX_TEGN,
-  PameldingFormValues,
-  erInnholdPakrevd,
   generateFormDefaultValues,
-  pameldingFormSchema
+  pameldingFormSchema,
+  PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
+import { Innhold } from './Innhold.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
@@ -50,10 +44,9 @@ export const PameldingForm = ({
   onDelEndring
 }: Props) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null)
-  const innhold = pamelding.deltakerliste.tilgjengeligInnhold
   const tiltakstype = pamelding.deltakerliste.tiltakstype
   const status = pamelding.status.type
-  const skalViseInnholdSjekkbokser = erInnholdPakrevd(tiltakstype)
+  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -75,7 +68,7 @@ export const PameldingForm = ({
 
   const valgteInnhold = watch('valgteInnhold')
 
-  const handleDiableForm = (disable: boolean) => {
+  const handleDisableForm = (disable: boolean) => {
     setIsDisabled(disable)
     if (disableForm) {
       disableForm(disable)
@@ -105,93 +98,23 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <VStack className="p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
+        <div className="flex flex-col gap-8 p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
-          <section>
-            <Heading size="medium" level="3">
-              Dette er innholdet
-            </Heading>
-            {pamelding.deltakelsesinnhold?.ledetekst && (
-              <BodyLong size="small">
-                {pamelding.deltakelsesinnhold.ledetekst}
-              </BodyLong>
-            )}
-          </section>
+          <Innhold pamelding={pamelding} isDisabled={isDisabled} />
 
-          {tiltakstype === ArenaTiltakskode.VASV && (
-            <section className="mb-8 mt-4">
-              <Textarea
-                label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
-                {...register('innholdsTekst')}
-                onChange={(e) => {
-                  setValue('innholdsTekst', fjernUgyldigeTegn(e.target.value), {
-                    shouldValidate: true
-                  })
-                }}
-                value={watch('innholdsTekst')}
-                error={errors.innholdAnnetBeskrivelse?.message}
-                disabled={isDisabled}
-                aria-label="Annet innhold beskrivelse"
-                aria-required
-                maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                size="small"
-                id="innholdAnnetBeskrivelse"
-              />
-            </section>
-          )}
-          {skalViseInnholdSjekkbokser && innhold.innhold.length > 0 && (
-            <section className="mb-8 mt-4">
-              <CheckboxGroup
-                defaultValue={defaultValues.valgteInnhold}
-                legend="Hva mer skal tiltaket inneholde?"
-                error={errors.valgteInnhold?.message}
-                size="small"
-                disabled={isDisabled}
-                id="valgteInnhold"
-              >
-                {innhold.innhold.map((e) => (
-                  <div key={e.innholdskode}>
-                    <Checkbox
-                      key={e.innholdskode}
-                      value={e.innholdskode}
-                      {...register('valgteInnhold')}
-                    >
-                      {e.innholdskode === INNHOLD_TYPE_ANNET
-                        ? 'Annet - fyll ut'
-                        : e.tekst}
-                    </Checkbox>
-                    {e.innholdskode === INNHOLD_TYPE_ANNET &&
-                      valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !==
-                        undefined && (
-                        <Textarea
-                          label={null}
-                          {...register('innholdAnnetBeskrivelse')}
-                          value={watch('innholdAnnetBeskrivelse')}
-                          onChange={(e) => {
-                            setValue(
-                              'innholdAnnetBeskrivelse',
-                              fjernUgyldigeTegn(e.target.value),
-                              { shouldValidate: true }
-                            )
-                          }}
-                          error={errors.innholdAnnetBeskrivelse?.message}
-                          disabled={isDisabled}
-                          aria-label="Annet innhold beskrivelse"
-                          aria-required
-                          maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
-                          size="small"
-                          id="innholdAnnetBeskrivelse"
-                        />
-                      )}
-                  </div>
-                ))}
-              </CheckboxGroup>
-            </section>
-          )}
+          <OmKurset
+            tiltakstype={pamelding.deltakerliste.tiltakstype}
+            statusType={pamelding.status.type}
+            oppstartstype={pamelding.deltakerliste.oppstartstype}
+            startdato={pamelding.deltakerliste.startdato}
+            sluttdato={pamelding.deltakerliste.sluttdato}
+            visDelMedArrangorInfo
+            visForUtkast
+          />
 
-          {tiltakstype !== ArenaTiltakskode.DIGIOPPARB && (
-            <section className="mb-8">
+          {skalViseBakgrunnsinfo && (
+            <section>
               <Heading size="medium" level="3" className="mb-4">
                 Bakgrunnsinfo
               </Heading>
@@ -219,29 +142,29 @@ export const PameldingForm = ({
 
           {(tiltakstype === ArenaTiltakskode.VASV ||
             tiltakstype === ArenaTiltakskode.ARBFORB) && (
-            <>
+            <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde
               </Heading>
               <Deltakelsesprosent disabled={isDisabled} />
-            </>
+            </div>
           )}
 
           <PameldingFormButtons
             pamelding={pamelding}
             disabled={isDisabled}
-            disableForm={handleDiableForm}
+            disableForm={handleDisableForm}
             onCancelUtkast={onCancelUtkast}
             onDelEndring={onDelEndring}
             onSubmitError={onSubmitError}
           />
-        </VStack>
+        </div>
 
         <div className="flex justify-between items-center">
           <MeldPaDirekteButton
             pamelding={pamelding}
             disabled={isDisabled}
-            disableForm={handleDiableForm}
+            disableForm={handleDisableForm}
             onSubmitError={onSubmitError}
           />
 

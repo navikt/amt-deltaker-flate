@@ -128,6 +128,15 @@ const DemoStatusInstillinger = () => {
         <option value={ArenaTiltakskode.VASV}>
           {getTiltakstypeDisplayText(ArenaTiltakskode.VASV)}
         </option>
+        <option value={ArenaTiltakskode.GRUPPEAMO}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUPPEAMO)}
+        </option>
+        <option value={ArenaTiltakskode.JOBBK}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.JOBBK)}
+        </option>
+        <option value={ArenaTiltakskode.GRUFAGYRKE}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUFAGYRKE)}
+        </option>
       </Select>
       <Select
         value={deltakerStatus}
@@ -143,6 +152,12 @@ const DemoStatusInstillinger = () => {
           {getDeltakerStatusDisplayText(
             DeltakerStatusType.UTKAST_TIL_PAMELDING
           )}
+        </option>
+        <option value={DeltakerStatusType.SOKT_INN}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.SOKT_INN)}
+        </option>
+        <option value={DeltakerStatusType.VENTELISTE}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.VENTELISTE)}
         </option>
         <option value={DeltakerStatusType.VENTER_PA_OPPSTART}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.VENTER_PA_OPPSTART)}

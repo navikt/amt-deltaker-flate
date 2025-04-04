@@ -11,7 +11,9 @@ import {
   createHistorikk,
   getInnholdForTiltaksType,
   getLedetekst,
-  getUtvidetInnhold
+  getUtvidetInnhold,
+  Oppstartstype,
+  erKursTiltak
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -49,9 +51,9 @@ export const createDeltaker = (
       deltakerlisteNavn: 'Testliste',
       tiltakstype: tiltakstype,
       arrangorNavn: 'Den Beste Arrangøren AS',
-      oppstartstype: 'løpende',
-      startdato: '2022-10-28',
-      sluttdato: '2027-12-20'
+      oppstartstype: Oppstartstype.LOPENDE,
+      startdato: dayjs('2022-10-28').toDate(),
+      sluttdato: dayjs('2027-12-20').toDate()
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -85,7 +87,8 @@ export const createDeltaker = (
     deltakelsesmengder: {
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
-    }
+    },
+    erManueltDeltMedArrangor: true
   }
 }
 
@@ -134,6 +137,7 @@ export class MockHandler {
           oppdatertPamelding.vedtaksinformasjon.fattet = null
         }
       }
+
       oppdatertPamelding.status.type = status
       oppdatertPamelding.startdato = this.getStartdato(status)
       oppdatertPamelding.sluttdato = this.getSluttdato(status)
@@ -175,6 +179,16 @@ export class MockHandler {
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
+
+      if (erKursTiltak(tiltakstype)) {
+        // Obs disse kan ha løpende oppstart også.
+        oppdatertDeltaker.bakgrunnsinformasjon = null
+        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else {
+        oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
+        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+      }
+
       this.deltaker = oppdatertDeltaker
       return HttpResponse.json(oppdatertDeltaker)
     }
