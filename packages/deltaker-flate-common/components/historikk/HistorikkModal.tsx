@@ -12,6 +12,7 @@ import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
 import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkSkeleton } from './HistorikkSkeleton'
 import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
+import { HistorikkSoktInn } from './HistorikkSoktInn.tsx'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
@@ -29,6 +30,13 @@ const getHistorikkItem = (
     case HistorikkType.Vedtak:
       return (
         <HistorikkVedtak endringsVedtak={historikk} tiltakstype={tiltakstype} />
+      )
+    case HistorikkType.SoktInn:
+      return (
+        <HistorikkSoktInn
+          soktInnHistorikk={historikk}
+          tiltakstype={tiltakstype}
+        />
       )
     case HistorikkType.Endring:
       return (
