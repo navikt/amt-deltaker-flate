@@ -67,6 +67,18 @@ export const hentTiltakNavnHosArrangorTekst = (
   arrangorNavn: string
 ) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
 
+export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
+  tiltaksType: ArenaTiltakskode,
+  deltakerlisteNavn: string,
+  arrangorNavn: string
+) => {
+  return [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
+    tiltaksType
+  )
+    ? `${deltakerlisteNavn} hos ${arrangorNavn}`
+    : hentTiltakNavnHosArrangorTekst(tiltaksType, arrangorNavn)
+}
+
 export const getDeltakerStatusDisplayText = (
   type: DeltakerStatusType
 ): string => {

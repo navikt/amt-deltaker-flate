@@ -18,7 +18,7 @@ import {
   deltakerprosentText,
   erKursEllerDigitalt,
   harFellesOppstart,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangor,
   useDeferredFetch,
   visDeltakelsesmengde
@@ -39,8 +39,9 @@ export const UtkastPage = () => {
     deltaker.deltakerliste.oppstartstype
   )
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
-  const navnHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+  const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
 

@@ -1,10 +1,10 @@
 import { Alert, BodyLong } from '@navikt/ds-react'
 import {
-  DeltakerStatusType,
-  getTiltakstypeDisplayText,
-  isValidDate,
   ArenaTiltakskode,
-  Oppstartstype
+  DeltakerStatusType,
+  Oppstartstype,
+  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  isValidDate
 } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
@@ -61,12 +61,6 @@ export const DeltakerStatusInfoTekst = ({
   oppstartstype
 }: DeltakerStatusInfoTekstProps) => {
   const harOppstartsDato = isValidDate(oppstartsdato)
-  const tiltakNavn = [
-    ArenaTiltakskode.GRUPPEAMO,
-    ArenaTiltakskode.GRUFAGYRKE
-  ].includes(tiltaksType)
-    ? `${deltakerlisteNavn} hos ${arrangorNavn}`
-    : getTiltakstypeDisplayText(tiltaksType)
 
   return (
     <>
@@ -74,7 +68,11 @@ export const DeltakerStatusInfoTekst = ({
         {getInfoTekst(
           oppstartstype === Oppstartstype.FELLES,
           statusType,
-          `${tiltakNavn} hos ${arrangorNavn}`
+          hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+            tiltaksType,
+            deltakerlisteNavn,
+            arrangorNavn
+          )
         )}
       </BodyLong>
       {!harOppstartsDato &&
