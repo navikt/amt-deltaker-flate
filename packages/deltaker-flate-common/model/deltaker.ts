@@ -15,7 +15,7 @@ export enum ArenaTiltakskode {
   VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK' // Jøbbsøkerkurs / er kurs
+  JOBBK = 'JOBBK' // Jobbsøkerkurs / er kurs
 }
 
 export enum Tiltakskode {
