@@ -150,7 +150,9 @@ export class MockHandler {
   getStartdato(): string {
     if (
       this.statusType === DeltakerStatusType.DELTAR ||
-      this.statusType === DeltakerStatusType.HAR_SLUTTET
+      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
+      this.statusType === DeltakerStatusType.FULLFORT ||
+      this.statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
@@ -165,7 +167,11 @@ export class MockHandler {
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
       return dayjs(fremtidigDato).format('YYYY-MM-DD')
     }
-    if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+    if (
+      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
+      this.statusType === DeltakerStatusType.FULLFORT ||
+      this.statusType === DeltakerStatusType.AVBRUTT
+    ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
       return dayjs(passertDato).format('YYYY-MM-DD')

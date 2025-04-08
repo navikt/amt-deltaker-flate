@@ -168,6 +168,12 @@ const DemoStatusInstillinger = () => {
         <option value={DeltakerStatusType.HAR_SLUTTET}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.HAR_SLUTTET)}
         </option>
+        <option value={DeltakerStatusType.AVBRUTT}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT)}
+        </option>
+        <option value={DeltakerStatusType.FULLFORT}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.FULLFORT)}
+        </option>
         <option value={DeltakerStatusType.AVBRUTT_UTKAST}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT_UTKAST)}
         </option>

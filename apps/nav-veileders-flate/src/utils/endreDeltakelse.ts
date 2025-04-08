@@ -2,7 +2,9 @@ import {
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
-  ArenaTiltakskode
+  ArenaTiltakskode,
+  erKursEllerDigitalt,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
@@ -12,15 +14,6 @@ import {
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
 import dayjs from 'dayjs'
-
-const harSluttetKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
 
 const ikkeAktuellKanEndres = (
   pamelding: PameldingResponse,
@@ -65,7 +58,7 @@ const skalViseForlengKnapp = (
 ) =>
   sluttdato &&
   (pamelding.status.type === DeltakerStatusType.DELTAR ||
-    harSluttetKanEndres(pamelding, statusdato, toMndSiden))
+    harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden))
 
 const skalViseEndreInnholdKnapp = (
   pamelding: PameldingResponse,
@@ -73,7 +66,7 @@ const skalViseEndreInnholdKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
+  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
 const skalViseEndreBakgrunnsinfoKnapp = (
   pamelding: PameldingResponse,
@@ -81,7 +74,7 @@ const skalViseEndreBakgrunnsinfoKnapp = (
   toMndSiden: Date
 ) =>
   venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
-  pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
+  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
@@ -89,15 +82,18 @@ const skalViseEndreSluttdatoKnapp = (
   toMndSiden: Date
 ) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
-  harSluttetKanEndres(pamelding, statusdato, toMndSiden)
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
 
 const skalViseEndreSluttarsakKnapp = (
   pamelding: PameldingResponse,
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  harSluttetKanEndres(pamelding, statusdato, toMndSiden) ||
-  ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)
+  (deltakerHarSluttetEllerFullfort(pamelding.status.type) ||
+    pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL) &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
 
 const skalViseEndreDeltakelsesmengde = (
   pamelding: PameldingResponse,
@@ -114,10 +110,12 @@ const skalViseEndreOppstartsdato = (
   toMndSiden: Date
 ) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
-    pamelding.startdato) ||
+    pamelding.startdato &&
+    pamelding.startdato !== EMDASH) ||
   harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
+  pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
   pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
   pamelding.startdato &&
   pamelding.startdato !== EMDASH
