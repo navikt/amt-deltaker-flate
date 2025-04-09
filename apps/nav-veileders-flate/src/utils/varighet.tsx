@@ -1,12 +1,11 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  ArenaTiltakskode,
   getDateFromString,
-  isValidDate,
-  ArenaTiltakskode
+  isValidDate
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
-import { dateStrToNullableDate } from './utils'
 
 export enum VarighetValg {
   ANNET = 'ANNET',
@@ -297,9 +296,7 @@ export const getSisteGyldigeSluttDato = (
   pamelding: PameldingResponse,
   nyStartdato?: Date
 ) => {
-  const deltakerlisteSluttDato = dateStrToNullableDate(
-    pamelding.deltakerliste.sluttdato
-  )
+  const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
 
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
 
@@ -361,9 +358,8 @@ export const getSluttDatoFeilmelding = (
   erForleng?: boolean
 ) => {
   const deltakerstartDato = getDateFromString(pamelding.startdato)
-  const deltakerlisteSluttDato = dateStrToNullableDate(
-    pamelding.deltakerliste.sluttdato
-  )
+  const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
+
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
   const sluttDato = dayjs(nySluttDato)
 

@@ -1,13 +1,20 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
 import { ModalFooter } from '../ModalFooter'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 interface Props {
   open: boolean
+  oppstartstype: Oppstartstype
   onConfirm: () => void
   onCancel: () => void
 }
 
-export const SlettKladdModal = ({ open, onConfirm, onCancel }: Props) => {
+export const SlettKladdModal = ({
+  open,
+  oppstartstype,
+  onConfirm,
+  onCancel
+}: Props) => {
   return (
     <Modal
       open={open}
@@ -15,7 +22,11 @@ export const SlettKladdModal = ({ open, onConfirm, onCancel }: Props) => {
       onClose={onCancel}
     >
       <Modal.Body>
-        <BodyLong>Påmeldingen og det du har skrevet vil bli borte.</BodyLong>
+        <BodyLong>
+          {oppstartstype === Oppstartstype.FELLES
+            ? 'Kladden til søknaden vil bli borte.'
+            : 'Påmeldingen og det du har skrevet vil bli borte.'}
+        </BodyLong>
       </Modal.Body>
       <ModalFooter
         confirmButtonText="Slett kladd"

@@ -1,9 +1,9 @@
 import {
+  ArenaTiltakskode,
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  DeltakerlisteStatus,
-  ArenaTiltakskode
+  DeltakerlisteStatus
 } from '../model/deltaker'
 import { Endring, EndringType } from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
@@ -42,16 +42,42 @@ export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
     case ArenaTiltakskode.GRUPPEAMO:
       return 'Arbeidsmarkedsopplæring'
     case ArenaTiltakskode.JOBBK:
-      return 'Jobbklubb'
+      return 'Jobbsøkerkurs'
     case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid'
   }
+}
+
+export const hentTiltakGjennomforingNavnArrangorTekst = (
+  navnPaGjennomforing: string,
+  tiltakstype: ArenaTiltakskode,
+  arrangorNavn: string
+) => {
+  if (tiltakstype === ArenaTiltakskode.GRUPPEAMO) {
+    return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
+  }
+  if (tiltakstype === ArenaTiltakskode.GRUFAGYRKE) {
+    return `${navnPaGjennomforing} hos ${arrangorNavn}`
+  }
+  return hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)
 }
 
 export const hentTiltakNavnHosArrangorTekst = (
   tiltakstype: ArenaTiltakskode,
   arrangorNavn: string
 ) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
+
+export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
+  tiltaksType: ArenaTiltakskode,
+  deltakerlisteNavn: string,
+  arrangorNavn: string
+) => {
+  return [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
+    tiltaksType
+  )
+    ? `${deltakerlisteNavn} hos ${arrangorNavn}`
+    : hentTiltakNavnHosArrangorTekst(tiltaksType, arrangorNavn)
+}
 
 export const getDeltakerStatusDisplayText = (
   type: DeltakerStatusType

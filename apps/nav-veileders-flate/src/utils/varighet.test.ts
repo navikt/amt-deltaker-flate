@@ -2,7 +2,8 @@ import dayjs from 'dayjs'
 import {
   DeltakerlisteStatus,
   DeltakerStatusType,
-  ArenaTiltakskode
+  ArenaTiltakskode,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
@@ -34,9 +35,9 @@ const pamelding: PameldingResponse = {
     deltakerlisteNavn: 'Testliste',
     tiltakstype: ArenaTiltakskode.ARBFORB,
     arrangorNavn: 'Den Beste Arrangøren AS',
-    oppstartstype: 'LOPENDE',
-    startdato: startdato,
-    sluttdato: sluttdato,
+    oppstartstype: Oppstartstype.LOPENDE,
+    startdato: dayjs(startdato).toDate(),
+    sluttdato: dayjs(sluttdato).toDate(),
     status: DeltakerlisteStatus.GJENNOMFORES,
     tilgjengeligInnhold: {
       innhold: [],
@@ -134,7 +135,7 @@ describe('getSisteGyldigeSluttDato', () => {
       ...pamelding,
       deltakerliste: {
         ...pamelding.deltakerliste,
-        sluttdato: deltakerlisteSluttDato.toString()
+        sluttdato: deltakerlisteSluttDato.toDate()
       },
       maxVarighet: null
     })
@@ -161,7 +162,7 @@ describe('getSisteGyldigeSluttDato', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: deltakerlisteSluttDato.toString()
+          sluttdato: deltakerlisteSluttDato.toDate()
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds()
       },
@@ -176,7 +177,7 @@ describe('getSisteGyldigeSluttDato', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: deltakerlisteSluttDato.toString()
+          sluttdato: deltakerlisteSluttDato.toDate()
         },
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
@@ -340,7 +341,7 @@ describe('getSluttDatoFeilmelding', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: dayjs().add(2, 'month').toString()
+          sluttdato: dayjs().add(2, 'month').toDate()
         },
         maxVarighet: null
       },
@@ -356,7 +357,7 @@ describe('getSluttDatoFeilmelding', () => {
         startdato: '2024-04-23',
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: '2024-10-23'
+          sluttdato: dayjs('2024-10-23').toDate()
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds()
       },
@@ -371,7 +372,7 @@ describe('getSluttDatoFeilmelding', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: dayjs().add(3, 'month').toString()
+          sluttdato: dayjs().add(3, 'month').toDate()
         },
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
@@ -386,7 +387,7 @@ describe('getSluttDatoFeilmelding', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: dayjs().add(3, 'month').toString()
+          sluttdato: dayjs().add(3, 'month').toDate()
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds()
       },
@@ -401,7 +402,7 @@ describe('getSluttDatoFeilmelding', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          sluttdato: dayjs().add(2, 'month').toString()
+          sluttdato: dayjs().add(2, 'month').toDate()
         },
         maxVarighet: dayjs.duration(3, 'month').asMilliseconds()
       },

@@ -115,7 +115,7 @@ const InngangPrEnv = () => {
 
       {(lagNyPamelding && errorCreate) ||
         (!lagNyPamelding && errorHent && (
-          <ErrorPage message="Feil med henting av deltaker" />
+          <ErrorPage message={errorCreate ?? 'Feil med henting av deltaker'} />
         ))}
 
       {lagNyPamelding && nyPamelding && (

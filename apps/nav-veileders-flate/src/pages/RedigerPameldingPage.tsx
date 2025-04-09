@@ -3,13 +3,15 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  ArenaTiltakskode,
   UtkastHeader,
+  erKursEllerDigitalt,
+  harFellesOppstart,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { avbrytUtkast } from '../api/api.ts'
+import { PameldingResponse } from '../api/data/pamelding.ts'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
@@ -23,7 +25,6 @@ import {
   useModiaLink
 } from '../hooks/useModiaLink.ts'
 import { ErrorPage } from './ErrorPage.tsx'
-import { PameldingResponse } from '../api/data/pamelding.ts'
 
 export const RedigerPameldingPage = () => {
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
@@ -34,11 +35,17 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const erUtkastAvbrutt =
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
-  const tittel = erUtkastAvbrutt ? 'Avbrutt utkast' : 'Utkast til påmelding'
-  const kanEndreUtkast =
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.DIGIOPPARB
+  const tittel = erUtkastAvbrutt
+    ? 'Avbrutt utkast'
+    : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
+  const kanEndreUtkast = !erKursEllerDigitalt(
+    pamelding.deltakerliste.tiltakstype
+  )
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -66,9 +73,7 @@ export const RedigerPameldingPage = () => {
       <div>
         <PameldingHeader
           title={tittel}
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
-          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          deltakerlisteId={pamelding.deltakerliste.deltakerlisteId}
+          deltakerliste={pamelding.deltakerliste}
         />
         <UtkastHeader
           visStatusVenterPaaBruker={!erUtkastAvbrutt}
@@ -97,7 +102,7 @@ export const RedigerPameldingPage = () => {
               bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
               deltakelsesprosent={pamelding.deltakelsesprosent}
               dagerPerUke={pamelding.dagerPerUke}
-              tiltakstype={pamelding.deltakerliste.tiltakstype}
+              deltakerliste={pamelding.deltakerliste}
             />
             {pamelding.status.type ===
               DeltakerStatusType.UTKAST_TIL_PAMELDING && (
@@ -135,7 +140,7 @@ export const RedigerPameldingPage = () => {
                   loading={avbrytUtkastState === DeferredFetchState.LOADING}
                   icon={<XMarkIcon />}
                 >
-                  Avbryt utkast til påmelding
+                  {`Avbryt utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`}
                 </Button>
               </>
             )}

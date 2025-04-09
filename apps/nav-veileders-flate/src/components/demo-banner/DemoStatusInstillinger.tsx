@@ -160,6 +160,12 @@ const DemoStatusInstillinger = () => {
             DeltakerStatusType.UTKAST_TIL_PAMELDING
           )}
         </option>
+        <option value={DeltakerStatusType.SOKT_INN}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.SOKT_INN)}
+        </option>
+        <option value={DeltakerStatusType.VENTELISTE}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.VENTELISTE)}
+        </option>
         <option value={DeltakerStatusType.AVBRUTT_UTKAST}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT_UTKAST)}
         </option>
@@ -171,6 +177,12 @@ const DemoStatusInstillinger = () => {
         </option>
         <option value={DeltakerStatusType.HAR_SLUTTET}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.HAR_SLUTTET)}
+        </option>
+        <option value={DeltakerStatusType.AVBRUTT}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.AVBRUTT)}
+        </option>
+        <option value={DeltakerStatusType.FULLFORT}>
+          {getDeltakerStatusDisplayText(DeltakerStatusType.FULLFORT)}
         </option>
         <option value={DeltakerStatusType.FEILREGISTRERT}>
           {getDeltakerStatusDisplayText(DeltakerStatusType.FEILREGISTRERT)}

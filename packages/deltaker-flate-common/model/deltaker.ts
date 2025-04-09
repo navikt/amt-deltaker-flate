@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import { dateSchema, nullableDateSchema } from './utils'
 
+export enum Oppstartstype {
+  LOPENDE = 'LOPENDE',
+  FELLES = 'FELLES'
+}
+
 export enum ArenaTiltakskode {
   ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
   ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
@@ -10,7 +15,7 @@ export enum ArenaTiltakskode {
   VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK' // Jobbklubb / er kurs
+  JOBBK = 'JOBBK' // Jobbsøkerkurs / er kurs
 }
 
 export enum Tiltakskode {

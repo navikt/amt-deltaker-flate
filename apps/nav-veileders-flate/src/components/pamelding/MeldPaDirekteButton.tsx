@@ -3,6 +3,7 @@ import { Alert, Button, HelpText } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -16,8 +17,8 @@ import {
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
 import {
-  PameldingFormValues,
-  generateFormDefaultValues
+  generateFormDefaultValues,
+  PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 import { ErrorPage } from '../../pages/ErrorPage.tsx'
 import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-utils.ts'
@@ -49,18 +50,29 @@ export const MeldPaDirekteButton = ({
   const [newPameldingValues, setNewPameldingValues] = useState(
     useOldPamelding ? generateFormDefaultValues(pamelding) : undefined
   )
-
+  const erFellesOppstart = harFellesOppstart(
+    pamelding.deltakerliste.oppstartstype
+  )
   const methods = useFormContext<PameldingFormValues>()
+
+  const meldPaText = erFellesOppstart ? 'Søk inn' : 'Meld på'
+
   const meldPaDirekteTekst =
     pamelding.status.type === DeltakerStatusType.KLADD
-      ? 'Meld på uten å dele utkast'
-      : 'Meld på uten godkjent utkast'
+      ? `${meldPaText} uten å dele utkast`
+      : `${meldPaText} uten godkjent utkast`
 
   const returnToFrontpage = () => {
-    doRedirect(DELTAKELSESOVERSIKT_LINK, {
-      heading: 'Bruker er meldt på',
-      body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
-    })
+    const body = erFellesOppstart
+      ? {
+          heading: 'Bruker er søkt inn',
+          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+        }
+      : {
+          heading: 'Bruker er meldt på',
+          body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
+        }
+    doRedirect(DELTAKELSESOVERSIKT_LINK, body)
   }
 
   const {
@@ -129,8 +141,7 @@ export const MeldPaDirekteButton = ({
         </Button>
         <div className="ml-2">
           <HelpText aria-label={`Hjelpetekst: ${meldPaDirekteTekst}`}>
-            Meld på uten digital godkjenning av utkastet. Brukeren skal allerede
-            vite hvilke opplysninger som blir delt med arrangøren.
+            {`${meldPaText} uten digital godkjenning av utkastet. Brukeren skal allerede vite hvilke opplysninger som blir delt med arrangøren.`}
           </HelpText>
         </div>
       </div>

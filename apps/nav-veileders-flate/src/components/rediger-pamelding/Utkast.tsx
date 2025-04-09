@@ -4,16 +4,19 @@ import {
   EMDASH,
   ArenaTiltakskode,
   deltakerprosentText,
-  visDeltakelsesmengde
+  visDeltakelsesmengde,
+  OmKurset,
+  erKursEllerDigitalt,
+  DeltakerStatusType
 } from 'deltaker-flate-common'
-import { Deltakelsesinnhold } from '../../api/data/pamelding.ts'
+import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
 interface Props {
   innhold: Deltakelsesinnhold | null
   bakgrunnsinformasjon: string | null
   deltakelsesprosent: number | null
   dagerPerUke: number | null
-  tiltakstype: ArenaTiltakskode
+  deltakerliste: Deltakerliste
 }
 
 export const Utkast = ({
@@ -21,12 +24,15 @@ export const Utkast = ({
   bakgrunnsinformasjon,
   deltakelsesprosent,
   dagerPerUke,
-  tiltakstype
+  deltakerliste
 }: Props) => {
+  const tiltakstype = deltakerliste.tiltakstype
   const bakgrunnsinfoVisningstekst =
     bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
       ? bakgrunnsinformasjon
       : EMDASH
+
+  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
 
   return (
     <VStack>
@@ -41,7 +47,7 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      {bakgrunnsinformasjon && (
+      {visBakgrunnsinfo && (
         <div className="mt-8">
           <Heading level="3" size="small">
             Bakgrunnsinfo
@@ -62,6 +68,18 @@ export const Utkast = ({
           </BodyLong>
         </>
       )}
+
+      <OmKurset
+        tiltakstype={deltakerliste.tiltakstype}
+        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
+        oppstartstype={deltakerliste.oppstartstype}
+        startdato={deltakerliste.startdato}
+        sluttdato={deltakerliste.sluttdato}
+        size="small"
+        visDelMedArrangorInfo
+        visForUtkast
+        className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
+      />
     </VStack>
   )
 }

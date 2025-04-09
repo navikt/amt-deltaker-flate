@@ -16,7 +16,9 @@ import {
   getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  ArenaTiltakskode
+  ArenaTiltakskode,
+  Oppstartstype,
+  erKursTiltak
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -83,10 +85,10 @@ export class MockHandler {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
         tiltakstype: this.tiltakstype,
+        oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: 'Den Beste Arrangøren AS',
-        oppstartstype: 'LOPENDE',
-        startdato: '2022-10-28',
-        sluttdato: '2030-02-20',
+        startdato: dayjs('2022-10-28').toDate(),
+        sluttdato: dayjs('2030-02-20').toDate(),
         status: DeltakerlisteStatus.GJENNOMFORES,
         tilgjengeligInnhold: {
           innhold: innhold,
@@ -135,7 +137,8 @@ export class MockHandler {
       deltakelsesmengder: {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
-      }
+      },
+      erManueltDeltMedArrangor: true
     }
   }
 
@@ -147,7 +150,9 @@ export class MockHandler {
   getStartdato(): string {
     if (
       this.statusType === DeltakerStatusType.DELTAR ||
-      this.statusType === DeltakerStatusType.HAR_SLUTTET
+      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
+      this.statusType === DeltakerStatusType.FULLFORT ||
+      this.statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
@@ -162,7 +167,11 @@ export class MockHandler {
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
       return dayjs(fremtidigDato).format('YYYY-MM-DD')
     }
-    if (this.statusType === DeltakerStatusType.HAR_SLUTTET) {
+    if (
+      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
+      this.statusType === DeltakerStatusType.FULLFORT ||
+      this.statusType === DeltakerStatusType.AVBRUTT
+    ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
       return dayjs(passertDato).format('YYYY-MM-DD')
@@ -386,6 +395,16 @@ export class MockHandler {
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
+
+      if (erKursTiltak(tiltakstype)) {
+        // Obs disse kan ha løpende oppstart også.
+        oppdatertPamelding.bakgrunnsinformasjon = null
+        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else {
+        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
+        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+      }
+
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

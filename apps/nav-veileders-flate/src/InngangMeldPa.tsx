@@ -7,7 +7,7 @@ import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
-import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
+import { useMock } from './utils/environment-utils.ts'
 
 const InngangMeldPa = () => {
   const { deltakerlisteId } = useParams()
@@ -32,17 +32,12 @@ const InngangMeldPa = () => {
   }
 
   if (error || !nyPamelding) {
-    return (
-      <>
-        {isEnvLocalDemoOrPr && <DemoBanner />}
-        <ErrorPage message="Kunne ikke opprette kladd for påmelding." />
-      </>
-    )
+    return <ErrorPage message={error} />
   }
 
   return (
     <PameldingContextProvider initialPamelding={nyPamelding}>
-      {isEnvLocalDemoOrPr && <DemoBanner />}
+      {useMock && <DemoBanner />}
       <DeltakerGuard />
     </PameldingContextProvider>
   )
