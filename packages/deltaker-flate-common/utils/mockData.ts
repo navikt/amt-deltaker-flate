@@ -371,6 +371,15 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       opprettet: dayjs().subtract(3, 'day').toDate()
     },
     {
+      type: HistorikkType.InnsokPaaFellesOppstart,
+      innsokt: dayjs().subtract(10, 'days').toDate(),
+      innsoktAv: 'Navn Navnesen',
+      innsoktAvEnhet: 'Nav Fredrikstad',
+      utkastDelt: dayjs().subtract(3, 'day').toDate(),
+      utkastGodkjentAvNav: false,
+      deltakelsesinnholdVedInnsok: null
+    },
+    {
       type: HistorikkType.ImportertFraArena,
       importertDato: dayjs().subtract(10, 'days').toDate(),
       dagerPerUke: null,
