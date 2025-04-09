@@ -20,10 +20,10 @@
     "playwright:codegen": "playwright codegen playwright.dev"
   },
   "dependencies": {
-    "@grafana/faro-web-sdk": "^1.14.3",
-    "@navikt/aksel-icons": "^7.18.0",
-    "@navikt/ds-css": "^7.18.0",
-    "@navikt/ds-react": "^7.18.0",
+    "@grafana/faro-web-sdk": "^1.15.0",
+    "@navikt/aksel-icons": "^7.19.0",
+    "@navikt/ds-css": "^7.19.0",
+    "@navikt/ds-react": "^7.19.0",
     "@navikt/nav-dekoratoren-moduler": "^3.2.2",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
