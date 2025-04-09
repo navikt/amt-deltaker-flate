@@ -9,9 +9,10 @@ import {
   PlusCircleFillIcon
 } from '@navikt/aksel-icons'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
+import { TiltakskoordinatorEndringsType } from '../model/deltakerHistorikk.ts'
 
 interface EndringTypeIkonProps {
-  type: EndreDeltakelseType
+  type: EndreDeltakelseType | TiltakskoordinatorEndringsType
   size?: 'medium' | 'large' | 'small'
 }
 
@@ -70,6 +71,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
       )
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
     case EndreDeltakelseType.ENDRE_INNHOLD:
+    case TiltakskoordinatorEndringsType.DelMedArrangor:
       return (
         <MenuElipsisHorizontalCircleFillIcon
           className={sizeName(size)}

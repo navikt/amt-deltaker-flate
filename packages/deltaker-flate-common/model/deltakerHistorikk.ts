@@ -27,6 +27,10 @@ export enum ArrangorEndringsType {
   LeggTilOppstartsdato = 'LeggTilOppstartsdato'
 }
 
+export enum TiltakskoordinatorEndringsType {
+  DelMedArrangor = 'DelMedArrangor'
+}
+
 export const endreBakgrunnsinformasjonSchema = z.object({
   type: z.literal(EndringType.EndreBakgrunnsinformasjon),
   bakgrunnsinformasjon: z.string().nullable()
@@ -119,6 +123,14 @@ const arrangorEndringSchema = z.discriminatedUnion('type', [
   arrangorLeggTilOppstartSchema
 ])
 
+const tiltakskoordinatorDelMedArrangorSchema = z.object({
+  type: z.literal(TiltakskoordinatorEndringsType.DelMedArrangor)
+})
+
+const tiltakskoordinatorEndringSchema = z.discriminatedUnion('type', [
+  tiltakskoordinatorDelMedArrangorSchema
+])
+
 export const soktInnSchema = z.object({
   type: z.literal(HistorikkType.InnsokPaaFellesOppstart),
   innsokt: nullableDateSchema,
@@ -177,6 +189,14 @@ export const vurderingFraArrangorSchema = z.object({
   endretAv: z.string()
 })
 
+export const endringFraTiltakskoordinatorSchema = z.object({
+  type: z.literal(HistorikkType.EndringFraTiltakskoordinator),
+  endring: tiltakskoordinatorEndringSchema,
+  endret: dateSchema,
+  endretAv: z.string(),
+  endretAvEnhet: z.string()
+})
+
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   vedtakSchema,
   soktInnSchema,
@@ -184,7 +204,8 @@ export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   forslagSchema,
   endringFraArrangorSchema,
   importertFraArenaSchema,
-  vurderingFraArrangorSchema
+  vurderingFraArrangorSchema,
+  endringFraTiltakskoordinatorSchema
 ])
 
 export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
@@ -201,4 +222,10 @@ export type importertFraArena = z.infer<typeof importertFraArenaSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
 export type DeltakerHistorikkListe = z.infer<
   typeof deltakerHistorikkListeSchema
+>
+export type EndringerFraTiltakskoordinator = z.infer<
+  typeof endringFraTiltakskoordinatorSchema
+>
+export type TiltakskoordinatorEndring = z.infer<
+  typeof tiltakskoordinatorEndringSchema
 >

@@ -13,7 +13,8 @@ import {
   getLedetekst,
   getUtvidetInnhold,
   Oppstartstype,
-  erKursTiltak
+  erKursTiltak,
+  lagHistorikkFellesOppstart
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -302,6 +303,10 @@ export class MockHandler {
   }
 
   getHistorikk() {
-    return HttpResponse.json(createHistorikk())
+    return HttpResponse.json(
+      this.deltaker?.deltakerliste.oppstartstype === Oppstartstype.FELLES
+        ? lagHistorikkFellesOppstart()
+        : createHistorikk()
+    )
   }
 }
