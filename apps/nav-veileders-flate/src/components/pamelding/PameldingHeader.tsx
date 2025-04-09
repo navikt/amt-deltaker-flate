@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import {
   erKursTiltak,
-  hentTiltakGjennomforingNavnArrangorTekst,
+  hentTiltakGjennomforingNavnArrangorTittel,
   Oppstartstype
 } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/pamelding.ts'
@@ -21,7 +21,7 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
   return (
     <div>
       <Heading level="1" size="large">
-        {hentTiltakGjennomforingNavnArrangorTekst(
+        {hentTiltakGjennomforingNavnArrangorTittel(
           deltakerliste.deltakerlisteNavn,
           deltakerliste.tiltakstype,
           deltakerliste.arrangorNavn

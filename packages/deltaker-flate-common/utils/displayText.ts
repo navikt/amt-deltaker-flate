@@ -48,7 +48,7 @@ export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
   }
 }
 
-export const hentTiltakGjennomforingNavnArrangorTekst = (
+export const hentTiltakGjennomforingNavnArrangorTittel = (
   navnPaGjennomforing: string,
   tiltakstype: ArenaTiltakskode,
   arrangorNavn: string

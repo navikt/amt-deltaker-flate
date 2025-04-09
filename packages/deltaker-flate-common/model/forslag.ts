@@ -4,7 +4,7 @@ import { vurderingFraArrangorSchema } from './deltakerHistorikk.ts'
 
 export enum HistorikkType {
   Vedtak = 'Vedtak',
-  SoktInn = 'SoktInn',
+  InnsokPaaFellesOppstart = 'InnsokPaaFellesOppstart',
   Endring = 'Endring',
   Forslag = 'Forslag',
   EndringFraArrangor = 'EndringFraArrangor',

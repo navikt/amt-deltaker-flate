@@ -371,13 +371,13 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       opprettet: dayjs().subtract(3, 'day').toDate()
     },
     {
-      type: HistorikkType.SoktInn,
-      soktInn: dayjs().subtract(10, 'days').toDate(),
-      soktInnAvNav: false,
-      deltakelsesinnhold: null,
-      opprettetAv: 'Navn Navnesen',
-      opprettetAvEnhet: 'Nav Fredrikstad',
-      opprettet: dayjs().subtract(3, 'day').toDate()
+      type: HistorikkType.InnsokPaaFellesOppstart,
+      innsokt: dayjs().subtract(10, 'days').toDate(),
+      innsoktAv: 'Navn Navnesen',
+      innsoktAvEnhet: 'Nav Fredrikstad',
+      utkastDelt: dayjs().subtract(3, 'day').toDate(),
+      utkastGodkjentAvNav: false,
+      deltakelsesinnholdVedInnsok: null
     },
     {
       type: HistorikkType.ImportertFraArena,

@@ -31,7 +31,7 @@ const getHistorikkItem = (
       return (
         <HistorikkVedtak endringsVedtak={historikk} tiltakstype={tiltakstype} />
       )
-    case HistorikkType.SoktInn:
+    case HistorikkType.InnsokPaaFellesOppstart:
       return (
         <HistorikkSoktInn
           soktInnHistorikk={historikk}
