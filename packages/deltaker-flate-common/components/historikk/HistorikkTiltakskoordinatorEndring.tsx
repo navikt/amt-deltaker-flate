@@ -38,7 +38,7 @@ export const HistorikkTiltakskoordinatorEndring = ({
     >
       {getEndringsDetaljer(tiltakskoordinatorEndring.endring)}
       <Detail className="mt-1" textColor="subtle">
-        {`Endret ${formatDate(tiltakskoordinatorEndring.endret)} av ${tiltakskoordinatorEndring.endretAv} ${tiltakskoordinatorEndring.endretAvEnhet}.`}
+        {`Endret ${formatDate(tiltakskoordinatorEndring.endret)} av ${tiltakskoordinatorEndring.endretAv}.`}
       </Detail>
     </HistorikkElement>
   )

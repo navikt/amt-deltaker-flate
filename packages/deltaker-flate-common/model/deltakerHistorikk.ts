@@ -193,8 +193,7 @@ export const endringFraTiltakskoordinatorSchema = z.object({
   type: z.literal(HistorikkType.EndringFraTiltakskoordinator),
   endring: tiltakskoordinatorEndringSchema,
   endret: dateSchema,
-  endretAv: z.string(),
-  endretAvEnhet: z.string()
+  endretAv: z.string()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
