@@ -13,6 +13,7 @@ import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkSkeleton } from './HistorikkSkeleton'
 import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
 import { HistorikkSoktInn } from './HistorikkSoktInn.tsx'
+import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinatorEndring.tsx'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
@@ -58,6 +59,12 @@ const getHistorikkItem = (
       )
     case HistorikkType.VurderingFraArrangor:
       return <HistorikkVurderingFraArrangor vurdering={historikk} />
+    case HistorikkType.EndringFraTiltakskoordinator:
+      return (
+        <HistorikkTiltakskoordinatorEndring
+          tiltakskoordinatorEndring={historikk}
+        />
+      )
   }
 }
 

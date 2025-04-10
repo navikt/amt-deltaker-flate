@@ -5,7 +5,11 @@ import {
   DeltakerStatusType,
   DeltakerlisteStatus
 } from '../model/deltaker'
-import { Endring, EndringType } from '../model/deltakerHistorikk.ts'
+import {
+  Endring,
+  EndringType,
+  TiltakskoordinatorEndringsType
+} from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 import {
   ForslagEndringAarsak,
@@ -255,5 +259,14 @@ export const getEndringsTittel = (endring: Endring) => {
       return `Oppstartsdato er endret til ${formatDateWithMonthName(endring.startdato)}`
     case EndringType.FjernOppstartsdato:
       return 'Oppstartsdato er fjernet'
+  }
+}
+
+export const getTiltakskoordinatorEndringsTittel = (
+  endring: TiltakskoordinatorEndringsType
+) => {
+  switch (endring) {
+    case TiltakskoordinatorEndringsType.DelMedArrangor:
+      return 'Informasjon sendt til arrangør'
   }
 }

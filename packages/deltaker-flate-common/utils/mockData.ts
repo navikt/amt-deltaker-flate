@@ -11,7 +11,8 @@ import {
 import {
   ArrangorEndringsType,
   DeltakerHistorikkListe,
-  EndringType
+  EndringType,
+  TiltakskoordinatorEndringsType
 } from '../model/deltakerHistorikk'
 import {
   ForslagEndringAarsakType,
@@ -371,15 +372,6 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       opprettet: dayjs().subtract(3, 'day').toDate()
     },
     {
-      type: HistorikkType.InnsokPaaFellesOppstart,
-      innsokt: dayjs().subtract(10, 'days').toDate(),
-      innsoktAv: 'Navn Navnesen',
-      innsoktAvEnhet: 'Nav Fredrikstad',
-      utkastDelt: dayjs().subtract(3, 'day').toDate(),
-      utkastGodkjentAvNav: false,
-      deltakelsesinnholdVedInnsok: null
-    },
-    {
       type: HistorikkType.ImportertFraArena,
       importertDato: dayjs().subtract(10, 'days').toDate(),
       dagerPerUke: null,
@@ -394,13 +386,35 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         gyldigTil: null,
         opprettet: dayjs().subtract(17, 'days').toDate()
       }
-    },
+    }
+  ]
+}
+
+export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
+  return [
     {
       type: HistorikkType.VurderingFraArrangor,
       vurderingstype: Vurderingstype.OPPFYLLER_IKKE_KRAVENE,
       begrunnelse: 'Oppfyller ikke kravene',
       opprettetDato: dayjs().subtract(17, 'day').toDate(),
       endretAv: 'Nav'
+    },
+    {
+      type: HistorikkType.EndringFraTiltakskoordinator,
+      endring: {
+        type: TiltakskoordinatorEndringsType.DelMedArrangor
+      },
+      endret: dayjs().subtract(17, 'day').toDate(),
+      endretAv: 'Nav'
+    },
+    {
+      type: HistorikkType.InnsokPaaFellesOppstart,
+      innsokt: dayjs().subtract(10, 'days').toDate(),
+      innsoktAv: 'Navn Navnesen',
+      innsoktAvEnhet: 'Nav Fredrikstad',
+      utkastDelt: dayjs().subtract(3, 'day').toDate(),
+      utkastGodkjentAvNav: false,
+      deltakelsesinnholdVedInnsok: null
     }
   ]
 }
