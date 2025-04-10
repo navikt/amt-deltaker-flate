@@ -72,6 +72,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
     case EndreDeltakelseType.ENDRE_INNHOLD:
     case TiltakskoordinatorEndringsType.DelMedArrangor:
+    case TiltakskoordinatorEndringsType.SettPaVenteliste:
       return (
         <MenuElipsisHorizontalCircleFillIcon
           className={sizeName(size)}

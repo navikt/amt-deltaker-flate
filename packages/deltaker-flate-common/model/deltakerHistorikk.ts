@@ -28,7 +28,8 @@ export enum ArrangorEndringsType {
 }
 
 export enum TiltakskoordinatorEndringsType {
-  DelMedArrangor = 'DelMedArrangor'
+  DelMedArrangor = 'DelMedArrangor',
+  SettPaVenteliste = 'SettPaVenteliste'
 }
 
 export const endreBakgrunnsinformasjonSchema = z.object({
@@ -127,8 +128,13 @@ const tiltakskoordinatorDelMedArrangorSchema = z.object({
   type: z.literal(TiltakskoordinatorEndringsType.DelMedArrangor)
 })
 
+const tiltakskoordinatorSettPaVentelisteSchema = z.object({
+  type: z.literal(TiltakskoordinatorEndringsType.SettPaVenteliste)
+})
+
 const tiltakskoordinatorEndringSchema = z.discriminatedUnion('type', [
-  tiltakskoordinatorDelMedArrangorSchema
+  tiltakskoordinatorDelMedArrangorSchema,
+  tiltakskoordinatorSettPaVentelisteSchema
 ])
 
 export const soktInnSchema = z.object({
@@ -193,7 +199,8 @@ export const endringFraTiltakskoordinatorSchema = z.object({
   type: z.literal(HistorikkType.EndringFraTiltakskoordinator),
   endring: tiltakskoordinatorEndringSchema,
   endret: dateSchema,
-  endretAv: z.string()
+  endretAv: z.string(),
+  endretAvEnhet: z.string().nullable()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
