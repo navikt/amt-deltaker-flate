@@ -398,7 +398,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
         type: TiltakskoordinatorEndringsType.SettPaVenteliste
       },
       endret: dayjs().subtract(17, 'day').toDate(),
-      endretAv: 'Nav',
+      endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad'
     },
     {
