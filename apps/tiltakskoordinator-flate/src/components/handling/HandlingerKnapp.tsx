@@ -1,13 +1,17 @@
-import { TasklistIcon, XMarkIcon } from '@navikt/aksel-icons'
+import {
+  MenuElipsisHorizontalCircleIcon,
+  TasklistSendIcon,
+  XMarkIcon
+} from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
+import { Tiltakskode } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
+import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
 import { HandlingModalController } from './HandlingModalController'
-import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
-import { Tiltakskode } from 'deltaker-flate-common'
 
 interface Props {
   className?: string
@@ -41,15 +45,23 @@ export const HandlingerKnapp = ({ className }: Props) => {
     return <div className="mt-8"></div>
   }
 
+  function getKnappHandlingText(handlingValg: HandlingValg) {
+    switch (handlingValg) {
+      case HandlingValg.DEL_DELTAKERE:
+        return 'Del med arrangør'
+      case HandlingValg.SETT_PA_VENTELISTE:
+        return 'Sett på venteliste'
+    }
+  }
+
   return (
     <div className={`flex gap-3 ${className ?? ''}`}>
       {handlingValg !== null && (
         <>
-          {handlingValg === HandlingValg.DEL_DELTAKERE && (
-            <Button size="small" onClick={() => setModalOpen(true)}>
-              Del med arrangør
-            </Button>
-          )}
+          <Button size="small" onClick={() => setModalOpen(true)}>
+            {getKnappHandlingText(handlingValg)}
+          </Button>
+
           <Button
             size="small"
             variant="secondary"
@@ -80,13 +92,31 @@ export const HandlingerKnapp = ({ className }: Props) => {
               }}
             >
               <div className="p-1 flex items-start">
-                <TasklistIcon
+                <TasklistSendIcon
                   width="1.125rem"
                   height="1.125rem"
                   className="mt-[0.15rem] mr-1"
                   aria-hidden
                 />
                 Velg deltakere som skal deles med arrangør
+              </div>
+            </ActionMenu.Item>
+
+            <ActionMenu.Item
+              onSelect={(e: Event) => {
+                e.preventDefault()
+                setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
+              }}
+            >
+              <div className="p-1 flex items-start">
+                <MenuElipsisHorizontalCircleIcon
+                  width="1.125rem"
+                  height="1.125rem"
+                  className="mt-[0.15rem] mr-1"
+                  color="var(--a-lightblue-800)"
+                  aria-hidden
+                />
+                Sett på venteliste
               </div>
             </ActionMenu.Item>
           </ActionMenu.Content>

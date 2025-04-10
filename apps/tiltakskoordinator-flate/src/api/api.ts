@@ -184,13 +184,50 @@ export async function delDeltakereMedArrangor(
         logError('ZodError', error.issues)
       } else {
         logError(
-          'Kunne ikke parse deltakereSchema for getDeltakere',
+          'Kunne ikke parse deltakereSchema for delDeltakereMedArrangor',
           deltakerlisteId
         )
       }
 
       throw new Error(
         'Deltakerne ble delt med arrangør, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
+      )
+    }
+  })
+}
+
+export async function settDeltakerePaVenteliste(
+  deltakerlisteId: string,
+  deltakerIder: string[]
+): Promise<Deltakere> {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/sett-pa-venteliste`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(deltakerIder),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  }).then(async (response) => {
+    if (response.status !== 200) {
+      const message = 'Deltakere kunne ikke settes på venteliste'
+      handleError(message, deltakerlisteId, response.status, null)
+    }
+    try {
+      return deltakereSchema.parse(await response.json())
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakereSchema for settDeltakerePaVenteliste',
+          deltakerlisteId
+        )
+      }
+
+      throw new Error(
+        'Deltakerne ble satt på venteliste, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
       )
     }
   })

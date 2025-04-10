@@ -40,7 +40,11 @@ export const HandlingModal = ({
             {getIngenDeltakerValgtTekst(handlingValg)}
           </Alert>
         ) : (
-          <ExpansionCard className="mt-6" size="small">
+          <ExpansionCard
+            className="mt-6"
+            size="small"
+            aria-label={getHandlingDeltakereTittel(handlingValg)}
+          >
             <ExpansionCard.Header>
               <ExpansionCard.Title as="h2" size="small">
                 {getHandlingDeltakereTittel(handlingValg)}
@@ -87,6 +91,8 @@ const getIngenDeltakerValgtTekst = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
       return 'Du må velge minst én deltaker for å dele med arrangør.'
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return 'Du må velge minst én deltaker for å sette på venteliste.'
   }
 }
 
@@ -94,6 +100,8 @@ const getHandlingTittel = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
       return 'Del med arrangør'
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return 'Sett på venteliste'
   }
 }
 
@@ -101,6 +109,8 @@ const getHandlingDeltakereTittel = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
       return 'Følgende deltakere deles med arrangør'
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return 'Følgende deltakere settes på venteliste'
   }
 }
 
@@ -108,5 +118,7 @@ const getHandlingKnappSendTekst = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
       return 'Del med arrangør'
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return 'Sett på venteliste'
   }
 }

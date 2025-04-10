@@ -35,6 +35,15 @@ export const worker = setupWorker(
       return handler.delMedArrangor(body)
     }
   ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/sett-pa-venteliste',
+    async ({ request }) => {
+      await delay(500)
+      const body = (await request.json()) as string[]
+
+      return handler.settPaVenteliste(body)
+    }
+  ),
   http.get(
     '/amt-deltaker-bff/tiltakskoordinator/deltaker/:deltakerId',
     async ({ params }) => {
