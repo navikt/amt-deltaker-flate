@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-
-import { FeatureToggles, KOMET_ER_MASTER } from './feature-toggle-data.ts'
 import { ArenaTiltakskode, Tiltakskode } from '../model/deltaker.ts'
 import { fetchToggles } from './feature-toggle-api.ts'
+import { FeatureToggles, KOMET_ER_MASTER } from './feature-toggle-data.ts'
 
 let cachedFeatureToggles: FeatureToggles | undefined = undefined
 

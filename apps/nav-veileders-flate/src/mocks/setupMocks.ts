@@ -1,4 +1,9 @@
-import { DeltakerStatusType, ArenaTiltakskode } from 'deltaker-flate-common'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusType,
+  KOMET_ER_MASTER,
+  LES_ARENA_DELTAKERE_TOGGLE_NAVN
+} from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import {
@@ -17,10 +22,6 @@ import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
-import {
-  KOMET_ER_MASTER,
-  LES_ARENA_DELTAKERE_TOGGLE_NAVN
-} from '../../../../packages/deltaker-flate-common/feature-toggle/feature-toggle-data.ts'
 
 const handler = new MockHandler()
 

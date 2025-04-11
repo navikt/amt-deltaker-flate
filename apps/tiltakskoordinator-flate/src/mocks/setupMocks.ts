@@ -1,10 +1,10 @@
-import { delay, http, HttpResponse } from 'msw'
-import { setupWorker } from 'msw/browser'
-import { MockHandler } from './MockHandler'
 import {
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN
-} from '../../../../packages/deltaker-flate-common/feature-toggle/feature-toggle-data.ts'
+} from 'deltaker-flate-common'
+import { delay, http, HttpResponse } from 'msw'
+import { setupWorker } from 'msw/browser'
+import { MockHandler } from './MockHandler'
 
 const handler = new MockHandler()
 
