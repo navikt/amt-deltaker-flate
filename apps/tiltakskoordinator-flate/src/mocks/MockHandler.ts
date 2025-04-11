@@ -6,6 +6,7 @@ import {
   mapDeltakerDeltaljerToDeltaker
 } from './mockData.tsx'
 import { DeltakerDetaljer } from '../api/data/deltaker.ts'
+import { DeltakerStatusType } from 'deltaker-flate-common'
 
 export class MockHandler {
   tilgang = true
@@ -66,6 +67,23 @@ export class MockHandler {
     const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.erManueltDeltMedArrangor = true
+      }
+      return deltaker
+    })
+    this.deltakere = oppdaterteDeltakere
+
+    return HttpResponse.json(
+      this.deltakere.filter((deltaker) =>
+        delteDeltakerIder.includes(deltaker.id)
+      )
+    )
+  }
+
+  settPaVenteliste(delteDeltakerIder: string[]) {
+    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+      if (delteDeltakerIder.includes(deltaker.id)) {
+        deltaker.status.type = DeltakerStatusType.VENTELISTE
+        deltaker.status.aarsak = null
       }
       return deltaker
     })

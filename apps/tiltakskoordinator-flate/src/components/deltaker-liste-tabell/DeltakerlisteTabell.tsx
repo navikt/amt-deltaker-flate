@@ -202,6 +202,8 @@ const getHandlingInfoText = (handlingValg: HandlingValg) => {
   switch (handlingValg) {
     case HandlingValg.DEL_DELTAKERE:
       return 'Velg deltakere som skal deles med arrangør for vurdering.'
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return 'Velg deltakere som skal settes på venteliste.'
   }
 }
 

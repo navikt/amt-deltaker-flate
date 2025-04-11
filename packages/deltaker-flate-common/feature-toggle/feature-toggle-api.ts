@@ -2,13 +2,12 @@ import {
   FeatureToggles,
   featureToggleSchema,
   TOGGLES
-} from './data/feature-toggle'
-import { API_URL } from '../utils/environment-utils.ts'
-import { logError } from 'deltaker-flate-common'
+} from './feature-toggle-data.ts'
+import { logError } from '../utils/utils.ts'
 
-export const fetchToggles = (): Promise<FeatureToggles> => {
+export const fetchToggles = (baseUrl: string): Promise<FeatureToggles> => {
   const features = TOGGLES.map((feature) => `feature=${feature}`).join('&')
-  const url = `${API_URL}/unleash/api/feature?${features}`
+  const url = `${baseUrl}/unleash/api/feature?${features}`
   return fetch(url, {
     method: 'GET',
     credentials: 'include',

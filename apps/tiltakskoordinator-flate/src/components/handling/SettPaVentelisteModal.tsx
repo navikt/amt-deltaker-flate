@@ -1,6 +1,6 @@
 import { BodyShort } from '@navikt/ds-react'
 import { useState } from 'react'
-import { delDeltakereMedArrangor } from '../../api/api'
+import { settDeltakerePaVenteliste } from '../../api/api'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useHandlingContext } from '../../context-providers/HandlingContext'
 import { HandlingModal } from './HandlingModal'
@@ -12,7 +12,7 @@ interface Props {
   onSend: () => void
 }
 
-export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
+export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
   const { deltakerlisteDetaljer, setDelakere } = useDeltakerlisteContext()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
@@ -24,7 +24,7 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
   }
 
   const utforHandling = () => {
-    delDeltakereMedArrangor(
+    settDeltakerePaVenteliste(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
@@ -36,11 +36,11 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
         onSend()
 
         setHandlingUtfortText(
-          `${valgteDeltakere.length} deltaker${valgteDeltakere.length === 1 ? '' : 'e'} ble delt med arrangør.`
+          `${valgteDeltakere.length} deltaker${valgteDeltakere.length === 1 ? '' : 'e'} ble satt på venteliste.`
         )
       })
       .catch(() => {
-        setError('Kunne ikke dele med arrangør. Vennligst prøv igjen.')
+        setError('Kunne ikke sette på venteliste. Vennligst prøv igjen.')
       })
   }
 
@@ -52,11 +52,16 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
       error={error}
     >
       <BodyShort>
-        {`${valgteDeltakere.length} person${valgteDeltakere.length === 1 ? '' : 'er'} deles med arrangør for vurdering. Disse blir synlige i Deltakeroversikten til arrangør.`}
+        {`${valgteDeltakere.length} person${valgteDeltakere.length === 1 ? '' : 'er'} settes på venteliste.`}
       </BodyShort>
-      <BodyShort className="mb-4 mt-4">
-        Informasjon om at opplysninger er delt med arrangør, blir synlig for
-        deltakerne på nav.no, og for deres Nav-veiledere i Modia.
+      <BodyShort className="mt-4">
+        Informasjon om venteliste-plass sendes automatisk til deltakerne når du
+        trykker “Sett på venteliste”.
+      </BodyShort>
+      <BodyShort className="mt-4 mb-4">
+        Arrangør kan se deltakerne på venteliste i Deltakeroversikten.
+        Nav-veileder får beskjed om at sine deltakere har fått venteliste-plass
+        gjennom Modia.
       </BodyShort>
     </HandlingModal>
   )

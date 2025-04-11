@@ -12,6 +12,7 @@ import {
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
+  DialogLenke,
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
@@ -27,7 +28,6 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { DialogLenke } from '../../../../packages/deltaker-flate-common/components/DialogLenke.tsx'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { getHistorikk } from '../api/api.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'

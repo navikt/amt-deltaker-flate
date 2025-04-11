@@ -12,6 +12,7 @@ import {
   DeltakerStatusInfoTekst,
   DeltakerStatusTag,
   DeltakerStatusType,
+  DialogLenke,
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
@@ -24,7 +25,6 @@ import {
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
-import { DialogLenke } from '../../../../../packages/deltaker-flate-common/components/DialogLenke.tsx'
 import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
 import { usePameldingContext } from './PameldingContext.tsx'

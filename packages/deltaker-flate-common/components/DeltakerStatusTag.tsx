@@ -4,13 +4,13 @@ import { getDeltakerStatusDisplayText } from '../utils/displayText'
 
 const getTagType = (status: DeltakerStatusType) => {
   switch (status) {
-    case DeltakerStatusType.VENTELISTE:
     case DeltakerStatusType.VENTER_PA_OPPSTART:
       return 'alt3'
     case DeltakerStatusType.KLADD:
       return 'warning'
     case DeltakerStatusType.FULLFORT:
     case DeltakerStatusType.HAR_SLUTTET:
+    case DeltakerStatusType.VENTELISTE:
       return 'alt1'
     case DeltakerStatusType.UTKAST_TIL_PAMELDING:
       return 'info'
