@@ -200,7 +200,7 @@ export async function settDeltakerePaVenteliste(
   deltakerlisteId: string,
   deltakerIder: string[]
 ): Promise<Deltakere> {
-  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/sett-pa-venteliste`, {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/sett-paa-venteliste`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(deltakerIder),
