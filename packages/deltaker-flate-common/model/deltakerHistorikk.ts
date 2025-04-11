@@ -29,7 +29,7 @@ export enum ArrangorEndringsType {
 
 export enum TiltakskoordinatorEndringsType {
   DelMedArrangor = 'DelMedArrangor',
-  SettPaVenteliste = 'SettPaVenteliste'
+  SettPaaVenteliste = 'SettPaaVenteliste'
 }
 
 export const endreBakgrunnsinformasjonSchema = z.object({
@@ -129,7 +129,7 @@ const tiltakskoordinatorDelMedArrangorSchema = z.object({
 })
 
 const tiltakskoordinatorSettPaVentelisteSchema = z.object({
-  type: z.literal(TiltakskoordinatorEndringsType.SettPaVenteliste)
+  type: z.literal(TiltakskoordinatorEndringsType.SettPaaVenteliste)
 })
 
 const tiltakskoordinatorEndringSchema = z.discriminatedUnion('type', [
