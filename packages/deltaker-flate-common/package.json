@@ -13,8 +13,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^7.19.0",
-    "@navikt/ds-react": "^7.19.0",
+    "@navikt/aksel-icons": "^7.19.1",
+    "@navikt/ds-react": "^7.19.1",
     "dayjs": "^1.11.13",
     "react": "^19.1.0",
     "typescript": "^5.8.3",
