@@ -12,6 +12,7 @@ import {
   useHandlingContext
 } from '../../context-providers/HandlingContext'
 import { HandlingModalController } from './HandlingModalController'
+import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 
 interface Props {
   className?: string
@@ -21,6 +22,10 @@ export const HandlingerKnapp = ({ className }: Props) => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { handlingValg, setHandlingValg, setValgteDeltakere } =
     useHandlingContext()
+  const { erKometMasterForTiltak } = useFeatureToggles()
+  const kometErMaster = erKometMasterForTiltak(
+    deltakerlisteDetaljer.tiltakskode
+  )
   const [modalOpen, setModalOpen] = useState(false)
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingKnappRef = useRef<HTMLButtonElement>(null)
@@ -102,23 +107,25 @@ export const HandlingerKnapp = ({ className }: Props) => {
               </div>
             </ActionMenu.Item>
 
-            <ActionMenu.Item
-              onSelect={(e: Event) => {
-                e.preventDefault()
-                setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
-              }}
-            >
-              <div className="p-1 flex items-start">
-                <MenuElipsisHorizontalCircleIcon
-                  width="1.125rem"
-                  height="1.125rem"
-                  className="mt-[0.15rem] mr-1"
-                  color="var(--a-lightblue-800)"
-                  aria-hidden
-                />
-                Sett på venteliste
-              </div>
-            </ActionMenu.Item>
+            {kometErMaster && (
+              <ActionMenu.Item
+                onSelect={(e: Event) => {
+                  e.preventDefault()
+                  setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
+                }}
+              >
+                <div className="p-1 flex items-start">
+                  <MenuElipsisHorizontalCircleIcon
+                    width="1.125rem"
+                    height="1.125rem"
+                    className="mt-[0.15rem] mr-1"
+                    color="var(--a-lightblue-800)"
+                    aria-hidden
+                  />
+                  Sett på venteliste
+                </div>
+              </ActionMenu.Item>
+            )}
           </ActionMenu.Content>
         </ActionMenu>
       )}

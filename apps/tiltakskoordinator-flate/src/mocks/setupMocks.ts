@@ -1,6 +1,10 @@
-import { delay, http } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { MockHandler } from './MockHandler'
+import {
+  KOMET_ER_MASTER,
+  LES_ARENA_DELTAKERE_TOGGLE_NAVN
+} from '../../../../packages/deltaker-flate-common/feature-toggle/feature-toggle-data.ts'
 
 const handler = new MockHandler()
 
@@ -51,5 +55,13 @@ export const worker = setupWorker(
       const { deltakerId } = params
       return handler.getDeltaker(deltakerId as string)
     }
-  )
+  ),
+  http.get('/amt-deltaker-bff/unleash/api/feature', async () => {
+    await delay(1000)
+    const toggles = {
+      [KOMET_ER_MASTER]: true,
+      [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
+    }
+    return HttpResponse.json(toggles)
+  })
 )
