@@ -56,6 +56,10 @@ export const HandlingerKnapp = ({ className }: Props) => {
     deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
+  if (!kanDeleMedArrangor && !kometErMaster) {
+    return <div className="mt-8"></div>
+  }
+
   return (
     <div className={`flex gap-3 ${className ?? ''}`}>
       {handlingValg !== null && (
@@ -106,7 +110,7 @@ export const HandlingerKnapp = ({ className }: Props) => {
               </ActionMenu.Item>
             )}
 
-            {!kometErMaster && (
+            {kometErMaster && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {
                   e.preventDefault()
