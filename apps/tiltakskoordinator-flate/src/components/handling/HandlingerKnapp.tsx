@@ -41,15 +41,6 @@ export const HandlingerKnapp = ({ className }: Props) => {
     }
   }, [handlingValg])
 
-  const kanDeleMedArrangor =
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  if (!kanDeleMedArrangor) {
-    return <div className="mt-8"></div>
-  }
-
   function getKnappHandlingText(handlingValg: HandlingValg) {
     switch (handlingValg) {
       case HandlingValg.DEL_DELTAKERE:
@@ -58,6 +49,12 @@ export const HandlingerKnapp = ({ className }: Props) => {
         return 'Sett på venteliste'
     }
   }
+
+  const kanDeleMedArrangor =
+    deltakerlisteDetaljer.tiltakskode ==
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+    deltakerlisteDetaljer.tiltakskode ==
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
   return (
     <div className={`flex gap-3 ${className ?? ''}`}>
@@ -90,22 +87,24 @@ export const HandlingerKnapp = ({ className }: Props) => {
             </Button>
           </ActionMenu.Trigger>
           <ActionMenu.Content className="w-[16rem]">
-            <ActionMenu.Item
-              onSelect={(e: Event) => {
-                e.preventDefault()
-                setHandlingValg(HandlingValg.DEL_DELTAKERE)
-              }}
-            >
-              <div className="p-1 flex items-start">
-                <TasklistSendIcon
-                  width="1.125rem"
-                  height="1.125rem"
-                  className="mt-[0.15rem] mr-1"
-                  aria-hidden
-                />
-                Velg deltakere som skal deles med arrangør
-              </div>
-            </ActionMenu.Item>
+            {kanDeleMedArrangor && (
+              <ActionMenu.Item
+                onSelect={(e: Event) => {
+                  e.preventDefault()
+                  setHandlingValg(HandlingValg.DEL_DELTAKERE)
+                }}
+              >
+                <div className="p-1 flex items-start">
+                  <TasklistSendIcon
+                    width="1.125rem"
+                    height="1.125rem"
+                    className="mt-[0.15rem] mr-1"
+                    aria-hidden
+                  />
+                  Velg deltakere som skal deles med arrangør
+                </div>
+              </ActionMenu.Item>
+            )}
 
             {kometErMaster && (
               <ActionMenu.Item
