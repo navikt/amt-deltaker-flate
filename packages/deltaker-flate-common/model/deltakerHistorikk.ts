@@ -200,7 +200,7 @@ export const endringFraTiltakskoordinatorSchema = z.object({
   endring: tiltakskoordinatorEndringSchema,
   endret: dateSchema,
   endretAv: z.string(),
-  endretAvEnhet: z.string().nullable()
+  endretAvEnhet: z.string().nullable().optional()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
