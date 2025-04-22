@@ -106,7 +106,7 @@ export const HandlingerKnapp = ({ className }: Props) => {
               </ActionMenu.Item>
             )}
 
-            {kometErMaster && (
+            {!kometErMaster && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {
                   e.preventDefault()
