@@ -93,6 +93,8 @@ const getIngenDeltakerValgtTekst = (handlingValg: HandlingValg) => {
       return 'Du må velge minst én deltaker for å dele med arrangør.'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Du må velge minst én deltaker for å sette på venteliste.'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Du må velge minst én deltaker for å tildele plass.'
   }
 }
 
@@ -102,6 +104,8 @@ const getHandlingTittel = (handlingValg: HandlingValg) => {
       return 'Del med arrangør'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Sett på venteliste'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Tildel plass'
   }
 }
 
@@ -111,6 +115,8 @@ const getHandlingDeltakereTittel = (handlingValg: HandlingValg) => {
       return 'Følgende deltakere deles med arrangør'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Følgende deltakere settes på venteliste'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Følgende deltakere tildeles plass'
   }
 }
 
@@ -120,5 +126,7 @@ const getHandlingKnappSendTekst = (handlingValg: HandlingValg) => {
       return 'Del med arrangør'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Sett på venteliste'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Tildel plass'
   }
 }

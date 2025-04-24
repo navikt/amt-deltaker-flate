@@ -204,6 +204,8 @@ const getHandlingInfoText = (handlingValg: HandlingValg) => {
       return 'Velg deltakere som skal deles med arrangør for vurdering.'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Velg deltakere som skal settes på venteliste.'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Velg deltakere som skal tilbys plass.'
   }
 }
 
@@ -218,6 +220,15 @@ const getValgbareDeltakere = (
           deltaker.status.type === DeltakerStatusType.SOKT_INN &&
           !deltaker.erManueltDeltMedArrangor &&
           deltaker.vurdering === null
+      )
+    case HandlingValg.SETT_PA_VENTELISTE:
+      return deltakere.filter(
+        (deltaker) => deltaker.status.type !== DeltakerStatusType.VENTELISTE
+      )
+    case HandlingValg.TILDEL_PLASS:
+      return deltakere.filter(
+        (deltaker) =>
+          deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART
       )
     default:
       return deltakere

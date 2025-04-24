@@ -40,6 +40,15 @@ export const worker = setupWorker(
     }
   ),
   http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/tildel-plass',
+    async ({ request }) => {
+      await delay(500)
+      const body = (await request.json()) as string[]
+
+      return handler.tildelPlass(body)
+    }
+  ),
+  http.post(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/sett-paa-venteliste',
     async ({ request }) => {
       await delay(500)

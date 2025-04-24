@@ -1,4 +1,5 @@
 import {
+  CheckmarkCircleIcon,
   MenuElipsisHorizontalCircleIcon,
   TasklistSendIcon,
   XMarkIcon
@@ -47,6 +48,8 @@ export const HandlingerKnapp = ({ className }: Props) => {
         return 'Del med arrangør'
       case HandlingValg.SETT_PA_VENTELISTE:
         return 'Sett på venteliste'
+      case HandlingValg.TILDEL_PLASS:
+        return 'Tildel plass'
     }
   }
 
@@ -106,6 +109,26 @@ export const HandlingerKnapp = ({ className }: Props) => {
                     aria-hidden
                   />
                   Velg deltakere som skal deles med arrangør
+                </div>
+              </ActionMenu.Item>
+            )}
+
+            {kometErMaster && (
+              <ActionMenu.Item
+                onSelect={(e: Event) => {
+                  e.preventDefault()
+                  setHandlingValg(HandlingValg.TILDEL_PLASS)
+                }}
+              >
+                <div className="p-1 flex items-start">
+                  <CheckmarkCircleIcon
+                    width="1.125rem"
+                    height="1.125rem"
+                    className="mt-[0.15rem] mr-1"
+                    color="var(--a-icon-success)"
+                    aria-hidden
+                  />
+                  Tildel plass
                 </div>
               </ActionMenu.Item>
             )}
