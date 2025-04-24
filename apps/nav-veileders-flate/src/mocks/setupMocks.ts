@@ -1,4 +1,9 @@
-import { DeltakerStatusType, ArenaTiltakskode } from 'deltaker-flate-common'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusType,
+  KOMET_ER_MASTER,
+  LES_ARENA_DELTAKERE_TOGGLE_NAVN
+} from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import {
@@ -17,10 +22,6 @@ import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
 import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
-import {
-  KOMET_ER_MASTER,
-  LES_ARENA_DELTAKERE_TOGGLE_NAVN
-} from '../api/data/feature-toggle.ts'
 
 const handler = new MockHandler()
 
@@ -240,8 +241,8 @@ export const worker = setupWorker(
   http.get('/amt-deltaker-bff/unleash/api/feature', async () => {
     await delay(1000)
     const toggles = {
-      [KOMET_ER_MASTER]: true,
-      [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: false
+      [KOMET_ER_MASTER]: false,
+      [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
     }
     return HttpResponse.json(toggles)
   })

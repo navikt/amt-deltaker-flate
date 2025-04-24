@@ -8,6 +8,6 @@
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["hooks", "model", "utils"],
+  "include": ["hooks", "model", "utils", "feature-toggle"],
   "exclude": ["node_modules"]
 }

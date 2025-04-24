@@ -2,7 +2,8 @@ import { createContext, useContext, useState } from 'react'
 import { Deltaker } from '../api/data/deltakerliste'
 
 export const enum HandlingValg {
-  DEL_DELTAKERE = 'DEL_DELTAKERE'
+  DEL_DELTAKERE = 'DEL_DELTAKERE',
+  SETT_PA_VENTELISTE = 'SETT_PA_VENTELISTE'
 }
 
 export interface HandlingContextProps {

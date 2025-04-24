@@ -1,4 +1,4 @@
-import { Beskyttelsesmarkering } from '../api/data/deltakerliste'
+import { Beskyttelsesmarkering, Deltaker } from '../api/data/deltakerliste'
 
 export const lagDeltakerNavn = (
   fornavn: string,
@@ -47,3 +47,14 @@ export const formaterTelefonnummer = (
 
   return tlf
 }
+
+export const getDeltakereOppdatert = (
+  deltakere: Deltaker[],
+  oppdaterteDeltakere: Deltaker[]
+) =>
+  deltakere.map((deltaker) => {
+    const oppdatertDeltaker = oppdaterteDeltakere.find(
+      (oppdaterteDeltaker) => oppdaterteDeltaker.id === deltaker.id
+    )
+    return oppdatertDeltaker ?? deltaker
+  })

@@ -12,7 +12,7 @@ import {
 } from 'deltaker-flate-common'
 import { usePameldingContext } from './PameldingContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
-import { useFeatureToggle } from '../../hooks/useFeatureToggle.ts'
+import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 
 export const EndreDeltakelseKnapp = () => {
   const { pamelding, setPamelding } = usePameldingContext()
@@ -20,7 +20,7 @@ export const EndreDeltakelseKnapp = () => {
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [forslag, setForslag] = useState<Forslag | null>(null)
-  const { erKometMasterForTiltak } = useFeatureToggle()
+  const { erKometMasterForTiltak } = useFeatureToggles()
   const enableEndreDeltakelse = erKometMasterForTiltak(
     pamelding.deltakerliste.tiltakstype
   )
