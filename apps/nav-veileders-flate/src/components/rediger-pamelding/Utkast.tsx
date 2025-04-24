@@ -71,6 +71,8 @@ export const Utkast = ({
 
       <OmKurset
         tiltakstype={deltakerliste.tiltakstype}
+        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
+        arrangorNavn={deltakerliste.arrangorNavn}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
         startdato={deltakerliste.startdato}

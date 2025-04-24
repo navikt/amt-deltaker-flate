@@ -150,6 +150,8 @@ export const UtkastPage = () => {
 
       <OmKurset
         tiltakstype={deltaker.deltakerliste.tiltakstype}
+        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}

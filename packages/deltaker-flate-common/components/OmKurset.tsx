@@ -12,6 +12,8 @@ import {
 
 interface Props {
   tiltakstype: ArenaTiltakskode
+  arrangorNavn: string
+  deltakerlisteNavn: string
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype
   startdato: Date | null
@@ -24,6 +26,8 @@ interface Props {
 
 export const OmKurset = ({
   tiltakstype,
+  arrangorNavn,
+  deltakerlisteNavn,
   statusType,
   oppstartstype,
   startdato,
@@ -44,7 +48,7 @@ export const OmKurset = ({
     return null // Jobbsøkerkurs har innhold ledetekst.
   }
 
-  const statuserForVIsKurs = [
+  const statuserForVisKurs = [
     DeltakerStatusType.KLADD,
     DeltakerStatusType.UTKAST_TIL_PAMELDING,
     DeltakerStatusType.SOKT_INN,
@@ -55,7 +59,7 @@ export const OmKurset = ({
   const skalViseOmKurset =
     statusType === DeltakerStatusType.KLADD ||
     (statusType === DeltakerStatusType.UTKAST_TIL_PAMELDING && visForUtkast) ||
-    (statuserForVIsKurs.includes(statusType) &&
+    (statuserForVisKurs.includes(statusType) &&
       oppstartstype === Oppstartstype.FELLES)
 
   if (!skalViseOmKurset) {
@@ -80,17 +84,39 @@ export const OmKurset = ({
             {`Sluttdato: ${formatDate(sluttdato)}`}
           </BodyLong>
 
-          <BodyLong size="small" className="mt-4">
-            Når det nærmer seg oppstart av kurset, vil Nav gjøre en vurdering av
-            om du oppfyller kravene for å delta. Du får svar på søknaden etter
-            dette.
-          </BodyLong>
+          {statusType === DeltakerStatusType.VENTELISTE ? (
+            <>
+              <BodyLong size="small" className="mt-4">
+                Dersom det åpner seg ledig plass, vil {arrangorNavn} ta kontakt
+                med deg for å avtale oppstart.
+              </BodyLong>
 
-          <BodyLong size="small" className="mt-4">
-            Hvis du oppfyller kravene, vil du bli tildelt en plass eller satt på
-            venteliste. Dersom kravene til kurset ikke er oppfylt, vil du få
-            avslag på søknaden.
-          </BodyLong>
+              <BodyLong size="small" className="mt-4">
+                Ordinær oppstart er {formatDate(startdato)}, men ledige plasser
+                kan dukke opp etter dette. Ved ledig plass ber vi om at du er
+                tilgjengelig på kort varsel.
+              </BodyLong>
+
+              <BodyLong size="small" className="mt-4">
+                Skulle du ikke få plass, vil søknaden om {deltakerlisteNavn} hos{' '}
+                {arrangorNavn} avslås.
+              </BodyLong>
+            </>
+          ) : (
+            <>
+              <BodyLong size="small" className="mt-4">
+                Når det nærmer seg oppstart av kurset, vil Nav gjøre en
+                vurdering av om du oppfyller kravene for å delta. Du får svar på
+                søknaden etter dette.
+              </BodyLong>
+
+              <BodyLong size="small" className="mt-4">
+                Hvis du oppfyller kravene, vil du bli tildelt en plass eller
+                satt på venteliste. Dersom kravene til kurset ikke er oppfylt,
+                vil du få avslag på søknaden.
+              </BodyLong>
+            </>
+          )}
 
           {kanDeleDeltakerMedArrangor(tiltakstype, oppstartstype) &&
             visDelMedArrangorInfo && (
