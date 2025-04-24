@@ -241,7 +241,7 @@ export const worker = setupWorker(
   http.get('/amt-deltaker-bff/unleash/api/feature', async () => {
     await delay(1000)
     const toggles = {
-      [KOMET_ER_MASTER]: false,
+      [KOMET_ER_MASTER]: true,
       [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
     }
     return HttpResponse.json(toggles)
