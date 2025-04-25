@@ -25,10 +25,12 @@ export const VedtakOgKlage = ({
   importertFraArena
 }: Props) => {
   const harVedtak =
+    statusType !== DeltakerStatusType.KLADD &&
+    statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
+    statusType !== DeltakerStatusType.AVBRUTT_UTKAST &&
     statusType !== DeltakerStatusType.SOKT_INN &&
     statusType !== DeltakerStatusType.VENTELISTE &&
-    statusType !== DeltakerStatusType.VURDERES &&
-    !!vedtaksinformasjon?.fattet
+    statusType !== DeltakerStatusType.VURDERES
 
   const harRettTilAKlage = !(
     harFellesOppstart(oppstartstype) &&
