@@ -150,6 +150,8 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <OmKurset
           tiltakstype={pamelding.deltakerliste.tiltakstype}
+          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
+          deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
           statusType={pamelding.status.type}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           startdato={pamelding.deltakerliste.startdato}

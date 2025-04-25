@@ -118,4 +118,7 @@ const harDeltattFemtenDagerEllerMer = (pamelding: PameldingResponse) => {
 const harStatusSomKanSetteTilIkkeAktuell = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.VENTER_PA_OPPSTART ||
   statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.IKKE_AKTUELL
+  statusType === DeltakerStatusType.IKKE_AKTUELL ||
+  statusType === DeltakerStatusType.SOKT_INN ||
+  statusType === DeltakerStatusType.VURDERES ||
+  statusType === DeltakerStatusType.VENTELISTE
