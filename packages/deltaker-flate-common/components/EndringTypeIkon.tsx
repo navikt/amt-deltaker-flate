@@ -80,7 +80,6 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--a-deepblue-400)"
         />
       )
-
     case TiltakskoordinatorEndringsType.TildelPlass:
       return (
         <ChevronRightCircleFillIcon

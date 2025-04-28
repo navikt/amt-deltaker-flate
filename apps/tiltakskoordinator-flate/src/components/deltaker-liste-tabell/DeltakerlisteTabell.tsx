@@ -228,7 +228,8 @@ const getValgbareDeltakere = (
     case HandlingValg.TILDEL_PLASS:
       return deltakere.filter(
         (deltaker) =>
-          deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART
+          deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART &&
+          deltaker.status.type !== DeltakerStatusType.DELTAR
       )
     default:
       return deltakere

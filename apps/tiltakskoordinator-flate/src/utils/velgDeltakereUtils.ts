@@ -19,7 +19,10 @@ export const kanVelges = (
   }
 
   if (handlingValg === HandlingValg.TILDEL_PLASS) {
-    return deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART
+    return (
+      deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART &&
+      deltaker.status.type !== DeltakerStatusType.DELTAR
+    )
   }
   return true
 }
