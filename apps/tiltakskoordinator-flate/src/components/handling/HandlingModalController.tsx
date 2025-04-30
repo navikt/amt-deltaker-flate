@@ -1,6 +1,7 @@
 import { HandlingValg } from '../../context-providers/HandlingContext'
 import { DelMedArrangorModal } from './DelMedArrangorModal'
 import { SettPaVentelisteModal } from './SettPaVentelisteModal'
+import { TildelPlassModal } from './TildelPlassModal'
 
 interface HandlingModalControllerProps {
   handlingValg: HandlingValg
@@ -31,6 +32,10 @@ export const HandlingModalController = ({
           onClose={onClose}
           onSend={onSend}
         />
+      )
+    case HandlingValg.TILDEL_PLASS:
+      return (
+        <TildelPlassModal open={modalOpen} onClose={onClose} onSend={onSend} />
       )
   }
 }

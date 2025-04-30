@@ -1,9 +1,6 @@
 import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
-import {
-  DeltakerStatusTag,
-  DeltakerStatusType,
-  Tiltakskode
-} from 'deltaker-flate-common'
+import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
+import { useEffect, useRef } from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext.tsx'
@@ -13,14 +10,13 @@ import {
 } from '../../context-providers/HandlingContext.tsx'
 import { getDeltakerUrl } from '../../navigation.ts'
 import { lagDeltakerNavn } from '../../utils/utils.ts'
+import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
+import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
+import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 import { Vurdering } from '../Vurdering.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
-import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
-import { useEffect, useRef } from 'react'
-import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
-import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -204,22 +200,12 @@ const getHandlingInfoText = (handlingValg: HandlingValg) => {
       return 'Velg deltakere som skal deles med arrangør for vurdering.'
     case HandlingValg.SETT_PA_VENTELISTE:
       return 'Velg deltakere som skal settes på venteliste.'
+    case HandlingValg.TILDEL_PLASS:
+      return 'Velg deltakere som skal tilbys plass.'
   }
 }
 
 const getValgbareDeltakere = (
   handlingValg: HandlingValg,
   deltakere: Deltaker[]
-) => {
-  switch (handlingValg) {
-    case HandlingValg.DEL_DELTAKERE:
-      return deltakere.filter(
-        (deltaker) =>
-          deltaker.status.type === DeltakerStatusType.SOKT_INN &&
-          !deltaker.erManueltDeltMedArrangor &&
-          deltaker.vurdering === null
-      )
-    default:
-      return deltakere
-  }
-}
+) => deltakere.filter((deltaker) => kanVelges(handlingValg, deltaker))

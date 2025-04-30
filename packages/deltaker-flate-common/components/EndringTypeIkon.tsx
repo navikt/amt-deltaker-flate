@@ -8,8 +8,8 @@ import {
   PieChartFillIcon,
   PlusCircleFillIcon
 } from '@navikt/aksel-icons'
-import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 import { TiltakskoordinatorEndringsType } from '../model/deltakerHistorikk.ts'
+import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 
 interface EndringTypeIkonProps {
   type: EndreDeltakelseType | TiltakskoordinatorEndringsType
@@ -78,6 +78,14 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           className={sizeName(size)}
           aria-hidden
           color="var(--a-deepblue-400)"
+        />
+      )
+    case TiltakskoordinatorEndringsType.TildelPlass:
+      return (
+        <ChevronRightCircleFillIcon
+          className={sizeName(size)}
+          aria-hidden
+          color="var(--a-deepblue-300)"
         />
       )
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:

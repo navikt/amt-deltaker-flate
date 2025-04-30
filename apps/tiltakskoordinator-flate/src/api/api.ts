@@ -196,6 +196,43 @@ export async function delDeltakereMedArrangor(
   })
 }
 
+export async function tildelPlass(
+  deltakerlisteId: string,
+  deltakerIder: string[]
+): Promise<Deltakere> {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/tildel-plass`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(deltakerIder),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  }).then(async (response) => {
+    if (response.status !== 200) {
+      const message = 'Deltakere kunne tildeles plass'
+      handleError(message, deltakerlisteId, response.status, null)
+    }
+    try {
+      return deltakereSchema.parse(await response.json())
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakereSchema for tildelPlass',
+          deltakerlisteId
+        )
+      }
+
+      throw new Error(
+        'Deltakerne ble tildelt plass, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
+      )
+    }
+  })
+}
+
 export async function settDeltakerePaVenteliste(
   deltakerlisteId: string,
   deltakerIder: string[]

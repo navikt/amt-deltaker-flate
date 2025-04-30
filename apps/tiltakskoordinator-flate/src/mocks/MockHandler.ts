@@ -79,6 +79,23 @@ export class MockHandler {
     )
   }
 
+  tildelPlass(delteDeltakerIder: string[]) {
+    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+      if (delteDeltakerIder.includes(deltaker.id)) {
+        deltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
+        deltaker.status.aarsak = null
+      }
+      return deltaker
+    })
+    this.deltakere = oppdaterteDeltakere
+
+    return HttpResponse.json(
+      this.deltakere.filter((deltaker) =>
+        delteDeltakerIder.includes(deltaker.id)
+      )
+    )
+  }
+
   settPaVenteliste(delteDeltakerIder: string[]) {
     const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
