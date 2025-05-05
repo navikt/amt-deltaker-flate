@@ -19,7 +19,7 @@
     "react": "^19.1.0",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "zod": "^3.24.3"
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",

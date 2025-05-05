@@ -26,12 +26,12 @@
     "@navikt/ds-tailwind": "^7.21.0",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.7.5",
+    "msw": "^2.7.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.3",
     "uuid": "^11.1.0",
-    "zod": "^3.24.3"
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
