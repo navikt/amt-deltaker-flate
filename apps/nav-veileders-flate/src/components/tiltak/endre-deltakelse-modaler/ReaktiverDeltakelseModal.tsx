@@ -1,7 +1,7 @@
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { useState } from 'react'
-import { EndreDeltakelseType } from 'deltaker-flate-common'
+import { EndreDeltakelseType, Oppstartstype } from 'deltaker-flate-common'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
 import { BodyLong, ConfirmationPanel } from '@navikt/ds-react'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
@@ -56,29 +56,37 @@ export const ReaktiverDeltakelseModal = ({
     return null
   }
 
+  const erFellesOppstart =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+
   return (
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.REAKTIVER_DELTAKELSE}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseReaktiver}
       validertRequest={validertRequest}
       forslag={null}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <ConfirmationPanel
         size="small"
         checked={confirmed}
         onChange={handleChangeConfirm}
         error={errorConfirmed}
-        label="Ja, brukeren skal delta likevel"
+        label={
+          erFellesOppstart
+            ? 'Ja, brukeren skal søkes inn likevel'
+            : 'Ja, brukeren skal delta likevel'
+        }
       >
         <BodyLong size="small">
-          Skal brukeren delta på tiltaket likevel? Statusen settes tilbake til
-          “venter på oppstart” og brukeren mottar informasjon om påmeldingen.
+          {erFellesOppstart
+            ? `Skal brukeren søkes inn på tiltaket likevel? 
+						Statusen settes tilbake til “Søkt inn” og brukeren mottar informasjon om søknaden.`
+            : `Skal brukeren delta på tiltaket likevel? Statusen settes tilbake til
+						“Venter på oppstart” og brukeren mottar informasjon om påmeldingen.`}
         </BodyLong>
       </ConfirmationPanel>
       <BegrunnelseInput

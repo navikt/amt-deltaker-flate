@@ -80,14 +80,12 @@ export const IkkeAktuellModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.IKKE_AKTUELL}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseIkkeAktuell}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={true}
     >
       <AarsakRadioGroup
         legend="Hva er årsaken til at deltakeren ikke er aktuell?"

@@ -17,11 +17,7 @@ import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
-import {
-  dateStrToNullableDate,
-  formatDateToDtoStr,
-  formatDateToString
-} from '../../../utils/utils.ts'
+import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   UGYLDIG_DATO_FEILMELDING,
@@ -174,24 +170,18 @@ export const EndreOppstartsdatoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_OPPSTARTSDATO}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseStartdato}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <SimpleDatePicker
         label="Ny oppstartsdato"
         error={errorStartdato}
-        fromDate={
-          dateStrToNullableDate(pamelding.deltakerliste.startdato) || undefined
-        }
-        toDate={
-          dateStrToNullableDate(pamelding.deltakerliste.sluttdato) || undefined
-        }
+        fromDate={pamelding.deltakerliste.startdato || undefined}
+        toDate={pamelding.deltakerliste.sluttdato || undefined}
         defaultMonth={dayjs().toDate()}
         defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}

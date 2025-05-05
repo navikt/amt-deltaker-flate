@@ -69,14 +69,12 @@ export const FjernOppstartsdatoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.FJERN_OPPSTARTSDATO}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseFjernOppstartsdato}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <BegrunnelseInput
         type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}

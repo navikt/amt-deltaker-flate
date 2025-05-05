@@ -150,14 +150,12 @@ export const EndreDeltakelsesmengdeModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelsesmengde}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"

@@ -23,27 +23,23 @@ export type EndringsmodalRequest<T extends EndringRequest> = {
 interface Props<T extends EndringRequest> {
   open: boolean
   endringstype: EndreDeltakelseType
-  digitalBruker: boolean
-  harAdresse: boolean
+  deltaker: PameldingResponse
   onClose: () => void
   onSend: (oppdatertPamelding: PameldingResponse | null) => void
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
-  erUnderOppfolging: boolean
   children: ReactNode
 }
 export function Endringsmodal<T extends EndringRequest>({
   open,
   endringstype,
-  digitalBruker,
-  harAdresse,
+  deltaker,
   onSend,
   onClose,
   apiFunction,
   validertRequest,
   forslag,
-  erUnderOppfolging,
   children
 }: Props<T>) {
   return (
@@ -61,9 +57,7 @@ export function Endringsmodal<T extends EndringRequest>({
         apiFunction={apiFunction}
         validertRequest={validertRequest}
         forslag={forslag}
-        digitalBruker={digitalBruker}
-        harAdresse={harAdresse}
-        erUnderOppfolging={erUnderOppfolging}
+        deltaker={deltaker}
       >
         {children}
       </EndringsmodalBody>
@@ -76,9 +70,7 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
-  digitalBruker: boolean
-  harAdresse: boolean
-  erUnderOppfolging: boolean
+  deltaker: PameldingResponse
   children: ReactNode
 }
 function EndringsmodalBody<T extends EndringRequest>({
@@ -86,9 +78,7 @@ function EndringsmodalBody<T extends EndringRequest>({
   apiFunction,
   validertRequest,
   forslag,
-  digitalBruker,
-  harAdresse,
-  erUnderOppfolging,
+  deltaker,
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
@@ -113,11 +103,11 @@ function EndringsmodalBody<T extends EndringRequest>({
     <>
       <Modal.Body>
         <Alert className="mb-6" variant="info" size="small">
-          {getEndrePameldingTekst(digitalBruker, harAdresse)}
+          {getEndrePameldingTekst(deltaker)}
         </Alert>
         {forslag && <ModalForslagDetaljer forslag={forslag} />}
 
-        {!erUnderOppfolging && (
+        {!deltaker.erUnderOppfolging && (
           <Alert variant="error" size="small" className="mb-6">
             <Heading level="2" size="xsmall">
               Det kan ikke gjøres endringer på deltakelsen
@@ -128,7 +118,7 @@ function EndringsmodalBody<T extends EndringRequest>({
         )}
 
         {children}
-        {!digitalBruker && !harAdresse && (
+        {!deltaker.digitalBruker && !deltaker.harAdresse && (
           <div className="flex items-center mt-4">
             <Alert variant="warning" size="small">
               <BodyLong className="mt-1" size="small">
@@ -145,7 +135,9 @@ function EndringsmodalBody<T extends EndringRequest>({
         confirmButtonText="Lagre"
         onConfirm={sendEndring}
         confirmLoading={state === DeferredFetchState.LOADING}
-        disabled={state === DeferredFetchState.LOADING || !erUnderOppfolging}
+        disabled={
+          state === DeferredFetchState.LOADING || !deltaker.erUnderOppfolging
+        }
         error={valideringsError ?? error ?? undefined}
       />
     </>

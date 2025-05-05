@@ -108,13 +108,11 @@ export const EndreSluttdatoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_SLUTTDATO}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttdato}
       validertRequest={validertRequest}
-      forslag={forslag}
       erUnderOppfolging={true}
     >
       <SimpleDatePicker

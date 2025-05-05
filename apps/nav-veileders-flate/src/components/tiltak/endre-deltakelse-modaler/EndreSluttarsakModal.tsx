@@ -83,14 +83,12 @@ export const EndreSluttarsakModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_SLUTTARSAK}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttarsak}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={true}
     >
       <AarsakRadioGroup
         legend={sluttarsakSporsmalTekst(pamelding.status.type)}
