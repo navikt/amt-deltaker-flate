@@ -162,14 +162,12 @@ export const AvsluttDeltakelseModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={avsluttDeltakelse}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={true}
     >
       <AarsakRadioGroup
         legend="Hva er årsaken til avslutning?"

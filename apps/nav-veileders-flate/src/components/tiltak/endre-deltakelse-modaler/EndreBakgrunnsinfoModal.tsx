@@ -57,14 +57,12 @@ export const EndreBakgrunnsinfoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseBakgrunnsinfo}
       validertRequest={validertRequest}
       forslag={null}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <>
         {pamelding.importertFraArena && !pamelding.bakgrunnsinformasjon && (

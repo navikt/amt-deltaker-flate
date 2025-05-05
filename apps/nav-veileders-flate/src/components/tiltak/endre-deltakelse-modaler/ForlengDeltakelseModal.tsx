@@ -141,14 +141,12 @@ export const ForlengDeltakelseModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.FORLENG_DELTAKELSE}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseForleng}
       validertRequest={validertRequest}
       forslag={forslag}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"

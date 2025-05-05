@@ -60,14 +60,12 @@ export const ReaktiverDeltakelseModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.REAKTIVER_DELTAKELSE}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseReaktiver}
       validertRequest={validertRequest}
       forslag={null}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <ConfirmationPanel
         size="small"

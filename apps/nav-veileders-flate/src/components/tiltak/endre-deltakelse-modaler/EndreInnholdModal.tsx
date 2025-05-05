@@ -136,14 +136,12 @@ export const EndreInnholdModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_INNHOLD}
-      digitalBruker={pamelding.digitalBruker}
-      harAdresse={pamelding.harAdresse}
+      deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseInnhold}
       validertRequest={validertRequest}
       forslag={null}
-      erUnderOppfolging={pamelding.erUnderOppfolging}
     >
       <Heading level="2" size="small" className="mb-4">
         Dette er innholdet

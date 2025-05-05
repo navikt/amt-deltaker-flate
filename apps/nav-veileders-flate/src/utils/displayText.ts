@@ -46,13 +46,10 @@ export const getDeltakerStatusAarsakTypeText = (
   }
 }
 
-export const getEndrePameldingTekst = (
-  digitalBruker: boolean,
-  harAdresse: boolean
-) => {
-  if (digitalBruker)
+export const getEndrePameldingTekst = (deltaker: PameldingResponse) => {
+  if (deltaker.digitalBruker)
     return 'Bruker får beskjed på nav.no og kan se innholdet i begrunnelsen.\nArrangør ser endringen i Deltakeroversikten.'
-  return harAdresse
+  return deltaker.harAdresse
     ? 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet. Arrangør ser endringen i Deltakeroversikten.'
     : 'Arrangør ser endringen i Deltakeroversikten.'
 }
