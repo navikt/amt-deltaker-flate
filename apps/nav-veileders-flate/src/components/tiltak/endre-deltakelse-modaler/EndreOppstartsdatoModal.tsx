@@ -17,11 +17,7 @@ import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
-import {
-  dateStrToNullableDate,
-  formatDateToDtoStr,
-  formatDateToString
-} from '../../../utils/utils.ts'
+import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   UGYLDIG_DATO_FEILMELDING,
