@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const TildelPlassModal = ({ open, onClose, onSend }: Props) => {
-  const { deltakerlisteDetaljer, setDelakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
 
@@ -24,12 +24,12 @@ export const TildelPlassModal = ({ open, onClose, onSend }: Props) => {
   }
 
   const utforHandling = () => {
-    tildelPlass(
+    return tildelPlass(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
       .then((oppdaterteDeltakere) => {
-        setDelakere((deltakere) =>
+        setDeltakere((deltakere) =>
           getDeltakereOppdatert(deltakere, oppdaterteDeltakere)
         )
         setError(null)

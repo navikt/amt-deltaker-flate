@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
-  const { deltakerlisteDetaljer, setDelakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
 
@@ -23,13 +23,13 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
     return null
   }
 
-  const utforHandling = () => {
-    settDeltakerePaVenteliste(
+  const utforHandling = (): Promise<void> => {
+    return settDeltakerePaVenteliste(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
       .then((oppdaterteDeltakere) => {
-        setDelakere((deltakere) =>
+        setDeltakere((deltakere) =>
           getDeltakereOppdatert(deltakere, oppdaterteDeltakere)
         )
         setError(null)

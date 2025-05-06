@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
-  const { deltakerlisteDetaljer, setDelakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
 
@@ -24,12 +24,12 @@ export const DelMedArrangorModal = ({ open, onClose, onSend }: Props) => {
   }
 
   const utforHandling = () => {
-    delDeltakereMedArrangor(
+    return delDeltakereMedArrangor(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
       .then((oppdaterteDeltakere) => {
-        setDelakere((deltakere) =>
+        setDeltakere((deltakere) =>
           getDeltakereOppdatert(deltakere, oppdaterteDeltakere)
         )
         setError(null)

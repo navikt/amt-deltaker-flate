@@ -7,7 +7,7 @@ export interface DeltakerListeContextProps {
   setDeltakerlisteDetaljer: React.Dispatch<
     React.SetStateAction<DeltakerlisteDetaljer>
   >
-  setDelakere: React.Dispatch<React.SetStateAction<Deltakere>>
+  setDeltakere: React.Dispatch<React.SetStateAction<Deltakere>>
 }
 
 const DeltakerlisteContext = createContext<
@@ -44,7 +44,7 @@ const DeltakerlisteContextProvider = ({
     deltakerlisteDetaljer: deltakerlisteDetaljer,
     deltakere: deltakere,
     setDeltakerlisteDetaljer: setDeltakerlisteDetaljer,
-    setDelakere: setDelakere
+    setDeltakere: setDelakere
   }
 
   return (
