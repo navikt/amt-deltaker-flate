@@ -4,15 +4,20 @@ import {
   useHandlingContext
 } from '../../context-providers/HandlingContext'
 import { lagDeltakerNavn } from '../../utils/utils'
+import { useState } from 'react'
 
 interface Props {
   open: boolean
   children: React.ReactNode
   error: string | null
   onClose: () => void
-  onUtforHandling: () => void
+  onUtforHandling: () => Promise<void>
 }
-
+enum HandlingStatusType {
+  NOT_STARTED,
+  IN_PROGRESS,
+  DONE
+}
 export const HandlingModal = ({
   open,
   children,
@@ -21,6 +26,9 @@ export const HandlingModal = ({
   onUtforHandling
 }: Props) => {
   const { valgteDeltakere, handlingValg } = useHandlingContext()
+  const [handlingStatus, setHandlingStatus] = useState<HandlingStatusType>(
+    HandlingStatusType.NOT_STARTED
+  )
 
   if (!handlingValg) {
     return null
@@ -75,7 +83,16 @@ export const HandlingModal = ({
 
       <Modal.Footer>
         {valgteDeltakere.length > 0 && (
-          <Button form="skjema" onClick={onUtforHandling}>
+          <Button
+            form="skjema"
+            onClick={() => {
+              setHandlingStatus(HandlingStatusType.IN_PROGRESS)
+              onUtforHandling().then(() =>
+                setHandlingStatus(HandlingStatusType.DONE)
+              )
+            }}
+            disabled={handlingStatus === HandlingStatusType.IN_PROGRESS}
+          >
             {getHandlingKnappSendTekst(handlingValg)}
           </Button>
         )}
