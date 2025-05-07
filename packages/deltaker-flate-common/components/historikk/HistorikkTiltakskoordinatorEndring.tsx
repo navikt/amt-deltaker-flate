@@ -4,10 +4,14 @@ import {
   TiltakskoordinatorEndring,
   TiltakskoordinatorEndringsType
 } from '../../model/deltakerHistorikk.ts'
-import { getTiltakskoordinatorEndringsTittel } from '../../utils/displayText.ts'
+import {
+  getDeltakerStatusAarsakText,
+  getTiltakskoordinatorEndringsTittel
+} from '../../utils/displayText.ts'
 import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
+import React from 'react'
 
 interface Props {
   tiltakskoordinatorEndring: EndringerFraTiltakskoordinator
@@ -29,6 +33,19 @@ const getEndringsDetaljer = (endring: TiltakskoordinatorEndring) => {
         <BodyLong size="small">
           Du har fått plass på ventelisten til kurset.
         </BodyLong>
+      )
+    case TiltakskoordinatorEndringsType.Avslag:
+      return (
+        <>
+          <BodyLong size="small">
+            Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
       )
   }
 }
