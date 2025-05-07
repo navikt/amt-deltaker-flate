@@ -30,7 +30,8 @@ export enum ArrangorEndringsType {
 export enum TiltakskoordinatorEndringsType {
   DelMedArrangor = 'DelMedArrangor',
   SettPaaVenteliste = 'SettPaaVenteliste',
-  TildelPlass = 'TildelPlass'
+  TildelPlass = 'TildelPlass',
+  Avslag = 'Avslag'
 }
 
 export const endreBakgrunnsinformasjonSchema = z.object({

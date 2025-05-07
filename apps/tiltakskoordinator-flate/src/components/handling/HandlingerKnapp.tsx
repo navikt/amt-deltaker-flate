@@ -1,25 +1,26 @@
 import {
   CheckmarkCircleIcon,
   MenuElipsisHorizontalCircleIcon,
+  PlusCircleFillIcon,
   TasklistSendIcon,
   XMarkIcon
 } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { Tiltakskode } from 'deltaker-flate-common'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { HandlingModalController } from './HandlingModalController'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 
 interface Props {
+  onModalOpen: () => void
   className?: string
 }
 
-export const HandlingerKnapp = ({ className }: Props) => {
+export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { handlingValg, setHandlingValg, setValgteDeltakere } =
     useHandlingContext()
@@ -27,7 +28,6 @@ export const HandlingerKnapp = ({ className }: Props) => {
   const kometErMaster = erKometMasterForTiltak(
     deltakerlisteDetaljer.tiltakskode
   )
-  const [modalOpen, setModalOpen] = useState(false)
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingKnappRef = useRef<HTMLButtonElement>(null)
 
@@ -50,6 +50,8 @@ export const HandlingerKnapp = ({ className }: Props) => {
         return 'Sett på venteliste'
       case HandlingValg.TILDEL_PLASS:
         return 'Tildel plass'
+      case HandlingValg.GI_AVSLAG:
+        return 'Gi avslag'
     }
   }
 
@@ -67,9 +69,11 @@ export const HandlingerKnapp = ({ className }: Props) => {
     <div className={`flex gap-3 ${className ?? ''}`}>
       {handlingValg !== null && (
         <>
-          <Button size="small" onClick={() => setModalOpen(true)}>
-            {getKnappHandlingText(handlingValg)}
-          </Button>
+          {handlingValg !== HandlingValg.GI_AVSLAG && (
+            <Button size="small" onClick={onModalOpen}>
+              {getKnappHandlingText(handlingValg)}
+            </Button>
+          )}
 
           <Button
             size="small"
@@ -152,21 +156,28 @@ export const HandlingerKnapp = ({ className }: Props) => {
                 </div>
               </ActionMenu.Item>
             )}
+
+            {kometErMaster && (
+              <ActionMenu.Item
+                onSelect={(e: Event) => {
+                  e.preventDefault()
+                  setHandlingValg(HandlingValg.GI_AVSLAG)
+                }}
+              >
+                <div className="p-1 flex items-start">
+                  <PlusCircleFillIcon
+                    width="1.125rem"
+                    height="1.125rem"
+                    className="mt-[0.15rem] mr-1 rotate-45"
+                    aria-hidden
+                    color="var(--a-orange-600)"
+                  />
+                  Gi avslag
+                </div>
+              </ActionMenu.Item>
+            )}
           </ActionMenu.Content>
         </ActionMenu>
-      )}
-
-      {handlingValg && (
-        <HandlingModalController
-          handlingValg={handlingValg}
-          modalOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onSend={() => {
-            setModalOpen(false)
-            setValgteDeltakere([])
-            setHandlingValg(null)
-          }}
-        />
       )}
     </div>
   )

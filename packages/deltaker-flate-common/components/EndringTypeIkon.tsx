@@ -53,6 +53,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--a-gray-600)"
         />
       )
+    case TiltakskoordinatorEndringsType.GiAvslag:
     case EndreDeltakelseType.IKKE_AKTUELL:
       return (
         <PlusCircleFillIcon
