@@ -176,21 +176,9 @@ export const getDeltakerStatusAarsakTypeText = (
       return 'Samarbeidet med arrangøren er avbrutt'
     case DeltakerStatusAarsakType.FIKK_IKKE_PLASS:
       return 'Fikk ikke plass'
+    case DeltakerStatusAarsakType.KURS_FULLT:
+      return 'Kurset er fullt'
+    case DeltakerStatusAarsakType.KRAV_IKKE_OPPFYLT:
+      return 'Krav for deltakelse er ikke oppfylt'
   }
-}
-
-export const getDeltakerStatusAarsakTyperAsList = () => {
-  const arsakstyper = Object.keys(DeltakerStatusAarsakType)
-    .filter(
-      (type) =>
-        type !== DeltakerStatusAarsakType.ANNET &&
-        type !== DeltakerStatusAarsakType.FIKK_IKKE_PLASS &&
-        type !== DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
-    )
-    .map((typeString) => {
-      // @ts-expect-error: arsakType is made from DeltakerStatusAarsakType keys
-      const typeKey: keyof typeof DeltakerStatusAarsakType = typeString
-      return DeltakerStatusAarsakType[typeKey]
-    })
-  return arsakstyper.concat(DeltakerStatusAarsakType.ANNET)
 }

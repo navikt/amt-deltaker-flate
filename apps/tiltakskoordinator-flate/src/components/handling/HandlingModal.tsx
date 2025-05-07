@@ -1,9 +1,8 @@
-import { Alert, Button, ExpansionCard, List, Modal } from '@navikt/ds-react'
+import { Alert, Button, Modal } from '@navikt/ds-react'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { lagDeltakerNavn } from '../../utils/utils'
 import { useState } from 'react'
 import { ValgteDeltakereBox } from './ValgteDeltakereBox'
 
@@ -12,7 +11,7 @@ interface Props {
   children: React.ReactNode
   error: string | null
   onClose: () => void
-  onUtforHandling: () => Promise<void>
+  onUtforHandling: () => Promise<void> | undefined
 }
 enum HandlingStatusType {
   NOT_STARTED,
@@ -64,9 +63,12 @@ export const HandlingModal = ({
             form="skjema"
             onClick={() => {
               setHandlingStatus(HandlingStatusType.IN_PROGRESS)
-              onUtforHandling().then(() =>
-                setHandlingStatus(HandlingStatusType.DONE)
-              )
+              const h = onUtforHandling()
+              if (h === undefined) {
+                setHandlingStatus(HandlingStatusType.NOT_STARTED)
+              } else {
+                h.then(() => setHandlingStatus(HandlingStatusType.DONE))
+              }
             }}
             disabled={handlingStatus === HandlingStatusType.IN_PROGRESS}
           >

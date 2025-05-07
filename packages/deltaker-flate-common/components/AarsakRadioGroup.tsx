@@ -6,15 +6,27 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType
 } from '../model/forslag'
-import {
-  getDeltakerStatusAarsakTyperAsList,
-  getDeltakerStatusAarsakTypeText
-} from '../utils/utils'
+import { getDeltakerStatusAarsakTypeText } from '../utils/utils'
 import { fjernUgyldigeTegn } from '../utils/utils'
 import { useState } from 'react'
 import { getDeltakerStatusAarsak } from '../utils/forslagUtils'
 
 export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
+
+export const avslagAarsaker = [
+  DeltakerStatusAarsakType.KRAV_IKKE_OPPFYLT,
+  DeltakerStatusAarsakType.KURS_FULLT,
+  DeltakerStatusAarsakType.ANNET
+]
+
+const standardAarsaker = [
+  DeltakerStatusAarsakType.FATT_JOBB,
+  DeltakerStatusAarsakType.IKKE_MOTT,
+  DeltakerStatusAarsakType.SYK,
+  DeltakerStatusAarsakType.TRENGER_ANNEN_STOTTE,
+  DeltakerStatusAarsakType.UTDANNING,
+  DeltakerStatusAarsakType.ANNET
+]
 
 interface Props {
   aarsak: DeltakerStatusAarsakType | undefined
@@ -23,6 +35,7 @@ interface Props {
   beskrivelseError: string | undefined
   legend: string
   disabled?: boolean
+  velgbareAarsaker?: DeltakerStatusAarsakType[]
   onChange: (value: DeltakerStatusAarsakType) => void
   onBeskrivelse: (beskrivelse: string) => void
 }
@@ -35,8 +48,11 @@ export function AarsakRadioGroup({
   onChange,
   onBeskrivelse,
   legend,
-  disabled
+  disabled,
+  velgbareAarsaker
 }: Props) {
+  const tilgjengeligeAarsaker = velgbareAarsaker ?? standardAarsaker
+
   return (
     <RadioGroup
       legend={legend}
@@ -47,7 +63,7 @@ export function AarsakRadioGroup({
       disabled={disabled}
     >
       <>
-        {getDeltakerStatusAarsakTyperAsList().map((arsakType) => (
+        {tilgjengeligeAarsaker.map((arsakType) => (
           <Radio value={arsakType} key={arsakType}>
             {getDeltakerStatusAarsakTypeText(arsakType)}
           </Radio>

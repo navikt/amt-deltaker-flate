@@ -1,5 +1,9 @@
 import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
-import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusTag,
+  DeltakerStatusType,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
@@ -57,6 +61,14 @@ export const DeltakerlisteTabell = () => {
 
   const erBatchHandling =
     handlingValg !== null && handlingValg !== HandlingValg.GI_AVSLAG
+
+  const kanGisAvslag = (deltaker: Deltaker) =>
+    [
+      DeltakerStatusType.SOKT_INN,
+      DeltakerStatusType.VURDERES,
+      DeltakerStatusType.VENTELISTE,
+      DeltakerStatusType.VENTER_PA_OPPSTART
+    ].includes(deltaker.status.type)
 
   return (
     <div className="flex flex-col gap-3">
@@ -126,6 +138,7 @@ export const DeltakerlisteTabell = () => {
                 {handlingValg === HandlingValg.GI_AVSLAG && (
                   <Table.DataCell>
                     <GiAvslagKnapp
+                      disabled={!kanGisAvslag(deltaker)}
                       onClick={() => {
                         setValgteDeltakere([deltaker])
                         setModalOpen(true)

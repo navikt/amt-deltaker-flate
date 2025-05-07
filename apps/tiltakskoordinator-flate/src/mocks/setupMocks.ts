@@ -1,4 +1,5 @@
 import {
+  DeltakerStatusAarsak,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN
 } from 'deltaker-flate-common'
@@ -55,6 +56,18 @@ export const worker = setupWorker(
       const body = (await request.json()) as string[]
 
       return handler.settPaVenteliste(body)
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/gi-avslag',
+    async ({ request }) => {
+      await delay(500)
+      const body = (await request.json()) as {
+        deltakerId: string
+        aarsak: DeltakerStatusAarsak
+      }
+
+      return handler.giAvslag(body.deltakerId, body.aarsak)
     }
   ),
   http.get(

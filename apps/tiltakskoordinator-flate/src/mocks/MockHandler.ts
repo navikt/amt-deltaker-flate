@@ -6,7 +6,7 @@ import {
   mapDeltakerDeltaljerToDeltaker
 } from './mockData.tsx'
 import { DeltakerDetaljer } from '../api/data/deltaker.ts'
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerStatusAarsak, DeltakerStatusType } from 'deltaker-flate-common'
 
 export class MockHandler {
   tilgang = true
@@ -111,5 +111,16 @@ export class MockHandler {
         delteDeltakerIder.includes(deltaker.id)
       )
     )
+  }
+
+  giAvslag(deltakerId: string, aarsak: DeltakerStatusAarsak) {
+    const deltaker = this.deltakere.find((d) => d.id === deltakerId)!
+    deltaker.status.type = DeltakerStatusType.IKKE_AKTUELL
+    deltaker.status.aarsak = aarsak
+    this.deltakere = this.deltakere.map((d) =>
+      d.id === deltaker.id ? deltaker : d
+    )
+
+    return HttpResponse.json(deltaker)
   }
 }

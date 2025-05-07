@@ -1,11 +1,13 @@
-import { logError } from 'deltaker-flate-common'
+import { DeltakerStatusAarsak, logError } from 'deltaker-flate-common'
 import { API_URL } from '../utils/environment-utils'
 import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 import {
+  Deltaker,
   Deltakere,
   deltakereSchema,
   DeltakerlisteDetaljer,
-  deltakerlisteDetaljerSchema
+  deltakerlisteDetaljerSchema,
+  deltakerSchema
 } from './data/deltakerliste'
 import { ZodError } from 'zod'
 
@@ -265,6 +267,49 @@ export async function settDeltakerePaVenteliste(
 
       throw new Error(
         'Deltakerne ble satt på venteliste, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
+      )
+    }
+  })
+}
+
+export async function giAvslag(
+  deltakerlisteId: string,
+  deltakerId: string,
+  aarsak: DeltakerStatusAarsak,
+  begrunnelse: string | null
+): Promise<Deltaker> {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/gi-avslag`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      deltakerId,
+      aarsak,
+      begrunnelse
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  }).then(async (response) => {
+    if (response.status !== 200) {
+      const message = 'Kunne ikke gi avslag til deltaker'
+      handleError(message, deltakerlisteId, response.status, null)
+    }
+    try {
+      return deltakerSchema.parse(await response.json())
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakerSchema for giAvslag',
+          deltakerlisteId
+        )
+      }
+
+      throw new Error(
+        'Deltakern ble gitt avslag, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
       )
     }
   })
