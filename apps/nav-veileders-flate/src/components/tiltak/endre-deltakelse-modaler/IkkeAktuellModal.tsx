@@ -1,15 +1,17 @@
 import {
+  AarsakRadioGroup,
+  BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  useAarsak,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { FEILMELDING_15_DAGER_SIDEN } from '../../../utils/displayText.ts'
 import dayjs from 'dayjs'

@@ -4,6 +4,7 @@ import { BodyShort } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useHandlingContext } from '../../context-providers/HandlingContext'
 import { lagDeltakerNavn } from '../../utils/utils'
+import { BegrunnelseInput, useBegrunnelse } from 'deltaker-flate-common'
 
 interface Props {
   open: boolean
@@ -15,6 +16,8 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
   const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
+
+  const begrunnelse = useBegrunnelse(true)
 
   const [error, setError] = useState<string | null>(null)
 
@@ -64,6 +67,13 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
       <BodyShort className="mt-4">
         Nav-veileder får beskjed om at deltakeren har fått avslag gjennom Modia.
       </BodyShort>
+
+      <BegrunnelseInput
+        type="valgfri"
+        onChange={begrunnelse.handleChange}
+        error={begrunnelse.error}
+        disabled={false}
+      />
     </HandlingModal>
   )
 }

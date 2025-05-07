@@ -1,6 +1,7 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
@@ -8,7 +9,8 @@ import {
   ForslagEndringType,
   SluttdatoForslag,
   getDateFromString,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -28,7 +30,6 @@ import {
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 

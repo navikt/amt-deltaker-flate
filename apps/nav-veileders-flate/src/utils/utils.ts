@@ -53,22 +53,6 @@ export const erGyldigDagerPerUke = (value: string) => {
   return isValidFloatInRange(value, 0, 7)
 }
 
-export const getDeltakerStatusAarsakTyperAsList = () => {
-  const arsakstyper = Object.keys(DeltakerStatusAarsakType)
-    .filter(
-      (type) =>
-        type !== DeltakerStatusAarsakType.ANNET &&
-        type !== DeltakerStatusAarsakType.FIKK_IKKE_PLASS &&
-        type !== DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
-    )
-    .map((typeString) => {
-      // @ts-expect-error: arsakType is made from DeltakerStatusAarsakType keys
-      const typeKey: keyof typeof DeltakerStatusAarsakType = typeString
-      return DeltakerStatusAarsakType[typeKey]
-    })
-  return arsakstyper.concat(DeltakerStatusAarsakType.ANNET)
-}
-
 export enum HarDeltattValg {
   JA = 'JA',
   NEI = 'NEI'

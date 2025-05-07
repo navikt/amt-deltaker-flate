@@ -1,12 +1,16 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
 import {
+  AarsakRadioGroup,
   AvsluttDeltakelseForslag,
+  BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
   ForslagEndringType,
-  getDateFromString
+  getDateFromString,
+  useAarsak,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -26,8 +30,6 @@ import {
   getSoftMaxVarighetBekreftelseText
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import { AarsakRadioGroup, useAarsak } from '../modal/AarsakRadioGroup.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import dayjs from 'dayjs'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'

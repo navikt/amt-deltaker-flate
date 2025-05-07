@@ -2,7 +2,11 @@ import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import { EMDASH } from './constants'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { ArenaTiltakskode, Oppstartstype } from '../model/deltaker'
+import {
+  ArenaTiltakskode,
+  DeltakerStatusAarsakType,
+  Oppstartstype
+} from '../model/deltaker'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
@@ -151,3 +155,42 @@ export const erKursTiltak = (tiltaksType: ArenaTiltakskode) =>
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype) =>
   oppstartstype === Oppstartstype.FELLES
+
+export const getDeltakerStatusAarsakTypeText = (
+  type: DeltakerStatusAarsakType
+) => {
+  switch (type) {
+    case DeltakerStatusAarsakType.ANNET:
+      return 'Annet - fyll ut'
+    case DeltakerStatusAarsakType.FATT_JOBB:
+      return 'Fått jobb'
+    case DeltakerStatusAarsakType.IKKE_MOTT:
+      return 'Møter ikke opp'
+    case DeltakerStatusAarsakType.SYK:
+      return 'Syk'
+    case DeltakerStatusAarsakType.TRENGER_ANNEN_STOTTE:
+      return 'Trenger annen hjelp og støtte'
+    case DeltakerStatusAarsakType.UTDANNING:
+      return 'Utdanning'
+    case DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT:
+      return 'Samarbeidet med arrangøren er avbrutt'
+    case DeltakerStatusAarsakType.FIKK_IKKE_PLASS:
+      return 'Fikk ikke plass'
+  }
+}
+
+export const getDeltakerStatusAarsakTyperAsList = () => {
+  const arsakstyper = Object.keys(DeltakerStatusAarsakType)
+    .filter(
+      (type) =>
+        type !== DeltakerStatusAarsakType.ANNET &&
+        type !== DeltakerStatusAarsakType.FIKK_IKKE_PLASS &&
+        type !== DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
+    )
+    .map((typeString) => {
+      // @ts-expect-error: arsakType is made from DeltakerStatusAarsakType keys
+      const typeKey: keyof typeof DeltakerStatusAarsakType = typeString
+      return DeltakerStatusAarsakType[typeKey]
+    })
+  return arsakstyper.concat(DeltakerStatusAarsakType.ANNET)
+}

@@ -1,17 +1,20 @@
 import { Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+
+import { DeltakerStatusAarsakType } from '../model/deltaker'
 import {
   Forslag,
-  DeltakerStatusAarsakType,
   ForslagEndringAarsakType,
-  ForslagEndringType,
-  getDeltakerStatusAarsak,
-  fjernUgyldigeTegn
-} from 'deltaker-flate-common'
-
-import { getDeltakerStatusAarsakTyperAsList } from '../../../utils/utils.ts'
-import { getDeltakerStatusAarsakTypeText } from '../../../utils/displayText'
+  ForslagEndringType
+} from '../model/forslag'
+import {
+  getDeltakerStatusAarsakTyperAsList,
+  getDeltakerStatusAarsakTypeText
+} from '../utils/utils'
+import { fjernUgyldigeTegn } from '../utils/utils'
 import { useState } from 'react'
-import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from '../../../api/data/endre-deltakelse-request.ts'
+import { getDeltakerStatusAarsak } from '../utils/forslagUtils'
+
+export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
 
 interface Props {
   aarsak: DeltakerStatusAarsakType | undefined

@@ -1,9 +1,11 @@
 import {
+  BegrunnelseInput,
   DeltakelsesmengdeForslag,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
-  ForslagEndringType
+  ForslagEndringType,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -16,7 +18,6 @@ import {
 } from '../../../utils/deltakelsesmengdeValidering.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { NumberTextField } from '../../NumberTextField.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'

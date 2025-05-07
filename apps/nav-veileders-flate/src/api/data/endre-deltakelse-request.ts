@@ -2,8 +2,6 @@ import { z } from 'zod'
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
-export const BESKRIVELSE_ARSAK_ANNET_MAX_TEGN = 40
-
 export const aarsakSchema = z.object({
   type: z.nativeEnum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
