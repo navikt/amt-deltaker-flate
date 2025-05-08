@@ -12,7 +12,7 @@ import {
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { Deltaker } from '../../api/data/deltakerliste'
-import { giAvslag, tildelPlass } from '../../api/api'
+import { giAvslag } from '../../api/api'
 
 interface Props {
   open: boolean
@@ -62,7 +62,7 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
         setError(null)
         onSend()
 
-        setHandlingUtfortText(`${lagDeltakerNavn2(deltaker)} ble gitt avslag.`)
+        setHandlingUtfortText(`${lagDeltakerNavn2(deltaker)} fikk avslag.`)
       })
       .catch(() => {
         setError('Kunne ikke gi avslag. Vennligst prøv igjen.')

@@ -277,6 +277,6 @@ export const getTiltakskoordinatorEndringsTittel = (
     case TiltakskoordinatorEndringsType.TildelPlass:
       return 'Fått plass'
     case TiltakskoordinatorEndringsType.Avslag:
-      return 'Deltakelsen er ikke aktuell'
+      return 'Søknaden er avslått'
   }
 }

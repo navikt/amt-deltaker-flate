@@ -309,7 +309,7 @@ export async function giAvslag(
       }
 
       throw new Error(
-        'Deltakern ble gitt avslag, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
+        'Deltakern fikk avslag, men vi kunne ikke laste inn deltakerne på nytt. Prøv igjen senere.'
       )
     }
   })

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { DeltakerStatusAarsakType, EMDASH } from 'deltaker-flate-common'
+import { EMDASH } from 'deltaker-flate-common'
 
 /**
  * Formaterer date til string: YYYY-MM-DD. Format slik backend vil ha.
