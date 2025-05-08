@@ -1,12 +1,14 @@
 import { BodyShort, ConfirmationPanel } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndringType,
   getDateFromString,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -28,7 +30,6 @@ import {
   VarighetValg
 } from '../../../utils/varighet.tsx'
 import { VarighetField } from '../VarighetField.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 

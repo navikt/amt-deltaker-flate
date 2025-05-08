@@ -1,7 +1,9 @@
 import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
 import {
+  BegrunnelseInput,
   DeferredFetchState,
   Forslag,
+  useBegrunnelse,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
@@ -11,7 +13,6 @@ import { useAppContext } from '../../../AppContext'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
-import { BegrunnelseInput, useBegrunnelse } from './BegrunnelseInput'
 
 interface Props {
   onSend: (oppdatertPamelding: PameldingResponse | null) => void

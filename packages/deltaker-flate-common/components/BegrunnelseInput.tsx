@@ -1,7 +1,9 @@
 import { Textarea } from '@navikt/ds-react'
 import { useState } from 'react'
-import { BEGRUNNELSE_MAKS_TEGN } from '../../../model/PameldingFormValues'
-import { fjernUgyldigeTegn } from 'deltaker-flate-common'
+import { fjernUgyldigeTegn } from '../utils/utils'
+import React from 'react'
+
+const BEGRUNNELSE_MAKS_TEGN = 200
 
 type BegrunnelseLabel = {
   label: string

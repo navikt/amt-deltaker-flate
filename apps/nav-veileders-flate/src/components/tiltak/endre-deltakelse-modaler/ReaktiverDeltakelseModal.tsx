@@ -1,11 +1,15 @@
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { useState } from 'react'
-import { EndreDeltakelseType, Oppstartstype } from 'deltaker-flate-common'
+import {
+  BegrunnelseInput,
+  EndreDeltakelseType,
+  Oppstartstype,
+  useBegrunnelse
+} from 'deltaker-flate-common'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
 import { BodyLong, ConfirmationPanel } from '@navikt/ds-react'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface ReaktiverDeltakelseModalProps {

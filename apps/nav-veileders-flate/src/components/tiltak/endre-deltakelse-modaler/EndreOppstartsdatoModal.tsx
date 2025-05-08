@@ -9,7 +9,9 @@ import {
   StartdatoForslag,
   ArenaTiltakskode,
   getDateFromString,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  BegrunnelseInput,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
@@ -30,7 +32,6 @@ import {
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 

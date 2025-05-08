@@ -1,15 +1,16 @@
 import {
+  BegrunnelseInput,
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
   Forslag,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  useBegrunnelse
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseFjernOppstartsdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 
-import { BegrunnelseInput, useBegrunnelse } from '../modal/BegrunnelseInput.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 

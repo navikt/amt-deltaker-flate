@@ -1,6 +1,10 @@
 import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
-import { DeltakerStatusTag, Tiltakskode } from 'deltaker-flate-common'
-import { useEffect, useRef } from 'react'
+import {
+  DeltakerStatusTag,
+  DeltakerStatusType,
+  Tiltakskode
+} from 'deltaker-flate-common'
+import { useEffect, useRef, useState } from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext.tsx'
@@ -17,10 +21,15 @@ import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 import { Vurdering } from '../Vurdering.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
+import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
+import { HandlingModalController } from '../handling/HandlingModalController.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const { handlingValg, valgteDeltakere } = useHandlingContext()
+  const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
+    useHandlingContext()
+
+  const [modalOpen, setModalOpen] = useState(false)
 
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
@@ -50,9 +59,23 @@ export const DeltakerlisteTabell = () => {
     )
   }
 
+  const erBatchHandling =
+    handlingValg !== null && handlingValg !== HandlingValg.GI_AVSLAG
+
+  const kanGisAvslag = (deltaker: Deltaker) =>
+    [
+      DeltakerStatusType.SOKT_INN,
+      DeltakerStatusType.VURDERES,
+      DeltakerStatusType.VENTELISTE,
+      DeltakerStatusType.VENTER_PA_OPPSTART
+    ].includes(deltaker.status.type)
+
   return (
     <div className="flex flex-col gap-3">
-      <HandlingerKnapp className="place-self-end mt-2 mb-2" />
+      <HandlingerKnapp
+        onModalOpen={() => setModalOpen(true)}
+        className="place-self-end mt-2 mb-2"
+      />
 
       {handlingValg !== null && (
         <Alert
@@ -69,7 +92,7 @@ export const DeltakerlisteTabell = () => {
       <Table className="w-fit h-fit">
         <Table.Header>
           <Table.Row>
-            {handlingValg !== null && (
+            {erBatchHandling && (
               <Table.DataCell>
                 <MarkerAlleCheckbox
                   valgbareDeltakere={getValgbareDeltakere(
@@ -104,11 +127,22 @@ export const DeltakerlisteTabell = () => {
                   disabled ? 'text-[var(--a-border-subtle-hover)]' : ''
                 }
               >
-                {handlingValg !== null && (
+                {erBatchHandling && (
                   <Table.DataCell>
                     <VelgDeltakerCheckbox
                       deltaker={deltaker}
                       labelId={`id${deltaker.id}`}
+                    />
+                  </Table.DataCell>
+                )}
+                {handlingValg === HandlingValg.GI_AVSLAG && (
+                  <Table.DataCell>
+                    <GiAvslagKnapp
+                      disabled={!kanGisAvslag(deltaker)}
+                      onClick={() => {
+                        setValgteDeltakere([deltaker])
+                        setModalOpen(true)
+                      }}
                     />
                   </Table.DataCell>
                 )}
@@ -163,6 +197,19 @@ export const DeltakerlisteTabell = () => {
       </Table>
 
       <HandlingFullfortAlert />
+
+      {handlingValg && (
+        <HandlingModalController
+          handlingValg={handlingValg}
+          modalOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSend={() => {
+            setModalOpen(false)
+            setValgteDeltakere([])
+            setHandlingValg(null)
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -202,6 +249,8 @@ const getHandlingInfoText = (handlingValg: HandlingValg) => {
       return 'Velg deltakere som skal settes på venteliste.'
     case HandlingValg.TILDEL_PLASS:
       return 'Velg deltakere som skal tilbys plass.'
+    case HandlingValg.GI_AVSLAG:
+      return 'Velg deltaker som skal få avslag.'
   }
 }
 

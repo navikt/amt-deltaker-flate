@@ -1,5 +1,6 @@
 import { HandlingValg } from '../../context-providers/HandlingContext'
 import { DelMedArrangorModal } from './DelMedArrangorModal'
+import { GiAvslagModal } from './GiAvslagModal'
 import { SettPaVentelisteModal } from './SettPaVentelisteModal'
 import { TildelPlassModal } from './TildelPlassModal'
 
@@ -36,6 +37,10 @@ export const HandlingModalController = ({
     case HandlingValg.TILDEL_PLASS:
       return (
         <TildelPlassModal open={modalOpen} onClose={onClose} onSend={onSend} />
+      )
+    case HandlingValg.GI_AVSLAG:
+      return (
+        <GiAvslagModal open={modalOpen} onClose={onClose} onSend={onSend} />
       )
   }
 }
