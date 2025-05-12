@@ -59,8 +59,7 @@ export const TildelPlassModal = ({ open, onClose, onSend }: Props) => {
         plass”.
       </BodyShort>
       <BodyShort className="mt-4 mb-4">
-        Arrangør kan se deltakerne i Deltakeroversikten. Nav-veileder får
-        beskjed om at sine deltakere har fått plass gjennom Modia.
+        Arrangør kan se deltakerne i Deltakeroversikten.
       </BodyShort>
     </HandlingModal>
   )

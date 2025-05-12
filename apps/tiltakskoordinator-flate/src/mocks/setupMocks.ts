@@ -61,7 +61,7 @@ export const worker = setupWorker(
   http.post(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/gi-avslag',
     async ({ request }) => {
-      await delay(500)
+      await delay(5000)
       const body = (await request.json()) as {
         deltakerId: string
         aarsak: DeltakerStatusAarsak
