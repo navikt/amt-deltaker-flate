@@ -9,6 +9,7 @@ import {
   ForslagEndring,
   ForslagEndringType,
   getDateFromString,
+  Oppstartstype,
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -19,15 +20,16 @@ import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-req
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
-  HarDeltattValg,
+  Avslutningstype,
   dateStrToNullableDate,
-  formatDateToDtoStr
+  formatDateToDtoStr,
+  HarDeltattValg
 } from '../../../utils/utils.ts'
 import {
-  VARIGHET_BEKREFTELSE_FEILMELDING,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText
+  getSoftMaxVarighetBekreftelseText,
+  VARIGHET_BEKREFTELSE_FEILMELDING
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
@@ -54,6 +56,14 @@ export const AvsluttDeltakelseModal = ({
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     getHarDeltatt(forslag)
   )
+  const [avslutningstype, setAvslutningstype] =
+    useState<Avslutningstype | null>(() => {
+      const harFullfortValg = getHarFullfort(forslag)
+      if (harFullfortValg) return Avslutningstype.FULLFORT
+      else if (!harDeltatt) return Avslutningstype.IKKE_DELTATT
+      else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
+      else return null
+    })
   const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -71,13 +81,26 @@ export const AvsluttDeltakelseModal = ({
     )
   })
   const { enhetId } = useAppContext()
+  const skalViseHarFullfort =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const skalViseAarsak =
+    avslutningstype === Avslutningstype.AVBRUTT ||
+    avslutningstype === Avslutningstype.IKKE_DELTATT
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt = showHarDeltatt(pamelding, forslag)
+  const skalViseHarDeltatt =
+    showHarDeltatt(pamelding, forslag) && !skalViseHarFullfort
   const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
+  const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
+    setAvslutningstype(nyVerdi)
+    if (nyVerdi === Avslutningstype.IKKE_DELTATT) setHarDeltatt(false)
+    if (nyVerdi === Avslutningstype.FULLFORT) {
+      aarsak.handleChange(undefined)
+    }
+  }
   const validertRequest = () => {
     let hasError = false
 
@@ -108,6 +131,7 @@ export const AvsluttDeltakelseModal = ({
             ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
+        harFullfort: avslutningstype === Avslutningstype.FULLFORT,
         begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
       }
@@ -171,16 +195,39 @@ export const AvsluttDeltakelseModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      <AarsakRadioGroup
-        legend="Hva er årsaken til avslutning?"
-        aarsak={aarsak.aarsak}
-        aarsakError={aarsak.aarsakError}
-        beskrivelse={aarsak.beskrivelse}
-        beskrivelseError={aarsak.beskrivelseError}
-        onChange={aarsak.handleChange}
-        onBeskrivelse={aarsak.handleBeskrivelse}
-        disabled={false}
-      />
+      {skalViseHarFullfort && (
+        <section className="mt-4 mb-4">
+          <RadioGroup
+            legend="Har personen fullført kurset?"
+            size="small"
+            disabled={false}
+            defaultValue={avslutningstype}
+            onChange={onSetAvslutningstype}
+          >
+            <Radio value={Avslutningstype.FULLFORT}>
+              Ja, kurset er fullført
+            </Radio>
+            <Radio value={Avslutningstype.AVBRUTT}>
+              Nei, kurset er avbrutt
+            </Radio>
+            <Radio value={Avslutningstype.IKKE_DELTATT}>
+              Nei, personen har ikke deltatt
+            </Radio>
+          </RadioGroup>
+        </section>
+      )}
+      {skalViseAarsak && (
+        <AarsakRadioGroup
+          legend="Hva er årsaken til avslutning?"
+          aarsak={aarsak.aarsak}
+          aarsakError={aarsak.aarsakError}
+          beskrivelse={aarsak.beskrivelse}
+          beskrivelseError={aarsak.beskrivelseError}
+          onChange={aarsak.handleChange}
+          onBeskrivelse={aarsak.handleBeskrivelse}
+          disabled={false}
+        />
+      )}
       {skalViseHarDeltatt && (
         <section className="mt-4">
           <RadioGroup
@@ -210,6 +257,7 @@ export const AvsluttDeltakelseModal = ({
           </RadioGroup>
         </section>
       )}
+
       {skalViseSluttDato && (
         <section className="mt-6">
           <SimpleDatePicker
@@ -286,6 +334,13 @@ const showHarDeltatt = (
 function getHarDeltatt(forslag: Forslag | null): boolean | null {
   if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
     return forslag.endring.harDeltatt
+  }
+  return null
+}
+
+function getHarFullfort(forslag: Forslag | null): boolean | null {
+  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+    return forslag.endring.harFullfort
   }
   return null
 }
