@@ -58,11 +58,6 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
         Informasjon om venteliste-plass sendes automatisk til deltakerne når du
         trykker “Sett på venteliste”.
       </BodyShort>
-      <BodyShort className="mt-4 mb-4">
-        Arrangør kan se deltakerne på venteliste i Deltakeroversikten.
-        Nav-veileder får beskjed om at sine deltakere har fått venteliste-plass
-        gjennom Modia.
-      </BodyShort>
     </HandlingModal>
   )
 }

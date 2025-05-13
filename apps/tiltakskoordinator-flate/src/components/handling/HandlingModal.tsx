@@ -70,12 +70,18 @@ export const HandlingModal = ({
                 h.then(() => setHandlingStatus(HandlingStatusType.DONE))
               }
             }}
+            loading={handlingStatus === HandlingStatusType.IN_PROGRESS}
             disabled={handlingStatus === HandlingStatusType.IN_PROGRESS}
           >
             {getHandlingKnappSendTekst(handlingValg)}
           </Button>
         )}
-        <Button type="button" variant="secondary" onClick={onClose}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={onClose}
+          disabled={handlingStatus === HandlingStatusType.IN_PROGRESS}
+        >
           Avbryt
         </Button>
       </Modal.Footer>

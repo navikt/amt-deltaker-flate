@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { HandlingModal } from './HandlingModal'
-import { BodyShort } from '@navikt/ds-react'
+import { Alert, BodyShort } from '@navikt/ds-react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useHandlingContext } from '../../context-providers/HandlingContext'
 import { lagDeltakerNavn2 } from '../../utils/utils'
@@ -77,13 +77,12 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
       error={error}
     >
       <BodyShort>
-        {`${lagDeltakerNavn2(deltaker)} 
-					settes som “Ikke aktuell” for ${deltakerlisteDetaljer.navn}. 
-					Informasjon om avslag sendes automatisk til deltakerne når du trykker “Gi avslag”.`}
+        {`${lagDeltakerNavn2(deltaker)} settes som “Ikke aktuell” for ${deltakerlisteDetaljer.navn}.`}
       </BodyShort>
-      <BodyShort className="mt-4 mb-4">
-        Nav-veileder får beskjed om at deltakeren har fått avslag gjennom Modia.
-      </BodyShort>
+
+      <Alert variant="info" size="small" className="mt-5 mb-6">
+        Bruker får beskjed om avslaget og kan se innholdet i begrunnelsen.
+      </Alert>
 
       <AarsakRadioGroup
         velgbareAarsaker={avslagAarsaker}
