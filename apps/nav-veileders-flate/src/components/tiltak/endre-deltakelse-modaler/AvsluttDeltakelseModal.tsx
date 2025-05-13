@@ -81,16 +81,20 @@ export const AvsluttDeltakelseModal = ({
     )
   })
   const { enhetId } = useAppContext()
-  const skalViseHarFullfort =
+  const skalViseAvslutningsTypeValg =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
-  const skalViseAarsak =
-    avslutningstype === Avslutningstype.AVBRUTT ||
-    avslutningstype === Avslutningstype.IKKE_DELTATT
+
+  const skalViseAarsak = skalViseAvslutningsTypeValg
+    ? avslutningstype === Avslutningstype.AVBRUTT ||
+      avslutningstype === Avslutningstype.IKKE_DELTATT
+    : true
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
   const skalViseHarDeltatt =
-    showHarDeltatt(pamelding, forslag) && !skalViseHarFullfort
-  const skalViseSluttDato = !skalViseHarDeltatt || harDeltatt
+    showHarDeltatt(pamelding, forslag) && !skalViseAvslutningsTypeValg
+  const skalViseSluttDato =
+    (!skalViseHarDeltatt || harDeltatt) &&
+    avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
@@ -104,9 +108,18 @@ export const AvsluttDeltakelseModal = ({
   const validertRequest = () => {
     let hasError = false
 
-    if (sluttdato.error || !aarsak.valider() || !begrunnelse.valider()) {
+    if (sluttdato.error || !begrunnelse.valider()) {
       hasError = true
     }
+
+    if (skalViseAvslutningsTypeValg && avslutningstype === null) {
+      hasError = true
+    }
+
+    if (avslutningstype !== Avslutningstype.FULLFORT && !aarsak.valider()) {
+      hasError = true
+    }
+
     if (skalViseSluttDato && !sluttdato.sluttdato) {
       hasError = true
     }
@@ -119,13 +132,15 @@ export const AvsluttDeltakelseModal = ({
       setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
-    if (!hasError && aarsak.aarsak !== undefined) {
+    if (!hasError) {
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       const endring: AvsluttDeltakelseRequest = {
-        aarsak: {
-          type: aarsak.aarsak,
-          beskrivelse: nyArsakBeskrivelse
-        },
+        aarsak: aarsak.aarsak
+          ? {
+              type: aarsak.aarsak,
+              beskrivelse: nyArsakBeskrivelse
+            }
+          : null,
         sluttdato:
           skalViseSluttDato && sluttdato.sluttdato
             ? formatDateToDtoStr(sluttdato.sluttdato)
@@ -195,7 +210,7 @@ export const AvsluttDeltakelseModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      {skalViseHarFullfort && (
+      {skalViseAvslutningsTypeValg && (
         <section className="mt-4 mb-4">
           <RadioGroup
             legend="Har personen fullført kurset?"
