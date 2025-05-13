@@ -107,6 +107,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <DeltakerStatusInfoTekst
           tiltaksType={pamelding.deltakerliste.tiltakstype}
           deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
+          tiltaketsStartDato={pamelding.deltakerliste.startdato}
           statusType={pamelding.status.type}
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}
@@ -115,6 +116,17 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <AktiveForslag forslag={pamelding.forslag} />
+
+      <OmKurset
+        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        arrangorNavn={pamelding.deltakerliste.arrangorNavn}
+        deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
+        statusType={pamelding.status.type}
+        oppstartstype={pamelding.deltakerliste.oppstartstype}
+        startdato={pamelding.deltakerliste.startdato}
+        sluttdato={pamelding.deltakerliste.sluttdato}
+        className="mt-8"
+      />
 
       <DeltakelseInnhold
         tiltakstype={pamelding.deltakerliste.tiltakstype}
@@ -147,17 +159,6 @@ export const DeltakerInfo = ({ className }: Props) => {
             }
           />
         )}
-
-        <OmKurset
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
-          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
-          statusType={pamelding.status.type}
-          oppstartstype={pamelding.deltakerliste.oppstartstype}
-          startdato={pamelding.deltakerliste.startdato}
-          sluttdato={pamelding.deltakerliste.sluttdato}
-          className="mt-8"
-        />
 
         <SeEndringer
           className="mt-8"

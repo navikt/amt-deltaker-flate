@@ -1,8 +1,10 @@
 import { Alert, BodyLong } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import {
   ArenaTiltakskode,
   DeltakerStatusType,
   Oppstartstype,
+  formatDateWithMonthName,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   isValidDate
 } from 'deltaker-flate-common'
@@ -14,6 +16,7 @@ interface DeltakerStatusInfoTekstProps {
   arrangorNavn: string
   oppstartsdato: string | null
   oppstartstype: Oppstartstype
+  tiltaketsStartDato: Date
 }
 
 export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
@@ -58,7 +61,8 @@ export const DeltakerStatusInfoTekst = ({
   statusType,
   arrangorNavn,
   oppstartsdato,
-  oppstartstype
+  oppstartstype,
+  tiltaketsStartDato
 }: DeltakerStatusInfoTekstProps) => {
   const harOppstartsDato = isValidDate(oppstartsdato)
 
@@ -78,11 +82,30 @@ export const DeltakerStatusInfoTekst = ({
       {!harOppstartsDato &&
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
-            {tiltaksType === ArenaTiltakskode.VASV
-              ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
-              : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'}
+            {getIngenStartDatoInfoTekst(
+              tiltaksType,
+              oppstartstype,
+              arrangorNavn,
+              tiltaketsStartDato
+            )}
           </Alert>
         )}
     </>
   )
+}
+
+const getIngenStartDatoInfoTekst = (
+  tiltaksType: ArenaTiltakskode,
+  oppstartstype: Oppstartstype,
+  arrangorNavn: string,
+  tiltaketsStartDato: Date
+) => {
+  if (oppstartstype === Oppstartstype.FELLES) {
+    const harKursetStartet = dayjs().isAfter(tiltaketsStartDato)
+    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Arrangøren tar kontakt med deg for å avtale din oppstart.`
+  }
+
+  return tiltaksType === ArenaTiltakskode.VASV
+    ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
+    : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'
 }
