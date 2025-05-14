@@ -8,7 +8,7 @@ interface Props {
   className: string
   dialogUrl: string
   tiltakOgStedTekst: string
-  meldtPaDato?: Date
+  meldtPaDato?: Date | null
   feilregistrertDato?: Date
 }
 

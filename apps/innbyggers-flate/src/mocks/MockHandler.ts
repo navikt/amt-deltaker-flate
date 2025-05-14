@@ -74,11 +74,11 @@ export const createDeltaker = (
       innhold: getUtvidetInnhold(innhold)
     },
     vedtaksinformasjon: {
-      fattet: harVedtak(statusType) ? yesterday.toString() : null,
+      fattet: harVedtak(statusType) ? yesterday.toDate() : null,
       fattetAvNav: false,
-      opprettet: yesterday.toString(),
+      opprettet: yesterday.toDate(),
       opprettetAv: 'Navn Navnesen',
-      sistEndret: dayjs().toString(),
+      sistEndret: dayjs().toDate(),
       sistEndretAv: 'Navn Navnesen',
       sistEndretAvEnhet: 'Nav Fredrikstad'
     },
@@ -109,7 +109,7 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
       if (oppdatertPamelding.vedtaksinformasjon) {
-        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs().toString()
+        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs().toDate()
       }
       this.deltaker = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
@@ -125,7 +125,7 @@ export class MockHandler {
       if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
           .subtract(2, 'day')
-          .toString()
+          .toDate()
       } else if (oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = null
       }
@@ -133,7 +133,7 @@ export class MockHandler {
         if (harVedtak(status)) {
           oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
             .subtract(2, 'day')
-            .toString()
+            .toDate()
         } else {
           oppdatertPamelding.vedtaksinformasjon.fattet = null
         }

@@ -1,7 +1,6 @@
 import {
   DeltakerStatusType,
   FeilregistrertInfo,
-  getDateFromString,
   hentTiltakNavnHosArrangorTekst
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -29,7 +28,7 @@ export const DeltakerGuard = () => {
         className="w-full"
         dialogUrl={DIALOG_URL}
         tiltakOgStedTekst={tiltakOgStedTekst}
-        meldtPaDato={getDateFromString(deltaker?.vedtaksinformasjon?.fattet)}
+        meldtPaDato={deltaker?.vedtaksinformasjon?.fattet}
         feilregistrertDato={deltaker.status.gyldigFra}
       />
     )

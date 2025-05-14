@@ -213,11 +213,12 @@ export const worker = setupWorker(
   ),
   http.post(
     '/amt-deltaker-bff/forslag/:forslagId/avvis',
-    async ({ request, params }) => {
+    async ({ params, request }) => {
       await delay(1000)
       const { forslagId } = params as { forslagId: string }
 
-      return await request.json().then(() => handler.avvisForslag(forslagId))
+      await request.json().then(() => handler.avvisForslag(forslagId))
+      return new HttpResponse(null, { status: 200 })
     }
   ),
   http.post('/amt-deltaker-bff/pamelding/:deltakerId/avbryt', async () => {
