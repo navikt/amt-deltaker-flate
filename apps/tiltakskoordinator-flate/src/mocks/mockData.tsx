@@ -1,4 +1,8 @@
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusAarsakType,
+  DeltakerStatusType,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import {
   Beskyttelsesmarkering,
   Deltaker,
@@ -41,7 +45,13 @@ export const createMockDeltaker = (
     fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
-      aarsak: null
+      aarsak:
+        statusType === DeltakerStatusType.IKKE_AKTUELL
+          ? {
+              type: DeltakerStatusAarsakType.KURS_FULLT,
+              beskrivelse: null
+            }
+          : null
     },
     vurdering,
     beskyttelsesmarkering,
