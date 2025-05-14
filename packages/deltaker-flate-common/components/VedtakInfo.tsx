@@ -28,10 +28,9 @@ export const VedtakInfo = ({
   className
 }: Props) => {
   const vedtaksDato =
+    oppstartstype === Oppstartstype.FELLES &&
     statusType === DeltakerStatusType.IKKE_AKTUELL &&
-    vedtaksinformasjon &&
-    vedtaksinformasjon?.fattet === null &&
-    oppstartstype === Oppstartstype.FELLES
+    vedtaksinformasjon?.fattet === null
       ? statusDato
       : vedtaksinformasjon?.fattet
 
