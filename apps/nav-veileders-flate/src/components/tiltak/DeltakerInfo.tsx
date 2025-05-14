@@ -171,6 +171,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <VedtakOgKlage
           statusType={pamelding.status.type}
+          statusDato={pamelding.status.opprettet}
           tiltakstype={pamelding.deltakerliste.tiltakstype}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}

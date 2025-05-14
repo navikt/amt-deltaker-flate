@@ -196,6 +196,7 @@ export const TiltakPage = () => {
 
         <VedtakOgKlage
           statusType={deltaker.status.type}
+          statusDato={deltaker.status.opprettet}
           tiltakstype={deltaker.deltakerliste.tiltakstype}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}

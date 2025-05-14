@@ -2,11 +2,16 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   importertDeltakerFraArena,
   ArenaTiltakskode,
-  Vedtaksinformasjon
+  Vedtaksinformasjon,
+  DeltakerStatusType,
+  Oppstartstype
 } from '../model/deltaker'
-import { formatDate, formatDateStrWithMonthName } from '../utils/utils'
+import { formatDate } from '../utils/utils'
 
 interface Props {
+  statusType: DeltakerStatusType
+  statusDato: Date
+  oppstartstype: Oppstartstype
   tiltakstype: ArenaTiltakskode
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null
@@ -14,13 +19,23 @@ interface Props {
 }
 
 export const VedtakInfo = ({
+  statusType,
+  statusDato,
+  oppstartstype,
   tiltakstype,
   vedtaksinformasjon,
   importertFraArena,
   className
 }: Props) => {
+  const vedtaksDato =
+    oppstartstype === Oppstartstype.FELLES &&
+    statusType === DeltakerStatusType.IKKE_AKTUELL &&
+    vedtaksinformasjon?.fattet === null
+      ? statusDato
+      : vedtaksinformasjon?.fattet
+
   const vedtakTekst = vedtaksinformasjon
-    ? ` Vedtak fattet: ${formatDateStrWithMonthName(vedtaksinformasjon.fattet)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`
+    ? ` Vedtak fattet: ${formatDate(vedtaksDato)}. Meldt på av ${vedtakEndretAv(vedtaksinformasjon)}.`
     : null
   const importertTekst =
     !vedtakTekst && importertFraArena

@@ -86,11 +86,11 @@ export const deltakerStatusAarsakSchema = z.object({
 })
 
 export const vedtaksinformasjonSchema = z.object({
-  fattet: z.string().nullable(), // LocalDateTime
+  fattet: nullableDateSchema,
   fattetAvNav: z.boolean(),
-  opprettet: z.string(),
+  opprettet: dateSchema,
   opprettetAv: z.string(),
-  sistEndret: z.string(),
+  sistEndret: dateSchema,
   sistEndretAv: z.string(),
   sistEndretAvEnhet: z.string().nullable()
 })

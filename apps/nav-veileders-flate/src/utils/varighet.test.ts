@@ -71,7 +71,8 @@ const pamelding: PameldingResponse = {
     sisteDeltakelsesmengde: null,
     nesteDeltakelsesmengde: null
   },
-  erUnderOppfolging: true
+  erUnderOppfolging: true,
+  erManueltDeltMedArrangor: true
 }
 
 describe('kalkulerSluttdato', () => {

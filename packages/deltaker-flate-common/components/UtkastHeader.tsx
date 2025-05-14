@@ -4,11 +4,7 @@ import {
   DeltakerStatus,
   DeltakerStatusAarsakType
 } from '../model/deltaker'
-import {
-  formatDateFromString,
-  formatDateStrWithMonthName,
-  formatDateWithMonthName
-} from '../utils/utils'
+import { formatDate, formatDateWithMonthName } from '../utils/utils'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
@@ -32,8 +28,8 @@ export const UtkastHeader = ({
 
   const erEndretSammeDag =
     erEndret &&
-    formatDateFromString(vedtaksinformasjon?.sistEndret) ===
-      formatDateFromString(vedtaksinformasjon?.opprettet)
+    formatDate(vedtaksinformasjon?.sistEndret) ===
+      formatDate(vedtaksinformasjon?.opprettet)
 
   const detailTextColor = erNAVVeileder ? 'subtle' : 'default'
 
@@ -52,7 +48,7 @@ export const UtkastHeader = ({
                 Første utkast delt:
               </Detail>
               <Detail as="span">
-                {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
+                {formatDateWithMonthName(vedtaksinformasjon.opprettet)}{' '}
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </HStack>
@@ -68,7 +64,7 @@ export const UtkastHeader = ({
                   </Detail>
                 ) : (
                   <Detail as="span">
-                    {formatDateStrWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
+                    {formatDateWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
                     {vedtaksinformasjon.sistEndretAv}
                   </Detail>
                 )}
@@ -81,7 +77,7 @@ export const UtkastHeader = ({
               Delt:
             </Detail>
             <Detail as="span">
-              {formatDateStrWithMonthName(vedtaksinformasjon.opprettet)}{' '}
+              {formatDateWithMonthName(vedtaksinformasjon.opprettet)}{' '}
               {vedtaksinformasjon.opprettetAv}
             </Detail>
           </HStack>

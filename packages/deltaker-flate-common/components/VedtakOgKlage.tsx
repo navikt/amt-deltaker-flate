@@ -11,6 +11,7 @@ import { harFellesOppstart } from '../utils/utils'
 
 interface Props {
   statusType: DeltakerStatusType
+  statusDato: Date
   tiltakstype: ArenaTiltakskode
   oppstartstype: Oppstartstype
   vedtaksinformasjon: Vedtaksinformasjon | null
@@ -19,6 +20,7 @@ interface Props {
 
 export const VedtakOgKlage = ({
   statusType,
+  statusDato,
   tiltakstype,
   oppstartstype,
   vedtaksinformasjon,
@@ -40,6 +42,9 @@ export const VedtakOgKlage = ({
   return harVedtak ? (
     <>
       <VedtakInfo
+        statusDato={statusDato}
+        statusType={statusType}
+        oppstartstype={oppstartstype}
         tiltakstype={tiltakstype}
         vedtaksinformasjon={vedtaksinformasjon}
         importertFraArena={importertFraArena}

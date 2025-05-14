@@ -114,11 +114,11 @@ export class MockHandler {
         innhold: getUtvidetInnhold(innhold)
       },
       vedtaksinformasjon: {
-        fattet: harVedtak(this.statusType) ? yesterday.toString() : null,
+        fattet: harVedtak(this.statusType) ? yesterday.toDate() : null,
         fattetAvNav: false,
-        opprettet: yesterday.toString(),
+        opprettet: yesterday.toDate(),
         opprettetAv: 'Navn Navnesen',
-        sistEndret: today.toString(),
+        sistEndret: today.toDate(),
         sistEndretAv: 'Navn Navnesen',
         sistEndretAvEnhet: 'Nav Fredrikstad'
       },
@@ -143,7 +143,7 @@ export class MockHandler {
     }
   }
 
-  createPamelding(deltakerlisteId: string): HttpResponse {
+  createPamelding(deltakerlisteId: string) {
     this.pamelding = this.createDeltaker(deltakerlisteId)
     return HttpResponse.json(this.pamelding)
   }
@@ -282,7 +282,7 @@ export class MockHandler {
     return []
   }
 
-  deletePamelding(deltakerId: string): HttpResponse {
+  deletePamelding(deltakerId: string) {
     if (deltakerId === this.deltakerIdNotAllowedToDelete) {
       return new HttpResponse(null, { status: 400 })
     }
@@ -295,7 +295,7 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(request: SendInnPameldingRequest): HttpResponse {
+  sendInnPamelding(request: SendInnPameldingRequest) {
     if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
 
     this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null
@@ -338,7 +338,7 @@ export class MockHandler {
       if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
           .subtract(2, 'day')
-          .toString()
+          .toDate()
       } else if (oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = null
       }
