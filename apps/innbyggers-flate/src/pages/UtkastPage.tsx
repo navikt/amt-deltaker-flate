@@ -19,6 +19,7 @@ import {
   erKursEllerDigitalt,
   harFellesOppstart,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangor,
   useDeferredFetch,
   visDeltakelsesmengde
@@ -43,6 +44,10 @@ export const UtkastPage = () => {
     deltaker.deltakerliste.tiltakstype,
     deltaker.deltakerliste.deltakerlisteNavn,
     arrangorNavn
+  )
+  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.arrangorNavn
   )
 
   const { deltakerId } = useParams()
@@ -70,7 +75,7 @@ export const UtkastPage = () => {
   return (
     <div className="flex flex-col items-start mb-8">
       <Heading level="1" size="xlarge">
-        {navnHosArrangorTekst}
+        {tiltakOgStedTekst}
       </Heading>
       <Heading
         level="2"

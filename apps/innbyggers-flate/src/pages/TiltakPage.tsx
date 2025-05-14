@@ -127,6 +127,7 @@ export const TiltakPage = () => {
         <DeltakerStatusInfoTekst
           tiltaksType={deltaker.deltakerliste.tiltakstype}
           deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+          tiltaketsStartDato={deltaker.deltakerliste.startdato}
           statusType={deltaker.status.type}
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           oppstartsdato={deltaker.startdato}
@@ -135,17 +136,6 @@ export const TiltakPage = () => {
       )}
 
       <AktiveForslag forslag={deltaker.forslag} />
-
-      <DeltakelseInnhold
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
-        deltakelsesinnhold={deltaker.deltakelsesinnhold}
-        heading={
-          <Heading level="2" size="medium" className="mt-8 mb-2">
-            Dette er innholdet
-          </Heading>
-        }
-        listClassName="mt-2"
-      />
 
       <OmKurset
         tiltakstype={deltaker.deltakerliste.tiltakstype}
@@ -156,6 +146,17 @@ export const TiltakPage = () => {
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         className="mt-8"
+      />
+
+      <DeltakelseInnhold
+        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        heading={
+          <Heading level="2" size="medium" className="mt-8 mb-2">
+            Dette er innholdet
+          </Heading>
+        }
+        listClassName="mt-2"
       />
 
       <div>
