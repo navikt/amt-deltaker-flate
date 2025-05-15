@@ -81,17 +81,17 @@ export const AvsluttDeltakelseModal = ({
     )
   })
   const { enhetId } = useAppContext()
-  const skalViseAvslutningsTypeValg =
+  const erFellesOppstart =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
-  const skalViseAarsak = skalViseAvslutningsTypeValg
+  const skalViseAarsak = erFellesOppstart
     ? avslutningstype === Avslutningstype.AVBRUTT ||
       avslutningstype === Avslutningstype.IKKE_DELTATT
     : true
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
   const skalViseHarDeltatt =
-    showHarDeltatt(pamelding, forslag) && !skalViseAvslutningsTypeValg
+    showHarDeltatt(pamelding, forslag) && !erFellesOppstart
   const skalViseSluttDato =
     (!skalViseHarDeltatt || harDeltatt) &&
     avslutningstype !== Avslutningstype.IKKE_DELTATT
@@ -112,7 +112,7 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalViseAvslutningsTypeValg && avslutningstype === null) {
+    if (erFellesOppstart && avslutningstype === null) {
       hasError = true
     }
 
@@ -210,7 +210,7 @@ export const AvsluttDeltakelseModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      {skalViseAvslutningsTypeValg && (
+      {erFellesOppstart && (
         <section className="mt-4 mb-4">
           <RadioGroup
             legend="Har personen fullført kurset?"
