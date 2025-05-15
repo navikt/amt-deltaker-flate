@@ -1,5 +1,10 @@
 import { BodyShort, Label } from '@navikt/ds-react'
-import { DeltakerStatusTag, EMDASH, formatDate } from 'deltaker-flate-common'
+import {
+  DeltakerStatusTag,
+  EMDASH,
+  formatDate,
+  getDeltakerStatusAarsakText
+} from 'deltaker-flate-common'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
 import { Vurdering } from './Vurdering'
 
@@ -17,6 +22,16 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
       <Detail title="Status">
         <DeltakerStatusTag statusType={deltaker.status.type} />
       </Detail>
+      {deltaker.status.aarsak && (
+        <div className="flex gap-2" aria-atomic>
+          <Detail title="Årsak">
+            <BodyShort as="span" className="whitespace-pre-wrap">
+              {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
+            </BodyShort>
+          </Detail>
+        </div>
+      )}
+
       <Detail title="Vurdering, arrangør">
         {deltaker.vurdering ? (
           <div className="flex flex-col gap-2">
