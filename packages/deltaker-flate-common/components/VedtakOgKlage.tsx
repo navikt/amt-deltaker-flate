@@ -72,8 +72,7 @@ export const VedtakOgKlage = ({
           </Heading>
           <BodyLong size="small" className="mt-2">
             Etter forvaltningslovforskriften § 33 har du ikke rett til å klage
-            på avgjørelsen når du får avslag på å delta på dette
-            arbeidsmarkedstiltaket.
+            på dette vedtaket.
           </BodyLong>
         </>
       )}
