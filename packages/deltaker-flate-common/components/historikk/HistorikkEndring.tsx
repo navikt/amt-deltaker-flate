@@ -14,7 +14,7 @@ import { formatDate } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
-import { ArenaTiltakskode } from '../../model/deltaker.ts'
+import { ArenaTiltakskode, Oppstartstype } from '../../model/deltaker.ts'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -70,9 +70,16 @@ const getEndringsDetaljer = (
     case EndringType.AvsluttDeltakelse: {
       return (
         <>
-          <BodyLong size="small">
-            Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
-          </BodyLong>
+          {endring.aarsak && (
+            <BodyLong size="small">
+              Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+            </BodyLong>
+          )}
+          {endring.oppstartstype === Oppstartstype.FELLES && (
+            <BodyLong size="small">
+              Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
+            </BodyLong>
+          )}
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}

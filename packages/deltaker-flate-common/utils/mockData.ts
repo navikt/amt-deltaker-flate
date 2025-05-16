@@ -6,7 +6,8 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   ArenaTiltakskode,
-  Vurderingstype
+  Vurderingstype,
+  Oppstartstype
 } from '../model/deltaker'
 import {
   ArrangorEndringsType,
@@ -162,7 +163,9 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
           beskrivelse: null
         },
         sluttdato: dayjs().toDate(),
-        begrunnelse: null
+        begrunnelse: null,
+        harFullfort: true,
+        oppstartstype: Oppstartstype.LOPENDE
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -415,7 +418,9 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
           beskrivelse: null
         },
         sluttdato: dayjs().toDate(),
-        begrunnelse: null
+        begrunnelse: null,
+        harFullfort: true,
+        oppstartstype: Oppstartstype.FELLES
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
