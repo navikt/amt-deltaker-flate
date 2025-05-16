@@ -353,7 +353,7 @@ function getHarDeltatt(forslag: Forslag | null): boolean | null {
   return null
 }
 
-function getHarFullfort(forslag: Forslag | null): boolean | null {
+function getHarFullfort(forslag: Forslag | null): boolean | null | undefined {
   if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
     return forslag.endring.harFullfort
   }
