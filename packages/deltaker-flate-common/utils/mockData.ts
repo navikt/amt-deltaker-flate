@@ -419,7 +419,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
         },
         sluttdato: dayjs().toDate(),
         begrunnelse: null,
-        harFullfort: true,
+        harFullfort: false,
         oppstartstype: Oppstartstype.FELLES
       },
       endretAv: 'Navn Navnesen',
