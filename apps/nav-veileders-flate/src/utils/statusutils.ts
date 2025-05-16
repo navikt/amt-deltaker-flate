@@ -19,6 +19,16 @@ export const deltakerHarSluttetEllerFullfort = (
   )
 }
 
+export const deltakerErIkkeAktuellEllerHarSluttet = (
+  statustype: DeltakerStatusType
+): boolean => {
+  return (
+    statustype === DeltakerStatusType.IKKE_AKTUELL ||
+    statustype === DeltakerStatusType.HAR_SLUTTET ||
+    statustype === DeltakerStatusType.AVBRUTT
+  )
+}
+
 export const deltakerHarAvsluttendeStatus = (
   statustype: DeltakerStatusType
 ): boolean => {

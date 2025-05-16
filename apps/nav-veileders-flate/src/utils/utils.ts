@@ -57,3 +57,9 @@ export enum HarDeltattValg {
   JA = 'JA',
   NEI = 'NEI'
 }
+
+export enum Avslutningstype {
+  FULLFORT = 'FULLFORT',
+  AVBRUTT = 'AVBRUTT',
+  IKKE_DELTATT = 'IKKE_DELTATT'
+}

@@ -76,8 +76,9 @@ export const forlengDeltakelseForslagSchema = z.object({
 export const avsluttDeltakelseForslagSchema = z.object({
   type: z.literal(ForslagEndringType.AvsluttDeltakelse),
   sluttdato: dateSchema.nullable(),
-  aarsak: forslagEndringAarsakSchema,
-  harDeltatt: z.boolean().nullable()
+  aarsak: forslagEndringAarsakSchema.nullable(),
+  harDeltatt: z.boolean().nullable(),
+  harFullfort: z.boolean().optional().nullable()
 })
 
 export const ikkeAktuellForslagSchema = z.object({

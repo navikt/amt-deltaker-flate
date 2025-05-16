@@ -1,19 +1,20 @@
+import dayjs from 'dayjs'
 import {
+  ArenaTiltakskode,
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
-  ArenaTiltakskode,
   erKursEllerDigitalt,
   Oppstartstype
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
+  deltakerErIkkeAktuellEllerHarSluttet,
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
-import dayjs from 'dayjs'
 
 const ikkeAktuellKanEndres = (
   pamelding: PameldingResponse,
@@ -90,8 +91,7 @@ const skalViseEndreSluttarsakKnapp = (
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  (deltakerHarSluttetEllerFullfort(pamelding.status.type) ||
-    pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL) &&
+  deltakerErIkkeAktuellEllerHarSluttet(pamelding.status.type) &&
   statusdato > toMndSiden &&
   pamelding.kanEndres
 
