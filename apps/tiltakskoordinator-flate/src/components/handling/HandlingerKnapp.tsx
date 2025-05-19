@@ -105,11 +105,10 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.DEL_DELTAKERE)
                 }}
               >
-                <div className="p-1 flex gap-1 items-start">
+                <div className="p-1 flex gap-1 items-center">
                   <TasklistSendIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem]"
                     aria-hidden
                   />
                   Velg deltakere som skal deles med arrangør
@@ -124,11 +123,10 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.TILDEL_PLASS)
                 }}
               >
-                <div className="p-1 flex gap-1 items-start">
+                <div className="p-1 flex gap-1 items-center">
                   <CheckmarkCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem]"
                     color="var(--a-icon-success)"
                     aria-hidden
                   />
@@ -144,11 +142,10 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
                 }}
               >
-                <div className="p-1 flex gap-1 items-start">
+                <div className="p-1 flex gap-1 items-center">
                   <MenuElipsisHorizontalCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem]"
                     color="var(--a-lightblue-800)"
                     aria-hidden
                   />
@@ -164,15 +161,15 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.GI_AVSLAG)
                 }}
               >
-                <div className="p-1 flex gap-1 items-start">
-                  <span className="mt-[0.15rem] rotate-45">
+                <div className="p-1 flex gap-1 items-center">
+                  <div className="rotate-45">
                     <PlusCircleFillIcon
                       width="1.125rem"
                       height="1.125rem"
                       aria-hidden
                       color="var(--a-orange-600)"
                     />
-                  </span>
+                  </div>
                   Gi avslag
                 </div>
               </ActionMenu.Item>
