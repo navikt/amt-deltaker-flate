@@ -60,7 +60,7 @@ export const AvsluttDeltakelseModal = ({
     useState<Avslutningstype | null>(() => {
       const harFullfortValg = getHarFullfort(forslag)
       if (harFullfortValg) return Avslutningstype.FULLFORT
-      else if (!harDeltatt) return Avslutningstype.IKKE_DELTATT
+      else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
       else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
       else return null
     })
@@ -213,7 +213,7 @@ export const AvsluttDeltakelseModal = ({
       {erFellesOppstart && (
         <section className="mt-4 mb-4">
           <RadioGroup
-            legend="Har personen fullført kurset?"
+            legend="Har deltakeren fullført kurset?"
             size="small"
             disabled={false}
             defaultValue={avslutningstype}
