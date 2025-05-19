@@ -43,13 +43,13 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
               </BodyLong>
             )}
             {forslag.endring.harDeltatt !== null && (
-              <BodyLong size="small" className="mt-1">
+              <BodyLong size="small">
                 Har personen deltatt?{' '}
                 {forslag.endring.harDeltatt ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
             {forslag.endring.harFullfort !== null && (
-              <BodyLong size="small" className="mb-1">
+              <BodyLong size="small">
                 Er kurset fullført? {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
