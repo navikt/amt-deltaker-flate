@@ -107,6 +107,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
               >
                 <div className="p-1" style={getHandlingValgStyle()}>
                   <TasklistSendIcon
+                    style={{ placeSelf: 'start', marginTop: '0.25rem' }}
                     width="1.125rem"
                     height="1.125rem"
                     aria-hidden
