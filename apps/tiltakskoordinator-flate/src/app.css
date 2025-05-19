@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import '@navikt/ds-css' layer(components);
-@source inline('gap-1 w-[16rem]');
+@config "../tailwind.config.ts";
 
 p,
 li {
