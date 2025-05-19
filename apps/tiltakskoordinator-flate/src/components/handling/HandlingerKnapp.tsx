@@ -97,7 +97,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
               Handlinger
             </Button>
           </ActionMenu.Trigger>
-          <ActionMenu.Content className="w-[16rem]">
+          <ActionMenu.Content style={{ width: '16rem' }}>
             {kanDeleMedArrangor && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {
