@@ -5,10 +5,10 @@ import { useHandlingContext } from '../../context-providers/HandlingContext.tsx'
 
 interface Props {
   deltaker: Deltaker
-  labelId: string
+  deltakerNavn: string
 }
 
-export const VelgDeltakerCheckbox = ({ deltaker, labelId }: Props) => {
+export const VelgDeltakerCheckbox = ({ deltaker, deltakerNavn }: Props) => {
   const { handlingValg, valgteDeltakere, setValgteDeltakere } =
     useHandlingContext()
 
@@ -27,7 +27,7 @@ export const VelgDeltakerCheckbox = ({ deltaker, labelId }: Props) => {
       checked={!!valgteDeltakere.find((it) => it.id === deltaker.id)}
       onChange={() => toggleSelectedRow(deltaker)}
       disabled={disabled}
-      aria-labelledby={labelId}
+      aria-label={`Velg ${deltakerNavn}`}
     >
       {' '}
     </Checkbox>

@@ -134,7 +134,7 @@ export const DeltakerlisteTabell = () => {
                   <Table.DataCell>
                     <VelgDeltakerCheckbox
                       deltaker={deltaker}
-                      labelId={`id${deltaker.id}`}
+                      deltakerNavn={navn}
                     />
                   </Table.DataCell>
                 )}
