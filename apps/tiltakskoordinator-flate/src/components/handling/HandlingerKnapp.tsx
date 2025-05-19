@@ -162,14 +162,13 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                 }}
               >
                 <div className="p-1" style={getHandlingValgStyle()}>
-                  <div className="rotate-45">
-                    <PlusCircleFillIcon
-                      width="1.125rem"
-                      height="1.125rem"
-                      aria-hidden
-                      color="var(--a-orange-600)"
-                    />
-                  </div>
+                  <PlusCircleFillIcon
+                    width="1.125rem"
+                    height="1.125rem"
+                    style={{ rotate: '45deg' }}
+                    aria-hidden
+                    color="var(--a-orange-600)"
+                  />
                   Gi avslag
                 </div>
               </ActionMenu.Item>
