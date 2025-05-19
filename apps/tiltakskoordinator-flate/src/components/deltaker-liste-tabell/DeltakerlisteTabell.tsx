@@ -102,6 +102,9 @@ export const DeltakerlisteTabell = () => {
                 />
               </Table.DataCell>
             )}
+            {handlingValg === HandlingValg.GI_AVSLAG && (
+              <Table.DataCell></Table.DataCell>
+            )}
             <TableHeaderCell label="Navn" />
             <TableHeaderCell label="Nav-enhet" />
             <TableHeaderCell label="Status deltakelse" />
@@ -139,6 +142,7 @@ export const DeltakerlisteTabell = () => {
                   <Table.DataCell>
                     <GiAvslagKnapp
                       disabled={!kanGisAvslag(deltaker)}
+                      deltakerNavn={navn}
                       onClick={() => {
                         setValgteDeltakere([deltaker])
                         setModalOpen(true)
