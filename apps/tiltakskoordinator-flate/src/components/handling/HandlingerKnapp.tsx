@@ -105,7 +105,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.DEL_DELTAKERE)
                 }}
               >
-                <div className="p-1 flex gap-1 items-center">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <TasklistSendIcon
                     width="1.125rem"
                     height="1.125rem"
@@ -123,7 +123,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.TILDEL_PLASS)
                 }}
               >
-                <div className="p-1 flex gap-1 items-center">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <CheckmarkCircleIcon
                     width="1.125rem"
                     height="1.125rem"
@@ -142,7 +142,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
                 }}
               >
-                <div className="p-1 flex gap-1 items-center">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <MenuElipsisHorizontalCircleIcon
                     width="1.125rem"
                     height="1.125rem"
@@ -161,7 +161,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.GI_AVSLAG)
                 }}
               >
-                <div className="p-1 flex gap-1 items-center">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <div className="rotate-45">
                     <PlusCircleFillIcon
                       width="1.125rem"
@@ -179,4 +179,12 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
       )}
     </div>
   )
+}
+
+const getHandlingValgStyle = () => {
+  return {
+    display: 'flex',
+    gap: '0.25rem',
+    alignItems: 'center'
+  }
 }
