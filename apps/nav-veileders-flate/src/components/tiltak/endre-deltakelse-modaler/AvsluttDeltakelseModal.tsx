@@ -377,7 +377,9 @@ function getHarFullfort(forslag: Forslag | null): boolean | null | undefined {
 
 const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.HAR_SLUTTET
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.FULLFORT ||
+  statusType === DeltakerStatusType.AVBRUTT
 
 export const avslutningsBeskrivelseTekstMapper = (
   kategoriType: Avslutningstype
