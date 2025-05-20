@@ -154,7 +154,7 @@ export const AvsluttDeltakelseModal = ({
       validerDeltakerKanEndres(pamelding)
       if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
         throw new Error(
-          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar" eller "Har sluttet"'
+          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar", "Har sluttet", "Avbrutt" eller "Fullført".'
         )
       }
 
