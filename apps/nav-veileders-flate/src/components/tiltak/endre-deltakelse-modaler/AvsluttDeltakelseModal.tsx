@@ -146,7 +146,9 @@ export const AvsluttDeltakelseModal = ({
             ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
-        harFullfort: avslutningstype === Avslutningstype.FULLFORT,
+        harFullfort: erFellesOppstart
+          ? avslutningstype === Avslutningstype.FULLFORT
+          : null,
         begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
       }
@@ -154,7 +156,7 @@ export const AvsluttDeltakelseModal = ({
       validerDeltakerKanEndres(pamelding)
       if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
         throw new Error(
-          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar" eller "Har sluttet"'
+          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar", "Har sluttet", "Avbrutt" eller "Fullført".'
         )
       }
 
@@ -377,7 +379,9 @@ function getHarFullfort(forslag: Forslag | null): boolean | null | undefined {
 
 const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.HAR_SLUTTET
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.FULLFORT ||
+  statusType === DeltakerStatusType.AVBRUTT
 
 export const avslutningsBeskrivelseTekstMapper = (
   kategoriType: Avslutningstype

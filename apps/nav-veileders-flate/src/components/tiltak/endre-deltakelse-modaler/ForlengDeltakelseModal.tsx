@@ -197,4 +197,6 @@ export const ForlengDeltakelseModal = ({
 
 const harStatusSomKanForlengeDeltakelse = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.HAR_SLUTTET
+  statusType === DeltakerStatusType.HAR_SLUTTET ||
+  statusType === DeltakerStatusType.FULLFORT ||
+  statusType === DeltakerStatusType.AVBRUTT
