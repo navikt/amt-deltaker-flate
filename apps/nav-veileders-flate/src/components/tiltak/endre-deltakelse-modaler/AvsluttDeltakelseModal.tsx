@@ -146,7 +146,9 @@ export const AvsluttDeltakelseModal = ({
             ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
-        harFullfort: avslutningstype === Avslutningstype.FULLFORT,
+        harFullfort: erFellesOppstart
+          ? avslutningstype === Avslutningstype.FULLFORT
+          : null,
         begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
       }
