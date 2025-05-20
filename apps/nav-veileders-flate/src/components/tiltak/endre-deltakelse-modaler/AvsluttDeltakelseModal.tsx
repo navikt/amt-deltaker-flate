@@ -219,13 +219,28 @@ export const AvsluttDeltakelseModal = ({
             defaultValue={avslutningstype}
             onChange={onSetAvslutningstype}
           >
-            <Radio value={Avslutningstype.FULLFORT}>
+            <Radio
+              value={Avslutningstype.FULLFORT}
+              description={avslutningsBeskrivelseTekstMapper(
+                Avslutningstype.FULLFORT
+              )}
+            >
               Ja, kurset er fullført
             </Radio>
-            <Radio value={Avslutningstype.AVBRUTT}>
+            <Radio
+              value={Avslutningstype.AVBRUTT}
+              description={avslutningsBeskrivelseTekstMapper(
+                Avslutningstype.AVBRUTT
+              )}
+            >
               Nei, kurset er avbrutt
             </Radio>
-            <Radio value={Avslutningstype.IKKE_DELTATT}>
+            <Radio
+              value={Avslutningstype.IKKE_DELTATT}
+              description={avslutningsBeskrivelseTekstMapper(
+                Avslutningstype.IKKE_DELTATT
+              )}
+            >
               Nei, personen har ikke deltatt
             </Radio>
           </RadioGroup>
@@ -363,3 +378,18 @@ function getHarFullfort(forslag: Forslag | null): boolean | null | undefined {
 const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.DELTAR ||
   statusType === DeltakerStatusType.HAR_SLUTTET
+
+export const avslutningsBeskrivelseTekstMapper = (
+  kategoriType: Avslutningstype
+) => {
+  switch (kategoriType) {
+    case Avslutningstype.FULLFORT:
+      return 'Med fullført menes at kurset er gjennomført, og/eller at ønsket mål, sertifisering el. er oppnådd'
+    case Avslutningstype.AVBRUTT:
+      return 'Med avbrutt menes at deltakeren avslutter på kurset uten å ha gjennomført og/eller oppnådd ønsket mål, sertifisering el.'
+    case Avslutningstype.IKKE_DELTATT:
+      return 'Dersom personen ikke har deltatt på tiltaket, vil statusen på tiltaket endres til “Ikke aktuell”.'
+    default:
+      return 'Ukjent'
+  }
+}
