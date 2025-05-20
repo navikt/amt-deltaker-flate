@@ -20,7 +20,6 @@ import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
 import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import assertNever = util.assertNever
-import React from 'react'
 
 interface Props {
   forslag: Forslag
@@ -38,13 +37,20 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.AvsluttDeltakelse:
         return (
           <>
-            <BodyLong size="small">
-              Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
-            </BodyLong>
+            {forslag.endring.aarsak && (
+              <BodyLong size="small">
+                Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+              </BodyLong>
+            )}
             {forslag.endring.harDeltatt !== null && (
               <BodyLong size="small">
                 Har personen deltatt?{' '}
                 {forslag.endring.harDeltatt ? 'Ja' : 'Nei'}
+              </BodyLong>
+            )}
+            {forslag.endring.harFullfort !== null && (
+              <BodyLong size="small">
+                Er kurset fullført? {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
             {forslag.endring.sluttdato && (
@@ -102,7 +108,7 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
             Ny sluttårsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
           </BodyLong>
         )
-      case 'FjernOppstartsdato':
+      case ForslagEndringType.FjernOppstartsdato:
         return null
       default:
         assertNever(forslag.endring)

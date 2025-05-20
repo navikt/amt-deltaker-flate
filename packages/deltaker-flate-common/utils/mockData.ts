@@ -6,7 +6,8 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   ArenaTiltakskode,
-  Vurderingstype
+  Vurderingstype,
+  Oppstartstype
 } from '../model/deltaker'
 import {
   ArrangorEndringsType,
@@ -162,7 +163,9 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
           beskrivelse: null
         },
         sluttdato: dayjs().toDate(),
-        begrunnelse: null
+        begrunnelse: null,
+        harFullfort: true,
+        oppstartstype: Oppstartstype.LOPENDE
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -405,6 +408,42 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       endret: dayjs().subtract(5, 'day').toDate(),
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad'
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.AvsluttDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().toDate(),
+        begrunnelse: null,
+        harFullfort: false,
+        oppstartstype: Oppstartstype.FELLES
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: {
+        id: uuidv4(),
+        type: HistorikkType.Forslag,
+        opprettet: dayjs().toDate(),
+        begrunnelse: 'Trenger mer tid',
+        arrangorNavn: 'Muligheter As',
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs().add(1, 'month').toDate(),
+          aarsak: {
+            type: ForslagEndringAarsakType.FattJobb
+          },
+          harDeltatt: true
+        },
+        status: {
+          type: ForslagStatusType.Godkjent,
+          godkjent: dayjs().toDate()
+        }
+      }
     },
     {
       type: HistorikkType.EndringFraTiltakskoordinator,

@@ -3,6 +3,7 @@ import {
   deltakelsesinnholdSchema,
   deltakerStatusAarsakSchema,
   innholdSchema,
+  Oppstartstype,
   pameldingStatusSchema,
   vurderingstypeSchema
 } from './deltaker'
@@ -80,9 +81,11 @@ export const ikkeAktuellSchema = z.object({
 
 export const avsluttDeltakelseSchema = z.object({
   type: z.literal(EndringType.AvsluttDeltakelse),
-  aarsak: deltakerStatusAarsakSchema,
+  aarsak: deltakerStatusAarsakSchema.nullable(),
   sluttdato: dateSchema,
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  harFullfort: z.boolean(),
+  oppstartstype: z.nativeEnum(Oppstartstype)
 })
 
 export const endreSluttarsakSchema = z.object({

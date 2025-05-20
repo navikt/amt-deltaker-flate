@@ -208,7 +208,55 @@ export class MockHandler {
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           },
-          harDeltatt: false
+          harDeltatt: true,
+          harFullfort: null
+        }
+      })
+      const forslagAvslutt2 = aktivtForslag({
+        begrunnelse: null,
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs(sluttdato).toDate(),
+          aarsak: null,
+          harDeltatt: true,
+          harFullfort: true
+        }
+      })
+      const forslagAvslutt3 = aktivtForslag({
+        begrunnelse: null,
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs(sluttdato).toDate(),
+          aarsak: {
+            type: ForslagEndringAarsakType.Syk
+          },
+          harDeltatt: false,
+          harFullfort: false
+        }
+      })
+      const forslagAvslutt4 = aktivtForslag({
+        begrunnelse: null,
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs(sluttdato).toDate(),
+          aarsak: {
+            type: ForslagEndringAarsakType.Syk
+          },
+          harDeltatt: true,
+          harFullfort: false
+        }
+      })
+      const forslagAvslutt5 = aktivtForslag({
+        begrunnelse: null,
+        endring: {
+          type: ForslagEndringType.AvsluttDeltakelse,
+          sluttdato: dayjs(sluttdato).toDate(),
+          aarsak: {
+            type: ForslagEndringAarsakType.Annet,
+            beskrivelse: 'tralala'
+          },
+          harDeltatt: true,
+          harFullfort: false
         }
       })
       const forslagDeltakelsesmengde = aktivtForslag({
@@ -240,6 +288,10 @@ export class MockHandler {
         forslagDeltakelsesmengde,
         forslag,
         forslagAvslutt,
+        forslagAvslutt2,
+        forslagAvslutt3,
+        forslagAvslutt4,
+        forslagAvslutt5,
         forslagIkkeAktuell
       ]
     }

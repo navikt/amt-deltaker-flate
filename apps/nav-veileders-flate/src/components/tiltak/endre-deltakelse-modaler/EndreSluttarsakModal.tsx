@@ -53,7 +53,7 @@ export const EndreSluttarsakModal = ({
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       if (
         aarsak.aarsak === pamelding.status.aarsak?.type &&
-        nyArsakBeskrivelse === pamelding.status.aarsak.beskrivelse
+        nyArsakBeskrivelse === pamelding.status.aarsak?.beskrivelse
       ) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }

@@ -217,8 +217,10 @@ export const worker = setupWorker(
       await delay(1000)
       const { forslagId } = params as { forslagId: string }
 
-      await request.json().then(() => handler.avvisForslag(forslagId))
-      return new HttpResponse(null, { status: 200 })
+      const respone = await request
+        .json()
+        .then(() => handler.avvisForslag(forslagId))
+      return respone
     }
   ),
   http.post('/amt-deltaker-bff/pamelding/:deltakerId/avbryt', async () => {

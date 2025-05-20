@@ -97,7 +97,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
               Handlinger
             </Button>
           </ActionMenu.Trigger>
-          <ActionMenu.Content className="w-[16rem]">
+          <ActionMenu.Content style={{ maxWidth: '14rem' }}>
             {kanDeleMedArrangor && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {
@@ -105,11 +105,11 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.DEL_DELTAKERE)
                 }}
               >
-                <div className="p-1 flex items-start">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <TasklistSendIcon
+                    style={{ placeSelf: 'start', marginTop: '0.25rem' }}
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem] mr-1"
                     aria-hidden
                   />
                   Velg deltakere som skal deles med arrangør
@@ -124,11 +124,10 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.TILDEL_PLASS)
                 }}
               >
-                <div className="p-1 flex items-start">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <CheckmarkCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem] mr-1"
                     color="var(--a-icon-success)"
                     aria-hidden
                   />
@@ -144,11 +143,10 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.SETT_PA_VENTELISTE)
                 }}
               >
-                <div className="p-1 flex items-start">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <MenuElipsisHorizontalCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem] mr-1"
                     color="var(--a-lightblue-800)"
                     aria-hidden
                   />
@@ -164,11 +162,11 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   setHandlingValg(HandlingValg.GI_AVSLAG)
                 }}
               >
-                <div className="p-1 flex items-start">
+                <div className="p-1" style={getHandlingValgStyle()}>
                   <PlusCircleFillIcon
                     width="1.125rem"
                     height="1.125rem"
-                    className="mt-[0.15rem] mr-1 rotate-45"
+                    style={{ rotate: '45deg' }}
                     aria-hidden
                     color="var(--a-orange-600)"
                   />
@@ -181,4 +179,12 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
       )}
     </div>
   )
+}
+
+const getHandlingValgStyle = () => {
+  return {
+    display: 'flex',
+    gap: '0.25rem',
+    alignItems: 'center'
+  }
 }
