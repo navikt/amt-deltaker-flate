@@ -59,7 +59,7 @@ export const AvsluttDeltakelseModal = ({
   const [avslutningstype, setAvslutningstype] =
     useState<Avslutningstype | null>(() => {
       const harFullfortValg = getHarFullfort(forslag)
-      if (harFullfortValg) return Avslutningstype.FULLFORT
+      if (harFullfortValg == true) return Avslutningstype.FULLFORT
       else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
       else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
       else return null
