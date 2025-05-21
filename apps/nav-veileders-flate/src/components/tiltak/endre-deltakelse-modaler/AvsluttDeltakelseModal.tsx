@@ -237,14 +237,16 @@ export const AvsluttDeltakelseModal = ({
             >
               Nei, kurset er avbrutt
             </Radio>
-            <Radio
-              value={Avslutningstype.IKKE_DELTATT}
-              description={avslutningsBeskrivelseTekstMapper(
-                Avslutningstype.IKKE_DELTATT
-              )}
-            >
-              Nei, personen har ikke deltatt
-            </Radio>
+            {showHarDeltatt(pamelding, forslag) && (
+              <Radio
+                value={Avslutningstype.IKKE_DELTATT}
+                description={avslutningsBeskrivelseTekstMapper(
+                  Avslutningstype.IKKE_DELTATT
+                )}
+              >
+                Nei, personen har ikke deltatt
+              </Radio>
+            )}
           </RadioGroup>
         </section>
       )}
