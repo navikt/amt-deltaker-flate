@@ -59,7 +59,7 @@ export const AvsluttDeltakelseModal = ({
   const [avslutningstype, setAvslutningstype] =
     useState<Avslutningstype | null>(() => {
       const harFullfortValg = getHarFullfort(forslag)
-      if (harFullfortValg == true) return Avslutningstype.FULLFORT
+      if (harFullfortValg === true) return Avslutningstype.FULLFORT
       else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
       else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
       else return null
@@ -101,8 +101,11 @@ export const AvsluttDeltakelseModal = ({
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
     if (nyVerdi === Avslutningstype.IKKE_DELTATT) setHarDeltatt(false)
-    if (nyVerdi === Avslutningstype.FULLFORT) {
-      aarsak.handleChange(undefined)
+    if (
+      nyVerdi === Avslutningstype.FULLFORT ||
+      nyVerdi === Avslutningstype.AVBRUTT
+    ) {
+      setHarDeltatt(true)
     }
   }
   const validertRequest = () => {
@@ -135,12 +138,13 @@ export const AvsluttDeltakelseModal = ({
     if (!hasError) {
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       const endring: AvsluttDeltakelseRequest = {
-        aarsak: aarsak.aarsak
-          ? {
-              type: aarsak.aarsak,
-              beskrivelse: nyArsakBeskrivelse
-            }
-          : null,
+        aarsak:
+          skalViseAarsak && aarsak.aarsak
+            ? {
+                type: aarsak.aarsak,
+                beskrivelse: nyArsakBeskrivelse
+              }
+            : null,
         sluttdato:
           skalViseSluttDato && sluttdato.sluttdato
             ? formatDateToDtoStr(sluttdato.sluttdato)
