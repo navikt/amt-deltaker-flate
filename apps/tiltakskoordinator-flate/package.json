@@ -31,7 +31,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.1",
     "uuid": "^11.1.0",
-    "zod": "^3.25.28"
+    "zod": "^3.25.30"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
