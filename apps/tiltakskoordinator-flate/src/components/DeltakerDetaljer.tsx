@@ -3,7 +3,8 @@ import {
   DeltakerStatusTag,
   EMDASH,
   formatDate,
-  getDeltakerStatusAarsakText
+  getDeltakerStatusAarsakText,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
 import { Vurdering } from './Vurdering'
@@ -16,6 +17,8 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
   if (!deltaker) {
     return null
   }
+
+  const visVurdering = deltaker.tiltakskode !== Tiltakskode.JOBBKLUBB
 
   return (
     <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)]">
@@ -32,20 +35,22 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         </div>
       )}
 
-      <Detail title="Vurdering, arrangør">
-        {deltaker.vurdering ? (
-          <div className="flex flex-col gap-2">
-            <Vurdering vurdering={deltaker.vurdering.type} />
-            {deltaker.vurdering.begrunnelse && (
-              <BodyShort size="small">
-                {deltaker.vurdering.begrunnelse}
-              </BodyShort>
-            )}
-          </div>
-        ) : (
-          <BodyShort size="small">{EMDASH}</BodyShort>
-        )}
-      </Detail>
+      {visVurdering && (
+        <Detail title="Vurdering, arrangør">
+          {deltaker.vurdering ? (
+            <div className="flex flex-col gap-2">
+              <Vurdering vurdering={deltaker.vurdering.type} />
+              {deltaker.vurdering.begrunnelse && (
+                <BodyShort size="small">
+                  {deltaker.vurdering.begrunnelse}
+                </BodyShort>
+              )}
+            </div>
+          ) : (
+            <BodyShort size="small">{EMDASH}</BodyShort>
+          )}
+        </Detail>
+      )}
       <Detail title="Dato">
         <BodyShort size="small">
           {deltaker.startdato

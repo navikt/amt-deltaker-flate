@@ -63,7 +63,8 @@ export const createMockDeltaker = (
       telefonnummer: adresseBeskyttet ? null : '87654321',
       epost: 'veileder.veiledersen@epost.no'
     },
-    innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS
+    innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
+    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
   }
 }
 const createStatus = (index: number) => {
