@@ -53,12 +53,17 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: AvsluttDeltakelseModalProps) => {
   const defaultSluttdato = getSluttdato(pamelding, forslag)
+  const erFellesOppstart =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     getHarDeltatt(forslag)
   )
   const [avslutningstype, setAvslutningstype] =
     useState<Avslutningstype | null>(() => {
       const harFullfortValg = getHarFullfort(forslag)
+      if (!erFellesOppstart) return null
+
       if (harFullfortValg === true) return Avslutningstype.FULLFORT
       else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
       else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
@@ -81,8 +86,6 @@ export const AvsluttDeltakelseModal = ({
     )
   })
   const { enhetId } = useAppContext()
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
   const skalViseAarsak = erFellesOppstart
     ? avslutningstype === Avslutningstype.AVBRUTT ||
@@ -111,7 +114,7 @@ export const AvsluttDeltakelseModal = ({
   const validertRequest = () => {
     let hasError = false
 
-    if (sluttdato.error || !begrunnelse.valider()) {
+    if (!begrunnelse.valider()) {
       hasError = true
     }
 
@@ -123,13 +126,20 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalViseSluttDato && !sluttdato.sluttdato) {
+    if (skalViseSluttDato && sluttdato.error) {
       hasError = true
     }
+
+    if (skalViseSluttDato && !sluttdato.sluttdato) {
+      sluttdato.setError('Du må velge en sluttdato.')
+      hasError = true
+    }
+
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
     }
+
     if (skalViseHarDeltatt && harDeltatt === null) {
       hasError = true
       setHarDeltattError('Du må svare før du kan fortsette.')

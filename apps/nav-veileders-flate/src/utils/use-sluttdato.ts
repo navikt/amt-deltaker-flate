@@ -171,6 +171,7 @@ export function useSluttdatoInput({
     defaultDato,
     error: errorMsg,
     validate,
+    setError,
     onChange: handleChange
   }
 }
