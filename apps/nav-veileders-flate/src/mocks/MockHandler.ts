@@ -405,27 +405,7 @@ export class MockHandler {
       }
       oppdatertPamelding.startdato = this.getStartdato()
       oppdatertPamelding.sluttdato = this.getSluttdato()
-      oppdatertPamelding.forslag = [
-        {
-          type: 'Forslag',
-          id: 'c83db134-fb10-402a-b916-306dd7997d4c',
-          opprettet: '2025-05-27T10:45:21.344585',
-          begrunnelse: null,
-          arrangorNavn: 'Barneverns- og Helsenemnda',
-          endring: {
-            type: 'AvsluttDeltakelse',
-            sluttdato: null,
-            aarsak: {
-              type: 'Utdanning'
-            },
-            harDeltatt: false,
-            harFullfort: null
-          },
-          status: {
-            type: 'VenterPaSvar'
-          }
-        }
-      ] //this.getForslag()
+      oppdatertPamelding.forslag = this.getForslag()
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }
