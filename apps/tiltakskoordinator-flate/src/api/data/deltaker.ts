@@ -2,6 +2,7 @@ import {
   deltakerStatusAarsakSchema,
   deltakerStatusTypeSchema,
   nullableDateSchema,
+  Tiltakskode,
   vurderingstypeSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -44,7 +45,8 @@ export const deltakerDetaljerSchema = z.object({
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
-  innsatsgruppe: z.nativeEnum(InnsatsbehovType).nullable()
+  innsatsgruppe: z.nativeEnum(InnsatsbehovType).nullable(),
+  tiltakskode: z.nativeEnum(Tiltakskode)
 })
 
 export type DeltakerDetaljer = z.infer<typeof deltakerDetaljerSchema>
