@@ -28,6 +28,7 @@ import {
   SortKey,
   useDeltakerSortering
 } from '../../hooks/useDeltakerSortering.tsx'
+import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -39,8 +40,12 @@ export const DeltakerlisteTabell = () => {
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
 
-  const { sort, handleSort, sorterteDeltagere } =
-    useDeltakerSortering(deltakere)
+  const { lagretSorteringsValg, setLagretSorteringsValg } =
+    useSorteringContext()
+  const { sort, handleSort, sorterteDeltagere } = useDeltakerSortering(
+    deltakere,
+    lagretSorteringsValg
+  )
 
   useEffect(() => {
     if (handlingValg === handlingValgRef.current) {
@@ -100,9 +105,12 @@ export const DeltakerlisteTabell = () => {
       <Table
         className="w-fit h-fit"
         sort={sort}
-        onSortChange={(sortKey) =>
-          handleSort(sortKey as ScopedSortState['orderBy'])
-        }
+        onSortChange={(sortKey) => {
+          handleSort(
+            sortKey as ScopedSortState['orderBy'],
+            setLagretSorteringsValg
+          )
+        }}
       >
         <Table.Header>
           <Table.Row>

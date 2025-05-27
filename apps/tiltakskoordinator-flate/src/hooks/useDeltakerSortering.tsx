@@ -13,8 +13,11 @@ export enum SortKey {
   VURDERING = 'vurdering'
 }
 
-export const useDeltakerSortering = (deltakere: Deltaker[]) => {
-  const [sort, setSort] = useState<ScopedSortState>()
+export const useDeltakerSortering = (
+  deltakere: Deltaker[],
+  sorteringsValg?: ScopedSortState
+) => {
+  const [sort, setSort] = useState<ScopedSortState | undefined>(sorteringsValg)
   const [sorterteDeltagere, setSorterteDeltagere] = useState<Deltaker[]>(
     sorterDeltakere(deltakere)
   )
@@ -23,8 +26,11 @@ export const useDeltakerSortering = (deltakere: Deltaker[]) => {
     setSorterteDeltagere(sorterDeltakere(deltakere, sort))
   }, [deltakere, sort])
 
-  const handleSort = (sortKey: ScopedSortState['orderBy']) => {
-    setSort(
+  const handleSort = (
+    sortKey: ScopedSortState['orderBy'],
+    onSortChanged?: (newSort: ScopedSortState) => void
+  ) => {
+    const newSort =
       sort && sortKey === sort.orderBy && sort.direction === 'descending'
         ? undefined
         : {
@@ -34,7 +40,12 @@ export const useDeltakerSortering = (deltakere: Deltaker[]) => {
                 ? 'descending'
                 : 'ascending'
           }
-    )
+    // @ts-expect-error newSort er riktig
+    setSort(newSort)
+    if (onSortChanged) {
+      // @ts-expect-error newSort er riktig
+      onSortChanged(newSort)
+    }
   }
 
   return {
