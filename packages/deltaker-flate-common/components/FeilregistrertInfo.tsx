@@ -39,9 +39,11 @@ export const FeilregistrertInfo = ({
         feil.
       </BodyShort>
 
-      <BodyShort className="mt-4">
-        {`Meldt på: ${formatDateWithMonthName(meldtPaDato)}`}
-      </BodyShort>
+      {meldtPaDato && (
+        <BodyShort className="mt-4">
+          {`Meldt på: ${formatDateWithMonthName(meldtPaDato)}`}
+        </BodyShort>
+      )}
 
       <BodyShort className="mt-4">
         {`Feilen ble registrert: ${formatDateWithMonthName(feilregistrertDato)}`}

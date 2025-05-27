@@ -11,7 +11,6 @@ import {
 import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
-import React from 'react'
 
 interface Props {
   tiltakskoordinatorEndring: EndringerFraTiltakskoordinator

@@ -21,13 +21,12 @@ export const TiltakPage = () => {
       <Tilbakeknapp />
       <div className="flex flex-col gap-4 xl:flex-row-reverse">
         <ForNAVAnsatt className="xl:max-w-[412px] w-full" />
-        {pamelding.status.type === DeltakerStatusType.FEILREGISTRERT &&
-        pamelding.vedtaksinformasjon ? (
+        {pamelding.status.type === DeltakerStatusType.FEILREGISTRERT ? (
           <FeilregistrertInfo
             className="w-full"
             dialogUrl={DIALOG_URL}
             tiltakOgStedTekst={tiltakOgStedTekst}
-            meldtPaDato={pamelding.vedtaksinformasjon.fattet}
+            meldtPaDato={pamelding.vedtaksinformasjon?.fattet}
             feilregistrertDato={pamelding.status.gyldigFra}
           />
         ) : (

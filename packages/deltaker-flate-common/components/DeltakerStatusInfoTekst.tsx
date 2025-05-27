@@ -27,7 +27,9 @@ export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
     status === DeltakerStatusType.IKKE_AKTUELL ||
     status === DeltakerStatusType.VURDERES ||
     status === DeltakerStatusType.VENTELISTE ||
-    status === DeltakerStatusType.SOKT_INN
+    status === DeltakerStatusType.SOKT_INN ||
+    status === DeltakerStatusType.FULLFORT ||
+    status === DeltakerStatusType.AVBRUTT
   )
 }
 
@@ -52,6 +54,9 @@ const getInfoTekst = (
       return `Du er søkt inn på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.VENTELISTE:
       return `Du er satt på venteliste for arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.FULLFORT:
+    case DeltakerStatusType.AVBRUTT:
+      return `Du deltok på ${tiltakOgStedTekst}.`
   }
 }
 
