@@ -27,13 +27,13 @@
     "@navikt/ds-tailwind": "^7.22.0",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.8.4",
+    "msw": "^2.8.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
     "react-router-dom": "^7.6.1",
     "uuid": "^11.1.0",
-    "zod": "^3.25.28"
+    "zod": "^3.25.32"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -44,8 +44,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^22.15.21",
-    "@types/react": "^19.1.5",
+    "@types/node": "^22.15.23",
+    "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
