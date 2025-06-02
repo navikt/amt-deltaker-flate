@@ -7,6 +7,7 @@ import { useAppContext } from './context-providers/AppContext.tsx'
 import { AppRoutes } from './Routes.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
 import { HandlingContextProvider } from './context-providers/HandlingContext.tsx'
+import { SorteringContextProvider } from './context-providers/SorteringContext.tsx'
 
 dayjs.locale(nb)
 
@@ -19,9 +20,11 @@ export const App = () => {
       {useMock && <DemoBanner />}
 
       <HandlingContextProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <SorteringContextProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SorteringContextProvider>
       </HandlingContextProvider>
     </>
   )

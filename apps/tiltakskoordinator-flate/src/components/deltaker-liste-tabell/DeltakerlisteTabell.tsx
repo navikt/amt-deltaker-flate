@@ -18,11 +18,17 @@ import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
 import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
+import { HandlingModalController } from '../handling/HandlingModalController.tsx'
 import { Vurdering } from '../Vurdering.tsx'
+import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
-import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
-import { HandlingModalController } from '../handling/HandlingModalController.tsx'
+import {
+  ScopedSortState,
+  SortKey,
+  useDeltakerSortering
+} from '../../hooks/useDeltakerSortering.tsx'
+import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -33,6 +39,13 @@ export const DeltakerlisteTabell = () => {
 
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
+
+  const { lagretSorteringsValg, setLagretSorteringsValg } =
+    useSorteringContext()
+  const { sort, handleSort, sorterteDeltagere } = useDeltakerSortering(
+    deltakere,
+    lagretSorteringsValg
+  )
 
   useEffect(() => {
     if (handlingValg === handlingValgRef.current) {
@@ -89,7 +102,16 @@ export const DeltakerlisteTabell = () => {
         </Alert>
       )}
 
-      <Table className="w-fit h-fit">
+      <Table
+        className="w-fit h-fit"
+        sort={sort}
+        onSortChange={(sortKey) => {
+          handleSort(
+            sortKey as ScopedSortState['orderBy'],
+            setLagretSorteringsValg
+          )
+        }}
+      >
         <Table.Header>
           <Table.Row>
             {erBatchHandling && (
@@ -105,17 +127,23 @@ export const DeltakerlisteTabell = () => {
             {handlingValg === HandlingValg.GI_AVSLAG && (
               <Table.DataCell></Table.DataCell>
             )}
-            <TableHeaderCell label="Navn" />
-            <TableHeaderCell label="Nav-enhet" />
-            <TableHeaderCell label="Status deltakelse" />
+            <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
+            <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
+            <TableHeaderCell
+              label="Status deltakelse"
+              sortKey={SortKey.STATUS}
+            />
             {skalViseVurderinger && (
-              <TableHeaderCell label="Vurdering, arrangør" />
+              <TableHeaderCell
+                label="Vurdering, arrangør"
+                sortKey={SortKey.VURDERING}
+              />
             )}
           </Table.Row>
         </Table.Header>
 
         <Table.Body className="">
-          {deltakere.map((deltaker) => {
+          {sorterteDeltagere.map((deltaker) => {
             const disabled = !kanVelges(handlingValg, deltaker)
             const navn = lagDeltakerNavn(
               deltaker.fornavn,
@@ -220,13 +248,19 @@ export const DeltakerlisteTabell = () => {
 
 interface TableHeaderCellProps {
   label: string
+  sortKey: SortKey
 }
 
-const TableHeaderCell = ({ label }: TableHeaderCellProps) => {
+const TableHeaderCell = ({ label, sortKey }: TableHeaderCellProps) => {
   return (
-    <Table.HeaderCell scope="col" className="pl-4 pr-4">
+    <Table.ColumnHeader
+      scope="col"
+      className="pl-4 pr-4"
+      sortKey={sortKey}
+      sortable
+    >
       <Label size="medium">{label}</Label>
-    </Table.HeaderCell>
+    </Table.ColumnHeader>
   )
 }
 
