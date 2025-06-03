@@ -26,12 +26,12 @@
     "@navikt/ds-tailwind": "^7.22.0",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.8.7",
+    "msw": "^2.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.1",
     "uuid": "^11.1.0",
-    "zod": "^3.25.46"
+    "zod": "^3.25.49"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -54,7 +54,7 @@
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.0"
   },
   "msw": {
     "workerDirectory": [
