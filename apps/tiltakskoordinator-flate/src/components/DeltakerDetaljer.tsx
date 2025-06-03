@@ -24,7 +24,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
   const visVurdering = deltaker.tiltakskode !== Tiltakskode.JOBBKLUBB
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col mb-4">
       <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)]">
         <Detail title="Status">
           <DeltakerStatusTag statusType={deltaker.status.type} />
@@ -64,12 +64,14 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         </Detail>
       </div>
 
-      <SeEndringer
-        className="w-fit"
-        deltakerId={deltaker.id}
-        tiltakstype={mapTiltakskodeTilArenaTiltakskode(deltaker.tiltakskode)}
-        fetchHistorikk={getDeltakerHistorikk}
-      />
+      {deltaker.tilgangTilBruker && (
+        <SeEndringer
+          className="mt-8 w-fit"
+          deltakerId={deltaker.id}
+          tiltakstype={mapTiltakskodeTilArenaTiltakskode(deltaker.tiltakskode)}
+          fetchHistorikk={getDeltakerHistorikk}
+        />
+      )}
     </div>
   )
 }
