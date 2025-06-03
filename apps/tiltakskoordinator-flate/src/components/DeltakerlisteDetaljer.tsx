@@ -39,16 +39,6 @@ export const DeltakerlisteDetaljer = () => {
           </List.Item>
         ))}
       </List>
-      <div className="mt-6">
-        <BodyLong size="small">
-          For å se vurderinger og endringsmeldinger må du foreløpig bruke den
-          gamle oversikten.
-        </BodyLong>
-        <Link href={endringsmeldingerLenke} className="mt-3">
-          Se endringsmeldinger
-          <ExternalLinkIcon fontSize="1.5rem" aria-hidden />
-        </Link>
-      </div>
     </div>
   )
 }
