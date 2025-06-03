@@ -1,1 +1,0 @@
-export const TILTAKSANSVARLIG_URL = import.meta.env.VITE_TILTAKSANSVARLIG_URL
