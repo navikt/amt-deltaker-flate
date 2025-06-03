@@ -5,7 +5,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   ArenaTiltakskode,
   DeltakerStatusAarsakType,
-  Oppstartstype
+  Oppstartstype,
+  Tiltakskode
 } from '../model/deltaker'
 
 dayjs.locale(nb)
@@ -190,5 +191,28 @@ export const getDeltakerStatusAarsakTypeText = (
       return 'Kurset er fullt'
     case DeltakerStatusAarsakType.KRAV_IKKE_OPPFYLT:
       return 'Krav for deltakelse er ikke oppfylt'
+  }
+}
+
+export const mapTiltakskodeTilArenaTiltakskode = (tiltaksKode: Tiltakskode) => {
+  switch (tiltaksKode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
+      return ArenaTiltakskode.ARBFORB
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
+      return ArenaTiltakskode.ARBRRHDAG
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
+      return ArenaTiltakskode.DIGIOPPARB
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+      return ArenaTiltakskode.GRUPPEAMO
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+      return ArenaTiltakskode.GRUFAGYRKE
+    case Tiltakskode.JOBBKLUBB:
+      return ArenaTiltakskode.JOBBK
+    case Tiltakskode.OPPFOLGING:
+      return ArenaTiltakskode.INDOPPFAG
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+      return ArenaTiltakskode.VASV
+    case Tiltakskode.AVKLARING:
+      return ArenaTiltakskode.AVKLARAG
   }
 }

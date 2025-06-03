@@ -1,4 +1,9 @@
-import { DeltakerStatusAarsak, logError } from 'deltaker-flate-common'
+import {
+  DeltakerHistorikkListe,
+  deltakerHistorikkListeSchema,
+  DeltakerStatusAarsak,
+  logError
+} from 'deltaker-flate-common'
 import { API_URL } from '../utils/environment-utils'
 import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 import {
@@ -139,6 +144,43 @@ export const getDeltaker = async (
 
         throw new Error(
           'Kunne ikke laste inn detaljer om deltaker. Prøv igjen senere'
+        )
+      }
+    })
+}
+
+export const getDeltakerHistorikk = async (
+  deltakerId: string
+): Promise<DeltakerHistorikkListe> => {
+  return fetch(
+    `${API_URL}/tiltakskoordinator/deltaker/${deltakerId}/historikk`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Nav-Consumer-Id': APP_NAME
+      }
+    }
+  )
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Deltaker historikk kunne ikke hentes.'
+        handleError(message, null, response.status, deltakerId)
+      }
+      return response.json()
+    })
+    .then((json: string) => {
+      try {
+        return deltakerHistorikkListeSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse deltakerHistorikkListeSchema:', error)
+        if (error instanceof ZodError) {
+          logError('Issue', error.issues)
+        }
+        throw new Error(
+          'Kunne ikke laste inn endringene for deltakelsen. Prøv igjen senere.'
         )
       }
     })

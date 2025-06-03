@@ -1,12 +1,16 @@
+import {
+  DeltakerStatusAarsak,
+  DeltakerStatusType,
+  lagHistorikkFellesOppstart
+} from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
+import { DeltakerDetaljer } from '../api/data/deltaker.ts'
 import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
   mapDeltakerDeltaljerToDeltaker
 } from './mockData.tsx'
-import { DeltakerDetaljer } from '../api/data/deltaker.ts'
-import { DeltakerStatusAarsak, DeltakerStatusType } from 'deltaker-flate-common'
 
 export class MockHandler {
   tilgang = true
@@ -56,6 +60,10 @@ export class MockHandler {
       (deltaker) => deltaker.id === deltakerId
     )
     return HttpResponse.json(deltaker)
+  }
+
+  getHistorikk() {
+    return HttpResponse.json(lagHistorikkFellesOppstart())
   }
 
   leggTilTilgang() {

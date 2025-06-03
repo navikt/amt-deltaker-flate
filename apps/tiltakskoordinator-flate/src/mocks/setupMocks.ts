@@ -85,5 +85,12 @@ export const worker = setupWorker(
       [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
     }
     return HttpResponse.json(toggles)
-  })
+  }),
+  http.get(
+    '/amt-deltaker-bff/tiltakskoordinator/deltaker/:deltakerId/historikk',
+    async () => {
+      await delay(1000)
+      return handler.getHistorikk()
+    }
+  )
 )
