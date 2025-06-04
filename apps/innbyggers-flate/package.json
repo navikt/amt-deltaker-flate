@@ -29,14 +29,14 @@
     "deltaker-flate-common": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.1",
+    "react-router-dom": "^7.6.2",
     "uuid": "^11.1.0",
-    "zod": "^3.25.46"
+    "zod": "^3.25.50"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@axe-core/playwright": "^4.10.1",
+    "@axe-core/playwright": "^4.10.2",
     "@playwright/test": "^1.52.0",
     "@tailwindcss/vite": "^4.1.8",
     "@testing-library/jest-dom": "^6.6.3",
@@ -47,13 +47,13 @@
     "@types/react-dom": "^19.1.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
-    "@vitejs/plugin-react": "^4.5.0",
-    "msw": "^2.8.7",
+    "@vitejs/plugin-react": "^4.5.1",
+    "msw": "^2.9.0",
     "playwright": "^1.52.0",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.1"
   },
   "msw": {
     "workerDirectory": [
