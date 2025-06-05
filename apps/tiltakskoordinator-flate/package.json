@@ -31,7 +31,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "uuid": "^11.1.0",
-    "zod": "^3.25.50"
+    "zod": "^3.25.51"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -45,7 +45,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
+    "@types/react-dom": "^19.1.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^3.10.1",
