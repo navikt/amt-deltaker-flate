@@ -12,8 +12,14 @@ import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext.tsx'
+import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
+import {
+  ScopedSortState,
+  SortKey,
+  useDeltakerSortering
+} from '../../hooks/useDeltakerSortering.tsx'
 import { getDeltakerUrl } from '../../navigation.ts'
-import { lagDeltakerNavn } from '../../utils/utils.ts'
+import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
@@ -23,12 +29,6 @@ import { Vurdering } from '../Vurdering.tsx'
 import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
-import {
-  ScopedSortState,
-  SortKey,
-  useDeltakerSortering
-} from '../../hooks/useDeltakerSortering.tsx'
-import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -145,7 +145,7 @@ export const DeltakerlisteTabell = () => {
         <Table.Body className="">
           {sorterteDeltagere.map((deltaker) => {
             const disabled = !kanVelges(handlingValg, deltaker)
-            const navn = lagDeltakerNavn(
+            const navn = lagDeltakerNavnEtternavnForst(
               deltaker.fornavn,
               deltaker.mellomnavn,
               deltaker.etternavn

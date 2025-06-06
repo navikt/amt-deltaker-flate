@@ -7,7 +7,7 @@ export interface ScopedSortState extends SortState {
 }
 
 export enum SortKey {
-  NAVN = 'fornavn',
+  NAVN = 'etternavn',
   NAV_ENHET = 'navEnhet',
   STATUS = 'status',
   VURDERING = 'vurdering'
