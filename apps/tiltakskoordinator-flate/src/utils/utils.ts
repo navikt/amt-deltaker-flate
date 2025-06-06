@@ -8,6 +8,16 @@ export const lagDeltakerNavn = (
   return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
 }
 
+export const lagDeltakerNavnEtternavnForst = (
+  fornavn: string,
+  mellomnavn: string | null,
+  etternavn: string
+): string => {
+  return [`${etternavn}${etternavn.length > 0 ? ',' : ''}`, fornavn, mellomnavn]
+    .filter(Boolean)
+    .join(' ')
+}
+
 export function lagDeltakerNavn2(deltaker: Deltaker) {
   return [deltaker.fornavn, deltaker.mellomnavn, deltaker.etternavn]
     .filter(Boolean)
