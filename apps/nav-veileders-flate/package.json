@@ -20,20 +20,20 @@
   },
   "dependencies": {
     "@grafana/faro-web-sdk": "^1.18.2",
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.1.0",
     "@navikt/aksel-icons": "^7.22.0",
     "@navikt/ds-css": "^7.22.0",
     "@navikt/ds-react": "^7.22.0",
     "@navikt/ds-tailwind": "^7.22.0",
     "dayjs": "^1.11.13",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.9.0",
+    "msw": "^2.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
     "react-router-dom": "^7.6.2",
     "uuid": "^11.1.0",
-    "zod": "^3.25.53"
+    "zod": "^3.25.56"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
