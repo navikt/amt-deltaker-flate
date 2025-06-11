@@ -31,13 +31,13 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "uuid": "^11.1.0",
-    "zod": "^3.25.56"
+    "zod": "^3.25.58"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@axe-core/playwright": "^4.10.2",
-    "@playwright/test": "^1.52.0",
+    "@playwright/test": "^1.53.0",
     "@tailwindcss/vite": "^4.1.8",
     "@faker-js/faker": "^9.8.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -48,9 +48,9 @@
     "@types/react-dom": "^19.1.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
-    "@vitejs/plugin-react-swc": "^3.10.1",
+    "@vitejs/plugin-react-swc": "^3.10.2",
     "jsdom": "^26.1.0",
-    "playwright": "^1.52.0",
+    "playwright": "^1.53.0",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
