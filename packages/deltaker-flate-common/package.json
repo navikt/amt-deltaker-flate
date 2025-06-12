@@ -19,12 +19,12 @@
     "react": "^19.1.0",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "zod": "^3.25.56"
+    "zod": "^3.25.62"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@types/react": "^19.1.7",
+    "@types/react": "^19.1.8",
     "@types/uuid": "^10.0.0",
     "vitest": "^3.2.3"
   }
