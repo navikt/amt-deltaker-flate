@@ -1,4 +1,9 @@
-import { BodyShort, ConfirmationPanel, DateValidationT } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  ConfirmationPanel,
+  DateValidationT
+} from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
   DeltakerStatusType,
@@ -22,6 +27,7 @@ import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
+  Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
@@ -33,7 +39,10 @@ import {
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import {
+  kanLeggeTilOppstartsdato,
+  validerDeltakerKanEndres
+} from '../../../utils/endreDeltakelse.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -60,6 +69,12 @@ export const EndreOppstartsdatoModal = ({
       pamelding.deltakerliste.tiltakstype
     )
   )
+  const [leggTilStartDatoBekreftelse, setLeggTilStartDatoBekreftelse] =
+    useState(false)
+  const [
+    errorLeggTilStartDatoBekreftelse,
+    setErrorLeggTilStartDatoBekreftelse
+  ] = useState<string | null>(null)
   const [errorStartdato, setErrorStartDato] = useState<string | null>(null)
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
@@ -81,10 +96,13 @@ export const EndreOppstartsdatoModal = ({
     startdato: startdato
   })
 
+  const erLeggTilOppstartsdato = kanLeggeTilOppstartsdato(pamelding)
+
   const skalHaBegrunnelse =
-    !forslag ||
-    defaultDatoer.startdato?.getTime() !== startdato?.getTime() ||
-    defaultDatoer.sluttdato?.getTime() !== sluttdato.sluttdato?.getTime()
+    (!forslag ||
+      defaultDatoer.startdato?.getTime() !== startdato?.getTime() ||
+      defaultDatoer.sluttdato?.getTime() !== sluttdato.sluttdato?.getTime()) &&
+    !erLeggTilOppstartsdato
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
@@ -126,6 +144,13 @@ export const EndreOppstartsdatoModal = ({
     }
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
+      hasError = true
+    }
+
+    if (erLeggTilOppstartsdato && !leggTilStartDatoBekreftelse) {
+      setErrorLeggTilStartDatoBekreftelse(
+        Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING
+      )
       hasError = true
     }
 
@@ -230,12 +255,37 @@ export const EndreOppstartsdatoModal = ({
           )}
         </>
       )}
-      <BegrunnelseInput
-        type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
-        onChange={begrunnelse.handleChange}
-        error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
-      />
+      {erLeggTilOppstartsdato && (
+        <ConfirmationPanel
+          className="mt-6"
+          checked={leggTilStartDatoBekreftelse}
+          label="Ja, oppstartsdato er avtalt med arrangøren."
+          onChange={() => {
+            setLeggTilStartDatoBekreftelse((x) => !x)
+            setErrorLeggTilStartDatoBekreftelse(null)
+          }}
+          size="small"
+          error={errorLeggTilStartDatoBekreftelse}
+        >
+          <BodyLong>
+            Startdato må være avtalt med arrangøren og deltakeren<br></br>
+            <br></br>
+            Som hovedregel er det arrangøren som legger til oppstartsdato i
+            Deltakeroversikten. Før du endrer så må du ha avklart med arrangøren
+            at deltaker skal starte på denne datoen. <br></br>
+            <br></br>
+            Er oppstartsdato avtalt med arrangøren?
+          </BodyLong>
+        </ConfirmationPanel>
+      )}
+      {!erLeggTilOppstartsdato && (
+        <BegrunnelseInput
+          type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
+          onChange={begrunnelse.handleChange}
+          error={begrunnelse.error}
+          disabled={!pamelding.erUnderOppfolging}
+        />
+      )}
     </Endringsmodal>
   )
 }
