@@ -112,7 +112,8 @@ const skalViseEndreOppstartsdato = (
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
     pamelding.startdato &&
     pamelding.startdato !== EMDASH) ||
-  harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden)
+  harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden) ||
+  kanLeggeTilOppstartsdato(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
   pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
@@ -190,4 +191,16 @@ export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
       )
     }
   }
+}
+
+export const kanLeggeTilOppstartsdato = (pamelding: PameldingResponse) => {
+  // Noen arrangører bruker ikke deltakerlisten,
+  // derfor må Nav-veileder kunne legge til / endre oppstartsdato
+  return (
+    (pamelding.startdato === null || pamelding.startdato === EMDASH) &&
+    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
+    [ArenaTiltakskode.GRUFAGYRKE, ArenaTiltakskode.GRUPPEAMO].includes(
+      pamelding.deltakerliste.tiltakstype
+    )
+  )
 }
