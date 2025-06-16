@@ -114,4 +114,5 @@ export const EndreSluttarsakModal = ({
 
 const harStatusSomKanEndreSluttarsak = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.HAR_SLUTTET ||
-  statusType === DeltakerStatusType.IKKE_AKTUELL
+  statusType === DeltakerStatusType.IKKE_AKTUELL ||
+  statusType === DeltakerStatusType.AVBRUTT
