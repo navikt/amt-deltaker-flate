@@ -1,7 +1,7 @@
 import { Alert, ExpansionCard, List } from '@navikt/ds-react'
 import { Deltaker } from '../../api/data/deltakerliste'
 import { HandlingValg } from '../../context-providers/HandlingContext'
-import { lagDeltakerNavnEtternavnForst } from '../../utils/utils'
+import { lagDeltakerNavn } from '../../utils/utils'
 
 interface Props {
   valgteDeltakere: Deltaker[]
@@ -31,13 +31,7 @@ export function ValgteDeltakereBox(props: Props) {
       <ExpansionCard.Content>
         <List className="-mt-4 -mb-4">
           {props.valgteDeltakere.map((deltaker) => (
-            <List.Item key={deltaker.id}>
-              {lagDeltakerNavnEtternavnForst(
-                deltaker.fornavn,
-                deltaker.mellomnavn,
-                deltaker.etternavn
-              )}
-            </List.Item>
+            <List.Item key={deltaker.id}>{lagDeltakerNavn(deltaker)}</List.Item>
           ))}
         </List>
       </ExpansionCard.Content>

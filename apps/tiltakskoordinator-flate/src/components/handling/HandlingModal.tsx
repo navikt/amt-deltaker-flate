@@ -1,9 +1,10 @@
 import { Alert, Button, Modal } from '@navikt/ds-react'
+import { useState } from 'react'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { useState } from 'react'
+import { listDeltakerNavn } from '../../utils/utils'
 import { ValgteDeltakereBox } from './ValgteDeltakereBox'
 
 interface Props {
@@ -34,6 +35,12 @@ export const HandlingModal = ({
     return null
   }
 
+  const ikkeDigitaleDeltakereUtenAdresse = valgteDeltakere.filter(
+    (deltaker) => {
+      return !deltaker.digitalBruker && !deltaker.harAdresse
+    }
+  )
+
   return (
     <Modal
       open={open}
@@ -48,6 +55,16 @@ export const HandlingModal = ({
             valgteDeltakere={valgteDeltakere}
             handlingValg={handlingValg}
           />
+        )}
+
+        {ikkeDigitaleDeltakereUtenAdresse.length > 0 && (
+          <Alert variant="warning" size="small" className="mt-4">
+            {listDeltakerNavn(ikkeDigitaleDeltakereUtenAdresse)} er reservert
+            mot digital kommunikasjon, og har heller ingen registrert
+            kontaktadresse. De vil derfor ikke motta et varsel om vedtaket.
+            Vedtaket som journalføres i Gosys må skrives ut og leveres til
+            deltaker på annen måte.
+          </Alert>
         )}
 
         {error && (

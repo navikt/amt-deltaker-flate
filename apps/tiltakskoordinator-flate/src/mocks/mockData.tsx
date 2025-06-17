@@ -1,22 +1,22 @@
+import { faker } from '@faker-js/faker/locale/nb_NO'
+import dayjs from 'dayjs'
 import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   Tiltakskode
 } from 'deltaker-flate-common'
-import {
-  Beskyttelsesmarkering,
-  Deltaker,
-  DeltakerlisteDetaljer,
-  Vurderingstype
-} from '../api/data/deltakerliste'
-import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 import {
   DeltakerDetaljer,
   InnsatsbehovType,
   Vurdering
 } from '../api/data/deltaker.ts'
-import { faker } from '@faker-js/faker/locale/nb_NO'
+import {
+  Beskyttelsesmarkering,
+  Deltaker,
+  DeltakerlisteDetaljer,
+  Vurderingstype
+} from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
 
 export const mapDeltakerDeltaljerToDeltaker = (
@@ -25,7 +25,9 @@ export const mapDeltakerDeltaljerToDeltaker = (
   return {
     ...deltakerDetaljer,
     vurdering: deltakerDetaljer.vurdering?.type ?? null,
-    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering
+    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
+    digitalBruker: true,
+    harAdresse: !erAdresseBeskyttet(deltakerDetaljer.beskyttelsesmarkering)
   }
 }
 
