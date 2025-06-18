@@ -5,7 +5,11 @@ import {
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { DeltakerDetaljer } from '../api/data/deltaker.ts'
-import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste.ts'
+import {
+  Deltakere,
+  DeltakerlisteDetaljer,
+  Feilkode
+} from '../api/data/deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
@@ -107,8 +111,14 @@ export class MockHandler {
   settPaVenteliste(delteDeltakerIder: string[]) {
     const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
-        deltaker.status.type = DeltakerStatusType.VENTELISTE
         deltaker.status.aarsak = null
+        deltaker.feilkode = [Feilkode.MIDLERTIDIG_FEIL, null][
+          ~~(Math.random() * 2)
+        ]
+        deltaker.status.type =
+          deltaker.feilkode !== null
+            ? DeltakerStatusType.VENTELISTE
+            : deltaker.status.type
       }
       return deltaker
     })

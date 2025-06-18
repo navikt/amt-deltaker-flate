@@ -27,6 +27,12 @@ export enum Vurderingstype {
   OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
 }
 
+export enum Feilkode {
+  UGYLDIG_STATE = 'UGYLDIG_STATE',
+  MIDLERTIDIG_FEIL = 'MIDLERTIDIG_FEIL',
+  UKJENT = 'UKJENT'
+}
+
 export const deltakerSchema = z.object({
   id: z.string().uuid(),
   fornavn: z.string(),
@@ -36,7 +42,8 @@ export const deltakerSchema = z.object({
   vurdering: z.nativeEnum(Vurderingstype).nullable(),
   beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
   navEnhet: z.string().nullable(),
-  erManueltDeltMedArrangor: z.boolean()
+  erManueltDeltMedArrangor: z.boolean(),
+  feilkode: z.nativeEnum(Feilkode).nullable().optional()
 })
 
 export const deltakereSchema = z.array(deltakerSchema)

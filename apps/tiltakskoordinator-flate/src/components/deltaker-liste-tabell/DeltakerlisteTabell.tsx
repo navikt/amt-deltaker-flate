@@ -12,12 +12,6 @@ import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext.tsx'
-import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
-import {
-  ScopedSortState,
-  SortKey,
-  useDeltakerSortering
-} from '../../hooks/useDeltakerSortering.tsx'
 import { getDeltakerUrl } from '../../navigation.ts'
 import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
@@ -29,6 +23,13 @@ import { Vurdering } from '../Vurdering.tsx'
 import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
+import {
+  ScopedSortState,
+  SortKey,
+  useDeltakerSortering
+} from '../../hooks/useDeltakerSortering.tsx'
+import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
+import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFeilAlert.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -228,6 +229,7 @@ export const DeltakerlisteTabell = () => {
         </Table.Body>
       </Table>
 
+      <HandlingFullfortMedFeilAlert />
       <HandlingFullfortAlert />
 
       {handlingValg && (

@@ -15,6 +15,8 @@ export interface HandlingContextProps {
   setValgteDeltakere: React.Dispatch<React.SetStateAction<Deltaker[]>>
   handlingUtfortText: string | null
   setHandlingUtfortText: React.Dispatch<React.SetStateAction<string | null>>
+  handlingFeiletText: string | null
+  setHandlingFeiletText: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const HandlingContext = createContext<HandlingContextProps | undefined>(
@@ -43,6 +45,9 @@ const HandlingContextProvider = ({
   const [handlingUtfortText, setHandlingUtfortText] = useState<string | null>(
     null
   )
+  const [handlingFeiletText, setHandlingFeiletText] = useState<string | null>(
+    null
+  )
 
   const contextValue: HandlingContextProps = {
     handlingValg,
@@ -50,7 +55,9 @@ const HandlingContextProvider = ({
     handlingUtfortText,
     setHandlingValg,
     setValgteDeltakere,
-    setHandlingUtfortText
+    setHandlingUtfortText,
+    handlingFeiletText,
+    setHandlingFeiletText
   }
 
   return (

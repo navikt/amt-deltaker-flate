@@ -2,9 +2,13 @@ import { BodyShort } from '@navikt/ds-react'
 import { useState } from 'react'
 import { settDeltakerePaVenteliste } from '../../api/api'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
-import { useHandlingContext } from '../../context-providers/HandlingContext'
+import {
+  HandlingValg,
+  useHandlingContext
+} from '../../context-providers/HandlingContext'
 import { HandlingModal } from './HandlingModal'
-import { getDeltakereOppdatert } from '../../utils/utils'
+import { getDeltakereOppdatert } from '../../utils/utils.ts'
+import { lagInfoTekst } from './text-utils.ts'
 
 interface Props {
   open: boolean
@@ -14,8 +18,12 @@ interface Props {
 
 export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
   const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
-  const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
-    useHandlingContext()
+  const {
+    valgteDeltakere,
+    handlingValg,
+    setHandlingUtfortText,
+    setHandlingFeiletText
+  } = useHandlingContext()
 
   const [error, setError] = useState<string | null>(null)
 
@@ -23,21 +31,32 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
     return null
   }
 
+  const onModalClose = () => {
+    onClose()
+    setError(null)
+  }
+
   const utforHandling = (): Promise<void> => {
     return settDeltakerePaVenteliste(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
-      .then((oppdaterteDeltakere) => {
-        setDeltakere((deltakere) =>
-          getDeltakereOppdatert(deltakere, oppdaterteDeltakere)
+      .then((deltakereResult) => {
+        const feiledeDeltakere = deltakereResult.filter(
+          (deltaker) => deltaker.feilkode !== null
         )
-        setError(null)
+        setDeltakere((deltakere) =>
+          getDeltakereOppdatert(deltakere, deltakereResult)
+        )
         onSend()
 
-        setHandlingUtfortText(
-          `${valgteDeltakere.length} deltaker${valgteDeltakere.length === 1 ? '' : 'e'} ble satt på venteliste.`
+        const infoTekst = lagInfoTekst(
+          deltakereResult,
+          HandlingValg.SETT_PA_VENTELISTE
         )
+        if (feiledeDeltakere.length > 0) {
+          setHandlingFeiletText(infoTekst)
+        } else setHandlingUtfortText(infoTekst)
       })
       .catch(() => {
         setError('Kunne ikke sette på venteliste. Vennligst prøv igjen.')
@@ -47,7 +66,7 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
   return (
     <HandlingModal
       open={open}
-      onClose={onClose}
+      onClose={onModalClose}
       onUtforHandling={utforHandling}
       error={error}
     >
