@@ -37,7 +37,7 @@ export const HandlingModal = ({
 
   const ikkeDigitaleDeltakereUtenAdresse = valgteDeltakere.filter(
     (deltaker) => {
-      return !deltaker.digitalBruker && !deltaker.harAdresse
+      return deltaker.ikkeDigitalOgManglerAdresse
     }
   )
 

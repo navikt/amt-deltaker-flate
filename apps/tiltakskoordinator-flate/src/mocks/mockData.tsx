@@ -26,8 +26,7 @@ export const mapDeltakerDeltaljerToDeltaker = (
     ...deltakerDetaljer,
     vurdering: deltakerDetaljer.vurdering?.type ?? null,
     erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
-    digitalBruker: true,
-    harAdresse: !erAdresseBeskyttet(deltakerDetaljer.beskyttelsesmarkering)
+    ikkeDigitalOgManglerAdresse: true
   }
 }
 

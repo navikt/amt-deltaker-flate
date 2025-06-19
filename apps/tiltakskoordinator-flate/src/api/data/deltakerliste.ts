@@ -44,8 +44,7 @@ export const deltakerSchema = z.object({
   navEnhet: z.string().nullable(),
   erManueltDeltMedArrangor: z.boolean(),
   feilkode: z.nativeEnum(Feilkode).nullable().optional(),
-  digitalBruker: z.boolean(),
-  harAdresse: z.boolean()
+  ikkeDigitalOgManglerAdresse: z.boolean()
 })
 
 export const deltakereSchema = z.array(deltakerSchema)
