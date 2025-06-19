@@ -146,11 +146,7 @@ export const DeltakerlisteTabell = () => {
         <Table.Body className="">
           {sorterteDeltagere.map((deltaker) => {
             const disabled = !kanVelges(handlingValg, deltaker)
-            const navn = lagDeltakerNavnEtternavnForst(
-              deltaker.fornavn,
-              deltaker.mellomnavn,
-              deltaker.etternavn
-            )
+            const navn = lagDeltakerNavnEtternavnForst(deltaker)
             return (
               <Table.Row
                 key={`${deltaker.id}`}

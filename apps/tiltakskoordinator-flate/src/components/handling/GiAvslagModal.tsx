@@ -1,9 +1,4 @@
-import { useState } from 'react'
-import { HandlingModal } from './HandlingModal'
 import { Alert, BodyShort } from '@navikt/ds-react'
-import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
-import { useHandlingContext } from '../../context-providers/HandlingContext'
-import { lagDeltakerNavn2 } from '../../utils/utils'
 import {
   AarsakRadioGroup,
   avslagAarsaker,
@@ -11,8 +6,13 @@ import {
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
-import { Deltaker } from '../../api/data/deltakerliste'
+import { useState } from 'react'
 import { giAvslag } from '../../api/api'
+import { Deltaker } from '../../api/data/deltakerliste'
+import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
+import { useHandlingContext } from '../../context-providers/HandlingContext'
+import { lagDeltakerNavn } from '../../utils/utils'
+import { HandlingModal } from './HandlingModal'
 
 interface Props {
   open: boolean
@@ -62,7 +62,7 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
         setError(null)
         onSend()
 
-        setHandlingUtfortText(`${lagDeltakerNavn2(deltaker)} fikk avslag.`)
+        setHandlingUtfortText(`${lagDeltakerNavn(deltaker)} fikk avslag.`)
       })
       .catch(() => {
         setError('Kunne ikke gi avslag. Vennligst prøv igjen.')
@@ -77,7 +77,7 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
       error={error}
     >
       <BodyShort>
-        {`${lagDeltakerNavn2(deltaker)} settes som “Ikke aktuell” for ${deltakerlisteDetaljer.navn}.`}
+        {`${lagDeltakerNavn(deltaker)} settes som “Ikke aktuell” for ${deltakerlisteDetaljer.navn}.`}
       </BodyShort>
 
       <Alert variant="info" size="small" className="mt-5 mb-6">

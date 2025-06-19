@@ -17,11 +17,7 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
     <div className="pt-4 pb-4 border-t border-b border-[var(--a-border-divider)]">
       <div className="flex items-center flex-wrap gap-2 pl-10 pr-10">
         <Heading level="2" size="small">
-          {lagDeltakerNavn(
-            deltaker.fornavn,
-            deltaker.mellomnavn,
-            deltaker.etternavn
-          )}
+          {lagDeltakerNavn(deltaker)}
         </Heading>
 
         {deltaker.fodselsnummer && (

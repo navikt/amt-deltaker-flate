@@ -1,27 +1,29 @@
+import { DeltakerDetaljer } from '../api/data/deltaker'
 import { Beskyttelsesmarkering, Deltaker } from '../api/data/deltakerliste'
 
-export const lagDeltakerNavn = (
-  fornavn: string,
-  mellomnavn: string | null,
-  etternavn: string
-): string => {
-  return [fornavn, mellomnavn, etternavn].filter(Boolean).join(' ')
-}
-
 export const lagDeltakerNavnEtternavnForst = (
-  fornavn: string,
-  mellomnavn: string | null,
-  etternavn: string
+  deltaker: Deltaker | DeltakerDetaljer
 ): string => {
-  return [`${etternavn}${etternavn.length > 0 ? ',' : ''}`, fornavn, mellomnavn]
+  return [
+    `${deltaker.etternavn}${deltaker.etternavn.length > 0 ? ',' : ''}`,
+    deltaker.fornavn,
+    deltaker.mellomnavn
+  ]
     .filter(Boolean)
     .join(' ')
 }
 
-export function lagDeltakerNavn2(deltaker: Deltaker) {
+export function lagDeltakerNavn(deltaker: Deltaker | DeltakerDetaljer) {
   return [deltaker.fornavn, deltaker.mellomnavn, deltaker.etternavn]
     .filter(Boolean)
     .join(' ')
+}
+
+export const listDeltakerNavn = (deltakere: Deltaker[]): string => {
+  return deltakere
+    .map((deltaker) => lagDeltakerNavn(deltaker))
+    .join(', ')
+    .replace(/, ([^,]*)$/, ' og $1')
 }
 
 export const erAdresseBeskyttet = (
