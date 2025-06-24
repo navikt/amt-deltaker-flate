@@ -14,6 +14,7 @@ import {
   useHandlingContext
 } from '../../context-providers/HandlingContext'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
+import { useShadowDom } from '../../context-providers/ShadowDomContext'
 
 interface Props {
   onModalOpen: () => void
@@ -25,6 +26,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
   const { handlingValg, setHandlingValg, setValgteDeltakere } =
     useHandlingContext()
   const { erKometMasterForTiltak } = useFeatureToggles()
+  const { containerElement } = useShadowDom()
   const kometErMaster = erKometMasterForTiltak(
     deltakerlisteDetaljer.tiltakskode
   )
@@ -91,7 +93,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
       )}
 
       {handlingValg === null && (
-        <ActionMenu>
+        <ActionMenu rootElement={containerElement}>
           <ActionMenu.Trigger>
             <Button ref={handlingKnappRef} size="small">
               Handlinger
