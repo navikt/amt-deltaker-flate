@@ -43,13 +43,19 @@ export class Deltakerliste extends HTMLElement {
 
     // Load styles under this shadowDom-node, not root element
     const styleElem = document.createElement('style')
+    // Clean CSS for Shadow DOM - remove problematic @layer and @supports rules
+    const cleanedCss = appCss
+      .replace(/@layer[^{]*{/g, '') // Remove @layer openings
+      .replace(/@supports[^{]*{/g, '') // Remove @supports openings
+      .replace(/}$/g, '') // Remove trailing braces from removed blocks
+
     // eslint-disable-next-line no-console
-    console.log('CSS length:', appCss.length)
+    console.log('Original CSS length:', appCss.length)
     // eslint-disable-next-line no-console
-    console.log('CSS preview:', appCss.substring(0, 200))
+    console.log('Cleaned CSS length:', cleanedCss.length)
     // eslint-disable-next-line no-console
-    console.log('Contains rotate-45:', appCss.includes('rotate-45'))
-    styleElem.innerHTML = appCss
+    console.log('Contains rotate-45:', cleanedCss.includes('rotate-45'))
+    styleElem.innerHTML = cleanedCss
     shadowRoot.appendChild(styleElem)
     // eslint-disable-next-line no-console
     console.log('Style element added to shadow DOM')
