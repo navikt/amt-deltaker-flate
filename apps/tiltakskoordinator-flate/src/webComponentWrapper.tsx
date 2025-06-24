@@ -3,6 +3,7 @@ import { createRoot, Root } from 'react-dom/client'
 import appCss from './app.css?inline'
 import { App } from './App.tsx'
 import { AppContextProvider } from './context-providers/AppContext.tsx'
+import { ShadowDomContext } from './context-providers/ShadowDomContext.tsx'
 import {
   APPLICATION_NAME,
   APPLICATION_WEB_COMPONENT_NAME
@@ -51,11 +52,15 @@ export class Deltakerliste extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
-        <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
-          <App />
-        </AppContextProvider>
-      </div>
+      <ShadowDomContext.Provider
+        value={{ shadowRoot, containerElement: this.root }}
+      >
+        <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
+          <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
+            <App />
+          </AppContextProvider>
+        </div>
+      </ShadowDomContext.Provider>
     )
   }
 
