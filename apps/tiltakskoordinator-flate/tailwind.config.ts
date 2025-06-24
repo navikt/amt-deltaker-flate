@@ -1,2 +1,20 @@
-import config from '@amt-deltaker-flate/tailwind-config/tailwind.config'
+import type { Config } from 'tailwindcss'
+import generated from '@navikt/ds-tailwind'
+
+const config: Config = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    '../../packages/deltaker-flate-common/components/**/*.{js,ts,jsx,tsx}'
+  ],
+  presets: [generated],
+  theme: {
+    extend: {}
+  },
+  plugins: [],
+  // Ensure proper CSS output for Shadow DOM
+  corePlugins: {
+    preflight: false
+  }
+}
+
 export default config

@@ -43,8 +43,16 @@ export class Deltakerliste extends HTMLElement {
 
     // Load styles under this shadowDom-node, not root element
     const styleElem = document.createElement('style')
+    // eslint-disable-next-line no-console
+    console.log('CSS length:', appCss.length)
+    // eslint-disable-next-line no-console
+    console.log('CSS preview:', appCss.substring(0, 200))
+    // eslint-disable-next-line no-console
+    console.log('Contains rotate-45:', appCss.includes('rotate-45'))
     styleElem.innerHTML = appCss
     shadowRoot.appendChild(styleElem)
+    // eslint-disable-next-line no-console
+    console.log('Style element added to shadow DOM')
 
     const deltakerlisteId =
       this.getAttribute(Deltakerliste.DELTAKERLISTE_ID_PROP) ?? ''
