@@ -166,7 +166,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   <PlusCircleFillIcon
                     width="1.125rem"
                     height="1.125rem"
-                    style={{ rotate: '45deg' }}
+                    className="rotate-45"
                     aria-hidden
                     color="var(--a-orange-600)"
                   />
