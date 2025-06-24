@@ -53,6 +53,13 @@ export class Deltakerliste extends HTMLElement {
     shadowRoot.appendChild(styleElem)
     // eslint-disable-next-line no-console
     console.log('Style element added to shadow DOM')
+    // eslint-disable-next-line no-console
+    console.log(
+      'Style element CSS rules count:',
+      styleElem.sheet?.cssRules?.length
+    )
+    // eslint-disable-next-line no-console
+    console.log('Shadow DOM children:', shadowRoot.children.length)
 
     const deltakerlisteId =
       this.getAttribute(Deltakerliste.DELTAKERLISTE_ID_PROP) ?? ''
