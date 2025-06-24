@@ -67,6 +67,16 @@ export class Deltakerliste extends HTMLElement {
     // eslint-disable-next-line no-console
     console.log('Shadow DOM children:', shadowRoot.children.length)
 
+    // Check if rotate-45 rule is actually parsed
+    if (styleElem.sheet?.cssRules) {
+      const rules = Array.from(styleElem.sheet.cssRules)
+      const rotateRule = rules.find((rule) =>
+        rule.cssText?.includes('rotate-45')
+      )
+      // eslint-disable-next-line no-console
+      console.log('Found rotate-45 rule:', rotateRule?.cssText || 'NOT FOUND')
+    }
+
     const deltakerlisteId =
       this.getAttribute(Deltakerliste.DELTAKERLISTE_ID_PROP) ?? ''
 
