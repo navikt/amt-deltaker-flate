@@ -8,7 +8,7 @@ export const DeltakerlistePage = () => {
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">
-      <div className="flex flex-col max-w-[18rem] md:min-w-[15rem] mr-0 md:mr-8">
+      <div className="flex flex-col max-w-[20rem] md:max-w-[15rem] mr-0 md:mr-8">
         <h2 className="sr-only" tabIndex={-1} ref={ref}>
           Deltakerliste - detaljer
         </h2>
