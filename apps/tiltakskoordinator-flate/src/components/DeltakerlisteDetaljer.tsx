@@ -7,7 +7,7 @@ export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
 
   return (
-    <div className="md:w-1/5 w-full mt-14">
+    <div className="mt-14">
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}

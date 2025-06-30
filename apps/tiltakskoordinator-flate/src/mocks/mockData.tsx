@@ -1,8 +1,11 @@
 import { faker } from '@faker-js/faker/locale/nb_NO'
 import dayjs from 'dayjs'
 import {
+  createMockAktivtForslag,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
+  ForslagEndringAarsakType,
+  ForslagEndringType,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
@@ -26,7 +29,8 @@ export const mapDeltakerDeltaljerToDeltaker = (
     ...deltakerDetaljer,
     vurdering: deltakerDetaljer.vurdering?.type ?? null,
     erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
-    ikkeDigitalOgManglerAdresse: true
+    ikkeDigitalOgManglerAdresse: true,
+    harAktiveForslag: deltakerDetaljer.aktiveForslag.length > 0
   }
 }
 
@@ -66,7 +70,18 @@ export const createMockDeltaker = (
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    tilgangTilBruker: !adresseBeskyttet
+    tilgangTilBruker: !adresseBeskyttet,
+    aktiveForslag:
+      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+        ? [
+            createMockAktivtForslag({
+              type: ForslagEndringType.IkkeAktuell,
+              aarsak: {
+                type: ForslagEndringAarsakType.FattJobb
+              }
+            })
+          ]
+        : []
   }
 }
 const createStatus = (index: number) => {

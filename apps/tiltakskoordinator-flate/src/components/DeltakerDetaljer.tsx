@@ -11,6 +11,7 @@ import {
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
 import { Vurdering } from './Vurdering'
 import { getDeltakerHistorikk } from '../api/api'
+import { AktiveForslag } from './AktiveForslag'
 
 interface Props {
   deltaker: DeltakerDetaljerDomene | null
@@ -25,7 +26,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
 
   return (
     <div className="flex flex-col mb-4">
-      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)]">
+      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)] mb-4">
         <Detail title="Status">
           <DeltakerStatusTag statusType={deltaker.status.type} />
         </Detail>
@@ -64,9 +65,11 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         </Detail>
       </div>
 
+      <AktiveForslag forslag={deltaker.aktiveForslag} />
+
       {deltaker.tilgangTilBruker && (
         <SeEndringer
-          className="mt-8 w-fit"
+          className="mt-4 w-fit"
           deltakerId={deltaker.id}
           tiltakstype={mapTiltakskodeTilArenaTiltakskode(deltaker.tiltakskode)}
           fetchHistorikk={getDeltakerHistorikk}
