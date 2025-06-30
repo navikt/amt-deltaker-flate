@@ -161,3 +161,22 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     ]
   }
 }
+
+export const lagMockDeltaker = (): Deltaker => {
+  return {
+    id: uuidv4(),
+    fornavn: faker.person.firstName(),
+    mellomnavn: null,
+    etternavn: faker.person.lastName(),
+    status: {
+      type: DeltakerStatusType.SOKT_INN,
+      aarsak: null
+    },
+    vurdering: null,
+    beskyttelsesmarkering: [],
+    navEnhet: 'Nav Grünerløkka',
+    erManueltDeltMedArrangor: false,
+    ikkeDigitalOgManglerAdresse: false,
+    harAktiveForslag: false
+  }
+}
