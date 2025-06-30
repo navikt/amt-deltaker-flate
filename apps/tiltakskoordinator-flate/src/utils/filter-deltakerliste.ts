@@ -13,42 +13,48 @@ export const getFilterTypeNavn = (filterValg: FilterValg): string => {
   }
 }
 
-export type FilterValgDeltakere = {
+export const getFiltrerteDeltakere = (
+  delttakere: Deltakere,
+  filterValg: FilterValg[]
+): Deltakere => {
+  const valgteFilter = new Set(filterValg)
+  return delttakere.filter((deltaker) => {
+    let filterOk = true
+
+    valgteFilter.forEach((filterValg) => {
+      if (filterOk) {
+        switch (filterValg) {
+          case FilterValg.AktiveForslag:
+            filterOk = deltaker.harAktiveForslag
+            break
+        }
+      }
+    })
+
+    return filterOk
+  })
+}
+
+export type FilterDetaljer = {
   filtervalg: FilterValg
   valgt: boolean
   navn: string
-  filtrerteDeltakere: Deltakere
+  antall: number
 }
 
-export const getFilterMedDeltakere = (
+export const getFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: FilterValg[]
-): FilterValgDeltakere[] => {
+): FilterDetaljer[] => {
   return Object.values(FilterValg).map((filterValg) => {
     const erValgt = valgteFilter.includes(filterValg)
+
     return {
       filtervalg: filterValg,
       navn: getFilterTypeNavn(filterValg),
       valgt: erValgt,
-      filtrerteDeltakere: deltakere.filter((deltaker) => {
-        switch (filterValg) {
-          case FilterValg.AktiveForslag:
-            return deltaker.harAktiveForslag
-          default: // Ingen filter
-            return false
-        }
-      })
+      antall: getFiltrerteDeltakere(deltakere, valgteFilter.concat(filterValg))
+        .length
     }
   })
-}
-
-export const getFiltrerteDeltakere = (
-  filterMedDeltagere: FilterValgDeltakere[]
-): Deltakere => {
-  return filterMedDeltagere.reduce<Deltakere>((acc, filter) => {
-    if (filter.valgt) {
-      return [...acc, ...filter.filtrerteDeltakere]
-    }
-    return acc
-  }, [])
 }

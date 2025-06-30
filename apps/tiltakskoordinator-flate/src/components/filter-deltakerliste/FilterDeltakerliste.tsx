@@ -1,4 +1,5 @@
 import {
+  BodyShort,
   Checkbox,
   CheckboxGroup,
   ExpansionCard,
@@ -8,7 +9,7 @@ import { useMemo } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   FilterValg,
-  getFilterMedDeltakere,
+  getFilterDetaljer,
   getFiltrerteDeltakere
 } from '../../utils/filter-deltakerliste'
 import { useFilterContext } from '../../context-providers/FilterContext'
@@ -25,12 +26,13 @@ export const FilterDeltakerliste = ({ className }: Props) => {
     'deltaker-liste-filter-hendelser-open'
   )
 
-  const filterMedDeltakere = useMemo(() => {
-    const filter = getFilterMedDeltakere(deltakere, valgteFilter)
+  const filterDetaljer = useMemo(() => {
     setFiltrerteDeltakere(
-      valgteFilter.length > 0 ? getFiltrerteDeltakere(filter) : deltakere
+      valgteFilter.length > 0
+        ? getFiltrerteDeltakere(deltakere, valgteFilter)
+        : deltakere
     )
-    return filter
+    return getFilterDetaljer(deltakere, valgteFilter)
   }, [valgteFilter, deltakere])
 
   const handleChange = (nyValgteFilter: string[]) => {
@@ -61,15 +63,25 @@ export const FilterDeltakerliste = ({ className }: Props) => {
           </ExpansionCard.Title>
         </ExpansionCard.Header>
         <ExpansionCard.Content>
-          <CheckboxGroup legend="" onChange={handleChange} value={valgteFilter}>
-            {filterMedDeltakere.map((filter) => (
+          <CheckboxGroup
+            size="small"
+            legend=""
+            className="mt-[-0.5rem]"
+            onChange={handleChange}
+            value={valgteFilter}
+          >
+            {filterDetaljer.map((filter) => (
               <Checkbox
                 key={filter.filtervalg}
                 value={filter.filtervalg}
-                className="flex justify-between"
+                className="w-full [&_label_>_span]:w-full"
               >
-                <span>{filter.navn}</span>
-                <span className="ml-4">{filter.filtrerteDeltakere.length}</span>
+                <span className="flex justify-between gap-4 w-full">
+                  <span>{filter.navn}</span>
+                  <BodyShort as="span" weight="semibold">
+                    {filter.antall}
+                  </BodyShort>
+                </span>
               </Checkbox>
             ))}
           </CheckboxGroup>
