@@ -4,7 +4,7 @@ export enum FilterValg {
   AktiveForslag = 'AktiveForslag'
 }
 
-export const getFilterTypeNavn = (filterValg: FilterValg): string => {
+const getFilterTypeNavn = (filterValg: FilterValg): string => {
   switch (filterValg) {
     case FilterValg.AktiveForslag:
       return 'Forslag fra arrangør'
