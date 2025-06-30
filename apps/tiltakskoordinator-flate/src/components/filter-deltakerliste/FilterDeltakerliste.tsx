@@ -62,6 +62,7 @@ export const FilterDeltakerliste = ({ className }: Props) => {
             Hendelser
           </ExpansionCard.Title>
         </ExpansionCard.Header>
+
         <ExpansionCard.Content>
           <CheckboxGroup
             size="small"
