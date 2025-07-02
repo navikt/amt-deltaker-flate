@@ -32,7 +32,8 @@ import { useSorteringContext } from '../../context-providers/SorteringContext.ts
 import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFeilAlert.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const { filtrerteDeltakere, deltakerlisteDetaljer } =
+    useDeltakerlisteContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()
 
@@ -44,7 +45,7 @@ export const DeltakerlisteTabell = () => {
   const { lagretSorteringsValg, setLagretSorteringsValg } =
     useSorteringContext()
   const { sort, handleSort, sorterteDeltagere } = useDeltakerSortering(
-    deltakere,
+    filtrerteDeltakere,
     lagretSorteringsValg
   )
 
@@ -65,9 +66,9 @@ export const DeltakerlisteTabell = () => {
     deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
-  if (deltakere.length === 0) {
+  if (filtrerteDeltakere.length === 0) {
     return (
-      <Alert inline variant="info" size="small" className="h-fit">
+      <Alert inline variant="info" size="small" className="h-fit mt-8">
         Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere.
       </Alert>
     )
@@ -120,7 +121,7 @@ export const DeltakerlisteTabell = () => {
                 <MarkerAlleCheckbox
                   valgbareDeltakere={getValgbareDeltakere(
                     handlingValg,
-                    deltakere
+                    filtrerteDeltakere
                   )}
                 />
               </Table.DataCell>

@@ -16,6 +16,8 @@ import {
   TiltakskoordinatorEndringsType
 } from '../model/deltakerHistorikk'
 import {
+  Forslag,
+  ForslagEndring,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
@@ -25,6 +27,25 @@ import { INNHOLD_TYPE_ANNET } from './constants'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
+
+export const createMockAktivtForslag = (
+  endring: ForslagEndring,
+  begrunnelse?: string | null
+): Forslag => {
+  const b = begrunnelse === undefined ? 'Bgerunnelse' : begrunnelse
+
+  return {
+    type: HistorikkType.Forslag,
+    id: uuidv4(),
+    opprettet: dayjs().subtract(20, 'days').toDate(),
+    begrunnelse: b,
+    endring: endring,
+    arrangorNavn: 'Muligheter As',
+    status: {
+      type: ForslagStatusType.VenterPaSvar
+    }
+  }
+}
 
 export const createHistorikk = (): DeltakerHistorikkListe => {
   return [
