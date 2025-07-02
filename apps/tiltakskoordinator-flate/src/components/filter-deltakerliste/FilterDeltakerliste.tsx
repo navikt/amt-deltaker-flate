@@ -23,7 +23,8 @@ export const FilterDeltakerliste = ({ className }: Props) => {
   const { deltakere, setFiltrerteDeltakere } = useDeltakerlisteContext()
   const { valgteFilter, setValgteFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
-    'deltaker-liste-filter-hendelser-open'
+    'deltaker-liste-filter-hendelser-open',
+    true
   )
 
   const filterDetaljer = useMemo(() => {
