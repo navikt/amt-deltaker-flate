@@ -20,7 +20,7 @@
     "@amt-deltaker-flate/typescript-config": "workspace:*",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
-    "prettier": "^3.6.1",
+    "prettier": "^3.6.2",
     "turbo": "^2.5.4"
   },
   "lint-staged": {
