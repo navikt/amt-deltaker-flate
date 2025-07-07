@@ -13,13 +13,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^7.24.0",
-    "@navikt/ds-react": "^7.24.0",
+    "@navikt/aksel-icons": "^7.25.1",
+    "@navikt/ds-react": "^7.25.1",
     "dayjs": "^1.11.13",
     "react": "^19.1.0",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.74"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
