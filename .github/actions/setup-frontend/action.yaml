@@ -23,6 +23,3 @@ runs:
       shell: bash
       env:
         NODE_AUTH_TOKEN: ${{ inputs.node_auth_token }}
-    - name: Install Playwright browsers
-      shell: bash
-      run: pnpm playwright install --with-deps
