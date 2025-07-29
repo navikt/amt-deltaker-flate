@@ -54,8 +54,6 @@ jobs:
         run: pnpm lint
       - name: Run tests
         run: pnpm test:no-watch --filter=innbyggers-flate
-      - name: Install Playwright browsers
-        run: pnpm playwright install -- --with-deps
       - name: Run playwright tests
         run: pnpm playwright --filter=innbyggers-flate
 
