@@ -22,8 +22,8 @@ import {
   VarighetValg
 } from './varighet.tsx'
 
-const startdato = '2023-10-28'
-const sluttdato = '2025-10-28'
+const startdato = dayjs().subtract(1, 'year') // '2023-10-28'
+const sluttdato = dayjs().add(1, 'year')
 
 const pamelding: PameldingResponse = {
   deltakerId: uuidv4(),
@@ -36,8 +36,8 @@ const pamelding: PameldingResponse = {
     tiltakstype: ArenaTiltakskode.ARBFORB,
     arrangorNavn: 'Den Beste Arrangøren AS',
     oppstartstype: Oppstartstype.LOPENDE,
-    startdato: dayjs(startdato).toDate(),
-    sluttdato: dayjs(sluttdato).toDate(),
+    startdato: startdato.toDate(),
+    sluttdato: sluttdato.toDate(),
     status: DeltakerlisteStatus.GJENNOMFORES,
     tilgjengeligInnhold: {
       innhold: [],
@@ -52,7 +52,7 @@ const pamelding: PameldingResponse = {
     gyldigTil: null,
     opprettet: dayjs().subtract(1, 'day').toDate()
   },
-  startdato: startdato,
+  startdato: startdato.format('YYYY-MM-DD'),
   sluttdato: null,
   dagerPerUke: null,
   deltakelsesprosent: 100,
