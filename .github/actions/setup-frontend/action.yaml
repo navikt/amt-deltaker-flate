@@ -24,4 +24,4 @@ runs:
       env:
         NODE_AUTH_TOKEN: ${{ inputs.node_auth_token }}
     - name: Install Playwright browsers
-      run: pnpm exec playwright install --with-deps
+      run: pnpm playwright install --with-deps
