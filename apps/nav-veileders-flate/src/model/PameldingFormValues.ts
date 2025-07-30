@@ -3,7 +3,7 @@ import {
   ArenaTiltakskode,
   arenaTiltakstypeSchema
 } from 'deltaker-flate-common'
-import { string, z } from 'zod'
+import { z } from 'zod'
 import {
   PameldingResponse,
   innholdselementSchema
@@ -32,13 +32,14 @@ export const pameldingFormSchema = z
   .object({
     tiltakstype: arenaTiltakstypeSchema,
     tilgjengeligInnhold: innholdselementSchema.array(),
-    innholdsTekst: string()
+    innholdsTekst: z
+      .string()
       .max(
         BESKRIVELSE_ANNET_MAX_TEGN,
         `Tiltaksinnholdet kan ikke være mer enn ${BESKRIVELSE_MAX_TEGN} tegn.`
       )
       .optional(),
-    valgteInnhold: string().array(),
+    valgteInnhold: z.string().array(),
     innholdAnnetBeskrivelse: z
       .string()
       .max(
@@ -56,7 +57,7 @@ export const pameldingFormSchema = z
     deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
-        invalid_type_error: deltakelsesprosentFeilmelding
+        error: () => deltakelsesprosentFeilmelding
       })
       .int({ message: deltakelsesprosentFeilmelding })
       .gte(1, { message: deltakelsesprosentFeilmelding })
@@ -64,7 +65,7 @@ export const pameldingFormSchema = z
       .optional(),
     dagerPerUke: z
       .number({
-        invalid_type_error: dagerPerUkeFeilmelding
+        error: () => dagerPerUkeFeilmelding
       })
       .int({ message: dagerPerUkeFeilmelding })
       .gte(1, { message: dagerPerUkeFeilmelding })

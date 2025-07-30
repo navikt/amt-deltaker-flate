@@ -66,8 +66,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       zod:
-        specifier: ^3.25.67
-        version: 3.25.76
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -178,8 +178,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       zod:
-        specifier: ^3.25.67
-        version: 3.25.76
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -284,8 +284,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       zod:
-        specifier: ^3.25.67
-        version: 3.25.76
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -375,8 +375,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       zod:
-        specifier: ^3.25.67
-        version: 3.25.76
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -909,6 +909,9 @@ packages:
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@7.25.1':
     resolution: {integrity: sha512-pikrVMt2MUxfcG7Bwfl11ynwqTA1JoFINtCLzvLh7K4cykRbuR3rwrU2Xb0ZxeNCevy0X1OnBqNp7FB98oG5hg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.25.1/7f14a29c907d7d2dc75886bbe90f769f8acd36c0}
@@ -924,6 +927,9 @@ packages:
       html-react-parser: '>=5.x'
       jsdom: '>=16.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3363,8 +3369,8 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.0.14:
+    resolution: {integrity: sha512-nGFJTnJN6cM2v9kXL+SOBq3AtjQby3Mv5ySGFof5UGRHrRioSJ5iG680cYNjE/yWk671nROcpPj4hAS8nyLhSw==}
 
 snapshots:
 
@@ -3780,11 +3786,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@navikt/aksel-icons': 7.25.1
       '@navikt/ds-tokens': 7.25.1
-      '@types/react': 19.1.9
       clsx: 2.1.1
       date-fns: 4.1.0
       react: 19.1.1
       react-day-picker: 9.7.0(react@19.1.1)
+    optionalDependencies:
+      '@types/react': 19.1.9
     transitivePeerDependencies:
       - react-dom
 
@@ -3798,6 +3805,7 @@ snapshots:
       html-react-parser: 5.2.6(@types/react@19.1.9)(react@19.1.1)
       js-cookie: 3.0.5
       jsdom: 26.1.0
+    optionalDependencies:
       react: 19.1.1
 
   '@nodelib/fs.scandir@2.1.5':
@@ -6408,4 +6416,4 @@ snapshots:
 
   yoctocolors-cjs@2.1.2: {}
 
-  zod@3.25.76: {}
+  zod@4.0.14: {}
