@@ -8,7 +8,6 @@ import {
   Tag,
   VStack
 } from '@navikt/ds-react'
-import { util } from 'zod'
 import { Forslag, ForslagEndringType } from '../../model/forslag.ts'
 import {
   deltakerprosentText,
@@ -16,10 +15,12 @@ import {
   getForslagEndringAarsakText,
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
-import { getEndreDeltakelsesType } from '../../utils/forslagUtils.tsx'
+import {
+  assertNever,
+  getEndreDeltakelsesType
+} from '../../utils/forslagUtils.tsx'
 import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
-import assertNever = util.assertNever
 
 interface Props {
   forslag: Forslag

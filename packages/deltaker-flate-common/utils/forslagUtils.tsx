@@ -1,4 +1,3 @@
-import { util } from 'zod'
 import { DeltakerStatusAarsakType } from '../model/deltaker.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 import {
@@ -8,9 +7,12 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
-import assertNever = util.assertNever
 import { getForslagStatusTypeText } from './displayText.ts'
 import { Tag } from '@navikt/ds-react'
+
+export function assertNever(value: never): never {
+  throw new Error(`Unexpected value: ${JSON.stringify(value)}`)
+}
 
 export const getForslagStatusTag = (forslagStatusType: ForslagStatusType) => {
   switch (forslagStatusType) {
