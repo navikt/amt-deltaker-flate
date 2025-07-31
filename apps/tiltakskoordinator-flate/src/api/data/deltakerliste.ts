@@ -39,11 +39,11 @@ export const deltakerSchema = z.object({
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
   status: deltakerStatusSchema,
-  vurdering: z.nativeEnum(Vurderingstype).nullable(),
-  beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
+  vurdering: z.enum(Vurderingstype).nullable(),
+  beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   navEnhet: z.string().nullable(),
   erManueltDeltMedArrangor: z.boolean(),
-  feilkode: z.nativeEnum(Feilkode).nullable().optional(),
+  feilkode: z.enum(Feilkode).nullable().optional(),
   ikkeDigitalOgManglerAdresse: z.boolean(),
   harAktiveForslag: z.boolean()
 })
