@@ -1,4 +1,5 @@
-import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
+import { Radio, RadioGroup } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import {
   AarsakRadioGroup,
   AvsluttDeltakelseForslag,
@@ -13,50 +14,36 @@ import {
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import {
   Avslutningstype,
-  dateStrToNullableDate,
   formatDateToDtoStr,
   HarDeltattValg
 } from '../../../utils/utils.ts'
-import {
-  getSisteGyldigeSluttDato,
-  getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
-  VARIGHET_BEKREFTELSE_FEILMELDING
-} from '../../../utils/varighet.tsx'
-import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import dayjs from 'dayjs'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
-interface AvsluttDeltakelseModalProps {
+interface Props {
   pamelding: PameldingResponse
   forslag: Forslag | null
   open: boolean
-  endringstype:
-    | EndreDeltakelseType.AVSLUTT_DELTAKELSE
-    | EndreDeltakelseType.ENDRE_AVSLUTNING
   onClose: () => void
   onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
 }
 
-export const AvsluttDeltakelseModal = ({
+export const EndreAvslutningModal = ({
   pamelding,
   forslag,
   open,
-  endringstype,
   onClose,
   onSuccess
-}: AvsluttDeltakelseModalProps) => {
-  const defaultSluttdato = getSluttdato(pamelding, forslag)
+}: Props) => {
+  const sluttdato = getSluttdato(pamelding, forslag)
   const erFellesOppstart =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
@@ -74,21 +61,9 @@ export const AvsluttDeltakelseModal = ({
       else return null
     })
   const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
-  const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
-  const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
-    string | null
-  >(null)
 
   const aarsak = useAarsak(forslag)
   const begrunnelse = useBegrunnelse(true)
-  const sluttdato = useSluttdatoInput({
-    deltaker: pamelding,
-    defaultDato: defaultSluttdato ?? undefined,
-    startdato: useMemo(
-      () => getDateFromString(pamelding.startdato),
-      [pamelding.startdato]
-    )
-  })
   const { enhetId } = useAppContext()
 
   const skalViseAarsak = erFellesOppstart
@@ -102,8 +77,6 @@ export const AvsluttDeltakelseModal = ({
   const skalViseSluttDato =
     (!skalViseHarDeltatt || harDeltatt) &&
     avslutningstype !== Avslutningstype.IKKE_DELTATT
-  const skalBekrefteVarighet =
-    skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
 
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
@@ -130,20 +103,6 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalViseSluttDato && sluttdato.error) {
-      hasError = true
-    }
-
-    if (skalViseSluttDato && !sluttdato.sluttdato) {
-      sluttdato.setError('Du må velge en sluttdato.')
-      hasError = true
-    }
-
-    if (skalBekrefteVarighet && !varighetBekreftelse) {
-      setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
-      hasError = true
-    }
-
     if (skalViseHarDeltatt && harDeltatt === null) {
       hasError = true
       setHarDeltattError('Du må svare før du kan fortsette.')
@@ -160,9 +119,7 @@ export const AvsluttDeltakelseModal = ({
               }
             : null,
         sluttdato:
-          skalViseSluttDato && sluttdato.sluttdato
-            ? formatDateToDtoStr(sluttdato.sluttdato)
-            : null,
+          skalViseSluttDato && sluttdato ? formatDateToDtoStr(sluttdato) : null,
         harDeltatt: harDeltatt,
         harFullfort: erFellesOppstart
           ? avslutningstype === Avslutningstype.FULLFORT
@@ -203,7 +160,7 @@ export const AvsluttDeltakelseModal = ({
 
       const deltakerErEndret =
         pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
-        !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
+        !dayjs(sluttdato).isSame(pamelding.sluttdato, 'day') ||
         pamelding.status.aarsak?.type !== aarsak.aarsak ||
         pamelding.status.aarsak?.beskrivelse !== nyArsakBeskrivelse
       if (!deltakerErEndret) {
@@ -222,7 +179,7 @@ export const AvsluttDeltakelseModal = ({
   return (
     <Endringsmodal
       open={open}
-      endringstype={endringstype}
+      endringstype={EndreDeltakelseType.ENDRE_AVSLUTNING}
       deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
@@ -310,37 +267,6 @@ export const AvsluttDeltakelseModal = ({
         </section>
       )}
 
-      {skalViseSluttDato && (
-        <section className="mt-6">
-          <SimpleDatePicker
-            label="Hva er ny sluttdato?"
-            disabled={false}
-            error={sluttdato.error}
-            fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
-            toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
-            defaultDate={defaultSluttdato ?? undefined}
-            onValidate={sluttdato.validate}
-            onChange={sluttdato.onChange}
-          />
-        </section>
-      )}
-      {skalBekrefteVarighet && (
-        <ConfirmationPanel
-          className="mt-6"
-          checked={varighetBekreftelse}
-          label="Ja, deltakeren oppfyller kravene."
-          onChange={() => {
-            setVarighetConfirmation((x) => !x)
-            setErrorVarighetConfirmation(null)
-          }}
-          size="small"
-          error={errorVarighetConfirmation}
-        >
-          {getSoftMaxVarighetBekreftelseText(
-            pamelding.deltakerliste.tiltakstype
-          )}
-        </ConfirmationPanel>
-      )}
       <BegrunnelseInput
         type="valgfri"
         onChange={begrunnelse.handleChange}

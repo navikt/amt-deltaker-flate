@@ -29,7 +29,8 @@ export enum ForslagEndringType {
   Sluttdato = 'Sluttdato',
   Startdato = 'Startdato',
   Sluttarsak = 'Sluttarsak',
-  FjernOppstartsdato = 'FjernOppstartsdato'
+  FjernOppstartsdato = 'FjernOppstartsdato',
+  EndreAvslutning = 'EndreAvslutning'
 }
 
 export enum ForslagEndringAarsakType {
@@ -113,6 +114,14 @@ export const fjernOppstartsdatoForslagSchema = z.object({
   type: z.literal(ForslagEndringType.FjernOppstartsdato)
 })
 
+export const endreAvslutningForslagSchema = z.object({
+  type: z.literal(ForslagEndringType.EndreAvslutning),
+  sluttdato: dateSchema.nullable(),
+  aarsak: forslagEndringAarsakSchema.nullable(),
+  harDeltatt: z.boolean().nullable(),
+  harFullfort: z.boolean().optional().nullable()
+})
+
 export const forslagEndringSchema = z.discriminatedUnion('type', [
   forlengDeltakelseForslagSchema,
   avsluttDeltakelseForslagSchema,
@@ -121,7 +130,8 @@ export const forslagEndringSchema = z.discriminatedUnion('type', [
   sluttdatoForslagSchema,
   startdatoForslagSchema,
   sluttarsakForslagSchema,
-  fjernOppstartsdatoForslagSchema
+  fjernOppstartsdatoForslagSchema,
+  endreAvslutningForslagSchema
 ])
 
 const venterPaSvarSchema = z.object({

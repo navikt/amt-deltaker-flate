@@ -34,7 +34,12 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
-      return <AvsluttDeltakelseModal {...props} />
+      return (
+        <AvsluttDeltakelseModal
+          {...props}
+          endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
+        />
+      )
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return <EndreSluttdatoModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
@@ -45,6 +50,13 @@ export const ModalController = (props: ModalControllerProps) => {
       return <ReaktiverDeltakelseModal {...props} />
     case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
       return <FjernOppstartsdatoModal {...props} />
+    case EndreDeltakelseType.ENDRE_AVSLUTNING:
+      return (
+        <AvsluttDeltakelseModal
+          {...props}
+          endringstype={EndreDeltakelseType.ENDRE_AVSLUTNING}
+        />
+      )
     default:
       return null
   }

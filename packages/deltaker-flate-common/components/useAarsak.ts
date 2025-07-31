@@ -80,7 +80,8 @@ const getSluttaarsakFraForslag = (
   switch (forslag?.endring.type) {
     case ForslagEndringType.IkkeAktuell:
     case ForslagEndringType.Sluttarsak:
-    case ForslagEndringType.AvsluttDeltakelse: {
+    case ForslagEndringType.AvsluttDeltakelse:
+    case ForslagEndringType.EndreAvslutning: {
       aarsak = forslag.endring.aarsak
       break
     }
