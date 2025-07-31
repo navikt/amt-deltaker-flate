@@ -70,6 +70,8 @@ export const getEndreDeltakelsesType = (forslag: Forslag) => {
       return EndreDeltakelseType.ENDRE_SLUTTARSAK
     case ForslagEndringType.FjernOppstartsdato:
       return EndreDeltakelseType.FJERN_OPPSTARTSDATO
+    case ForslagEndringType.EndreAvslutning:
+      return EndreDeltakelseType.ENDRE_AVSLUTNING
     default:
       assertNever(forslag.endring)
   }
