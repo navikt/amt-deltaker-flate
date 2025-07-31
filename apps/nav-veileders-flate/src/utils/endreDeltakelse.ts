@@ -5,7 +5,6 @@ import {
   EMDASH,
   EndreDeltakelseType,
   erKursEllerDigitalt,
-  erKursTiltak,
   Oppstartstype
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
@@ -127,8 +126,10 @@ const skalViseEndreAvslutning = (
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
-  erKursTiltak(pamelding.deltakerliste.tiltakstype) &&
+  (pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL ||
+    pamelding.status.type === DeltakerStatusType.FULLFORT ||
+    pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
+  pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES &&
   statusdato > toMndSiden &&
   pamelding.kanEndres
 
