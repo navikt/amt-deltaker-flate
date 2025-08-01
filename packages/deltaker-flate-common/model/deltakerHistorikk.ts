@@ -85,7 +85,7 @@ export const avsluttDeltakelseSchema = z.object({
   sluttdato: dateSchema,
   begrunnelse: z.string().nullable(),
   harFullfort: z.boolean(),
-  oppstartstype: z.nativeEnum(Oppstartstype)
+  oppstartstype: z.enum(Oppstartstype)
 })
 
 export const endreSluttarsakSchema = z.object({

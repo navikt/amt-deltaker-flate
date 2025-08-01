@@ -13,9 +13,9 @@ import {
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
-export const tiltakstypeSchema = z.nativeEnum(ArenaTiltakskode)
+export const tiltakstypeSchema = z.enum(ArenaTiltakskode)
 
-export const deltakerlisteStatusSchema = z.nativeEnum(DeltakerlisteStatus)
+export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
 
 export const innholdselementSchema = z.object({
   tekst: z.string(),
@@ -32,7 +32,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.nativeEnum(Oppstartstype),
+  oppstartstype: z.enum(Oppstartstype),
   startdato: dateSchema,
   sluttdato: nullableDateSchema,
   status: deltakerlisteStatusSchema,

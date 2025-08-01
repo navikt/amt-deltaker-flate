@@ -54,7 +54,7 @@ export const pameldingFormSchema = z
         `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
       )
       .optional(),
-    deltakelsesprosentValg: z.nativeEnum(DeltakelsesprosentValg).optional(),
+    deltakelsesprosentValg: z.enum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
         error: () => deltakelsesprosentFeilmelding

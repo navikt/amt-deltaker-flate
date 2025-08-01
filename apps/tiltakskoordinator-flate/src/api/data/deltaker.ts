@@ -44,10 +44,10 @@ export const deltakerDetaljerSchema = z.object({
   sluttdato: nullableDateSchema,
   navEnhet: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
-  beskyttelsesmarkering: z.array(z.nativeEnum(Beskyttelsesmarkering)),
+  beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
-  innsatsgruppe: z.nativeEnum(InnsatsbehovType).nullable(),
-  tiltakskode: z.nativeEnum(Tiltakskode),
+  innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
+  tiltakskode: z.enum(Tiltakskode),
   tilgangTilBruker: z.boolean(),
   aktiveForslag: z.array(forslagSchema)
 })

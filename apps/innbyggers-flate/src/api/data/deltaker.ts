@@ -17,7 +17,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: arenaTiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.nativeEnum(Oppstartstype),
+  oppstartstype: z.enum(Oppstartstype),
   startdato: dateSchema,
   sluttdato: nullableDateSchema
 })

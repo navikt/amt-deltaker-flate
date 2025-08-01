@@ -1,4 +1,5 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import {
   AarsakRadioGroup,
   AvsluttDeltakelseForslag,
@@ -18,6 +19,8 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   Avslutningstype,
@@ -33,9 +36,6 @@ import {
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import dayjs from 'dayjs'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -201,7 +201,7 @@ export const AvsluttDeltakelseModal = ({
         pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
         !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
         pamelding.status.aarsak?.type !== aarsak.aarsak ||
-        pamelding.status.aarsak?.beskrivelse !== nyArsakBeskrivelse
+        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse
       if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }

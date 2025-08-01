@@ -121,6 +121,17 @@ const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
   pamelding.startdato &&
   pamelding.startdato !== EMDASH
 
+const skalViseEndreAvslutning = (
+  pamelding: PameldingResponse,
+  statusdato: Date,
+  toMndSiden: Date
+) =>
+  (pamelding.status.type === DeltakerStatusType.FULLFORT ||
+    pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
+  pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES &&
+  statusdato > toMndSiden &&
+  pamelding.kanEndres
+
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
@@ -167,6 +178,9 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   }
   if (skalViseFjernOppstartsdato(pamelding)) {
     valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
+  }
+  if (skalViseEndreAvslutning(pamelding, statusdato, toMndSiden)) {
+    valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
   }
 
   return valg
