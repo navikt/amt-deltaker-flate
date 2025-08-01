@@ -116,7 +116,6 @@ export const fjernOppstartsdatoForslagSchema = z.object({
 
 export const endreAvslutningForslagSchema = z.object({
   type: z.literal(ForslagEndringType.EndreAvslutning),
-  sluttdato: dateSchema.nullable(),
   aarsak: forslagEndringAarsakSchema.nullable(),
   harDeltatt: z.boolean().nullable(),
   harFullfort: z.boolean().optional().nullable()
@@ -183,6 +182,9 @@ export type ForlengDeltakelseForslag = z.infer<
 >
 export type AvsluttDeltakelseForslag = z.infer<
   typeof avsluttDeltakelseForslagSchema
+>
+export type EndreAvslutningForslag = z.infer<
+  typeof endreAvslutningForslagSchema
 >
 export type IkkeAktuellForslag = z.infer<typeof ikkeAktuellForslagSchema>
 export type DeltakelsesmengdeForslag = z.infer<

@@ -11,6 +11,7 @@ import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
 import { ReaktiverDeltakelseModal } from './ReaktiverDeltakelseModal.tsx'
 import { EndreDeltakelseType, Forslag } from 'deltaker-flate-common'
 import { FjernOppstartsdatoModal } from './FjernOppstartdatoModal.tsx'
+import { EndreAvslutningModal } from './EndreAvslutningModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
@@ -34,12 +35,7 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
-      return (
-        <AvsluttDeltakelseModal
-          {...props}
-          endringstype={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
-        />
-      )
+      return <AvsluttDeltakelseModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
       return <EndreSluttdatoModal {...props} />
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
@@ -51,12 +47,7 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
       return <FjernOppstartsdatoModal {...props} />
     case EndreDeltakelseType.ENDRE_AVSLUTNING:
-      return (
-        <AvsluttDeltakelseModal
-          {...props}
-          endringstype={EndreDeltakelseType.ENDRE_AVSLUTNING}
-        />
-      )
+      return <EndreAvslutningModal {...props} />
     default:
       return null
   }
