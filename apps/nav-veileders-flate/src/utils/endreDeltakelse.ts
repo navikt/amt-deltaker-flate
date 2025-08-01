@@ -126,8 +126,7 @@ const skalViseEndreAvslutning = (
   statusdato: Date,
   toMndSiden: Date
 ) =>
-  (pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL ||
-    pamelding.status.type === DeltakerStatusType.FULLFORT ||
+  (pamelding.status.type === DeltakerStatusType.FULLFORT ||
     pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
   pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES &&
   statusdato > toMndSiden &&
