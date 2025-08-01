@@ -2,15 +2,14 @@ import { Radio, RadioGroup } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
   AarsakRadioGroup,
-  AvsluttDeltakelseForslag,
   BegrunnelseInput,
   DeltakerStatusType,
+  EndreAvslutningForslag,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
   ForslagEndringType,
   getDateFromString,
-  Oppstartstype,
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -21,11 +20,7 @@ import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-req
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import {
-  Avslutningstype,
-  formatDateToDtoStr,
-  HarDeltattValg
-} from '../../../utils/utils.ts'
+import { Avslutningstype, formatDateToDtoStr } from '../../../utils/utils.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
@@ -43,9 +38,7 @@ export const EndreAvslutningModal = ({
   onClose,
   onSuccess
 }: Props) => {
-  const sluttdato = getSluttdato(pamelding, forslag)
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const sluttdato = getDateFromString(pamelding.sluttdato)
 
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     getHarDeltatt(forslag)
@@ -53,30 +46,20 @@ export const EndreAvslutningModal = ({
   const [avslutningstype, setAvslutningstype] =
     useState<Avslutningstype | null>(() => {
       const harFullfortValg = getHarFullfort(forslag)
-      if (!erFellesOppstart) return null
-
       if (harFullfortValg === true) return Avslutningstype.FULLFORT
       else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
       else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
       else return null
     })
-  const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
 
   const aarsak = useAarsak(forslag)
   const begrunnelse = useBegrunnelse(true)
+
   const { enhetId } = useAppContext()
 
-  const skalViseAarsak = erFellesOppstart
-    ? avslutningstype === Avslutningstype.AVBRUTT ||
-      avslutningstype === Avslutningstype.IKKE_DELTATT
-    : true
-
-  // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt =
-    showHarDeltatt(pamelding, forslag) && !erFellesOppstart
-  const skalViseSluttDato =
-    (!skalViseHarDeltatt || harDeltatt) &&
-    avslutningstype !== Avslutningstype.IKKE_DELTATT
+  const skalViseAarsak =
+    avslutningstype === Avslutningstype.AVBRUTT ||
+    avslutningstype === Avslutningstype.IKKE_DELTATT
 
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
@@ -95,17 +78,12 @@ export const EndreAvslutningModal = ({
       hasError = true
     }
 
-    if (erFellesOppstart && avslutningstype === null) {
+    if (avslutningstype === null) {
       hasError = true
     }
 
     if (avslutningstype !== Avslutningstype.FULLFORT && !aarsak.valider()) {
       hasError = true
-    }
-
-    if (skalViseHarDeltatt && harDeltatt === null) {
-      hasError = true
-      setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
     if (!hasError) {
@@ -119,50 +97,31 @@ export const EndreAvslutningModal = ({
               }
             : null,
         sluttdato:
-          skalViseSluttDato && sluttdato ? formatDateToDtoStr(sluttdato) : null,
+          harDeltatt &&
+          avslutningstype !== Avslutningstype.IKKE_DELTATT &&
+          sluttdato
+            ? formatDateToDtoStr(sluttdato)
+            : null,
         harDeltatt: harDeltatt,
-        harFullfort: erFellesOppstart
-          ? avslutningstype === Avslutningstype.FULLFORT
-          : null,
+        harFullfort: avslutningstype === Avslutningstype.FULLFORT,
         begrunnelse: begrunnelse.begrunnelse || null,
         forslagId: forslag ? forslag.id : null
       }
 
       validerDeltakerKanEndres(pamelding)
-      if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
+      if (!harStatusSomKanEndreAvslutning(pamelding.status.type)) {
         throw new Error(
-          'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar", "Har sluttet", "Avbrutt" eller "Fullført".'
+          'Kan ikke endre avslutning for deltaker som ikke har status "Avbrutt" eller "Fullført".'
         )
-      }
-
-      if (
-        !skalViseSluttDato &&
-        pamelding.status.type !== DeltakerStatusType.DELTAR
-      ) {
-        throw new Error(
-          'Deltakeren har allerede sluttet på tiltaket, og kan derfor ikke settes til “Ikke deltatt”.'
-        )
-      }
-
-      const harDeltattErIkkeSpesifisertIForslag =
-        getHarDeltatt(forslag) === null
-      if (harDeltattErIkkeSpesifisertIForslag) {
-        const femtenDagerSiden = dayjs().subtract(15, 'days')
-        if (
-          !skalViseSluttDato &&
-          dayjs(pamelding.status.gyldigFra).isSameOrBefore(femtenDagerSiden)
-        ) {
-          throw new Error(
-            'Deltakeren har hatt status “Deltar” i mer enn 15 dager, og kan derfor ikke settes til “Ikke deltatt”.'
-          )
-        }
       }
 
       const deltakerErEndret =
-        pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
-        !dayjs(sluttdato).isSame(pamelding.sluttdato, 'day') ||
+        (pamelding.status.type === DeltakerStatusType.FULLFORT &&
+          avslutningstype !== Avslutningstype.FULLFORT) ||
+        (pamelding.status.type === DeltakerStatusType.AVBRUTT &&
+          avslutningstype !== Avslutningstype.AVBRUTT) ||
         pamelding.status.aarsak?.type !== aarsak.aarsak ||
-        pamelding.status.aarsak?.beskrivelse !== nyArsakBeskrivelse
+        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse
       if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
@@ -187,44 +146,43 @@ export const EndreAvslutningModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      {erFellesOppstart && (
-        <section className="mt-4 mb-4">
-          <RadioGroup
-            legend="Har deltakeren fullført kurset?"
-            size="small"
-            disabled={false}
-            defaultValue={avslutningstype}
-            onChange={onSetAvslutningstype}
-          >
-            <Radio
-              value={Avslutningstype.FULLFORT}
-              description={avslutningsBeskrivelseTekstMapper(
-                Avslutningstype.FULLFORT
-              )}
-            >
-              Ja, kurset er fullført
-            </Radio>
-            <Radio
-              value={Avslutningstype.AVBRUTT}
-              description={avslutningsBeskrivelseTekstMapper(
-                Avslutningstype.AVBRUTT
-              )}
-            >
-              Nei, kurset er avbrutt
-            </Radio>
-            {showHarDeltatt(pamelding, forslag) && (
-              <Radio
-                value={Avslutningstype.IKKE_DELTATT}
-                description={avslutningsBeskrivelseTekstMapper(
-                  Avslutningstype.IKKE_DELTATT
-                )}
-              >
-                Nei, personen har ikke deltatt
-              </Radio>
+      <section className="mt-4 mb-4">
+        <RadioGroup
+          legend="Har deltakeren fullført kurset?"
+          size="small"
+          disabled={false}
+          defaultValue={avslutningstype}
+          onChange={onSetAvslutningstype}
+        >
+          <Radio
+            value={Avslutningstype.FULLFORT}
+            description={avslutningsBeskrivelseTekstMapper(
+              Avslutningstype.FULLFORT
             )}
-          </RadioGroup>
-        </section>
-      )}
+          >
+            Ja, kurset er fullført
+          </Radio>
+          <Radio
+            value={Avslutningstype.AVBRUTT}
+            description={avslutningsBeskrivelseTekstMapper(
+              Avslutningstype.AVBRUTT
+            )}
+          >
+            Nei, kurset er avbrutt
+          </Radio>
+          {showHarDeltatt(pamelding, forslag) && (
+            <Radio
+              value={Avslutningstype.IKKE_DELTATT}
+              description={avslutningsBeskrivelseTekstMapper(
+                Avslutningstype.IKKE_DELTATT
+              )}
+            >
+              Nei, personen har ikke deltatt
+            </Radio>
+          )}
+        </RadioGroup>
+      </section>
+
       {skalViseAarsak && (
         <AarsakRadioGroup
           legend="Hva er årsaken til avslutning?"
@@ -237,35 +195,6 @@ export const EndreAvslutningModal = ({
           disabled={false}
         />
       )}
-      {skalViseHarDeltatt && (
-        <section className="mt-4">
-          <RadioGroup
-            legend="Har personen deltatt på tiltaket?"
-            size="small"
-            description="Dersom personen ikke har deltatt på tiltaket, vil statusen på tiltaket endres til “Ikke aktuell”."
-            error={harDeltattError}
-            disabled={false}
-            defaultValue={
-              getHarDeltatt(forslag) === null
-                ? undefined
-                : getHarDeltatt(forslag)
-                  ? HarDeltattValg.JA
-                  : HarDeltattValg.NEI
-            }
-            onChange={(value: HarDeltattValg) => {
-              if (value === HarDeltattValg.NEI) {
-                setHarDeltatt(false)
-              } else {
-                setHarDeltatt(true)
-              }
-              setHarDeltattError(undefined)
-            }}
-          >
-            <Radio value={HarDeltattValg.JA}>Ja</Radio>
-            <Radio value={HarDeltattValg.NEI}>Nei</Radio>
-          </RadioGroup>
-        </section>
-      )}
 
       <BegrunnelseInput
         type="valgfri"
@@ -277,23 +206,10 @@ export const EndreAvslutningModal = ({
   )
 }
 
-function isAvsluttDeltakelseForslag(
+function isEndreAvslutningForslag(
   endring: ForslagEndring
-): endring is AvsluttDeltakelseForslag {
-  return endring.type === ForslagEndringType.AvsluttDeltakelse
-}
-
-function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
-  if (forslag === null) {
-    return getDateFromString(deltaker.sluttdato)
-  }
-  if (isAvsluttDeltakelseForslag(forslag.endring)) {
-    return forslag.endring.sluttdato
-  } else {
-    throw new Error(
-      `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
-    )
-  }
+): endring is EndreAvslutningForslag {
+  return endring.type === ForslagEndringType.EndreAvslutning
 }
 
 const showHarDeltatt = (
@@ -310,22 +226,20 @@ const showHarDeltatt = (
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {
-  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+  if (forslag && isEndreAvslutningForslag(forslag.endring)) {
     return forslag.endring.harDeltatt
   }
   return null
 }
 
 function getHarFullfort(forslag: Forslag | null): boolean | null | undefined {
-  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+  if (forslag && isEndreAvslutningForslag(forslag.endring)) {
     return forslag.endring.harFullfort
   }
   return null
 }
 
-const harStatusSomKanAvslutteDeltakelse = (statusType: DeltakerStatusType) =>
-  statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.HAR_SLUTTET ||
+const harStatusSomKanEndreAvslutning = (statusType: DeltakerStatusType) =>
   statusType === DeltakerStatusType.FULLFORT ||
   statusType === DeltakerStatusType.AVBRUTT
 
@@ -339,7 +253,5 @@ export const avslutningsBeskrivelseTekstMapper = (
       return 'Med avbrutt menes at deltakeren avslutter på kurset uten å ha gjennomført og/eller oppnådd ønsket mål, sertifisering el.'
     case Avslutningstype.IKKE_DELTATT:
       return 'Dersom personen ikke har deltatt på tiltaket, vil statusen på tiltaket endres til “Ikke aktuell”.'
-    default:
-      return 'Ukjent'
   }
 }
