@@ -93,10 +93,10 @@ export const AvsluttDeltakelseModal = ({
     : true
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt =
-    showHarDeltatt(pamelding, forslag) && !erFellesOppstart
+  const harDeltattMindreEnnFemtenDagerLopendeOppstart =
+    harDeltattMindreEnn15Dager(pamelding, forslag) && !erFellesOppstart
   const skalViseSluttDato =
-    (!skalViseHarDeltatt || harDeltatt) &&
+    (!harDeltattMindreEnnFemtenDagerLopendeOppstart || harDeltatt) &&
     avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
@@ -140,7 +140,7 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalViseHarDeltatt && harDeltatt === null) {
+    if (harDeltattMindreEnnFemtenDagerLopendeOppstart && harDeltatt === null) {
       hasError = true
       setHarDeltattError('Du må svare før du kan fortsette.')
     }
@@ -251,7 +251,7 @@ export const AvsluttDeltakelseModal = ({
             >
               Nei, kurset er avbrutt
             </Radio>
-            {showHarDeltatt(pamelding, forslag) && (
+            {harDeltattMindreEnn15Dager(pamelding, forslag) && (
               <Radio
                 value={Avslutningstype.IKKE_DELTATT}
                 description={avslutningsBeskrivelseTekstMapper(
@@ -276,7 +276,7 @@ export const AvsluttDeltakelseModal = ({
           disabled={false}
         />
       )}
-      {skalViseHarDeltatt && (
+      {harDeltattMindreEnnFemtenDagerLopendeOppstart && (
         <section className="mt-4">
           <RadioGroup
             legend="Har personen deltatt på tiltaket?"
@@ -366,7 +366,7 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
   }
 }
 
-const showHarDeltatt = (
+const harDeltattMindreEnn15Dager = (
   pamelding: PameldingResponse,
   forslag: Forslag | null
 ) => {
@@ -374,9 +374,11 @@ const showHarDeltatt = (
     return true
   }
 
-  const statusdato = pamelding.status.gyldigFra
+  const startDato = pamelding.startdato
+  if (startDato === null) throw Error('startdato er null')
+
   const femtenDagerSiden = dayjs().subtract(15, 'days')
-  return dayjs(statusdato).isAfter(femtenDagerSiden, 'day')
+  return dayjs(startDato).isAfter(femtenDagerSiden, 'day')
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {

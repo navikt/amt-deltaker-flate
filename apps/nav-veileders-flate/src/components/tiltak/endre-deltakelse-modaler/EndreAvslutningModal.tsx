@@ -170,7 +170,7 @@ export const EndreAvslutningModal = ({
           >
             Nei, kurset er avbrutt
           </Radio>
-          {showHarDeltatt(pamelding, forslag) && (
+          {harDeltattMindreEnn15Dager(pamelding, forslag) && (
             <Radio
               value={Avslutningstype.IKKE_DELTATT}
               description={avslutningsBeskrivelseTekstMapper(
@@ -212,7 +212,7 @@ function isEndreAvslutningForslag(
   return endring.type === ForslagEndringType.EndreAvslutning
 }
 
-const showHarDeltatt = (
+const harDeltattMindreEnn15Dager = (
   pamelding: PameldingResponse,
   forslag: Forslag | null
 ) => {
@@ -220,9 +220,13 @@ const showHarDeltatt = (
     return true
   }
 
-  const statusdato = pamelding.status.gyldigFra
-  const femtenDagerSiden = dayjs().subtract(15, 'days')
-  return dayjs(statusdato).isAfter(femtenDagerSiden, 'day')
+  if (!pamelding.startdato || !pamelding.sluttdato) {
+    return false
+  }
+
+  return dayjs(pamelding.startdato)
+    .add(15, 'days')
+    .isAfter(pamelding.sluttdato, 'day')
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {
