@@ -97,9 +97,7 @@ export const EndreAvslutningModal = ({
               }
             : null,
         sluttdato:
-          harDeltatt &&
-          avslutningstype !== Avslutningstype.IKKE_DELTATT &&
-          sluttdato
+          avslutningstype !== Avslutningstype.IKKE_DELTATT && sluttdato
             ? formatDateToDtoStr(sluttdato)
             : null,
         harDeltatt: harDeltatt,
