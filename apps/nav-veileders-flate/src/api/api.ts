@@ -8,6 +8,7 @@ import { API_URL } from '../utils/environment-utils.ts'
 import {
   AvsluttDeltakelseRequest,
   AvvisForslagRequest,
+  EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
@@ -366,6 +367,31 @@ export const avsluttDeltakelse = (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Kunne ikke avslutte deltakelsen.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
+export const endreAvslutning = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreAvslutningRequest
+): Promise<PameldingResponse> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/endre-avslutning`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Kunne ikke endre avslutning til deltakeren.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

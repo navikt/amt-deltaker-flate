@@ -9,18 +9,17 @@ import {
   Forslag,
   ForslagEndring,
   ForslagEndringType,
-  getDateFromString,
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
-import { avsluttDeltakelse } from '../../../api/api.ts'
-import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { endreAvslutning } from '../../../api/api.ts'
+import { EndreAvslutningRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import { Avslutningstype, formatDateToDtoStr } from '../../../utils/utils.ts'
+import { Avslutningstype } from '../../../utils/utils.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
@@ -38,8 +37,6 @@ export const EndreAvslutningModal = ({
   onClose,
   onSuccess
 }: Props) => {
-  const sluttdato = getDateFromString(pamelding.sluttdato)
-
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     getHarDeltatt(forslag)
   )
@@ -88,17 +85,13 @@ export const EndreAvslutningModal = ({
 
     if (!hasError) {
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
-      const endring: AvsluttDeltakelseRequest = {
+      const endring: EndreAvslutningRequest = {
         aarsak:
           skalViseAarsak && aarsak.aarsak
             ? {
                 type: aarsak.aarsak,
                 beskrivelse: nyArsakBeskrivelse
               }
-            : null,
-        sluttdato:
-          avslutningstype !== Avslutningstype.IKKE_DELTATT && sluttdato
-            ? formatDateToDtoStr(sluttdato)
             : null,
         harDeltatt: harDeltatt,
         harFullfort: avslutningstype === Avslutningstype.FULLFORT,
@@ -140,7 +133,7 @@ export const EndreAvslutningModal = ({
       deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
-      apiFunction={avsluttDeltakelse}
+      apiFunction={endreAvslutning}
       validertRequest={validertRequest}
       forslag={forslag}
     >

@@ -64,6 +64,16 @@ export const avsluttDeltakelseSchema = z.object({
 
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
 
+export const endreAvslutningSchema = z.object({
+  aarsak: aarsakSchema.nullable(),
+  harDeltatt: z.boolean().nullable(),
+  harFullfort: z.boolean().nullable(),
+  begrunnelse: z.string().nullable(),
+  forslagId: z.uuid().nullable()
+})
+
+export type EndreAvslutningRequest = z.infer<typeof endreAvslutningSchema>
+
 export const endreSluttarsakSchema = z.object({
   aarsak: aarsakSchema,
   begrunnelse: z.string().nullable(),
@@ -115,3 +125,4 @@ export type EndringRequest =
   | EndreInnholdRequest
   | EndreDeltakelsesmengdeRequest
   | ReaktiverDeltakelseRequest
+  | EndreAvslutningRequest
