@@ -430,7 +430,6 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad'
     },
-
     {
       type: HistorikkType.Endring,
       endring: {
