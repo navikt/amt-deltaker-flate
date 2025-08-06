@@ -25,6 +25,7 @@ import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import {
   AvsluttDeltakelseRequest,
+  EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
@@ -562,6 +563,7 @@ export class MockHandler {
 
   avsluttDeltakelse(request: AvsluttDeltakelseRequest) {
     const oppdatertPamelding = this.pamelding
+    const oppstartstype = oppdatertPamelding?.deltakerliste.oppstartstype
 
     if (oppdatertPamelding) {
       if (request.harDeltatt === false) {
@@ -570,9 +572,38 @@ export class MockHandler {
         oppdatertPamelding.startdato = null
         oppdatertPamelding.sluttdato = null
       } else {
-        oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
+        if (oppstartstype === Oppstartstype.FELLES) {
+          oppdatertPamelding.status.type = request.harFullfort
+            ? DeltakerStatusType.FULLFORT
+            : DeltakerStatusType.AVBRUTT
+        } else {
+          oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
+        }
         oppdatertPamelding.status.aarsak = request.aarsak
         oppdatertPamelding.sluttdato = request.sluttdato
+      }
+      this.fjernAktivtForslag(request.forslagId)
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreAvslutning(request: EndreAvslutningRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      if (request.harDeltatt === false) {
+        oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
+        oppdatertPamelding.status.aarsak = request.aarsak
+        oppdatertPamelding.startdato = null
+        oppdatertPamelding.sluttdato = null
+      } else {
+        oppdatertPamelding.status.type = request.harFullfort
+          ? DeltakerStatusType.FULLFORT
+          : DeltakerStatusType.AVBRUTT
+        oppdatertPamelding.status.aarsak = request.aarsak
       }
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding

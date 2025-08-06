@@ -3,14 +3,14 @@ import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
 export const aarsakSchema = z.object({
-  type: z.nativeEnum(DeltakerStatusAarsakType),
+  type: z.enum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
 })
 
 export const ikkeAktuellSchema = z.object({
   aarsak: aarsakSchema,
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullable()
+  forslagId: z.uuid().nullable()
 })
 
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
@@ -18,14 +18,14 @@ export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
 export const forlengDeltakelseSchema = z.object({
   sluttdato: z.string(),
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullable()
+  forslagId: z.uuid().nullable()
 })
 
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
 export const fjernOppstartsdatoSchema = z.object({
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullable()
+  forslagId: z.uuid().nullable()
 })
 
 export type FjernOppstartsdatoRequest = z.infer<typeof fjernOppstartsdatoSchema>
@@ -34,7 +34,7 @@ export const endreStartdatoSchema = z.object({
   startdato: z.string().nullable(),
   sluttdato: z.string().nullable(),
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullish()
+  forslagId: z.uuid().nullish()
 })
 
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
@@ -47,7 +47,7 @@ export type EndreBakgrunnsinfoRequest = z.infer<typeof endreBakgrunnsinfoSchema>
 
 export const endreSluttdatoSchema = z.object({
   sluttdato: z.string(),
-  forslagId: z.string().uuid().nullish(),
+  forslagId: z.uuid().nullish(),
   begrunnelse: z.string().nullable()
 })
 
@@ -59,15 +59,25 @@ export const avsluttDeltakelseSchema = z.object({
   harDeltatt: z.boolean().nullable(),
   harFullfort: z.boolean().nullable(),
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullable()
+  forslagId: z.uuid().nullable()
 })
 
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
 
+export const endreAvslutningSchema = z.object({
+  aarsak: aarsakSchema.nullable(),
+  harDeltatt: z.boolean().nullable(),
+  harFullfort: z.boolean().nullable(),
+  begrunnelse: z.string().nullable(),
+  forslagId: z.uuid().nullable()
+})
+
+export type EndreAvslutningRequest = z.infer<typeof endreAvslutningSchema>
+
 export const endreSluttarsakSchema = z.object({
   aarsak: aarsakSchema,
   begrunnelse: z.string().nullable(),
-  forslagId: z.string().uuid().nullish()
+  forslagId: z.uuid().nullish()
 })
 
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
@@ -115,3 +125,4 @@ export type EndringRequest =
   | EndreInnholdRequest
   | EndreDeltakelsesmengdeRequest
   | ReaktiverDeltakelseRequest
+  | EndreAvslutningRequest

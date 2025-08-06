@@ -8,6 +8,7 @@ import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import {
   avsluttDeltakelseSchema,
+  endreAvslutningSchema,
   endreBakgrunnsinfoSchema,
   endreDeltakelsesmengdeSchema,
   endreInnholdSchema,
@@ -207,6 +208,19 @@ export const worker = setupWorker(
         .json()
         .then((json) => avsluttDeltakelseSchema.parse(json))
         .then((body) => handler.avsluttDeltakelse(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/endre-avslutning',
+    async ({ request }) => {
+      await delay(100)
+
+      const response = await request
+        .json()
+        .then((json) => endreAvslutningSchema.parse(json))
+        .then((body) => handler.endreAvslutning(body))
 
       return response
     }

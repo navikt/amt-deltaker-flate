@@ -36,6 +36,7 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
           </BodyLong>
         )
       case ForslagEndringType.AvsluttDeltakelse:
+      case ForslagEndringType.EndreAvslutning:
         return (
           <>
             {forslag.endring.aarsak && (
@@ -54,11 +55,12 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
                 Er kurset fullført? {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
-            {forslag.endring.sluttdato && (
-              <BodyLong size="small">
-                Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
-              </BodyLong>
-            )}
+            {forslag.endring.type == ForslagEndringType.AvsluttDeltakelse &&
+              forslag.endring.sluttdato && (
+                <BodyLong size="small">
+                  Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+                </BodyLong>
+              )}
           </>
         )
       case ForslagEndringType.ForlengDeltakelse:

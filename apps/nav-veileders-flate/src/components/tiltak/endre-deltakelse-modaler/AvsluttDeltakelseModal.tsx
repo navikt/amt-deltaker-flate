@@ -1,4 +1,5 @@
 import { ConfirmationPanel, Radio, RadioGroup } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import {
   AarsakRadioGroup,
   AvsluttDeltakelseForslag,
@@ -18,6 +19,8 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import {
   Avslutningstype,
@@ -33,9 +36,6 @@ import {
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import dayjs from 'dayjs'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface AvsluttDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -93,10 +93,10 @@ export const AvsluttDeltakelseModal = ({
     : true
 
   // VI viser dette valget i 15 dager etter startdato. ellers så vil vi alltid sette sluttdato
-  const skalViseHarDeltatt =
-    showHarDeltatt(pamelding, forslag) && !erFellesOppstart
+  const harDeltattMindreEnnFemtenDagerLopendeOppstart =
+    harDeltattMindreEnn15Dager(pamelding, forslag) && !erFellesOppstart
   const skalViseSluttDato =
-    (!skalViseHarDeltatt || harDeltatt) &&
+    (!harDeltattMindreEnnFemtenDagerLopendeOppstart || harDeltatt) &&
     avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
@@ -140,7 +140,7 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (skalViseHarDeltatt && harDeltatt === null) {
+    if (harDeltattMindreEnnFemtenDagerLopendeOppstart && harDeltatt === null) {
       hasError = true
       setHarDeltattError('Du må svare før du kan fortsette.')
     }
@@ -201,7 +201,7 @@ export const AvsluttDeltakelseModal = ({
         pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
         !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
         pamelding.status.aarsak?.type !== aarsak.aarsak ||
-        pamelding.status.aarsak?.beskrivelse !== nyArsakBeskrivelse
+        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse
       if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
@@ -251,7 +251,7 @@ export const AvsluttDeltakelseModal = ({
             >
               Nei, kurset er avbrutt
             </Radio>
-            {showHarDeltatt(pamelding, forslag) && (
+            {harDeltattMindreEnn15Dager(pamelding, forslag) && (
               <Radio
                 value={Avslutningstype.IKKE_DELTATT}
                 description={avslutningsBeskrivelseTekstMapper(
@@ -276,7 +276,7 @@ export const AvsluttDeltakelseModal = ({
           disabled={false}
         />
       )}
-      {skalViseHarDeltatt && (
+      {harDeltattMindreEnnFemtenDagerLopendeOppstart && (
         <section className="mt-4">
           <RadioGroup
             legend="Har personen deltatt på tiltaket?"
@@ -366,7 +366,7 @@ function getSluttdato(deltaker: PameldingResponse, forslag: Forslag | null) {
   }
 }
 
-const showHarDeltatt = (
+const harDeltattMindreEnn15Dager = (
   pamelding: PameldingResponse,
   forslag: Forslag | null
 ) => {
@@ -374,9 +374,11 @@ const showHarDeltatt = (
     return true
   }
 
-  const statusdato = pamelding.status.gyldigFra
+  const startDato = pamelding.startdato
+  if (startDato === null) throw Error('startdato er null')
+
   const femtenDagerSiden = dayjs().subtract(15, 'days')
-  return dayjs(statusdato).isAfter(femtenDagerSiden, 'day')
+  return dayjs(startDato).isAfter(femtenDagerSiden, 'day')
 }
 
 function getHarDeltatt(forslag: Forslag | null): boolean | null {

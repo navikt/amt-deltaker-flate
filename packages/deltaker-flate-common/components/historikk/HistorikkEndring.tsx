@@ -1,4 +1,5 @@
 import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
+import { ArenaTiltakskode, Oppstartstype } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
@@ -14,7 +15,6 @@ import { formatDate } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
-import { ArenaTiltakskode, Oppstartstype } from '../../model/deltaker.ts'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -45,6 +45,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
     case EndringType.FjernOppstartsdato:
       return EndreDeltakelseType.FJERN_OPPSTARTSDATO
+    case EndringType.EndreAvslutning:
+      return EndreDeltakelseType.ENDRE_AVSLUTNING
   }
 }
 
@@ -59,6 +61,27 @@ const getEndringsDetaljer = (
           <BodyLong size="small">
             Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
           </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.EndreAvslutning: {
+      return (
+        <>
+          {endring.aarsak && (
+            <BodyLong size="small">
+              Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+            </BodyLong>
+          )}
+
+          <BodyLong size="small">
+            Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
+          </BodyLong>
+
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}

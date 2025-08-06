@@ -72,13 +72,11 @@ export enum Vurderingstype {
   OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
   OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
 }
-export const arenaTiltakstypeSchema = z.nativeEnum(ArenaTiltakskode)
-export const tiltakskodeSchema = z.nativeEnum(Tiltakskode)
-export const deltakerStatusTypeSchema = z.nativeEnum(DeltakerStatusType)
-export const deltakerStatusAarsakTypeSchema = z.nativeEnum(
-  DeltakerStatusAarsakType
-)
-export const vurderingstypeSchema = z.nativeEnum(Vurderingstype)
+export const arenaTiltakstypeSchema = z.enum(ArenaTiltakskode)
+export const tiltakskodeSchema = z.enum(Tiltakskode)
+export const deltakerStatusTypeSchema = z.enum(DeltakerStatusType)
+export const deltakerStatusAarsakTypeSchema = z.enum(DeltakerStatusAarsakType)
+export const vurderingstypeSchema = z.enum(Vurderingstype)
 
 export const deltakerStatusAarsakSchema = z.object({
   type: deltakerStatusAarsakTypeSchema,

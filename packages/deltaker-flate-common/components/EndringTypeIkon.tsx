@@ -63,6 +63,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         />
       )
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
+    case EndreDeltakelseType.ENDRE_AVSLUTNING:
       return (
         <ChevronRightLastCircleFillIcon
           className={sizeName(size)}
