@@ -175,7 +175,7 @@ export class MockHandler {
       this.statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
-      passertDato.setDate(passertDato.getDate() + 61)
+      passertDato.setDate(passertDato.getDate() - 10)
       return dayjs(passertDato).format('YYYY-MM-DD')
     }
     return EMDASH
