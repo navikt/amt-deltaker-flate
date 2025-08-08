@@ -79,13 +79,13 @@ const skalViseEndreBakgrunnsinfoKnapp = (
 
 const skalViseEndreSluttdatoKnapp = (
   pamelding: PameldingResponse,
-  statusdato: Date,
   toMndSiden: Date
-) =>
-  deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+) => {
+  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  if (!deltakerHarSluttetEllerFullfort(pamelding.status.type)) return false
 
+  return sluttdato! > toMndSiden && pamelding.kanEndres
+}
 const skalViseEndreSluttarsakKnapp = (
   pamelding: PameldingResponse,
   statusdato: Date,
@@ -167,7 +167,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (pamelding.status.type === DeltakerStatusType.DELTAR) {
     valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
-  if (skalViseEndreSluttdatoKnapp(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreSluttdatoKnapp(pamelding, toMndSiden)) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTDATO)
   }
   if (skalViseEndreSluttarsakKnapp(pamelding, statusdato, toMndSiden)) {

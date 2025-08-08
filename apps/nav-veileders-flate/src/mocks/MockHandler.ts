@@ -163,7 +163,7 @@ export class MockHandler {
     return EMDASH
   }
 
-  getSluttdato(): string {
+  getSluttdato(): string | null {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
@@ -175,7 +175,7 @@ export class MockHandler {
       this.statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
-      passertDato.setDate(passertDato.getDate() - 10)
+      passertDato.setDate(passertDato.getDate() + 61)
       return dayjs(passertDato).format('YYYY-MM-DD')
     }
     return EMDASH
