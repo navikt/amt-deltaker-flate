@@ -36,14 +36,14 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0
       '@navikt/aksel-icons':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-css':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-react':
-        specifier: ^7.25.2
-        version: 7.25.2(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.26.0
+        version: 7.26.0(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^3.4.0
         version: 3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.9)(react@19.1.1))(jsdom@26.1.0)(react@19.1.1)
@@ -60,8 +60,8 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
       react-router-dom:
-        specifier: ^7.7.1
-        version: 7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.8.0
+        version: 7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -83,7 +83,7 @@ importers:
         version: 1.54.2
       '@tailwindcss/vite':
         specifier: ^4.1.11
-        version: 4.1.11(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 4.1.11(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       '@testing-library/jest-dom':
         specifier: ^6.6.4
         version: 6.6.4
@@ -110,7 +110,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react':
         specifier: ^4.7.0
-        version: 4.7.0(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 4.7.0(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       eslint:
         specifier: ^9.32.0
         version: 9.32.0(jiti@2.5.1)
@@ -127,8 +127,8 @@ importers:
         specifier: ^5.9.2
         version: 5.9.2
       vite:
-        specifier: ^7.0.6
-        version: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.2.0)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(yaml@2.8.0)
@@ -142,17 +142,17 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(react-hook-form@7.62.0(react@19.1.1))
       '@navikt/aksel-icons':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-css':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-react':
-        specifier: ^7.25.2
-        version: 7.25.2(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.26.0
+        version: 7.26.0(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@navikt/ds-tailwind':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -172,8 +172,8 @@ importers:
         specifier: ^7.62.0
         version: 7.62.0(react@19.1.1)
       react-router-dom:
-        specifier: ^7.7.1
-        version: 7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.8.0
+        version: 7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -195,7 +195,7 @@ importers:
         version: 1.54.2
       '@tailwindcss/vite':
         specifier: ^4.1.11
-        version: 4.1.11(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 4.1.11(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       '@testing-library/jest-dom':
         specifier: ^6.6.4
         version: 6.6.4
@@ -222,7 +222,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react-swc':
         specifier: ^3.11.0
-        version: 3.11.0(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 3.11.0(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       eslint:
         specifier: ^9.32.0
         version: 9.32.0(jiti@2.5.1)
@@ -239,8 +239,8 @@ importers:
         specifier: ^5.9.2
         version: 5.9.2
       vite:
-        specifier: ^7.0.6
-        version: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.2.0)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(yaml@2.8.0)
@@ -251,17 +251,17 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0
       '@navikt/aksel-icons':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-css':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-react':
-        specifier: ^7.25.2
-        version: 7.25.2(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.26.0
+        version: 7.26.0(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@navikt/ds-tailwind':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -278,8 +278,8 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
       react-router-dom:
-        specifier: ^7.7.1
-        version: 7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.8.0
+        version: 7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -304,7 +304,7 @@ importers:
         version: 1.54.2
       '@tailwindcss/vite':
         specifier: ^4.1.11
-        version: 4.1.11(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 4.1.11(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       '@testing-library/jest-dom':
         specifier: ^6.6.4
         version: 6.6.4
@@ -331,7 +331,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react-swc':
         specifier: ^3.11.0
-        version: 3.11.0(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+        version: 3.11.0(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       eslint:
         specifier: ^9.32.0
         version: 9.32.0(jiti@2.5.1)
@@ -348,8 +348,8 @@ importers:
         specifier: ^5.9.2
         version: 5.9.2
       vite:
-        specifier: ^7.0.6
-        version: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.2.0)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(yaml@2.8.0)
@@ -357,11 +357,11 @@ importers:
   packages/deltaker-flate-common:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@navikt/ds-react':
-        specifier: ^7.25.2
-        version: 7.25.2(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^7.26.0
+        version: 7.26.0(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -431,8 +431,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^7.25.2
-        version: 7.25.2
+        specifier: ^7.26.0
+        version: 7.26.0
       '@tailwindcss/postcss':
         specifier: 4.1.11
         version: 4.1.11
@@ -898,23 +898,23 @@ packages:
     resolution: {integrity: sha512-B9nHSJYtsv79uo7QdkZ/b/WoKm20IkVSmTc/WCKarmDtFwM0dRx2ouEniqwNkzCSLn3fydzKmnMzjtfdOWt3VQ==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@7.25.2':
-    resolution: {integrity: sha512-R0JkmgqP7Vg9Kn2FQ7AzDWNSid8eG3x+9xRTC4uxtQxu6nyclbBQN+Rc4JpG60j/AbQJrn9aP4aHcCdchLaWLQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.25.2/adad3140d8b5598ced14215e3762db22f9137adf}
+  '@navikt/aksel-icons@7.26.0':
+    resolution: {integrity: sha512-w0+tgi4VPq8BBeYOw0ExlJju136nzyM1XBv0R4Clw1iPBePz5XY39EMybpTqQzNBHdUE9dzj7M6mxQsfSBNkoA==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.26.0/e2f5bdc8e9ad03a6022ce385631cc1225b707881}
 
-  '@navikt/ds-css@7.25.2':
-    resolution: {integrity: sha512-+ZDIZHFCIFCtN/zoo0XSqDnCgT1W2tLxCOalnxv+wYr1lE1c2Kd3G95TskrI2/cCuKc8gRLyM2D3hgMGqs1vHQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.25.2/ca763fa9f75666ad85c1efdcc1858f6c6642ecea}
+  '@navikt/ds-css@7.26.0':
+    resolution: {integrity: sha512-9T2go4H/8wd61WYefY6fmBbXRIyueVmCdZHqAcsEUvpFjoDyxPuWPzRDEiw6A5bef45jVG+WmMoq7sDLdhms8Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.26.0/08ce619d01b0642c11b03f6c6a33044e2af3950b}
 
-  '@navikt/ds-react@7.25.2':
-    resolution: {integrity: sha512-TMAob+PzCaWwQaRe8clCKdG7Rv0YQnEh4H914LbTqcVLVpOi8W0p8Nglc10Bf8OjwdhVWSr2Pt7Puum1ELvkiA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.25.2/a4a2cd7c5cd28f463d4dd54fd1ba3d3ebb687245}
+  '@navikt/ds-react@7.26.0':
+    resolution: {integrity: sha512-AL47hKeCdyHNtx17N0c4pSMuJMEE1wWtsvkc2cu/xL6AszwT75vf9PJL+nPn1lgKiALzYo+t66PTMfnvD0bDGw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.26.0/07f92564bf49776d9b53da470d28d638af35391b}
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
 
-  '@navikt/ds-tailwind@7.25.2':
-    resolution: {integrity: sha512-aEOl80AoRcdSx/CJXU1E6daWtdulLSfgr0Im3XhZjGbi50ccO4S33F6FggipXzZk0nqhfDAjsiGG0n7Hc8p0uw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.25.2/f0a862bc9b91e9d3601ffb199eb80b1617f57fe1}
+  '@navikt/ds-tailwind@7.26.0':
+    resolution: {integrity: sha512-5gEOwN60DUoufkck2q3lItG3chacLrQ5o+NrLMjcSEYQ7NRrLTo4rsWtbhqvoynIKpAj0KqOUccxmgMAnkvckg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.26.0/95e4223189cb1428418ce4275e241f737a439ae0}
 
-  '@navikt/ds-tokens@7.25.2':
-    resolution: {integrity: sha512-eoQ4DTQA47edQ1GZhhA80lnXs5PLFmEX3ychgCTlk5TvCTfH+GnDXsvIO3Ka6z8VzwbBF6AILbibZOIBgPbrmA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.25.2/25b2d855c55c7cab6100b9ddaa3b853e69c83ca6}
+  '@navikt/ds-tokens@7.26.0':
+    resolution: {integrity: sha512-kyJHMBMlWCT3bqz8gkRvLHGK2rGGC1ts9OIBqlkbhFlv6dpiTd8UtokuyXGT1+HGyqU6S/GwT1bj4bL5Kvf9Zg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.26.0/b1382b0c82cf8e2ad0cda7c348d4df6fbac233f3}
 
   '@navikt/nav-dekoratoren-moduler@3.4.0':
     resolution: {integrity: sha512-dAD2TDjadqt7kdR8pZ421q6lqqfnFfNg8AuRpWFQ7Bd3lML29/oipe/d+g/vQwaLH4aVTDIpGX8nVrR/g2NXfA==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.4.0/e368316e1b7d6e0fb7f15fbd087c34400a7208f3}
@@ -2757,15 +2757,15 @@ packages:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
     engines: {node: '>=0.10.0'}
 
-  react-router-dom@7.7.1:
-    resolution: {integrity: sha512-bavdk2BA5r3MYalGKZ01u8PGuDBloQmzpBZVhDLrOOv1N943Wq6dcM9GhB3x8b7AbqPMEezauv4PeGkAJfy7FQ==}
+  react-router-dom@7.8.0:
+    resolution: {integrity: sha512-ntInsnDVnVRdtSu6ODmTQ41cbluak/ENeTif7GBce0L6eztFg6/e1hXAysFQI8X25C8ipKmT9cClbJwxx3Kaqw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  react-router@7.7.1:
-    resolution: {integrity: sha512-jVKHXoWRIsD/qS6lvGveckwb862EekvapdHJN/cGmzw40KnJH5gg53ujOJ4qX6EKIK9LSBfFed/xiQ5yeXNrUA==}
+  react-router@7.8.0:
+    resolution: {integrity: sha512-r15M3+LHKgM4SOapNmsH3smAizWds1vJ0Z9C4mWaKnT9/wD7+d/0jYcj6LmOvonkrO4Rgdyp4KQ/29gWN2i1eg==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
@@ -3179,8 +3179,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite@7.0.6:
-    resolution: {integrity: sha512-MHFiOENNBd+Bd9uvc8GEsIzdkn1JxMmEeYX35tI3fv0sJBUTfW5tQsoaOwuY4KhBI09A3dUJ/DXf2yxPVPUceg==}
+  vite@7.1.0:
+    resolution: {integrity: sha512-3jdAy3NhBJYsa/lCFcnRfbK4kNkO/bhijFCnv5ByUQk/eekYagoV2yQSISUrhpV+5JiY5hmwOh7jNnQ68dFMuQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -3770,16 +3770,16 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@7.25.2': {}
+  '@navikt/aksel-icons@7.26.0': {}
 
-  '@navikt/ds-css@7.25.2': {}
+  '@navikt/ds-css@7.26.0': {}
 
-  '@navikt/ds-react@7.25.2(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@navikt/ds-react@7.26.0(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@floating-ui/react': 0.27.8(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@floating-ui/react-dom': 2.1.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@navikt/aksel-icons': 7.25.2
-      '@navikt/ds-tokens': 7.25.2
+      '@navikt/aksel-icons': 7.26.0
+      '@navikt/ds-tokens': 7.26.0
       '@types/react': 19.1.9
       clsx: 2.1.1
       date-fns: 4.1.0
@@ -3788,9 +3788,9 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@7.25.2': {}
+  '@navikt/ds-tailwind@7.26.0': {}
 
-  '@navikt/ds-tokens@7.25.2': {}
+  '@navikt/ds-tokens@7.26.0': {}
 
   '@navikt/nav-dekoratoren-moduler@3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.9)(react@19.1.1))(jsdom@26.1.0)(react@19.1.1)':
     dependencies:
@@ -4086,12 +4086,12 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.11
 
-  '@tailwindcss/vite@4.1.11(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
+  '@tailwindcss/vite@4.1.11(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
     dependencies:
       '@tailwindcss/node': 4.1.11
       '@tailwindcss/oxide': 4.1.11
       tailwindcss: 4.1.11
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -4287,15 +4287,15 @@ snapshots:
       '@typescript-eslint/types': 8.39.0
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react-swc@3.11.0(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
+  '@vitejs/plugin-react-swc@3.11.0(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@swc/core': 1.13.3
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@4.7.0(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
+  '@vitejs/plugin-react@4.7.0(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.0)
@@ -4303,7 +4303,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -4315,14 +4315,14 @@ snapshots:
       chai: 5.2.1
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
+  '@vitest/mocker@3.2.4(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
       msw: 2.10.4(@types/node@24.2.0)(typescript@5.9.2)
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -5731,13 +5731,13 @@ snapshots:
 
   react-refresh@0.17.0: {}
 
-  react-router-dom@7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  react-router-dom@7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      react-router: 7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      react-router: 7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
 
-  react-router@7.7.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  react-router@7.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       cookie: 1.0.2
       react: 19.1.1
@@ -6217,7 +6217,7 @@ snapshots:
       debug: 4.4.1
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -6232,7 +6232,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0):
+  vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0):
     dependencies:
       esbuild: 0.25.8
       fdir: 6.4.6(picomatch@4.0.3)
@@ -6251,7 +6251,7 @@ snapshots:
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(vite@7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
+      '@vitest/mocker': 3.2.4(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(vite@7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -6269,7 +6269,7 @@ snapshots:
       tinyglobby: 0.2.14
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.0.6(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
+      vite: 7.1.0(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
       vite-node: 3.2.4(@types/node@24.2.0)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
