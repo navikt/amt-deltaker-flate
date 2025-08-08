@@ -163,7 +163,7 @@ export class MockHandler {
     return EMDASH
   }
 
-  getSluttdato(): string | null {
+  getSluttdato(): string {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
