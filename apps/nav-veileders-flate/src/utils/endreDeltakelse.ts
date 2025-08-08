@@ -199,7 +199,7 @@ export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
       )
     }
     const toMndSiden = dayjs().subtract(2, 'months')
-    if (dayjs(deltaker.status.gyldigFra).isSameOrBefore(toMndSiden)) {
+    if (dayjs(deltaker.sluttdato).isSameOrBefore(toMndSiden)) {
       throw new Error(
         'Deltaker fikk avsluttende status for mer enn to måneder siden, og kan derfor ikke redigeres.'
       )
