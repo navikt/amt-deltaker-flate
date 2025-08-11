@@ -135,7 +135,7 @@ const skalViseEndreAvslutning = (
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
-  const statusdato = pamelding.status.gyldigFra
+  const statusdato = sluttdato ? sluttdato! : pamelding.status.gyldigFra
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 
