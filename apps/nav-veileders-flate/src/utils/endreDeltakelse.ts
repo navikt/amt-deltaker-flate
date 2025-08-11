@@ -16,65 +16,33 @@ import {
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
 
-const ikkeAktuellKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+const ikkeAktuellKanEndres = (pamelding: PameldingResponse) =>
+  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const harSluttetEllerFullfortKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  deltakerHarSluttetEllerFullfort(pamelding.status.type) &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+const harSluttetEllerFullfortKanEndres = (pamelding: PameldingResponse) =>
+  deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const harAvsluttendeStatusKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  deltakerHarAvsluttendeStatus(pamelding.status.type) &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+const harAvsluttendeStatusKanEndres = (pamelding: PameldingResponse) =>
+  deltakerHarAvsluttendeStatus(pamelding.status.type)
 
-const venterDeltarEllerKanEndres = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
+const venterDeltarEllerKanEndres = (pamelding: PameldingResponse) =>
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  harAvsluttendeStatusKanEndres(pamelding, statusdato, toMndSiden)
+  harAvsluttendeStatusKanEndres(pamelding)
 
 const skalViseForlengKnapp = (
   pamelding: PameldingResponse,
-  sluttdato: Date | null,
-  statusdato: Date,
-  toMndSiden: Date
+  sluttdato: Date | null
 ) =>
   sluttdato &&
   (pamelding.status.type === DeltakerStatusType.DELTAR ||
-    harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden))
+    harSluttetEllerFullfortKanEndres(pamelding))
 
-const skalViseEndreInnholdKnapp = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
+const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
+  venterDeltarEllerKanEndres(pamelding) &&
   !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
-const skalViseEndreBakgrunnsinfoKnapp = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden) &&
+const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
+  venterDeltarEllerKanEndres(pamelding) &&
   !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
 const skalViseEndreSluttdatoKnapp = (
@@ -86,33 +54,19 @@ const skalViseEndreSluttdatoKnapp = (
 
   return sluttdato! > toMndSiden && pamelding.kanEndres
 }
-const skalViseEndreSluttarsakKnapp = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
-  deltakerErIkkeAktuellEllerHarSluttet(pamelding.status.type) &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
+  deltakerErIkkeAktuellEllerHarSluttet(pamelding.status.type)
 
-const skalViseEndreDeltakelsesmengde = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
+const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
   (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV ||
     pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.ARBFORB) &&
-  venterDeltarEllerKanEndres(pamelding, statusdato, toMndSiden)
+  venterDeltarEllerKanEndres(pamelding)
 
-const skalViseEndreOppstartsdato = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
+const skalViseEndreOppstartsdato = (pamelding: PameldingResponse) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
     pamelding.startdato &&
     pamelding.startdato !== EMDASH) ||
-  harSluttetEllerFullfortKanEndres(pamelding, statusdato, toMndSiden) ||
+  harSluttetEllerFullfortKanEndres(pamelding) ||
   kanLeggeTilOppstartsdato(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
@@ -121,16 +75,10 @@ const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
   pamelding.startdato &&
   pamelding.startdato !== EMDASH
 
-const skalViseEndreAvslutning = (
-  pamelding: PameldingResponse,
-  statusdato: Date,
-  toMndSiden: Date
-) =>
+const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
   (pamelding.status.type === DeltakerStatusType.FULLFORT ||
     pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
-  pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES &&
-  statusdato > toMndSiden &&
-  pamelding.kanEndres
+  pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
 export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const valg: EndreDeltakelseType[] = []
@@ -138,8 +86,12 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   const statusdato = sluttdato ? sluttdato! : pamelding.status.gyldigFra
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
+  const deltakelseErLaast =
+    !pamelding.kanEndres ||
+    (deltakerHarAvsluttendeStatus(pamelding.status.type) &&
+      statusdato < toMndSiden)
 
-  if (skalViseEndreOppstartsdato(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreOppstartsdato(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_OPPSTARTSDATO)
   }
   if (
@@ -152,34 +104,37 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   ) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
   }
-  if (ikkeAktuellKanEndres(pamelding, statusdato, toMndSiden)) {
+  if (ikkeAktuellKanEndres(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }
-  if (skalViseForlengKnapp(pamelding, sluttdato, statusdato, toMndSiden)) {
+  if (skalViseForlengKnapp(pamelding, sluttdato) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FORLENG_DELTAKELSE)
   }
-  if (skalViseEndreInnholdKnapp(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreInnholdKnapp(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
   }
-  if (skalViseEndreBakgrunnsinfoKnapp(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreBakgrunnsinfoKnapp(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)
   }
   if (pamelding.status.type === DeltakerStatusType.DELTAR) {
     valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
-  if (skalViseEndreSluttdatoKnapp(pamelding, toMndSiden)) {
+  if (
+    skalViseEndreSluttdatoKnapp(pamelding, toMndSiden) &&
+    !deltakelseErLaast
+  ) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTDATO)
   }
-  if (skalViseEndreSluttarsakKnapp(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreSluttarsakKnapp(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)
   }
-  if (skalViseEndreDeltakelsesmengde(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreDeltakelsesmengde(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE)
   }
-  if (skalViseFjernOppstartsdato(pamelding)) {
+  if (skalViseFjernOppstartsdato(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
   }
-  if (skalViseEndreAvslutning(pamelding, statusdato, toMndSiden)) {
+  if (skalViseEndreAvslutning(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
   }
 
