@@ -30,7 +30,8 @@ export const mapDeltakerDeltaljerToDeltaker = (
     vurdering: deltakerDetaljer.vurdering?.type ?? null,
     erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
     ikkeDigitalOgManglerAdresse: true,
-    harAktiveForslag: deltakerDetaljer.aktiveForslag.length > 0
+    harAktiveForslag: deltakerDetaljer.aktiveForslag.length > 0,
+    kanEndres: deltakerDetaljer.status.type !== DeltakerStatusType.AVBRUTT
   }
 }
 
@@ -89,6 +90,12 @@ const createStatus = (index: number) => {
     return DeltakerStatusType.VENTER_PA_OPPSTART
   } else if (index < 6) {
     return DeltakerStatusType.IKKE_AKTUELL
+  } else if (index < 10) {
+    return DeltakerStatusType.AVBRUTT
+  } else if (index < 14) {
+    return DeltakerStatusType.FULLFORT
+  } else if (index < 17) {
+    return DeltakerStatusType.DELTAR
   }
   return DeltakerStatusType.SOKT_INN
 }
@@ -113,7 +120,7 @@ const createBeskyttelsesmarkering = (index: number) => {
   if (index === 11) return [Beskyttelsesmarkering.FORTROLIG]
   if (index === 12) return [Beskyttelsesmarkering.STRENGT_FORTROLIG]
   if (index === 13) return [Beskyttelsesmarkering.STRENGT_FORTROLIG_UTLAND]
-  if (index === 14)
+  if (index === 15)
     return [
       Beskyttelsesmarkering.STRENGT_FORTROLIG,
       Beskyttelsesmarkering.SKJERMET
@@ -124,7 +131,7 @@ const createBeskyttelsesmarkering = (index: number) => {
 
 export const createMockDeltakere = (): DeltakerDetaljer[] => {
   const deltakere = []
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 20; i++) {
     const navEnheter = ['Nav Grünerløkka', 'Nav Lade', 'Nav Madla', 'Nav Fana']
 
     deltakere.push(
@@ -137,6 +144,20 @@ export const createMockDeltakere = (): DeltakerDetaljer[] => {
       )
     )
   }
+  const deltakerMedStatusDeltar = deltakere.find(
+    (deltaker) => deltaker.status.type === DeltakerStatusType.DELTAR
+  )
+
+  if (deltakerMedStatusDeltar) {
+    deltakere.push({
+      ...deltakerMedStatusDeltar,
+      status: {
+        ...deltakerMedStatusDeltar.status,
+        type: DeltakerStatusType.AVBRUTT
+      }
+    })
+  }
+
   return deltakere
 }
 
@@ -177,6 +198,7 @@ export const lagMockDeltaker = (): Deltaker => {
     navEnhet: 'Nav Grünerløkka',
     erManueltDeltMedArrangor: false,
     ikkeDigitalOgManglerAdresse: false,
-    harAktiveForslag: false
+    harAktiveForslag: false,
+    kanEndres: true
   }
 }
