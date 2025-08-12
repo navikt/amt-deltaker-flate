@@ -13,20 +13,20 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^7.25.2",
-    "@navikt/ds-react": "^7.25.2",
+    "@navikt/aksel-icons": "^7.27.1",
+    "@navikt/ds-react": "^7.27.1",
     "dayjs": "^1.11.13",
     "react": "^19.1.1",
     "typescript": "^5.9.2",
     "uuid": "^11.1.0",
-    "zod": "^4.0.15"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
-    "@types/react": "^19.1.9",
+    "@types/react": "^19.1.10",
     "@types/uuid": "^10.0.0",
-    "eslint": "^9.32.0",
+    "eslint": "^9.33.0",
     "vitest": "^3.2.4"
   }
 }
