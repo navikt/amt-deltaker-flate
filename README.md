@@ -20,6 +20,29 @@ Turborepo er satt opp med:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
+### Oppsett
+
+For å sette opp prosjektet lokalt, må du ha [Node.js](https://nodejs.org/) og [pnpm](https://pnpm.io/) installert.
+
+### Installere pakker lokalt
+
+For å installere npm pakker med @navikt-scope lokalt må du først lage et PAT(Personal Access Token) i github.
+Token genererer du under [developer settings](https://github.com/settings/tokens).
+
+1. Lag et classic token som har `read:packages` rettigheter.
+2. Autoriser tokenet etter generering med `configure SSO`, velg authorize for `navikt`-organisasjonen.
+3. For å unngå å bruke PAT i klartekst, må du sette det som en environment variabel. Legg til følgende i din `.bashrc` eller `.zshrc` fil:
+   ```bash
+   export NODE_AUTH_TOKEN=<your_personal_access_token>
+   ```
+4. Om du ikke har det fra før lag en `.npmrc`-fil i rot på maskinen din med følgende innhold:
+   ```
+   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+   @navikt:registry=https://npm.pkg.github.com
+   ```
+   evt. bruk .npmrc-filen som ligger i rot av prosjekt.
+5. Etter stegene over er gjort kan du kjøre `pnpm install` for å installere alle avhengigheter.
+
 ### Build
 
 Bygg alt ved å stå i rot:
