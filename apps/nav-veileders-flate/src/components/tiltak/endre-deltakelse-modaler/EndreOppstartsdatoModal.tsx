@@ -6,7 +6,6 @@ import {
 } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
@@ -41,6 +40,7 @@ import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import {
   kanLeggeTilOppstartsdato,
+  kanEndreOppstartsdato,
   validerDeltakerKanEndres
 } from '../../../utils/endreDeltakelse.ts'
 
@@ -170,7 +170,7 @@ export const EndreOppstartsdatoModal = ({
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
       validerDeltakerKanEndres(pamelding)
-      if (!harStatusSomKanEndreStartDato(pamelding.status.type)) {
+      if (!kanEndreOppstartsdato(pamelding)) {
         throw new Error(
           `Kan ikke endre oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
         )
@@ -314,8 +314,3 @@ function getDatoer(deltaker: PameldingResponse, forslag: Forslag | null) {
     )
   }
 }
-
-const harStatusSomKanEndreStartDato = (statusType: DeltakerStatusType) =>
-  statusType === DeltakerStatusType.VENTER_PA_OPPSTART ||
-  statusType === DeltakerStatusType.DELTAR ||
-  statusType === DeltakerStatusType.HAR_SLUTTET

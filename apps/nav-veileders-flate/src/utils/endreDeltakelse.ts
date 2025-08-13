@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import {
   ArenaTiltakskode,
   DeltakerStatusType,
@@ -45,14 +44,8 @@ const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
   !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
-const skalViseEndreSluttdatoKnapp = (
-  pamelding: PameldingResponse,
-  toMndSiden: Date
-) => {
-  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
-  if (!deltakerHarSluttetEllerFullfort(pamelding.status.type)) return false
-
-  return sluttdato! > toMndSiden && pamelding.kanEndres
+const skalViseEndreSluttdatoKnapp = (pamelding: PameldingResponse) => {
+  return deltakerHarSluttetEllerFullfort(pamelding.status.type)
 }
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
   deltakerErIkkeAktuellEllerHarSluttet(pamelding.status.type)
@@ -62,7 +55,7 @@ const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
     pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.ARBFORB) &&
   venterDeltarEllerKanEndres(pamelding)
 
-const skalViseEndreOppstartsdato = (pamelding: PameldingResponse) =>
+export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
     pamelding.startdato &&
     pamelding.startdato !== EMDASH) ||
@@ -80,18 +73,26 @@ const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
     pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
   pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
-export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
-  const valg: EndreDeltakelseType[] = []
+const erDeltakelseLaast = (pamelding: PameldingResponse) => {
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+
   const statusdato = sluttdato ? sluttdato! : pamelding.status.gyldigFra
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
-  const deltakelseErLaast =
+
+  return (
     !pamelding.kanEndres ||
     (deltakerHarAvsluttendeStatus(pamelding.status.type) &&
       statusdato < toMndSiden)
+  )
+}
 
-  if (skalViseEndreOppstartsdato(pamelding) && !deltakelseErLaast) {
+export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
+  const valg: EndreDeltakelseType[] = []
+  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const deltakelseErLaast = erDeltakelseLaast(pamelding)
+
+  if (kanEndreOppstartsdato(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_OPPSTARTSDATO)
   }
   if (
@@ -119,10 +120,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (pamelding.status.type === DeltakerStatusType.DELTAR) {
     valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
-  if (
-    skalViseEndreSluttdatoKnapp(pamelding, toMndSiden) &&
-    !deltakelseErLaast
-  ) {
+  if (skalViseEndreSluttdatoKnapp(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTDATO)
   }
   if (skalViseEndreSluttarsakKnapp(pamelding) && !deltakelseErLaast) {
@@ -147,18 +145,10 @@ export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
       'Deltakeren er feilregistrert, og kan derfor ikke redigeres.'
     )
   }
-  if (deltakerHarAvsluttendeStatus(deltaker.status.type)) {
-    if (!deltaker.kanEndres) {
-      throw new Error(
-        'Det finnes en annen aktiv deltakelse på samme tiltak. Denne deltakelsen kan ikke endres.'
-      )
-    }
-    const toMndSiden = dayjs().subtract(2, 'months')
-    if (dayjs(deltaker.sluttdato).isSameOrBefore(toMndSiden)) {
-      throw new Error(
-        'Deltaker fikk avsluttende status for mer enn to måneder siden, og kan derfor ikke redigeres.'
-      )
-    }
+  if (erDeltakelseLaast(deltaker)) {
+    throw new Error(
+      'Deltaker fikk avsluttende status for mer enn to måneder siden eller det finnes en nyere deltakelse, og kan derfor ikke redigeres.'
+    )
   }
 }
 
