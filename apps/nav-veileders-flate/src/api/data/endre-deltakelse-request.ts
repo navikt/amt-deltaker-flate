@@ -126,3 +126,4 @@ export type EndringRequest =
   | EndreDeltakelsesmengdeRequest
   | ReaktiverDeltakelseRequest
   | EndreAvslutningRequest
+  | FjernOppstartsdatoRequest
