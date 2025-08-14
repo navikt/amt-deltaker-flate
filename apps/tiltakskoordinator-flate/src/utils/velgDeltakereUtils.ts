@@ -6,6 +6,10 @@ export const kanVelges = (
   handlingValg: HandlingValg | null,
   deltaker: Deltaker
 ) => {
+  if (!deltaker.kanEndres && handlingValg !== null) {
+    return false
+  }
+
   if (handlingValg === HandlingValg.DEL_DELTAKERE) {
     return (
       deltaker.status.type === DeltakerStatusType.SOKT_INN &&
@@ -26,5 +30,6 @@ export const kanVelges = (
       deltaker.status.type !== DeltakerStatusType.FULLFORT
     )
   }
+
   return true
 }
