@@ -97,6 +97,7 @@ export class MockHandler {
         deltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
         deltaker.status.aarsak = null
       }
+      deltaker.feilkode = null
       return deltaker
     })
     this.deltakere = oppdaterteDeltakere
