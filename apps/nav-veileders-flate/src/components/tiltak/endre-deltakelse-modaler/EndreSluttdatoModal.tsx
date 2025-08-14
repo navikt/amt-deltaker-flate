@@ -112,6 +112,7 @@ export const EndreSluttdatoModal = ({
       deltaker={pamelding}
       onClose={onClose}
       onSend={onSuccess}
+      // @ts-expect-error EndreSluttdatoRequest er gyldig
       apiFunction={endreDeltakelseSluttdato}
       validertRequest={validertRequest}
       erUnderOppfolging={true}

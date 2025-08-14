@@ -14,13 +14,7 @@ export const lagInfoTekst = (deltakere: Deltaker[], handling: HandlingValg) => {
 
   if (feiledeDeltakere.length > 0) {
     const navn = feiledeDeltakere
-      .map((deltaker) =>
-        lagDeltakerNavn(
-          deltaker.fornavn,
-          deltaker.mellomnavn,
-          deltaker.etternavn
-        )
-      )
+      .map((deltaker) => lagDeltakerNavn(deltaker))
       .join(', ')
     return `${antallOppdaterte} av ${antallValgte} deltakere ${handlingstekst}. ${navn} kunne ikke endres. Vennligst prøv igjen`
   } else {
