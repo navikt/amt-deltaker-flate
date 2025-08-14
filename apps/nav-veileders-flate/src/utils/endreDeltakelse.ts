@@ -73,17 +73,38 @@ const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
     pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
   pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
-const erDeltakelseLaast = (pamelding: PameldingResponse) => {
-  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
+  if (!pamelding.kanEndres) {
+    return true
+  }
 
-  const statusdato = sluttdato ? sluttdato! : pamelding.status.gyldigFra
+  if (!deltakerHarAvsluttendeStatus(pamelding.status.type)) {
+    return false
+  }
+
+  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const statusGyldigFra = pamelding.status.gyldigFra
+  const nyesteDato = getNyesteDato([sluttdato, statusGyldigFra])
+
+  if (!nyesteDato) {
+    return false
+  }
+
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 
-  return (
-    !pamelding.kanEndres ||
-    (deltakerHarAvsluttendeStatus(pamelding.status.type) &&
-      statusdato < toMndSiden)
+  return nyesteDato < toMndSiden
+}
+
+const getNyesteDato = (datoer: (Date | null)[]) => {
+  const gyldigeDatoer = datoer.filter((date): date is Date => date !== null)
+
+  if (gyldigeDatoer.length === 0) {
+    return null
+  }
+
+  return gyldigeDatoer.reduce((latest, current) =>
+    current > latest ? current : latest
   )
 }
 
