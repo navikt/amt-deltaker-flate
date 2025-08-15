@@ -5,7 +5,7 @@ import {
   ExpansionCard,
   Heading
 } from '@navikt/ds-react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   FilterValg,
@@ -27,14 +27,19 @@ export const FilterDeltakerliste = ({ className }: Props) => {
     true
   )
 
+  const filtrerteDeltakere = useMemo(() => {
+    return valgteFilter.length > 0
+      ? getFiltrerteDeltakere(deltakere, valgteFilter)
+      : deltakere
+  }, [valgteFilter, deltakere])
+
   const filterDetaljer = useMemo(() => {
-    setFiltrerteDeltakere(
-      valgteFilter.length > 0
-        ? getFiltrerteDeltakere(deltakere, valgteFilter)
-        : deltakere
-    )
     return getFilterDetaljer(deltakere, valgteFilter)
   }, [valgteFilter, deltakere])
+
+  useEffect(() => {
+    setFiltrerteDeltakere(filtrerteDeltakere)
+  }, [filtrerteDeltakere, setFiltrerteDeltakere])
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteFilter(
