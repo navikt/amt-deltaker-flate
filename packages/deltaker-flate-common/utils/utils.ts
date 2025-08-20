@@ -120,8 +120,7 @@ export const haveSameContents = (list1: unknown[], list2: unknown[]) =>
   )
 
 export const fjernUgyldigeTegn = (str: string) => {
-  const ugyldigeTegnRegex =
-    /[^a-zA-ZæøåÆØÅ0-9 \s.,@<>'`!"#$%&\/()\\=?*<;:>*§_-]/g
+  const ugyldigeTegnRegex = /[^a-zA-ZæøåÆØÅ0-9 \s.,@<>'`!"#$%&\/()\\=?*;:§_-]/g
 
   const cleanText = str.replace(
     new RegExp(
