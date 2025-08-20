@@ -15,7 +15,7 @@ export const HandlingFullfortAlert = () => {
       setTimeout(() => {
         setMelding(null)
         setHandlingUtfortText(null)
-      }, 15000)
+      }, 15 * 1000)
     }
   }, [handlingUtfortText])
 

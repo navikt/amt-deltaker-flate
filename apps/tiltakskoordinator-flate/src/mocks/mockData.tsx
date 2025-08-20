@@ -22,17 +22,21 @@ import {
 } from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
 
-export const mapDeltakerDeltaljerToDeltaker = (
-  deltakerDetaljer: DeltakerDetaljer
+export type MockDeltaker = DeltakerDetaljer & Omit<Deltaker, 'vurdering'>
+
+export const mapMockDeltakereToDeltakere = (
+  mockDeltakere: MockDeltaker[]
+): Deltaker[] => {
+  return mockDeltakere.map(mapMockDeltakerToDeltaker)
+}
+
+export const mapMockDeltakerToDeltaker = (
+  mockDeltaker: MockDeltaker
 ): Deltaker => {
   return {
-    ...deltakerDetaljer,
-    vurdering: deltakerDetaljer.vurdering?.type ?? null,
-    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
-    ikkeDigitalOgManglerAdresse: true,
-    harAktiveForslag: deltakerDetaljer.aktiveForslag.length > 0,
-    kanEndres: deltakerDetaljer.status.type !== DeltakerStatusType.AVBRUTT
-  }
+    ...mockDeltaker,
+    vurdering: mockDeltaker.vurdering?.type ?? null
+  } as Deltaker
 }
 
 export const createMockDeltaker = (
@@ -41,13 +45,33 @@ export const createMockDeltaker = (
   beskyttelsesmarkering: Beskyttelsesmarkering[],
   vurdering: Vurdering | null,
   navEnhet: string | null
-): DeltakerDetaljer => {
+): MockDeltaker => {
   const adresseBeskyttet = erAdresseBeskyttet(beskyttelsesmarkering)
+  const erSkjermet = beskyttelsesmarkering.includes(
+    Beskyttelsesmarkering.SKJERMET
+  )
+
+  const aktiveForslag =
+    statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+      ? [
+          createMockAktivtForslag({
+            type: ForslagEndringType.IkkeAktuell,
+            aarsak: {
+              type: ForslagEndringAarsakType.FattJobb
+            }
+          })
+        ]
+      : []
+
   return {
     id,
-    fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
+    fornavn: adresseBeskyttet
+      ? 'Adressebeskyttet'
+      : erSkjermet
+        ? 'Skjermet person'
+        : faker.person.firstName(),
     mellomnavn: null,
-    etternavn: adresseBeskyttet ? '' : faker.person.lastName(),
+    etternavn: adresseBeskyttet || erSkjermet ? '' : faker.person.lastName(),
     fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
@@ -60,6 +84,7 @@ export const createMockDeltaker = (
           : null
     },
     vurdering,
+    erManueltDeltMedArrangor: !!vurdering,
     beskyttelsesmarkering,
     navEnhet,
     startdato: faker.date.past(),
@@ -72,17 +97,10 @@ export const createMockDeltaker = (
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     tilgangTilBruker: !adresseBeskyttet,
-    aktiveForslag:
-      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
-        ? [
-            createMockAktivtForslag({
-              type: ForslagEndringType.IkkeAktuell,
-              aarsak: {
-                type: ForslagEndringAarsakType.FattJobb
-              }
-            })
-          ]
-        : []
+    ikkeDigitalOgManglerAdresse: true,
+    harAktiveForslag: aktiveForslag.length > 0,
+    aktiveForslag,
+    kanEndres: statusType !== DeltakerStatusType.AVBRUTT
   }
 }
 const createStatus = (index: number) => {
@@ -129,7 +147,7 @@ const createBeskyttelsesmarkering = (index: number) => {
   return []
 }
 
-export const createMockDeltakere = (): DeltakerDetaljer[] => {
+export const createMockDeltakere = (): MockDeltaker[] => {
   const deltakere = []
   for (let i = 0; i < 20; i++) {
     const navEnheter = ['Nav Grünerløkka', 'Nav Lade', 'Nav Madla', 'Nav Fana']
@@ -151,6 +169,7 @@ export const createMockDeltakere = (): DeltakerDetaljer[] => {
   if (deltakerMedStatusDeltar) {
     deltakere.push({
       ...deltakerMedStatusDeltar,
+      id: deltakerMedStatusDeltar.id.replace('888e', '888a'),
       status: {
         ...deltakerMedStatusDeltar.status,
         type: DeltakerStatusType.AVBRUTT
