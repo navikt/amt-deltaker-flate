@@ -23,7 +23,7 @@ export const generateInnholdFromResponse = (
       ? [
           {
             innholdskode: INNHOLD_TYPE_ANNET,
-            beskrivelse: innholdsTekst || null
+            beskrivelse: innholdsTekst
           }
         ]
       : []
