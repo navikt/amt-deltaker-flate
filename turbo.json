@@ -2,20 +2,24 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": ["MODE", "BASE_URL", "PROD", "DEV"],
   "tasks": {
-    "build": {
+    "type-check": {
       "dependsOn": ["^build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tsconfig.json"]
+    },
+    "build": {
+      "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:dev": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:pull-request": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:demo": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "test": {
