@@ -1,5 +1,5 @@
-import { formatDate } from 'deltaker-flate-common'
-import { UlestHendelse, UlestHendelseType } from '../api/data/ulestHendelse'
+import { formatDate, UlestHendelseType } from 'deltaker-flate-common'
+import { UlestHendelse } from '../api/data/ulestHendelse'
 
 export const getEndretTekst = (ulestHendelse: UlestHendelse) => {
   const endretTekst =

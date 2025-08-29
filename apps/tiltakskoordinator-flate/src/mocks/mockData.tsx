@@ -6,7 +6,8 @@ import {
   DeltakerStatusType,
   ForslagEndringAarsakType,
   ForslagEndringType,
-  Tiltakskode
+  Tiltakskode,
+  UlestHendelseType
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -21,7 +22,7 @@ import {
   Vurderingstype
 } from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
-import { UlestHendelse, UlestHendelseType } from '../api/data/ulestHendelse.ts'
+import { UlestHendelse } from '../api/data/ulestHendelse.ts'
 
 export type MockDeltaker = DeltakerDetaljer & Omit<Deltaker, 'vurdering'>
 

@@ -4,12 +4,12 @@ import {
   formatDate,
   ForslagtypeDetaljer,
   getDeltakerStatusAarsakText,
-  getForslagTittel
+  getForslagTittel,
+  UlestHendelseType
 } from 'deltaker-flate-common'
 import {
   UlestHendelse,
-  UlestHendelseEndring,
-  UlestHendelseType
+  UlestHendelseEndring
 } from '../../api/data/ulestHendelse'
 import {
   BodyLong,

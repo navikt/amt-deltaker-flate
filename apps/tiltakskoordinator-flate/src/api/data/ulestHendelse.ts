@@ -2,21 +2,10 @@ import {
   dateSchema,
   deltakerStatusAarsakSchema,
   forslagEndringSchema,
-  nullableDateSchema
+  nullableDateSchema,
+  UlestHendelseType
 } from 'deltaker-flate-common'
 import z from 'zod'
-
-export enum UlestHendelseType {
-  InnbyggerGodkjennUtkast = 'InnbyggerGodkjennUtkast',
-  NavGodkjennUtkast = 'NavGodkjennUtkast',
-  LeggTilOppstartsdato = 'LeggTilOppstartsdato',
-  FjernOppstartsdato = 'FjernOppstartsdato',
-  EndreStartdato = 'EndreStartdato',
-  IkkeAktuell = 'IkkeAktuell',
-  AvsluttDeltakelse = 'AvsluttDeltakelse',
-  AvbrytDeltakelse = 'AvbrytDeltakelse',
-  ReaktiverDeltakelse = 'ReaktiverDeltakelse'
-}
 
 const innbyggerGodkjennUtkastSchema = z.object({
   type: z.literal(UlestHendelseType.InnbyggerGodkjennUtkast)

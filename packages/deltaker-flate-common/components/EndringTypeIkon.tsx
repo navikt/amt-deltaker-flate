@@ -10,7 +10,7 @@ import {
 } from '@navikt/aksel-icons'
 import { TiltakskoordinatorEndringsType } from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
-import { UlestHendelseType } from '../../../apps/tiltakskoordinator-flate/src/api/data/ulestHendelse.ts'
+import { UlestHendelseType } from '../model/ulestHendelse.ts'
 
 interface EndringTypeIkonProps {
   type: EndreDeltakelseType | TiltakskoordinatorEndringsType | UlestHendelseType
