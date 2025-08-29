@@ -357,6 +357,28 @@ export async function giAvslag(
   })
 }
 
+export async function markerSomLest(ulestHendelseId: string): Promise<void> {
+  return fetch(
+    `${API_URL}/tiltakskoordinator/ulest-hendelse/${ulestHendelseId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Nav-Consumer-Id': APP_NAME
+      }
+    }
+  ).then(async (response) => {
+    if (response.status !== 200) {
+      const message = `Kunne ikke markere ulest hendelse som lest: ${ulestHendelseId}`
+      logError(message)
+      throw new Error(message)
+    }
+    return Promise.resolve()
+  })
+}
+
 const harTilgansfeil = (response: Response) => {
   return [401, 403, 410].includes(response.status)
 }

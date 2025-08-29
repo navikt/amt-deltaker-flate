@@ -19,7 +19,6 @@ import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
 import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 import { HandlingModalController } from '../handling/HandlingModalController.tsx'
-import { Vurdering } from '../Vurdering.tsx'
 import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
@@ -30,6 +29,7 @@ import {
 } from '../../hooks/useDeltakerSortering.tsx'
 import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
 import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFeilAlert.tsx'
+import { Vurdering } from '../Vurdering.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { filtrerteDeltakere, deltakerlisteDetaljer } =

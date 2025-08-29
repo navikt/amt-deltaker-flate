@@ -29,8 +29,9 @@ export const EndreDeltakelseKnapp = () => {
     setModalType(type)
     setModalOpen(true)
     setForslag(
-      pamelding.forslag.filter((f) => getEndreDeltakelsesType(f) === type)[0] ??
-        null
+      pamelding.forslag.filter(
+        (f) => getEndreDeltakelsesType(f.endring) === type
+      )[0] ?? null
     )
   }
 

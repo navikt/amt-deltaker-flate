@@ -1,7 +1,7 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
-import { DeltakerDetaljer } from '../api/data/deltaker'
-import { lagDeltakerNavn } from '../utils/utils'
-import { DeltakerMarkering } from './DeltakerMarkering'
+import { DeltakerDetaljer } from '../../api/data/deltaker'
+import { lagDeltakerNavn } from '../../utils/utils'
+import { DeltakerMarkering } from '../DeltakerMarkering'
 import { Fodselsnummer } from './Fodselsnummer'
 
 interface Props {

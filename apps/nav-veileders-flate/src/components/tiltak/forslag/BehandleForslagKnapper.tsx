@@ -43,7 +43,7 @@ export const BehandleForslagKnapper = ({ forslag }: Props) => {
           variant="primary"
           className="ml-4"
           onClick={() => {
-            const type = getEndreDeltakelsesType(forslag)
+            const type = getEndreDeltakelsesType(forslag.endring)
             setModalType(type)
             setBehandleModalOpen(true)
           }}

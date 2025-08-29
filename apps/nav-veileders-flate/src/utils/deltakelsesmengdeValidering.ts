@@ -18,7 +18,7 @@ export const getDagerPerUkeError = (
   if (!dagerPerUke || deltakelsesprosent === 100) {
     return undefined
   }
-  const isValid = dagerPerUke ? 0 < dagerPerUke && dagerPerUke <= 5 : true
+  const isValid = 0 < dagerPerUke && dagerPerUke <= 5
 
   if (!isValid) {
     return 'Dager per uke må være et helt tall fra 1 til 5'

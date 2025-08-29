@@ -64,6 +64,16 @@ export class MockHandler {
     return HttpResponse.json(lagHistorikkFellesOppstart())
   }
 
+  slettUlestHendelse(ulestHendelseId: string) {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => ({
+      ...deltaker,
+      ulesteHendelser: deltaker.ulesteHendelser.filter(
+        (hendelse) => hendelse.id !== ulestHendelseId
+      )
+    }))
+    return new HttpResponse()
+  }
+
   leggTilTilgang() {
     this.tilgang = true
     return new HttpResponse()

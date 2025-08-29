@@ -3,25 +3,57 @@ import { ReactNode } from 'react'
 import { Forslag } from '../../model/forslag'
 import { ForslagDetaljer } from './ForslagDetaljer'
 
+interface EndringBoxProps {
+  className?: string
+  children: ReactNode
+}
+
+export const EndringerWrapper = ({ children, className }: EndringBoxProps) => {
+  return (
+    <Box
+      background="bg-subtle"
+      padding={{ xs: '2', md: '4' }}
+      borderRadius="medium"
+      className={className ?? ''}
+    >
+      {children}
+    </Box>
+  )
+}
+
+interface EndringBoxProps {
+  className?: string
+  children: ReactNode
+}
+
+export const EndringerBox = ({ children, className }: EndringBoxProps) => {
+  return (
+    <Box
+      background="surface-default"
+      borderColor="border-default"
+      borderWidth="1"
+      borderRadius="medium"
+      className={className ?? ''}
+    >
+      {children}
+    </Box>
+  )
+}
+
 interface ForslagInfoProps {
   children: ReactNode
 }
 
 export function ForslagInfo({ children }: ForslagInfoProps) {
   return (
-    <Box
-      background="bg-subtle"
-      padding={{ xs: '2', md: '4' }}
-      borderRadius="medium"
-      className="mt-4"
-    >
+    <EndringerWrapper className="mt-4">
       <VStack gap="4">
         <Heading level="2" size="medium">
           Arrangør foreslår en endring:
         </Heading>
         {children}
       </VStack>
-    </Box>
+    </EndringerWrapper>
   )
 }
 
@@ -31,14 +63,9 @@ interface AktivtForslagBoxProps {
 }
 export function AktivtForslagBox({ forslag, children }: AktivtForslagBoxProps) {
   return (
-    <Box
-      background="surface-default"
-      borderColor="border-default"
-      borderWidth="1"
-      borderRadius="medium"
-    >
+    <EndringerBox>
       <ForslagDetaljer forslag={forslag} />
       {children}
-    </Box>
+    </EndringerBox>
   )
 }

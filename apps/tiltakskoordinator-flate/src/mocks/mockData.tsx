@@ -21,6 +21,7 @@ import {
   Vurderingstype
 } from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
+import { UlestHendelse, UlestHendelseType } from '../api/data/ulestHendelse.ts'
 
 export type MockDeltaker = DeltakerDetaljer & Omit<Deltaker, 'vurdering'>
 
@@ -100,9 +101,11 @@ export const createMockDeltaker = (
     ikkeDigitalOgManglerAdresse: true,
     harAktiveForslag: aktiveForslag.length > 0,
     aktiveForslag,
-    kanEndres: statusType !== DeltakerStatusType.AVBRUTT
+    kanEndres: statusType !== DeltakerStatusType.AVBRUTT,
+    ulesteHendelser: createUlesteHendelserMock(id)
   }
 }
+
 const createStatus = (index: number) => {
   if (index < 3) {
     return DeltakerStatusType.VENTER_PA_OPPSTART
@@ -220,4 +223,156 @@ export const lagMockDeltaker = (): Deltaker => {
     harAktiveForslag: false,
     kanEndres: true
   }
+}
+
+const createUlesteHendelserMock = (deltakerId: string): UlestHendelse[] => {
+  return [
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(1, 'day').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Oslo'
+      },
+      hendelse: {
+        type: UlestHendelseType.InnbyggerGodkjennUtkast
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(2, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: null
+      },
+      hendelse: {
+        type: UlestHendelseType.NavGodkjennUtkast
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(3, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Bergen'
+      },
+      hendelse: {
+        type: UlestHendelseType.LeggTilOppstartsdato,
+        startdato: dayjs().add(1, 'week').toDate(),
+        sluttdato: dayjs().add(6, 'months').toDate()
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(4, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Trondheim'
+      },
+      hendelse: {
+        type: UlestHendelseType.FjernOppstartsdato,
+        begrunnelseFraNav: 'Deltaker ønsker å utsette oppstart',
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(5, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: null
+      },
+      hendelse: {
+        type: UlestHendelseType.EndreStartdato,
+        startdato: dayjs().add(2, 'weeks').toDate(),
+        sluttdato: dayjs().add(7, 'months').toDate(),
+        begrunnelseFraNav: 'Endring av oppstartsdato etter ønske fra deltaker',
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(6, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Stavanger'
+      },
+      hendelse: {
+        type: UlestHendelseType.IkkeAktuell,
+        aarsak: {
+          type: DeltakerStatusAarsakType.IKKE_MOTT,
+          beskrivelse: null
+        },
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: 'Deltaker har ikke møtt',
+        endringFraForslag: {
+          type: ForslagEndringType.IkkeAktuell,
+          aarsak: {
+            type: ForslagEndringAarsakType.IkkeMott
+          }
+        }
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(7, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Kristiansand'
+      },
+      hendelse: {
+        type: UlestHendelseType.AvsluttDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().subtract(1, 'day').toDate(),
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(8, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: null
+      },
+      hendelse: {
+        type: UlestHendelseType.AvbrytDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().subtract(2, 'days').toDate(),
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(9, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Tromsø'
+      },
+      hendelse: {
+        type: UlestHendelseType.ReaktiverDeltakelse,
+        begrunnelseFraNav: 'Deltaker ønsker å fortsette etter avbrudd'
+      }
+    }
+  ]
 }
