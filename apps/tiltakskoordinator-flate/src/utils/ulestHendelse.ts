@@ -8,13 +8,13 @@ export const getEndretTekst = (ulestHendelse: UlestHendelse) => {
       ? 'Søkt inn'
       : 'Endret'
 
-  const endretAv =
-    ulestHendelse.ansvarlig.endretAvNavn &&
-    ulestHendelse.ansvarlig.endretAvEnhet
+  let endretAv = ''
+  if (ulestHendelse.ansvarlig) {
+    endretAv = ulestHendelse.ansvarlig.endretAvEnhet
       ? ` av ${ulestHendelse.ansvarlig.endretAvNavn} ${ulestHendelse.ansvarlig.endretAvEnhet}`
-      : ulestHendelse.ansvarlig.endretAvNavn
-        ? ` av ${ulestHendelse.ansvarlig.endretAvNavn}`
-        : ''
+      : ` av ${ulestHendelse.ansvarlig.endretAvNavn}`
+  }
+
   return `${endretTekst} ${formatDate(ulestHendelse.opprettet)}${endretAv}.`
 }
 

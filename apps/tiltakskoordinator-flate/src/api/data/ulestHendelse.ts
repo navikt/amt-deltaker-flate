@@ -79,7 +79,7 @@ export const hendelseSchema = z.discriminatedUnion('type', [
 ])
 
 export const hendelseAnsvarligSchema = z.object({
-  endretAvNavn: z.string().nullable(),
+  endretAvNavn: z.string(),
   endretAvEnhet: z.string().nullable()
 })
 
@@ -87,7 +87,7 @@ export const ulesthendelseSchema = z.object({
   id: z.string().uuid(),
   opprettet: dateSchema,
   deltakerId: z.string().uuid(),
-  ansvarlig: hendelseAnsvarligSchema,
+  ansvarlig: hendelseAnsvarligSchema.nullable(),
   hendelse: hendelseSchema
 })
 
