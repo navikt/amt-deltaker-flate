@@ -17,14 +17,14 @@ spec:
     path: /internal/ready
     initialDelay: 10
   replicas:
-    min: 2
+    min: 1
     max: 4
     scalingStrategy:
       cpu:
-        thresholdPercentage: 100
+        thresholdPercentage: 500
   resources:
     requests:
-      cpu: 50m
+      cpu: 20m
       memory: 64Mi
     limits:
       memory: 256Mi
