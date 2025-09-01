@@ -14,6 +14,7 @@ import {
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
+import dayjs from 'dayjs'
 
 const ikkeAktuellKanEndres = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
@@ -93,7 +94,7 @@ const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 
-  return nyesteDato < toMndSiden
+  return dayjs(nyesteDato).isAfter(toMndSiden)
 }
 
 const getNyesteDato = (datoer: (Date | null)[]) => {
