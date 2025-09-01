@@ -74,7 +74,7 @@ const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
     pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
   pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
 
-const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
+export const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
   if (!pamelding.kanEndres) {
     return true
   }
@@ -91,13 +91,11 @@ const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
     return false
   }
 
-  const toMndSiden = new Date()
-  toMndSiden.setMonth(toMndSiden.getMonth() - 2)
-
+  const toMndSiden = dayjs().subtract(2, 'month')
   return dayjs(nyesteDato).isBefore(toMndSiden)
 }
 
-const getNyesteDato = (datoer: (Date | null)[]) => {
+export const getNyesteDato = (datoer: (Date | null)[]) => {
   const gyldigeDatoer = datoer.filter((date): date is Date => date !== null)
 
   if (gyldigeDatoer.length === 0) {
