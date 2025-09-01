@@ -20,7 +20,7 @@ export function DeltakerEndringer({
 }: Props) {
   const [ulesteHendelser, setUlesteHendelser] = useState(initialUlesteHendelser)
 
-  if (ulesteHendelser.length <= 0 || forslag.length <= 0) {
+  if (ulesteHendelser.length <= 0 && forslag.length <= 0) {
     return <></>
   }
 
