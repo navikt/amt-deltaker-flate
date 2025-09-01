@@ -94,7 +94,7 @@ const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
   const toMndSiden = new Date()
   toMndSiden.setMonth(toMndSiden.getMonth() - 2)
 
-  return dayjs(nyesteDato).isAfter(toMndSiden)
+  return dayjs(nyesteDato).isBefore(toMndSiden)
 }
 
 const getNyesteDato = (datoer: (Date | null)[]) => {
