@@ -2,7 +2,6 @@ import {
   dateSchema,
   deltakerStatusAarsakSchema,
   forslagEndringSchema,
-  nullableDateSchema,
   UlestHendelseType
 } from 'deltaker-flate-common'
 import z from 'zod'
@@ -13,26 +12,9 @@ const innbyggerGodkjennUtkastSchema = z.object({
 const navGodkjennUtkastSchema = z.object({
   type: z.literal(UlestHendelseType.NavGodkjennUtkast)
 })
-const leggTilOppstartsdatoSchema = z.object({
-  type: z.literal(UlestHendelseType.LeggTilOppstartsdato),
-  startdato: dateSchema,
-  sluttdato: nullableDateSchema
-})
-
-const fjernOppstartsdatoSchema = z.object({
-  type: z.literal(UlestHendelseType.FjernOppstartsdato),
-  begrunnelseFraNav: z.string().nullable(),
-  begrunnelseFraArrangor: z.string().nullable(),
-  endringFraForslag: forslagEndringSchema.nullable()
-})
-
-const endreStartdatoSchema = z.object({
-  type: z.literal(UlestHendelseType.EndreStartdato),
-  startdato: dateSchema,
-  sluttdato: nullableDateSchema,
-  begrunnelseFraNav: z.string().nullable(),
-  begrunnelseFraArrangor: z.string().nullable(),
-  endringFraForslag: forslagEndringSchema.nullable()
+const reaktiverDeltakelseSchema = z.object({
+  type: z.literal(UlestHendelseType.ReaktiverDeltakelse),
+  begrunnelseFraNav: z.string()
 })
 
 const ikkeAktuellSchema = z.object({
@@ -61,21 +43,13 @@ const avbrytDeltakelseSchema = z.object({
   endringFraForslag: forslagEndringSchema.nullable()
 })
 
-const reaktiverDeltakelseSchema = z.object({
-  type: z.literal(UlestHendelseType.ReaktiverDeltakelse),
-  begrunnelseFraNav: z.string()
-})
-
 export const hendelseSchema = z.discriminatedUnion('type', [
   innbyggerGodkjennUtkastSchema,
   navGodkjennUtkastSchema,
-  leggTilOppstartsdatoSchema,
-  fjernOppstartsdatoSchema,
-  endreStartdatoSchema,
+  reaktiverDeltakelseSchema,
   ikkeAktuellSchema,
   avsluttDeltakelseSchema,
-  avbrytDeltakelseSchema,
-  reaktiverDeltakelseSchema
+  avbrytDeltakelseSchema
 ])
 
 export const hendelseAnsvarligSchema = z.object({

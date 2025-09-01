@@ -1,17 +1,4 @@
 import {
-  EndringerBox,
-  EndringTypeIkon,
-  formatDate,
-  ForslagtypeDetaljer,
-  getDeltakerStatusAarsakText,
-  getForslagTittel,
-  UlestHendelseType
-} from 'deltaker-flate-common'
-import {
-  UlestHendelse,
-  UlestHendelseEndring
-} from '../../api/data/ulestHendelse'
-import {
   BodyLong,
   Box,
   Button,
@@ -19,7 +6,19 @@ import {
   Heading,
   ReadMore
 } from '@navikt/ds-react'
+import {
+  EndringerBox,
+  EndringTypeIkon,
+  ForslagtypeDetaljer,
+  getDeltakerStatusAarsakText,
+  getForslagTittel,
+  UlestHendelseType
+} from 'deltaker-flate-common'
 import { markerSomLest } from '../../api/api'
+import {
+  UlestHendelse,
+  UlestHendelseEndring
+} from '../../api/data/ulestHendelse'
 import {
   getEndretTekst,
   getUlestHendelseTittel
@@ -102,7 +101,6 @@ const HendelsesDetaljer = ({
   switch (hendelse.type) {
     case UlestHendelseType.InnbyggerGodkjennUtkast:
     case UlestHendelseType.NavGodkjennUtkast:
-    case UlestHendelseType.FjernOppstartsdato:
     case UlestHendelseType.ReaktiverDeltakelse:
       return null
 
@@ -121,24 +119,6 @@ const HendelsesDetaljer = ({
               Navs begrunnelse: {hendelse.begrunnelseFraNav}
             </BodyLong>
           )}
-        </>
-      )
-
-    case UlestHendelseType.LeggTilOppstartsdato:
-    case UlestHendelseType.EndreStartdato:
-      return (
-        <>
-          {hendelse.sluttdato && (
-            <BodyLong size="small">
-              Forventet sluttdato: {formatDate(hendelse.sluttdato)}
-            </BodyLong>
-          )}
-          {hendelse.type === UlestHendelseType.EndreStartdato &&
-            hendelse.begrunnelseFraNav && (
-              <BodyLong size="small" className="whitespace-pre-wrap">
-                Navs begrunnelse: {hendelse.begrunnelseFraNav}
-              </BodyLong>
-            )}
         </>
       )
   }

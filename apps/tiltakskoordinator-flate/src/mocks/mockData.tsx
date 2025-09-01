@@ -255,52 +255,6 @@ const createUlesteHendelserMock = (deltakerId: string): UlestHendelse[] => {
     {
       id: uuidv4(),
       deltakerId,
-      opprettet: dayjs().subtract(3, 'days').toDate(),
-      ansvarlig: {
-        endretAvNavn: faker.person.fullName(),
-        endretAvEnhet: 'NAV Bergen'
-      },
-      hendelse: {
-        type: UlestHendelseType.LeggTilOppstartsdato,
-        startdato: dayjs().add(1, 'week').toDate(),
-        sluttdato: dayjs().add(6, 'months').toDate()
-      }
-    },
-    {
-      id: uuidv4(),
-      deltakerId,
-      opprettet: dayjs().subtract(4, 'days').toDate(),
-      ansvarlig: {
-        endretAvNavn: faker.person.fullName(),
-        endretAvEnhet: 'NAV Trondheim'
-      },
-      hendelse: {
-        type: UlestHendelseType.FjernOppstartsdato,
-        begrunnelseFraNav: 'Deltaker ønsker å utsette oppstart',
-        begrunnelseFraArrangor: null,
-        endringFraForslag: null
-      }
-    },
-    {
-      id: uuidv4(),
-      deltakerId,
-      opprettet: dayjs().subtract(5, 'days').toDate(),
-      ansvarlig: {
-        endretAvNavn: faker.person.fullName(),
-        endretAvEnhet: null
-      },
-      hendelse: {
-        type: UlestHendelseType.EndreStartdato,
-        startdato: dayjs().add(2, 'weeks').toDate(),
-        sluttdato: dayjs().add(7, 'months').toDate(),
-        begrunnelseFraNav: 'Endring av oppstartsdato etter ønske fra deltaker',
-        begrunnelseFraArrangor: null,
-        endringFraForslag: null
-      }
-    },
-    {
-      id: uuidv4(),
-      deltakerId,
       opprettet: dayjs().subtract(6, 'days').toDate(),
       ansvarlig: {
         endretAvNavn: faker.person.fullName(),

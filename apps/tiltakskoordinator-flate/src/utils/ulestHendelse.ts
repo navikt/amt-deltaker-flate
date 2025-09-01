@@ -23,11 +23,6 @@ export const getUlestHendelseTittel = (ulestHendelse: UlestHendelse) => {
     case UlestHendelseType.InnbyggerGodkjennUtkast:
     case UlestHendelseType.NavGodkjennUtkast:
       return 'Søkt inn'
-    case UlestHendelseType.LeggTilOppstartsdato:
-    case UlestHendelseType.EndreStartdato:
-      return `Oppstartsdato er endret til ${formatDate(ulestHendelse.hendelse.startdato)}`
-    case UlestHendelseType.FjernOppstartsdato:
-      return 'Oppstartsdato er fjernet'
     case UlestHendelseType.IkkeAktuell:
       return 'Deltakelsen er ikke aktuell'
     case UlestHendelseType.AvsluttDeltakelse:
