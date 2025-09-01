@@ -370,7 +370,7 @@ export async function markerSomLest(ulestHendelseId: string): Promise<void> {
       }
     }
   ).then(async (response) => {
-    if (response.status !== 200) {
+    if (response.status !== 204) {
       const message = `Kunne ikke markere ulest hendelse som lest: ${ulestHendelseId}`
       logError(message)
       throw new Error(message)
