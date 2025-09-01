@@ -20,6 +20,10 @@ export function DeltakerEndringer({
 }: Props) {
   const [ulesteHendelser, setUlesteHendelser] = useState(initialUlesteHendelser)
 
+  if (ulesteHendelser.length <= 0 || forslag.length <= 0) {
+    return <></>
+  }
+
   return (
     <EndringerWrapper className="mt-4 flex flex-col gap-4">
       {forslag.length > 0 && (
