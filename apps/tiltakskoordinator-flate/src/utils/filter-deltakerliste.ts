@@ -1,24 +1,30 @@
 import { Deltakere } from '../api/data/deltakerliste'
 
 export enum FilterValg {
-  AktiveForslag = 'AktiveForslag'
+  AktiveForslag = 'AktiveForslag',
+  OppdateringFraNav = 'OppdateringFraNav',
+  NyeDeltakere = 'NyeDeltakere'
 }
 
 const getFilterTypeNavn = (filterValg: FilterValg): string => {
   switch (filterValg) {
     case FilterValg.AktiveForslag:
       return 'Forslag fra arrangør'
+    case FilterValg.OppdateringFraNav:
+      return 'Oppdatering fra Nav'
+    case FilterValg.NyeDeltakere:
+      return 'Nye deltakere'
     default:
       return 'Ukjent filter'
   }
 }
 
 export const getFiltrerteDeltakere = (
-  delttakere: Deltakere,
+  deltakere: Deltakere,
   filterValg: FilterValg[]
 ): Deltakere => {
   const valgteFilter = new Set(filterValg)
-  return delttakere.filter((deltaker) => {
+  return deltakere.filter((deltaker) => {
     let filterOk = true
 
     valgteFilter.forEach((filterValg) => {
@@ -26,6 +32,12 @@ export const getFiltrerteDeltakere = (
         switch (filterValg) {
           case FilterValg.AktiveForslag:
             filterOk = deltaker.harAktiveForslag
+            break
+          case FilterValg.OppdateringFraNav:
+            filterOk = deltaker.harOppdateringFraNav
+            break
+          case FilterValg.NyeDeltakere:
+            filterOk = deltaker.erNyDeltaker
             break
         }
       }

@@ -65,6 +65,31 @@ export const createMockDeltaker = (
         ]
       : []
 
+  const ulesteHendelser = createUlesteHendelserMock(id)
+  const tilfeldigAntallUleste = Math.floor(
+    Math.random() * (ulesteHendelser.length / 2) + 1
+  )
+  const ulesteHendelserUtvalg = faker.helpers.arrayElements(
+    ulesteHendelser,
+    tilfeldigAntallUleste
+  )
+
+  const harOppdateringFraNav = ulesteHendelserUtvalg.some((ulestHendelse) =>
+    [
+      UlestHendelseType.IkkeAktuell,
+      UlestHendelseType.AvsluttDeltakelse,
+      UlestHendelseType.AvbrytDeltakelse,
+      UlestHendelseType.ReaktiverDeltakelse
+    ].includes(ulestHendelse.hendelse.type)
+  )
+
+  const erNyDeltaker = ulesteHendelserUtvalg.some((ulestHendelse) =>
+    [
+      UlestHendelseType.NavGodkjennUtkast,
+      UlestHendelseType.InnbyggerGodkjennUtkast
+    ].includes(ulestHendelse.hendelse.type)
+  )
+
   return {
     id,
     fornavn: adresseBeskyttet
@@ -101,9 +126,11 @@ export const createMockDeltaker = (
     tilgangTilBruker: !adresseBeskyttet,
     ikkeDigitalOgManglerAdresse: true,
     harAktiveForslag: aktiveForslag.length > 0,
-    aktiveForslag,
+    erNyDeltaker: erNyDeltaker,
+    harOppdateringFraNav: harOppdateringFraNav,
+    aktiveForslag: aktiveForslag,
     kanEndres: statusType !== DeltakerStatusType.AVBRUTT,
-    ulesteHendelser: createUlesteHendelserMock(id)
+    ulesteHendelser: ulesteHendelserUtvalg
   }
 }
 
@@ -222,6 +249,8 @@ export const lagMockDeltaker = (): Deltaker => {
     erManueltDeltMedArrangor: false,
     ikkeDigitalOgManglerAdresse: false,
     harAktiveForslag: false,
+    erNyDeltaker: false,
+    harOppdateringFraNav: false,
     kanEndres: true
   }
 }
