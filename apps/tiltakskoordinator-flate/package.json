@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --port 3003",
+    "type-check": "tsc --noEmit",
     "build:demo": "vite build --mode demo",
     "build:pull-request": "vite build --mode pull-request",
     "build:dev": "vite build --mode dev --config vite-micro-frontend.config.js",

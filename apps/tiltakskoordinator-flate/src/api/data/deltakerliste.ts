@@ -46,6 +46,8 @@ export const deltakerSchema = z.object({
   feilkode: z.enum(Feilkode).nullable().optional(),
   ikkeDigitalOgManglerAdresse: z.boolean(),
   harAktiveForslag: z.boolean(),
+  erNyDeltaker: z.boolean(),
+  harOppdateringFraNav: z.boolean(),
   kanEndres: z.boolean()
 })
 

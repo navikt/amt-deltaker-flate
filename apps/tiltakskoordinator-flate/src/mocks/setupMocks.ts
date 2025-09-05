@@ -92,5 +92,13 @@ export const worker = setupWorker(
       await delay(1000)
       return handler.getHistorikk()
     }
+  ),
+  http.delete(
+    '/amt-deltaker-bff/tiltakskoordinator/ulest-hendelse/:ulestHendelseId',
+    async ({ params }) => {
+      await delay(1000)
+      const { ulestHendelseId } = params
+      return handler.slettUlestHendelse(ulestHendelseId as string)
+    }
   )
 )

@@ -5,15 +5,21 @@ import { lagMockDeltaker } from '../mocks/mockData'
 const mockDeltakere = [
   {
     ...lagMockDeltaker(),
-    harAktiveForslag: false
+    harAktiveForslag: false,
+    harOppdateringFraNav: false,
+    erNyDeltaker: false
   },
   {
     ...lagMockDeltaker(),
-    harAktiveForslag: true
+    harAktiveForslag: true,
+    harOppdateringFraNav: true,
+    erNyDeltaker: false
   },
   {
     ...lagMockDeltaker(),
-    harAktiveForslag: true
+    harAktiveForslag: true,
+    harOppdateringFraNav: false,
+    erNyDeltaker: true
   }
 ]
 

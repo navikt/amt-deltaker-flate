@@ -19,7 +19,10 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
             Forslag fra arrangør:
           </Heading>
         </div>
-        <ForslagtypeDetaljer forslag={forslag} />
+        <ForslagtypeDetaljer
+          begrunnelse={forslag.begrunnelse}
+          forslagEndring={forslag.endring}
+        />
       </Box>
     </div>
   )

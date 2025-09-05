@@ -1,6 +1,5 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { Deltakelsesmengde } from '../model/deltaker'
-import React from 'react'
 import { deltakerprosentText } from '../utils/displayText'
 import { formatDate } from '../utils/utils'
 

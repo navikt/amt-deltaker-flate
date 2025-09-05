@@ -8,10 +8,10 @@ import {
   SeEndringer,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker'
-import { Vurdering } from './Vurdering'
-import { getDeltakerHistorikk } from '../api/api'
-import { AktiveForslag } from './AktiveForslag'
+import { getDeltakerHistorikk } from '../../api/api'
+import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../../api/data/deltaker'
+import { Vurdering } from '../Vurdering'
+import { DeltakerEndringer } from './DeltakerEndringer'
 
 interface Props {
   deltaker: DeltakerDetaljerDomene | null
@@ -65,7 +65,10 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         </Detail>
       </div>
 
-      <AktiveForslag forslag={deltaker.aktiveForslag} />
+      <DeltakerEndringer
+        forslag={deltaker.aktiveForslag}
+        ulesteHendelser={deltaker.ulesteHendelser}
+      />
 
       {deltaker.tilgangTilBruker && (
         <SeEndringer

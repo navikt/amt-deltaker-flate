@@ -6,7 +6,8 @@ import {
   DeltakerStatusType,
   ForslagEndringAarsakType,
   ForslagEndringType,
-  Tiltakskode
+  Tiltakskode,
+  UlestHendelseType
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -21,18 +22,23 @@ import {
   Vurderingstype
 } from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
+import { UlestHendelse } from '../api/data/ulestHendelse.ts'
 
-export const mapDeltakerDeltaljerToDeltaker = (
-  deltakerDetaljer: DeltakerDetaljer
+export type MockDeltaker = DeltakerDetaljer & Omit<Deltaker, 'vurdering'>
+
+export const mapMockDeltakereToDeltakere = (
+  mockDeltakere: MockDeltaker[]
+): Deltaker[] => {
+  return mockDeltakere.map(mapMockDeltakerToDeltaker)
+}
+
+export const mapMockDeltakerToDeltaker = (
+  mockDeltaker: MockDeltaker
 ): Deltaker => {
   return {
-    ...deltakerDetaljer,
-    vurdering: deltakerDetaljer.vurdering?.type ?? null,
-    erManueltDeltMedArrangor: !!deltakerDetaljer.vurdering,
-    ikkeDigitalOgManglerAdresse: true,
-    harAktiveForslag: deltakerDetaljer.aktiveForslag.length > 0,
-    kanEndres: deltakerDetaljer.status.type !== DeltakerStatusType.AVBRUTT
-  }
+    ...mockDeltaker,
+    vurdering: mockDeltaker.vurdering?.type ?? null
+  } as Deltaker
 }
 
 export const createMockDeltaker = (
@@ -41,13 +47,58 @@ export const createMockDeltaker = (
   beskyttelsesmarkering: Beskyttelsesmarkering[],
   vurdering: Vurdering | null,
   navEnhet: string | null
-): DeltakerDetaljer => {
+): MockDeltaker => {
   const adresseBeskyttet = erAdresseBeskyttet(beskyttelsesmarkering)
+  const erSkjermet = beskyttelsesmarkering.includes(
+    Beskyttelsesmarkering.SKJERMET
+  )
+
+  const aktiveForslag =
+    statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+      ? [
+          createMockAktivtForslag({
+            type: ForslagEndringType.IkkeAktuell,
+            aarsak: {
+              type: ForslagEndringAarsakType.FattJobb
+            }
+          })
+        ]
+      : []
+
+  const ulesteHendelser = createUlesteHendelserMock(id)
+  const tilfeldigAntallUleste = Math.floor(
+    Math.random() * (ulesteHendelser.length / 2) + 1
+  )
+  const ulesteHendelserUtvalg = faker.helpers.arrayElements(
+    ulesteHendelser,
+    tilfeldigAntallUleste
+  )
+
+  const harOppdateringFraNav = ulesteHendelserUtvalg.some((ulestHendelse) =>
+    [
+      UlestHendelseType.IkkeAktuell,
+      UlestHendelseType.AvsluttDeltakelse,
+      UlestHendelseType.AvbrytDeltakelse,
+      UlestHendelseType.ReaktiverDeltakelse
+    ].includes(ulestHendelse.hendelse.type)
+  )
+
+  const erNyDeltaker = ulesteHendelserUtvalg.some((ulestHendelse) =>
+    [
+      UlestHendelseType.NavGodkjennUtkast,
+      UlestHendelseType.InnbyggerGodkjennUtkast
+    ].includes(ulestHendelse.hendelse.type)
+  )
+
   return {
     id,
-    fornavn: adresseBeskyttet ? 'Adressebeskyttet' : faker.person.firstName(),
+    fornavn: adresseBeskyttet
+      ? 'Adressebeskyttet'
+      : erSkjermet
+        ? 'Skjermet person'
+        : faker.person.firstName(),
     mellomnavn: null,
-    etternavn: adresseBeskyttet ? '' : faker.person.lastName(),
+    etternavn: adresseBeskyttet || erSkjermet ? '' : faker.person.lastName(),
     fodselsnummer: faker.string.numeric(11),
     status: {
       type: statusType,
@@ -60,6 +111,7 @@ export const createMockDeltaker = (
           : null
     },
     vurdering,
+    erManueltDeltMedArrangor: !!vurdering,
     beskyttelsesmarkering,
     navEnhet,
     startdato: faker.date.past(),
@@ -72,19 +124,16 @@ export const createMockDeltaker = (
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     tilgangTilBruker: !adresseBeskyttet,
-    aktiveForslag:
-      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
-        ? [
-            createMockAktivtForslag({
-              type: ForslagEndringType.IkkeAktuell,
-              aarsak: {
-                type: ForslagEndringAarsakType.FattJobb
-              }
-            })
-          ]
-        : []
+    ikkeDigitalOgManglerAdresse: true,
+    harAktiveForslag: aktiveForslag.length > 0,
+    erNyDeltaker: erNyDeltaker,
+    harOppdateringFraNav: harOppdateringFraNav,
+    aktiveForslag: aktiveForslag,
+    kanEndres: statusType !== DeltakerStatusType.AVBRUTT,
+    ulesteHendelser: ulesteHendelserUtvalg
   }
 }
+
 const createStatus = (index: number) => {
   if (index < 3) {
     return DeltakerStatusType.VENTER_PA_OPPSTART
@@ -129,7 +178,7 @@ const createBeskyttelsesmarkering = (index: number) => {
   return []
 }
 
-export const createMockDeltakere = (): DeltakerDetaljer[] => {
+export const createMockDeltakere = (): MockDeltaker[] => {
   const deltakere = []
   for (let i = 0; i < 20; i++) {
     const navEnheter = ['Nav Grünerløkka', 'Nav Lade', 'Nav Madla', 'Nav Fana']
@@ -151,6 +200,7 @@ export const createMockDeltakere = (): DeltakerDetaljer[] => {
   if (deltakerMedStatusDeltar) {
     deltakere.push({
       ...deltakerMedStatusDeltar,
+      id: deltakerMedStatusDeltar.id.replace('888e', '888a'),
       status: {
         ...deltakerMedStatusDeltar.status,
         type: DeltakerStatusType.AVBRUTT
@@ -199,6 +249,114 @@ export const lagMockDeltaker = (): Deltaker => {
     erManueltDeltMedArrangor: false,
     ikkeDigitalOgManglerAdresse: false,
     harAktiveForslag: false,
+    erNyDeltaker: false,
+    harOppdateringFraNav: false,
     kanEndres: true
   }
+}
+
+const createUlesteHendelserMock = (deltakerId: string): UlestHendelse[] => {
+  return [
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(1, 'day').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Oslo'
+      },
+      hendelse: {
+        type: UlestHendelseType.InnbyggerGodkjennUtkast
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(2, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: null
+      },
+      hendelse: {
+        type: UlestHendelseType.NavGodkjennUtkast
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(6, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Stavanger'
+      },
+      hendelse: {
+        type: UlestHendelseType.IkkeAktuell,
+        aarsak: {
+          type: DeltakerStatusAarsakType.IKKE_MOTT,
+          beskrivelse: null
+        },
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: 'Deltaker har ikke møtt',
+        endringFraForslag: {
+          type: ForslagEndringType.IkkeAktuell,
+          aarsak: {
+            type: ForslagEndringAarsakType.IkkeMott
+          }
+        }
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(7, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Kristiansand'
+      },
+      hendelse: {
+        type: UlestHendelseType.AvsluttDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().subtract(1, 'day').toDate(),
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(8, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: null
+      },
+      hendelse: {
+        type: UlestHendelseType.AvbrytDeltakelse,
+        aarsak: {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        },
+        sluttdato: dayjs().subtract(2, 'days').toDate(),
+        begrunnelseFraNav: null,
+        begrunnelseFraArrangor: null,
+        endringFraForslag: null
+      }
+    },
+    {
+      id: uuidv4(),
+      deltakerId,
+      opprettet: dayjs().subtract(9, 'days').toDate(),
+      ansvarlig: {
+        endretAvNavn: faker.person.fullName(),
+        endretAvEnhet: 'NAV Tromsø'
+      },
+      hendelse: {
+        type: UlestHendelseType.ReaktiverDeltakelse,
+        begrunnelseFraNav: 'Deltaker ønsker å fortsette etter avbrudd'
+      }
+    }
+  ]
 }

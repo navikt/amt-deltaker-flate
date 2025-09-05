@@ -48,7 +48,10 @@ export const HistorikkElement = ({
               <BodyLong size="small" weight="semibold">
                 {getForslagTittel(forslag.endring.type)}
               </BodyLong>
-              <ForslagtypeDetaljer forslag={forslag} />
+              <ForslagtypeDetaljer
+                begrunnelse={forslag.begrunnelse}
+                forslagEndring={forslag.endring}
+              />
               <Detail
                 className="mt-1"
                 textColor="subtle"

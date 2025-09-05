@@ -10,9 +10,10 @@ import {
 } from '@navikt/aksel-icons'
 import { TiltakskoordinatorEndringsType } from '../model/deltakerHistorikk.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
+import { UlestHendelseType } from '../model/ulestHendelse.ts'
 
 interface EndringTypeIkonProps {
-  type: EndreDeltakelseType | TiltakskoordinatorEndringsType
+  type: EndreDeltakelseType | TiltakskoordinatorEndringsType | UlestHendelseType
   size?: 'medium' | 'large' | 'small'
 }
 
@@ -27,6 +28,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
     }
   }
   switch (type) {
+    case UlestHendelseType.EndreStartdato:
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return (
         <ChevronRightCircleFillIcon
@@ -43,6 +45,9 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--a-icon-success)"
         />
       )
+    case UlestHendelseType.AvbrytDeltakelse:
+    case UlestHendelseType.AvsluttDeltakelse:
+    case UlestHendelseType.FjernOppstartsdato:
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
     case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
     case EndreDeltakelseType.ENDRE_SLUTTDATO:
@@ -54,6 +59,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         />
       )
     case TiltakskoordinatorEndringsType.Avslag:
+    case UlestHendelseType.IkkeAktuell:
     case EndreDeltakelseType.IKKE_AKTUELL:
       return (
         <PlusCircleFillIcon
@@ -82,6 +88,9 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--a-deepblue-400)"
         />
       )
+    case UlestHendelseType.InnbyggerGodkjennUtkast:
+    case UlestHendelseType.NavGodkjennUtkast:
+    case UlestHendelseType.LeggTilOppstartsdato:
     case TiltakskoordinatorEndringsType.TildelPlass:
       return (
         <ChevronRightCircleFillIcon
@@ -98,6 +107,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--a-purple-500)"
         />
       )
+    case UlestHendelseType.ReaktiverDeltakelse:
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return (
         <CaretRightCircleFillIcon

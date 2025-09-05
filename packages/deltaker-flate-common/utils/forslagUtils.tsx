@@ -1,14 +1,14 @@
+import { Tag } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType } from '../model/deltaker.ts'
 import { EndreDeltakelseType } from '../model/endre-deltaker.ts'
 import {
-  Forslag,
+  ForslagEndring,
   ForslagEndringAarsak,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
 import { getForslagStatusTypeText } from './displayText.ts'
-import { Tag } from '@navikt/ds-react'
 
 export function assertNever(value: never): never {
   throw new Error(`Unexpected value: ${JSON.stringify(value)}`)
@@ -52,8 +52,8 @@ export const getDeltakerStatusAarsak = (aarsak: ForslagEndringAarsak) => {
   }
 }
 
-export const getEndreDeltakelsesType = (forslag: Forslag) => {
-  switch (forslag.endring.type) {
+export const getEndreDeltakelsesType = (endring: ForslagEndring) => {
+  switch (endring.type) {
     case ForslagEndringType.IkkeAktuell:
       return EndreDeltakelseType.IKKE_AKTUELL
     case ForslagEndringType.AvsluttDeltakelse:
@@ -73,6 +73,6 @@ export const getEndreDeltakelsesType = (forslag: Forslag) => {
     case ForslagEndringType.EndreAvslutning:
       return EndreDeltakelseType.ENDRE_AVSLUTNING
     default:
-      assertNever(forslag.endring)
+      assertNever(endring)
   }
 }

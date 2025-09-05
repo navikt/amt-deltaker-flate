@@ -6,6 +6,7 @@
     "build:demo": "turbo build:demo",
     "build:dev": "turbo build:dev --parallel",
     "build": "turbo build --parallel",
+    "type-check": "turbo type-check",
     "start": "turbo start --parallel",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",

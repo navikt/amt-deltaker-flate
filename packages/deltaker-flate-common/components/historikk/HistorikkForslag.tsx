@@ -25,7 +25,7 @@ const getForslagStatusTekst = (forslag: Forslag) => {
 }
 
 export const HistorikkForslag = ({ forslag }: Props) => {
-  const endreDeltakelsesType = getEndreDeltakelsesType(forslag)
+  const endreDeltakelsesType = getEndreDeltakelsesType(forslag.endring)
   const forslagStatusTekst = getForslagStatusTekst(forslag)
   return (
     <HistorikkElement
