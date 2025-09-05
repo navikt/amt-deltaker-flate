@@ -73,7 +73,7 @@ jobs:
       - name: Build
         run: pnpm build:dev --filter=innbyggers-flate
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
@@ -126,7 +126,7 @@ jobs:
       - name: Build
         run: pnpm build --filter=innbyggers-flate
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: projects/337368476147/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-prod-d4dd.iam.gserviceaccount.com
