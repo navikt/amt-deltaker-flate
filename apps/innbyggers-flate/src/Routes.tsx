@@ -7,7 +7,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={APP_ROUTE} element={<App />} />
-      <Route path="{*splat}" element={<Navigate replace to={APP_ROUTE} />} />
+      <Route path="*" element={<Navigate replace to={APP_ROUTE} />} />
     </Routes>
   )
 }
