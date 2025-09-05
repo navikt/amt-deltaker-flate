@@ -71,7 +71,7 @@ export class MockHandler {
         (hendelse) => hendelse.id !== ulestHendelseId
       )
     }))
-    return new HttpResponse()
+    return new HttpResponse(null, { status: 204 })
   }
 
   leggTilTilgang() {
