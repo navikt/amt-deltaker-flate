@@ -1,7 +1,7 @@
 import { BodyShort, Label, Link } from '@navikt/ds-react'
 import { Link as ReactRouterLink, useParams } from 'react-router-dom'
 import { ChevronLeftIcon } from '@navikt/aksel-icons'
-import { getDeltakerlisteUrl } from '../navigation'
+import { getDeltakerlisteUrl } from '../../navigation'
 
 export const Tilbakelenke = () => {
   const { deltakerlisteId } = useParams()

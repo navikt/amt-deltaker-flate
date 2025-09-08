@@ -8,7 +8,11 @@ import {
   Tag,
   VStack
 } from '@navikt/ds-react'
-import { Forslag, ForslagEndringType } from '../../model/forslag.ts'
+import {
+  Forslag,
+  ForslagEndring,
+  ForslagEndringType
+} from '../../model/forslag.ts'
 import {
   deltakerprosentText,
   getEndreDeltakelseTypeText,
@@ -23,42 +27,42 @@ import { formatDate } from '../../utils/utils.ts'
 import { EndringTypeIkon } from '../EndringTypeIkon.tsx'
 
 interface Props {
-  forslag: Forslag
+  begrunnelse?: string | null
+  forslagEndring: ForslagEndring
 }
 
-export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
-  const detaljer = (forslag: Forslag) => {
-    switch (forslag.endring.type) {
+export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
+  const detaljer = (endring: ForslagEndring) => {
+    switch (endring.type) {
       case ForslagEndringType.IkkeAktuell:
         return (
           <BodyLong size="small">
-            Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+            Årsak: {getForslagEndringAarsakText(endring.aarsak)}
           </BodyLong>
         )
       case ForslagEndringType.AvsluttDeltakelse:
       case ForslagEndringType.EndreAvslutning:
         return (
           <>
-            {forslag.endring.aarsak && (
+            {endring.aarsak && (
               <BodyLong size="small">
-                Årsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+                Årsak: {getForslagEndringAarsakText(endring.aarsak)}
               </BodyLong>
             )}
-            {forslag.endring.harDeltatt !== null && (
+            {endring.harDeltatt !== null && (
               <BodyLong size="small">
-                Har personen deltatt?{' '}
-                {forslag.endring.harDeltatt ? 'Ja' : 'Nei'}
+                Har personen deltatt? {endring.harDeltatt ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
-            {forslag.endring.harFullfort !== null && (
+            {endring.harFullfort !== null && (
               <BodyLong size="small">
-                Er kurset fullført? {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
+                Er kurset fullført? {endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
-            {forslag.endring.type == ForslagEndringType.AvsluttDeltakelse &&
-              forslag.endring.sluttdato && (
+            {endring.type == ForslagEndringType.AvsluttDeltakelse &&
+              endring.sluttdato && (
                 <BodyLong size="small">
-                  Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+                  Ny sluttdato: {formatDate(endring.sluttdato)}
                 </BodyLong>
               )}
           </>
@@ -66,7 +70,7 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.ForlengDeltakelse:
         return (
           <BodyLong size="small">
-            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+            Ny sluttdato: {formatDate(endring.sluttdato)}
           </BodyLong>
         )
       case ForslagEndringType.Deltakelsesmengde:
@@ -75,13 +79,13 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
             <BodyShort size="small">
               Ny deltakelsesmengde:{' '}
               {deltakerprosentText(
-                forslag.endring.deltakelsesprosent,
-                forslag.endring.dagerPerUke
+                endring.deltakelsesprosent,
+                endring.dagerPerUke
               )}
             </BodyShort>
-            {forslag.endring.gyldigFra && (
+            {endring.gyldigFra && (
               <BodyShort size="small">
-                Gjelder fra: {formatDate(forslag.endring.gyldigFra)}
+                Gjelder fra: {formatDate(endring.gyldigFra)}
               </BodyShort>
             )}
           </>
@@ -89,18 +93,18 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.Sluttdato:
         return (
           <BodyLong size="small">
-            Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+            Ny sluttdato: {formatDate(endring.sluttdato)}
           </BodyLong>
         )
       case ForslagEndringType.Startdato:
         return (
           <>
             <BodyLong size="small">
-              Ny oppstartsdato: {formatDate(forslag.endring.startdato)}
+              Ny oppstartsdato: {formatDate(endring.startdato)}
             </BodyLong>
-            {forslag.endring.sluttdato && (
+            {endring.sluttdato && (
               <BodyLong size="small">
-                Forventet sluttdato: {formatDate(forslag.endring.sluttdato)}
+                Forventet sluttdato: {formatDate(endring.sluttdato)}
               </BodyLong>
             )}
           </>
@@ -108,29 +112,33 @@ export const ForslagtypeDetaljer = ({ forslag }: { forslag: Forslag }) => {
       case ForslagEndringType.Sluttarsak:
         return (
           <BodyLong size="small">
-            Ny sluttårsak: {getForslagEndringAarsakText(forslag.endring.aarsak)}
+            Ny sluttårsak: {getForslagEndringAarsakText(endring.aarsak)}
           </BodyLong>
         )
       case ForslagEndringType.FjernOppstartsdato:
         return null
       default:
-        assertNever(forslag.endring)
+        assertNever(endring)
     }
   }
   return (
     <>
-      {detaljer(forslag)}
-      {forslag.begrunnelse && (
+      {detaljer(forslagEndring)}
+      {begrunnelse && (
         <BodyLong size="small" className="whitespace-pre-wrap">
-          Begrunnelse: {forslag.begrunnelse}
+          Begrunnelse: {begrunnelse}
         </BodyLong>
       )}
     </>
   )
 }
 
-export const ForslagDetaljer = ({ forslag }: Props) => {
-  const endreDeltakelsesType = getEndreDeltakelsesType(forslag)
+interface ForslagDetaljerProps {
+  forslag: Forslag
+}
+
+export const ForslagDetaljer = ({ forslag }: ForslagDetaljerProps) => {
+  const endreDeltakelsesType = getEndreDeltakelsesType(forslag.endring)
   return (
     <HGrid columns="2rem auto" className="p-4 items-start">
       <VStack>
@@ -141,11 +149,16 @@ export const ForslagDetaljer = ({ forslag }: Props) => {
           <Heading level="3" size="small">
             {getEndreDeltakelseTypeText(endreDeltakelsesType)}
           </Heading>
-          <Tag variant="info" size="small">
-            {getForslagStatusTypeText(forslag.status.type)}
-          </Tag>
+          {forslag.status.type && (
+            <Tag variant="info" size="small">
+              {getForslagStatusTypeText(forslag.status.type)}
+            </Tag>
+          )}
         </HStack>
-        <ForslagtypeDetaljer forslag={forslag} />
+        <ForslagtypeDetaljer
+          forslagEndring={forslag.endring}
+          begrunnelse={forslag.begrunnelse}
+        />
         <Detail>
           Forslag sendt fra arrangør {formatDate(forslag.opprettet)}
         </Detail>

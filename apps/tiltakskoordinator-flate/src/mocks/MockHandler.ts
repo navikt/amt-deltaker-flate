@@ -4,16 +4,13 @@ import {
   lagHistorikkFellesOppstart
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
-import { DeltakerDetaljer } from '../api/data/deltaker.ts'
-import {
-  Deltakere,
-  DeltakerlisteDetaljer,
-  Feilkode
-} from '../api/data/deltakerliste.ts'
+import { DeltakerlisteDetaljer, Feilkode } from '../api/data/deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
-  mapDeltakerDeltaljerToDeltaker
+  mapMockDeltakereToDeltakere,
+  mapMockDeltakerToDeltaker,
+  MockDeltaker
 } from './mockData.tsx'
 
 export class MockHandler {
@@ -21,10 +18,7 @@ export class MockHandler {
   stengt = false
   harAdRolle = true
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
-  deltakereMedDetaljer: DeltakerDetaljer[] = createMockDeltakere()
-  deltakere: Deltakere = this.deltakereMedDetaljer.map(
-    mapDeltakerDeltaljerToDeltaker
-  )
+  mockDeltakere: MockDeltaker[] = createMockDeltakere()
 
   getDeltakerlisteDetaljer() {
     this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer()
@@ -44,7 +38,7 @@ export class MockHandler {
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
-    return HttpResponse.json(this.deltakere)
+    return HttpResponse.json(mapMockDeltakereToDeltakere(this.mockDeltakere))
   }
 
   getDeltaker(deltakerId: string) {
@@ -60,7 +54,7 @@ export class MockHandler {
     if (!this.tilgang) {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
-    const deltaker = this.deltakereMedDetaljer.find(
+    const deltaker = this.mockDeltakere.find(
       (deltaker) => deltaker.id === deltakerId
     )
     return HttpResponse.json(deltaker)
@@ -70,29 +64,41 @@ export class MockHandler {
     return HttpResponse.json(lagHistorikkFellesOppstart())
   }
 
+  slettUlestHendelse(ulestHendelseId: string) {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => ({
+      ...deltaker,
+      ulesteHendelser: deltaker.ulesteHendelser.filter(
+        (hendelse) => hendelse.id !== ulestHendelseId
+      )
+    }))
+    return new HttpResponse(null, { status: 204 })
+  }
+
   leggTilTilgang() {
     this.tilgang = true
     return new HttpResponse()
   }
 
   delMedArrangor(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.erManueltDeltMedArrangor = true
       }
       return deltaker
     })
-    this.deltakere = oppdaterteDeltakere
+    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
-      this.deltakere.filter((deltaker) =>
-        delteDeltakerIder.includes(deltaker.id)
+      mapMockDeltakereToDeltakere(
+        this.mockDeltakere.filter((deltaker) =>
+          delteDeltakerIder.includes(deltaker.id)
+        )
       )
     )
   }
 
   tildelPlass(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
         deltaker.status.aarsak = null
@@ -100,17 +106,19 @@ export class MockHandler {
       deltaker.feilkode = null
       return deltaker
     })
-    this.deltakere = oppdaterteDeltakere
+    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
-      this.deltakere.filter((deltaker) =>
-        delteDeltakerIder.includes(deltaker.id)
+      mapMockDeltakereToDeltakere(
+        this.mockDeltakere.filter((deltaker) =>
+          delteDeltakerIder.includes(deltaker.id)
+        )
       )
     )
   }
 
   settPaVenteliste(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.deltakere.map((deltaker) => {
+    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.aarsak = null
         deltaker.feilkode = [Feilkode.MIDLERTIDIG_FEIL, null][
@@ -123,23 +131,25 @@ export class MockHandler {
       }
       return deltaker
     })
-    this.deltakere = oppdaterteDeltakere
+    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
-      this.deltakere.filter((deltaker) =>
-        delteDeltakerIder.includes(deltaker.id)
+      mapMockDeltakereToDeltakere(
+        this.mockDeltakere.filter((deltaker) =>
+          delteDeltakerIder.includes(deltaker.id)
+        )
       )
     )
   }
 
   giAvslag(deltakerId: string, aarsak: DeltakerStatusAarsak) {
-    const deltaker = this.deltakere.find((d) => d.id === deltakerId)!
+    const deltaker = this.mockDeltakere.find((d) => d.id === deltakerId)!
     deltaker.status.type = DeltakerStatusType.IKKE_AKTUELL
     deltaker.status.aarsak = aarsak
-    this.deltakere = this.deltakere.map((d) =>
+    this.mockDeltakere = this.mockDeltakere.map((d) =>
       d.id === deltaker.id ? deltaker : d
     )
 
-    return HttpResponse.json(deltaker)
+    return HttpResponse.json(mapMockDeltakerToDeltaker(deltaker))
   }
 }

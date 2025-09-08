@@ -8,6 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { Beskyttelsesmarkering } from './deltakerliste.ts'
+import { ulesthendelseSchema } from './ulestHendelse.ts'
 
 export const navVeilederSchema = z.object({
   navn: z.string().nullable(),
@@ -49,7 +50,8 @@ export const deltakerDetaljerSchema = z.object({
   innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
   tiltakskode: z.enum(Tiltakskode),
   tilgangTilBruker: z.boolean(),
-  aktiveForslag: z.array(forslagSchema)
+  aktiveForslag: z.array(forslagSchema),
+  ulesteHendelser: z.array(ulesthendelseSchema)
 })
 
 export type DeltakerDetaljer = z.infer<typeof deltakerDetaljerSchema>
