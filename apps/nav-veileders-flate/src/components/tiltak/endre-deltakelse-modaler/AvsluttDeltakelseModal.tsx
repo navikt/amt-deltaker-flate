@@ -174,15 +174,6 @@ export const AvsluttDeltakelseModal = ({
         )
       }
 
-      if (
-        !skalViseSluttDato &&
-        pamelding.status.type !== DeltakerStatusType.DELTAR
-      ) {
-        throw new Error(
-          'Deltakeren har allerede sluttet på tiltaket, og kan derfor ikke settes til “Ikke deltatt”.'
-        )
-      }
-
       const harDeltattErIkkeSpesifisertIForslag =
         getHarDeltatt(forslag) === null
       if (harDeltattErIkkeSpesifisertIForslag) {
