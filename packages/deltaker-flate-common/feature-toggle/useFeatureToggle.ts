@@ -17,16 +17,15 @@ const alltidMasterForTiltakstyper = [
   ArenaTiltakskode.DIGIOPPARB,
   Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
   ArenaTiltakskode.VASV,
-  Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-]
-const nyeTiltakstyper = [
+  Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
   ArenaTiltakskode.GRUPPEAMO,
-  ArenaTiltakskode.JOBBK,
-  ArenaTiltakskode.GRUFAGYRKE,
   Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+  ArenaTiltakskode.JOBBK,
   Tiltakskode.JOBBKLUBB,
+  ArenaTiltakskode.GRUFAGYRKE,
   Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 ]
+const nyeTiltakstyper: unknown[] = []
 
 export const useFeatureToggle = (baseUrl: string) => {
   const [toggles, setToggles] = useState<FeatureToggles>()
