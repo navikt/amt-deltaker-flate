@@ -177,7 +177,7 @@ export const DeltakerlisteTabell = () => {
                   </Table.DataCell>
                 )}
 
-                <TableDataCell>
+                <TableDataCell className="min-w-[16rem]">
                   <HStack
                     id={`id${deltaker.id}`}
                     gap="1"
@@ -203,9 +203,12 @@ export const DeltakerlisteTabell = () => {
                   </HStack>
                 </TableDataCell>
 
-                <TableDataCell text={deltaker.navEnhet} />
+                <TableDataCell
+                  text={deltaker.navEnhet}
+                  className="min-w-[10rem]"
+                />
 
-                <TableDataCell>
+                <TableDataCell className="min-w-[10rem]">
                   <DeltakerStatusTag statusType={deltaker.status.type} />
                 </TableDataCell>
 
