@@ -24,26 +24,25 @@ export const getFiltrerteDeltakere = (
   filterValg: FilterValg[]
 ): Deltakere => {
   const valgteFilter = new Set(filterValg)
+
   return deltakere.filter((deltaker) => {
-    let filterOk = true
+    if (valgteFilter.size === 0) return true
+    let match = false
 
     valgteFilter.forEach((filterValg) => {
-      if (filterOk) {
-        switch (filterValg) {
-          case FilterValg.AktiveForslag:
-            filterOk = deltaker.harAktiveForslag
-            break
-          case FilterValg.OppdateringFraNav:
-            filterOk = deltaker.harOppdateringFraNav
-            break
-          case FilterValg.NyeDeltakere:
-            filterOk = deltaker.erNyDeltaker
-            break
-        }
+      switch (filterValg) {
+        case FilterValg.AktiveForslag:
+          if (deltaker.harAktiveForslag) match = true
+          break
+        case FilterValg.OppdateringFraNav:
+          if (deltaker.harOppdateringFraNav) match = true
+          break
+        case FilterValg.NyeDeltakere:
+          if (deltaker.erNyDeltaker) match = true
+          break
       }
     })
-
-    return filterOk
+    return match
   })
 }
 
@@ -65,8 +64,7 @@ export const getFilterDetaljer = (
       filtervalg: filterValg,
       navn: getFilterTypeNavn(filterValg),
       valgt: erValgt,
-      antall: getFiltrerteDeltakere(deltakere, valgteFilter.concat(filterValg))
-        .length
+      antall: getFiltrerteDeltakere(deltakere, [filterValg]).length
     }
   })
 }
