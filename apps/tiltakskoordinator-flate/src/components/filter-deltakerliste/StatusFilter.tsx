@@ -19,11 +19,11 @@ interface Props {
   className?: string
 }
 
-export const FilterDeltakerliste = ({ className }: Props) => {
+export const StatusFilter = ({ className }: Props) => {
   const { deltakere, setFiltrerteDeltakere } = useDeltakerlisteContext()
   const { valgteFilter, setValgteFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
-    'deltaker-liste-filter-hendelser-open',
+    'deltaker-liste-filter-status-open',
     false
   )
 
