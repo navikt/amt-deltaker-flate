@@ -1,9 +1,18 @@
 import { createContext, useContext, useState } from 'react'
-import { FilterValg } from '../utils/filter-deltakerliste'
+import {
+  HandlingFilterValg,
+  StatusFilterValg
+} from '../utils/filter-deltakerliste'
 
 export interface FilterContextProps {
-  valgteFilter: FilterValg[]
-  setValgteFilter: React.Dispatch<React.SetStateAction<FilterValg[]>>
+  valgteHandlingerFilter: HandlingFilterValg[]
+  valgteStatusFilter: StatusFilterValg[]
+  setValgteHandlingerFilter: React.Dispatch<
+    React.SetStateAction<HandlingFilterValg[]>
+  >
+  setValgteStatusFilter: React.Dispatch<
+    React.SetStateAction<StatusFilterValg[]>
+  >
 }
 
 const FilterContext = createContext<FilterContextProps | undefined>(undefined)
@@ -21,11 +30,18 @@ const useFilterContext = () => {
 }
 
 const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [valgteFilter, setValgteFilter] = useState<FilterValg[]>([])
+  const [valgteHandlingerFilter, setValgteHandlingerFilter] = useState<
+    HandlingFilterValg[]
+  >([])
+  const [valgteStatusFilter, setValgteStatusFilter] = useState<
+    StatusFilterValg[]
+  >([])
 
   const contextValue: FilterContextProps = {
-    valgteFilter,
-    setValgteFilter
+    valgteHandlingerFilter: valgteHandlingerFilter,
+    setValgteHandlingerFilter: setValgteHandlingerFilter,
+    valgteStatusFilter: valgteStatusFilter,
+    setValgteStatusFilter: setValgteStatusFilter
   }
 
   return (

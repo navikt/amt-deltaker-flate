@@ -4,7 +4,7 @@ import {
 } from 'deltaker-flate-common'
 import { Deltakere } from '../api/data/deltakerliste'
 
-export enum FilterValg {
+export enum HandlingFilterValg {
   AktiveForslag = 'AktiveForslag',
   OppdateringFraNav = 'OppdateringFraNav',
   NyeDeltakere = 'NyeDeltakere'
@@ -22,13 +22,13 @@ const statusFilterTyper = [
 
 export type StatusFilterValg = (typeof statusFilterTyper)[number]
 
-const getFilterTypeNavn = (filterValg: FilterValg): string => {
+const getHandlingFilterTypeNavn = (filterValg: HandlingFilterValg): string => {
   switch (filterValg) {
-    case FilterValg.AktiveForslag:
+    case HandlingFilterValg.AktiveForslag:
       return 'Forslag fra arrangør'
-    case FilterValg.OppdateringFraNav:
+    case HandlingFilterValg.OppdateringFraNav:
       return 'Oppdatering fra Nav'
-    case FilterValg.NyeDeltakere:
+    case HandlingFilterValg.NyeDeltakere:
       return 'Nye deltakere'
     default:
       return 'Ukjent filter'
@@ -37,7 +37,25 @@ const getFilterTypeNavn = (filterValg: FilterValg): string => {
 
 export const getFiltrerteDeltakere = (
   deltakere: Deltakere,
-  filterValg: FilterValg[]
+  handlingFilterValg: HandlingFilterValg[],
+  statusFilterValg: StatusFilterValg[]
+): Deltakere => {
+  let filtrerte = deltakere
+
+  if (handlingFilterValg.length > 0) {
+    filtrerte = getHandlingFiltrerteDeltakere(filtrerte, handlingFilterValg)
+  }
+
+  if (statusFilterValg.length > 0) {
+    filtrerte = getStatusFiltrerteDeltakere(filtrerte, statusFilterValg)
+  }
+
+  return filtrerte
+}
+
+export const getHandlingFiltrerteDeltakere = (
+  deltakere: Deltakere,
+  filterValg: HandlingFilterValg[]
 ): Deltakere => {
   const valgteFilter = new Set(filterValg)
   if (valgteFilter.size === 0) return deltakere
@@ -47,13 +65,13 @@ export const getFiltrerteDeltakere = (
 
     valgteFilter.forEach((filterValg) => {
       switch (filterValg) {
-        case FilterValg.AktiveForslag:
+        case HandlingFilterValg.AktiveForslag:
           if (deltaker.harAktiveForslag) match = true
           break
-        case FilterValg.OppdateringFraNav:
+        case HandlingFilterValg.OppdateringFraNav:
           if (deltaker.harOppdateringFraNav) match = true
           break
-        case FilterValg.NyeDeltakere:
+        case HandlingFilterValg.NyeDeltakere:
           if (deltaker.erNyDeltaker) match = true
           break
       }
@@ -83,33 +101,53 @@ export const getStatusFiltrerteDeltakere = (
   })
 }
 
-export type FilterDetaljer = {
-  filtervalg: FilterValg | StatusFilterValg
+export type HandlingFilterDetaljer = {
+  filtervalg: HandlingFilterValg
   valgt: boolean
   navn: string
   antall: number
 }
 
-export const getFilterDetaljer = (
+export const getHandlingFilterDetaljer = (
   deltakere: Deltakere,
-  valgteFilter: FilterValg[]
-): FilterDetaljer[] => {
-  return Object.values(FilterValg).map((filterValg) => {
+  valgteFilter: HandlingFilterValg[],
+  valgteStatusFilter: StatusFilterValg[]
+): HandlingFilterDetaljer[] => {
+  const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
+    deltakere,
+    valgteStatusFilter
+  )
+
+  return Object.values(HandlingFilterValg).map((filterValg) => {
     const erValgt = valgteFilter.includes(filterValg)
 
     return {
       filtervalg: filterValg,
-      navn: getFilterTypeNavn(filterValg),
+      navn: getHandlingFilterTypeNavn(filterValg),
       valgt: erValgt,
-      antall: getFiltrerteDeltakere(deltakere, [filterValg]).length
+      antall: getHandlingFiltrerteDeltakere(deltakereFiltretPaaStatus, [
+        filterValg
+      ]).length
     }
   })
 }
 
+export type StatusFilterDetaljer = {
+  filtervalg: StatusFilterValg
+  valgt: boolean
+  navn: string
+  antall: number
+}
+
 export const getStatusFilterDetaljer = (
   deltakere: Deltakere,
-  valgteFilter: StatusFilterValg[]
-): FilterDetaljer[] => {
+  valgteFilter: StatusFilterValg[],
+  valgteHandlingerFilter: HandlingFilterValg[]
+): StatusFilterDetaljer[] => {
+  const deltakereFiltretPaaHandlinger = getHandlingFiltrerteDeltakere(
+    deltakere,
+    valgteHandlingerFilter
+  )
   return statusFilterTyper.map((filterValg) => {
     const erValgt = valgteFilter.includes(filterValg)
 
@@ -117,7 +155,9 @@ export const getStatusFilterDetaljer = (
       filtervalg: filterValg,
       navn: getDeltakerStatusDisplayText(filterValg),
       valgt: erValgt,
-      antall: getStatusFiltrerteDeltakere(deltakere, [filterValg]).length
+      antall: getStatusFiltrerteDeltakere(deltakereFiltretPaaHandlinger, [
+        filterValg
+      ]).length
     }
   })
 }

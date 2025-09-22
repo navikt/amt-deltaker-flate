@@ -8,28 +8,40 @@ import { useMemo } from 'react'
 import useLocalStorage from '../../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
-import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
-import { getStatusFilterDetaljer } from '../../utils/filter-deltakerliste'
+import {
+  HandlingFilterValg,
+  getHandlingFilterDetaljer
+} from '../../utils/filter-deltakerliste'
 
-export const StatusFilter = () => {
+export const HendelseFilter = () => {
   const { deltakere } = useDeltakerlisteContext()
-  const { valgteStatusFilter, valgteHandlingerFilter, setValgteStatusFilter } =
-    useFilterContext()
+  const {
+    valgteHandlingerFilter,
+    valgteStatusFilter,
+    setValgteHandlingerFilter
+  } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
-    'deltaker-liste-filter-status-open',
+    'deltaker-liste-filter-hendelser-open',
     false
   )
 
   const filterDetaljer = useMemo(() => {
-    return getStatusFilterDetaljer(
+    return getHandlingFilterDetaljer(
       deltakere,
-      valgteStatusFilter,
-      valgteHandlingerFilter
+      valgteHandlingerFilter,
+      valgteStatusFilter
     )
-  }, [valgteStatusFilter, valgteHandlingerFilter, deltakere])
+  }, [valgteHandlingerFilter, valgteStatusFilter, deltakere])
 
   const handleChange = (nyValgteFilter: string[]) => {
-    setValgteStatusFilter(nyValgteFilter as StatusFilterValg[])
+    setValgteHandlingerFilter(
+      nyValgteFilter
+        .filter(
+          (filter): filter is keyof typeof HandlingFilterValg =>
+            filter in HandlingFilterValg
+        )
+        .map((filter) => HandlingFilterValg[filter])
+    )
   }
 
   return (
@@ -41,7 +53,7 @@ export const StatusFilter = () => {
     >
       <ExpansionCard.Header>
         <ExpansionCard.Title as="h2" size="small">
-          Status
+          Hendelser
         </ExpansionCard.Title>
       </ExpansionCard.Header>
 
@@ -51,7 +63,7 @@ export const StatusFilter = () => {
           legend=""
           className="mt-[-0.5rem]"
           onChange={handleChange}
-          value={valgteStatusFilter}
+          value={valgteHandlingerFilter}
         >
           {filterDetaljer.map((filter) => (
             <Checkbox

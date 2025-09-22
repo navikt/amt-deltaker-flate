@@ -1,7 +1,8 @@
 import {
   DeltakerStatusAarsak,
   DeltakerStatusType,
-  lagHistorikkFellesOppstart
+  lagHistorikkFellesOppstart,
+  UlestHendelseType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { DeltakerlisteDetaljer, Feilkode } from '../api/data/deltakerliste.ts'
@@ -65,12 +66,26 @@ export class MockHandler {
   }
 
   slettUlestHendelse(ulestHendelseId: string) {
-    this.mockDeltakere = this.mockDeltakere.map((deltaker) => ({
-      ...deltaker,
-      ulesteHendelser: deltaker.ulesteHendelser.filter(
-        (hendelse) => hendelse.id !== ulestHendelseId
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
+      const ulestHendelse = deltaker.ulesteHendelser.find(
+        (hendelse) => hendelse.id === ulestHendelseId
       )
-    }))
+      if (ulestHendelse) {
+        const erNy =
+          ulestHendelse.hendelse.type ==
+            UlestHendelseType.InnbyggerGodkjennUtkast ||
+          ulestHendelse.hendelse.type == UlestHendelseType.NavGodkjennUtkast
+        return {
+          ...deltaker,
+          erNyDeltaker: erNy ? false : deltaker.erNyDeltaker,
+          harOppdateringFraNav: !erNy ? false : deltaker.harOppdateringFraNav,
+          ulesteHendelser: deltaker.ulesteHendelser.filter(
+            (hendelse) => hendelse.id !== ulestHendelseId
+          )
+        }
+      }
+      return deltaker
+    })
     return new HttpResponse(null, { status: 204 })
   }
 
