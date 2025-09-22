@@ -52,7 +52,7 @@
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^4.1.0",
     "eslint": "^9.35.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "playwright": "^1.55.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
