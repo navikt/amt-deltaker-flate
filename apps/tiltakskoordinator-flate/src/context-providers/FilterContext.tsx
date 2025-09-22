@@ -5,9 +5,9 @@ import {
 } from '../utils/filter-deltakerliste'
 
 export interface FilterContextProps {
-  valgteHandlingerFilter: HandlingFilterValg[]
+  valgteHendelseFilter: HandlingFilterValg[]
   valgteStatusFilter: StatusFilterValg[]
-  setValgteHandlingerFilter: React.Dispatch<
+  setValgteHendelseFilter: React.Dispatch<
     React.SetStateAction<HandlingFilterValg[]>
   >
   setValgteStatusFilter: React.Dispatch<
@@ -30,7 +30,7 @@ const useFilterContext = () => {
 }
 
 const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [valgteHandlingerFilter, setValgteHandlingerFilter] = useState<
+  const [valgteHendelseFilter, setValgteHendelseFilter] = useState<
     HandlingFilterValg[]
   >([])
   const [valgteStatusFilter, setValgteStatusFilter] = useState<
@@ -38,8 +38,8 @@ const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
   >([])
 
   const contextValue: FilterContextProps = {
-    valgteHandlingerFilter: valgteHandlingerFilter,
-    setValgteHandlingerFilter: setValgteHandlingerFilter,
+    valgteHendelseFilter: valgteHendelseFilter,
+    setValgteHendelseFilter: setValgteHendelseFilter,
     valgteStatusFilter: valgteStatusFilter,
     setValgteStatusFilter: setValgteStatusFilter
   }

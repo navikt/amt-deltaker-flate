@@ -10,31 +10,28 @@ import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteCo
 import { useFilterContext } from '../../context-providers/FilterContext'
 import {
   HandlingFilterValg,
-  getHandlingFilterDetaljer
+  getHendelseFilterDetaljer
 } from '../../utils/filter-deltakerliste'
 
 export const HendelseFilter = () => {
   const { deltakere } = useDeltakerlisteContext()
-  const {
-    valgteHandlingerFilter,
-    valgteStatusFilter,
-    setValgteHandlingerFilter
-  } = useFilterContext()
+  const { valgteHendelseFilter, valgteStatusFilter, setValgteHendelseFilter } =
+    useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-hendelser-open',
     false
   )
 
   const filterDetaljer = useMemo(() => {
-    return getHandlingFilterDetaljer(
+    return getHendelseFilterDetaljer(
       deltakere,
-      valgteHandlingerFilter,
+      valgteHendelseFilter,
       valgteStatusFilter
     )
-  }, [valgteHandlingerFilter, valgteStatusFilter, deltakere])
+  }, [valgteHendelseFilter, valgteStatusFilter, deltakere])
 
   const handleChange = (nyValgteFilter: string[]) => {
-    setValgteHandlingerFilter(
+    setValgteHendelseFilter(
       nyValgteFilter
         .filter(
           (filter): filter is keyof typeof HandlingFilterValg =>
@@ -63,7 +60,7 @@ export const HendelseFilter = () => {
           legend=""
           className="mt-[-0.5rem]"
           onChange={handleChange}
-          value={valgteHandlingerFilter}
+          value={valgteHendelseFilter}
         >
           {filterDetaljer.map((filter) => (
             <Checkbox

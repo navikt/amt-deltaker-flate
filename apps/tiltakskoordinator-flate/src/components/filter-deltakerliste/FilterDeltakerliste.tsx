@@ -12,15 +12,15 @@ interface Props {
 
 export const FilterDeltakerliste = ({ className }: Props) => {
   const { deltakere, setFiltrerteDeltakere } = useDeltakerlisteContext()
-  const { valgteHandlingerFilter, valgteStatusFilter } = useFilterContext()
+  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
 
   const filtrerteDeltakere = useMemo(() => {
     return getFiltrerteDeltakere(
       deltakere,
-      valgteHandlingerFilter,
+      valgteHendelseFilter,
       valgteStatusFilter
     )
-  }, [valgteHandlingerFilter, valgteStatusFilter, deltakere])
+  }, [valgteHendelseFilter, valgteStatusFilter, deltakere])
 
   useEffect(() => {
     setFiltrerteDeltakere(filtrerteDeltakere)
@@ -31,6 +31,7 @@ export const FilterDeltakerliste = ({ className }: Props) => {
       <Heading size="small" level="2" className="sr-only">
         Filtrer deltakerliste
       </Heading>
+
       <div className="flex flex-col gap-4">
         <HendelseFilter />
         <StatusFilter />

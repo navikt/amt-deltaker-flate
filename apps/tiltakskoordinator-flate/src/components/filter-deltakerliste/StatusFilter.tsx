@@ -13,7 +13,7 @@ import { getStatusFilterDetaljer } from '../../utils/filter-deltakerliste'
 
 export const StatusFilter = () => {
   const { deltakere } = useDeltakerlisteContext()
-  const { valgteStatusFilter, valgteHandlingerFilter, setValgteStatusFilter } =
+  const { valgteStatusFilter, valgteHendelseFilter, setValgteStatusFilter } =
     useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-status-open',
@@ -24,9 +24,9 @@ export const StatusFilter = () => {
     return getStatusFilterDetaljer(
       deltakere,
       valgteStatusFilter,
-      valgteHandlingerFilter
+      valgteHendelseFilter
     )
-  }, [valgteStatusFilter, valgteHandlingerFilter, deltakere])
+  }, [valgteStatusFilter, valgteHendelseFilter, deltakere])
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteStatusFilter(nyValgteFilter as StatusFilterValg[])

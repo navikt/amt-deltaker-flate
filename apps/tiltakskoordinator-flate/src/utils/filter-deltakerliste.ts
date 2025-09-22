@@ -43,7 +43,7 @@ export const getFiltrerteDeltakere = (
   let filtrerte = deltakere
 
   if (handlingFilterValg.length > 0) {
-    filtrerte = getHandlingFiltrerteDeltakere(filtrerte, handlingFilterValg)
+    filtrerte = getHendelseFiltrerteDeltakere(filtrerte, handlingFilterValg)
   }
 
   if (statusFilterValg.length > 0) {
@@ -53,7 +53,7 @@ export const getFiltrerteDeltakere = (
   return filtrerte
 }
 
-export const getHandlingFiltrerteDeltakere = (
+export const getHendelseFiltrerteDeltakere = (
   deltakere: Deltakere,
   filterValg: HandlingFilterValg[]
 ): Deltakere => {
@@ -108,7 +108,7 @@ export type HandlingFilterDetaljer = {
   antall: number
 }
 
-export const getHandlingFilterDetaljer = (
+export const getHendelseFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: HandlingFilterValg[],
   valgteStatusFilter: StatusFilterValg[]
@@ -125,7 +125,7 @@ export const getHandlingFilterDetaljer = (
       filtervalg: filterValg,
       navn: getHandlingFilterTypeNavn(filterValg),
       valgt: erValgt,
-      antall: getHandlingFiltrerteDeltakere(deltakereFiltretPaaStatus, [
+      antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
         filterValg
       ]).length
     }
@@ -144,7 +144,7 @@ export const getStatusFilterDetaljer = (
   valgteFilter: StatusFilterValg[],
   valgteHandlingerFilter: HandlingFilterValg[]
 ): StatusFilterDetaljer[] => {
-  const deltakereFiltretPaaHandlinger = getHandlingFiltrerteDeltakere(
+  const deltakereFiltretPaaHandlinger = getHendelseFiltrerteDeltakere(
     deltakere,
     valgteHandlingerFilter
   )

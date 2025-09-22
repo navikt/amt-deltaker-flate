@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { lagMockDeltaker } from '../mocks/mockData'
 import {
   getFiltrerteDeltakere,
-  getHandlingFilterDetaljer,
-  getHandlingFiltrerteDeltakere,
+  getHendelseFilterDetaljer,
+  getHendelseFiltrerteDeltakere,
   getStatusFilterDetaljer,
   getStatusFiltrerteDeltakere,
   HandlingFilterValg,
@@ -54,14 +54,14 @@ const mockDeltakere = [
   }
 ]
 
-describe('getHandlingFiltrerteDeltakere', () => {
+describe('getHendelseFiltrerteDeltakere', () => {
   it('returnerer alle deltakere hvis ingen filter er valgt', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [])
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [])
     expect(result).toHaveLength(mockDeltakere.length)
   })
 
   it('filtrerer på AktiveForslag', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [
       HandlingFilterValg.AktiveForslag
     ])
     expect(result).toHaveLength(1)
@@ -69,7 +69,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 
   it('filtrerer på OppdateringFraNav', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [
       HandlingFilterValg.OppdateringFraNav
     ])
     expect(result).toHaveLength(1)
@@ -77,7 +77,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 
   it('filtrerer på NyeDeltakere', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [
       HandlingFilterValg.NyeDeltakere
     ])
     expect(result).toHaveLength(1)
@@ -85,7 +85,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 
   it('filtrerer med OR-logikk: minst ett filter matcher', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [
       HandlingFilterValg.OppdateringFraNav,
       HandlingFilterValg.NyeDeltakere
     ])
@@ -95,7 +95,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 
   it('filtrerer med OR-logikk: alle filtre valgt', () => {
-    const result = getHandlingFiltrerteDeltakere(mockDeltakere, [
+    const result = getHendelseFiltrerteDeltakere(mockDeltakere, [
       HandlingFilterValg.AktiveForslag,
       HandlingFilterValg.OppdateringFraNav,
       HandlingFilterValg.NyeDeltakere
@@ -117,7 +117,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
         erNyDeltaker: false
       }
     ]
-    const result = getHandlingFiltrerteDeltakere(deltakere, [
+    const result = getHendelseFiltrerteDeltakere(deltakere, [
       HandlingFilterValg.AktiveForslag,
       HandlingFilterValg.OppdateringFraNav,
       HandlingFilterValg.NyeDeltakere
@@ -126,7 +126,7 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 
   it('returnerer tom liste hvis ingen deltakere matcher filter', () => {
-    const result = getHandlingFiltrerteDeltakere(
+    const result = getHendelseFiltrerteDeltakere(
       [
         {
           ...lagMockDeltaker(),
@@ -143,14 +143,14 @@ describe('getHandlingFiltrerteDeltakere', () => {
   })
 })
 
-describe('getHandlingFilterDetaljer', () => {
+describe('getHendelseFilterDetaljer', () => {
   it('returnerer korrekt antall filter', () => {
-    const detaljer = getHandlingFilterDetaljer(mockDeltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(mockDeltakere, [], [])
     expect(detaljer).toHaveLength(Object.values(HandlingFilterValg).length)
   })
 
   it('viser valgt=true for valgte filter', () => {
-    const detaljer = getHandlingFilterDetaljer(
+    const detaljer = getHendelseFilterDetaljer(
       mockDeltakere,
       [HandlingFilterValg.AktiveForslag, HandlingFilterValg.NyeDeltakere],
       []
@@ -170,7 +170,7 @@ describe('getHandlingFilterDetaljer', () => {
   })
 
   it('viser korrekt antall for hvert filter', () => {
-    const detaljer = getHandlingFilterDetaljer(mockDeltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(mockDeltakere, [], [])
     const aktive = detaljer.find(
       (d) => d.filtervalg === HandlingFilterValg.AktiveForslag
     )
@@ -212,12 +212,12 @@ describe('getHandlingFilterDetaljer', () => {
         erNyDeltaker: false
       }
     ]
-    const detaljer = getHandlingFilterDetaljer(deltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(deltakere, [], [])
     detaljer.forEach((d) => expect(d.antall).toBe(0))
   })
 
   it('returnerer riktig antall når statusfilter og handlingsfilter er valgt', () => {
-    const detaljer = getHandlingFilterDetaljer(
+    const detaljer = getHendelseFilterDetaljer(
       [
         {
           ...lagMockDeltaker(),
