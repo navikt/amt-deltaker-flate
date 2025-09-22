@@ -27,12 +27,12 @@
     "@navikt/ds-tailwind": "^7.29.1",
     "dayjs": "^1.11.18",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.11.2",
+    "msw": "^2.11.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.1",
     "uuid": "^13.0.0",
-    "zod": "^4.1.9"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -50,7 +50,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^4.1.0",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "jsdom": "^26.1.0",
     "playwright": "^1.55.0",
     "tailwindcss": "^4.1.13",
