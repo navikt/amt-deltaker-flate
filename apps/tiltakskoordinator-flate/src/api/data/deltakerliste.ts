@@ -34,7 +34,7 @@ export enum Feilkode {
 }
 
 export const deltakerSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),
@@ -54,12 +54,12 @@ export const deltakerSchema = z.object({
 export const deltakereSchema = z.array(deltakerSchema)
 
 const koordinator = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   navn: z.string()
 })
 
 export const deltakerlisteDetaljerSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   navn: z.string(),
   tiltakskode: tiltakskodeSchema,
   startdato: nullableDateSchema,

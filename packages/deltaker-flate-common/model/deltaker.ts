@@ -106,7 +106,7 @@ export const deltakelsesinnholdSchema = z.object({
 })
 
 export const pameldingStatusSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   type: deltakerStatusTypeSchema,
   aarsak: deltakerStatusAarsakSchema.nullable(),
   gyldigFra: dateSchema,
