@@ -2,7 +2,8 @@ import {
   deltakerStatusAarsakTypeSchema,
   deltakerStatusTypeSchema,
   nullableDateSchema,
-  tiltakskodeSchema
+  tiltakskodeSchema,
+  Vurderingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -21,11 +22,6 @@ export const deltakerStatusSchema = z.object({
   type: deltakerStatusTypeSchema,
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
-
-export enum Vurderingstype {
-  OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
-  OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
-}
 
 export enum Feilkode {
   UGYLDIG_STATE = 'UGYLDIG_STATE',

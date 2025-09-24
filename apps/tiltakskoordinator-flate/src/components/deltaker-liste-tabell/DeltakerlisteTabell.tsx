@@ -61,10 +61,14 @@ export const DeltakerlisteTabell = () => {
   }, [handlingValg])
 
   const skalViseVurderinger =
-    deltakerlisteDetaljer.tiltakskode ==
+    (deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+      deltakerlisteDetaljer.tiltakskode ==
+        Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) &&
+    filtrerteDeltakere.find(
+      (deltaker) =>
+        deltaker.vurdering !== null || deltaker.erManueltDeltMedArrangor
+    )
 
   if (filtrerteDeltakere.length === 0) {
     return (
