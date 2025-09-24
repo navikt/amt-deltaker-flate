@@ -165,7 +165,7 @@ const forslagStatusSchema = z.discriminatedUnion('type', [
 ])
 
 export const forslagSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   type: z.literal(HistorikkType.Forslag),
   opprettet: dateSchema,
   begrunnelse: z.string().nullable(),

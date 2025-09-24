@@ -197,7 +197,7 @@ export const deltakerEndringSchema = z.object({
 
 export const endringFraArrangorSchema = z.object({
   type: z.literal(HistorikkType.EndringFraArrangor),
-  id: z.string().uuid(),
+  id: z.uuid(),
   opprettet: dateSchema,
   arrangorNavn: z.string(),
   endring: arrangorEndringSchema

@@ -28,7 +28,7 @@ const tilgjengeligInnholdSchema = z.object({
 })
 
 export const deltakerlisteSchema = z.object({
-  deltakerlisteId: z.string().uuid(),
+  deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
@@ -40,7 +40,7 @@ export const deltakerlisteSchema = z.object({
 })
 
 export const pameldingSchema = z.object({
-  deltakerId: z.string().uuid(),
+  deltakerId: z.uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),

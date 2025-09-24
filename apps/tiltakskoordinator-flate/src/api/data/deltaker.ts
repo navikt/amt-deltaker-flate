@@ -35,7 +35,7 @@ export enum InnsatsbehovType {
 }
 
 export const deltakerDetaljerSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
   etternavn: z.string(),

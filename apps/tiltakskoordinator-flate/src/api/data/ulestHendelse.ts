@@ -58,9 +58,9 @@ export const hendelseAnsvarligSchema = z.object({
 })
 
 export const ulesthendelseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   opprettet: dateSchema,
-  deltakerId: z.string().uuid(),
+  deltakerId: z.uuid(),
   ansvarlig: hendelseAnsvarligSchema.nullable(),
   hendelse: hendelseSchema
 })

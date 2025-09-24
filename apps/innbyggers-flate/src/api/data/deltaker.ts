@@ -13,7 +13,7 @@ import {
 import { z } from 'zod'
 
 export const deltakerlisteSchema = z.object({
-  deltakerlisteId: z.string().uuid(),
+  deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
   tiltakstype: arenaTiltakstypeSchema,
   arrangorNavn: z.string(),
@@ -23,7 +23,7 @@ export const deltakerlisteSchema = z.object({
 })
 
 export const deltakerSchema = z.object({
-  deltakerId: z.string().uuid(),
+  deltakerId: z.uuid(),
   deltakerliste: deltakerlisteSchema,
   status: pameldingStatusSchema,
   startdato: z.string().nullable(),

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const pameldingRequestSchema = z.object({
-  deltakerlisteId: z.string().uuid(),
+  deltakerlisteId: z.uuid(),
   personident: z.string()
 })
 
