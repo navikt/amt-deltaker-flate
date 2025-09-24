@@ -65,7 +65,7 @@ export const DeltakerlisteTabell = () => {
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
       deltakerlisteDetaljer.tiltakskode ==
         Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) &&
-    filtrerteDeltakere.find(
+    !!filtrerteDeltakere.find(
       (deltaker) =>
         deltaker.vurdering !== null || deltaker.erManueltDeltMedArrangor
     )
