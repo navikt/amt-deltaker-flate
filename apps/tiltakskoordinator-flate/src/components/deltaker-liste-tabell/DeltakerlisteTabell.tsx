@@ -32,7 +32,7 @@ import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFei
 import { Vurdering } from '../Vurdering.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { filtrerteDeltakere, deltakerlisteDetaljer } =
+  const { deltakere, filtrerteDeltakere, deltakerlisteDetaljer } =
     useDeltakerlisteContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()
@@ -61,10 +61,14 @@ export const DeltakerlisteTabell = () => {
   }, [handlingValg])
 
   const skalViseVurderinger =
-    deltakerlisteDetaljer.tiltakskode ==
+    (deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+      deltakerlisteDetaljer.tiltakskode ==
+        Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) &&
+    !!deltakere.find(
+      (deltaker) =>
+        deltaker.vurdering !== null || deltaker.erManueltDeltMedArrangor
+    )
 
   if (filtrerteDeltakere.length === 0) {
     return (

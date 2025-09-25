@@ -7,7 +7,8 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType,
   Tiltakskode,
-  UlestHendelseType
+  UlestHendelseType,
+  Vurderingstype
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -18,8 +19,7 @@ import {
 import {
   Beskyttelsesmarkering,
   Deltaker,
-  DeltakerlisteDetaljer,
-  Vurderingstype
+  DeltakerlisteDetaljer
 } from '../api/data/deltakerliste'
 import { erAdresseBeskyttet } from '../utils/utils.ts'
 import { UlestHendelse } from '../api/data/ulestHendelse.ts'

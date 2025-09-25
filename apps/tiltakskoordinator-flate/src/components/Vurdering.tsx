@@ -1,10 +1,10 @@
-import { Vurderingstype } from '../api/data/deltakerliste.ts'
 import { BodyShort } from '@navikt/ds-react'
 import {
   XMarkOctagonIcon,
   CheckmarkCircleIcon,
   QuestionmarkDiamondIcon
 } from '@navikt/aksel-icons'
+import { Vurderingstype } from 'deltaker-flate-common'
 
 interface Props {
   vurdering: Vurderingstype | null
