@@ -73,7 +73,7 @@ export const DeltakerlisteTabell = () => {
   if (filtrerteDeltakere.length === 0) {
     return (
       <Alert inline variant="info" size="small" className="h-fit mt-8">
-        Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere.
+        {`Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere${deltakere.length === 0 ? '' : ' som samsvarer med dine filtervalg'}.`}
       </Alert>
     )
   }
