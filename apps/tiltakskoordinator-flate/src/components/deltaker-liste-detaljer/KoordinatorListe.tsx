@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { fjernTilgang } from '../../api/api.ts'
 import { Koordinator } from '../../api/data/deltakerliste.ts'
 import { getIkkeTilgangTilDeltakerlisteUrl } from '../../navigation.ts'
-import { useMock } from '../../utils/environment-utils.ts'
+import { isEnvLocalDemoOrPr } from '../../utils/environment-utils.ts'
 import { gaTilGjennomforingerMulighetsrommet } from '../../utils/utils.ts'
 
 export const KoordinatorListe = ({
@@ -36,7 +36,7 @@ export const KoordinatorListe = ({
     postFjernTilgang(deltakerlisteId)
       .then(() => setVisFjernKoordinatorModal(false))
       .then(() => {
-        if (useMock) {
+        if (isEnvLocalDemoOrPr) {
           navigate(getIkkeTilgangTilDeltakerlisteUrl(deltakerlisteId))
         } else {
           gaTilGjennomforingerMulighetsrommet()
