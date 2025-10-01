@@ -26,7 +26,7 @@ export const DeltakerlisteDetaljer = () => {
         {deltakerlisteDetaljer.apentForPamelding ? 'Ja' : 'Nei'}
       </BodyShort>
       <Detail weight="semibold" className="mt-3">
-        Koordinator for deltakerliste:
+        Koordinatorer for deltakerliste:
       </Detail>
       <KoordinatorListe
         deltakerlisteId={deltakerlisteDetaljer.id}
