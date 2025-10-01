@@ -223,11 +223,21 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     koordinatorer: [
       {
         id: uuidv4(),
-        navn: 'Navn Navnesen'
+        navn: 'Navn Navnesen',
+        erAktiv: true,
+        kanFjernes: false
       },
       {
         id: uuidv4(),
-        navn: 'To Navn Etternavn'
+        navn: 'This Is Me',
+        erAktiv: true,
+        kanFjernes: true
+      },
+      {
+        id: uuidv4(),
+        navn: 'Navn Etternavn',
+        erAktiv: false,
+        kanFjernes: false
       }
     ]
   }

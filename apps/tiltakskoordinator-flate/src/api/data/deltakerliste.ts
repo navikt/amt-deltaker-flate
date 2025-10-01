@@ -49,9 +49,11 @@ export const deltakerSchema = z.object({
 
 export const deltakereSchema = z.array(deltakerSchema)
 
-const koordinator = z.object({
+const koordinatorSchema = z.object({
   id: z.uuid(),
-  navn: z.string()
+  navn: z.string(),
+  erAktiv: z.boolean(),
+  kanFjernes: z.boolean()
 })
 
 export const deltakerlisteDetaljerSchema = z.object({
@@ -62,9 +64,10 @@ export const deltakerlisteDetaljerSchema = z.object({
   sluttdato: nullableDateSchema,
   apentForPamelding: z.boolean(),
   antallPlasser: z.number(),
-  koordinatorer: z.array(koordinator)
+  koordinatorer: z.array(koordinatorSchema)
 })
 
 export type Deltaker = z.infer<typeof deltakerSchema>
 export type Deltakere = z.infer<typeof deltakereSchema>
 export type DeltakerlisteDetaljer = z.infer<typeof deltakerlisteDetaljerSchema>
+export type Koordinator = z.infer<typeof koordinatorSchema>

@@ -1,7 +1,7 @@
-import { PersonIcon } from '@navikt/aksel-icons'
-import { BodyShort, Detail, List } from '@navikt/ds-react'
+import { BodyShort, Detail } from '@navikt/ds-react'
 import { formatDate } from 'deltaker-flate-common'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
+import { KoordinatorListe } from './deltaker-liste-detaljer/KoordinatorListe.tsx'
 
 export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
@@ -28,13 +28,10 @@ export const DeltakerlisteDetaljer = () => {
       <Detail weight="semibold" className="mt-3">
         Koordinator for deltakerliste:
       </Detail>
-      <List as="ul" size="small">
-        {deltakerlisteDetaljer.koordinatorer.map((koordinator) => (
-          <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
-            {koordinator.navn}
-          </List.Item>
-        ))}
-      </List>
+      <KoordinatorListe
+        deltakerlisteId={deltakerlisteDetaljer.id}
+        koordinatorer={deltakerlisteDetaljer.koordinatorer}
+      />
     </div>
   )
 }
