@@ -94,6 +94,11 @@ export class MockHandler {
     return new HttpResponse()
   }
 
+  fjernTilgang() {
+    this.tilgang = false
+    return new HttpResponse()
+  }
+
   delMedArrangor(delteDeltakerIder: string[]) {
     const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
