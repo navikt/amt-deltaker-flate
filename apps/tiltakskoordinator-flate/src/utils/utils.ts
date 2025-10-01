@@ -84,7 +84,8 @@ export const gaTilGjennomforingerMulighetsrommet = () => {
   const gjennomforingerIndex = pathSegments.indexOf('gjennomforinger')
 
   if (gjennomforingerIndex !== -1) {
-    const newSegments = pathSegments.slice(0, gjennomforingerIndex + 1)
+    // Inkluder "gjennomforinger" + ID-en (neste segment)
+    const newSegments = pathSegments.slice(0, gjennomforingerIndex + 2)
     const newPath = '/' + newSegments.join('/') + '/'
 
     window.location.pathname = newPath
