@@ -76,3 +76,17 @@ export const getDeltakereOppdatert = (
     )
     return oppdatertDeltaker ?? deltaker
   })
+
+export const gaTilGjennomforingerMulighetsrommet = () => {
+  const currentPath = window.location.pathname
+  const pathSegments = currentPath.split('/').filter(Boolean)
+
+  const gjennomforingerIndex = pathSegments.indexOf('gjennomforinger')
+
+  if (gjennomforingerIndex !== -1) {
+    const newSegments = pathSegments.slice(0, gjennomforingerIndex + 1)
+    const newPath = '/' + newSegments.join('/') + '/'
+
+    window.location.pathname = newPath
+  }
+}

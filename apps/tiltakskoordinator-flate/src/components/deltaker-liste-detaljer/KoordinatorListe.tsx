@@ -10,9 +10,11 @@ import {
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getIkkeTilgangTilDeltakerlisteUrl } from '../../navigation.ts'
 import { fjernTilgang } from '../../api/api.ts'
 import { Koordinator } from '../../api/data/deltakerliste.ts'
+import { getIkkeTilgangTilDeltakerlisteUrl } from '../../navigation.ts'
+import { useMock } from '../../utils/environment-utils.ts'
+import { gaTilGjennomforingerMulighetsrommet } from '../../utils/utils.ts'
 
 export const KoordinatorListe = ({
   deltakerlisteId,
@@ -21,7 +23,7 @@ export const KoordinatorListe = ({
   deltakerlisteId: string
   koordinatorer: Koordinator[]
 }) => {
-  const [visSlettKoordinatorModal, setVisSlettKoordinatorModal] =
+  const [visFjernKoordinatorModal, setVisFjernKoordinatorModal] =
     useState(false)
   const navigate = useNavigate()
   const {
@@ -32,8 +34,14 @@ export const KoordinatorListe = ({
 
   const fjernKoordinator = () => {
     postFjernTilgang(deltakerlisteId)
-      .then(() => setVisSlettKoordinatorModal(false))
-      .then(() => navigate(getIkkeTilgangTilDeltakerlisteUrl(deltakerlisteId)))
+      .then(() => setVisFjernKoordinatorModal(false))
+      .then(() => {
+        if (useMock) {
+          navigate(getIkkeTilgangTilDeltakerlisteUrl(deltakerlisteId))
+        } else {
+          gaTilGjennomforingerMulighetsrommet()
+        }
+      })
   }
 
   const tidligereKoordinatorer = koordinatorer.filter(
@@ -56,13 +64,14 @@ export const KoordinatorListe = ({
                   variant="tertiary"
                   size="xsmall"
                   icon={<TrashIcon title="Fjern meg selv som koordinator" />}
-                  onClick={() => setVisSlettKoordinatorModal(true)}
+                  onClick={() => setVisFjernKoordinatorModal(true)}
                 />
               )}
             </div>
           </List.Item>
         ))}
       </List>
+
       <ReadMore size="small" header="Tidligere koordinatorer">
         {tidligereKoordinatorer.length > 0 ? (
           <List as="ul" size="small">
@@ -78,8 +87,8 @@ export const KoordinatorListe = ({
       </ReadMore>
 
       <Modal
-        open={visSlettKoordinatorModal}
-        onClose={() => setVisSlettKoordinatorModal(false)}
+        open={visFjernKoordinatorModal}
+        onClose={() => setVisFjernKoordinatorModal(false)}
         header={{ heading: 'Fjern min tilgang som koordinator' }}
       >
         <Modal.Body>
@@ -110,7 +119,7 @@ export const KoordinatorListe = ({
             size="small"
             variant="tertiary"
             loading={state === DeferredFetchState.LOADING}
-            onClick={() => setVisSlettKoordinatorModal(false)}
+            onClick={() => setVisFjernKoordinatorModal(false)}
           >
             Avbryt
           </Button>
