@@ -58,15 +58,22 @@ export const KoordinatorListe = ({
           ))}
       </List>
       <ReadMore size="small" header="Tidligere koordinatorer">
-        <List as="ul" size="small">
-          {koordinatorer
-            .filter((koordinator) => !koordinator.erAktiv)
-            .map((koordinator) => (
-              <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
-                <BodyShort size="small">{koordinator.navn}</BodyShort>
-              </List.Item>
-            ))}
-        </List>
+        {koordinatorer.length > 0 ? (
+          <List as="ul" size="small">
+            {koordinatorer
+              .filter((koordinator) => !koordinator.erAktiv)
+              .map((koordinator) => (
+                <List.Item
+                  key={koordinator.id}
+                  icon={<PersonIcon aria-hidden />}
+                >
+                  <BodyShort size="small">{koordinator.navn}</BodyShort>
+                </List.Item>
+              ))}
+          </List>
+        ) : (
+          <BodyShort size="small">Her var det tomt gitt</BodyShort>
+        )}
       </ReadMore>
 
       <Modal
