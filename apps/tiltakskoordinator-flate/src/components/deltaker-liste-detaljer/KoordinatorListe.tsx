@@ -11,7 +11,7 @@ import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getIkkeTilgangTilDeltakerlisteUrl } from '../../navigation.ts'
-import { fjernTilTilgang } from '../../api/api.ts'
+import { fjernTilgang } from '../../api/api.ts'
 import { Koordinator } from '../../api/data/deltakerliste.ts'
 
 export const KoordinatorListe = ({
@@ -28,7 +28,7 @@ export const KoordinatorListe = ({
     error,
     state,
     doFetch: postFjernTilgang
-  } = useDeferredFetch(fjernTilTilgang)
+  } = useDeferredFetch(fjernTilgang)
 
   const fjernKoordinator = () => {
     postFjernTilgang(deltakerlisteId)

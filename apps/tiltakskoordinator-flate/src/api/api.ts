@@ -203,6 +203,23 @@ export async function leggTilTilgang(deltakerlisteId: string) {
   }
 }
 
+export async function fjernTilgang(deltakerlisteId: string) {
+  const response = await fetch(`${apiUrl(deltakerlisteId)}/tilgang/fjern`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  })
+
+  if (response.status !== 200) {
+    const message = 'Tilgang kunne ikke fjernes'
+    handleError(message, deltakerlisteId, response.status, null)
+  }
+}
+
 export async function delDeltakereMedArrangor(
   deltakerlisteId: string,
   deltakerIder: string[]
