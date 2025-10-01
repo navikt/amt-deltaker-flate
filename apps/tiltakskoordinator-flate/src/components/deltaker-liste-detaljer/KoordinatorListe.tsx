@@ -36,40 +36,41 @@ export const KoordinatorListe = ({
       .then(() => navigate(getIkkeTilgangTilDeltakerlisteUrl(deltakerlisteId)))
   }
 
+  const tidligereKoordinatorer = koordinatorer.filter(
+    (koordinator) => !koordinator.erAktiv
+  )
+
+  const aktiveKoordinatorer = koordinatorer.filter(
+    (koordinator) => koordinator.erAktiv
+  )
+
   return (
     <>
       <List as="ul" size="small">
-        {koordinatorer
-          .filter((koordinator) => koordinator.erAktiv)
-          .map((koordinator) => (
-            <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
-              <div className="flex gap-1 items-center">
-                <BodyShort size="small">{koordinator.navn}</BodyShort>
-                {koordinator.kanFjernes && (
-                  <Button
-                    variant="tertiary"
-                    size="xsmall"
-                    icon={<TrashIcon title="Fjern meg selv som koordinator" />}
-                    onClick={() => setVisSlettKoordinatorModal(true)}
-                  />
-                )}
-              </div>
-            </List.Item>
-          ))}
+        {aktiveKoordinatorer.map((koordinator) => (
+          <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
+            <div className="flex gap-1 items-center">
+              <BodyShort size="small">{koordinator.navn}</BodyShort>
+              {koordinator.kanFjernes && (
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  icon={<TrashIcon title="Fjern meg selv som koordinator" />}
+                  onClick={() => setVisSlettKoordinatorModal(true)}
+                />
+              )}
+            </div>
+          </List.Item>
+        ))}
       </List>
       <ReadMore size="small" header="Tidligere koordinatorer">
-        {koordinatorer.length > 0 ? (
+        {tidligereKoordinatorer.length > 0 ? (
           <List as="ul" size="small">
-            {koordinatorer
-              .filter((koordinator) => !koordinator.erAktiv)
-              .map((koordinator) => (
-                <List.Item
-                  key={koordinator.id}
-                  icon={<PersonIcon aria-hidden />}
-                >
-                  <BodyShort size="small">{koordinator.navn}</BodyShort>
-                </List.Item>
-              ))}
+            {tidligereKoordinatorer.map((koordinator) => (
+              <List.Item key={koordinator.id} icon={<PersonIcon aria-hidden />}>
+                <BodyShort size="small">{koordinator.navn}</BodyShort>
+              </List.Item>
+            ))}
           </List>
         ) : (
           <BodyShort size="small">Her var det tomt gitt</BodyShort>
