@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright'
 import { expect, type Page, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/123')
+  await page.goto('/gjennomforinger/abc/deltakerliste')
 })
 
 test.afterEach(async ({ page }) => {
