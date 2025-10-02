@@ -32,6 +32,13 @@ export const worker = setupWorker(
     }
   ),
   http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/tilgang/fjern',
+    async () => {
+      await delay(500)
+      return handler.fjernTilgang()
+    }
+  ),
+  http.post(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/del-med-arrangor',
     async ({ request }) => {
       await delay(500)
