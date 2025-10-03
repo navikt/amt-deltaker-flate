@@ -9,6 +9,7 @@ import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { leggTilTilgang } from '../api/api'
+import DemoBanner from '../components/demo-banner/DemoBanner'
 import { useAppContext } from '../context-providers/AppContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { getDeltakerlisteUrl } from '../navigation'
@@ -38,45 +39,48 @@ export function IkkeTilgangTilDeltakerlistePage() {
   }
 
   return (
-    <Box className="flex justify-center pt-16">
-      <div className="flex flex-col gap-4 max-w-screen-sm">
-        <Heading
-          size="small"
-          level="2"
-          tabIndex={-1}
-          ref={ref}
-          className="outline-none"
-        >
-          Du har ikke tilgang til deltakerlisten for denne gjennomføringen
-        </Heading>
-        <BodyLong>
-          Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
-          prioritere deltakere til kurs.
-        </BodyLong>
-        <BodyLong>
-          Dersom du har et behov for å administrere listen, kan du registrere
-          deg som koordinator for gjennomføringen her.
-        </BodyLong>
-        <BodyLong>Navnet ditt vil vises ved deltakerlisten.</BodyLong>
-        <ConfirmationPanel
-          checked={confirmation}
-          error={error ?? confirmationError}
-          label="Jeg bekrefter at jeg har tjenstlig behov for å se og administrere denne deltakerlisten."
-          onChange={() =>
-            setConfirmation((x) => {
-              setConfirmationError(undefined)
-              return !x
-            })
-          }
-        />
-        <Button
-          loading={state === DeferredFetchState.LOADING}
-          className="w-fit"
-          onClick={handleClick}
-        >
-          Gi meg tilgang
-        </Button>
-      </div>
-    </Box>
+    <>
+      <DemoBanner />
+      <Box className="flex justify-center pt-16">
+        <div className="flex flex-col gap-4 max-w-screen-sm">
+          <Heading
+            size="small"
+            level="2"
+            tabIndex={-1}
+            ref={ref}
+            className="outline-none"
+          >
+            Du har ikke tilgang til deltakerlisten for denne gjennomføringen
+          </Heading>
+          <BodyLong>
+            Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
+            prioritere deltakere til kurs.
+          </BodyLong>
+          <BodyLong>
+            Dersom du har et behov for å administrere listen, kan du registrere
+            deg som koordinator for gjennomføringen her.
+          </BodyLong>
+          <BodyLong>Navnet ditt vil vises ved deltakerlisten.</BodyLong>
+          <ConfirmationPanel
+            checked={confirmation}
+            error={error ?? confirmationError}
+            label="Jeg bekrefter at jeg har tjenstlig behov for å se og administrere denne deltakerlisten."
+            onChange={() =>
+              setConfirmation((x) => {
+                setConfirmationError(undefined)
+                return !x
+              })
+            }
+          />
+          <Button
+            loading={state === DeferredFetchState.LOADING}
+            className="w-fit"
+            onClick={handleClick}
+          >
+            Gi meg tilgang
+          </Button>
+        </div>
+      </Box>
+    </>
   )
 }

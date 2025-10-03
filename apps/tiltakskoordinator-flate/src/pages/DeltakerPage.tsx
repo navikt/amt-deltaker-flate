@@ -6,8 +6,9 @@ import { getDeltaker } from '../api/api.ts'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../api/data/deltaker.ts'
 import { DeltakerDetaljer } from '../components/deltaker-detaljer/DeltakerDetaljer.tsx'
 import { DeltakerDetaljerHeader } from '../components/deltaker-detaljer/DeltakerDetaljerHeader.tsx'
-import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
 import { Tilbakelenke } from '../components/deltaker-detaljer/Tilbakelenke.tsx'
+import DemoBanner from '../components/demo-banner/DemoBanner.tsx'
+import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
 import { useAppContext } from '../context-providers/AppContext.tsx'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad.tsx'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil.ts'
@@ -39,6 +40,7 @@ export const DeltakerPage = () => {
 
   return (
     <>
+      <DemoBanner />
       <Tilbakelenke />
       <h2 className="sr-only" tabIndex={-1} ref={ref}>
         Deltakerdetaljer
