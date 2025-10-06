@@ -31,7 +31,7 @@
     "msw": "^2.11.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-hook-form": "^7.63.0",
+    "react-hook-form": "^7.64.0",
     "react-router-dom": "^7.9.3",
     "uuid": "^13.0.0",
     "zod": "^4.1.11"
@@ -50,7 +50,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^4.1.0",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "jsdom": "^27.0.0",
     "playwright": "^1.55.1",
     "tailwindcss": "^4.1.14",
