@@ -1,6 +1,7 @@
 import {
   DeltakerStatusType,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { Deltakere } from '../api/data/deltakerliste'
 
@@ -111,25 +112,33 @@ export type HandlingFilterDetaljer = {
 export const getHendelseFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: HandlingFilterValg[],
-  valgteStatusFilter: StatusFilterValg[]
+  valgteStatusFilter: StatusFilterValg[],
+  oppstartstype: Oppstartstype
 ): HandlingFilterDetaljer[] => {
   const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
     deltakere,
     valgteStatusFilter
   )
 
-  return Object.values(HandlingFilterValg).map((filterValg) => {
-    const erValgt = valgteFilter.includes(filterValg)
+  return Object.values(HandlingFilterValg)
+    .filter(
+      (filterValg) =>
+        oppstartstype === Oppstartstype.FELLES
+          ? true
+          : filterValg === HandlingFilterValg.AktiveForslag // Kun vise denne for Løpende oppstart
+    )
+    .map((filterValg) => {
+      const erValgt = valgteFilter.includes(filterValg)
 
-    return {
-      filtervalg: filterValg,
-      navn: getHandlingFilterTypeNavn(filterValg),
-      valgt: erValgt,
-      antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
-        filterValg
-      ]).length
-    }
-  })
+      return {
+        filtervalg: filterValg,
+        navn: getHandlingFilterTypeNavn(filterValg),
+        valgt: erValgt,
+        antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
+          filterValg
+        ]).length
+      }
+    })
 }
 
 export type StatusFilterDetaljer = {

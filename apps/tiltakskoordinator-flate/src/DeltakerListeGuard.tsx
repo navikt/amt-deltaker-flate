@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
 import { Deltakere } from './api/data/deltakerliste'
-import DemoBanner from './components/demo-banner/DemoBanner'
+import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
@@ -76,7 +76,7 @@ export const DeltakerListeGuard = () => {
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
           initialDeltakere={deltakere}
         >
-          <DemoBanner />
+          <DemoStatusInnstillinger />
           <DeltakerlistePage />
         </DeltakerlisteContextProvider>
       )}

@@ -5,14 +5,18 @@ import { useFilterContext } from '../../context-providers/FilterContext'
 import { getFiltrerteDeltakere } from '../../utils/filter-deltakerliste'
 import { HendelseFilter } from './HendelseFilter'
 import { StatusFilter } from './StatusFilter'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 interface Props {
   className?: string
 }
 
 export const FilterDeltakerliste = ({ className }: Props) => {
-  const { deltakere, setFiltrerteDeltakere } = useDeltakerlisteContext()
+  const { deltakere, deltakerlisteDetaljer, setFiltrerteDeltakere } =
+    useDeltakerlisteContext()
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
+  const erFellesOppstart =
+    deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
 
   const filtrerteDeltakere = useMemo(() => {
     return getFiltrerteDeltakere(
@@ -34,7 +38,8 @@ export const FilterDeltakerliste = ({ className }: Props) => {
 
       <div className="flex flex-col gap-4">
         <HendelseFilter />
-        <StatusFilter />
+
+        {erFellesOppstart && <StatusFilter />}
       </div>
     </div>
   )

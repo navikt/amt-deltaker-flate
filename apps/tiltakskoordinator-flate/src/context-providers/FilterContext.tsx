@@ -13,6 +13,7 @@ export interface FilterContextProps {
   setValgteStatusFilter: React.Dispatch<
     React.SetStateAction<StatusFilterValg[]>
   >
+  nullstillFilter?: () => void
 }
 
 const FilterContext = createContext<FilterContextProps | undefined>(undefined)
@@ -37,11 +38,17 @@ const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
     StatusFilterValg[]
   >([])
 
+  const nullstillFilter = () => {
+    setValgteHendelseFilter([])
+    setValgteStatusFilter([])
+  }
+
   const contextValue: FilterContextProps = {
-    valgteHendelseFilter: valgteHendelseFilter,
-    setValgteHendelseFilter: setValgteHendelseFilter,
-    valgteStatusFilter: valgteStatusFilter,
-    setValgteStatusFilter: setValgteStatusFilter
+    valgteHendelseFilter,
+    setValgteHendelseFilter,
+    valgteStatusFilter,
+    setValgteStatusFilter,
+    nullstillFilter
   }
 
   return (
