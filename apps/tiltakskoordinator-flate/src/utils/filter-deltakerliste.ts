@@ -11,7 +11,7 @@ export enum HandlingFilterValg {
   NyeDeltakere = 'NyeDeltakere'
 }
 
-const statusFilterTyper = [
+export const statuserForFellesOppstart = [
   DeltakerStatusType.SOKT_INN,
   DeltakerStatusType.VENTER_PA_OPPSTART,
   DeltakerStatusType.DELTAR,
@@ -19,6 +19,17 @@ const statusFilterTyper = [
   DeltakerStatusType.FULLFORT,
   DeltakerStatusType.AVBRUTT,
   DeltakerStatusType.IKKE_AKTUELL
+]
+
+export const statuserForLopendeOppstart = [
+  DeltakerStatusType.VENTER_PA_OPPSTART,
+  DeltakerStatusType.DELTAR,
+  DeltakerStatusType.HAR_SLUTTET,
+  DeltakerStatusType.IKKE_AKTUELL
+]
+
+const statusFilterTyper = [
+  ...new Set([...statuserForFellesOppstart, ...statuserForLopendeOppstart])
 ] as const
 
 export type StatusFilterValg = (typeof statusFilterTyper)[number]
