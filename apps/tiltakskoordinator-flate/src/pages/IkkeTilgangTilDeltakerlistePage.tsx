@@ -50,18 +50,22 @@ export function IkkeTilgangTilDeltakerlistePage() {
           Du har ikke tilgang til deltakerlisten for denne gjennomføringen
         </Heading>
         <BodyLong>
-          Deltakerlisten er kun tilgjengelig for deg som er ansvarlig for å
-          prioritere deltakere til kurs.
+          Deltakerlisten er kun tilgjengelig for personer som har ansvar for
+          oppfølging av tiltaket og som har et tjenstlig behov for å behandle
+          opplysninger om deltakerne.
         </BodyLong>
         <BodyLong>
-          Dersom du har et behov for å administrere listen, kan du registrere
-          deg som koordinator for gjennomføringen her.
+          Dersom du har behov for slik tilgang, kan du registrere deg som
+          koordinator for gjennomføringen her.
         </BodyLong>
-        <BodyLong>Navnet ditt vil vises ved deltakerlisten.</BodyLong>
+        <BodyLong>
+          Når du er registrert som koordinator, vil navnet ditt vises i
+          tilknytning til deltakerlisten.
+        </BodyLong>
         <ConfirmationPanel
           checked={confirmation}
           error={error ?? confirmationError}
-          label="Jeg bekrefter at jeg har tjenstlig behov for å se og administrere denne deltakerlisten."
+          label="Jeg bekrefter at jeg har tjenstlig behov for å se denne deltakerlisten."
           onChange={() =>
             setConfirmation((x) => {
               setConfirmationError(undefined)
