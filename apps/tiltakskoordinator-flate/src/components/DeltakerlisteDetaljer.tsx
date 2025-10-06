@@ -1,5 +1,5 @@
 import { BodyShort, Detail } from '@navikt/ds-react'
-import { formatDate } from 'deltaker-flate-common'
+import { formatDate, Oppstartstype } from 'deltaker-flate-common'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
 import { KoordinatorListe } from './deltaker-liste-detaljer/KoordinatorListe.tsx'
 
@@ -7,7 +7,13 @@ export const DeltakerlisteDetaljer = () => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
 
   return (
-    <div className="mt-14">
+    <div
+      className={
+        deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
+          ? 'mt-14'
+          : ''
+      }
+    >
       <Detail weight="semibold">Start- sluttdato</Detail>
       <BodyShort size="small">
         {formatDate(deltakerlisteDetaljer.startdato)} -{' '}
