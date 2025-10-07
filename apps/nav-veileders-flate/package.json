@@ -52,7 +52,7 @@
     "@vitejs/plugin-react-swc": "^4.1.0",
     "eslint": "^9.37.0",
     "jsdom": "^27.0.0",
-    "playwright": "^1.55.1",
+    "playwright": "^1.56.0",
     "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
