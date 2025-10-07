@@ -17,8 +17,7 @@ export function StengtDeltakerlistePage() {
           Deltakerlisten for gjennomføringen er stengt
         </Heading>
         <BodyLong>
-          Tiltaket er fullført eller avsluttet, og deltakerlisten vises derfor
-          ikke lenger.
+          Tiltaket er avsluttet, og deltakerlisten vises derfor ikke lenger.
         </BodyLong>
       </div>
     </Box>
