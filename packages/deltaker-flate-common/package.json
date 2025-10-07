@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@navikt/aksel-icons": "^7.31.0",
-    "@navikt/ds-react": "^7.31.0",
+    "@navikt/ds-react": "^7.32.0",
     "dayjs": "^1.11.18",
     "react": "^19.2.0",
     "typescript": "^5.9.3",
