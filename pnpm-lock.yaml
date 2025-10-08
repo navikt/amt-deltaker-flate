@@ -148,8 +148,8 @@ importers:
         specifier: ^7.31.0
         version: 7.31.0(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@navikt/ds-tailwind':
-        specifier: ^7.31.0
-        version: 7.31.0
+        specifier: ^7.32.1
+        version: 7.32.1
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
@@ -254,8 +254,8 @@ importers:
         specifier: ^7.31.0
         version: 7.31.0(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@navikt/ds-tailwind':
-        specifier: ^7.31.0
-        version: 7.31.0
+        specifier: ^7.32.1
+        version: 7.32.1
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
@@ -416,8 +416,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^7.31.0
-        version: 7.31.0
+        specifier: ^7.32.1
+        version: 7.32.1
       '@tailwindcss/postcss':
         specifier: 4.1.14
         version: 4.1.14
@@ -903,8 +903,8 @@ packages:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
 
-  '@navikt/ds-tailwind@7.31.0':
-    resolution: {integrity: sha512-9S5Ovm/4Z7MQOUqOPCaEXciPd1uN+nhuF7LYTMKCKbEeZDvUnXEbQmYkMcT3spLX2sos0gTVICKP0ymuuxzH5g==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.31.0/1da57e8287c33c61d1d8c51d4aa0ad9e4d8db21b}
+  '@navikt/ds-tailwind@7.32.1':
+    resolution: {integrity: sha512-+v25KbtqOp/l45miBpXFpVigi6U58ZDfIdrpcHFVuMmh7d3u0ik0u2aiXg1WULRPUWr5PPiHmAPjQpsZ58IB1Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.32.1/a8523749a75a873876aa3ebdef529b0618872ee7}
 
   '@navikt/ds-tokens@7.31.0':
     resolution: {integrity: sha512-cW7be0OyW9FIcIrgagIO0/YZoc3774iCqq9VYvx9cyIYT3CK6kSziCEyT/Kro3wEzyW+nJokTORgyx28zk3y9A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.31.0/c8ff6b4d9a463ddab2a357fd4dee135c26693322}
@@ -3773,7 +3773,7 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@7.31.0': {}
+  '@navikt/ds-tailwind@7.32.1': {}
 
   '@navikt/ds-tokens@7.31.0': {}
 
