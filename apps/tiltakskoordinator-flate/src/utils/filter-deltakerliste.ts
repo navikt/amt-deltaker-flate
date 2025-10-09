@@ -1,6 +1,7 @@
 import {
   DeltakerStatusType,
-  getDeltakerStatusDisplayText
+  getDeltakerStatusDisplayText,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { Deltakere } from '../api/data/deltakerliste'
 
@@ -10,7 +11,7 @@ export enum HandlingFilterValg {
   NyeDeltakere = 'NyeDeltakere'
 }
 
-const statusFilterTyper = [
+export const statuserForFellesOppstart = [
   DeltakerStatusType.SOKT_INN,
   DeltakerStatusType.VENTER_PA_OPPSTART,
   DeltakerStatusType.DELTAR,
@@ -18,6 +19,17 @@ const statusFilterTyper = [
   DeltakerStatusType.FULLFORT,
   DeltakerStatusType.AVBRUTT,
   DeltakerStatusType.IKKE_AKTUELL
+]
+
+export const statuserForLopendeOppstart = [
+  DeltakerStatusType.VENTER_PA_OPPSTART,
+  DeltakerStatusType.DELTAR,
+  DeltakerStatusType.HAR_SLUTTET,
+  DeltakerStatusType.IKKE_AKTUELL
+]
+
+const statusFilterTyper = [
+  ...new Set([...statuserForFellesOppstart, ...statuserForLopendeOppstart])
 ] as const
 
 export type StatusFilterValg = (typeof statusFilterTyper)[number]
@@ -111,25 +123,33 @@ export type HandlingFilterDetaljer = {
 export const getHendelseFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: HandlingFilterValg[],
-  valgteStatusFilter: StatusFilterValg[]
+  valgteStatusFilter: StatusFilterValg[],
+  oppstartstype: Oppstartstype
 ): HandlingFilterDetaljer[] => {
   const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
     deltakere,
     valgteStatusFilter
   )
 
-  return Object.values(HandlingFilterValg).map((filterValg) => {
-    const erValgt = valgteFilter.includes(filterValg)
+  return Object.values(HandlingFilterValg)
+    .filter(
+      (filterValg) =>
+        oppstartstype === Oppstartstype.FELLES
+          ? true
+          : filterValg === HandlingFilterValg.AktiveForslag // Kun vise denne for Løpende oppstart
+    )
+    .map((filterValg) => {
+      const erValgt = valgteFilter.includes(filterValg)
 
-    return {
-      filtervalg: filterValg,
-      navn: getHandlingFilterTypeNavn(filterValg),
-      valgt: erValgt,
-      antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
-        filterValg
-      ]).length
-    }
-  })
+      return {
+        filtervalg: filterValg,
+        navn: getHandlingFilterTypeNavn(filterValg),
+        valgt: erValgt,
+        antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
+          filterValg
+        ]).length
+      }
+    })
 }
 
 export type StatusFilterDetaljer = {

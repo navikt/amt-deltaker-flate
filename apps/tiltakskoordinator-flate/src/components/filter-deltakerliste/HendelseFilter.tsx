@@ -14,7 +14,7 @@ import {
 } from '../../utils/filter-deltakerliste'
 
 export const HendelseFilter = () => {
-  const { deltakere } = useDeltakerlisteContext()
+  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { valgteHendelseFilter, valgteStatusFilter, setValgteHendelseFilter } =
     useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
@@ -26,9 +26,15 @@ export const HendelseFilter = () => {
     return getHendelseFilterDetaljer(
       deltakere,
       valgteHendelseFilter,
-      valgteStatusFilter
+      valgteStatusFilter,
+      deltakerlisteDetaljer.oppstartstype
     )
-  }, [valgteHendelseFilter, valgteStatusFilter, deltakere])
+  }, [
+    valgteHendelseFilter,
+    valgteStatusFilter,
+    deltakere,
+    deltakerlisteDetaljer
+  ])
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteHendelseFilter(

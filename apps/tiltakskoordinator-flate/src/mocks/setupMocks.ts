@@ -1,7 +1,8 @@
 import {
   DeltakerStatusAarsak,
   KOMET_ER_MASTER,
-  LES_ARENA_DELTAKERE_TOGGLE_NAVN
+  LES_ARENA_DELTAKERE_TOGGLE_NAVN,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
@@ -10,6 +11,14 @@ import { MockHandler } from './MockHandler'
 const handler = new MockHandler()
 
 export const worker = setupWorker(
+  http.post(
+    '/amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
+    async ({ params }) => {
+      await delay(1000)
+      const { oppstartstype } = params
+      return handler.setOppstartsype(oppstartstype as Oppstartstype)
+    }
+  ),
   http.get(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId',
     async () => {

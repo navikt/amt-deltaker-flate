@@ -22,7 +22,9 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
-  const visVurdering = deltaker.tiltakskode !== Tiltakskode.JOBBKLUBB
+  const visVurdering =
+    deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+    deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
   return (
     <div className="flex flex-col mb-4">

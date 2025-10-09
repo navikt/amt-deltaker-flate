@@ -2,6 +2,7 @@ import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import {
   DeltakerStatusTag,
   DeltakerStatusType,
+  Oppstartstype,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
@@ -41,6 +42,8 @@ export const DeltakerlisteTabell = () => {
 
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
+  const erFellesOppstart =
+    deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
 
   const { lagretSorteringsValg, setLagretSorteringsValg } =
     useSorteringContext()
@@ -61,6 +64,7 @@ export const DeltakerlisteTabell = () => {
   }, [handlingValg])
 
   const skalViseVurderinger =
+    erFellesOppstart &&
     (deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
       deltakerlisteDetaljer.tiltakskode ==
@@ -91,10 +95,12 @@ export const DeltakerlisteTabell = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <HandlingerKnapp
-        onModalOpen={() => setModalOpen(true)}
-        className="place-self-end mt-2 mb-2"
-      />
+      {deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES && (
+        <HandlingerKnapp
+          onModalOpen={() => setModalOpen(true)}
+          className="place-self-end mt-2 mb-2"
+        />
+      )}
 
       {handlingValg !== null && (
         <Alert

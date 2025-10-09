@@ -9,7 +9,7 @@ import {
   HandlingFilterValg,
   StatusFilterValg
 } from './filter-deltakerliste'
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerStatusType, Oppstartstype } from 'deltaker-flate-common'
 
 const mockDeltakere = [
   {
@@ -145,15 +145,31 @@ describe('getHendelseFiltrerteDeltakere', () => {
 
 describe('getHendelseFilterDetaljer', () => {
   it('returnerer korrekt antall filter', () => {
-    const detaljer = getHendelseFilterDetaljer(mockDeltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(
+      mockDeltakere,
+      [],
+      [],
+      Oppstartstype.FELLES
+    )
     expect(detaljer).toHaveLength(Object.values(HandlingFilterValg).length)
+  })
+
+  it('returnerer korrekt antall filter for løpende oppstart', () => {
+    const detaljer = getHendelseFilterDetaljer(
+      mockDeltakere,
+      [],
+      [],
+      Oppstartstype.LOPENDE
+    )
+    expect(detaljer).toHaveLength(1)
   })
 
   it('viser valgt=true for valgte filter', () => {
     const detaljer = getHendelseFilterDetaljer(
       mockDeltakere,
       [HandlingFilterValg.AktiveForslag, HandlingFilterValg.NyeDeltakere],
-      []
+      [],
+      Oppstartstype.FELLES
     )
     const aktive = detaljer.find(
       (d) => d.filtervalg === HandlingFilterValg.AktiveForslag
@@ -170,7 +186,12 @@ describe('getHendelseFilterDetaljer', () => {
   })
 
   it('viser korrekt antall for hvert filter', () => {
-    const detaljer = getHendelseFilterDetaljer(mockDeltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(
+      mockDeltakere,
+      [],
+      [],
+      Oppstartstype.FELLES
+    )
     const aktive = detaljer.find(
       (d) => d.filtervalg === HandlingFilterValg.AktiveForslag
     )
@@ -212,7 +233,12 @@ describe('getHendelseFilterDetaljer', () => {
         erNyDeltaker: false
       }
     ]
-    const detaljer = getHendelseFilterDetaljer(deltakere, [], [])
+    const detaljer = getHendelseFilterDetaljer(
+      deltakere,
+      [],
+      [],
+      Oppstartstype.FELLES
+    )
     detaljer.forEach((d) => expect(d.antall).toBe(0))
   })
 
@@ -237,7 +263,8 @@ describe('getHendelseFilterDetaljer', () => {
         }
       ],
       [HandlingFilterValg.OppdateringFraNav],
-      ['DELTAR' as StatusFilterValg]
+      ['DELTAR' as StatusFilterValg],
+      Oppstartstype.FELLES
     )
     detaljer.forEach((d) => {
       if (d.filtervalg === HandlingFilterValg.OppdateringFraNav) {

@@ -4,15 +4,20 @@ import {
   CheckboxGroup,
   ExpansionCard
 } from '@navikt/ds-react'
+import { Oppstartstype } from 'deltaker-flate-common'
 import { useMemo } from 'react'
 import useLocalStorage from '../../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
 import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
-import { getStatusFilterDetaljer } from '../../utils/filter-deltakerliste'
+import {
+  getStatusFilterDetaljer,
+  statuserForFellesOppstart,
+  statuserForLopendeOppstart
+} from '../../utils/filter-deltakerliste'
 
 export const StatusFilter = () => {
-  const { deltakere } = useDeltakerlisteContext()
+  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
   const { valgteStatusFilter, valgteHendelseFilter, setValgteStatusFilter } =
     useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
@@ -53,20 +58,27 @@ export const StatusFilter = () => {
           onChange={handleChange}
           value={valgteStatusFilter}
         >
-          {filterDetaljer.map((filter) => (
-            <Checkbox
-              key={filter.filtervalg}
-              value={filter.filtervalg}
-              className="w-full [&_label_>_span]:w-full"
-            >
-              <span className="flex justify-between gap-4 w-full">
-                <span>{filter.navn}</span>
-                <BodyShort as="span" weight="semibold">
-                  {filter.antall}
-                </BodyShort>
-              </span>
-            </Checkbox>
-          ))}
+          {filterDetaljer
+            .filter((filter) => {
+              return deltakerlisteDetaljer.oppstartstype ===
+                Oppstartstype.LOPENDE
+                ? statuserForLopendeOppstart.includes(filter.filtervalg)
+                : statuserForFellesOppstart.includes(filter.filtervalg)
+            })
+            .map((filter) => (
+              <Checkbox
+                key={filter.filtervalg}
+                value={filter.filtervalg}
+                className="w-full [&_label_>_span]:w-full"
+              >
+                <span className="flex justify-between gap-4 w-full">
+                  <span>{filter.navn}</span>
+                  <BodyShort as="span" weight="semibold">
+                    {filter.antall}
+                  </BodyShort>
+                </span>
+              </Checkbox>
+            ))}
         </CheckboxGroup>
       </ExpansionCard.Content>
     </ExpansionCard>

@@ -6,6 +6,7 @@ import {
   DeltakerStatusType,
   ForslagEndringAarsakType,
   ForslagEndringType,
+  Oppstartstype,
   Tiltakskode,
   UlestHendelseType,
   Vurderingstype
@@ -218,6 +219,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
+    oppstartstype: Oppstartstype.FELLES,
     apentForPamelding: true,
     antallPlasser: 42,
     koordinatorer: [
