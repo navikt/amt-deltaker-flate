@@ -2,6 +2,7 @@ import {
   deltakerStatusAarsakTypeSchema,
   deltakerStatusTypeSchema,
   nullableDateSchema,
+  Oppstartstype,
   tiltakskodeSchema,
   Vurderingstype
 } from 'deltaker-flate-common'
@@ -62,6 +63,7 @@ export const deltakerlisteDetaljerSchema = z.object({
   tiltakskode: tiltakskodeSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
+  oppstartstype: z.enum(Oppstartstype),
   apentForPamelding: z.boolean(),
   antallPlasser: z.number(),
   koordinatorer: z.array(koordinatorSchema)

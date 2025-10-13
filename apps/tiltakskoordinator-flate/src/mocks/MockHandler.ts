@@ -2,6 +2,7 @@ import {
   DeltakerStatusAarsak,
   DeltakerStatusType,
   lagHistorikkFellesOppstart,
+  Oppstartstype,
   UlestHendelseType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -63,6 +64,14 @@ export class MockHandler {
 
   getHistorikk() {
     return HttpResponse.json(lagHistorikkFellesOppstart())
+  }
+
+  setOppstartsype(oppstartstype: Oppstartstype) {
+    this.deltakerlisteDetaljer = {
+      ...this.deltakerlisteDetaljer,
+      oppstartstype
+    } as DeltakerlisteDetaljer
+    return HttpResponse.json(this.deltakerlisteDetaljer)
   }
 
   slettUlestHendelse(ulestHendelseId: string) {
