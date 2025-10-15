@@ -38,7 +38,7 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@axe-core/playwright": "^4.10.2",
-    "@faker-js/faker": "^10.0.0",
+    "@faker-js/faker": "^10.1.0",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/vite": "^4.1.14",
     "@testing-library/jest-dom": "^6.9.1",
