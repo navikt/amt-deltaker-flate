@@ -12,7 +12,8 @@ interface Props {
   statusType: DeltakerStatusType
   arrangorNavn: string
   tiltaksType: ArenaTiltakskode
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
+  erEnkeltplassUtenRammeavtale: boolean
   className?: string
 }
 
@@ -22,8 +23,12 @@ export const HvaDelesMedArrangor = ({
   arrangorNavn,
   tiltaksType,
   oppstartstype,
+  erEnkeltplassUtenRammeavtale,
   className
 }: Props) => {
+  if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
+    return null
+  }
   const erKurs = erKursEllerDigitalt(tiltaksType)
   const visDelMedArrangorInfo =
     kanDeleDeltakerMedArrangor(tiltaksType, oppstartstype) &&

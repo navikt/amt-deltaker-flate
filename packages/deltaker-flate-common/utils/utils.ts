@@ -141,7 +141,7 @@ export const fjernUgyldigeTegn = (str: string) => {
 
 export const kanDeleDeltakerMedArrangor = (
   tiltaksType: ArenaTiltakskode,
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
 ) =>
   oppstartstype === Oppstartstype.FELLES &&
   [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
@@ -163,7 +163,7 @@ export const erKursTiltak = (tiltaksType: ArenaTiltakskode) =>
     ArenaTiltakskode.GRUFAGYRKE
   ].includes(tiltaksType)
 
-export const harFellesOppstart = (oppstartstype: Oppstartstype) =>
+export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
 
 export const getDeltakerStatusAarsakTypeText = (

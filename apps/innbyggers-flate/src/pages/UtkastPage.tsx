@@ -36,9 +36,9 @@ export const UtkastPage = () => {
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
 
-  const erFellesOppstart = harFellesOppstart(
-    deltaker.deltakerliste.oppstartstype
-  )
+  const erUtkastTilSoknad =
+    harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
+    deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakstype,
@@ -83,7 +83,7 @@ export const UtkastPage = () => {
         className="mt-6"
         data-testid="heading_utkast"
       >
-        {erFellesOppstart ? 'Utkast til søknad' : 'Utkast til påmelding'}
+        {erUtkastTilSoknad ? 'Utkast til søknad' : 'Utkast til påmelding'}
       </Heading>
       <UtkastHeader
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
@@ -91,9 +91,9 @@ export const UtkastPage = () => {
       />
       <GuidePanel poster illustration={svg}>
         <Heading level="3" size="small">
-          {`Dette er et utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
+          {`Dette er et utkast til ${erUtkastTilSoknad ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
         </Heading>
-        {erFellesOppstart ? (
+        {erUtkastTilSoknad ? (
           <>
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
@@ -164,27 +164,31 @@ export const UtkastPage = () => {
         className="mt-6"
       />
 
-      <Heading level="3" size="medium" className="mt-6">
-        Kontaktinformasjon
-      </Heading>
-      {kanDeleDeltakerMedArrangor(
-        tiltakstype,
-        deltaker.deltakerliste.oppstartstype
-      ) ? (
+      {!deltaker.deltakerliste.erEnkeltplassUtenRammeavtale && (
         <>
-          <BodyLong size="small" className="mt-2">
-            Du vil få beskjed dersom det oversendes informasjon om deg til
-            arrangør. Arrangøren behandler opplysninger på vegne av NAV.
-          </BodyLong>
-          <BodyLong size="small" className="mt-2">
-            Dette deles med {deltaker.deltakerliste.arrangorNavn}:
-          </BodyLong>
+          <Heading level="3" size="medium" className="mt-6">
+            Kontaktinformasjon
+          </Heading>
+          {kanDeleDeltakerMedArrangor(
+            tiltakstype,
+            deltaker.deltakerliste.oppstartstype
+          ) ? (
+            <>
+              <BodyLong size="small" className="mt-2">
+                Du vil få beskjed dersom det oversendes informasjon om deg til
+                arrangør. Arrangøren behandler opplysninger på vegne av NAV.
+              </BodyLong>
+              <BodyLong size="small" className="mt-2">
+                Dette deles med {deltaker.deltakerliste.arrangorNavn}:
+              </BodyLong>
+            </>
+          ) : (
+            <BodyLong size="small" className="mt-2">
+              Nav samarbeider med {arrangorNavn}. Arrangøren behandler
+              personopplysninger på vegne av Nav.
+            </BodyLong>
+          )}
         </>
-      ) : (
-        <BodyLong size="small" className="mt-2">
-          Nav samarbeider med {arrangorNavn}. Arrangøren behandler
-          personopplysninger på vegne av Nav.
-        </BodyLong>
       )}
 
       <List as="ul" size="small" className="-mt-1 -mb-2">
@@ -246,7 +250,7 @@ export const UtkastPage = () => {
       </div>
 
       <Alert inline variant="info" className="mt-4">
-        {erFellesOppstart
+        {erUtkastTilSoknad
           ? 'Når du godkjenner utkastet blir søknaden sendt inn.'
           : `Når du godkjenner utkastet blir du meldt på, vedtaket fattes og ${arrangorNavn} mottar informasjonen.`}
       </Alert>

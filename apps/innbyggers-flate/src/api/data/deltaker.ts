@@ -7,7 +7,6 @@ import {
   arenaTiltakstypeSchema,
   vedtaksinformasjonSchema,
   Oppstartstype,
-  dateSchema,
   nullableDateSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -17,9 +16,10 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: arenaTiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.enum(Oppstartstype),
-  startdato: dateSchema,
-  sluttdato: nullableDateSchema
+  oppstartstype: z.enum(Oppstartstype).nullable(),
+  startdato: nullableDateSchema,
+  sluttdato: nullableDateSchema,
+  erEnkeltplassUtenRammeavtale: z.boolean()
 })
 
 export const deltakerSchema = z.object({
