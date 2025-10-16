@@ -71,5 +71,8 @@ const forskriftskapitler: { [Key in ArenaTiltakskode]: string } = {
   [ArenaTiltakskode.GRUFAGYRKE]: '7',
   [ArenaTiltakskode.GRUPPEAMO]: '7',
   [ArenaTiltakskode.JOBBK]: '4',
-  [ArenaTiltakskode.VASV]: '14'
+  [ArenaTiltakskode.VASV]: '14',
+  [ArenaTiltakskode.ENKELAMO]: '7',
+  [ArenaTiltakskode.ENKFAGYRKE]: '7',
+  [ArenaTiltakskode.HOYEREUTD]: '7'
 }

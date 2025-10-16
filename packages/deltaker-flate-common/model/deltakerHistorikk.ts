@@ -5,7 +5,7 @@ import {
   innholdSchema,
   Oppstartstype,
   pameldingStatusSchema,
-  vurderingstypeSchema
+  Vurderingstype
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
@@ -215,7 +215,7 @@ export const importertFraArenaSchema = z.object({
 
 export const vurderingFraArrangorSchema = z.object({
   type: z.literal(HistorikkType.VurderingFraArrangor),
-  vurderingstype: vurderingstypeSchema,
+  vurderingstype: z.enum(Vurderingstype),
   begrunnelse: z.string().nullable(),
   opprettetDato: dateSchema,
   endretAv: z.string()

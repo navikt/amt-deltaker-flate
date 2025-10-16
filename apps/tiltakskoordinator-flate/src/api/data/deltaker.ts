@@ -1,10 +1,10 @@
 import {
   deltakerStatusAarsakSchema,
-  deltakerStatusTypeSchema,
+  DeltakerStatusType,
   forslagSchema,
   nullableDateSchema,
   Tiltakskode,
-  vurderingstypeSchema
+  Vurderingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { Beskyttelsesmarkering } from './deltakerliste.ts'
@@ -17,12 +17,12 @@ export const navVeilederSchema = z.object({
 })
 
 export const deltakerStatusSchema = z.object({
-  type: deltakerStatusTypeSchema,
+  type: z.enum(DeltakerStatusType),
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
 
 const vurderingSchema = z.object({
-  type: vurderingstypeSchema,
+  type: z.enum(Vurderingstype),
   begrunnelse: z.string().nullable()
 })
 

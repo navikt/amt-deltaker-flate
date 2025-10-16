@@ -191,6 +191,16 @@ export class MockHandler {
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
       }
 
+      if (
+        tiltakstype === ArenaTiltakskode.ENKELAMO ||
+        tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
+        tiltakstype === ArenaTiltakskode.HOYEREUTD
+      ) {
+        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = true
+      } else {
+        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
+      }
+
       this.deltaker = oppdatertDeltaker
       return HttpResponse.json(oppdatertDeltaker)
     }
