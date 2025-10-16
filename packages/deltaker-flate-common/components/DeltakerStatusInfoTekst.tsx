@@ -61,6 +61,28 @@ const getInfoTekst = (
   }
 }
 
+const getHoyereUtdanningInfo = (statusType: DeltakerStatusType) => {
+  if (
+    !(
+      statusType === DeltakerStatusType.SOKT_INN ||
+      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+    )
+  ) {
+    return null
+  }
+
+  const infoTekst =
+    statusType === DeltakerStatusType.SOKT_INN
+      ? 'Nav har søkt deg inn på tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
+      : 'Nav har godkjent tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
+
+  return (
+    <Alert variant="info" className="mt-4" size="small">
+      {infoTekst}
+    </Alert>
+  )
+}
+
 export const DeltakerStatusInfoTekst = ({
   tiltaksType,
   deltakerlisteNavn,
@@ -71,6 +93,10 @@ export const DeltakerStatusInfoTekst = ({
   tiltaketsStartDato,
   erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
+  if (tiltaksType === ArenaTiltakskode.HOYEREUTD) {
+    return getHoyereUtdanningInfo(statusType)
+  }
+
   if (erEnkeltplassUtenRammeavtale || !oppstartstype) {
     return null
   }
