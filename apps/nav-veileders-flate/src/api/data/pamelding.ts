@@ -1,6 +1,5 @@
 import {
   ArenaTiltakskode,
-  dateSchema,
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
@@ -32,11 +31,12 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakstype: tiltakstypeSchema,
   arrangorNavn: z.string(),
-  oppstartstype: z.enum(Oppstartstype),
-  startdato: dateSchema,
+  oppstartstype: z.enum(Oppstartstype).nullable(),
+  startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  status: deltakerlisteStatusSchema,
-  tilgjengeligInnhold: tilgjengeligInnholdSchema
+  status: deltakerlisteStatusSchema.nullable(),
+  tilgjengeligInnhold: tilgjengeligInnholdSchema,
+  erEnkeltplassUtenRammeavtale: z.boolean()
 })
 
 export const pameldingSchema = z.object({

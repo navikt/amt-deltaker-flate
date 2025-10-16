@@ -54,7 +54,8 @@ export const createDeltaker = (
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
       startdato: dayjs('2022-10-28').toDate(),
-      sluttdato: dayjs('2027-12-20').toDate()
+      sluttdato: dayjs('2027-12-20').toDate(),
+      erEnkeltplassUtenRammeavtale: false
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',

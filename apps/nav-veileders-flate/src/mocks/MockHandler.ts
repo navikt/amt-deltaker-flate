@@ -95,7 +95,8 @@ export class MockHandler {
         tilgjengeligInnhold: {
           innhold: innhold,
           ledetekst: ledetekst
-        }
+        },
+        erEnkeltplassUtenRammeavtale: false
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

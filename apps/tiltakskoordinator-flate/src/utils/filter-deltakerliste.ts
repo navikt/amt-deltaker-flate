@@ -124,7 +124,7 @@ export const getHendelseFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: HandlingFilterValg[],
   valgteStatusFilter: StatusFilterValg[],
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
 ): HandlingFilterDetaljer[] => {
   const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
     deltakere,

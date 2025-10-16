@@ -14,7 +14,7 @@ interface Props {
   deltakerNavn: string
   tiltakstype: ArenaTiltakskode
   arrangorNavn: string
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
 }
 
 export const DelUtkastModal = ({

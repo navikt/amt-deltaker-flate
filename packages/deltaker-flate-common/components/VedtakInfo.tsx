@@ -11,7 +11,7 @@ import { formatDate } from '../utils/utils'
 interface Props {
   statusType: DeltakerStatusType
   statusDato: Date
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
   tiltakstype: ArenaTiltakskode
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null

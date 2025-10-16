@@ -65,9 +65,9 @@ export const deltakerlisteDetaljerSchema = z.object({
   tiltakskode: tiltakskodeSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  oppstartstype: z.enum(Oppstartstype),
+  oppstartstype: z.enum(Oppstartstype).nullable(),
   apentForPamelding: z.boolean(),
-  antallPlasser: z.number(),
+  antallPlasser: z.number().nullable(),
   koordinatorer: z.array(koordinatorSchema)
 })
 

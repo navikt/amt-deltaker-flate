@@ -4,7 +4,7 @@ import { Oppstartstype } from 'deltaker-flate-common'
 
 interface Props {
   open: boolean
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
   onConfirm: () => void
   onCancel: () => void
 }

@@ -112,6 +112,9 @@ export const DeltakerInfo = ({ className }: Props) => {
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
+          erEnkeltplassUtenRammeavtale={
+            pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
+          }
         />
       )}
 
@@ -185,6 +188,9 @@ export const DeltakerInfo = ({ className }: Props) => {
           statusType={pamelding.status.type}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           className="mt-8"
+          erEnkeltplassUtenRammeavtale={
+            pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
+          }
         />
       </div>
     </div>

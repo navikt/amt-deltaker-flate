@@ -15,8 +15,9 @@ interface DeltakerStatusInfoTekstProps {
   statusType: DeltakerStatusType
   arrangorNavn: string
   oppstartsdato: string | null
-  oppstartstype: Oppstartstype
-  tiltaketsStartDato: Date
+  oppstartstype: Oppstartstype | null
+  tiltaketsStartDato: Date | null
+  erEnkeltplassUtenRammeavtale: boolean
 }
 
 export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
@@ -67,8 +68,13 @@ export const DeltakerStatusInfoTekst = ({
   arrangorNavn,
   oppstartsdato,
   oppstartstype,
-  tiltaketsStartDato
+  tiltaketsStartDato,
+  erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
+  if (erEnkeltplassUtenRammeavtale || !oppstartstype) {
+    return null
+  }
+
   const harOppstartsDato = isValidDate(oppstartsdato)
 
   return (
@@ -103,9 +109,12 @@ const getIngenStartDatoInfoTekst = (
   tiltaksType: ArenaTiltakskode,
   oppstartstype: Oppstartstype,
   arrangorNavn: string,
-  tiltaketsStartDato: Date
+  tiltaketsStartDato: Date | null
 ) => {
   if (oppstartstype === Oppstartstype.FELLES) {
+    if (!tiltaketsStartDato) {
+      return 'Arrangøren tar kontakt med deg for å avtale din oppstart.'
+    }
     const harKursetStartet = dayjs().isAfter(tiltaketsStartDato)
     return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Arrangøren tar kontakt med deg for å avtale din oppstart.`
   }

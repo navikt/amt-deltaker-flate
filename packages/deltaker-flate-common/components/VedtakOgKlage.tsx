@@ -13,7 +13,7 @@ interface Props {
   statusType: DeltakerStatusType
   statusDato: Date
   tiltakstype: ArenaTiltakskode
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null
 }

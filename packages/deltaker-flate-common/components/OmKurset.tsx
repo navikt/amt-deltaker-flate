@@ -15,7 +15,7 @@ interface Props {
   arrangorNavn: string
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
-  oppstartstype: Oppstartstype
+  oppstartstype: Oppstartstype | null
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
@@ -37,7 +37,7 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakstype)) {
+  if (!erKursTiltak(tiltakstype) || !oppstartstype) {
     return null
   }
 
