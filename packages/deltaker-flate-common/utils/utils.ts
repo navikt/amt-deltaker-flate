@@ -193,7 +193,9 @@ export const getDeltakerStatusAarsakTypeText = (
   }
 }
 
-export const mapTiltakskodeTilArenaTiltakskode = (tiltaksKode: Tiltakskode) => {
+export const mapTiltakskodeTilArenaTiltakskode = (
+  tiltaksKode: Tiltakskode
+): ArenaTiltakskode => {
   switch (tiltaksKode) {
     case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
       return ArenaTiltakskode.ARBFORB
@@ -213,5 +215,11 @@ export const mapTiltakskodeTilArenaTiltakskode = (tiltaksKode: Tiltakskode) => {
       return ArenaTiltakskode.VASV
     case Tiltakskode.AVKLARING:
       return ArenaTiltakskode.AVKLARAG
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
+      return ArenaTiltakskode.ENKELAMO
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
+      return ArenaTiltakskode.ENKFAGYRKE
+    case Tiltakskode.HOYERE_UTDANNING:
+      return ArenaTiltakskode.HOYEREUTD
   }
 }

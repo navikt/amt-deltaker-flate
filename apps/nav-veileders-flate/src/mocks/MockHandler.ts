@@ -451,6 +451,16 @@ export class MockHandler {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
+      if (
+        tiltakstype === ArenaTiltakskode.ENKELAMO ||
+        tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
+        tiltakstype === ArenaTiltakskode.HOYEREUTD
+      ) {
+        oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = true
+      } else {
+        oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
+      }
+
       if (erKursTiltak(tiltakstype)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null

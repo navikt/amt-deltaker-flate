@@ -141,6 +141,16 @@ const DemoStatusInstillinger = () => {
         <option value={ArenaTiltakskode.GRUFAGYRKE}>
           {getTiltakstypeDisplayText(ArenaTiltakskode.GRUFAGYRKE)}
         </option>
+
+        <option value={ArenaTiltakskode.ENKELAMO}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.ENKELAMO)}
+        </option>
+        <option value={ArenaTiltakskode.ENKFAGYRKE}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.ENKFAGYRKE)}
+        </option>
+        <option value={ArenaTiltakskode.HOYEREUTD}>
+          {getTiltakstypeDisplayText(ArenaTiltakskode.HOYEREUTD)}
+        </option>
       </Select>
       <Select
         value={pameldingStatus}
