@@ -417,6 +417,10 @@ export class MockHandler {
   setTiltakstype(tiltakstype: ArenaTiltakskode) {
     this.tiltakstype = tiltakstype
     const oppdatertPamelding = this.pamelding
+    const erEnkeltplass =
+      tiltakstype === ArenaTiltakskode.ENKELAMO ||
+      tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
+      tiltakstype === ArenaTiltakskode.HOYEREUTD
 
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakstype = tiltakstype
@@ -444,20 +448,22 @@ export class MockHandler {
       }
       if (
         tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-        tiltakstype === ArenaTiltakskode.VASV
+        tiltakstype === ArenaTiltakskode.VASV ||
+        erEnkeltplass
       ) {
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
-      if (
-        tiltakstype === ArenaTiltakskode.ENKELAMO ||
-        tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
-        tiltakstype === ArenaTiltakskode.HOYEREUTD
-      ) {
+      if (erEnkeltplass) {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = true
+        oppdatertPamelding.forslag = []
+        oppdatertPamelding.importertFraArena = {
+          innsoktDato: dayjs().subtract(20, 'day').toDate()
+        }
       } else {
+        oppdatertPamelding.importertFraArena = null
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
@@ -465,6 +471,9 @@ export class MockHandler {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else if (erEnkeltplass) {
+        oppdatertPamelding.bakgrunnsinformasjon = null
+        oppdatertPamelding.deltakerliste.oppstartstype = null
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE

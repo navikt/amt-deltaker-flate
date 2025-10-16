@@ -52,7 +52,7 @@ export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
     case ArenaTiltakskode.ENKELAMO:
       return 'Arbeidsmarkedsopplæring (enkeltplass)'
     case ArenaTiltakskode.ENKFAGYRKE:
-      return 'fag- og yrkesopplæring (enkeltplass)'
+      return 'Fag- og yrkesopplæring (enkeltplass)'
     case ArenaTiltakskode.HOYEREUTD:
       return 'Høyere utdanning'
   }
