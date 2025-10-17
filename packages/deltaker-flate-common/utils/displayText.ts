@@ -49,6 +49,12 @@ export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
       return 'Jobbsøkerkurs'
     case ArenaTiltakskode.VASV:
       return 'Varig tilrettelagt arbeid'
+    case ArenaTiltakskode.ENKELAMO:
+      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+    case ArenaTiltakskode.ENKFAGYRKE:
+      return 'Fag- og yrkesopplæring (enkeltplass)'
+    case ArenaTiltakskode.HOYEREUTD:
+      return 'Høyere utdanning'
   }
 }
 

@@ -1,8 +1,4 @@
-import {
-  INNHOLD_TYPE_ANNET,
-  ArenaTiltakskode,
-  arenaTiltakstypeSchema
-} from 'deltaker-flate-common'
+import { ArenaTiltakskode, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { z } from 'zod'
 import {
   PameldingResponse,
@@ -30,7 +26,7 @@ export const erInnholdPakrevd = (tiltakstype: ArenaTiltakskode) =>
 
 export const pameldingFormSchema = z
   .object({
-    tiltakstype: arenaTiltakstypeSchema,
+    tiltakstype: z.enum(ArenaTiltakskode),
     tilgjengeligInnhold: innholdselementSchema.array(),
     innholdsTekst: z
       .string()

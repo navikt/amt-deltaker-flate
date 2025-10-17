@@ -1,6 +1,5 @@
 import {
   ArenaTiltakskode,
-  dateSchema,
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
@@ -12,8 +11,6 @@ import {
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-
-export const tiltakstypeSchema = z.enum(ArenaTiltakskode)
 
 export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
 
@@ -30,13 +27,14 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakstype: tiltakstypeSchema,
+  tiltakstype: z.enum(ArenaTiltakskode),
   arrangorNavn: z.string(),
-  oppstartstype: z.enum(Oppstartstype),
-  startdato: dateSchema,
+  oppstartstype: z.enum(Oppstartstype).nullable(),
+  startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  status: deltakerlisteStatusSchema,
-  tilgjengeligInnhold: tilgjengeligInnholdSchema
+  status: deltakerlisteStatusSchema.nullable(),
+  tilgjengeligInnhold: tilgjengeligInnholdSchema,
+  erEnkeltplassUtenRammeavtale: z.boolean()
 })
 
 export const pameldingSchema = z.object({

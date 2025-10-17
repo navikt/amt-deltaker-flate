@@ -20,10 +20,16 @@ export const DeltakerlisteDetaljer = () => {
         {formatDate(deltakerlisteDetaljer.sluttdato)}
       </BodyShort>
 
-      <Detail weight="semibold" className="mt-3">
-        Antall plasser
-      </Detail>
-      <BodyShort size="small">{deltakerlisteDetaljer.antallPlasser}</BodyShort>
+      {deltakerlisteDetaljer.antallPlasser !== null && (
+        <>
+          <Detail weight="semibold" className="mt-3">
+            Antall plasser
+          </Detail>
+          <BodyShort size="small">
+            {deltakerlisteDetaljer.antallPlasser}
+          </BodyShort>
+        </>
+      )}
 
       <Detail weight="semibold" className="mt-3">
         Åpent for påmelding

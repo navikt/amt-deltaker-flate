@@ -15,7 +15,12 @@ export enum ArenaTiltakskode {
   VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
   GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
   GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK' // Jobbsøkerkurs / er kurs
+  JOBBK = 'JOBBK', // Jobbsøkerkurs / er kurs
+
+  // Enkeltplasser gammel forskrift (kun import fra Arena):
+  ENKELAMO = 'ENKELAMO', // Enkeltplass AMO
+  ENKFAGYRKE = 'ENKFAGYRKE', // Enkeltplass Fag- og yrkesopplæring
+  HOYEREUTD = 'HOYEREUTD' // Høyere utdanning
 }
 
 export enum Tiltakskode {
@@ -27,7 +32,12 @@ export enum Tiltakskode {
   GRUPPE_FAG_OG_YRKESOPPLAERING = 'GRUPPE_FAG_OG_YRKESOPPLAERING',
   JOBBKLUBB = 'JOBBKLUBB',
   OPPFOLGING = 'OPPFOLGING',
-  VARIG_TILRETTELAGT_ARBEID_SKJERMET = 'VARIG_TILRETTELAGT_ARBEID_SKJERMET'
+  VARIG_TILRETTELAGT_ARBEID_SKJERMET = 'VARIG_TILRETTELAGT_ARBEID_SKJERMET',
+
+  // Enkeltplasser gammel forskrift (kun import fra Arena):
+  HOYERE_UTDANNING = 'HOYERE_UTDANNING',
+  ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING = 'ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING',
+  ENKELTPLASS_FAG_OG_YRKESOPPLAERING = 'ENKELTPLASS_FAG_OG_YRKESOPPLAERING'
 }
 
 export enum DeltakerStatusType {
@@ -72,14 +82,9 @@ export enum Vurderingstype {
   OPPFYLLER_KRAVENE = 'OPPFYLLER_KRAVENE',
   OPPFYLLER_IKKE_KRAVENE = 'OPPFYLLER_IKKE_KRAVENE'
 }
-export const arenaTiltakstypeSchema = z.enum(ArenaTiltakskode)
-export const tiltakskodeSchema = z.enum(Tiltakskode)
-export const deltakerStatusTypeSchema = z.enum(DeltakerStatusType)
-export const deltakerStatusAarsakTypeSchema = z.enum(DeltakerStatusAarsakType)
-export const vurderingstypeSchema = z.enum(Vurderingstype)
 
 export const deltakerStatusAarsakSchema = z.object({
-  type: deltakerStatusAarsakTypeSchema,
+  type: z.enum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
 })
 
@@ -107,7 +112,7 @@ export const deltakelsesinnholdSchema = z.object({
 
 export const pameldingStatusSchema = z.object({
   id: z.uuid(),
-  type: deltakerStatusTypeSchema,
+  type: z.enum(DeltakerStatusType),
   aarsak: deltakerStatusAarsakSchema.nullable(),
   gyldigFra: dateSchema,
   gyldigTil: nullableDateSchema,
