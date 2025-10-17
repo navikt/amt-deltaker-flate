@@ -263,7 +263,9 @@ export const lagMockDeltaker = (): Deltaker => {
     harAktiveForslag: false,
     erNyDeltaker: false,
     harOppdateringFraNav: false,
-    kanEndres: true
+    kanEndres: true,
+    startdato: null,
+    sluttdato: null
   }
 }
 

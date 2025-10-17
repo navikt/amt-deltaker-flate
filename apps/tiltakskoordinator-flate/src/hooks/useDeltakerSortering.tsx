@@ -10,7 +10,9 @@ export enum SortKey {
   NAVN = 'etternavn',
   NAV_ENHET = 'navEnhet',
   STATUS = 'status',
-  VURDERING = 'vurdering'
+  VURDERING = 'vurdering',
+  START_DATO = 'startdato',
+  SLUTT_DATO = 'sluttdato'
 }
 
 export const useDeltakerSortering = (
@@ -75,6 +77,7 @@ export const sorterDeltakere = (
         ? comparator(b.status, a.status, 'type')
         : comparator(a.status, b.status, 'type')
     }
+
     if (sort) {
       return sort.direction === 'ascending'
         ? comparator(b, a, sort.orderBy)
