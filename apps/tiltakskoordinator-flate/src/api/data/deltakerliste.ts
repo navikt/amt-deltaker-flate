@@ -45,7 +45,9 @@ export const deltakerSchema = z.object({
   harAktiveForslag: z.boolean(),
   erNyDeltaker: z.boolean(),
   harOppdateringFraNav: z.boolean(),
-  kanEndres: z.boolean()
+  kanEndres: z.boolean(),
+  startdato: nullableDateSchema,
+  sluttdato: nullableDateSchema
 })
 
 export const deltakereSchema = z.array(deltakerSchema)

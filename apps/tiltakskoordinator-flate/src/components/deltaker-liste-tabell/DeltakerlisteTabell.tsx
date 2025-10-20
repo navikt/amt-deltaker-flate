@@ -2,6 +2,7 @@ import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
 import {
   DeltakerStatusTag,
   DeltakerStatusType,
+  formatDate,
   Oppstartstype,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -116,6 +117,7 @@ export const DeltakerlisteTabell = () => {
 
       <Table
         className="w-fit h-fit"
+        zebraStripes
         sort={sort}
         onSortChange={(sortKey) => {
           handleSort(
@@ -141,10 +143,13 @@ export const DeltakerlisteTabell = () => {
             )}
             <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
             <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
-            <TableHeaderCell
-              label="Status deltakelse"
-              sortKey={SortKey.STATUS}
-            />
+            {!erFellesOppstart && (
+              <>
+                <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
+                <TableHeaderCell label="Slutt" sortKey={SortKey.SLUTT_DATO} />
+              </>
+            )}
+            <TableHeaderCell label="Status" sortKey={SortKey.STATUS} />
             {skalViseVurderinger && (
               <TableHeaderCell
                 label="Vurdering, arrangør"
@@ -217,6 +222,13 @@ export const DeltakerlisteTabell = () => {
                   text={deltaker.navEnhet}
                   className="min-w-[10rem]"
                 />
+
+                {!erFellesOppstart && (
+                  <>
+                    <TableDataCell text={formatDate(deltaker.startdato)} />
+                    <TableDataCell text={formatDate(deltaker.sluttdato)} />
+                  </>
+                )}
 
                 <TableDataCell className="min-w-[10rem]">
                   <DeltakerStatusTag statusType={deltaker.status.type} />
