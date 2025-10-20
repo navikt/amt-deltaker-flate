@@ -225,15 +225,8 @@ export const DeltakerlisteTabell = () => {
 
                 {!erFellesOppstart && (
                   <>
-                    <TableDataCell
-                      text={formatDate(deltaker.startdato)}
-                      className="min-w-[10rem]"
-                    />
-
-                    <TableDataCell
-                      text={formatDate(deltaker.sluttdato)}
-                      className="min-w-[10rem]"
-                    />
+                    <TableDataCell text={formatDate(deltaker.startdato)} />
+                    <TableDataCell text={formatDate(deltaker.sluttdato)} />
                   </>
                 )}
 
