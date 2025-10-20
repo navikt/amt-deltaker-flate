@@ -145,10 +145,7 @@ export const DeltakerlisteTabell = () => {
             <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
             {!erFellesOppstart && (
               <>
-                <TableHeaderCell
-                  label="Oppstart"
-                  sortKey={SortKey.START_DATO}
-                />
+                <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
                 <TableHeaderCell label="Slutt" sortKey={SortKey.SLUTT_DATO} />
               </>
             )}
