@@ -42,7 +42,8 @@ const pamelding: PameldingResponse = {
     tilgjengeligInnhold: {
       innhold: [],
       ledetekst: ''
-    }
+    },
+    erEnkeltplassUtenRammeavtale: false
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

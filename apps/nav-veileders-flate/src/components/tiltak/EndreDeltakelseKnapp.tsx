@@ -1,5 +1,5 @@
 import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, Dropdown } from '@navikt/ds-react'
+import { Alert, Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
@@ -50,22 +50,33 @@ export const EndreDeltakelseKnapp = () => {
     }
   }
 
+  if (pamelding.importertFraArena && !enableEndreDeltakelse) {
+    return (
+      <Alert inline variant="info">
+        For å endre aktiviteten må du gå til Arena.
+      </Alert>
+    )
+  }
+
+  if (!enableEndreDeltakelse) {
+    return null
+  }
+
   return (
     <>
       <Dropdown>
-        {enableEndreDeltakelse && (
-          <Button
-            ref={endreDeltakelseRef}
-            as={Dropdown.Toggle}
-            variant="secondary"
-            size="small"
-            className="w-fit"
-            data-testid="endre_deltakelse_knapp"
-            icon={<PencilIcon aria-hidden />}
-          >
-            Endre deltakelse
-          </Button>
-        )}
+        <Button
+          ref={endreDeltakelseRef}
+          as={Dropdown.Toggle}
+          variant="secondary"
+          size="small"
+          className="w-fit"
+          data-testid="endre_deltakelse_knapp"
+          icon={<PencilIcon aria-hidden />}
+        >
+          Endre deltakelse
+        </Button>
+
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             {getEndreDeltakelsesValg(pamelding).map((valgType) => (

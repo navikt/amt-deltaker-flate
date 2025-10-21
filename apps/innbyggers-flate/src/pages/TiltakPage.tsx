@@ -83,7 +83,8 @@ export const TiltakPage = () => {
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            {harFellesOppstart(deltaker.deltakerliste.oppstartstype)
+            {harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
+            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
               ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
               : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}
           </BodyShort>
@@ -132,6 +133,9 @@ export const TiltakPage = () => {
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           oppstartsdato={deltaker.startdato}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
+          erEnkeltplassUtenRammeavtale={
+            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+          }
         />
       )}
 
@@ -209,6 +213,9 @@ export const TiltakPage = () => {
           tiltaksType={deltaker.deltakerliste.tiltakstype}
           statusType={deltaker.status.type}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
+          erEnkeltplassUtenRammeavtale={
+            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+          }
           className="mt-8"
         />
       </div>

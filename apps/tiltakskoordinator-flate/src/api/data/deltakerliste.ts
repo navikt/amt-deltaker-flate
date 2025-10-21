@@ -1,9 +1,9 @@
 import {
-  deltakerStatusAarsakTypeSchema,
-  deltakerStatusTypeSchema,
+  DeltakerStatusAarsakType,
+  DeltakerStatusType,
   nullableDateSchema,
   Oppstartstype,
-  tiltakskodeSchema,
+  Tiltakskode,
   Vurderingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -16,11 +16,11 @@ export enum Beskyttelsesmarkering {
 }
 
 const deltakerStatusAarsakSchema = z.object({
-  type: deltakerStatusAarsakTypeSchema
+  type: z.enum(DeltakerStatusAarsakType)
 })
 
 export const deltakerStatusSchema = z.object({
-  type: deltakerStatusTypeSchema,
+  type: z.enum(DeltakerStatusType),
   aarsak: deltakerStatusAarsakSchema.nullable()
 })
 
@@ -62,12 +62,12 @@ const koordinatorSchema = z.object({
 export const deltakerlisteDetaljerSchema = z.object({
   id: z.uuid(),
   navn: z.string(),
-  tiltakskode: tiltakskodeSchema,
+  tiltakskode: z.enum(Tiltakskode),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  oppstartstype: z.enum(Oppstartstype),
+  oppstartstype: z.enum(Oppstartstype).nullable(),
   apentForPamelding: z.boolean(),
-  antallPlasser: z.number(),
+  antallPlasser: z.number().nullable(),
   koordinatorer: z.array(koordinatorSchema)
 })
 

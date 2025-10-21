@@ -13,7 +13,7 @@ const getTagType = (status: DeltakerlisteStatus) => {
 }
 
 interface DeltakerlisteStatusTagProps {
-  status: DeltakerlisteStatus
+  status: DeltakerlisteStatus | null
 }
 
 const visDeltakerlisteStatus = (status: DeltakerlisteStatus): boolean => {
@@ -27,11 +27,10 @@ const visDeltakerlisteStatus = (status: DeltakerlisteStatus): boolean => {
 export const DeltakerlisteStatusTag = ({
   status
 }: DeltakerlisteStatusTagProps) => {
+  if (!status || !visDeltakerlisteStatus(status)) return null
   return (
-    visDeltakerlisteStatus(status) && (
-      <Tag variant={getTagType(status)} size="small" className="mt-2">
-        {getDeltakerlisteStatusText(status)}
-      </Tag>
-    )
+    <Tag variant={getTagType(status)} size="small" className="mt-2">
+      {getDeltakerlisteStatusText(status)}
+    </Tag>
   )
 }

@@ -54,7 +54,8 @@ export const createDeltaker = (
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
       startdato: dayjs('2022-10-28').toDate(),
-      sluttdato: dayjs('2027-12-20').toDate()
+      sluttdato: dayjs('2027-12-20').toDate(),
+      erEnkeltplassUtenRammeavtale: false
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -152,6 +153,10 @@ export class MockHandler {
   setTiltakstype(tiltakstype: ArenaTiltakskode) {
     this.tiltakstype = tiltakstype
     const oppdatertDeltaker = this.deltaker
+    const erEnkeltplass =
+      tiltakstype === ArenaTiltakskode.ENKELAMO ||
+      tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
+      tiltakstype === ArenaTiltakskode.HOYEREUTD
 
     if (oppdatertDeltaker) {
       oppdatertDeltaker.deltakerliste.tiltakstype = tiltakstype
@@ -174,17 +179,32 @@ export class MockHandler {
       }
       if (
         tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-        tiltakstype === ArenaTiltakskode.VASV
+        tiltakstype === ArenaTiltakskode.VASV ||
+        erEnkeltplass
       ) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
+      if (erEnkeltplass) {
+        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = true
+        oppdatertDeltaker.forslag = []
+        oppdatertDeltaker.importertFraArena = {
+          innsoktDato: dayjs().subtract(20, 'day').toDate()
+        }
+      } else {
+        oppdatertDeltaker.importertFraArena = null
+        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
+      }
+
       if (erKursTiltak(tiltakstype)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertDeltaker.bakgrunnsinformasjon = null
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
+      } else if (erEnkeltplass) {
+        oppdatertDeltaker.bakgrunnsinformasjon = null
+        oppdatertDeltaker.deltakerliste.oppstartstype = null
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
