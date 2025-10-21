@@ -14,8 +14,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^7.32.2",
-    "@navikt/ds-react": "^7.32.2",
+    "@navikt/aksel-icons": "^7.32.3",
+    "@navikt/ds-react": "^7.32.3",
     "dayjs": "^1.11.18",
     "react": "^19.2.0",
     "typescript": "^5.9.3",
@@ -26,7 +26,7 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^19.2.2",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "vitest": "^3.2.4"
   }
 }

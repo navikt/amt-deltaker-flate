@@ -167,9 +167,7 @@ export const DeltakerlisteTabell = () => {
               <Table.Row
                 key={`${deltaker.id}`}
                 selected={!!valgteDeltakere.find((it) => it.id === deltaker.id)}
-                className={
-                  disabled ? 'text-[var(--a-border-subtle-hover)]' : ''
-                }
+                className={disabled ? 'text-(--a-border-subtle-hover)' : ''}
               >
                 {erBatchHandling && (
                   <Table.DataCell>
@@ -218,10 +216,7 @@ export const DeltakerlisteTabell = () => {
                   </HStack>
                 </TableDataCell>
 
-                <TableDataCell
-                  text={deltaker.navEnhet}
-                  className="min-w-[10rem]"
-                />
+                <TableDataCell text={deltaker.navEnhet} className="min-w-40" />
 
                 {!erFellesOppstart && (
                   <>
@@ -230,7 +225,7 @@ export const DeltakerlisteTabell = () => {
                   </>
                 )}
 
-                <TableDataCell className="min-w-[10rem]">
+                <TableDataCell className="min-w-40">
                   <DeltakerStatusTag statusType={deltaker.status.type} />
                 </TableDataCell>
 
