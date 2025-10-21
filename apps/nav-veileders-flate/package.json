@@ -41,7 +41,7 @@
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@axe-core/playwright": "^4.10.2",
     "@playwright/test": "^1.56.1",
-    "@tailwindcss/vite": "^4.1.14",
+    "@tailwindcss/vite": "^4.1.15",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
