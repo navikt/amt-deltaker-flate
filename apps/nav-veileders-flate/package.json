@@ -26,12 +26,12 @@
     "@navikt/ds-css": "^7.32.5",
     "@navikt/ds-react": "^7.32.5",
     "@navikt/ds-tailwind": "^7.32.5",
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.19",
     "deltaker-flate-common": "workspace:*",
     "msw": "^2.11.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-hook-form": "^7.65.0",
+    "react-hook-form": "^7.66.0",
     "react-router-dom": "^7.9.5",
     "uuid": "^13.0.0",
     "zod": "^4.1.12"
@@ -50,13 +50,13 @@
     "@types/react-dom": "^19.2.2",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^4.2.0",
-    "eslint": "^9.38.0",
-    "jsdom": "^27.0.1",
+    "eslint": "^9.39.0",
+    "jsdom": "^27.1.0",
     "playwright": "^1.56.1",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
-    "vitest": "^4.0.5"
+    "vitest": "^4.0.6"
   },
   "msw": {
     "workerDirectory": [
