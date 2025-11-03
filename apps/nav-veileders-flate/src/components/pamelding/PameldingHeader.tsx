@@ -30,12 +30,16 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
       <Heading level="2" size="medium">
         {title}
       </Heading>
-      <TiltaksgjennomforingLink deltakerlisteId={deltakerliste.deltakerlisteId}>
-        <div className="flex mt-2">
-          <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
-          <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
-        </div>
-      </TiltaksgjennomforingLink>
+      {!deltakerliste.erEnkeltplassUtenRammeavtale && (
+        <TiltaksgjennomforingLink
+          deltakerlisteId={deltakerliste.deltakerlisteId}
+        >
+          <div className="flex mt-2">
+            <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
+            <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
+          </div>
+        </TiltaksgjennomforingLink>
+      )}
 
       {erKursMedLopendeOppstart && (
         <Alert variant="info" size="small" className="mt-3">

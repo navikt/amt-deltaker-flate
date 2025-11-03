@@ -36,35 +36,37 @@ export const ForNAVAnsatt = ({ className }: Props) => {
         </Alert>
       )}
 
-      <LinkPanel
-        href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
-        onClick={(event) => {
-          event.preventDefault()
-          doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
-        }}
-        border
-        className="mt-4 rounded-sm border-2 border-[var(--a-border-selected)] xl:max-w-[500px]"
-      >
-        <LinkPanel.Title className="text-lg text-[var(--a-text-action)] text-nowrap">
-          Gå til tiltaks&shy;gjennomføringen
-        </LinkPanel.Title>
-        <LinkPanel.Description>
-          <BodyShort size="small">
-            {hentTiltakNavnHosArrangorTekst(
-              pamelding.deltakerliste.tiltakstype,
-              pamelding.deltakerliste.arrangorNavn
-            )}
-          </BodyShort>
-          <Detail textColor="subtle" className="mb-1">
-            {pamelding.deltakerliste.deltakerlisteNavn}
-          </Detail>
-          <BodyShort size="small">
-            {formatDate(pamelding.deltakerliste.startdato)} -{' '}
-            {formatDate(pamelding.deltakerliste.sluttdato)}
-          </BodyShort>
-          <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
-        </LinkPanel.Description>
-      </LinkPanel>
+      {!pamelding.deltakerliste.erEnkeltplassUtenRammeavtale && (
+        <LinkPanel
+          href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
+          onClick={(event) => {
+            event.preventDefault()
+            doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
+          }}
+          border
+          className="mt-4 rounded-sm border-2 border-(--a-border-selected) xl:max-w-[500px]"
+        >
+          <LinkPanel.Title className="text-lg text-(--a-text-action) text-nowrap">
+            Gå til tiltaks&shy;gjennomføringen
+          </LinkPanel.Title>
+          <LinkPanel.Description>
+            <BodyShort size="small">
+              {hentTiltakNavnHosArrangorTekst(
+                pamelding.deltakerliste.tiltakstype,
+                pamelding.deltakerliste.arrangorNavn
+              )}
+            </BodyShort>
+            <Detail textColor="subtle" className="mb-1">
+              {pamelding.deltakerliste.deltakerlisteNavn}
+            </Detail>
+            <BodyShort size="small">
+              {formatDate(pamelding.deltakerliste.startdato)} -{' '}
+              {formatDate(pamelding.deltakerliste.sluttdato)}
+            </BodyShort>
+            <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
+          </LinkPanel.Description>
+        </LinkPanel>
+      )}
     </div>
   )
 }
