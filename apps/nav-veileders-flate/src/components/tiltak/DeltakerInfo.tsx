@@ -44,8 +44,9 @@ export const DeltakerInfo = ({ className }: Props) => {
   const skalViseDato =
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    pamelding.status.type !== DeltakerStatusType.SOKT_INN &&
-    pamelding.status.type !== DeltakerStatusType.VENTELISTE
+    pamelding.status.type !== DeltakerStatusType.VENTELISTE &&
+    (pamelding.status.type !== DeltakerStatusType.SOKT_INN ||
+      pamelding.startdato)
 
   const bakgrunnsinformasjon =
     pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
