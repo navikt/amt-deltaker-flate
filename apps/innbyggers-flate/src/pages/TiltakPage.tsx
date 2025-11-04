@@ -45,8 +45,8 @@ export const TiltakPage = () => {
   const skalViseDato =
     deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    deltaker.status.type !== DeltakerStatusType.SOKT_INN &&
-    deltaker.status.type !== DeltakerStatusType.VENTELISTE
+    deltaker.status.type !== DeltakerStatusType.VENTELISTE &&
+    (deltaker.status.type !== DeltakerStatusType.SOKT_INN || deltaker.startdato)
 
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
