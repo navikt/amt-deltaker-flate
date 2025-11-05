@@ -30,7 +30,6 @@ import {
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
   EndreSluttarsakRequest,
-  EndreSluttdatoRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
   ForlengDeltakelseRequest,
@@ -548,19 +547,6 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon
       this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
-    }
-
-    return new HttpResponse(null, { status: 404 })
-  }
-
-  endreDeltakelseSluttdato(request: EndreSluttdatoRequest) {
-    const oppdatertPamelding = this.pamelding
-
-    if (oppdatertPamelding) {
-      oppdatertPamelding.sluttdato = request.sluttdato
-      this.pamelding = oppdatertPamelding
-      this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)
     }
 
