@@ -72,3 +72,7 @@ Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på git
 ## For Nav-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #team_komet.
+
+## 🤖 KI-assistanse - GitHub Copilot
+
+Dette repoet bruker GitHub Copilot for kodeforslag.

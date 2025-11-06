@@ -1,6 +1,5 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { MockHandler } from '../mocks/MockHandler.ts'
 import {
   DATO_FØR_SLUTTDATO_FEILMELDING,
   DATO_UTENFOR_TILTAKGJENNOMFORING,
@@ -15,17 +14,27 @@ import { PameldingResponse } from '../api/data/pamelding.ts'
 import { dateValidation } from '../components/tiltak/VarighetField.tsx'
 import { useSluttdato } from './use-sluttdato.ts'
 
-const mock = new MockHandler()
-const deltakerUtenDatoer = mock.createDeltaker(
-  '85a05446-7211-4bbc-88ad-970f7ef9fb04'
-)
-const deltakerMedDatoer = mock.createDeltaker(
-  '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-  dayjs('2024-07-17').toDate(),
-  dayjs('2024-07-20').toDate(),
-  6,
-  3
-)
+const createDeltaker = (
+  startdato?: string,
+  sluttdato?: string,
+  maxVarighetMnd?: number,
+  softMaxVarighetMnd?: number
+): PameldingResponse => {
+  return {
+    startdato: startdato,
+    sluttdato: sluttdato,
+    deltakerliste: {
+      sluttdato: dayjs('2030-02-20').toDate()
+    },
+    maxVarighet: dayjs.duration(maxVarighetMnd ?? 12, 'month').asMilliseconds(),
+    softMaxVarighet: dayjs
+      .duration(softMaxVarighetMnd ?? 12, 'month')
+      .asMilliseconds()
+  } as unknown as PameldingResponse
+}
+
+const deltakerUtenDatoer = createDeltaker()
+const deltakerMedDatoer = createDeltaker('2024-07-17', '2024-07-20', 6, 3)
 
 describe('useSluttdato - deltakerUtenDatoer', () => {
   it('har error uten varighet', () => {
@@ -337,14 +346,13 @@ describe('useSluttdato - deltakerMedDatoer', () => {
   })
 
   it('validerDato - dato er etter gjennomførings sluttdato - setter error', () => {
-    const deltaker = mock.createDeltaker(
-      '85a05446-7211-4bbc-88ad-970f7ef9fb04',
+    const deltaker = createDeltaker(
       dayjs(deltakerMedDatoer.deltakerliste.sluttdato)
         .subtract(3, 'months')
-        .toDate(),
+        .toString(),
       dayjs(deltakerMedDatoer.deltakerliste.sluttdato)
         .subtract(1, 'months')
-        .toDate(),
+        .toString(),
       12,
       12
     )
