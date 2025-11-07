@@ -19,7 +19,8 @@ export const deltakerlisteSchema = z.object({
   oppstartstype: z.enum(Oppstartstype).nullable(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  erEnkeltplassUtenRammeavtale: z.boolean()
+  erEnkeltplassUtenRammeavtale: z.boolean(),
+  oppmoteSted: z.string().nullable()
 })
 
 export const deltakerSchema = z.object({
