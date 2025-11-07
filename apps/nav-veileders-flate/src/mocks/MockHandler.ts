@@ -95,7 +95,8 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: false
+        erEnkeltplassUtenRammeavtale: false,
+        oppmoteSted: 'Kl. 10:00 på Gardermoen'
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
