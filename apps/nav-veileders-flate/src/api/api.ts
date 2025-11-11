@@ -353,7 +353,7 @@ export const endreAvslutning = (
   enhetId: string,
   request: EndreAvslutningRequest
 ): Promise<PameldingResponse> => {
-  return fetch(`${API_URL}/deltaker/${deltakerId}/endre-avslutning`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/endre-avslutning-v2`, {
     method: 'POST',
     credentials: 'include',
     headers: {

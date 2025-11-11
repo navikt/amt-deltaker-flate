@@ -8,7 +8,6 @@ import {
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
-  deltakerErIkkeAktuellEllerHarSluttet,
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
@@ -45,11 +44,8 @@ const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
   !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
 
-const skalViseEndreSluttdatoKnapp = (pamelding: PameldingResponse) => {
-  return deltakerHarSluttetEllerFullfort(pamelding.status.type)
-}
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
-  deltakerErIkkeAktuellEllerHarSluttet(pamelding.status.type)
+  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
 const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
   (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV ||
@@ -70,9 +66,7 @@ const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
   pamelding.startdato !== EMDASH
 
 const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
-  (pamelding.status.type === DeltakerStatusType.FULLFORT ||
-    pamelding.status.type === DeltakerStatusType.AVBRUTT) &&
-  pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
 const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
   if (!pamelding.kanEndres) {
@@ -127,9 +121,6 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   ) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
   }
-  if (ikkeAktuellKanEndres(pamelding) && !deltakelseErLaast) {
-    valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
-  }
   if (skalViseForlengKnapp(pamelding, sluttdato) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FORLENG_DELTAKELSE)
   }
@@ -142,20 +133,20 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (pamelding.status.type === DeltakerStatusType.DELTAR) {
     valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
-  if (skalViseEndreSluttdatoKnapp(pamelding) && !deltakelseErLaast) {
-    valg.push(EndreDeltakelseType.ENDRE_SLUTTDATO)
-  }
-  if (skalViseEndreSluttarsakKnapp(pamelding) && !deltakelseErLaast) {
-    valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)
-  }
   if (skalViseEndreDeltakelsesmengde(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE)
   }
   if (skalViseFjernOppstartsdato(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
   }
+  if (skalViseEndreSluttarsakKnapp(pamelding) && !deltakelseErLaast) {
+    valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)
+  }
   if (skalViseEndreAvslutning(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
+  }
+  if (ikkeAktuellKanEndres(pamelding) && !deltakelseErLaast) {
+    valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }
 
   return valg

@@ -149,12 +149,13 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  getStartdato(): string {
+  getStartdato(newStatusType?: DeltakerStatusType): string {
+    const statusType = newStatusType ?? this.statusType
     if (
-      this.statusType === DeltakerStatusType.DELTAR ||
-      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
-      this.statusType === DeltakerStatusType.FULLFORT ||
-      this.statusType === DeltakerStatusType.AVBRUTT
+      statusType === DeltakerStatusType.DELTAR ||
+      statusType === DeltakerStatusType.HAR_SLUTTET ||
+      statusType === DeltakerStatusType.FULLFORT ||
+      statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
@@ -163,16 +164,17 @@ export class MockHandler {
     return EMDASH
   }
 
-  getSluttdato(): string {
-    if (this.statusType === DeltakerStatusType.DELTAR) {
+  getSluttdato(newStatusType?: DeltakerStatusType): string {
+    const statusType = newStatusType ?? this.statusType
+    if (statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
       return dayjs(fremtidigDato).format('YYYY-MM-DD')
     }
     if (
-      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
-      this.statusType === DeltakerStatusType.FULLFORT ||
-      this.statusType === DeltakerStatusType.AVBRUTT
+      statusType === DeltakerStatusType.HAR_SLUTTET ||
+      statusType === DeltakerStatusType.FULLFORT ||
+      statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
@@ -401,11 +403,21 @@ export class MockHandler {
           type: DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT,
           beskrivelse: null
         }
+      } else if (status === DeltakerStatusType.AVBRUTT) {
+        oppdatertPamelding.status.aarsak = {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        }
+      } else if (status === DeltakerStatusType.IKKE_AKTUELL) {
+        oppdatertPamelding.status.aarsak = {
+          type: DeltakerStatusAarsakType.ANNET,
+          beskrivelse: 'Det er en annen grunn'
+        }
       } else {
         oppdatertPamelding.status.aarsak = null
       }
-      oppdatertPamelding.startdato = this.getStartdato()
-      oppdatertPamelding.sluttdato = this.getSluttdato()
+      oppdatertPamelding.startdato = this.getStartdato(status)
+      oppdatertPamelding.sluttdato = this.getSluttdato(status)
       oppdatertPamelding.forslag = this.getForslag()
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
