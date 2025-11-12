@@ -1,11 +1,13 @@
 import dayjs from 'dayjs'
 import {
+  ArenaTiltakskode,
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
+  erKursTiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -16,10 +18,8 @@ import {
   getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  ArenaTiltakskode,
-  Oppstartstype,
-  erKursTiltak,
-  lagHistorikkFellesOppstart
+  lagHistorikkFellesOppstart,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -184,6 +184,8 @@ export class MockHandler {
   }
 
   getForslag(): Forslag[] {
+    const erFellesOppstart =
+      this.pamelding?.deltakerliste.oppstartstype === Oppstartstype.FELLES
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
@@ -225,43 +227,6 @@ export class MockHandler {
           harFullfort: true
         }
       })
-      const forslagAvslutt3 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Syk
-          },
-          harDeltatt: false,
-          harFullfort: false
-        }
-      })
-      const forslagAvslutt4 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Syk
-          },
-          harDeltatt: true,
-          harFullfort: false
-        }
-      })
-      const forslagAvslutt5 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Annet,
-            beskrivelse: 'tralala'
-          },
-          harDeltatt: true,
-          harFullfort: false
-        }
-      })
       const forslagDeltakelsesmengde = aktivtForslag({
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
@@ -286,15 +251,14 @@ export class MockHandler {
           }
         }
       })
+      const avvisForslag = erFellesOppstart
+        ? [forslagAvslutt2]
+        : [forslagAvslutt]
       return [
         forslagStartdato,
         forslagDeltakelsesmengde,
         forslag,
-        forslagAvslutt,
-        forslagAvslutt2,
-        forslagAvslutt3,
-        forslagAvslutt4,
-        forslagAvslutt5,
+        ...avvisForslag,
         forslagIkkeAktuell
       ]
     }

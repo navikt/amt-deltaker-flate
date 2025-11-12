@@ -75,6 +75,8 @@ export function getHarDeltatt(forslag: Forslag | null): boolean | null {
       forslag.endring.type === ForslagEndringType.EndreAvslutning)
   ) {
     return forslag.endring.harDeltatt ?? null
+  } else if (forslag?.endring.type === ForslagEndringType.Sluttdato) {
+    return true
   }
   return null
 }
