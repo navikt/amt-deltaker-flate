@@ -199,7 +199,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/deltaker/:deltakerId/endre-avslutning-v2',
+    '/amt-deltaker-bff/deltaker/:deltakerId/endre-avslutning',
     async ({ request }) => {
       await delay(100)
 
