@@ -1,9 +1,7 @@
 import dayjs from 'dayjs'
 import {
-  AvsluttDeltakelseForslag,
   DeltakerStatusType,
   Forslag,
-  ForslagEndring,
   ForslagEndringType,
   getDateFromString
 } from 'deltaker-flate-common'
@@ -35,12 +33,6 @@ export const avslutningsBeskrivelseTekstMapper = (
   }
 }
 
-function isAvsluttDeltakelseForslag(
-  endring: ForslagEndring
-): endring is AvsluttDeltakelseForslag {
-  return endring.type === ForslagEndringType.AvsluttDeltakelse
-}
-
 export function getSluttdato(
   deltaker: PameldingResponse,
   forslag: Forslag | null
@@ -48,7 +40,11 @@ export function getSluttdato(
   if (forslag === null) {
     return getDateFromString(deltaker.sluttdato)
   }
-  if (isAvsluttDeltakelseForslag(forslag.endring)) {
+  if (
+    forslag.endring.type === ForslagEndringType.AvsluttDeltakelse ||
+    forslag.endring.type === ForslagEndringType.EndreAvslutning ||
+    forslag.endring.type === ForslagEndringType.Sluttdato
+  ) {
     return forslag.endring.sluttdato
   } else {
     throw new Error(
@@ -73,8 +69,12 @@ export const harDeltattMindreEnn15Dager = (
 }
 
 export function getHarDeltatt(forslag: Forslag | null): boolean | null {
-  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
-    return forslag.endring.harDeltatt
+  if (
+    forslag &&
+    (forslag.endring.type === ForslagEndringType.AvsluttDeltakelse ||
+      forslag.endring.type === ForslagEndringType.EndreAvslutning)
+  ) {
+    return forslag.endring.harDeltatt ?? null
   }
   return null
 }
@@ -82,7 +82,11 @@ export function getHarDeltatt(forslag: Forslag | null): boolean | null {
 export function getHarFullfort(
   forslag: Forslag | null
 ): boolean | null | undefined {
-  if (forslag && isAvsluttDeltakelseForslag(forslag.endring)) {
+  if (
+    forslag &&
+    (forslag.endring.type === ForslagEndringType.AvsluttDeltakelse ||
+      forslag.endring.type === ForslagEndringType.EndreAvslutning)
+  ) {
     return forslag.endring.harFullfort
   }
   return null

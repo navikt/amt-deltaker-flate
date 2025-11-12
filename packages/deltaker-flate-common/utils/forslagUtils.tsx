@@ -62,14 +62,14 @@ export const getEndreDeltakelsesType = (endring: ForslagEndring) => {
       return EndreDeltakelseType.FORLENG_DELTAKELSE
     case ForslagEndringType.Deltakelsesmengde:
       return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
-    case ForslagEndringType.Sluttdato:
-      return EndreDeltakelseType.ENDRE_SLUTTDATO
     case ForslagEndringType.Startdato:
       return EndreDeltakelseType.ENDRE_OPPSTARTSDATO
     case ForslagEndringType.Sluttarsak:
       return EndreDeltakelseType.ENDRE_SLUTTARSAK
     case ForslagEndringType.FjernOppstartsdato:
       return EndreDeltakelseType.FJERN_OPPSTARTSDATO
+    case ForslagEndringType.Sluttdato:
+      return EndreDeltakelseType.ENDRE_SLUTTDATO
     case ForslagEndringType.EndreAvslutning:
       return EndreDeltakelseType.ENDRE_AVSLUTNING
     default:

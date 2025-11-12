@@ -622,6 +622,7 @@ export class MockHandler {
           ? DeltakerStatusType.FULLFORT
           : DeltakerStatusType.AVBRUTT
         oppdatertPamelding.status.aarsak = request.aarsak
+        oppdatertPamelding.sluttdato = request.sluttdato ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding

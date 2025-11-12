@@ -29,6 +29,7 @@ interface Props {
   legend: string
   disabled?: boolean
   velgbareAarsaker?: DeltakerStatusAarsakType[]
+  className?: string
   onChange: (value: DeltakerStatusAarsakType) => void
   onBeskrivelse: (beskrivelse: string) => void
 }
@@ -42,7 +43,8 @@ export function AarsakRadioGroup({
   onBeskrivelse,
   legend,
   disabled,
-  velgbareAarsaker
+  velgbareAarsaker,
+  className
 }: Props) {
   const tilgjengeligeAarsaker = velgbareAarsaker ?? standardAarsaker
 
@@ -54,6 +56,7 @@ export function AarsakRadioGroup({
       onChange={onChange}
       value={aarsak ?? ''}
       disabled={disabled}
+      className={className ?? ''}
     >
       <>
         {tilgjengeligeAarsaker.map((arsakType) => (

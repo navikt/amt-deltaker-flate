@@ -68,6 +68,7 @@ export function useAarsak(
     handleChange,
     handleBeskrivelse,
     aarsakError,
+    setAarsakError,
     beskrivelseError,
     valider
   }
@@ -87,10 +88,7 @@ const getSluttaarsakFraForslag = (
     case ForslagEndringType.AvsluttDeltakelse:
     case ForslagEndringType.EndreAvslutning: {
       aarsak = forslag.endring.aarsak
-      break
     }
-    default:
-      throw new Error(`Forslag ${forslag?.endring.type} har ikke noen årsak`)
   }
 
   if (!aarsak) return [undefined, undefined]

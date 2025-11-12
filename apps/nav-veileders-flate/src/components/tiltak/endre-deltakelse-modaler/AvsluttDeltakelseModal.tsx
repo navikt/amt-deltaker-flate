@@ -116,6 +116,7 @@ export const AvsluttDeltakelseModal = ({
 
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
+    aarsak.setAarsakError(undefined)
     if (nyVerdi === Avslutningstype.IKKE_DELTATT) setHarDeltatt(false)
     if (
       nyVerdi === Avslutningstype.FULLFORT ||
@@ -135,7 +136,12 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (avslutningstype !== Avslutningstype.FULLFORT && !aarsak.valider()) {
+    const skalValidereAarsak =
+      (!erFellesOppstart &&
+        (pamelding.status.type === DeltakerStatusType.DELTAR || !harDeltatt)) ||
+      (erFellesOppstart && avslutningstype !== Avslutningstype.FULLFORT)
+
+    if (skalValidereAarsak && !aarsak.valider()) {
       hasError = true
     }
 
@@ -221,7 +227,7 @@ export const AvsluttDeltakelseModal = ({
       forslag={forslag}
     >
       {erFellesOppstart && (
-        <section className="mt-4 mb-4">
+        <section className="mt-4">
           <RadioGroup
             legend="Har deltakeren fullført kurset?"
             size="small"
@@ -256,18 +262,7 @@ export const AvsluttDeltakelseModal = ({
           </RadioGroup>
         </section>
       )}
-      {skalViseAarsak && (
-        <AarsakRadioGroup
-          legend="Hva er årsaken til avslutning?"
-          aarsak={aarsak.aarsak}
-          aarsakError={aarsak.aarsakError}
-          beskrivelse={aarsak.beskrivelse}
-          beskrivelseError={aarsak.beskrivelseError}
-          onChange={aarsak.handleChange}
-          onBeskrivelse={aarsak.handleBeskrivelse}
-          disabled={false}
-        />
-      )}
+
       {!erFellesOppstart && (
         <section className="mt-4">
           <RadioGroup
@@ -290,6 +285,7 @@ export const AvsluttDeltakelseModal = ({
                 setHarDeltatt(true)
               }
               setHarDeltattError(undefined)
+              aarsak.setAarsakError(undefined)
             }}
           >
             <Radio value={HarDeltattValg.JA}>Ja</Radio>
@@ -298,8 +294,22 @@ export const AvsluttDeltakelseModal = ({
         </section>
       )}
 
+      {skalViseAarsak && (
+        <AarsakRadioGroup
+          className="mt-4"
+          legend="Hva er årsaken til avslutning?"
+          aarsak={aarsak.aarsak}
+          aarsakError={aarsak.aarsakError}
+          beskrivelse={aarsak.beskrivelse}
+          beskrivelseError={aarsak.beskrivelseError}
+          onChange={aarsak.handleChange}
+          onBeskrivelse={aarsak.handleBeskrivelse}
+          disabled={false}
+        />
+      )}
+
       {skalViseSluttDato && (
-        <section className="mt-6">
+        <section className="mt-4">
           <SimpleDatePicker
             label="Hva er ny sluttdato?"
             disabled={false}
@@ -314,7 +324,7 @@ export const AvsluttDeltakelseModal = ({
       )}
       {skalBekrefteVarighet && (
         <ConfirmationPanel
-          className="mt-6"
+          className="mt-4"
           checked={varighetBekreftelse}
           label="Ja, deltakeren oppfyller kravene."
           onChange={() => {

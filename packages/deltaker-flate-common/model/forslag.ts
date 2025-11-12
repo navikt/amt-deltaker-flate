@@ -118,7 +118,8 @@ export const endreAvslutningForslagSchema = z.object({
   type: z.literal(ForslagEndringType.EndreAvslutning),
   aarsak: forslagEndringAarsakSchema.nullable(),
   harDeltatt: z.boolean().nullable(),
-  harFullfort: z.boolean().optional().nullable()
+  harFullfort: z.boolean().optional().nullable(),
+  sluttdato: nullableDateSchema.optional()
 })
 
 export const forslagEndringSchema = z.discriminatedUnion('type', [
