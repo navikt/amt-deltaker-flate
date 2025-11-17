@@ -436,7 +436,8 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
         type: EndringType.EndreAvslutning,
         aarsak: null,
         begrunnelse: null,
-        harFullfort: true
+        harFullfort: true,
+        sluttdato: null
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
