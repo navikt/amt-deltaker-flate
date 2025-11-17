@@ -45,7 +45,7 @@ export function getSluttdato(
     forslag.endring.type === ForslagEndringType.EndreAvslutning ||
     forslag.endring.type === ForslagEndringType.Sluttdato
   ) {
-    return forslag.endring.sluttdato
+    return forslag.endring.sluttdato ?? getDateFromString(deltaker.sluttdato)
   } else {
     throw new Error(
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
