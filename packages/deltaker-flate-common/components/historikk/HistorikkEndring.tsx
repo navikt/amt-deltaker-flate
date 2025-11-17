@@ -72,6 +72,11 @@ const getEndringsDetaljer = (
     case EndringType.EndreAvslutning: {
       return (
         <>
+          {endring.sluttdato && (
+            <BodyShort size="small">
+              Sluttdato: {formatDate(endring.sluttdato)}
+            </BodyShort>
+          )}
           {endring.aarsak && (
             <BodyLong size="small">
               Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
