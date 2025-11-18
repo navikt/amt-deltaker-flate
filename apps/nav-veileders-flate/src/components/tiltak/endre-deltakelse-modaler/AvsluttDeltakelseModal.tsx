@@ -77,10 +77,12 @@ export const AvsluttDeltakelseModal = ({
         erFellesOppstart
       )
     )
+  const [avslutningstypeError, setAvslutningstypeError] = useState<string>()
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     harDeltattFraForslag ??
       (erFellesOppstart
-        ? avslutningstype !== Avslutningstype.IKKE_DELTATT
+        ? avslutningstype === Avslutningstype.FULLFORT ||
+          avslutningstype === Avslutningstype.AVBRUTT
         : harDeltattMerEnnFjortenDager
           ? pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL
           : null)
@@ -119,6 +121,7 @@ export const AvsluttDeltakelseModal = ({
 
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
+    setAvslutningstypeError(undefined)
     aarsak.setAarsakError(undefined)
     if (nyVerdi === Avslutningstype.IKKE_DELTATT) setHarDeltatt(false)
     if (
@@ -137,6 +140,7 @@ export const AvsluttDeltakelseModal = ({
 
     if (erFellesOppstart && avslutningstype === null) {
       hasError = true
+      setAvslutningstypeError('Du må velge om kurset er fullført.')
     }
 
     const skalValidereAarsak =
@@ -237,6 +241,7 @@ export const AvsluttDeltakelseModal = ({
             disabled={false}
             defaultValue={avslutningstype}
             onChange={onSetAvslutningstype}
+            error={avslutningstypeError}
           >
             <Radio
               value={Avslutningstype.FULLFORT}
