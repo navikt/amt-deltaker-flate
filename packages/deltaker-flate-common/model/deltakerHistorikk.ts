@@ -85,15 +85,16 @@ export const avsluttDeltakelseSchema = z.object({
   aarsak: deltakerStatusAarsakSchema.nullable(),
   sluttdato: dateSchema,
   begrunnelse: z.string().nullable(),
-  harFullfort: z.boolean(),
+  harFullfort: z.boolean().nullable(),
   oppstartstype: z.enum(Oppstartstype)
 })
 
 export const endreAvslutningSchema = z.object({
   type: z.literal(EndringType.EndreAvslutning),
   aarsak: deltakerStatusAarsakSchema.nullable(),
+  sluttdato: nullableDateSchema,
   begrunnelse: z.string().nullable(),
-  harFullfort: z.boolean()
+  harFullfort: z.boolean().nullable()
 })
 
 export const endreSluttarsakSchema = z.object({

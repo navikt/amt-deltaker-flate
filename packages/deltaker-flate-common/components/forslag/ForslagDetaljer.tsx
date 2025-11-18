@@ -59,6 +59,13 @@ export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
                 Er kurset fullført? {endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
+
+            {endring.type == ForslagEndringType.EndreAvslutning &&
+              endring.sluttdato !== null && (
+                <BodyLong size="small">
+                  Sluttdato: {formatDate(endring.sluttdato)}
+                </BodyLong>
+              )}
             {endring.type == ForslagEndringType.AvsluttDeltakelse &&
               endring.sluttdato && (
                 <BodyLong size="small">

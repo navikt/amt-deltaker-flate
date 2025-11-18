@@ -8,16 +8,20 @@ import { DeltakerStatusAarsakType } from '../model/deltaker.ts'
 import { BESKRIVELSE_ARSAK_ANNET_MAX_TEGN } from './AarsakRadioGroup.tsx'
 import { getDeltakerStatusAarsak } from '../utils/forslagUtils.tsx'
 
-export function useAarsak(forslag: Forslag | null) {
+export function useAarsak(
+  forslag: Forslag | null,
+  defaultAarsak?: DeltakerStatusAarsakType,
+  defaultAarsakBeskrivelse?: string | null
+) {
   const [initAarsak, initBeskrivelse] = getSluttaarsakFraForslag(forslag)
 
   const [aarsak, setAarsak] = useState<DeltakerStatusAarsakType | undefined>(
-    initAarsak
+    initAarsak ?? defaultAarsak
   )
   const [aarsakError, setAarsakError] = useState<string>()
 
   const [beskrivelse, setBeskrivelse] = useState<string | undefined>(
-    initBeskrivelse
+    initBeskrivelse ?? defaultAarsakBeskrivelse ?? undefined
   )
   const [beskrivelseError, setBeskrivelseError] = useState<string>()
 
@@ -64,6 +68,7 @@ export function useAarsak(forslag: Forslag | null) {
     handleChange,
     handleBeskrivelse,
     aarsakError,
+    setAarsakError,
     beskrivelseError,
     valider
   }
@@ -83,10 +88,7 @@ const getSluttaarsakFraForslag = (
     case ForslagEndringType.AvsluttDeltakelse:
     case ForslagEndringType.EndreAvslutning: {
       aarsak = forslag.endring.aarsak
-      break
     }
-    default:
-      throw new Error(`Forslag ${forslag?.endring.type} har ikke noen årsak`)
   }
 
   if (!aarsak) return [undefined, undefined]

@@ -13,7 +13,6 @@ import {
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
   EndreSluttarsakRequest,
-  EndreSluttdatoRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
   ForlengDeltakelseRequest,
@@ -292,31 +291,6 @@ export const endreDeltakelseStartdato = (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Kunne ikke endre oppstartsdato.'
-        handleError(message, deltakerId, response.status)
-      }
-      return response.json()
-    })
-    .then(parsePamelding)
-}
-
-export const endreDeltakelseSluttdato = (
-  deltakerId: string,
-  enhetId: string,
-  request: EndreSluttdatoRequest
-): Promise<PameldingResponse> => {
-  return fetch(`${API_URL}/deltaker/${deltakerId}/sluttdato`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        const message = 'Kunne ikke endre sluttdato.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

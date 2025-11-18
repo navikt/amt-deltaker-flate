@@ -45,14 +45,6 @@ export const endreBakgrunnsinfoSchema = z.object({
 
 export type EndreBakgrunnsinfoRequest = z.infer<typeof endreBakgrunnsinfoSchema>
 
-export const endreSluttdatoSchema = z.object({
-  sluttdato: z.string(),
-  forslagId: z.uuid().nullish(),
-  begrunnelse: z.string().nullable()
-})
-
-export type EndreSluttdatoRequest = z.infer<typeof endreSluttdatoSchema>
-
 export const avsluttDeltakelseSchema = z.object({
   aarsak: aarsakSchema.nullable(),
   sluttdato: z.string().nullable(),
@@ -68,6 +60,7 @@ export const endreAvslutningSchema = z.object({
   aarsak: aarsakSchema.nullable(),
   harDeltatt: z.boolean().nullable(),
   harFullfort: z.boolean().nullable(),
+  sluttdato: z.string().nullable(),
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
@@ -119,7 +112,6 @@ export type EndringRequest =
   | ForlengDeltakelseRequest
   | EndreStartdatoRequest
   | EndreBakgrunnsinfoRequest
-  | EndreSluttdatoRequest
   | AvsluttDeltakelseRequest
   | EndreSluttarsakRequest
   | EndreInnholdRequest

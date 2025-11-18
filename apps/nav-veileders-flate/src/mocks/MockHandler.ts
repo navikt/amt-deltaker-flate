@@ -1,11 +1,13 @@
 import dayjs from 'dayjs'
 import {
+  ArenaTiltakskode,
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
+  erKursTiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -16,10 +18,8 @@ import {
   getUtvidetInnhold,
   HistorikkType,
   Innhold,
-  ArenaTiltakskode,
-  Oppstartstype,
-  erKursTiltak,
-  lagHistorikkFellesOppstart
+  lagHistorikkFellesOppstart,
+  Oppstartstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -30,7 +30,6 @@ import {
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
   EndreSluttarsakRequest,
-  EndreSluttdatoRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
   ForlengDeltakelseRequest,
@@ -150,12 +149,13 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  getStartdato(): string {
+  getStartdato(newStatusType?: DeltakerStatusType): string {
+    const statusType = newStatusType ?? this.statusType
     if (
-      this.statusType === DeltakerStatusType.DELTAR ||
-      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
-      this.statusType === DeltakerStatusType.FULLFORT ||
-      this.statusType === DeltakerStatusType.AVBRUTT
+      statusType === DeltakerStatusType.DELTAR ||
+      statusType === DeltakerStatusType.HAR_SLUTTET ||
+      statusType === DeltakerStatusType.FULLFORT ||
+      statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
@@ -164,16 +164,17 @@ export class MockHandler {
     return EMDASH
   }
 
-  getSluttdato(): string {
-    if (this.statusType === DeltakerStatusType.DELTAR) {
+  getSluttdato(newStatusType?: DeltakerStatusType): string {
+    const statusType = newStatusType ?? this.statusType
+    if (statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
       return dayjs(fremtidigDato).format('YYYY-MM-DD')
     }
     if (
-      this.statusType === DeltakerStatusType.HAR_SLUTTET ||
-      this.statusType === DeltakerStatusType.FULLFORT ||
-      this.statusType === DeltakerStatusType.AVBRUTT
+      statusType === DeltakerStatusType.HAR_SLUTTET ||
+      statusType === DeltakerStatusType.FULLFORT ||
+      statusType === DeltakerStatusType.AVBRUTT
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
@@ -183,6 +184,8 @@ export class MockHandler {
   }
 
   getForslag(): Forslag[] {
+    const erFellesOppstart =
+      this.pamelding?.deltakerliste.oppstartstype === Oppstartstype.FELLES
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
@@ -224,43 +227,6 @@ export class MockHandler {
           harFullfort: true
         }
       })
-      const forslagAvslutt3 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Syk
-          },
-          harDeltatt: false,
-          harFullfort: false
-        }
-      })
-      const forslagAvslutt4 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Syk
-          },
-          harDeltatt: true,
-          harFullfort: false
-        }
-      })
-      const forslagAvslutt5 = aktivtForslag({
-        begrunnelse: null,
-        endring: {
-          type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
-          aarsak: {
-            type: ForslagEndringAarsakType.Annet,
-            beskrivelse: 'tralala'
-          },
-          harDeltatt: true,
-          harFullfort: false
-        }
-      })
       const forslagDeltakelsesmengde = aktivtForslag({
         endring: {
           type: ForslagEndringType.Deltakelsesmengde,
@@ -285,15 +251,14 @@ export class MockHandler {
           }
         }
       })
+      const avvisForslag = erFellesOppstart
+        ? [forslagAvslutt2]
+        : [forslagAvslutt]
       return [
         forslagStartdato,
         forslagDeltakelsesmengde,
         forslag,
-        forslagAvslutt,
-        forslagAvslutt2,
-        forslagAvslutt3,
-        forslagAvslutt4,
-        forslagAvslutt5,
+        ...avvisForslag,
         forslagIkkeAktuell
       ]
     }
@@ -402,11 +367,21 @@ export class MockHandler {
           type: DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT,
           beskrivelse: null
         }
+      } else if (status === DeltakerStatusType.AVBRUTT) {
+        oppdatertPamelding.status.aarsak = {
+          type: DeltakerStatusAarsakType.FATT_JOBB,
+          beskrivelse: null
+        }
+      } else if (status === DeltakerStatusType.IKKE_AKTUELL) {
+        oppdatertPamelding.status.aarsak = {
+          type: DeltakerStatusAarsakType.ANNET,
+          beskrivelse: 'Det er en annen grunn'
+        }
       } else {
         oppdatertPamelding.status.aarsak = null
       }
-      oppdatertPamelding.startdato = this.getStartdato()
-      oppdatertPamelding.sluttdato = this.getSluttdato()
+      oppdatertPamelding.startdato = this.getStartdato(status)
+      oppdatertPamelding.sluttdato = this.getSluttdato(status)
       oppdatertPamelding.forslag = this.getForslag()
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
@@ -554,19 +529,6 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  endreDeltakelseSluttdato(request: EndreSluttdatoRequest) {
-    const oppdatertPamelding = this.pamelding
-
-    if (oppdatertPamelding) {
-      oppdatertPamelding.sluttdato = request.sluttdato
-      this.pamelding = oppdatertPamelding
-      this.fjernAktivtForslag(request.forslagId)
-      return HttpResponse.json(oppdatertPamelding)
-    }
-
-    return new HttpResponse(null, { status: 404 })
-  }
-
   endreDeltakelseFjernOppstartsdato(request: FjernOppstartsdatoRequest) {
     const oppdatertPamelding = this.pamelding
 
@@ -624,6 +586,7 @@ export class MockHandler {
           ? DeltakerStatusType.FULLFORT
           : DeltakerStatusType.AVBRUTT
         oppdatertPamelding.status.aarsak = request.aarsak
+        oppdatertPamelding.sluttdato = request.sluttdato ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding

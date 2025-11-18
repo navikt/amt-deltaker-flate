@@ -5,13 +5,11 @@ import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
 import { EndreInnholdModal } from './EndreInnholdModal'
 import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
 import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
-import { EndreSluttdatoModal } from './EndreSluttdatoModal.tsx'
 import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
 import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
 import { ReaktiverDeltakelseModal } from './ReaktiverDeltakelseModal.tsx'
 import { EndreDeltakelseType, Forslag } from 'deltaker-flate-common'
 import { FjernOppstartsdatoModal } from './FjernOppstartdatoModal.tsx'
-import { EndreAvslutningModal } from './EndreAvslutningModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
@@ -35,19 +33,28 @@ export const ModalController = (props: ModalControllerProps) => {
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
-      return <AvsluttDeltakelseModal {...props} />
-    case EndreDeltakelseType.ENDRE_SLUTTDATO:
-      return <EndreSluttdatoModal {...props} />
-    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
-      return <EndreSluttarsakModal {...props} />
+      return (
+        <AvsluttDeltakelseModal
+          {...props}
+          endreDeltakelseType={EndreDeltakelseType.AVSLUTT_DELTAKELSE}
+        />
+      )
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
       return <EndreDeltakelsesmengdeModal {...props} />
     case EndreDeltakelseType.REAKTIVER_DELTAKELSE:
       return <ReaktiverDeltakelseModal {...props} />
     case EndreDeltakelseType.FJERN_OPPSTARTSDATO:
       return <FjernOppstartsdatoModal {...props} />
+    case EndreDeltakelseType.ENDRE_SLUTTARSAK:
+      return <EndreSluttarsakModal {...props} />
+    case EndreDeltakelseType.ENDRE_SLUTTDATO:
     case EndreDeltakelseType.ENDRE_AVSLUTNING:
-      return <EndreAvslutningModal {...props} />
+      return (
+        <AvsluttDeltakelseModal
+          {...props}
+          endreDeltakelseType={EndreDeltakelseType.ENDRE_AVSLUTNING}
+        />
+      )
     default:
       return null
   }
