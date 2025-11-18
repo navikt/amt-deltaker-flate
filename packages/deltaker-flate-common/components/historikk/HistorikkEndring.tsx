@@ -83,9 +83,11 @@ const getEndringsDetaljer = (
             </BodyLong>
           )}
 
-          <BodyLong size="small">
-            Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
-          </BodyLong>
+          {endring.harFullfort !== null && (
+            <BodyLong size="small">
+              Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
+            </BodyLong>
+          )}
 
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
