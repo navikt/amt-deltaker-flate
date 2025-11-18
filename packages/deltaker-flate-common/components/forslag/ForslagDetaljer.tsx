@@ -44,6 +44,11 @@ export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
       case ForslagEndringType.EndreAvslutning:
         return (
           <>
+            {endring.sluttdato !== null && (
+              <BodyLong size="small">
+                Sluttdato: {formatDate(endring.sluttdato)}
+              </BodyLong>
+            )}
             {endring.aarsak && (
               <BodyLong size="small">
                 Årsak: {getForslagEndringAarsakText(endring.aarsak)}
