@@ -74,7 +74,7 @@ export function getHarDeltatt(forslag: Forslag | null): boolean | null {
     (forslag.endring.type === ForslagEndringType.AvsluttDeltakelse ||
       forslag.endring.type === ForslagEndringType.EndreAvslutning)
   ) {
-    return forslag.endring.harDeltatt ?? null
+    return forslag.endring.harDeltatt
   } else if (forslag?.endring.type === ForslagEndringType.Sluttdato) {
     return true
   }
@@ -97,14 +97,14 @@ export function getHarFullfort(
 export const getAvslutningstype = (
   forslag: Forslag | null,
   statusType: DeltakerStatusType,
-  harDeltatt: boolean | null,
+  harDeltattFraForslag: boolean | null,
   erFellesOppstart: boolean
 ): Avslutningstype | null => {
   const harFullfortValg = getHarFullfort(forslag)
   if (!erFellesOppstart) return null
 
   if (harFullfortValg === true) return Avslutningstype.FULLFORT
-  else if (harDeltatt === false) return Avslutningstype.IKKE_DELTATT
+  else if (harDeltattFraForslag === false) return Avslutningstype.IKKE_DELTATT
   else if (harFullfortValg === false) return Avslutningstype.AVBRUTT
   else {
     const erAvbrutt = statusType === DeltakerStatusType.AVBRUTT

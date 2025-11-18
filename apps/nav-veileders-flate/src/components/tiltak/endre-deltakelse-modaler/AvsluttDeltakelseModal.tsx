@@ -67,21 +67,24 @@ export const AvsluttDeltakelseModal = ({
     forslag
   )
 
-  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
-    getHarDeltatt(forslag) ??
-      (harDeltattMerEnnFjortenDager
-        ? pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL
-        : null)
-  )
+  const harDeltattFraForslag = getHarDeltatt(forslag)
   const [avslutningstype, setAvslutningstype] =
     useState<Avslutningstype | null>(
       getAvslutningstype(
         forslag,
         pamelding.status.type,
-        harDeltatt,
+        harDeltattFraForslag,
         erFellesOppstart
       )
     )
+  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
+    harDeltattFraForslag ??
+      (erFellesOppstart
+        ? avslutningstype !== Avslutningstype.IKKE_DELTATT
+        : harDeltattMerEnnFjortenDager
+          ? pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL
+          : null)
+  )
   const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
