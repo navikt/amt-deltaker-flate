@@ -44,11 +44,6 @@ export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
       case ForslagEndringType.EndreAvslutning:
         return (
           <>
-            {endring.sluttdato !== null && (
-              <BodyLong size="small">
-                Sluttdato: {formatDate(endring.sluttdato)}
-              </BodyLong>
-            )}
             {endring.aarsak && (
               <BodyLong size="small">
                 Årsak: {getForslagEndringAarsakText(endring.aarsak)}
@@ -64,6 +59,13 @@ export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
                 Er kurset fullført? {endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
+
+            {endring.type == ForslagEndringType.EndreAvslutning &&
+              endring.sluttdato !== null && (
+                <BodyLong size="small">
+                  Sluttdato: {formatDate(endring.sluttdato)}
+                </BodyLong>
+              )}
             {endring.type == ForslagEndringType.AvsluttDeltakelse &&
               endring.sluttdato && (
                 <BodyLong size="small">
