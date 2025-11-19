@@ -143,7 +143,7 @@ export const PameldingForm = ({
           )}
 
           {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-            tiltakskode === Tiltakskode.ARBEIDSRETTET_REHABILITERING) && (
+            tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde
