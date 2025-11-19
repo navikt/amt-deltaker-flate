@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Heading, Textarea } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   erKursEllerDigitalt,
   fjernUgyldigeTegn,
@@ -44,9 +44,9 @@ export const PameldingForm = ({
   onDelEndring
 }: Props) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null)
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
   const status = pamelding.status.type
-  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
+  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -104,7 +104,7 @@ export const PameldingForm = ({
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
 
           <OmKurset
-            tiltakstype={pamelding.deltakerliste.tiltakstype}
+            tiltakskode={pamelding.deltakerliste.tiltakskode}
             arrangorNavn={pamelding.deltakerliste.arrangorNavn}
             deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
             statusType={pamelding.status.type}
@@ -142,8 +142,8 @@ export const PameldingForm = ({
             </section>
           )}
 
-          {(tiltakstype === ArenaTiltakskode.VASV ||
-            tiltakstype === ArenaTiltakskode.ARBFORB) && (
+          {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+            tiltakskode === Tiltakskode.ARBEIDSRETTET_REHABILITERING) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde

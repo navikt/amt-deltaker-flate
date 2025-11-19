@@ -66,7 +66,7 @@ export const ForlengDeltakelseModal = ({
     finnValgtVarighet(
       sluttdatoFraDeltaker,
       sluttdatoFraForslag,
-      pamelding.deltakerliste.tiltakstype
+      pamelding.deltakerliste.tiltakskode
     )
   )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
@@ -88,7 +88,7 @@ export const ForlengDeltakelseModal = ({
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
   const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
@@ -151,7 +151,7 @@ export const ForlengDeltakelseModal = ({
     >
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        tiltakskode={pamelding.deltakerliste.tiltakskode}
         startDato={sluttdatoFraDeltaker || undefined}
         sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
         errorVarighet={sluttdato.error}
@@ -182,7 +182,7 @@ export const ForlengDeltakelseModal = ({
           size="small"
           error={errorVarighetConfirmation}
         >
-          {getSoftMaxVarighetBekreftelseText(tiltakstype)}
+          {getSoftMaxVarighetBekreftelseText(tiltakskode)}
         </ConfirmationPanel>
       )}
       <BegrunnelseInput

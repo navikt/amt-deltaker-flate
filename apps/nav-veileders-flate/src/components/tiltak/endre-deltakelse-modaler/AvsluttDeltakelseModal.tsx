@@ -343,7 +343,7 @@ export const AvsluttDeltakelseModal = ({
           error={errorVarighetConfirmation}
         >
           {getSoftMaxVarighetBekreftelseText(
-            pamelding.deltakerliste.tiltakstype
+            pamelding.deltakerliste.tiltakskode
           )}
         </ConfirmationPanel>
       )}

@@ -1,5 +1,5 @@
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
@@ -27,7 +27,7 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakstype: z.enum(ArenaTiltakskode),
+  tiltakskode: z.enum(Tiltakskode),
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   startdato: nullableDateSchema,

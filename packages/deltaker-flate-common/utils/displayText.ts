@@ -1,9 +1,9 @@
 import {
-  ArenaTiltakskode,
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  DeltakerlisteStatus
+  DeltakerlisteStatus,
+  Tiltakskode
 } from '../model/deltaker'
 import {
   Endring,
@@ -29,64 +29,65 @@ export const deltakerprosentText = (
   return `${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`
 }
 
-export const getTiltakstypeDisplayText = (type: ArenaTiltakskode): string => {
+export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   switch (type) {
-    case ArenaTiltakskode.ARBFORB:
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
       return 'Arbeidsforberedende trening'
-    case ArenaTiltakskode.ARBRRHDAG:
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
       return 'Arbeidsrettet rehabilitering'
-    case ArenaTiltakskode.AVKLARAG:
+    case Tiltakskode.AVKLARING:
       return 'Avklaring'
-    case ArenaTiltakskode.INDOPPFAG:
+    case Tiltakskode.OPPFOLGING:
       return 'Oppfølging'
-    case ArenaTiltakskode.DIGIOPPARB:
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
       return 'Digitalt jobbsøkerkurs'
-    case ArenaTiltakskode.GRUFAGYRKE:
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
       return 'Fag- og yrkesopplæring'
-    case ArenaTiltakskode.GRUPPEAMO:
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring'
-    case ArenaTiltakskode.JOBBK:
+    case Tiltakskode.JOBBKLUBB:
       return 'Jobbsøkerkurs'
-    case ArenaTiltakskode.VASV:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid'
-    case ArenaTiltakskode.ENKELAMO:
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring (enkeltplass)'
-    case ArenaTiltakskode.ENKFAGYRKE:
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
       return 'Fag- og yrkesopplæring (enkeltplass)'
-    case ArenaTiltakskode.HOYEREUTD:
+    case Tiltakskode.HOYERE_UTDANNING:
       return 'Høyere utdanning'
   }
 }
 
 export const hentTiltakGjennomforingNavnArrangorTittel = (
   navnPaGjennomforing: string,
-  tiltakstype: ArenaTiltakskode,
+  tiltakskode: Tiltakskode,
   arrangorNavn: string
 ) => {
-  if (tiltakstype === ArenaTiltakskode.GRUPPEAMO) {
+  if (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING) {
     return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
   }
-  if (tiltakstype === ArenaTiltakskode.GRUFAGYRKE) {
+  if (tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) {
     return `${navnPaGjennomforing} hos ${arrangorNavn}`
   }
-  return hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)
+  return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
 export const hentTiltakNavnHosArrangorTekst = (
-  tiltakstype: ArenaTiltakskode,
+  tiltakskode: Tiltakskode,
   arrangorNavn: string
-) => `${getTiltakstypeDisplayText(tiltakstype)} hos ${arrangorNavn}`
+) => `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
 
 export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
-  tiltaksType: ArenaTiltakskode,
+  tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
-  return [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
-    tiltaksType
-  )
+  return [
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
     ? `${deltakerlisteNavn} hos ${arrangorNavn}`
-    : hentTiltakNavnHosArrangorTekst(tiltaksType, arrangorNavn)
+    : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
 export const getDeltakerStatusDisplayText = (

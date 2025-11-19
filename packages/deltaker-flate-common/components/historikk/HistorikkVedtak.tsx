@@ -1,6 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
-import { ArenaTiltakskode } from '../../model/deltaker.ts'
+import { Tiltakskode } from '../../model/deltaker.ts'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { deltakerprosentText } from '../../utils/displayText'
 import {
@@ -13,10 +13,10 @@ import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
   endringsVedtak: Vedtak
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 }
 
-export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
+export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
   const {
     fattet,
     fattetAvNav,
@@ -35,7 +35,7 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
       <DeltakelseInnhold
-        tiltakstype={tiltakstype}
+        tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnhold}
         heading={
           <BodyLong size="small" weight="semibold">
@@ -56,7 +56,7 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakstype }: Props) => {
         </>
       )}
 
-      {visDeltakelsesmengde(tiltakstype) && (
+      {visDeltakelsesmengde(tiltakskode) && (
         <>
           <BodyLong size="small" weight="semibold" className="mt-2">
             Deltakelsesmengde

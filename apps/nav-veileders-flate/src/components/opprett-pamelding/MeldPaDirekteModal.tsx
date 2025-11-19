@@ -68,7 +68,7 @@ export const MeldPaDirekteModal = ({
           {getInfoText(erFellesOppstart, pamelding.digitalBruker)}
         </BodyLong>
         <BodyShort weight="semibold">
-          {`${getDeltakerNavn(pamelding)} ${erFellesOppstart ? 'søkes inn' : 'meldes'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}`}
+          {`${getDeltakerNavn(pamelding)} ${erFellesOppstart ? 'søkes inn' : 'meldes'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyShort>
       </Modal.Body>
       <ModalFooter

@@ -11,7 +11,7 @@ import {
   haveSameContents,
   Innhold,
   INNHOLD_TYPE_ANNET,
-  ArenaTiltakskode
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
@@ -66,7 +66,8 @@ export const EndreInnholdModal = ({
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
   const visCheckbokser =
-    pamelding.deltakerliste.tiltakstype !== ArenaTiltakskode.VASV
+    pamelding.deltakerliste.tiltakskode !==
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
 
   const validertRequest = () => {
     if (visCheckbokser && valgteInnhold.length <= 0) {
@@ -109,7 +110,8 @@ export const EndreInnholdModal = ({
           innholdsTekst === getAnnetBeskrivelseFraInnhold(innhold))
       ) {
         throw new Error(
-          pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV
+          pamelding.deltakerliste.tiltakskode ===
+          Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
             ? getFeilmeldingIngenEndringTekst(false)
             : getFeilmeldingIngenEndring(false)
         )

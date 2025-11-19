@@ -1,5 +1,5 @@
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
@@ -38,18 +38,20 @@ const skalViseForlengKnapp = (
 
 const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
+  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakstype)
+  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
 const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
-  (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV ||
-    pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.ARBFORB) &&
+  (pamelding.deltakerliste.tiltakskode ===
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    pamelding.deltakerliste.tiltakskode ===
+      Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
   venterDeltarEllerKanEndres(pamelding)
 
 export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
@@ -171,8 +173,9 @@ export const kanLeggeTilOppstartsdato = (pamelding: PameldingResponse) => {
   return (
     (pamelding.startdato === null || pamelding.startdato === EMDASH) &&
     pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
-    [ArenaTiltakskode.GRUFAGYRKE, ArenaTiltakskode.GRUPPEAMO].includes(
-      pamelding.deltakerliste.tiltakstype
-    )
+    [
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+    ].includes(pamelding.deltakerliste.tiltakskode)
   )
 }

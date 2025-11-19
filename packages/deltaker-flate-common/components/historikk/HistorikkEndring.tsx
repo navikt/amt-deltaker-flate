@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
-import { ArenaTiltakskode, Oppstartstype } from '../../model/deltaker.ts'
+import { Tiltakskode, Oppstartstype } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
@@ -18,7 +18,7 @@ import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
   deltakerEndring: DeltakerEndring
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 }
 
 const mapEndringsType = (endringType: EndringType) => {
@@ -50,10 +50,7 @@ const mapEndringsType = (endringType: EndringType) => {
   }
 }
 
-const getEndringsDetaljer = (
-  endring: Endring,
-  tiltakstype: ArenaTiltakskode
-) => {
+const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (
@@ -128,7 +125,7 @@ const getEndringsDetaljer = (
     case EndringType.EndreInnhold: {
       return (
         <DeltakelseInnhold
-          tiltakstype={tiltakstype}
+          tiltakskode={tiltakskode}
           deltakelsesinnhold={{
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
@@ -201,7 +198,7 @@ const getEndringsDetaljer = (
   }
 }
 
-export const HistorikkEndring = ({ deltakerEndring, tiltakstype }: Props) => {
+export const HistorikkEndring = ({ deltakerEndring, tiltakskode }: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
 
   return (
@@ -210,7 +207,7 @@ export const HistorikkEndring = ({ deltakerEndring, tiltakstype }: Props) => {
       icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
       forslag={deltakerEndring.forslag}
     >
-      {getEndringsDetaljer(deltakerEndring.endring, tiltakstype)}
+      {getEndringsDetaljer(deltakerEndring.endring, tiltakskode)}
       <Detail className="mt-1" textColor="subtle">
         {`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
       </Detail>

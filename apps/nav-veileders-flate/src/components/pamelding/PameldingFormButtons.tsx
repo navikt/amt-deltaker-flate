@@ -62,8 +62,8 @@ export const PameldingFormButtons = ({
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
       body: erFellesOppstart
-        ? `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
-        : `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+        ? `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+        : `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -239,7 +239,7 @@ export const PameldingFormButtons = ({
           setDelUtkastModalOpen(false)
         }}
         deltakerNavn={getDeltakerNavn(pamelding)}
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        tiltakskode={pamelding.deltakerliste.tiltakskode}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
         oppstartstype={pamelding.deltakerliste.oppstartstype}
       />

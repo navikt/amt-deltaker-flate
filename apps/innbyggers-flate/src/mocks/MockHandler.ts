@@ -7,9 +7,9 @@ import {
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,
-  ArenaTiltakskode,
+  Tiltakskode,
   createHistorikk,
-  getInnholdForTiltaksType,
+  getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
   Oppstartstype,
@@ -32,10 +32,10 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 
 export const createDeltaker = (
   statusType: DeltakerStatusType,
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 ): DeltakerResponse => {
   const yesterday = dayjs().subtract(1, 'day')
-  const innhold = getInnholdForTiltaksType(tiltakstype)
+  const innhold = getInnholdForTiltakskode(tiltakskode)
   const dagerPerUke = 1
   const deltakelsesprosent = 10
 
@@ -50,7 +50,7 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'Testliste',
-      tiltakstype: tiltakstype,
+      tiltakskode: tiltakskode,
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
       startdato: dayjs('2022-10-28').toDate(),
@@ -71,7 +71,7 @@ export const createDeltaker = (
     deltakelsesprosent: deltakelsesprosent,
     bakgrunnsinformasjon: bakgrunnsinformasjon,
     deltakelsesinnhold: {
-      ledetekst: getLedetekst(tiltakstype),
+      ledetekst: getLedetekst(tiltakskode),
       innhold: getUtvidetInnhold(innhold)
     },
     vedtaksinformasjon: {
@@ -98,10 +98,10 @@ export class MockHandler {
   deltaker: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.UTKAST_TIL_PAMELDING
-  tiltakstype = ArenaTiltakskode.ARBFORB
+  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
 
   getDeltaker() {
-    this.deltaker = createDeltaker(this.statusType, this.tiltakstype)
+    this.deltaker = createDeltaker(this.statusType, this.tiltakskode)
     return HttpResponse.json(this.deltaker)
   }
 
@@ -150,26 +150,26 @@ export class MockHandler {
     return HttpResponse.json(this.deltaker)
   }
 
-  setTiltakstype(tiltakstype: ArenaTiltakskode) {
-    this.tiltakstype = tiltakstype
+  setTiltakskode(tiltakskode: Tiltakskode) {
+    this.tiltakskode = tiltakskode
     const oppdatertDeltaker = this.deltaker
     const erEnkeltplass =
-      tiltakstype === ArenaTiltakskode.ENKELAMO ||
-      tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
-      tiltakstype === ArenaTiltakskode.HOYEREUTD
+      tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
-      oppdatertDeltaker.deltakerliste.tiltakstype = tiltakstype
+      oppdatertDeltaker.deltakerliste.tiltakskode = tiltakskode
 
-      const innhold = getInnholdForTiltaksType(tiltakstype)
+      const innhold = getInnholdForTiltakskode(tiltakskode)
       oppdatertDeltaker.deltakelsesinnhold = {
         innhold: getUtvidetInnhold(innhold),
-        ledetekst: getLedetekst(tiltakstype)
+        ledetekst: getLedetekst(tiltakskode)
       }
 
       if (
-        tiltakstype === ArenaTiltakskode.ARBFORB ||
-        tiltakstype === ArenaTiltakskode.VASV
+        tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
+        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
       ) {
         oppdatertDeltaker.deltakelsesprosent = 80
         oppdatertDeltaker.dagerPerUke = 4
@@ -178,8 +178,8 @@ export class MockHandler {
         oppdatertDeltaker.dagerPerUke = null
       }
       if (
-        tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-        tiltakstype === ArenaTiltakskode.VASV ||
+        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
+        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
         erEnkeltplass
       ) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
@@ -198,7 +198,7 @@ export class MockHandler {
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (erKursTiltak(tiltakstype)) {
+      if (erKursTiltak(tiltakskode)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertDeltaker.bakgrunnsinformasjon = null
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
