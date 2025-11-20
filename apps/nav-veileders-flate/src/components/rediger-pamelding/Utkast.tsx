@@ -2,12 +2,12 @@ import { BodyLong, Heading, VStack } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   EMDASH,
-  ArenaTiltakskode,
   deltakerprosentText,
   visDeltakelsesmengde,
   OmKurset,
   erKursEllerDigitalt,
-  DeltakerStatusType
+  DeltakerStatusType,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
@@ -26,18 +26,18 @@ export const Utkast = ({
   dagerPerUke,
   deltakerliste
 }: Props) => {
-  const tiltakstype = deltakerliste.tiltakstype
+  const tiltakskode = deltakerliste.tiltakskode
   const bakgrunnsinfoVisningstekst =
     bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakstype)
+  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
 
   return (
     <VStack>
       <DeltakelseInnhold
-        tiltakstype={tiltakstype}
+        tiltakskode={tiltakskode}
         deltakelsesinnhold={innhold}
         heading={
           <Heading level="3" size="small" className="mb-2">
@@ -58,7 +58,7 @@ export const Utkast = ({
         </div>
       )}
 
-      {visDeltakelsesmengde(tiltakstype) && (
+      {visDeltakelsesmengde(tiltakskode) && (
         <>
           <Heading level="3" size="small" className="mt-8">
             Deltakelsesmengde
@@ -70,7 +70,7 @@ export const Utkast = ({
       )}
 
       <OmKurset
-        tiltakstype={deltakerliste.tiltakstype}
+        tiltakskode={deltakerliste.tiltakskode}
         deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
         arrangorNavn={deltakerliste.arrangorNavn}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
@@ -80,7 +80,7 @@ export const Utkast = ({
         size="small"
         visDelMedArrangorInfo
         visForUtkast
-        className={tiltakstype === ArenaTiltakskode.JOBBK ? 'mt-8' : ''}
+        className={tiltakskode === Tiltakskode.JOBBKLUBB ? 'mt-8' : ''}
       />
     </VStack>
   )

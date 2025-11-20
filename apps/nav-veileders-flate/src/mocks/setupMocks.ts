@@ -1,5 +1,5 @@
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN
@@ -33,11 +33,11 @@ export const worker = setupWorker(
     return response
   }),
   http.post(
-    '/amt-deltaker-bff/setup/tiltakstype/:tiltakstype',
+    '/amt-deltaker-bff/setup/tiltakskode/:tiltakskode',
     async ({ params }) => {
-      const { tiltakstype } = params
+      const { tiltakskode } = params
 
-      const response = handler.setTiltakstype(tiltakstype as ArenaTiltakskode)
+      const response = handler.setTiltakskode(tiltakskode as Tiltakskode)
       return response
     }
   ),

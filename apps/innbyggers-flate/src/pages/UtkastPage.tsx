@@ -41,12 +41,12 @@ export const UtkastPage = () => {
     deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )
 
@@ -70,7 +70,7 @@ export const UtkastPage = () => {
     }
   }
 
-  const tiltakstype = deltaker.deltakerliste.tiltakstype
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
 
   return (
     <div className="flex flex-col items-start mb-8">
@@ -98,7 +98,7 @@ export const UtkastPage = () => {
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
               {kanDeleDeltakerMedArrangor(
-                tiltakstype,
+                tiltakskode,
                 deltaker.deltakerliste.oppstartstype
               )
                 ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
@@ -118,7 +118,7 @@ export const UtkastPage = () => {
       </GuidePanel>
 
       <DeltakelseInnhold
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6 mb-2">
@@ -128,7 +128,7 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {!erKursEllerDigitalt(tiltakstype) && deltaker.bakgrunnsinformasjon && (
+      {!erKursEllerDigitalt(tiltakskode) && deltaker.bakgrunnsinformasjon && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Bakgrunnsinfo
@@ -139,7 +139,7 @@ export const UtkastPage = () => {
         </>
       )}
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
+      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde
@@ -154,7 +154,7 @@ export const UtkastPage = () => {
       )}
 
       <OmKurset
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
@@ -170,7 +170,7 @@ export const UtkastPage = () => {
             Kontaktinformasjon
           </Heading>
           {kanDeleDeltakerMedArrangor(
-            tiltakstype,
+            tiltakskode,
             deltaker.deltakerliste.oppstartstype
           ) ? (
             <>
@@ -202,7 +202,7 @@ export const UtkastPage = () => {
           Telefonnummer og e-postadresse
         </List.Item>
         {deltaker.adresseDelesMedArrangor &&
-          !erKursEllerDigitalt(tiltakstype) && (
+          !erKursEllerDigitalt(tiltakskode) && (
             <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
           )}
       </List>

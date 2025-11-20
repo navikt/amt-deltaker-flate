@@ -66,11 +66,11 @@ export const MeldPaDirekteButton = ({
     const body = erFellesOppstart
       ? {
           heading: 'Bruker er søkt inn',
-          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)}.`
+          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
         }
       : {
           heading: 'Bruker er meldt på',
-          body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakstype, pamelding.deltakerliste.arrangorNavn)} er fattet.`
+          body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)} er fattet.`
         }
     doRedirect(DELTAKELSESOVERSIKT_LINK, body)
   }

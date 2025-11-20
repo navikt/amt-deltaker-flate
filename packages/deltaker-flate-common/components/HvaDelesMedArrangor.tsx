@@ -1,7 +1,7 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   Oppstartstype
 } from '../model/deltaker'
@@ -11,7 +11,7 @@ interface Props {
   adresseDelesMedArrangor: boolean
   statusType: DeltakerStatusType
   arrangorNavn: string
-  tiltaksType: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   oppstartstype: Oppstartstype | null
   erEnkeltplassUtenRammeavtale: boolean
   className?: string
@@ -21,7 +21,7 @@ export const HvaDelesMedArrangor = ({
   adresseDelesMedArrangor,
   statusType,
   arrangorNavn,
-  tiltaksType,
+  tiltakskode,
   oppstartstype,
   erEnkeltplassUtenRammeavtale,
   className
@@ -29,9 +29,9 @@ export const HvaDelesMedArrangor = ({
   if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
     return null
   }
-  const erKurs = erKursEllerDigitalt(tiltaksType)
+  const erKurs = erKursEllerDigitalt(tiltakskode)
   const visDelMedArrangorInfo =
-    kanDeleDeltakerMedArrangor(tiltaksType, oppstartstype) &&
+    kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
     (statusType === DeltakerStatusType.SOKT_INN ||
       statusType === DeltakerStatusType.VURDERES)
 

@@ -22,7 +22,7 @@ export const EndreDeltakelseKnapp = () => {
   const [forslag, setForslag] = useState<Forslag | null>(null)
   const { erKometMasterForTiltak } = useFeatureToggles()
   const enableEndreDeltakelse = erKometMasterForTiltak(
-    pamelding.deltakerliste.tiltakstype
+    pamelding.deltakerliste.tiltakskode
   )
 
   const openModal = (type: EndreDeltakelseType) => {

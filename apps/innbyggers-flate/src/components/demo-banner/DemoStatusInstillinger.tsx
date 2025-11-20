@@ -2,9 +2,9 @@ import { Select } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   getDeltakerStatusDisplayText,
-  getTiltakstypeDisplayText,
+  getTiltakskodeDisplayText,
   logError,
-  ArenaTiltakskode,
+  Tiltakskode,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -12,16 +12,16 @@ import { useDeltakerContext } from '../../DeltakerContext.tsx'
 import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker.ts'
 import { API_URL, useMock } from '../../utils/environment-utils'
 
-export const endreMockTiltakstype = (
-  nyTiltakstype: ArenaTiltakskode
+export const endreMockTiltakskode = (
+  nyTiltakskode: Tiltakskode
 ): Promise<DeltakerResponse> => {
-  return fetch(`${API_URL}/setup/tiltakstype/${nyTiltakstype}`, {
+  return fetch(`${API_URL}/setup/tiltakskode/${nyTiltakskode}`, {
     method: 'POST'
   })
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
-          `Kunne ikke endre tiltakstype. Prøv igjen senere. (${response.status})`
+          `Kunne ikke endre tiltakskode. Prøv igjen senere. (${response.status})`
         )
       }
       return response.json()
@@ -63,23 +63,23 @@ export const endreMockDeltakelseStatus = (
 const DemoStatusInstillinger = () => {
   const { setDeltaker } = useDeltakerContext()
 
-  const [tiltaksType, setTiltaksType] = useState<ArenaTiltakskode>(
-    ArenaTiltakskode.ARBFORB
+  const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
   )
   const [deltakerStatus, setDeltakerStatus] = useState<DeltakerStatusType>(
     DeltakerStatusType.UTKAST_TIL_PAMELDING
   )
 
-  const { doFetch: doFetchEndreMockTiltakstype } =
-    useDeferredFetch(endreMockTiltakstype)
+  const { doFetch: doFetchEndreMockTiltakskode } =
+    useDeferredFetch(endreMockTiltakskode)
   const { doFetch: doFetchEndreMockDeltakelseStatus } = useDeferredFetch(
     endreMockDeltakelseStatus
   )
 
-  const handleTiltakstypeChanged = (nyTiltakstype: ArenaTiltakskode) => {
-    setTiltaksType(nyTiltakstype)
+  const handleTiltakskodeChanged = (nyTiltakskode: Tiltakskode) => {
+    setTiltakskode(nyTiltakskode)
     if (useMock) {
-      doFetchEndreMockTiltakstype(nyTiltakstype).then((data) => {
+      doFetchEndreMockTiltakskode(nyTiltakskode).then((data) => {
         if (data) {
           setDeltaker(data as DeltakerResponse)
         }
@@ -101,51 +101,59 @@ const DemoStatusInstillinger = () => {
   return (
     <div className="mt-2 flex gap-4 flex-wrap">
       <Select
-        value={tiltaksType}
-        label="Velg tiltakstype"
+        value={tiltakskode}
+        label="Velg tiltakskode"
         size="small"
         className="w-64"
-        data-testid="select_tiltakstype"
+        data-testid="select_tiltakskode"
         onChange={(e) =>
-          handleTiltakstypeChanged(e.target.value as ArenaTiltakskode)
+          handleTiltakskodeChanged(e.target.value as Tiltakskode)
         }
       >
-        <option value={ArenaTiltakskode.ARBFORB}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.ARBFORB)}
+        <option value={Tiltakskode.ARBEIDSFORBEREDENDE_TRENING}>
+          {getTiltakskodeDisplayText(Tiltakskode.ARBEIDSFORBEREDENDE_TRENING)}
         </option>
-        <option value={ArenaTiltakskode.ARBRRHDAG}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.ARBRRHDAG)}
+        <option value={Tiltakskode.ARBEIDSRETTET_REHABILITERING}>
+          {getTiltakskodeDisplayText(Tiltakskode.ARBEIDSRETTET_REHABILITERING)}
         </option>
-        <option value={ArenaTiltakskode.AVKLARAG}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.AVKLARAG)}
+        <option value={Tiltakskode.AVKLARING}>
+          {getTiltakskodeDisplayText(Tiltakskode.AVKLARING)}
         </option>
-        <option value={ArenaTiltakskode.INDOPPFAG}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.INDOPPFAG)}
+        <option value={Tiltakskode.OPPFOLGING}>
+          {getTiltakskodeDisplayText(Tiltakskode.OPPFOLGING)}
         </option>
-        <option value={ArenaTiltakskode.DIGIOPPARB}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.DIGIOPPARB)}
+        <option value={Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK}>
+          {getTiltakskodeDisplayText(Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK)}
         </option>
-        <option value={ArenaTiltakskode.VASV}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.VASV)}
+        <option value={Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET}>
+          {getTiltakskodeDisplayText(
+            Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+          )}
         </option>
-        <option value={ArenaTiltakskode.GRUPPEAMO}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUPPEAMO)}
+        <option value={Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING}>
+          {getTiltakskodeDisplayText(
+            Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+          )}
         </option>
-        <option value={ArenaTiltakskode.JOBBK}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.JOBBK)}
+        <option value={Tiltakskode.JOBBKLUBB}>
+          {getTiltakskodeDisplayText(Tiltakskode.JOBBKLUBB)}
         </option>
-        <option value={ArenaTiltakskode.GRUFAGYRKE}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.GRUFAGYRKE)}
+        <option value={Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING}>
+          {getTiltakskodeDisplayText(Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING)}
         </option>
 
-        <option value={ArenaTiltakskode.ENKELAMO}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.ENKELAMO)}
+        <option value={Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING}>
+          {getTiltakskodeDisplayText(
+            Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING
+          )}
         </option>
-        <option value={ArenaTiltakskode.ENKFAGYRKE}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.ENKFAGYRKE)}
+        <option value={Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING}>
+          {getTiltakskodeDisplayText(
+            Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+          )}
         </option>
-        <option value={ArenaTiltakskode.HOYEREUTD}>
-          {getTiltakstypeDisplayText(ArenaTiltakskode.HOYEREUTD)}
+        <option value={Tiltakskode.HOYERE_UTDANNING}>
+          {getTiltakskodeDisplayText(Tiltakskode.HOYERE_UTDANNING)}
         </option>
       </Select>
       <Select

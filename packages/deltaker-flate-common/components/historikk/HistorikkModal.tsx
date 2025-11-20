@@ -1,5 +1,5 @@
 import { Alert, Modal } from '@navikt/ds-react'
-import { ArenaTiltakskode } from '../../model/deltaker'
+import { Tiltakskode } from '../../model/deltaker'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
@@ -17,7 +17,7 @@ import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinato
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   open: boolean
   loading: boolean
   onClose: () => void
@@ -25,25 +25,25 @@ interface Props {
 
 const getHistorikkItem = (
   historikk: DeltakerHistorikk,
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 ) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return (
-        <HistorikkVedtak endringsVedtak={historikk} tiltakstype={tiltakstype} />
+        <HistorikkVedtak endringsVedtak={historikk} tiltakskode={tiltakskode} />
       )
     case HistorikkType.InnsokPaaFellesOppstart:
       return (
         <HistorikkSoktInn
           soktInnHistorikk={historikk}
-          tiltakstype={tiltakstype}
+          tiltakskode={tiltakskode}
         />
       )
     case HistorikkType.Endring:
       return (
         <HistorikkEndring
           deltakerEndring={historikk}
-          tiltakstype={tiltakstype}
+          tiltakskode={tiltakskode}
         />
       )
     case HistorikkType.Forslag:
@@ -54,7 +54,7 @@ const getHistorikkItem = (
       return (
         <HistorikkImportertFraArena
           deltakelseVedImport={historikk}
-          tiltakstype={tiltakstype}
+          tiltakskode={tiltakskode}
         />
       )
     case HistorikkType.VurderingFraArrangor:
@@ -72,7 +72,7 @@ export const HistorikkModal = ({
   open,
   loading,
   historikk,
-  tiltakstype,
+  tiltakskode,
   onClose
 }: Props) => {
   return (
@@ -89,7 +89,7 @@ export const HistorikkModal = ({
           historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
-              {getHistorikkItem(i, tiltakstype)}
+              {getHistorikkItem(i, tiltakskode)}
             </div>
           ))}
         {!loading && (!historikk || historikk.length < 0) && (

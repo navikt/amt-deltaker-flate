@@ -39,7 +39,7 @@ export const TiltakPage = () => {
   const visEndringer = searchParams.get('vis_endringer') === ''
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )
   const skalViseDato =
@@ -51,7 +51,7 @@ export const TiltakPage = () => {
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangor(
-      deltaker.deltakerliste.tiltakstype,
+      deltaker.deltakerliste.tiltakskode,
       deltaker.deltakerliste.oppstartstype
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
@@ -126,7 +126,7 @@ export const TiltakPage = () => {
 
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
         <DeltakerStatusInfoTekst
-          tiltaksType={deltaker.deltakerliste.tiltakstype}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
           deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
           tiltaketsStartDato={deltaker.deltakerliste.startdato}
           statusType={deltaker.status.type}
@@ -142,7 +142,7 @@ export const TiltakPage = () => {
       <AktiveForslag forslag={deltaker.forslag} />
 
       <OmKurset
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
@@ -153,7 +153,7 @@ export const TiltakPage = () => {
       />
 
       <DeltakelseInnhold
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -175,7 +175,7 @@ export const TiltakPage = () => {
           </>
         )}
 
-        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
+        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
           <DeltakelsesmengdeInfo
             deltakelsesprosent={deltaker.deltakelsesprosent}
             dagerPerUke={deltaker.dagerPerUke}
@@ -187,7 +187,7 @@ export const TiltakPage = () => {
 
         <SeEndringer
           className="mt-8"
-          tiltakstype={deltaker.deltakerliste.tiltakstype}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
           open={visEndringer}
@@ -201,7 +201,7 @@ export const TiltakPage = () => {
         <VedtakOgKlage
           statusType={deltaker.status.type}
           statusDato={deltaker.status.opprettet}
-          tiltakstype={deltaker.deltakerliste.tiltakstype}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           vedtaksinformasjon={deltaker.vedtaksinformasjon}
           importertFraArena={deltaker.importertFraArena}
@@ -210,7 +210,7 @@ export const TiltakPage = () => {
         <HvaDelesMedArrangor
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-          tiltaksType={deltaker.deltakerliste.tiltakstype}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
           statusType={deltaker.status.type}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           erEnkeltplassUtenRammeavtale={

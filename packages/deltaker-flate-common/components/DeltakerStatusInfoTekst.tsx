@@ -1,7 +1,7 @@
 import { Alert, BodyLong } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   Oppstartstype,
   formatDateWithMonthName,
@@ -10,7 +10,7 @@ import {
 } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
-  tiltaksType: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
@@ -84,7 +84,7 @@ const getHoyereUtdanningInfo = (statusType: DeltakerStatusType) => {
 }
 
 export const DeltakerStatusInfoTekst = ({
-  tiltaksType,
+  tiltakskode,
   deltakerlisteNavn,
   statusType,
   arrangorNavn,
@@ -93,7 +93,7 @@ export const DeltakerStatusInfoTekst = ({
   tiltaketsStartDato,
   erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
-  if (tiltaksType === ArenaTiltakskode.HOYEREUTD) {
+  if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
     return getHoyereUtdanningInfo(statusType)
   }
 
@@ -110,7 +110,7 @@ export const DeltakerStatusInfoTekst = ({
           oppstartstype === Oppstartstype.FELLES,
           statusType,
           hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-            tiltaksType,
+            tiltakskode,
             deltakerlisteNavn,
             arrangorNavn
           )
@@ -120,7 +120,7 @@ export const DeltakerStatusInfoTekst = ({
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
             {getIngenStartDatoInfoTekst(
-              tiltaksType,
+              tiltakskode,
               oppstartstype,
               arrangorNavn,
               tiltaketsStartDato
@@ -132,7 +132,7 @@ export const DeltakerStatusInfoTekst = ({
 }
 
 const getIngenStartDatoInfoTekst = (
-  tiltaksType: ArenaTiltakskode,
+  tiltakskode: Tiltakskode,
   oppstartstype: Oppstartstype,
   arrangorNavn: string,
   tiltaketsStartDato: Date | null
@@ -145,7 +145,7 @@ const getIngenStartDatoInfoTekst = (
     return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Arrangøren tar kontakt med deg for å avtale din oppstart.`
   }
 
-  return tiltaksType === ArenaTiltakskode.VASV
+  return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
     : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'
 }

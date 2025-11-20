@@ -16,14 +16,14 @@ interface Props {
 export const PameldingHeader = ({ title, deltakerliste }: Props) => {
   const erKursMedLopendeOppstart =
     deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erKursTiltak(deltakerliste.tiltakstype)
+    erKursTiltak(deltakerliste.tiltakskode)
 
   return (
     <div>
       <Heading level="1" size="large">
         {hentTiltakGjennomforingNavnArrangorTittel(
           deltakerliste.deltakerlisteNavn,
-          deltakerliste.tiltakstype,
+          deltakerliste.tiltakskode,
           deltakerliste.arrangorNavn
         )}
       </Heading>

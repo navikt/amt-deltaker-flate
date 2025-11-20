@@ -1,4 +1,4 @@
-import { DeltakerStatusType, ArenaTiltakskode } from 'deltaker-flate-common'
+import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { HttpResponse, delay, http } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { MockHandler } from './MockHandler.ts'
@@ -29,11 +29,11 @@ export const worker = setupWorker(
     return response
   }),
   http.post(
-    'amt-deltaker-bff/setup/tiltakstype/:tiltakstype',
+    'amt-deltaker-bff/setup/tiltakskode/:tiltakskode',
     async ({ params }) => {
-      const { tiltakstype } = params
+      const { tiltakskode } = params
 
-      const response = handler.setTiltakstype(tiltakstype as ArenaTiltakskode)
+      const response = handler.setTiltakskode(tiltakskode as Tiltakskode)
       return response
     }
   ),

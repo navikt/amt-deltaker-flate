@@ -1,9 +1,9 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  ArenaTiltakskode,
   getDateFromString,
-  isValidDate
+  isValidDate,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 
@@ -66,31 +66,31 @@ export const getVarighet = (valg: VarighetValg): Varighet => {
   return varigheter[valg]
 }
 
-export const varighetValgForType = (
-  tiltakstype: ArenaTiltakskode
+export const varighetValgForTiltakskode = (
+  tiltakskode: Tiltakskode
 ): VarighetValg[] => {
-  switch (tiltakstype) {
-    case ArenaTiltakskode.ARBFORB:
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
       return [
         VarighetValg.TRE_MANEDER,
         VarighetValg.SEKS_MANEDER,
         VarighetValg.TOLV_MANEDER
       ]
-    case ArenaTiltakskode.ARBRRHDAG:
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
       return [
         VarighetValg.FIRE_UKER,
         VarighetValg.ATTE_UKER,
         VarighetValg.TOLV_UKER
       ]
-    case ArenaTiltakskode.AVKLARAG:
+    case Tiltakskode.AVKLARING:
       return [VarighetValg.FIRE_UKER, VarighetValg.ATTE_UKER]
-    case ArenaTiltakskode.INDOPPFAG:
+    case Tiltakskode.OPPFOLGING:
       return [VarighetValg.TRE_MANEDER, VarighetValg.SEKS_MANEDER]
-    case ArenaTiltakskode.DIGIOPPARB:
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
       return [VarighetValg.FIRE_UKER]
-    case ArenaTiltakskode.VASV:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return []
-    case ArenaTiltakskode.GRUFAGYRKE:
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
     default:
       return [
         VarighetValg.FIRE_UKER,
@@ -161,19 +161,19 @@ export function finnVarighetValg(
 export function finnValgtVarighet(
   fraDato: Date | null | undefined,
   tilDato: Date | null | undefined,
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 ) {
   return fraDato && tilDato
-    ? finnVarighetValgForTiltakstype(fraDato, tilDato, tiltakstype)
+    ? finnVarighetValgForTiltakskode(fraDato, tilDato, tiltakskode)
     : undefined
 }
 
-export function finnVarighetValgForTiltakstype(
+export function finnVarighetValgForTiltakskode(
   fraDato: Date,
   tilDato: Date,
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 ) {
-  const varigheter = varighetValgForType(tiltakstype)
+  const varigheter = varighetValgForTiltakskode(tiltakskode)
 
   if (varigheter.length == 0) return undefined
 
@@ -215,10 +215,8 @@ export const getMaxVarighetDato = (
   }
 }
 
-export const getSoftMaxVarighetBekreftelseText = (
-  tiltakstype: ArenaTiltakskode
-) => {
-  if (tiltakstype === ArenaTiltakskode.INDOPPFAG) {
+export const getSoftMaxVarighetBekreftelseText = (tiltakskode: Tiltakskode) => {
+  if (tiltakskode === Tiltakskode.OPPFOLGING) {
     return (
       <BodyLong>
         Sluttdatoen er utenfor hovedregelen for maks varighet.<br></br>
@@ -232,7 +230,7 @@ export const getSoftMaxVarighetBekreftelseText = (
       </BodyLong>
     )
   }
-  if (tiltakstype === ArenaTiltakskode.ARBFORB) {
+  if (tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) {
     return (
       <BodyLong>
         Sluttdatoen er utenfor hovedregelen for maks varighet. <br></br>
@@ -246,9 +244,9 @@ export const getSoftMaxVarighetBekreftelseText = (
     )
   }
   if (
-    tiltakstype === ArenaTiltakskode.ARBRRHDAG ||
-    tiltakstype === ArenaTiltakskode.AVKLARAG ||
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB
+    tiltakskode === Tiltakskode.ARBEIDSRETTET_REHABILITERING ||
+    tiltakskode === Tiltakskode.AVKLARING ||
+    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK
   ) {
     return (
       <BodyLong size="small">
@@ -321,23 +319,23 @@ export const getSkalBekrefteVarighet = (
   nySluttDato?: Date | null,
   nyStartdato?: Date | null
 ) => {
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
   const startdato = nyStartdato || getDateFromString(pamelding.startdato)
   const softMaxVarighetDato =
     startdato && pamelding.softMaxVarighet
       ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')
       : null
   const maxVarighetDato = getSisteGyldigeSluttDato(pamelding, startdato)
-  const tiltakstyperMedSoftMaxVarighet = [
-    ArenaTiltakskode.ARBFORB,
-    ArenaTiltakskode.INDOPPFAG,
-    ArenaTiltakskode.ARBRRHDAG,
-    ArenaTiltakskode.AVKLARAG,
-    ArenaTiltakskode.DIGIOPPARB
+  const tiltakskoderMedSoftMaxVarighet = [
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    Tiltakskode.OPPFOLGING,
+    Tiltakskode.ARBEIDSRETTET_REHABILITERING,
+    Tiltakskode.AVKLARING,
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK
   ]
 
   if (
-    tiltakstyperMedSoftMaxVarighet.includes(tiltakstype) &&
+    tiltakskoderMedSoftMaxVarighet.includes(tiltakskode) &&
     nySluttDato &&
     softMaxVarighetDato
   ) {

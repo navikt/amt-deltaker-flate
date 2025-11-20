@@ -1,6 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
-import { ArenaTiltakskode } from '../../model/deltaker'
+import { Tiltakskode } from '../../model/deltaker'
 import { importertFraArena } from '../../model/deltakerHistorikk'
 import {
   deltakerprosentText,
@@ -16,12 +16,12 @@ import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
   deltakelseVedImport: importertFraArena
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 }
 
 export const HistorikkImportertFraArena = ({
   deltakelseVedImport,
-  tiltakstype
+  tiltakskode
 }: Props) => {
   const datoText = `${formatDate(deltakelseVedImport.startdato)} ${
     deltakelseVedImport.sluttdato
@@ -47,7 +47,7 @@ export const HistorikkImportertFraArena = ({
         <BodyLong size="small">{`Dato: ${datoText}`}</BodyLong>
       )}
 
-      {visDeltakelsesmengde(tiltakstype) && (
+      {visDeltakelsesmengde(tiltakskode) && (
         <>
           <BodyLong size="small">
             {`Deltakelsesmengde: ${deltakerprosentText(

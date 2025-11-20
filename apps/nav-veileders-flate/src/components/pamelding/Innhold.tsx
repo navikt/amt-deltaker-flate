@@ -6,7 +6,7 @@ import {
   Textarea
 } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET
 } from 'deltaker-flate-common'
@@ -27,9 +27,9 @@ interface Props {
 
 export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
   const skalViseInnholdSjekkbokser =
-    erInnholdPakrevd(tiltakstype) && innhold.innhold.length > 0
+    erInnholdPakrevd(tiltakskode) && innhold.innhold.length > 0
 
   const defaultValues = generateFormDefaultValues(pamelding)
 
@@ -52,7 +52,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const skalViseInnhold =
     pamelding.deltakelsesinnhold?.ledetekst ||
     skalViseInnholdSjekkbokser ||
-    tiltakstype === ArenaTiltakskode.VASV
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
 
   if (!pamelding.deltakelsesinnhold || !skalViseInnhold) {
     return null
@@ -71,7 +71,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
         )}
       </section>
 
-      {tiltakstype === ArenaTiltakskode.VASV && (
+      {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET && (
         <section className="mt-4">
           <Textarea
             label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"

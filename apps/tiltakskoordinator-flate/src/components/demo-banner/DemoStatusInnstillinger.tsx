@@ -74,10 +74,10 @@ export const DemoStatusInnstillinger = () => {
     >
       <Select
         value={oppstartstype}
-        label="Velg tiltakstype"
+        label="Velg oppstartstype"
         size="small"
         className="w-64"
-        data-testid="select_tiltakstype"
+        data-testid="select_oppstartstype"
         onChange={(e) =>
           handleOppstartstypeChanged(e.target.value as Oppstartstype)
         }

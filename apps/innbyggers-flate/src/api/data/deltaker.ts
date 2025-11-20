@@ -7,14 +7,14 @@ import {
   vedtaksinformasjonSchema,
   Oppstartstype,
   nullableDateSchema,
-  ArenaTiltakskode
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakstype: z.enum(ArenaTiltakskode),
+  tiltakskode: z.enum(Tiltakskode),
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   startdato: nullableDateSchema,

@@ -1,7 +1,7 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   importertDeltakerFraArena,
-  ArenaTiltakskode,
+  Tiltakskode,
   Vedtaksinformasjon,
   DeltakerStatusType,
   Oppstartstype
@@ -12,7 +12,7 @@ interface Props {
   statusType: DeltakerStatusType
   statusDato: Date
   oppstartstype: Oppstartstype | null
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null
   className: string
@@ -22,7 +22,7 @@ export const VedtakInfo = ({
   statusType,
   statusDato,
   oppstartstype,
-  tiltakstype,
+  tiltakskode,
   vedtaksinformasjon,
   importertFraArena,
   className
@@ -49,7 +49,7 @@ export const VedtakInfo = ({
       </Heading>
       <BodyLong size="small" className="mt-2">
         {`Dette er et vedtak etter arbeidsmarkedsloven § 12 og forskrift om
-				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakstype]}.`}
+				arbeidsmarkedstiltak kapittel ${forskriftskapitler[tiltakskode]}.`}
         {vedtakTekst || importertTekst || ''}
       </BodyLong>
     </div>
@@ -62,17 +62,17 @@ const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
   return `${vedtaksinformasjon.sistEndretAv}, ${vedtaksinformasjon.sistEndretAvEnhet}`
 }
 
-const forskriftskapitler: { [Key in ArenaTiltakskode]: string } = {
-  [ArenaTiltakskode.ARBFORB]: '13',
-  [ArenaTiltakskode.ARBRRHDAG]: '12',
-  [ArenaTiltakskode.AVKLARAG]: '2',
-  [ArenaTiltakskode.INDOPPFAG]: '4',
-  [ArenaTiltakskode.DIGIOPPARB]: '4',
-  [ArenaTiltakskode.GRUFAGYRKE]: '7',
-  [ArenaTiltakskode.GRUPPEAMO]: '7',
-  [ArenaTiltakskode.JOBBK]: '4',
-  [ArenaTiltakskode.VASV]: '14',
-  [ArenaTiltakskode.ENKELAMO]: '7',
-  [ArenaTiltakskode.ENKFAGYRKE]: '7',
-  [ArenaTiltakskode.HOYEREUTD]: '7'
+const forskriftskapitler: { [Key in Tiltakskode]: string } = {
+  [Tiltakskode.ARBEIDSFORBEREDENDE_TRENING]: '13',
+  [Tiltakskode.ARBEIDSRETTET_REHABILITERING]: '12',
+  [Tiltakskode.AVKLARING]: '2',
+  [Tiltakskode.OPPFOLGING]: '4',
+  [Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK]: '4',
+  [Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING]: '7',
+  [Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING]: '7',
+  [Tiltakskode.JOBBKLUBB]: '4',
+  [Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET]: '14',
+  [Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING]: '7',
+  [Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING]: '7',
+  [Tiltakskode.HOYERE_UTDANNING]: '7'
 }

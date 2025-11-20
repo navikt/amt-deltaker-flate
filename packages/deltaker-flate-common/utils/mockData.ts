@@ -5,9 +5,9 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  ArenaTiltakskode,
   Vurderingstype,
-  Oppstartstype
+  Oppstartstype,
+  Tiltakskode
 } from '../model/deltaker'
 import {
   ArrangorEndringsType,
@@ -544,20 +544,20 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
   ]
 }
 
-export const getLedetekst = (tiltakstype: ArenaTiltakskode) => {
-  switch (tiltakstype) {
-    case ArenaTiltakskode.ARBFORB:
+export const getLedetekst = (tiltakskode: Tiltakskode) => {
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
       return 'Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case ArenaTiltakskode.ARBRRHDAG:
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
       return 'Arbeidsrettet rehabilitering fokuserer på din helse og muligheter i arbeidslivet. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din helse, kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case ArenaTiltakskode.AVKLARAG:
+    case Tiltakskode.AVKLARING:
       return 'Avklaring skal hjelpe deg med å se hva du kan jobbe med. Du har samtaler med en veileder. Sammen kartlegger dere hvordan kompetanse, opplevelser fra tidligere arbeidsplass, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case ArenaTiltakskode.INDOPPFAG:
+    case Tiltakskode.OPPFOLGING:
       return 'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
-    case ArenaTiltakskode.VASV:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid er et tilbud for deg som får uføretrygd. Du jobber i en skjermet bedrift med arbeidsoppgaver som er tilpasset deg.'
-    case ArenaTiltakskode.DIGIOPPARB:
-    case ArenaTiltakskode.JOBBK:
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
+    case Tiltakskode.JOBBKLUBB:
       return 'Du får oppfølging og støtte til jobbsøkingen. På kurset får du karriereveiledning, hjelp til å orientere deg på arbeidsmarkedet, skrive CV og jobbsøknad og trene på jobbintervju.'
     default:
       return null
@@ -569,12 +569,12 @@ type TilgjengeligInnhold = {
   innholdskode: string
 }
 
-export const getInnholdForTiltaksType = (
-  tiltakstype: ArenaTiltakskode
+export const getInnholdForTiltakskode = (
+  tiltakskode: Tiltakskode
 ): TilgjengeligInnhold[] => {
   const annet = { tekst: 'Annet', innholdskode: INNHOLD_TYPE_ANNET }
-  switch (tiltakstype) {
-    case ArenaTiltakskode.ARBFORB:
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
       return [
         { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
@@ -602,7 +602,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case ArenaTiltakskode.ARBRRHDAG:
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
       return [
         { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         {
@@ -649,7 +649,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case ArenaTiltakskode.AVKLARAG:
+    case Tiltakskode.AVKLARING:
       return [
         { tekst: 'Arbeidsutprøving', innholdskode: 'arbeidsutprøving' },
         { tekst: 'Karriereveiledning', innholdskode: 'karriereveiledning' },
@@ -687,7 +687,7 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case ArenaTiltakskode.INDOPPFAG:
+    case Tiltakskode.OPPFOLGING:
       return [
         { tekst: 'Støtte til å søke jobber', innholdskode: 'jobbsoking' },
         { tekst: 'Arbeidspraksis', innholdskode: 'arbeidspraksis' },
@@ -724,9 +724,9 @@ export const getInnholdForTiltaksType = (
         },
         annet
       ]
-    case ArenaTiltakskode.VASV:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return [annet]
-    case ArenaTiltakskode.DIGIOPPARB:
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
     default:
       return []
   }

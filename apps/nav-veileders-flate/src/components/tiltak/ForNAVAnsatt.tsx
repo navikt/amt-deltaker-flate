@@ -52,7 +52,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
           <LinkPanel.Description>
             <BodyShort size="small">
               {hentTiltakNavnHosArrangorTekst(
-                pamelding.deltakerliste.tiltakstype,
+                pamelding.deltakerliste.tiltakskode,
                 pamelding.deltakerliste.arrangorNavn
               )}
             </BodyShort>

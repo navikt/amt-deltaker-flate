@@ -37,7 +37,7 @@ interface Props {
 export const DeltakerInfo = ({ className }: Props) => {
   const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    pamelding.deltakerliste.tiltakstype,
+    pamelding.deltakerliste.tiltakskode,
     pamelding.deltakerliste.arrangorNavn
   )
 
@@ -68,7 +68,7 @@ export const DeltakerInfo = ({ className }: Props) => {
   const visDeltMedArrangor =
     pamelding.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangor(
-      pamelding.deltakerliste.tiltakstype,
+      pamelding.deltakerliste.tiltakskode,
       pamelding.deltakerliste.oppstartstype
     ) &&
     (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
@@ -110,7 +110,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
         <DeltakerStatusInfoTekst
-          tiltaksType={pamelding.deltakerliste.tiltakstype}
+          tiltakskode={pamelding.deltakerliste.tiltakskode}
           deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
           tiltaketsStartDato={pamelding.deltakerliste.startdato}
           statusType={pamelding.status.type}
@@ -126,7 +126,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <AktiveForslag forslag={pamelding.forslag} />
 
       <OmKurset
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        tiltakskode={pamelding.deltakerliste.tiltakskode}
         arrangorNavn={pamelding.deltakerliste.arrangorNavn}
         deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
         statusType={pamelding.status.type}
@@ -137,7 +137,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       />
 
       <DeltakelseInnhold
-        tiltakstype={pamelding.deltakerliste.tiltakstype}
+        tiltakskode={pamelding.deltakerliste.tiltakskode}
         deltakelsesinnhold={pamelding.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -158,7 +158,7 @@ export const DeltakerInfo = ({ className }: Props) => {
             </BodyLong>
           </>
         )}
-        {visDeltakelsesmengde(pamelding.deltakerliste.tiltakstype) && (
+        {visDeltakelsesmengde(pamelding.deltakerliste.tiltakskode) && (
           <DeltakelsesmengdeInfo
             deltakelsesprosent={pamelding.deltakelsesprosent}
             dagerPerUke={pamelding.dagerPerUke}
@@ -170,7 +170,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
         <SeEndringer
           className="mt-8"
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          tiltakskode={pamelding.deltakerliste.tiltakskode}
           deltakerId={pamelding.deltakerId}
           fetchHistorikk={getHistorikk}
         />
@@ -180,7 +180,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <VedtakOgKlage
           statusType={pamelding.status.type}
           statusDato={pamelding.status.opprettet}
-          tiltakstype={pamelding.deltakerliste.tiltakstype}
+          tiltakskode={pamelding.deltakerliste.tiltakskode}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           vedtaksinformasjon={pamelding.vedtaksinformasjon}
           importertFraArena={pamelding.importertFraArena}
@@ -189,7 +189,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <HvaDelesMedArrangor
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
-          tiltaksType={pamelding.deltakerliste.tiltakstype}
+          tiltakskode={pamelding.deltakerliste.tiltakskode}
           statusType={pamelding.status.type}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           className="mt-8"

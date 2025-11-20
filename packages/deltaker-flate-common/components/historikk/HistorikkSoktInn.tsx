@@ -1,6 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
-import { ArenaTiltakskode } from '../../model/deltaker.ts'
+import { Tiltakskode } from '../../model/deltaker.ts'
 import { InnsokPaaFellesOppstart } from '../../model/deltakerHistorikk.ts'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
@@ -8,10 +8,10 @@ import { HistorikkElement } from './HistorikkElement.tsx'
 
 interface Props {
   soktInnHistorikk: InnsokPaaFellesOppstart
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
 }
 
-export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakstype }: Props) => {
+export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
   const {
     innsokt,
     innsoktAv,
@@ -27,7 +27,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakstype }: Props) => {
       icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
     >
       <DeltakelseInnhold
-        tiltakstype={tiltakstype}
+        tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnholdVedInnsok}
         heading={
           <BodyLong size="small" weight="semibold">

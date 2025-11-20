@@ -11,7 +11,7 @@ import {
   ForslagEndring,
   ForslagEndringType,
   StartdatoForslag,
-  ArenaTiltakskode,
+  Tiltakskode,
   getDateFromString,
   getDeltakerStatusDisplayText,
   BegrunnelseInput,
@@ -66,7 +66,7 @@ export const EndreOppstartsdatoModal = ({
     finnValgtVarighet(
       defaultDatoer.startdato,
       defaultDatoer.sluttdato,
-      pamelding.deltakerliste.tiltakstype
+      pamelding.deltakerliste.tiltakskode
     )
   )
   const [leggTilStartDatoBekreftelse, setLeggTilStartDatoBekreftelse] =
@@ -81,9 +81,10 @@ export const EndreOppstartsdatoModal = ({
     string | null
   >(null)
 
-  const tiltakstype = pamelding.deltakerliste.tiltakstype
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
 
-  const skalVelgeVarighet = tiltakstype !== ArenaTiltakskode.VASV
+  const skalVelgeVarighet =
+    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
 
   const [startdato, setStartdato] = useState<Date | undefined>(
     defaultDatoer.startdato
@@ -219,7 +220,7 @@ export const EndreOppstartsdatoModal = ({
           <VarighetField
             title="Hva er forventet varighet?"
             className="mt-6"
-            tiltakstype={pamelding.deltakerliste.tiltakstype}
+            tiltakskode={pamelding.deltakerliste.tiltakskode}
             startDato={startdato}
             sluttdato={maxSluttdato}
             errorVarighet={sluttdato.error}
@@ -250,7 +251,7 @@ export const EndreOppstartsdatoModal = ({
               size="small"
               error={errorVarighetConfirmation}
             >
-              {getSoftMaxVarighetBekreftelseText(tiltakstype)}
+              {getSoftMaxVarighetBekreftelseText(tiltakskode)}
             </ConfirmationPanel>
           )}
         </>

@@ -44,7 +44,7 @@ export const RedigerPameldingPage = () => {
     ? 'Avbrutt utkast'
     : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
   const kanEndreUtkast = !erKursEllerDigitalt(
-    pamelding.deltakerliste.tiltakstype
+    pamelding.deltakerliste.tiltakskode
   )
 
   const returnToFrontpage = () => {
