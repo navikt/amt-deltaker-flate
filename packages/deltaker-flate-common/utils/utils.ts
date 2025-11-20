@@ -191,7 +191,7 @@ export const getDeltakerStatusAarsakTypeText = (
     case DeltakerStatusAarsakType.KRAV_IKKE_OPPFYLT:
       return 'Krav for deltakelse er ikke oppfylt'
     case DeltakerStatusAarsakType.AVLYST_KONTRAKT:
-      return 'Gjennomføring avlyst'
+      return 'Avlyst kontrakt'
   }
 }
 
