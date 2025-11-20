@@ -96,7 +96,8 @@ export class MockHandler {
           ledetekst: ledetekst
         },
         erEnkeltplassUtenRammeavtale: false,
-        oppmoteSted: 'Kl. 10:00 på Gardermoen'
+        oppmoteSted:
+          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
