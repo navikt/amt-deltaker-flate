@@ -54,7 +54,7 @@ export const ForslagtypeDetaljer = ({ forslagEndring, begrunnelse }: Props) => {
                 Har personen deltatt? {endring.harDeltatt ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
-            {endring.harFullfort !== null && (
+            {endring.harDeltatt && endring.harFullfort !== null && (
               <BodyLong size="small">
                 Er kurset fullført? {endring.harFullfort ? 'Ja' : 'Nei'}
               </BodyLong>
