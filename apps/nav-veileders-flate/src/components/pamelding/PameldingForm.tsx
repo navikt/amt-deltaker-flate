@@ -1,14 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { BodyLong, Heading, Textarea } from '@navikt/ds-react'
+import { Heading, Textarea } from '@navikt/ds-react'
 import {
-  Tiltakskode,
   DeltakerStatusType,
   erKursEllerDigitalt,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
-  kanDeleDeltakerMedArrangor,
   OmKurset,
-  Oppmotested
+  Oppmotested,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -111,6 +110,7 @@ export const PameldingForm = ({
             oppstartstype={pamelding.deltakerliste.oppstartstype}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
+            visDelMedArrangorInfo
             visForUtkast
           />
 
@@ -118,23 +118,6 @@ export const PameldingForm = ({
             oppmoteSted={pamelding.deltakerliste.oppmoteSted}
             statusType={pamelding.status.type}
           />
-
-          {kanDeleDeltakerMedArrangor(
-            tiltakskode,
-            pamelding.deltakerliste.oppstartstype
-          ) && (
-            <div>
-              <BodyLong size="small">
-                For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
-                vurdering fra arrangøren av kurset. Arrangør eller koordinator
-                hos Nav vil kontakte deg hvis det er behov for et møte.
-              </BodyLong>
-              <BodyLong size="small" className="mt-4">
-                Du vil få beskjed dersom det oversendes informasjon til
-                arrangør.
-              </BodyLong>
-            </div>
-          )}
 
           {skalViseBakgrunnsinfo && (
             <section>

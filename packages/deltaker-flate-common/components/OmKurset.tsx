@@ -7,7 +7,8 @@ import {
 import {
   erKursTiltak,
   formatDate,
-  formatDateWithMonthName
+  formatDateWithMonthName,
+  kanDeleDeltakerMedArrangor
 } from '../utils/utils'
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
   sluttdato: Date | null
   size?: 'medium' | 'small'
   headingLevel?: 2 | 3 | 4
+  visDelMedArrangorInfo?: boolean
   visForUtkast?: boolean
   className?: string
 }
@@ -30,6 +32,7 @@ export const OmKurset = ({
   sluttdato,
   headingLevel,
   size,
+  visDelMedArrangorInfo,
   visForUtkast,
   className
 }: Props) => {
@@ -101,20 +104,36 @@ export const OmKurset = ({
             <>
               <BodyLong size="small" className="mt-2">
                 Nav vurderer søknaden din før kursstart, og du får beskjed om
-                resultatet.
+                resultatet:
               </BodyLong>
 
               <List as="ul" size="small" className="-mt-1 -mb-2">
                 <List.Item className="mt-2 whitespace-pre-wrap">
-                  Du kan få plass på kurset
+                  Du kan få plass på kurset.
                 </List.Item>
                 <List.Item className="mt-2 whitespace-pre-wrap">
-                  Du kan bli satt på venteliste
+                  Du kan bli satt på venteliste.
                 </List.Item>
                 <List.Item className="mt-2 whitespace-pre-wrap">
                   Du kan få avslag.
                 </List.Item>
               </List>
+
+              {kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
+                visDelMedArrangorInfo && (
+                  <>
+                    <BodyLong size="small" className="mt-4">
+                      For å avgjøre hvem som skal få plass, kan Nav be om hjelp
+                      til vurdering fra arrangøren av kurset. Arrangør eller
+                      koordinator hos Nav vil kontakte deg hvis det er behov for
+                      et møte.
+                    </BodyLong>
+                    <BodyLong size="small" className="mt-4">
+                      Du vil få beskjed dersom det oversendes informasjon til
+                      arrangør.
+                    </BodyLong>
+                  </>
+                )}
 
               <div className="flex mt-6">
                 <Label className="mr-2">Kurset starter: </Label>
