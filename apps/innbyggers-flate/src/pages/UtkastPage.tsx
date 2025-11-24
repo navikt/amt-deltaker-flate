@@ -13,6 +13,7 @@ import {
   DeltakelseInnhold,
   EMDASH,
   OmKurset,
+  Oppmotested,
   PERSONOPPLYSNINGER_URL,
   UtkastHeader,
   deltakerprosentText,
@@ -155,12 +156,16 @@ export const UtkastPage = () => {
 
       <OmKurset
         tiltakskode={deltaker.deltakerliste.tiltakskode}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
+        className="mt-6"
+      />
+
+      <Oppmotested
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        statusType={deltaker.status.type}
         className="mt-6"
       />
 

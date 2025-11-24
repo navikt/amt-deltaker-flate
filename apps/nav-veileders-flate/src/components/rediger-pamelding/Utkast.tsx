@@ -1,13 +1,15 @@
 import { BodyLong, Heading, VStack } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  EMDASH,
-  deltakerprosentText,
-  visDeltakelsesmengde,
-  OmKurset,
-  erKursEllerDigitalt,
   DeltakerStatusType,
-  Tiltakskode
+  EMDASH,
+  OmKurset,
+  Oppmotested,
+  Tiltakskode,
+  deltakerprosentText,
+  erKursEllerDigitalt,
+  kanDeleDeltakerMedArrangor,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
@@ -71,17 +73,33 @@ export const Utkast = ({
 
       <OmKurset
         tiltakskode={deltakerliste.tiltakskode}
-        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
-        arrangorNavn={deltakerliste.arrangorNavn}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
         startdato={deltakerliste.startdato}
         sluttdato={deltakerliste.sluttdato}
         size="small"
-        visDelMedArrangorInfo
         visForUtkast
         className={tiltakskode === Tiltakskode.JOBBKLUBB ? 'mt-8' : ''}
       />
+
+      <Oppmotested
+        oppmoteSted={deltakerliste.oppmoteSted}
+        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
+        className="mt-8"
+      />
+
+      {kanDeleDeltakerMedArrangor(tiltakskode, deltakerliste.oppstartstype) && (
+        <>
+          <BodyLong size="small" className="mt-4">
+            For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
+            vurdering fra arrangøren av kurset. Arrangør eller koordinator hos
+            Nav vil kontakte deg hvis det er behov for et møte.
+          </BodyLong>
+          <BodyLong size="small" className="mt-4">
+            Du vil få beskjed dersom det oversendes informasjon til arrangør.
+          </BodyLong>
+        </>
+      )}
     </VStack>
   )
 }

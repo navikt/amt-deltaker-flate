@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
-import { EMDASH } from './constants'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   Oppstartstype,
   Tiltakskode
 } from '../model/deltaker'
+import { EMDASH } from './constants'
 
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)

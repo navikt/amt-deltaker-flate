@@ -16,6 +16,7 @@ import {
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
+  Oppmotested,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
@@ -143,12 +144,18 @@ export const TiltakPage = () => {
 
       <OmKurset
         tiltakskode={deltaker.deltakerliste.tiltakskode}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
+        headingLevel={2}
+        className="mt-8"
+      />
+
+      <Oppmotested
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        statusType={deltaker.status.type}
+        headingLevel={3}
         className="mt-8"
       />
 

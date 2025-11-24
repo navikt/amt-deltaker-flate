@@ -16,6 +16,7 @@ import {
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
+  Oppmotested,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
@@ -127,12 +128,18 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <OmKurset
         tiltakskode={pamelding.deltakerliste.tiltakskode}
-        arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-        deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
         statusType={pamelding.status.type}
         oppstartstype={pamelding.deltakerliste.oppstartstype}
         startdato={pamelding.deltakerliste.startdato}
         sluttdato={pamelding.deltakerliste.sluttdato}
+        headingLevel={2}
+        className="mt-8"
+      />
+
+      <Oppmotested
+        oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+        statusType={pamelding.status.type}
+        headingLevel={3}
         className="mt-8"
       />
 

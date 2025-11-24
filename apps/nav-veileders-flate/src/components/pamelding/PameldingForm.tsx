@@ -1,12 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Heading, Textarea } from '@navikt/ds-react'
+import { BodyLong, Heading, Textarea } from '@navikt/ds-react'
 import {
   Tiltakskode,
   DeltakerStatusType,
   erKursEllerDigitalt,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
-  OmKurset
+  kanDeleDeltakerMedArrangor,
+  OmKurset,
+  Oppmotested
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -98,22 +100,41 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <div className="flex flex-col gap-8 p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
+        <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--a-surface-alt-3) mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
 
           <OmKurset
             tiltakskode={pamelding.deltakerliste.tiltakskode}
-            arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-            deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
             statusType={pamelding.status.type}
             oppstartstype={pamelding.deltakerliste.oppstartstype}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
-            visDelMedArrangorInfo
             visForUtkast
           />
+
+          <Oppmotested
+            oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+            statusType={pamelding.status.type}
+          />
+
+          {kanDeleDeltakerMedArrangor(
+            tiltakskode,
+            pamelding.deltakerliste.oppstartstype
+          ) && (
+            <div>
+              <BodyLong size="small">
+                For å avgjøre hvem som skal få plass, kan Nav be om hjelp til
+                vurdering fra arrangøren av kurset. Arrangør eller koordinator
+                hos Nav vil kontakte deg hvis det er behov for et møte.
+              </BodyLong>
+              <BodyLong size="small" className="mt-4">
+                Du vil få beskjed dersom det oversendes informasjon til
+                arrangør.
+              </BodyLong>
+            </div>
+          )}
 
           {skalViseBakgrunnsinfo && (
             <section>
