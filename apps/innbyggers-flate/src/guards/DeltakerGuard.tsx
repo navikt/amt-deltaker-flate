@@ -12,7 +12,7 @@ import { DIALOG_URL } from '../utils/environment-utils'
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )
 

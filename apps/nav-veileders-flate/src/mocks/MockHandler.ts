@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
@@ -13,7 +13,7 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
-  getInnholdForTiltaksType,
+  getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
   HistorikkType,
@@ -53,7 +53,7 @@ export class MockHandler {
   pamelding: PameldingResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakstype = ArenaTiltakskode.ARBFORB
+  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
 
   createDeltaker(
     deltakerlisteId: string,
@@ -68,8 +68,8 @@ export class MockHandler {
     const _startdato = startdato ? dayjs(startdato).toString() : null
     const _sluttdato = sluttdato ? dayjs(sluttdato).toString() : null
 
-    const ledetekst = getLedetekst(this.tiltakstype)
-    const innhold = getInnholdForTiltaksType(this.tiltakstype)
+    const ledetekst = getLedetekst(this.tiltakskode)
+    const innhold = getInnholdForTiltakskode(this.tiltakskode)
 
     const sisteDeltakelsesmengde: Deltakelsesmengde = {
       gyldigFra: startdato ?? new Date(),
@@ -85,7 +85,7 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakstype: this.tiltakstype,
+        tiltakskode: this.tiltakskode,
         oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: 'Den Beste Arrangøren AS',
         startdato: dayjs('2022-10-28').toDate(),
@@ -389,19 +389,19 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  setTiltakstype(tiltakstype: ArenaTiltakskode) {
-    this.tiltakstype = tiltakstype
+  setTiltakskode(tiltakskode: Tiltakskode) {
+    this.tiltakskode = tiltakskode
     const oppdatertPamelding = this.pamelding
     const erEnkeltplass =
-      tiltakstype === ArenaTiltakskode.ENKELAMO ||
-      tiltakstype === ArenaTiltakskode.ENKFAGYRKE ||
-      tiltakstype === ArenaTiltakskode.HOYEREUTD
+      tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.tiltakstype = tiltakstype
+      oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
 
-      const ledetekst = getLedetekst(tiltakstype)
-      const innhold = getInnholdForTiltaksType(tiltakstype)
+      const ledetekst = getLedetekst(tiltakskode)
+      const innhold = getInnholdForTiltakskode(tiltakskode)
       oppdatertPamelding.deltakerliste.tilgjengeligInnhold = {
         innhold,
         ledetekst
@@ -412,8 +412,8 @@ export class MockHandler {
       }
 
       if (
-        tiltakstype === ArenaTiltakskode.ARBFORB ||
-        tiltakstype === ArenaTiltakskode.VASV
+        tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
+        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
       ) {
         oppdatertPamelding.deltakelsesprosent = 80
         oppdatertPamelding.dagerPerUke = 4
@@ -422,8 +422,8 @@ export class MockHandler {
         oppdatertPamelding.dagerPerUke = null
       }
       if (
-        tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-        tiltakstype === ArenaTiltakskode.VASV ||
+        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
+        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
         erEnkeltplass
       ) {
         oppdatertPamelding.bakgrunnsinformasjon = null
@@ -442,7 +442,7 @@ export class MockHandler {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (erKursTiltak(tiltakstype)) {
+      if (erKursTiltak(tiltakskode)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES

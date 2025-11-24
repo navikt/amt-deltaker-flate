@@ -1,17 +1,17 @@
 import { BodyLong, List } from '@navikt/ds-react'
-import { Deltakelsesinnhold, ArenaTiltakskode } from '../model/deltaker'
+import { Deltakelsesinnhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   heading: React.ReactNode | null
   listClassName?: string
 }
 
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
-  tiltakstype,
+  tiltakskode,
   heading,
   listClassName
 }: Props) => {
@@ -28,7 +28,7 @@ export const DeltakelseInnhold = ({
           <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
         )}
 
-        {tiltakstype === ArenaTiltakskode.VASV &&
+        {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
           deltakelsesinnhold.innhold.length > 0 &&
           deltakelsesinnhold.innhold
             .filter((i) => i.valgt)
@@ -46,7 +46,7 @@ export const DeltakelseInnhold = ({
               }
             })}
 
-        {tiltakstype !== ArenaTiltakskode.VASV &&
+        {tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
           deltakelsesinnhold.innhold.length > 0 && (
             <List as="ul" size="small" className={listClassName ?? ''}>
               {deltakelsesinnhold.innhold

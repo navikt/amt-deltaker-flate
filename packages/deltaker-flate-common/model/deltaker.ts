@@ -6,23 +6,6 @@ export enum Oppstartstype {
   FELLES = 'FELLES'
 }
 
-export enum ArenaTiltakskode {
-  ARBFORB = 'ARBFORB', // Arbeidsforberedende trening / AFT
-  ARBRRHDAG = 'ARBRRHDAG', // Arbeidsrettet rehabilitering / ARR
-  AVKLARAG = 'AVKLARAG', // Avklaring
-  INDOPPFAG = 'INDOPPFAG', // Oppfølging
-  DIGIOPPARB = 'DIGIOPPARB', // Digitalt jobbsøkerkurs (oppfølgingstiltak)
-  VASV = 'VASV', // Varig tilrettelagt arbeid (skjermet virksomhet) / VTA
-  GRUFAGYRKE = 'GRUFAGYRKE', // Fag og yrkesopplæring gruppe / er kurs
-  GRUPPEAMO = 'GRUPPEAMO', // Arbeidsmarkedsopplæring i gruppe / er kurs
-  JOBBK = 'JOBBK', // Jobbsøkerkurs / er kurs
-
-  // Enkeltplasser gammel forskrift (kun import fra Arena):
-  ENKELAMO = 'ENKELAMO', // Enkeltplass AMO
-  ENKFAGYRKE = 'ENKFAGYRKE', // Enkeltplass Fag- og yrkesopplæring
-  HOYEREUTD = 'HOYEREUTD' // Høyere utdanning
-}
-
 export enum Tiltakskode {
   ARBEIDSFORBEREDENDE_TRENING = 'ARBEIDSFORBEREDENDE_TRENING',
   ARBEIDSRETTET_REHABILITERING = 'ARBEIDSRETTET_REHABILITERING',

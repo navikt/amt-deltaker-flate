@@ -1,4 +1,4 @@
-import { ArenaTiltakskode, INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
+import { INNHOLD_TYPE_ANNET, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import {
   PameldingResponse,
@@ -15,18 +15,18 @@ export const deltakelsesprosentFeilmelding =
 export const dagerPerUkeFeilmelding =
   'Dager per uke må være et helt tall fra 1 til 5.'
 
-export const erInnholdPakrevd = (tiltakstype: ArenaTiltakskode) =>
+export const erInnholdPakrevd = (tiltakskode: Tiltakskode) =>
   !(
-    tiltakstype === ArenaTiltakskode.VASV ||
-    tiltakstype === ArenaTiltakskode.DIGIOPPARB ||
-    tiltakstype === ArenaTiltakskode.GRUPPEAMO ||
-    tiltakstype === ArenaTiltakskode.GRUFAGYRKE ||
-    tiltakstype === ArenaTiltakskode.JOBBK
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
+    tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+    tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+    tiltakskode === Tiltakskode.JOBBKLUBB
   )
 
 export const pameldingFormSchema = z
   .object({
-    tiltakstype: z.enum(ArenaTiltakskode),
+    tiltakskode: z.enum(Tiltakskode),
     tilgjengeligInnhold: innholdselementSchema.array(),
     innholdsTekst: z
       .string()
@@ -72,7 +72,7 @@ export const pameldingFormSchema = z
     (schema) => {
       if (
         schema.tilgjengeligInnhold.length > 0 &&
-        erInnholdPakrevd(schema.tiltakstype)
+        erInnholdPakrevd(schema.tiltakskode)
       ) {
         return schema.valgteInnhold.length > 0
       } else return true
@@ -85,7 +85,7 @@ export const pameldingFormSchema = z
   .refine(
     (schema) => {
       if (
-        erInnholdPakrevd(schema.tiltakstype) &&
+        erInnholdPakrevd(schema.tiltakskode) &&
         schema.valgteInnhold?.find(
           (valgtInnhold) => valgtInnhold === INNHOLD_TYPE_ANNET
         )
@@ -154,7 +154,7 @@ export const generateFormDefaultValues = (
   }
 
   return {
-    tiltakstype: pamelding.deltakerliste.tiltakstype,
+    tiltakskode: pamelding.deltakerliste.tiltakskode,
     tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold.innhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),

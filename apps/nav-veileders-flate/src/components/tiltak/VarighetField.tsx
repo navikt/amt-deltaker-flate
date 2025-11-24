@@ -6,13 +6,13 @@ import {
   useDatepicker
 } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import { ArenaTiltakskode } from 'deltaker-flate-common'
+import { Tiltakskode } from 'deltaker-flate-common'
 import { useRef, useState } from 'react'
 import { formatDateToInputStr } from '../../utils/utils.ts'
 import {
   VarighetValg,
   getVarighet,
-  varighetValgForType
+  varighetValgForTiltakskode
 } from '../../utils/varighet.tsx'
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
   title: string
   startDato?: Date
   sluttdato?: Date
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   errorVarighet: string | null
   errorSluttDato: string | null
   defaultVarighet?: VarighetValg | null
@@ -36,7 +36,7 @@ export const VarighetField = ({
   title,
   startDato,
   sluttdato,
-  tiltakstype,
+  tiltakskode,
   errorVarighet,
   errorSluttDato,
   defaultVarighet,
@@ -104,7 +104,7 @@ export const VarighetField = ({
       className={className || ''}
     >
       <>
-        {varighetValgForType(tiltakstype).map((v) => (
+        {varighetValgForTiltakskode(tiltakskode).map((v) => (
           <Radio value={v} key={v}>
             {getVarighet(v).navn}
           </Radio>

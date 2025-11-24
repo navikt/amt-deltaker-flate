@@ -12,7 +12,7 @@ import { useDeltakerContext } from '../DeltakerContext'
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakstype,
+    deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )
 
@@ -30,7 +30,7 @@ export const AvbruttUtkastPage = () => {
       />
 
       <DeltakelseInnhold
-        tiltakstype={deltaker.deltakerliste.tiltakstype}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-2 mb-2">
@@ -51,7 +51,7 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakstype) && (
+      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde

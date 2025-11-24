@@ -1,6 +1,6 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   Oppstartstype
@@ -12,7 +12,7 @@ interface Props {
   onConfirm: () => void
   onCancel: () => void
   deltakerNavn: string
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   arrangorNavn: string
   oppstartstype: Oppstartstype | null
 }
@@ -22,7 +22,7 @@ export const DelUtkastModal = ({
   onConfirm,
   onCancel,
   deltakerNavn,
-  tiltakstype,
+  tiltakskode,
   arrangorNavn,
   oppstartstype
 }: Props) => {
@@ -51,7 +51,7 @@ export const DelUtkastModal = ({
         </BodyLong>
 
         <BodyLong weight="semibold">
-          {`${deltakerNavn} ${erFellesOppstart ? 'søkes inn' : 'meldes'} på ${hentTiltakNavnHosArrangorTekst(tiltakstype, arrangorNavn)}`}
+          {`${deltakerNavn} ${erFellesOppstart ? 'søkes inn' : 'meldes'} på ${hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)}`}
         </BodyLong>
       </Modal.Body>
       <ModalFooter

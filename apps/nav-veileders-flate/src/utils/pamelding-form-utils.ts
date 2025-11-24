@@ -1,6 +1,6 @@
 import {
   INNHOLD_TYPE_ANNET,
-  ArenaTiltakskode,
+  Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding.ts'
@@ -18,7 +18,10 @@ export const generateInnholdFromResponse = (
   innholdAnnetBeskrivelse?: string | null,
   innholdsTekst?: string | null
 ): InnholdDto[] => {
-  if (pamelding.deltakerliste.tiltakstype === ArenaTiltakskode.VASV) {
+  if (
+    pamelding.deltakerliste.tiltakskode ===
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+  ) {
     return innholdsTekst
       ? [
           {
@@ -52,7 +55,7 @@ const getDeltakerProsent = (
   data: PameldingFormValues
 ) => {
   const harDeltakelsesmengde = visDeltakelsesmengde(
-    pamelding.deltakerliste.tiltakstype
+    pamelding.deltakerliste.tiltakskode
   )
   const deltakelsesprosen =
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA

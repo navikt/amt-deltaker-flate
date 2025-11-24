@@ -4,7 +4,6 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
-  mapTiltakskodeTilArenaTiltakskode,
   SeEndringer,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -76,7 +75,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         <SeEndringer
           className="mt-4 w-fit"
           deltakerId={deltaker.id}
-          tiltakstype={mapTiltakskodeTilArenaTiltakskode(deltaker.tiltakskode)}
+          tiltakskode={deltaker.tiltakskode}
           fetchHistorikk={getDeltakerHistorikk}
         />
       )}

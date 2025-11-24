@@ -1,8 +1,8 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
   DeltakerStatusType,
-  Oppstartstype
+  Oppstartstype,
+  Tiltakskode
 } from '../model/deltaker'
 import {
   erKursTiltak,
@@ -11,7 +11,7 @@ import {
 } from '../utils/utils'
 
 interface Props {
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   arrangorNavn: string
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const OmKurset = ({
-  tiltakstype,
+  tiltakskode,
   arrangorNavn,
   deltakerlisteNavn,
   statusType,
@@ -37,13 +37,13 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakstype) || !oppstartstype) {
+  if (!erKursTiltak(tiltakskode) || !oppstartstype) {
     return null
   }
 
   if (
     oppstartstype === Oppstartstype.LOPENDE &&
-    tiltakstype === ArenaTiltakskode.JOBBK
+    tiltakskode === Tiltakskode.JOBBKLUBB
   ) {
     return null // Jobbsøkerkurs har innhold ledetekst.
   }
@@ -118,7 +118,7 @@ export const OmKurset = ({
             </>
           )}
 
-          {kanDeleDeltakerMedArrangor(tiltakstype, oppstartstype) &&
+          {kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
             visDelMedArrangorInfo && (
               <>
                 <BodyLong size="small" className="mt-4">

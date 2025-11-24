@@ -3,7 +3,6 @@ import nb from 'dayjs/locale/nb'
 import { EMDASH } from './constants'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
-  ArenaTiltakskode,
   DeltakerStatusAarsakType,
   Oppstartstype,
   Tiltakskode
@@ -100,10 +99,10 @@ export const formatDateFromString = (
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }
 
-export const visDeltakelsesmengde = (tiltakstype: ArenaTiltakskode) => {
+export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
   return (
-    tiltakstype === ArenaTiltakskode.ARBFORB ||
-    tiltakstype === ArenaTiltakskode.VASV
+    tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   )
 }
 
@@ -140,28 +139,29 @@ export const fjernUgyldigeTegn = (str: string) => {
 }
 
 export const kanDeleDeltakerMedArrangor = (
-  tiltaksType: ArenaTiltakskode,
+  tiltakskode: Tiltakskode,
   oppstartstype: Oppstartstype | null
 ) =>
   oppstartstype === Oppstartstype.FELLES &&
-  [ArenaTiltakskode.GRUPPEAMO, ArenaTiltakskode.GRUFAGYRKE].includes(
-    tiltaksType
-  )
-
-export const erKursEllerDigitalt = (tiltaksType: ArenaTiltakskode) =>
   [
-    ArenaTiltakskode.DIGIOPPARB,
-    ArenaTiltakskode.JOBBK,
-    ArenaTiltakskode.GRUPPEAMO,
-    ArenaTiltakskode.GRUFAGYRKE
-  ].includes(tiltaksType)
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
 
-export const erKursTiltak = (tiltaksType: ArenaTiltakskode) =>
+export const erKursEllerDigitalt = (tiltakskode: Tiltakskode) =>
   [
-    ArenaTiltakskode.JOBBK,
-    ArenaTiltakskode.GRUPPEAMO,
-    ArenaTiltakskode.GRUFAGYRKE
-  ].includes(tiltaksType)
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
+    Tiltakskode.JOBBKLUBB,
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
+
+export const erKursTiltak = (tiltakskode: Tiltakskode) =>
+  [
+    Tiltakskode.JOBBKLUBB,
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
@@ -192,36 +192,5 @@ export const getDeltakerStatusAarsakTypeText = (
       return 'Krav for deltakelse er ikke oppfylt'
     case DeltakerStatusAarsakType.AVLYST_KONTRAKT:
       return 'Avlyst kontrakt'
-  }
-}
-
-export const mapTiltakskodeTilArenaTiltakskode = (
-  tiltaksKode: Tiltakskode
-): ArenaTiltakskode => {
-  switch (tiltaksKode) {
-    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
-      return ArenaTiltakskode.ARBFORB
-    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
-      return ArenaTiltakskode.ARBRRHDAG
-    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
-      return ArenaTiltakskode.DIGIOPPARB
-    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
-      return ArenaTiltakskode.GRUPPEAMO
-    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
-      return ArenaTiltakskode.GRUFAGYRKE
-    case Tiltakskode.JOBBKLUBB:
-      return ArenaTiltakskode.JOBBK
-    case Tiltakskode.OPPFOLGING:
-      return ArenaTiltakskode.INDOPPFAG
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-      return ArenaTiltakskode.VASV
-    case Tiltakskode.AVKLARING:
-      return ArenaTiltakskode.AVKLARAG
-    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
-      return ArenaTiltakskode.ENKELAMO
-    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
-      return ArenaTiltakskode.ENKFAGYRKE
-    case Tiltakskode.HOYERE_UTDANNING:
-      return ArenaTiltakskode.HOYEREUTD
   }
 }

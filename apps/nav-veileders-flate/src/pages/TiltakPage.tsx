@@ -12,7 +12,7 @@ import { DIALOG_URL } from '../utils/environment-utils'
 export const TiltakPage = () => {
   const { pamelding } = usePameldingContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    pamelding.deltakerliste.tiltakstype,
+    pamelding.deltakerliste.tiltakskode,
     pamelding.deltakerliste.arrangorNavn
   )
 

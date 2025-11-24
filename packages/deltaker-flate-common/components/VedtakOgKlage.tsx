@@ -1,6 +1,6 @@
 import { BodyLong, Heading, Link } from '@navikt/ds-react'
 import {
-  ArenaTiltakskode,
+  Tiltakskode,
   DeltakerStatusType,
   importertDeltakerFraArena,
   Oppstartstype,
@@ -12,7 +12,7 @@ import { harFellesOppstart } from '../utils/utils'
 interface Props {
   statusType: DeltakerStatusType
   statusDato: Date
-  tiltakstype: ArenaTiltakskode
+  tiltakskode: Tiltakskode
   oppstartstype: Oppstartstype | null
   vedtaksinformasjon: Vedtaksinformasjon | null
   importertFraArena: importertDeltakerFraArena | null
@@ -21,7 +21,7 @@ interface Props {
 export const VedtakOgKlage = ({
   statusType,
   statusDato,
-  tiltakstype,
+  tiltakskode,
   oppstartstype,
   vedtaksinformasjon,
   importertFraArena
@@ -36,7 +36,7 @@ export const VedtakOgKlage = ({
 
   const harRettTilAKlage = !(
     harFellesOppstart(oppstartstype) &&
-    tiltakstype === ArenaTiltakskode.GRUPPEAMO
+    tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
   )
 
   return harVedtak ? (
@@ -45,7 +45,7 @@ export const VedtakOgKlage = ({
         statusDato={statusDato}
         statusType={statusType}
         oppstartstype={oppstartstype}
-        tiltakstype={tiltakstype}
+        tiltakskode={tiltakskode}
         vedtaksinformasjon={vedtaksinformasjon}
         importertFraArena={importertFraArena}
         className="mt-8"
