@@ -21,13 +21,13 @@
   },
   "dependencies": {
     "@grafana/faro-web-sdk": "^1.19.0",
-    "@navikt/aksel-icons": "^7.33.4",
-    "@navikt/ds-css": "^7.33.4",
-    "@navikt/ds-react": "^7.33.4",
-    "@navikt/ds-tailwind": "^7.33.4",
+    "@navikt/aksel-icons": "^7.33.5",
+    "@navikt/ds-css": "^7.33.5",
+    "@navikt/ds-react": "^7.33.5",
+    "@navikt/ds-tailwind": "^7.33.5",
     "dayjs": "^1.11.19",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.12.2",
+    "msw": "^2.12.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6",
@@ -54,8 +54,8 @@
     "playwright": "^1.56.1",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
-    "vite": "^7.2.2",
-    "vitest": "^4.0.10"
+    "vite": "^7.2.4",
+    "vitest": "^4.0.13"
   },
   "msw": {
     "workerDirectory": [
