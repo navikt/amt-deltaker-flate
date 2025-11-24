@@ -4,7 +4,7 @@ import { DeltakerStatusType } from '../model/deltaker'
 interface Props {
   statusType: DeltakerStatusType
   oppmoteSted?: string | null
-  headingLevel?: 2 | 3 | 4
+  headingLevel?: 3 | 4
   className?: string
 }
 
@@ -30,7 +30,10 @@ export const Oppmotested = ({
 
   return (
     <div className={className ?? ''}>
-      <Heading size="small" level={`${headingLevel ?? 4}`}>
+      <Heading
+        size={headingLevel === 3 ? 'small' : 'xsmall'}
+        level={`${headingLevel ?? 4}`}
+      >
         Oppmøtested
       </Heading>
       <BodyShort className="mt-2">{oppmoteSted}</BodyShort>
