@@ -139,7 +139,6 @@ export const DeltakerInfo = ({ className }: Props) => {
       <Oppmotested
         oppmoteSted={pamelding.deltakerliste.oppmoteSted}
         statusType={pamelding.status.type}
-        headingLevel={3}
         className="mt-8"
       />
 

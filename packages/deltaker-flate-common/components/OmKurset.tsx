@@ -107,7 +107,7 @@ export const OmKurset = ({
                 resultatet:
               </BodyLong>
 
-              <List as="ul" size="small" className="-mt-1 -mb-2">
+              <List as="ul" size="small" className="-mt-1">
                 <List.Item className="mt-2 whitespace-pre-wrap">
                   Du kan få plass på kurset.
                 </List.Item>

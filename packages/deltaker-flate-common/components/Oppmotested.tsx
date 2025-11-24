@@ -1,19 +1,13 @@
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Label } from '@navikt/ds-react'
 import { DeltakerStatusType } from '../model/deltaker'
 
 interface Props {
   statusType: DeltakerStatusType
   oppmoteSted?: string | null
-  headingLevel?: 3 | 4
   className?: string
 }
 
-export const Oppmotested = ({
-  oppmoteSted,
-  headingLevel,
-  statusType,
-  className
-}: Props) => {
+export const Oppmotested = ({ oppmoteSted, statusType, className }: Props) => {
   if (
     !oppmoteSted ||
     ![
@@ -30,12 +24,7 @@ export const Oppmotested = ({
 
   return (
     <div className={className ?? ''}>
-      <Heading
-        size={headingLevel === 3 ? 'small' : 'xsmall'}
-        level={`${headingLevel ?? 4}`}
-      >
-        Oppmøtested
-      </Heading>
+      <Label>Oppmøtested: </Label>
       <BodyShort className="mt-2">{oppmoteSted}</BodyShort>
     </div>
   )

@@ -155,7 +155,6 @@ export const TiltakPage = () => {
       <Oppmotested
         oppmoteSted={deltaker.deltakerliste.oppmoteSted}
         statusType={deltaker.status.type}
-        headingLevel={3}
         className="mt-8"
       />
 
