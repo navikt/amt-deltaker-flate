@@ -11,6 +11,7 @@ export const Oppmotested = ({ oppmoteSted, statusType, className }: Props) => {
   if (
     !oppmoteSted ||
     ![
+      DeltakerStatusType.KLADD,
       DeltakerStatusType.UTKAST_TIL_PAMELDING,
       DeltakerStatusType.SOKT_INN,
       DeltakerStatusType.VENTER_PA_OPPSTART,
