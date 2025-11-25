@@ -139,10 +139,10 @@ const getIngenStartDatoInfoTekst = (
 ) => {
   if (oppstartstype === Oppstartstype.FELLES) {
     if (!tiltaketsStartDato) {
-      return 'Arrangøren tar kontakt med deg for å avtale din oppstart.'
+      return 'Nav eller arrangøren tar kontakt med deg for å avtale din oppstart.'
     }
     const harKursetStartet = dayjs().isAfter(tiltaketsStartDato)
-    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Arrangøren tar kontakt med deg for å avtale din oppstart.`
+    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Nav eller arrangøren tar kontakt med deg for å avtale din oppstart.`
   }
 
   return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
