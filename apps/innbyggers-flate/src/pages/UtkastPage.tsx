@@ -118,6 +118,21 @@ export const UtkastPage = () => {
         )}
       </GuidePanel>
 
+      <OmKurset
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        statusType={deltaker.status.type}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        startdato={deltaker.deltakerliste.startdato}
+        sluttdato={deltaker.deltakerliste.sluttdato}
+        className="mt-6"
+      />
+
+      <Oppmotested
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        statusType={deltaker.status.type}
+        className="mt-6"
+      />
+
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
@@ -153,21 +168,6 @@ export const UtkastPage = () => {
           </BodyLong>
         </>
       )}
-
-      <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
-        statusType={deltaker.status.type}
-        oppstartstype={deltaker.deltakerliste.oppstartstype}
-        startdato={deltaker.deltakerliste.startdato}
-        sluttdato={deltaker.deltakerliste.sluttdato}
-        className="mt-6"
-      />
-
-      <Oppmotested
-        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
-        statusType={deltaker.status.type}
-        className="mt-6"
-      />
 
       {!deltaker.deltakerliste.erEnkeltplassUtenRammeavtale && (
         <>

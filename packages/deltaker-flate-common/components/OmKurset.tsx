@@ -137,11 +137,11 @@ export const OmKurset = ({
 
               <div className="flex mt-6">
                 <Label className="mr-2">Kurset starter: </Label>
-                <BodyLong> {formatDate(startdato)}</BodyLong>
+                <BodyLong size="small"> {formatDate(startdato)}</BodyLong>
               </div>
               <div className="flex mt-2">
                 <Label className="mr-2">Kurset slutter: </Label>
-                <BodyLong> {formatDate(sluttdato)}</BodyLong>
+                <BodyLong size="small"> {formatDate(sluttdato)}</BodyLong>
               </div>
             </>
           )}

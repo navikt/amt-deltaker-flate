@@ -105,7 +105,7 @@ export const DeltakerStatusInfoTekst = ({
 
   return (
     <>
-      <BodyLong size="small" className="mt-4">
+      <BodyLong size="small" className="mt-2">
         {getInfoTekst(
           oppstartstype === Oppstartstype.FELLES,
           statusType,

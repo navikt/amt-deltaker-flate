@@ -43,11 +43,11 @@ export const DeltakerInfo = ({ className }: Props) => {
   )
 
   const skalViseDato =
+    pamelding.startdato &&
+    pamelding.startdato !== EMDASH &&
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    pamelding.status.type !== DeltakerStatusType.VENTELISTE &&
-    (pamelding.status.type !== DeltakerStatusType.SOKT_INN ||
-      pamelding.startdato)
+    pamelding.status.type !== DeltakerStatusType.VENTELISTE
 
   const bakgrunnsinformasjon =
     pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
@@ -93,21 +93,6 @@ export const DeltakerInfo = ({ className }: Props) => {
           </BodyShort>
         </HStack>
       )}
-      {skalViseDato && (
-        <HStack gap="2" className="mt-4">
-          <Label>
-            {pamelding.startdato && !pamelding.sluttdato
-              ? 'Oppstartsdato:'
-              : 'Dato:'}
-          </Label>
-          <BodyShort>{dato}</BodyShort>
-        </HStack>
-      )}
-      {visDeltMedArrangor && (
-        <Alert variant="info" size="small" className="mt-4">
-          Informasjon er delt med arrangør for vurdering.
-        </Alert>
-      )}
 
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
         <DeltakerStatusInfoTekst
@@ -124,7 +109,22 @@ export const DeltakerInfo = ({ className }: Props) => {
         />
       )}
 
-      <AktiveForslag forslag={pamelding.forslag} />
+      {skalViseDato && (
+        <HStack gap="2" className="mt-4">
+          <Label>
+            {pamelding.startdato && !pamelding.sluttdato
+              ? 'Oppstartsdato:'
+              : 'Dato:'}
+          </Label>
+          <BodyShort>{dato}</BodyShort>
+        </HStack>
+      )}
+
+      {visDeltMedArrangor && (
+        <Alert variant="info" size="small" className="mt-4">
+          Informasjon er delt med arrangør for vurdering.
+        </Alert>
+      )}
 
       <OmKurset
         tiltakskode={pamelding.deltakerliste.tiltakskode}
@@ -139,8 +139,10 @@ export const DeltakerInfo = ({ className }: Props) => {
       <Oppmotested
         oppmoteSted={pamelding.deltakerliste.oppmoteSted}
         statusType={pamelding.status.type}
-        className="mt-8"
+        className="mt-4"
       />
+
+      <AktiveForslag className="mt-8" forslag={pamelding.forslag} />
 
       <DeltakelseInnhold
         tiltakskode={pamelding.deltakerliste.tiltakskode}

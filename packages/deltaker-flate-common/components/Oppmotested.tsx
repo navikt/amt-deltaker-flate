@@ -26,7 +26,9 @@ export const Oppmotested = ({ oppmoteSted, statusType, className }: Props) => {
   return (
     <div className={className ?? ''}>
       <Label>Oppmøtested: </Label>
-      <BodyShort className="mt-2">{oppmoteSted}</BodyShort>
+      <BodyShort size="small" className="mt-2">
+        {oppmoteSted}
+      </BodyShort>
     </div>
   )
 }
