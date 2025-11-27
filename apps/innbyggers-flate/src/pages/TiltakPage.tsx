@@ -104,7 +104,7 @@ export const TiltakPage = () => {
       {deltaker.status.aarsak && (
         <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort as="span" className="whitespace-pre-wrap">
+          <BodyShort size="small" as="span" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
         </HStack>
@@ -138,7 +138,7 @@ export const TiltakPage = () => {
               ? 'Oppstartsdato:'
               : 'Dato:'}
           </Label>
-          <BodyShort>{dato}</BodyShort>
+          <BodyShort size="small">{dato}</BodyShort>
         </HStack>
       )}
 

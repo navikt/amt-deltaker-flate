@@ -84,7 +84,7 @@ export const OmKurset = ({
             <>
               <BodyLong size="small" className="mt-2">
                 Dersom det åpner seg ledig plass, vil Nav eller arrangøren ta
-                kontakt med deg for å avtale oppstart.
+                kontakt med deg for å avtale når du skal begynne.
               </BodyLong>
 
               <BodyLong size="small" className="mt-4">

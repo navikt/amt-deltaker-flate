@@ -88,7 +88,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort as="span" className="whitespace-pre-wrap">
+          <BodyShort as="span" size="small" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
           </BodyShort>
         </HStack>
@@ -116,7 +116,7 @@ export const DeltakerInfo = ({ className }: Props) => {
               ? 'Oppstartsdato:'
               : 'Dato:'}
           </Label>
-          <BodyShort>{dato}</BodyShort>
+          <BodyShort size="small">{dato}</BodyShort>
         </HStack>
       )}
 
