@@ -114,11 +114,6 @@ export const PameldingForm = ({
             visForUtkast
           />
 
-          <Oppmotested
-            oppmoteSted={pamelding.deltakerliste.oppmoteSted}
-            statusType={pamelding.status.type}
-          />
-
           {skalViseBakgrunnsinfo && (
             <section>
               <Heading size="medium" level="3" className="mb-4">
@@ -155,6 +150,11 @@ export const PameldingForm = ({
               <Deltakelsesprosent disabled={isDisabled} />
             </div>
           )}
+
+          <Oppmotested
+            oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+            statusType={pamelding.status.type}
+          />
 
           <PameldingFormButtons
             pamelding={pamelding}
