@@ -1,13 +1,14 @@
 import { BodyLong, Heading, VStack } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  EMDASH,
-  deltakerprosentText,
-  visDeltakelsesmengde,
-  OmKurset,
-  erKursEllerDigitalt,
   DeltakerStatusType,
-  Tiltakskode
+  EMDASH,
+  OmKurset,
+  Oppmotested,
+  Tiltakskode,
+  deltakerprosentText,
+  erKursEllerDigitalt,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
 
@@ -71,8 +72,6 @@ export const Utkast = ({
 
       <OmKurset
         tiltakskode={deltakerliste.tiltakskode}
-        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
-        arrangorNavn={deltakerliste.arrangorNavn}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
         startdato={deltakerliste.startdato}
@@ -81,6 +80,12 @@ export const Utkast = ({
         visDelMedArrangorInfo
         visForUtkast
         className={tiltakskode === Tiltakskode.JOBBKLUBB ? 'mt-8' : ''}
+      />
+
+      <Oppmotested
+        oppmoteSted={deltakerliste.oppmoteSted}
+        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
+        className="mt-8"
       />
     </VStack>
   )

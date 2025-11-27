@@ -43,6 +43,7 @@ const pamelding: PameldingResponse = {
       innhold: [],
       ledetekst: ''
     },
+    oppmoteSted: 'Oslo',
     erEnkeltplassUtenRammeavtale: false
   },
   status: {

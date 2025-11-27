@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Heading, Textarea } from '@navikt/ds-react'
 import {
-  Tiltakskode,
   DeltakerStatusType,
   erKursEllerDigitalt,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
-  OmKurset
+  OmKurset,
+  Oppmotested,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -98,15 +99,13 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <div className="flex flex-col gap-8 p-4 border rounded-sm border-[var(--a-surface-alt-3)] mb-4">
+        <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--a-surface-alt-3) mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
 
           <OmKurset
             tiltakskode={pamelding.deltakerliste.tiltakskode}
-            arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-            deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
             statusType={pamelding.status.type}
             oppstartstype={pamelding.deltakerliste.oppstartstype}
             startdato={pamelding.deltakerliste.startdato}
@@ -151,6 +150,11 @@ export const PameldingForm = ({
               <Deltakelsesprosent disabled={isDisabled} />
             </div>
           )}
+
+          <Oppmotested
+            oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+            statusType={pamelding.status.type}
+          />
 
           <PameldingFormButtons
             pamelding={pamelding}

@@ -105,7 +105,7 @@ export const DeltakerStatusInfoTekst = ({
 
   return (
     <>
-      <BodyLong size="small" className="mt-4">
+      <BodyLong size="small" className="mt-2">
         {getInfoTekst(
           oppstartstype === Oppstartstype.FELLES,
           statusType,
@@ -139,13 +139,13 @@ const getIngenStartDatoInfoTekst = (
 ) => {
   if (oppstartstype === Oppstartstype.FELLES) {
     if (!tiltaketsStartDato) {
-      return 'Arrangøren tar kontakt med deg for å avtale din oppstart.'
+      return 'Nav eller arrangøren tar kontakt med deg for å avtale din oppstart.'
     }
     const harKursetStartet = dayjs().isAfter(tiltaketsStartDato)
-    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Arrangøren tar kontakt med deg for å avtale din oppstart.`
+    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Nav eller arrangøren tar kontakt med deg for å avtale når du skal begynne.`
   }
 
   return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-    ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale oppstart.`
-    : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale oppstart.'
+    ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale når du skal begynne.`
+    : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale når du skal begynne.'
 }

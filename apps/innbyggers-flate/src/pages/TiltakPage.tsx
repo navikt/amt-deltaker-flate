@@ -16,6 +16,7 @@ import {
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
+  Oppmotested,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
@@ -43,10 +44,11 @@ export const TiltakPage = () => {
     deltaker.deltakerliste.arrangorNavn
   )
   const skalViseDato =
+    deltaker.startdato &&
+    deltaker.startdato !== EMDASH &&
     deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    deltaker.status.type !== DeltakerStatusType.VENTELISTE &&
-    (deltaker.status.type !== DeltakerStatusType.SOKT_INN || deltaker.startdato)
+    deltaker.status.type !== DeltakerStatusType.VENTELISTE
 
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
@@ -102,26 +104,10 @@ export const TiltakPage = () => {
       {deltaker.status.aarsak && (
         <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort as="span" className="whitespace-pre-wrap">
+          <BodyShort size="small" as="span" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
         </HStack>
-      )}
-      {skalViseDato && (
-        <HStack gap="2" className="mt-4">
-          <Label>
-            {deltaker.startdato && !deltaker.sluttdato
-              ? 'Oppstartsdato:'
-              : 'Dato:'}
-          </Label>
-          <BodyShort>{dato}</BodyShort>
-        </HStack>
-      )}
-
-      {visDeltMedArrangor && (
-        <Alert variant="info" size="small" className="mt-4">
-          Informasjon er delt med arrangør for vurdering.
-        </Alert>
       )}
 
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
@@ -139,18 +125,40 @@ export const TiltakPage = () => {
         />
       )}
 
-      <AktiveForslag forslag={deltaker.forslag} />
+      {visDeltMedArrangor && (
+        <Alert variant="info" size="small" className="mt-4">
+          Informasjon er delt med arrangør for vurdering.
+        </Alert>
+      )}
+
+      {skalViseDato && (
+        <HStack gap="2" className="mt-4">
+          <Label>
+            {deltaker.startdato && !deltaker.sluttdato
+              ? 'Oppstartsdato:'
+              : 'Dato:'}
+          </Label>
+          <BodyShort size="small">{dato}</BodyShort>
+        </HStack>
+      )}
 
       <OmKurset
         tiltakskode={deltaker.deltakerliste.tiltakskode}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
+        headingLevel={2}
         className="mt-8"
       />
+
+      <Oppmotested
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        statusType={deltaker.status.type}
+        className="mt-4"
+      />
+
+      <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}

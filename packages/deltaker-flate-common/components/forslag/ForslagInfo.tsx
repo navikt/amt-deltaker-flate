@@ -42,11 +42,12 @@ export const EndringerBox = ({ children, className }: EndringBoxProps) => {
 
 interface ForslagInfoProps {
   children: ReactNode
+  className?: string
 }
 
-export function ForslagInfo({ children }: ForslagInfoProps) {
+export function ForslagInfo({ children, className }: ForslagInfoProps) {
   return (
-    <EndringerWrapper className="mt-4">
+    <EndringerWrapper className={className ?? ''}>
       <VStack gap="4">
         <Heading level="2" size="medium">
           Arrangør foreslår en endring:

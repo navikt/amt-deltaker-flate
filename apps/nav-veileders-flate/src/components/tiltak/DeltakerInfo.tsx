@@ -16,6 +16,7 @@ import {
   EMDASH,
   HvaDelesMedArrangor,
   OmKurset,
+  Oppmotested,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
@@ -42,11 +43,11 @@ export const DeltakerInfo = ({ className }: Props) => {
   )
 
   const skalViseDato =
+    pamelding.startdato &&
+    pamelding.startdato !== EMDASH &&
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    pamelding.status.type !== DeltakerStatusType.VENTELISTE &&
-    (pamelding.status.type !== DeltakerStatusType.SOKT_INN ||
-      pamelding.startdato)
+    pamelding.status.type !== DeltakerStatusType.VENTELISTE
 
   const bakgrunnsinformasjon =
     pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
@@ -87,25 +88,10 @@ export const DeltakerInfo = ({ className }: Props) => {
       {pamelding.status.aarsak && (
         <HStack gap="2" className="mt-4" aria-atomic>
           <Label>Årsak:</Label>
-          <BodyShort as="span" className="whitespace-pre-wrap">
+          <BodyShort as="span" size="small" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
           </BodyShort>
         </HStack>
-      )}
-      {skalViseDato && (
-        <HStack gap="2" className="mt-4">
-          <Label>
-            {pamelding.startdato && !pamelding.sluttdato
-              ? 'Oppstartsdato:'
-              : 'Dato:'}
-          </Label>
-          <BodyShort>{dato}</BodyShort>
-        </HStack>
-      )}
-      {visDeltMedArrangor && (
-        <Alert variant="info" size="small" className="mt-4">
-          Informasjon er delt med arrangør for vurdering.
-        </Alert>
       )}
 
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
@@ -123,18 +109,40 @@ export const DeltakerInfo = ({ className }: Props) => {
         />
       )}
 
-      <AktiveForslag forslag={pamelding.forslag} />
+      {skalViseDato && (
+        <HStack gap="2" className="mt-4">
+          <Label>
+            {pamelding.startdato && !pamelding.sluttdato
+              ? 'Oppstartsdato:'
+              : 'Dato:'}
+          </Label>
+          <BodyShort size="small">{dato}</BodyShort>
+        </HStack>
+      )}
+
+      {visDeltMedArrangor && (
+        <Alert variant="info" size="small" className="mt-4">
+          Informasjon er delt med arrangør for vurdering.
+        </Alert>
+      )}
 
       <OmKurset
         tiltakskode={pamelding.deltakerliste.tiltakskode}
-        arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-        deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
         statusType={pamelding.status.type}
         oppstartstype={pamelding.deltakerliste.oppstartstype}
         startdato={pamelding.deltakerliste.startdato}
         sluttdato={pamelding.deltakerliste.sluttdato}
+        headingLevel={2}
         className="mt-8"
       />
+
+      <Oppmotested
+        oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+        statusType={pamelding.status.type}
+        className="mt-4"
+      />
+
+      <AktiveForslag className="mt-8" forslag={pamelding.forslag} />
 
       <DeltakelseInnhold
         tiltakskode={pamelding.deltakerliste.tiltakskode}
