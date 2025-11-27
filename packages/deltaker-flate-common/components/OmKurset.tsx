@@ -74,7 +74,7 @@ export const OmKurset = ({
       {oppstartstype === Oppstartstype.LOPENDE && (
         <BodyLong size="small" className="mt-2">
           Når det blir ledig plass, tar Nav eller arrangøren kontakt med deg for
-          å avtale når du skal starte.
+          å avtale når du skal begynne.
         </BodyLong>
       )}
 
