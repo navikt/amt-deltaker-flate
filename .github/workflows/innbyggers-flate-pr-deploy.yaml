@@ -38,7 +38,7 @@ jobs:
         run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   deploy-pull-request-branch:
-    if: github.event.pull_request.head.repo.fork != true
+    if: github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
     name: Deploy Pull Request Branch - innbyggers-flate
     runs-on: ubuntu-latest
     timeout-minutes: 15
