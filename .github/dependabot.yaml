@@ -12,6 +12,9 @@ updates:
       - npm-github
     schedule:
       interval: weekly
+      day: tuesday
+      time: '05:00'
+      timezone: Europe/Oslo
     cooldown:
       default-days: 12
     open-pull-requests-limit: 10
