@@ -74,6 +74,7 @@ export const Utkast = ({
         tiltakskode={deltakerliste.tiltakskode}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
+        kreverGodkjenning={deltakerliste.kreverGodkjenning}
         startdato={deltakerliste.startdato}
         sluttdato={deltakerliste.sluttdato}
         size="small"
