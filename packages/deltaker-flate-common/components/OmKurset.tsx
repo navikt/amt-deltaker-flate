@@ -15,6 +15,7 @@ interface Props {
   tiltakskode: Tiltakskode
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype | null
+  kreverGodkjenning: boolean
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
@@ -28,6 +29,7 @@ export const OmKurset = ({
   tiltakskode,
   statusType,
   oppstartstype,
+  kreverGodkjenning,
   startdato,
   sluttdato,
   headingLevel,
@@ -71,10 +73,16 @@ export const OmKurset = ({
         Om kurset
       </Heading>
 
-      {oppstartstype === Oppstartstype.LOPENDE && (
+      {oppstartstype === Oppstartstype.LOPENDE && !kreverGodkjenning && (
         <BodyLong size="small" className="mt-2">
           Når det blir ledig plass, tar Nav eller arrangøren kontakt med deg for
           å avtale når du skal begynne.
+        </BodyLong>
+      )}
+
+      {oppstartstype === Oppstartstype.LOPENDE && kreverGodkjenning && (
+        <BodyLong size="small" className="mt-2">
+          Nav vurderer søknaden din, og du får beskjed om resultatet.
         </BodyLong>
       )}
 

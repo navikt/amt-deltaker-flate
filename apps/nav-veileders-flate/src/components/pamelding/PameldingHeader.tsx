@@ -14,9 +14,10 @@ interface Props {
 }
 
 export const PameldingHeader = ({ title, deltakerliste }: Props) => {
-  const erKursMedLopendeOppstart =
+  const erKursMedLopendeOppstartPameldesDirekte =
     deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erKursTiltak(deltakerliste.tiltakskode)
+    erKursTiltak(deltakerliste.tiltakskode) &&
+    !deltakerliste.kreverGodkjenning
 
   return (
     <div>
@@ -41,7 +42,7 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
         </TiltaksgjennomforingLink>
       )}
 
-      {erKursMedLopendeOppstart && (
+      {erKursMedLopendeOppstartPameldesDirekte && (
         <Alert variant="info" size="small" className="mt-3">
           <Heading spacing size="xsmall" level="3">
             Ved å fullføre denne påmeldingen fatter du også vedtaket om

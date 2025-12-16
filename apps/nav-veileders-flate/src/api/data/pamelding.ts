@@ -35,7 +35,8 @@ export const deltakerlisteSchema = z.object({
   status: deltakerlisteStatusSchema.nullable(),
   tilgjengeligInnhold: tilgjengeligInnholdSchema,
   erEnkeltplassUtenRammeavtale: z.boolean(),
-  oppmoteSted: z.string().nullable()
+  oppmoteSted: z.string().nullable(),
+  kreverGodkjenning: z.boolean() // direktegodkjent ?? TODO bestemme oss for navn
 })
 
 export const pameldingSchema = z.object({

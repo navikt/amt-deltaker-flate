@@ -17,6 +17,7 @@ export const deltakerlisteSchema = z.object({
   tiltakskode: z.enum(Tiltakskode),
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
+  kreverGodkjenning: z.boolean(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   erEnkeltplassUtenRammeavtale: z.boolean(),

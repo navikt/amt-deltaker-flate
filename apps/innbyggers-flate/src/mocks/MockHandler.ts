@@ -53,6 +53,7 @@ export const createDeltaker = (
       tiltakskode: tiltakskode,
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
+      kreverGodkjenning: false,
       startdato: dayjs('2022-10-28').toDate(),
       sluttdato: dayjs('2027-12-20').toDate(),
       erEnkeltplassUtenRammeavtale: false,
@@ -204,12 +205,15 @@ export class MockHandler {
         // Obs disse kan ha løpende oppstart også.
         oppdatertDeltaker.bakgrunnsinformasjon = null
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
+        oppdatertDeltaker.deltakerliste.kreverGodkjenning = true
       } else if (erEnkeltplass) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
         oppdatertDeltaker.deltakerliste.oppstartstype = null
+        oppdatertDeltaker.deltakerliste.kreverGodkjenning = false
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
         oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+        oppdatertDeltaker.deltakerliste.kreverGodkjenning = false
       }
 
       this.deltaker = oppdatertDeltaker

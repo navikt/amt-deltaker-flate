@@ -146,6 +146,7 @@ export const TiltakPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
+        kreverGodkjenning={deltaker.deltakerliste.kreverGodkjenning}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         headingLevel={2}
