@@ -96,6 +96,7 @@ export class MockHandler {
           ledetekst: ledetekst
         },
         erEnkeltplassUtenRammeavtale: false,
+        kreverGodkjenning: false,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
       },
@@ -448,12 +449,15 @@ export class MockHandler {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
+        oppdatertPamelding.deltakerliste.kreverGodkjenning = true
       } else if (erEnkeltplass) {
         oppdatertPamelding.bakgrunnsinformasjon = null
         oppdatertPamelding.deltakerliste.oppstartstype = null
+        oppdatertPamelding.deltakerliste.kreverGodkjenning = false
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
         oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
+        oppdatertPamelding.deltakerliste.kreverGodkjenning = false
       }
 
       this.pamelding = oppdatertPamelding
