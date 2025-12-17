@@ -24,6 +24,7 @@ import { Innhold } from './Innhold.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
+import { Innholdsbeskrivelse } from './Innholdsbeskrivelse.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -108,6 +109,7 @@ export const PameldingForm = ({
             tiltakskode={pamelding.deltakerliste.tiltakskode}
             statusType={pamelding.status.type}
             oppstartstype={pamelding.deltakerliste.oppstartstype}
+            kreverGodkjenning={pamelding.deltakerliste.kreverGodkjenning}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
             visDelMedArrangorInfo
@@ -155,6 +157,8 @@ export const PameldingForm = ({
             oppmoteSted={pamelding.deltakerliste.oppmoteSted}
             statusType={pamelding.status.type}
           />
+
+          <Innholdsbeskrivelse pamelding={pamelding} isDisabled={isDisabled} />
 
           <PameldingFormButtons
             pamelding={pamelding}

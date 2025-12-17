@@ -68,7 +68,7 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div className="max-w-[47.5rem] md:m-auto m-4" data-testid="page_utkast">
+    <div className="max-w-190 md:m-auto m-4" data-testid="page_utkast">
       <Tilbakeknapp />
       <div>
         <PameldingHeader
