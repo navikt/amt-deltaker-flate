@@ -43,9 +43,13 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
 
       {erKursMedLopendeOppstart && (
         <Alert variant="info" size="small" className="mt-3">
-          Dette tiltaket har løpende inntak, som betyr at det ikke utføres noen
-          ytterligere vurdering av om deltakeren er kvalifisert for kurset før
-          oppstart. Denne vurderingen må derfor utføres av Nav-veileder.
+          <Heading spacing size="xsmall" level="3">
+            Ved å fullføre denne påmeldingen fatter du også vedtaket om
+            tiltaksplass
+          </Heading>
+          Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
+          kravene for å delta i tiltaket. Deltakeren får vedtak og informasjonen
+          deles med arrangøren.
         </Alert>
       )}
     </div>
