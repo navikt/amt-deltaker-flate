@@ -4,6 +4,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import { EMDASH } from './constants'
@@ -142,12 +143,14 @@ export const kanDeleDeltakerMedArrangor = (
   tiltakskode: Tiltakskode,
   oppstartstype: Oppstartstype | null
 ) =>
+  // TODO sjekk opp
   oppstartstype === Oppstartstype.FELLES &&
   [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
+// TODO sjekk opp
 export const erKursEllerDigitalt = (tiltakskode: Tiltakskode) =>
   [
     Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
@@ -156,6 +159,7 @@ export const erKursEllerDigitalt = (tiltakskode: Tiltakskode) =>
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
+// TODO; sjekek bruken her, vi må kanskje få inn kreverGodkjenning
 export const erKursTiltak = (tiltakskode: Tiltakskode) =>
   [
     Tiltakskode.JOBBKLUBB,
@@ -165,6 +169,9 @@ export const erKursTiltak = (tiltakskode: Tiltakskode) =>
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
+
+export const kanMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
+  pameldingstype === Pameldingstype.DIREKTE_VEDTAK
 
 export const getDeltakerStatusAarsakTypeText = (
   type: DeltakerStatusAarsakType

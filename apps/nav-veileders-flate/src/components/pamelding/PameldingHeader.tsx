@@ -3,6 +3,7 @@ import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import {
   erKursTiltak,
   hentTiltakGjennomforingNavnArrangorTittel,
+  kanMeldePaaDirekte,
   Oppstartstype
 } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/pamelding.ts'
@@ -17,7 +18,7 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
   const erKursMedLopendeOppstartPameldesDirekte =
     deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
     erKursTiltak(deltakerliste.tiltakskode) &&
-    !deltakerliste.kreverGodkjenning
+    kanMeldePaaDirekte(deltakerliste.pameldingstype)
 
   return (
     <div>

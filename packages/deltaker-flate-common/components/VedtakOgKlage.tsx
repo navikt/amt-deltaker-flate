@@ -34,6 +34,7 @@ export const VedtakOgKlage = ({
     statusType !== DeltakerStatusType.VENTELISTE &&
     statusType !== DeltakerStatusType.VURDERES
 
+  // TODO skal påmeldingstype ha noe å si her?
   const harRettTilAKlage = !(
     harFellesOppstart(oppstartstype) &&
     tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING

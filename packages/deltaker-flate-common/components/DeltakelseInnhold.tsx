@@ -15,59 +15,62 @@ export const DeltakelseInnhold = ({
   heading,
   listClassName
 }: Props) => {
-  if (!deltakelsesinnhold) {
-    return <></>
+  if (!skalViseInnhold(deltakelsesinnhold)) {
+    return null
   }
 
   return (
-    skalViseInnhold(deltakelsesinnhold) && (
-      <>
-        {heading ?? <></>}
+    <>
+      {heading ?? null}
 
-        {deltakelsesinnhold?.ledetekst && (
-          <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
+      {deltakelsesinnhold?.ledetekst && (
+        <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
+      )}
+
+      {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+        deltakelsesinnhold.innhold.length > 0 &&
+        deltakelsesinnhold.innhold
+          .filter((i) => i.valgt)
+          .map((i) => {
+            if (i.innholdskode === INNHOLD_TYPE_ANNET) {
+              return (
+                <BodyLong
+                  className="mt-4 whitespace-pre-wrap"
+                  key={i.innholdskode}
+                  size="small"
+                >
+                  {i.beskrivelse}
+                </BodyLong>
+              )
+            }
+          })}
+
+      {tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+        deltakelsesinnhold.innhold.length > 0 && (
+          <List as="ul" size="small" className={listClassName ?? ''}>
+            {deltakelsesinnhold.innhold
+              .filter((i) => i.valgt)
+              .map((i) => (
+                <List.Item
+                  key={i.innholdskode}
+                  className="mt-2 whitespace-pre-wrap"
+                >
+                  {i.innholdskode === INNHOLD_TYPE_ANNET
+                    ? i.beskrivelse
+                    : i.tekst}
+                </List.Item>
+              ))}
+          </List>
         )}
-
-        {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-          deltakelsesinnhold.innhold.length > 0 &&
-          deltakelsesinnhold.innhold
-            .filter((i) => i.valgt)
-            .map((i) => {
-              if (i.innholdskode === INNHOLD_TYPE_ANNET) {
-                return (
-                  <BodyLong
-                    className="mt-4 whitespace-pre-wrap"
-                    key={i.innholdskode}
-                    size="small"
-                  >
-                    {i.beskrivelse}
-                  </BodyLong>
-                )
-              }
-            })}
-
-        {tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-          deltakelsesinnhold.innhold.length > 0 && (
-            <List as="ul" size="small" className={listClassName ?? ''}>
-              {deltakelsesinnhold.innhold
-                .filter((i) => i.valgt)
-                .map((i) => (
-                  <List.Item
-                    key={i.innholdskode}
-                    className="mt-2 whitespace-pre-wrap"
-                  >
-                    {i.innholdskode === INNHOLD_TYPE_ANNET
-                      ? i.beskrivelse
-                      : i.tekst}
-                  </List.Item>
-                ))}
-            </List>
-          )}
-      </>
-    )
+    </>
   )
 }
 
-const skalViseInnhold = (deltakelsesinnhold: Deltakelsesinnhold) => {
-  return deltakelsesinnhold.innhold.length > 0 || deltakelsesinnhold.ledetekst
+const skalViseInnhold = (
+  deltakelsesinnhold: Deltakelsesinnhold | null
+): deltakelsesinnhold is Deltakelsesinnhold => {
+  return (
+    !!deltakelsesinnhold &&
+    (deltakelsesinnhold.innhold.length > 0 || !!deltakelsesinnhold.ledetekst)
+  )
 }

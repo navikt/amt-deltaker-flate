@@ -57,6 +57,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
     }
   }
 
+  // TODO ha med at det skal være felles oppstart, ev også krever goskjenning?
   const kanDeleMedArrangor =
     deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
@@ -99,7 +100,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
               Handlinger
             </Button>
           </ActionMenu.Trigger>
-          <ActionMenu.Content className="max-w-[14rem]">
+          <ActionMenu.Content className="max-w-56">
             {kanDeleMedArrangor && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {

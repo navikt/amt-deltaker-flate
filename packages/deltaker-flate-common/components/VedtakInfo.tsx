@@ -74,5 +74,11 @@ const forskriftskapitler: { [Key in Tiltakskode]: string } = {
   [Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET]: '14',
   [Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING]: '7',
   [Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING]: '7',
-  [Tiltakskode.HOYERE_UTDANNING]: '7'
+  [Tiltakskode.HOYERE_UTDANNING]: '7',
+  // TODO
+  [Tiltakskode.ARBEIDSMARKEDSOPPLAERING]: '',
+  [Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV]: '',
+  [Tiltakskode.STUDIESPESIALISERING]: '',
+  [Tiltakskode.FAG_OG_YRKESOPPLAERING]: '',
+  [Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING]: ''
 }

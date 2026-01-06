@@ -3,6 +3,8 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   DeltakerlisteStatus,
+  Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import {
@@ -55,6 +57,18 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
       return 'Fag- og yrkesopplæring (enkeltplass)'
     case Tiltakskode.HOYERE_UTDANNING:
       return 'Høyere utdanning'
+
+    // TODO skal vi har med  (enkeltplass)?
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+      return 'Norskopplæring grunnleggende ferdigheter FOV'
+    case Tiltakskode.STUDIESPESIALISERING:
+      return 'Studiespesialisering'
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+      return 'Høyere yrkesfaglig utdanning'
   }
 }
 
@@ -63,6 +77,7 @@ export const hentTiltakGjennomforingNavnArrangorTittel = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string
 ) => {
+  // TODO sjekk denne
   if (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING) {
     return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
   }
@@ -82,6 +97,7 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
+  // TODO sjekk denne
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
@@ -122,6 +138,24 @@ export const getDeltakerStatusDisplayText = (
       return 'Påbegynt Registrering'
     case DeltakerStatusType.AVBRUTT_UTKAST:
       return 'Avbrutt utkast'
+  }
+}
+
+export const getPameldingstypeDisplayText = (type: Pameldingstype): string => {
+  switch (type) {
+    case Pameldingstype.DIREKTE_VEDTAK:
+      return 'Direkte vedtak'
+    case Pameldingstype.TRENGER_GODKJENNING:
+      return 'Trenger godkjenning'
+  }
+}
+
+export const getOppstartstypeDisplayText = (type: Oppstartstype): string => {
+  switch (type) {
+    case Oppstartstype.LOPENDE:
+      return 'Løpende oppstart'
+    case Oppstartstype.FELLES:
+      return 'Felles oppstart'
   }
 }
 
