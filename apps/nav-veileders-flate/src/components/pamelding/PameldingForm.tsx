@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Heading, Textarea } from '@navikt/ds-react'
+import { Alert, Heading, Textarea } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   erKursEllerDigitalt,
+  erKursTiltak,
   fjernUgyldigeTegn,
   INNHOLD_TYPE_ANNET,
+  kanMeldePaaDirekte,
   OmKurset,
   Oppmotested,
+  Oppstartstype,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
@@ -91,6 +94,11 @@ export const PameldingForm = ({
     }
   }, [valgteInnhold])
 
+  const erKursMedLopendeOppstartPameldesDirekte =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+    erKursTiltak(pamelding.deltakerliste.tiltakskode) &&
+    kanMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
+
   return (
     <form
       autoComplete="off"
@@ -159,6 +167,19 @@ export const PameldingForm = ({
           />
 
           <Innholdsbeskrivelse pamelding={pamelding} isDisabled={isDisabled} />
+
+          <Alert variant="info" size="small" inline>
+            Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav
+            og tiltaksarrangør.
+          </Alert>
+          {erKursMedLopendeOppstartPameldesDirekte && (
+            <Alert variant="info" size="small">
+              Dette tiltaket har løpende inntak, som betyr at det ikke utføres
+              noen ytterligere vurdering av om deltakeren er kvalifisert for
+              kurset før oppstart. Denne vurderingen må derfor utføres av
+              Nav-veileder.
+            </Alert>
+          )}
 
           <PameldingFormButtons
             pamelding={pamelding}
