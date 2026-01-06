@@ -2,20 +2,22 @@ import { BodyLong, Heading, Label, List } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import {
   erKursTiltak,
   formatDate,
   formatDateWithMonthName,
-  kanDeleDeltakerMedArrangor
+  kanDeleDeltakerMedArrangor,
+  kanMeldePaaDirekte
 } from '../utils/utils'
 
 interface Props {
   tiltakskode: Tiltakskode
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype | null
-  kreverGodkjenning: boolean
+  pameldingstype: Pameldingstype
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
@@ -29,7 +31,7 @@ export const OmKurset = ({
   tiltakskode,
   statusType,
   oppstartstype,
-  kreverGodkjenning,
+  pameldingstype,
   startdato,
   sluttdato,
   headingLevel,
@@ -66,6 +68,8 @@ export const OmKurset = ({
   if (!skalViseOmKurset) {
     return null
   }
+
+  const kreverGodkjenning = !kanMeldePaaDirekte(pameldingstype)
 
   return (
     <section className={className ?? ''}>

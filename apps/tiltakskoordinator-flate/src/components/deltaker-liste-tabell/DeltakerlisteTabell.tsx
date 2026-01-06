@@ -64,6 +64,7 @@ export const DeltakerlisteTabell = () => {
     }
   }, [handlingValg])
 
+  // TODO skal denen også ha med kreverGodkjenning?
   const skalViseVurderinger =
     erFellesOppstart &&
     (deltakerlisteDetaljer.tiltakskode ==
