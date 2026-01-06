@@ -44,7 +44,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    'amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
+    '/amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
     async ({ params }) => {
       const { oppstartstype } = params
 
@@ -53,7 +53,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    'amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
+    '/amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
     async ({ params }) => {
       const { pameldingstype } = params
 
