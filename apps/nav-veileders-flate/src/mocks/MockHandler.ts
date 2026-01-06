@@ -19,7 +19,8 @@ import {
   HistorikkType,
   Innhold,
   lagHistorikkFellesOppstart,
-  Oppstartstype
+  Oppstartstype,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -96,7 +97,7 @@ export class MockHandler {
           ledetekst: ledetekst
         },
         erEnkeltplassUtenRammeavtale: false,
-        kreverGodkjenning: false,
+        pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
       },
@@ -395,7 +396,7 @@ export class MockHandler {
   setTiltakskode(tiltakskode: Tiltakskode) {
     this.tiltakskode = tiltakskode
     const oppdatertPamelding = this.pamelding
-    const erEnkeltplass =
+    const erEnkeltplassFraArena =
       tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
@@ -427,14 +428,14 @@ export class MockHandler {
       if (
         tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
         tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplass
+        erEnkeltplassFraArena
       ) {
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
-      if (erEnkeltplass) {
+      if (erEnkeltplassFraArena) {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = true
         oppdatertPamelding.forslag = []
         oppdatertPamelding.importertFraArena = {
@@ -448,20 +449,33 @@ export class MockHandler {
       if (erKursTiltak(tiltakskode)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
-        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
-        oppdatertPamelding.deltakerliste.kreverGodkjenning = true
-      } else if (erEnkeltplass) {
+      } else if (erEnkeltplassFraArena) {
         oppdatertPamelding.bakgrunnsinformasjon = null
-        oppdatertPamelding.deltakerliste.oppstartstype = null
-        oppdatertPamelding.deltakerliste.kreverGodkjenning = false
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
-        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
-        oppdatertPamelding.deltakerliste.kreverGodkjenning = false
       }
 
       this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+    }
+    return HttpResponse.json(this.pamelding)
+  }
+
+  setOppstartstype(oppstartstype: Oppstartstype) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.oppstartstype = oppstartstype
+      this.pamelding = oppdatertPamelding
+    }
+    return HttpResponse.json(this.pamelding)
+  }
+
+  setPameldingstype(pameldingstype: Pameldingstype) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.pameldingstype = pameldingstype
+      this.pamelding = oppdatertPamelding
     }
     return HttpResponse.json(this.pamelding)
   }

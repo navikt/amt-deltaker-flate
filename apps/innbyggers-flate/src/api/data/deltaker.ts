@@ -7,7 +7,8 @@ import {
   vedtaksinformasjonSchema,
   Oppstartstype,
   nullableDateSchema,
-  Tiltakskode
+  Tiltakskode,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -17,7 +18,7 @@ export const deltakerlisteSchema = z.object({
   tiltakskode: z.enum(Tiltakskode),
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
-  kreverGodkjenning: z.boolean(),
+  pameldingstype: z.enum(Pameldingstype),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   erEnkeltplassUtenRammeavtale: z.boolean(),

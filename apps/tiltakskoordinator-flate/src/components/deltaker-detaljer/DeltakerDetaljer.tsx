@@ -21,13 +21,14 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
+  // TODO denne må kanskje sjekkes også på om det kreves godkjenning?
   const visVurdering =
     deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
     deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
 
   return (
     <div className="flex flex-col mb-4">
-      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)] mb-4">
+      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-(--a-border-divider) mb-4">
         <Detail title="Status">
           <DeltakerStatusTag statusType={deltaker.status.type} />
         </Detail>

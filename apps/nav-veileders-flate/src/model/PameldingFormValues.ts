@@ -16,13 +16,12 @@ export const dagerPerUkeFeilmelding =
   'Dager per uke må være et helt tall fra 1 til 5.'
 
 export const erInnholdPakrevd = (tiltakskode: Tiltakskode) =>
-  !(
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-    tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-    tiltakskode === Tiltakskode.JOBBKLUBB
-  )
+  [
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    Tiltakskode.ARBEIDSRETTET_REHABILITERING,
+    Tiltakskode.AVKLARING,
+    Tiltakskode.OPPFOLGING
+  ].includes(tiltakskode)
 
 export const pameldingFormSchema = z
   .object({

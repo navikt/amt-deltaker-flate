@@ -14,7 +14,8 @@ import {
   getUtvidetInnhold,
   Oppstartstype,
   erKursTiltak,
-  lagHistorikkFellesOppstart
+  lagHistorikkFellesOppstart,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -53,7 +54,7 @@ export const createDeltaker = (
       tiltakskode: tiltakskode,
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
-      kreverGodkjenning: false,
+      pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
       startdato: dayjs('2022-10-28').toDate(),
       sluttdato: dayjs('2027-12-20').toDate(),
       erEnkeltplassUtenRammeavtale: false,
@@ -156,7 +157,7 @@ export class MockHandler {
   setTiltakskode(tiltakskode: Tiltakskode) {
     this.tiltakskode = tiltakskode
     const oppdatertDeltaker = this.deltaker
-    const erEnkeltplass =
+    const erEnkeltplassFraArena =
       tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
@@ -183,14 +184,14 @@ export class MockHandler {
       if (
         tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
         tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplass
+        erEnkeltplassFraArena
       ) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
-      if (erEnkeltplass) {
+      if (erEnkeltplassFraArena) {
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = true
         oppdatertDeltaker.forslag = []
         oppdatertDeltaker.importertFraArena = {
@@ -204,20 +205,33 @@ export class MockHandler {
       if (erKursTiltak(tiltakskode)) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertDeltaker.bakgrunnsinformasjon = null
-        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
-        oppdatertDeltaker.deltakerliste.kreverGodkjenning = true
-      } else if (erEnkeltplass) {
+      } else if (erEnkeltplassFraArena) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
-        oppdatertDeltaker.deltakerliste.oppstartstype = null
-        oppdatertDeltaker.deltakerliste.kreverGodkjenning = false
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
-        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
-        oppdatertDeltaker.deltakerliste.kreverGodkjenning = false
       }
 
       this.deltaker = oppdatertDeltaker
-      return HttpResponse.json(oppdatertDeltaker)
+    }
+    return HttpResponse.json(this.deltaker)
+  }
+
+  setOppstartstype(oppstartstype: Oppstartstype) {
+    const oppdatertDeltaker = this.deltaker
+
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.oppstartstype = oppstartstype
+      this.deltaker = oppdatertDeltaker
+    }
+    return HttpResponse.json(this.deltaker)
+  }
+
+  setPameldingstype(pameldingstype: Pameldingstype) {
+    const oppdatertDeltaker = this.deltaker
+
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.pameldingstype = pameldingstype
+      this.deltaker = oppdatertDeltaker
     }
     return HttpResponse.json(this.deltaker)
   }

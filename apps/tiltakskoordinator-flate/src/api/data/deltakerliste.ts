@@ -68,6 +68,7 @@ export const deltakerlisteDetaljerSchema = z.object({
   oppstartstype: z.enum(Oppstartstype).nullable(),
   apentForPamelding: z.boolean(),
   antallPlasser: z.number().nullable(),
+  // TODO legge til pameldingstype
   koordinatorer: z.array(koordinatorSchema)
 })
 

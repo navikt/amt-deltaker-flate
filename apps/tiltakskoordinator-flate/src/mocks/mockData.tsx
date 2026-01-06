@@ -222,6 +222,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     oppstartstype: Oppstartstype.FELLES,
     apentForPamelding: true,
     antallPlasser: 42,
+    // TODO legge til pameldingstype
     koordinatorer: [
       {
         id: uuidv4(),

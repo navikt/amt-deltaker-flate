@@ -93,6 +93,7 @@ export const DeltakerStatusInfoTekst = ({
   tiltaketsStartDato,
   erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
+  // TODO er det noe her?
   if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
     return getHoyereUtdanningInfo(statusType)
   }
@@ -145,6 +146,7 @@ const getIngenStartDatoInfoTekst = (
     return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Nav eller arrangøren tar kontakt med deg for å avtale når du skal begynne.`
   }
 
+  // TODO er det noe her?
   return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale når du skal begynne.`
     : 'Når arrangøren har en ledig plass så vil de ta kontakt med deg for å avtale når du skal begynne.'

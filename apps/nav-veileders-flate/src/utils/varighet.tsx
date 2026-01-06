@@ -91,6 +91,15 @@ export const varighetValgForTiltakskode = (
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return []
     case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+    // TODO høre med de andre
+    /*
+ARBEIDSMARKEDSOPPLAERING
+NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
+STUDIESPESIALISERING
+FAG_OG_YRKESOPPLAERING
+HOYERE_YRKESFAGLIG_UTDANNING
+
+    */
     default:
       return [
         VarighetValg.FIRE_UKER,

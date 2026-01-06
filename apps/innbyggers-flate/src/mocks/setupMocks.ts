@@ -1,4 +1,9 @@
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { HttpResponse, delay, http } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { MockHandler } from './MockHandler.ts'
@@ -34,6 +39,26 @@ export const worker = setupWorker(
       const { tiltakskode } = params
 
       const response = handler.setTiltakskode(tiltakskode as Tiltakskode)
+      return response
+    }
+  ),
+  http.post(
+    'amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
+    async ({ params }) => {
+      const { oppstartstype } = params
+
+      const response = handler.setOppstartstype(oppstartstype as Oppstartstype)
+      return response
+    }
+  ),
+  http.post(
+    'amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
+    async ({ params }) => {
+      const { pameldingstype } = params
+
+      const response = handler.setPameldingstype(
+        pameldingstype as Pameldingstype
+      )
       return response
     }
   ),

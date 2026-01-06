@@ -130,7 +130,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         tiltakskode={pamelding.deltakerliste.tiltakskode}
         statusType={pamelding.status.type}
         oppstartstype={pamelding.deltakerliste.oppstartstype}
-        kreverGodkjenning={pamelding.deltakerliste.kreverGodkjenning}
+        pameldingstype={pamelding.deltakerliste.pameldingstype}
         startdato={pamelding.deltakerliste.startdato}
         sluttdato={pamelding.deltakerliste.sluttdato}
         headingLevel={2}
