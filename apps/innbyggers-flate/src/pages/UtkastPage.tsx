@@ -145,16 +145,20 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {!erKursEllerDigitalt(tiltakskode) && deltaker.bakgrunnsinformasjon && (
-        <>
-          <Heading level="3" size="medium" className="mt-6">
-            Bakgrunnsinfo
-          </Heading>
-          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-            {deltaker.bakgrunnsinformasjon || EMDASH}
-          </BodyLong>
-        </>
-      )}
+      {!erKursEllerDigitalt(
+        tiltakskode,
+        deltaker.deltakerliste.pameldingstype
+      ) &&
+        deltaker.bakgrunnsinformasjon && (
+          <>
+            <Heading level="3" size="medium" className="mt-6">
+              Bakgrunnsinfo
+            </Heading>
+            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+              {deltaker.bakgrunnsinformasjon || EMDASH}
+            </BodyLong>
+          </>
+        )}
 
       {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
         <>
@@ -173,7 +177,7 @@ export const UtkastPage = () => {
       {!deltaker.deltakerliste.erEnkeltplassUtenRammeavtale && (
         <>
           <Heading level="3" size="medium" className="mt-6">
-            Kontaktinformasjon
+            Dette deles med arrangøren
           </Heading>
           {kanDeleDeltakerMedArrangor(
             tiltakskode,
@@ -208,7 +212,10 @@ export const UtkastPage = () => {
           Telefonnummer og e-postadresse
         </List.Item>
         {deltaker.adresseDelesMedArrangor &&
-          !erKursEllerDigitalt(tiltakskode) && (
+          !erKursEllerDigitalt(
+            tiltakskode,
+            deltaker.deltakerliste.pameldingstype
+          ) && (
             <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
           )}
       </List>

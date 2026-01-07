@@ -38,11 +38,17 @@ const skalViseForlengKnapp = (
 
 const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
+  !erKursEllerDigitalt(
+    pamelding.deltakerliste.tiltakskode,
+    pamelding.deltakerliste.pameldingstype
+  )
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
+  !erKursEllerDigitalt(
+    pamelding.deltakerliste.tiltakskode,
+    pamelding.deltakerliste.pameldingstype
+  )
 
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL

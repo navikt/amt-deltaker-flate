@@ -3,8 +3,8 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
+  Tiltakskode,
   UtkastHeader,
-  erKursEllerDigitalt,
   harFellesOppstart,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -43,9 +43,10 @@ export const RedigerPameldingPage = () => {
   const tittel = erUtkastAvbrutt
     ? 'Avbrutt utkast'
     : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
-  const kanEndreUtkast = !erKursEllerDigitalt(
-    pamelding.deltakerliste.tiltakskode
-  )
+  const kanEndreUtkast = ![
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
+    Tiltakskode.JOBBKLUBB
+  ].includes(pamelding.deltakerliste.tiltakskode)
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)

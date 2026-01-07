@@ -5,6 +5,7 @@ import {
   erKursEllerDigitalt,
   erKursTiltak,
   fjernUgyldigeTegn,
+  harFritekstSomDelesMedArrangor,
   INNHOLD_TYPE_ANNET,
   kanMeldePaaDirekte,
   OmKurset,
@@ -27,7 +28,6 @@ import { Innhold } from './Innhold.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
-import { Innholdsbeskrivelse } from './Innholdsbeskrivelse.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -51,7 +51,10 @@ export const PameldingForm = ({
   const errorSummaryRef = useRef<HTMLDivElement>(null)
   const tiltakskode = pamelding.deltakerliste.tiltakskode
   const status = pamelding.status.type
-  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
+  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(
+    tiltakskode,
+    pamelding.deltakerliste.pameldingstype
+  )
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -96,7 +99,10 @@ export const PameldingForm = ({
 
   const erKursMedLopendeOppstartPameldesDirekte =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erKursTiltak(pamelding.deltakerliste.tiltakskode) &&
+    erKursTiltak(
+      pamelding.deltakerliste.tiltakskode,
+      pamelding.deltakerliste.pameldingstype
+    ) &&
     kanMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
 
   return (
@@ -109,6 +115,13 @@ export const PameldingForm = ({
     >
       <FormProvider {...methods}>
         <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--a-surface-alt-3) mb-4">
+          {harFritekstSomDelesMedArrangor(tiltakskode) && (
+            <Alert variant="info" size="small" inline>
+              Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav
+              og tiltaksarrangør.
+            </Alert>
+          )}
+
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
@@ -166,12 +179,6 @@ export const PameldingForm = ({
             statusType={pamelding.status.type}
           />
 
-          <Innholdsbeskrivelse pamelding={pamelding} isDisabled={isDisabled} />
-
-          <Alert variant="info" size="small" inline>
-            Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav
-            og tiltaksarrangør.
-          </Alert>
           {erKursMedLopendeOppstartPameldesDirekte && (
             <Alert variant="info" size="small">
               Dette tiltaket har løpende inntak, som betyr at det ikke utføres
