@@ -40,7 +40,7 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakskode) || !oppstartstype) {
+  if (!erKursTiltak(tiltakskode, pameldingstype) || !oppstartstype) {
     return null
   }
 

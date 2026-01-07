@@ -139,33 +139,63 @@ export const fjernUgyldigeTegn = (str: string) => {
   return cleanText
 }
 
+export const harFritekstSomDelesMedArrangor = (tiltakskode: Tiltakskode) =>
+  !(
+    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
+    tiltakskode === Tiltakskode.JOBBKLUBB
+  )
+
+// Tiltakskoordinator kan dele deltakeren med arrangør for vurdering hvis oppstartstype er felles
 export const kanDeleDeltakerMedArrangor = (
   tiltakskode: Tiltakskode,
   oppstartstype: Oppstartstype | null
 ) =>
-  // TODO sjekk opp
   oppstartstype === Oppstartstype.FELLES &&
   [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
+export const erEnkeltplassMedRammeavtale = (
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
+) =>
+  pameldingstype === Pameldingstype.DIREKTE_VEDTAK &&
+  [
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
+
 // TODO sjekk opp
-export const erKursEllerDigitalt = (tiltakskode: Tiltakskode) =>
+export const erKursEllerDigitalt = (
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
+) =>
   [
     Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
     Tiltakskode.JOBBKLUBB,
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
+  ].includes(tiltakskode) ||
+  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
 
-// TODO; sjekek bruken her, vi må kanskje få inn kreverGodkjenning
-export const erKursTiltak = (tiltakskode: Tiltakskode) =>
+// TODO; sjekek bruken her, vi må kanskje få inn påmeldingstype
+export const erKursTiltak = (
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
+) =>
   [
     Tiltakskode.JOBBKLUBB,
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
+  ].includes(tiltakskode) ||
+  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES

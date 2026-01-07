@@ -221,6 +221,7 @@ export const TiltakPage = () => {
           adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
           tiltakskode={deltaker.deltakerliste.tiltakskode}
           statusType={deltaker.status.type}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           erEnkeltplassUtenRammeavtale={
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
