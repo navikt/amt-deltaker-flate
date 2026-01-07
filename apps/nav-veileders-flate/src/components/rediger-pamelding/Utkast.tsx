@@ -33,7 +33,10 @@ export const Utkast = ({
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
+  const visBakgrunnsinfo = !erKursEllerDigitalt(
+    tiltakskode,
+    deltakerliste.pameldingstype
+  )
 
   return (
     <VStack>

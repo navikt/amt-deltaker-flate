@@ -446,7 +446,12 @@ export class MockHandler {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (erKursTiltak(tiltakskode)) {
+      if (
+        erKursTiltak(
+          tiltakskode,
+          oppdatertPamelding.deltakerliste.pameldingstype
+        )
+      ) {
         // Obs disse kan ha løpende oppstart også.
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else if (erEnkeltplassFraArena) {

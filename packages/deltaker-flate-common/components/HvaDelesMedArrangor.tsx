@@ -3,7 +3,8 @@ import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
 import {
   Tiltakskode,
   DeltakerStatusType,
-  Oppstartstype
+  Oppstartstype,
+  Pameldingstype
 } from '../model/deltaker'
 import { erKursEllerDigitalt, kanDeleDeltakerMedArrangor } from '../utils/utils'
 
@@ -13,6 +14,7 @@ interface Props {
   arrangorNavn: string
   tiltakskode: Tiltakskode
   oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   erEnkeltplassUtenRammeavtale: boolean
   className?: string
 }
@@ -23,13 +25,14 @@ export const HvaDelesMedArrangor = ({
   arrangorNavn,
   tiltakskode,
   oppstartstype,
+  pameldingstype,
   erEnkeltplassUtenRammeavtale,
   className
 }: Props) => {
   if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
     return null
   }
-  const erKurs = erKursEllerDigitalt(tiltakskode)
+  const erKurs = erKursEllerDigitalt(tiltakskode, pameldingstype)
   const visDelMedArrangorInfo =
     kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
     (statusType === DeltakerStatusType.SOKT_INN ||

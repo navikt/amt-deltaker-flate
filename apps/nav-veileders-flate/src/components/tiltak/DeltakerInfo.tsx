@@ -200,6 +200,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
           tiltakskode={pamelding.deltakerliste.tiltakskode}
           statusType={pamelding.status.type}
+          pameldingstype={pamelding.deltakerliste.pameldingstype}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
           className="mt-8"
           erEnkeltplassUtenRammeavtale={
