@@ -1,5 +1,6 @@
 import {
   INNHOLD_TYPE_ANNET,
+  skalViseInnholdOgBakgrunnaFelt,
   Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -20,7 +21,11 @@ export const generateInnholdFromResponse = (
 ): InnholdDto[] => {
   if (
     pamelding.deltakerliste.tiltakskode ===
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    skalViseInnholdOgBakgrunnaFelt(
+      pamelding.deltakerliste.tiltakskode,
+      pamelding.deltakerliste.pameldingstype
+    )
   ) {
     return innholdsTekst
       ? [

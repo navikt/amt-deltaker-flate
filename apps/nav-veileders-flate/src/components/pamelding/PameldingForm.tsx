@@ -5,7 +5,6 @@ import {
   erKursEllerDigitalt,
   erKursTiltak,
   fjernUgyldigeTegn,
-  harFritekstSomDelesMedArrangor,
   INNHOLD_TYPE_ANNET,
   kanMeldePaaDirekte,
   OmKurset,
@@ -28,6 +27,7 @@ import { Innhold } from './Innhold.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
+import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -115,13 +115,6 @@ export const PameldingForm = ({
     >
       <FormProvider {...methods}>
         <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--a-surface-alt-3) mb-4">
-          {harFritekstSomDelesMedArrangor(tiltakskode) && (
-            <Alert variant="info" size="small" inline>
-              Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav
-              og tiltaksarrangør.
-            </Alert>
-          )}
-
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />
@@ -179,12 +172,17 @@ export const PameldingForm = ({
             statusType={pamelding.status.type}
           />
 
+          <InnholdOgBakgrunn pamelding={pamelding} isDisabled={isDisabled} />
+
           {erKursMedLopendeOppstartPameldesDirekte && (
             <Alert variant="info" size="small">
-              Dette tiltaket har løpende inntak, som betyr at det ikke utføres
-              noen ytterligere vurdering av om deltakeren er kvalifisert for
-              kurset før oppstart. Denne vurderingen må derfor utføres av
-              Nav-veileder.
+              <Heading size="xsmall" level="3">
+                Ved å fullføre denne påmeldingen fatter du også vedtaket om
+                tiltaksplass
+              </Heading>
+              Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
+              kravene for å delta i tiltaket. Deltakeren får vedtak og
+              informasjonen deles med arrangøren.
             </Alert>
           )}
 

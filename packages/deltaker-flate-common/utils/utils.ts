@@ -197,6 +197,16 @@ export const erKursTiltak = (
   ].includes(tiltakskode) ||
   erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
 
+export const skalViseInnholdOgBakgrunnaFelt = (
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
+) =>
+  [
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode) ||
+  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
+
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
 
