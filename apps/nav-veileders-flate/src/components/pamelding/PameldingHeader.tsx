@@ -23,16 +23,13 @@ export const PameldingHeader = ({
   deltakerliste,
   vedtaksinformasjon
 }: Props) => {
-  let statusTekst = ''
+  let statusTekst = undefined
   switch (deltakerStatus.type) {
     case DeltakerStatusType.AVBRUTT_UTKAST:
       statusTekst = 'Avbrutt utkast'
       break
     case DeltakerStatusType.UTKAST_TIL_PAMELDING:
       statusTekst = 'Utkastet er delt og venter på godkjenning'
-      break
-    case DeltakerStatusType.KLADD:
-      statusTekst = 'Kladd til påmelding"'
       break
   }
 
