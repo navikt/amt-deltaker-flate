@@ -163,6 +163,7 @@ export const TiltakPage = () => {
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -197,6 +198,7 @@ export const TiltakPage = () => {
         <SeEndringer
           className="mt-8"
           tiltakskode={deltaker.deltakerliste.tiltakskode}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
           open={visEndringer}

@@ -136,6 +136,7 @@ export const UtkastPage = () => {
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6 mb-2">

@@ -6,15 +6,15 @@ import {
   XMarkIcon
 } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
-import { Tiltakskode } from 'deltaker-flate-common'
+import { Oppstartstype, Tiltakskode } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 import { useShadowDom } from '../../context-providers/ShadowDomContext'
+import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 
 interface Props {
   onModalOpen: () => void
@@ -57,12 +57,12 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
     }
   }
 
-  // TODO ha med at det skal være felles oppstart, ev også krever goskjenning?
   const kanDeleMedArrangor =
-    deltakerlisteDetaljer.tiltakskode ==
+    deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES &&
+    (deltakerlisteDetaljer.tiltakskode ==
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+      deltakerlisteDetaljer.tiltakskode ==
+        Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING)
 
   if (!kanDeleMedArrangor && !kometErMaster) {
     return <div className="mt-8"></div>

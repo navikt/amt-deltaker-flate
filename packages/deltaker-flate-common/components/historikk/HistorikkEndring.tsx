@@ -1,5 +1,9 @@
 import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
-import { Tiltakskode, Oppstartstype } from '../../model/deltaker.ts'
+import {
+  Tiltakskode,
+  Oppstartstype,
+  Pameldingstype
+} from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
@@ -19,6 +23,7 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   deltakerEndring: DeltakerEndring
   tiltakskode: Tiltakskode
+  pameldingstype: Pameldingstype
 }
 
 const mapEndringsType = (endringType: EndringType) => {
@@ -50,7 +55,11 @@ const mapEndringsType = (endringType: EndringType) => {
   }
 }
 
-const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
+const getEndringsDetaljer = (
+  endring: Endring,
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
+) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (
@@ -126,6 +135,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
       return (
         <DeltakelseInnhold
           tiltakskode={tiltakskode}
+          pameldingstype={pameldingstype}
           deltakelsesinnhold={{
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
@@ -198,7 +208,11 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
   }
 }
 
-export const HistorikkEndring = ({ deltakerEndring, tiltakskode }: Props) => {
+export const HistorikkEndring = ({
+  deltakerEndring,
+  tiltakskode,
+  pameldingstype
+}: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
 
   return (
@@ -207,7 +221,11 @@ export const HistorikkEndring = ({ deltakerEndring, tiltakskode }: Props) => {
       icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
       forslag={deltakerEndring.forslag}
     >
-      {getEndringsDetaljer(deltakerEndring.endring, tiltakskode)}
+      {getEndringsDetaljer(
+        deltakerEndring.endring,
+        tiltakskode,
+        pameldingstype
+      )}
       <Detail className="mt-1" textColor="subtle">
         {`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
       </Detail>

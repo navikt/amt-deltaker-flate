@@ -31,6 +31,7 @@ export const AvbruttUtkastPage = () => {
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-2 mb-2">

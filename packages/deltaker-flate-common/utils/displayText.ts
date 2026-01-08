@@ -58,9 +58,9 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
     case Tiltakskode.HOYERE_UTDANNING:
       return 'Høyere utdanning'
 
-    // TODO skal vi har med  (enkeltplass)?
+    // TODO skal vi har med (enkeltplass)?
     case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+      return 'Arbeidsmarkedsopplæring'
     case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
       return 'Norskopplæring grunnleggende ferdigheter FOV'
     case Tiltakskode.STUDIESPESIALISERING:
@@ -77,7 +77,8 @@ export const hentTiltakGjennomforingNavnArrangorTittel = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string
 ) => {
-  // TODO sjekk denne
+  // TODO sjekk denne for pamelidngstype og nye tiltakskoder?
+  // skal Kurs fjernes? siden de ble fjernet i aktivitetskort?
   if (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING) {
     return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
   }
@@ -97,7 +98,7 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
-  // TODO sjekk denne
+  // TODO sjekk denne for pamelidngstype og nye tiltakskoder?
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING

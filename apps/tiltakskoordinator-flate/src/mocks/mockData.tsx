@@ -7,6 +7,7 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   UlestHendelseType,
   Vurderingstype
@@ -222,7 +223,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     oppstartstype: Oppstartstype.FELLES,
     apentForPamelding: true,
     antallPlasser: 42,
-    // TODO legge til pameldingstype
+    pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
     koordinatorer: [
       {
         id: uuidv4(),

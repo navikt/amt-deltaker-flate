@@ -21,7 +21,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
-  // TODO denne må kanskje sjekkes også på om det kreves godkjenning?
+  // TODO denne må kanskje sjekkes også på oppstartstypen er felles?
   const visVurdering =
     deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
     deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
@@ -77,6 +77,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
           className="mt-4 w-fit"
           deltakerId={deltaker.id}
           tiltakskode={deltaker.tiltakskode}
+          pameldingstype={deltaker.pameldingstype}
           fetchHistorikk={getDeltakerHistorikk}
         />
       )}
