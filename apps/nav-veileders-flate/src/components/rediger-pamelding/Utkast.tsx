@@ -42,6 +42,7 @@ export const Utkast = ({
     <VStack>
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
+        pameldingstype={deltakerliste.pameldingstype}
         deltakelsesinnhold={innhold}
         heading={
           <Heading level="3" size="small" className="mb-2">

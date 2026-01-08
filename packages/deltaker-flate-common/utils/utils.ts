@@ -172,7 +172,7 @@ export const erEnkeltplassMedRammeavtale = (
     Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
-// TODO sjekk opp
+// TODO kan disse forenkles / endre navn til noe mer vettugt?
 export const erKursEllerDigitalt = (
   tiltakskode: Tiltakskode,
   pameldingstype: Pameldingstype
@@ -185,7 +185,6 @@ export const erKursEllerDigitalt = (
   ].includes(tiltakskode) ||
   erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
 
-// TODO; sjekek bruken her, vi må kanskje få inn påmeldingstype
 export const erKursTiltak = (
   tiltakskode: Tiltakskode,
   pameldingstype: Pameldingstype

@@ -4,6 +4,7 @@ import {
   DeltakerStatusType,
   formatDate,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
@@ -64,7 +65,6 @@ export const DeltakerlisteTabell = () => {
     }
   }, [handlingValg])
 
-  // TODO skal denen også ha med kreverGodkjenning?
   const skalViseVurderinger =
     erFellesOppstart &&
     (deltakerlisteDetaljer.tiltakskode ==
@@ -97,7 +97,8 @@ export const DeltakerlisteTabell = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      {deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES && (
+      {deltakerlisteDetaljer.pameldingstype ===
+        Pameldingstype.TRENGER_GODKJENNING && (
         <HandlingerKnapp
           onModalOpen={() => setModalOpen(true)}
           className="place-self-end mt-2 mb-2"

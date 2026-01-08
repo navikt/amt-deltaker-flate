@@ -3,6 +3,7 @@ import {
   DeltakerStatusType,
   nullableDateSchema,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   Vurderingstype
 } from 'deltaker-flate-common'
@@ -68,7 +69,7 @@ export const deltakerlisteDetaljerSchema = z.object({
   oppstartstype: z.enum(Oppstartstype).nullable(),
   apentForPamelding: z.boolean(),
   antallPlasser: z.number().nullable(),
-  // TODO legge til pameldingstype
+  pameldingstype: z.enum(Pameldingstype),
   koordinatorer: z.array(koordinatorSchema)
 })
 

@@ -1,10 +1,16 @@
 import { BodyLong, List } from '@navikt/ds-react'
-import { Deltakelsesinnhold, Tiltakskode } from '../model/deltaker'
+import {
+  Deltakelsesinnhold,
+  Pameldingstype,
+  Tiltakskode
+} from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
+import { skalViseInnholdOgBakgrunnaFelt } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
   tiltakskode: Tiltakskode
+  pameldingstype: Pameldingstype
   heading: React.ReactNode | null
   listClassName?: string
 }
@@ -12,6 +18,7 @@ interface Props {
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
   tiltakskode,
+  pameldingstype,
   heading,
   listClassName
 }: Props) => {
@@ -19,15 +26,19 @@ export const DeltakelseInnhold = ({
     return null
   }
 
+  const harInnholdsTekst =
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    skalViseInnholdOgBakgrunnaFelt(tiltakskode, pameldingstype)
+
   return (
     <>
       {heading ?? null}
 
-      {deltakelsesinnhold?.ledetekst && (
+      {deltakelsesinnhold.ledetekst && (
         <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
       )}
 
-      {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+      {harInnholdsTekst &&
         deltakelsesinnhold.innhold.length > 0 &&
         deltakelsesinnhold.innhold
           .filter((i) => i.valgt)
@@ -35,7 +46,7 @@ export const DeltakelseInnhold = ({
             if (i.innholdskode === INNHOLD_TYPE_ANNET) {
               return (
                 <BodyLong
-                  className="mt-4 whitespace-pre-wrap"
+                  className={`${deltakelsesinnhold.ledetekst ? 'mt-4' : ''} whitespace-pre-wrap`}
                   key={i.innholdskode}
                   size="small"
                 >
@@ -45,23 +56,22 @@ export const DeltakelseInnhold = ({
             }
           })}
 
-      {tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-        deltakelsesinnhold.innhold.length > 0 && (
-          <List as="ul" size="small" className={listClassName ?? ''}>
-            {deltakelsesinnhold.innhold
-              .filter((i) => i.valgt)
-              .map((i) => (
-                <List.Item
-                  key={i.innholdskode}
-                  className="mt-2 whitespace-pre-wrap"
-                >
-                  {i.innholdskode === INNHOLD_TYPE_ANNET
-                    ? i.beskrivelse
-                    : i.tekst}
-                </List.Item>
-              ))}
-          </List>
-        )}
+      {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
+        <List as="ul" size="small" className={listClassName ?? ''}>
+          {deltakelsesinnhold.innhold
+            .filter((i) => i.valgt)
+            .map((i) => (
+              <List.Item
+                key={i.innholdskode}
+                className="mt-2 whitespace-pre-wrap"
+              >
+                {i.innholdskode === INNHOLD_TYPE_ANNET
+                  ? i.beskrivelse
+                  : i.tekst}
+              </List.Item>
+            ))}
+        </List>
+      )}
     </>
   )
 }
