@@ -125,6 +125,7 @@ export const createMockDeltaker = (
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
     tilgangTilBruker: !adresseBeskyttet,
     ikkeDigitalOgManglerAdresse: true,
     harAktiveForslag: aktiveForslag.length > 0,
