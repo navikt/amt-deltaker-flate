@@ -147,6 +147,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <DeltakelseInnhold
         tiltakskode={pamelding.deltakerliste.tiltakskode}
+        pameldingstype={pamelding.deltakerliste.pameldingstype}
         deltakelsesinnhold={pamelding.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -180,6 +181,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <SeEndringer
           className="mt-8"
           tiltakskode={pamelding.deltakerliste.tiltakskode}
+          pameldingstype={pamelding.deltakerliste.pameldingstype}
           deltakerId={pamelding.deltakerId}
           fetchHistorikk={getHistorikk}
         />

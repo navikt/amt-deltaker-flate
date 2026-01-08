@@ -1,5 +1,5 @@
 import { Alert, Modal } from '@navikt/ds-react'
-import { Tiltakskode } from '../../model/deltaker'
+import { Pameldingstype, Tiltakskode } from '../../model/deltaker'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
@@ -18,6 +18,7 @@ import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinato
 interface Props {
   historikk: DeltakerHistorikkListe | null
   tiltakskode: Tiltakskode
+  pameldingstype: Pameldingstype
   open: boolean
   loading: boolean
   onClose: () => void
@@ -25,7 +26,8 @@ interface Props {
 
 const getHistorikkItem = (
   historikk: DeltakerHistorikk,
-  tiltakskode: Tiltakskode
+  tiltakskode: Tiltakskode,
+  pameldingstype: Pameldingstype
 ) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
@@ -44,6 +46,7 @@ const getHistorikkItem = (
         <HistorikkEndring
           deltakerEndring={historikk}
           tiltakskode={tiltakskode}
+          pameldingstype={pameldingstype}
         />
       )
     case HistorikkType.Forslag:
@@ -73,6 +76,7 @@ export const HistorikkModal = ({
   loading,
   historikk,
   tiltakskode,
+  pameldingstype,
   onClose
 }: Props) => {
   return (
@@ -89,7 +93,7 @@ export const HistorikkModal = ({
           historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
-              {getHistorikkItem(i, tiltakskode)}
+              {getHistorikkItem(i, tiltakskode, pameldingstype)}
             </div>
           ))}
         {!loading && (!historikk || historikk.length < 0) && (
