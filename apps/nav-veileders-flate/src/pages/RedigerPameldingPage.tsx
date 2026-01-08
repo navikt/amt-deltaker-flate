@@ -4,7 +4,6 @@ import {
   DeferredFetchState,
   DeltakerStatusType,
   Tiltakskode,
-  UtkastHeader,
   harFellesOppstart,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -38,11 +37,7 @@ export const RedigerPameldingPage = () => {
   const erFellesOppstart = harFellesOppstart(
     pamelding.deltakerliste.oppstartstype
   )
-  const erUtkastAvbrutt =
-    pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
-  const tittel = erUtkastAvbrutt
-    ? 'Avbrutt utkast'
-    : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
+
   const kanEndreUtkast = ![
     Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
     Tiltakskode.JOBBKLUBB
@@ -71,18 +66,11 @@ export const RedigerPameldingPage = () => {
   return (
     <div className="max-w-190 md:m-auto m-4" data-testid="page_utkast">
       <Tilbakeknapp />
-      <div>
-        <PameldingHeader
-          title={tittel}
-          deltakerliste={pamelding.deltakerliste}
-        />
-        <UtkastHeader
-          visStatusVenterPaaBruker={!erUtkastAvbrutt}
-          vedtaksinformasjon={pamelding.vedtaksinformasjon}
-          deltakerStatus={pamelding.status}
-          erNAVVeileder
-        />
-      </div>
+      <PameldingHeader
+        deltakerStatus={pamelding.status}
+        deltakerliste={pamelding.deltakerliste}
+        vedtaksinformasjon={pamelding.vedtaksinformasjon}
+      />
 
       <VStack gap="2" align="start" className="md:p-8 p-4 bg-white">
         {redigerUtkast && (
