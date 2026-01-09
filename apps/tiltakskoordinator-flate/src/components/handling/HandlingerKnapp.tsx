@@ -6,15 +6,15 @@ import {
   XMarkIcon
 } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
-import { Tiltakskode } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 import { useShadowDom } from '../../context-providers/ShadowDomContext'
+import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
+import { kanDeleDeltakerMedArrangorForVurdering } from 'deltaker-flate-common'
 
 interface Props {
   onModalOpen: () => void
@@ -57,12 +57,12 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
     }
   }
 
-  const kanDeleMedArrangor =
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  const kanDeleMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
+    deltakerlisteDetaljer.pameldingstype,
+    deltakerlisteDetaljer.tiltakskode
+  )
 
+  // TODO denne er kanskje ikke riktig lenger? Kanskje bare komet må være master?
   if (!kanDeleMedArrangor && !kometErMaster) {
     return <div className="mt-8"></div>
   }
@@ -99,7 +99,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
               Handlinger
             </Button>
           </ActionMenu.Trigger>
-          <ActionMenu.Content className="max-w-[14rem]">
+          <ActionMenu.Content className="max-w-56">
             {kanDeleMedArrangor && (
               <ActionMenu.Item
                 onSelect={(e: Event) => {

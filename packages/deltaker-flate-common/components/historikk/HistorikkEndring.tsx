@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
-import { Tiltakskode, Oppstartstype } from '../../model/deltaker.ts'
+import { Oppstartstype, Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,

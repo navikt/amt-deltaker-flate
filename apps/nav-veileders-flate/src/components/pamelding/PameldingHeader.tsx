@@ -1,22 +1,39 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 import {
-  erKursTiltak,
+  DeltakerStatus,
+  DeltakerStatusTag,
+  DeltakerStatusType,
+  getTiltakskodeDisplayText,
   hentTiltakGjennomforingNavnArrangorTittel,
-  Oppstartstype
+  UtkastHeader,
+  Vedtaksinformasjon
 } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/pamelding.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {
-  title: string
+  deltakerStatus: DeltakerStatus
   deltakerliste: Deltakerliste
+  vedtaksinformasjon: Vedtaksinformasjon | null
 }
 
-export const PameldingHeader = ({ title, deltakerliste }: Props) => {
-  const erKursMedLopendeOppstart =
-    deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erKursTiltak(deltakerliste.tiltakskode)
+export const PameldingHeader = ({
+  deltakerStatus,
+  deltakerliste,
+  vedtaksinformasjon
+}: Props) => {
+  let statusTekst = undefined
+  switch (deltakerStatus.type) {
+    case DeltakerStatusType.AVBRUTT_UTKAST:
+      statusTekst = 'Avbrutt utkast'
+      break
+    case DeltakerStatusType.UTKAST_TIL_PAMELDING:
+      statusTekst = 'Utkastet er delt og venter på godkjenning'
+      break
+  }
+
+  const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
 
   return (
     <div>
@@ -27,30 +44,41 @@ export const PameldingHeader = ({ title, deltakerliste }: Props) => {
           deltakerliste.arrangorNavn
         )}
       </Heading>
-      <Heading level="2" size="medium">
-        {title}
-      </Heading>
+
+      <Detail className="mb-4">
+        {getTiltakskodeDisplayText(deltakerliste.tiltakskode)}
+      </Detail>
+
+      {(erKladd ||
+        deltakerStatus.type === DeltakerStatusType.AVBRUTT_UTKAST) && (
+        <div className="mb-4">
+          <DeltakerStatusTag
+            statusType={deltakerStatus.type}
+            name={statusTekst}
+          />
+        </div>
+      )}
+
+      {!erKladd && (
+        <UtkastHeader
+          visStatusVenterPaaBruker={
+            deltakerStatus.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
+          }
+          vedtaksinformasjon={vedtaksinformasjon}
+          deltakerStatus={deltakerStatus}
+          erNAVVeileder
+        />
+      )}
+
       {!deltakerliste.erEnkeltplassUtenRammeavtale && (
         <TiltaksgjennomforingLink
           deltakerlisteId={deltakerliste.deltakerlisteId}
         >
-          <div className="flex mt-2">
+          <div className="flex">
             <BodyShort size="small">Gå til tiltaksgjennomføringen</BodyShort>
             <ChevronRightIcon aria-label="Gå til tiltaksgjennomføringen" />
           </div>
         </TiltaksgjennomforingLink>
-      )}
-
-      {erKursMedLopendeOppstart && (
-        <Alert variant="info" size="small" className="mt-3">
-          <Heading spacing size="xsmall" level="3">
-            Ved å fullføre denne påmeldingen fatter du også vedtaket om
-            tiltaksplass
-          </Heading>
-          Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
-          kravene for å delta i tiltaket. Deltakeren får vedtak og informasjonen
-          deles med arrangøren.
-        </Alert>
       )}
     </div>
   )

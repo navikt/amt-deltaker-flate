@@ -23,7 +23,7 @@ import {
   getDeltakerStatusAarsakText,
   harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -52,9 +52,9 @@ export const TiltakPage = () => {
 
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
-    kanDeleDeltakerMedArrangor(
-      deltaker.deltakerliste.tiltakskode,
-      deltaker.deltakerliste.oppstartstype
+    kanDeleDeltakerMedArrangorForVurdering(
+      deltaker.deltakerliste.pameldingstype,
+      deltaker.deltakerliste.tiltakskode
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)
@@ -146,6 +146,7 @@ export const TiltakPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         headingLevel={2}
@@ -221,6 +222,7 @@ export const TiltakPage = () => {
           tiltakskode={deltaker.deltakerliste.tiltakskode}
           statusType={deltaker.status.type}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           erEnkeltplassUtenRammeavtale={
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
           }

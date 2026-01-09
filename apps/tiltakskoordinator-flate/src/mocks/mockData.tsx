@@ -7,6 +7,7 @@ import {
   ForslagEndringAarsakType,
   ForslagEndringType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   UlestHendelseType,
   Vurderingstype
@@ -124,6 +125,8 @@ export const createMockDeltaker = (
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
+    oppstartstype: Oppstartstype.FELLES,
     tilgangTilBruker: !adresseBeskyttet,
     ikkeDigitalOgManglerAdresse: true,
     harAktiveForslag: aktiveForslag.length > 0,
@@ -222,6 +225,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     oppstartstype: Oppstartstype.FELLES,
     apentForPamelding: true,
     antallPlasser: 42,
+    pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
     koordinatorer: [
       {
         id: uuidv4(),

@@ -89,8 +89,14 @@ export const varighetValgForTiltakskode = (
     case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
       return [VarighetValg.FIRE_UKER]
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+    case Tiltakskode.STUDIESPESIALISERING:
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
       return []
     case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+
     default:
       return [
         VarighetValg.FIRE_UKER,
