@@ -11,10 +11,10 @@ import {
   Pameldingstype,
   Tiltakskode,
   createHistorikk,
-  erOpplaringstiltak,
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
+  harBakgrunnsinfo,
   lagHistorikkFellesOppstart
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -181,11 +181,7 @@ export class MockHandler {
         oppdatertDeltaker.deltakelsesprosent = null
         oppdatertDeltaker.dagerPerUke = null
       }
-      if (
-        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplassFraArena
-      ) {
+      if (harBakgrunnsinfo(tiltakskode)) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
@@ -200,12 +196,6 @@ export class MockHandler {
       } else {
         oppdatertDeltaker.importertFraArena = null
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
-      }
-
-      if (erOpplaringstiltak(tiltakskode) || erEnkeltplassFraArena) {
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-      } else {
-        oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
       this.deltaker = oppdatertDeltaker

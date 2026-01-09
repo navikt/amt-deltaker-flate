@@ -6,7 +6,6 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
-  erOpplaringstiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -15,6 +14,7 @@ import {
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
+  harBakgrunnsinfo,
   HistorikkType,
   Innhold,
   lagHistorikkFellesOppstart,
@@ -425,11 +425,7 @@ export class MockHandler {
         oppdatertPamelding.deltakelsesprosent = null
         oppdatertPamelding.dagerPerUke = null
       }
-      if (
-        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplassFraArena
-      ) {
+      if (harBakgrunnsinfo(tiltakskode)) {
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
@@ -444,12 +440,6 @@ export class MockHandler {
       } else {
         oppdatertPamelding.importertFraArena = null
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
-      }
-
-      if (erOpplaringstiltak(tiltakskode) || erEnkeltplassFraArena) {
-        oppdatertPamelding.bakgrunnsinformasjon = null
-      } else {
-        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
 
       this.pamelding = oppdatertPamelding

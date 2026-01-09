@@ -93,7 +93,7 @@ export const PameldingForm = ({
     }
   }, [valgteInnhold])
 
-  const erKursMedLopendeOppstartPameldesDirekte =
+  const erOpplaringLopendeOppstartDirektePamelding =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
     erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) &&
     kanMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
@@ -167,7 +167,7 @@ export const PameldingForm = ({
 
           <InnholdOgBakgrunn pamelding={pamelding} isDisabled={isDisabled} />
 
-          {erKursMedLopendeOppstartPameldesDirekte && (
+          {erOpplaringLopendeOppstartDirektePamelding && (
             <Alert variant="info" size="small">
               <Heading size="xsmall" level="3">
                 Ved å fullføre denne påmeldingen fatter du også vedtaket om
