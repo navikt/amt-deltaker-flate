@@ -1,5 +1,5 @@
 import { Alert, Modal } from '@navikt/ds-react'
-import { Pameldingstype, Tiltakskode } from '../../model/deltaker'
+import { Tiltakskode } from '../../model/deltaker'
 import {
   DeltakerHistorikk,
   DeltakerHistorikkListe
@@ -9,16 +9,15 @@ import { HistorikkArrangorEndring } from './HistorikkArrangorEndring'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
-import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkSkeleton } from './HistorikkSkeleton'
-import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
 import { HistorikkSoktInn } from './HistorikkSoktInn.tsx'
 import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinatorEndring.tsx'
+import { HistorikkVedtak } from './HistorikkVedtak'
+import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
   tiltakskode: Tiltakskode
-  pameldingstype: Pameldingstype
   open: boolean
   loading: boolean
   onClose: () => void
@@ -26,24 +25,18 @@ interface Props {
 
 const getHistorikkItem = (
   historikk: DeltakerHistorikk,
-  tiltakskode: Tiltakskode,
-  pameldingstype: Pameldingstype
+  tiltakskode: Tiltakskode
 ) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return (
-        <HistorikkVedtak
-          endringsVedtak={historikk}
-          tiltakskode={tiltakskode}
-          pameldingstype={pameldingstype}
-        />
+        <HistorikkVedtak endringsVedtak={historikk} tiltakskode={tiltakskode} />
       )
     case HistorikkType.InnsokPaaFellesOppstart:
       return (
         <HistorikkSoktInn
           soktInnHistorikk={historikk}
           tiltakskode={tiltakskode}
-          pameldingstype={pameldingstype}
         />
       )
     case HistorikkType.Endring:
@@ -51,7 +44,6 @@ const getHistorikkItem = (
         <HistorikkEndring
           deltakerEndring={historikk}
           tiltakskode={tiltakskode}
-          pameldingstype={pameldingstype}
         />
       )
     case HistorikkType.Forslag:
@@ -81,7 +73,6 @@ export const HistorikkModal = ({
   loading,
   historikk,
   tiltakskode,
-  pameldingstype,
   onClose
 }: Props) => {
   return (
@@ -98,7 +89,7 @@ export const HistorikkModal = ({
           historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
-              {getHistorikkItem(i, tiltakskode, pameldingstype)}
+              {getHistorikkItem(i, tiltakskode)}
             </div>
           ))}
         {!loading && (!historikk || historikk.length < 0) && (

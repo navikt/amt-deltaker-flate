@@ -4,11 +4,11 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
+  kanDeleDeltakerMedArrangorForVurdering,
   SeEndringer
 } from 'deltaker-flate-common'
 import { getDeltakerHistorikk } from '../../api/api'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../../api/data/deltaker'
-import { kanDeleDeltakerMedArrangorForVurdering } from '../../utils/utils'
 import { Vurdering } from '../Vurdering'
 import { DeltakerEndringer } from './DeltakerEndringer'
 
@@ -77,7 +77,6 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
           className="mt-4 w-fit"
           deltakerId={deltaker.id}
           tiltakskode={deltaker.tiltakskode}
-          pameldingstype={deltaker.pameldingstype}
           fetchHistorikk={getDeltakerHistorikk}
         />
       )}

@@ -1,16 +1,11 @@
 import { BodyLong, List } from '@navikt/ds-react'
-import {
-  Deltakelsesinnhold,
-  Pameldingstype,
-  Tiltakskode
-} from '../model/deltaker'
+import { Deltakelsesinnhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
-import { skalViseInnholdOgBakgrunnaFelt } from '../utils/utils'
+import { erOpplaringstiltak } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
   tiltakskode: Tiltakskode
-  pameldingstype: Pameldingstype
   heading: React.ReactNode | null
   listClassName?: string
 }
@@ -18,7 +13,6 @@ interface Props {
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
   tiltakskode,
-  pameldingstype,
   heading,
   listClassName
 }: Props) => {
@@ -28,7 +22,7 @@ export const DeltakelseInnhold = ({
 
   const harInnholdsTekst =
     tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    skalViseInnholdOgBakgrunnaFelt(tiltakskode, pameldingstype)
+    erOpplaringstiltak(tiltakskode)
 
   return (
     <>

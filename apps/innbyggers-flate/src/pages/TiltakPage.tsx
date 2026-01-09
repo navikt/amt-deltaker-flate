@@ -23,7 +23,7 @@ import {
   getDeltakerStatusAarsakText,
   harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -52,9 +52,9 @@ export const TiltakPage = () => {
 
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
-    kanDeleDeltakerMedArrangor(
-      deltaker.deltakerliste.tiltakskode,
-      deltaker.deltakerliste.oppstartstype
+    kanDeleDeltakerMedArrangorForVurdering(
+      deltaker.deltakerliste.pameldingstype,
+      deltaker.deltakerliste.tiltakskode
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)
@@ -163,7 +163,6 @@ export const TiltakPage = () => {
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
-        pameldingstype={deltaker.deltakerliste.pameldingstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -198,7 +197,6 @@ export const TiltakPage = () => {
         <SeEndringer
           className="mt-8"
           tiltakskode={deltaker.deltakerliste.tiltakskode}
-          pameldingstype={deltaker.deltakerliste.pameldingstype}
           deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
           open={visEndringer}
@@ -223,8 +221,8 @@ export const TiltakPage = () => {
           adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
           tiltakskode={deltaker.deltakerliste.tiltakskode}
           statusType={deltaker.status.type}
-          pameldingstype={deltaker.deltakerliste.pameldingstype}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           erEnkeltplassUtenRammeavtale={
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
           }
