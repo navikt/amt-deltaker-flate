@@ -1,10 +1,5 @@
 import { Alert, Textarea } from '@navikt/ds-react'
-import {
-  erEnkeltplassMedRammeavtale,
-  fjernUgyldigeTegn,
-  harFritekstSomDelesMedArrangor,
-  Tiltakskode
-} from 'deltaker-flate-common'
+import { erOpplaringstiltak, fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
 import { PameldingResponse } from '../../api/data/pamelding.ts'
 import {
@@ -27,17 +22,7 @@ export const InnholdOgBakgrunn = ({ pamelding, isDisabled }: Props) => {
     formState: { errors }
   } = useFormContext<PameldingFormValues>()
 
-  const skalViseInnholdOgBakgrunn =
-    [
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-    ].includes(tiltakskode) ||
-    erEnkeltplassMedRammeavtale(
-      tiltakskode,
-      pamelding.deltakerliste.pameldingstype
-    )
-
-  if (!skalViseInnholdOgBakgrunn) {
+  if (!erOpplaringstiltak(tiltakskode)) {
     return null
   }
 
@@ -62,12 +47,10 @@ export const InnholdOgBakgrunn = ({ pamelding, isDisabled }: Props) => {
         id="innholdAnnetBeskrivelse"
       />
 
-      {harFritekstSomDelesMedArrangor(tiltakskode) && (
-        <Alert variant="info" size="small" inline className="mt-4">
-          Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav og
-          tiltaksarrangøren.
-        </Alert>
-      )}
+      <Alert variant="info" size="small" inline className="mt-4">
+        Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav og
+        tiltaksarrangøren.
+      </Alert>
     </div>
   )
 }

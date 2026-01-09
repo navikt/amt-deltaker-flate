@@ -335,7 +335,7 @@ const DemoStatusInstillinger = () => {
       <Select
         value={pameldingsType}
         label="Velg påmeldingstype"
-        data-testid="select_påmeldingstype"
+        data-testid="select_pameldingstype"
         size="small"
         className="w-64"
         onChange={(e) =>

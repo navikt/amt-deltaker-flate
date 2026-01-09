@@ -22,7 +22,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
   }
 
   const visVurdering = kanDeleDeltakerMedArrangorForVurdering(
-    deltaker.oppstartstype,
+    deltaker.pameldingstype,
     deltaker.tiltakskode
   )
 
