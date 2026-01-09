@@ -17,11 +17,12 @@ import {
   PERSONOPPLYSNINGER_URL,
   UtkastHeader,
   deltakerprosentText,
-  erKursEllerDigitalt,
+  harAdresse,
+  harBakgrunnsinfo,
   harFellesOppstart,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   useDeferredFetch,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -72,6 +73,12 @@ export const UtkastPage = () => {
   }
 
   const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const skalVIseAdresse =
+    deltaker.adresseDelesMedArrangor && !harAdresse(tiltakskode)
+  const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
+    deltaker.deltakerliste.pameldingstype,
+    deltaker.deltakerliste.tiltakskode
+  )
 
   return (
     <div className="flex flex-col items-start mb-8">
@@ -98,10 +105,7 @@ export const UtkastPage = () => {
           <>
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
-              {kanDeleDeltakerMedArrangor(
-                tiltakskode,
-                deltaker.deltakerliste.oppstartstype
-              )
+              {kanDeleDeltakerMedArrangor
                 ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
                 : ''}
             </BodyLong>
@@ -136,7 +140,6 @@ export const UtkastPage = () => {
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
-        pameldingstype={deltaker.deltakerliste.pameldingstype}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6 mb-2">
@@ -146,20 +149,16 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {!erKursEllerDigitalt(
-        tiltakskode,
-        deltaker.deltakerliste.pameldingstype
-      ) &&
-        deltaker.bakgrunnsinformasjon && (
-          <>
-            <Heading level="3" size="medium" className="mt-6">
-              Bakgrunnsinfo
-            </Heading>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-              {deltaker.bakgrunnsinformasjon || EMDASH}
-            </BodyLong>
-          </>
-        )}
+      {harBakgrunnsinfo(tiltakskode) && deltaker.bakgrunnsinformasjon && (
+        <>
+          <Heading level="3" size="medium" className="mt-6">
+            Bakgrunnsinfo
+          </Heading>
+          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            {deltaker.bakgrunnsinformasjon || EMDASH}
+          </BodyLong>
+        </>
+      )}
 
       {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
         <>
@@ -180,10 +179,7 @@ export const UtkastPage = () => {
           <Heading level="3" size="medium" className="mt-6">
             Dette deles med arrangøren
           </Heading>
-          {kanDeleDeltakerMedArrangor(
-            tiltakskode,
-            deltaker.deltakerliste.oppstartstype
-          ) ? (
+          {kanDeleDeltakerMedArrangor ? (
             <>
               <BodyLong size="small" className="mt-2">
                 Du vil få beskjed dersom det oversendes informasjon om deg til
@@ -212,13 +208,9 @@ export const UtkastPage = () => {
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {deltaker.adresseDelesMedArrangor &&
-          !erKursEllerDigitalt(
-            tiltakskode,
-            deltaker.deltakerliste.pameldingstype
-          ) && (
-            <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
-          )}
+        {skalVIseAdresse && (
+          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+        )}
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.

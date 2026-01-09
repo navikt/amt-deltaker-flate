@@ -139,29 +139,27 @@ export const fjernUgyldigeTegn = (str: string) => {
   return cleanText
 }
 
-export const harFritekstSomDelesMedArrangor = (tiltakskode: Tiltakskode) =>
-  !(
-    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-    tiltakskode === Tiltakskode.JOBBKLUBB
+export const kanDeleDeltakerMedArrangorForVurdering = (
+  pameldingstype: Pameldingstype,
+  tiltakskode: Tiltakskode
+) => {
+  return (
+    pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
+    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
+      tiltakskode ===
+        Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV ||
+      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
+      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING)
   )
+}
 
-// Tiltakskoordinator kan dele deltakeren med arrangør for vurdering hvis oppstartstype er felles
-export const kanDeleDeltakerMedArrangor = (
-  tiltakskode: Tiltakskode,
-  oppstartstype: Oppstartstype | null
-) =>
-  oppstartstype === Oppstartstype.FELLES &&
+export const erOpplaringstiltak = (tiltakskode: Tiltakskode) =>
   [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
-
-export const erEnkeltplassMedRammeavtale = (
-  tiltakskode: Tiltakskode,
-  pameldingstype: Pameldingstype
-) =>
-  pameldingstype === Pameldingstype.DIREKTE_VEDTAK &&
-  [
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
     Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
     Tiltakskode.STUDIESPESIALISERING,
@@ -172,39 +170,37 @@ export const erEnkeltplassMedRammeavtale = (
     Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
-// TODO kan disse forenkles / endre navn til noe mer vettugt?
-export const erKursEllerDigitalt = (
+export const erOpplaringstiltakMedDirekteVedtak = (
   tiltakskode: Tiltakskode,
   pameldingstype: Pameldingstype
 ) =>
+  pameldingstype === Pameldingstype.DIREKTE_VEDTAK &&
   [
-    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
-    Tiltakskode.JOBBKLUBB,
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode) ||
-  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+  ].includes(tiltakskode)
 
-export const erKursTiltak = (
-  tiltakskode: Tiltakskode,
-  pameldingstype: Pameldingstype
-) =>
-  [
-    Tiltakskode.JOBBKLUBB,
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode) ||
-  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
+export const harInnhold = (tiltakskode: Tiltakskode) =>
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
 
-export const skalViseInnholdOgBakgrunnaFelt = (
-  tiltakskode: Tiltakskode,
-  pameldingstype: Pameldingstype
-) =>
-  [
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode) ||
-  erEnkeltplassMedRammeavtale(tiltakskode, pameldingstype)
+export const harBakgrunnsinfo = (tiltakskode: Tiltakskode) =>
+  !erOpplaringstiltak(tiltakskode) &&
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
+
+export const harAdresse = (tiltakskode: Tiltakskode) =>
+  !erOpplaringstiltak(tiltakskode) &&
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES

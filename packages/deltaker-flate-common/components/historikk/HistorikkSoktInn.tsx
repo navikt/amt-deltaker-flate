@@ -1,6 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
-import { Pameldingstype, Tiltakskode } from '../../model/deltaker.ts'
+import { Tiltakskode } from '../../model/deltaker.ts'
 import { InnsokPaaFellesOppstart } from '../../model/deltakerHistorikk.ts'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
@@ -9,14 +9,9 @@ import { HistorikkElement } from './HistorikkElement.tsx'
 interface Props {
   soktInnHistorikk: InnsokPaaFellesOppstart
   tiltakskode: Tiltakskode
-  pameldingstype: Pameldingstype
 }
 
-export const HistorikkSoktInn = ({
-  soktInnHistorikk,
-  tiltakskode,
-  pameldingstype
-}: Props) => {
+export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
   const {
     innsokt,
     innsoktAv,
@@ -34,7 +29,6 @@ export const HistorikkSoktInn = ({
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnholdVedInnsok}
-        pameldingstype={pameldingstype}
         heading={
           <BodyLong size="small" weight="semibold">
             Dette er innholdet

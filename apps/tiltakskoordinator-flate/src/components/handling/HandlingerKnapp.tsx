@@ -14,7 +14,7 @@ import {
 } from '../../context-providers/HandlingContext'
 import { useShadowDom } from '../../context-providers/ShadowDomContext'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
-import { kanDeleDeltakerMedArrangorForVurdering } from '../../utils/utils.ts'
+import { kanDeleDeltakerMedArrangorForVurdering } from 'deltaker-flate-common'
 
 interface Props {
   onModalOpen: () => void

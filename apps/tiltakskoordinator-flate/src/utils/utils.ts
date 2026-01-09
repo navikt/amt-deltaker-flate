@@ -1,4 +1,3 @@
-import { Pameldingstype, Tiltakskode } from 'deltaker-flate-common'
 import { DeltakerDetaljer } from '../api/data/deltaker'
 import { Beskyttelsesmarkering, Deltaker } from '../api/data/deltakerliste'
 
@@ -91,21 +90,4 @@ export const gaTilGjennomforingerMulighetsrommet = () => {
 
     window.location.pathname = newPath
   }
-}
-
-export const kanDeleDeltakerMedArrangorForVurdering = (
-  pameldingstype: Pameldingstype,
-  tiltakskode: Tiltakskode
-) => {
-  return (
-    pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
-    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
-      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
-      tiltakskode ===
-        Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV ||
-      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
-      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING)
-  )
 }

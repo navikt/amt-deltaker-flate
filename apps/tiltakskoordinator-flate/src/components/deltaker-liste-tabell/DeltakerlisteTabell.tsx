@@ -3,6 +3,7 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   formatDate,
+  kanDeleDeltakerMedArrangorForVurdering,
   Oppstartstype,
   Pameldingstype
 } from 'deltaker-flate-common'
@@ -21,10 +22,7 @@ import {
   useDeltakerSortering
 } from '../../hooks/useDeltakerSortering.tsx'
 import { getDeltakerUrl } from '../../navigation.ts'
-import {
-  kanDeleDeltakerMedArrangorForVurdering,
-  lagDeltakerNavnEtternavnForst
-} from '../../utils/utils.ts'
+import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
 import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
