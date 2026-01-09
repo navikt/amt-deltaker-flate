@@ -1,17 +1,16 @@
 import { Alert, Button } from '@navikt/ds-react'
-import { HistorikkModal } from './HistorikkModal'
-import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
 import { useEffect, useState } from 'react'
 import {
   DeferredFetchState,
   useDeferredFetch
 } from '../../hooks/useDeferredFetch'
-import { Pameldingstype, Tiltakskode } from '../../model/deltaker'
+import { Tiltakskode } from '../../model/deltaker'
+import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
+import { HistorikkModal } from './HistorikkModal'
 
 interface Props {
   deltakerId: string
   tiltakskode: Tiltakskode
-  pameldingstype: Pameldingstype
   open?: boolean
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
@@ -21,7 +20,6 @@ interface Props {
 export const SeEndringer = ({
   deltakerId,
   tiltakskode,
-  pameldingstype,
   open,
   className,
   fetchHistorikk,
@@ -68,7 +66,6 @@ export const SeEndringer = ({
       <HistorikkModal
         historikk={historikk}
         tiltakskode={tiltakskode}
-        pameldingstype={pameldingstype}
         open={historikkModalOpen}
         loading={state === DeferredFetchState.LOADING}
         onClose={() => {

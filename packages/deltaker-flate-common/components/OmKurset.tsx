@@ -6,10 +6,10 @@ import {
   Tiltakskode
 } from '../model/deltaker'
 import {
-  erKursTiltak,
+  erOpplaringstiltak,
   formatDate,
   formatDateWithMonthName,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   kanMeldePaaDirekte
 } from '../utils/utils'
 
@@ -40,7 +40,11 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakskode, pameldingstype) || !oppstartstype) {
+  if (
+    !erOpplaringstiltak(tiltakskode) ||
+    !oppstartstype ||
+    tiltakskode !== Tiltakskode.JOBBKLUBB
+  ) {
     return null
   }
 
@@ -131,7 +135,10 @@ export const OmKurset = ({
                 </List.Item>
               </List>
 
-              {kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
+              {kanDeleDeltakerMedArrangorForVurdering(
+                pameldingstype,
+                tiltakskode
+              ) &&
                 visDelMedArrangorInfo && (
                   <>
                     <BodyLong size="small" className="mt-4">

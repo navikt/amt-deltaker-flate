@@ -7,15 +7,15 @@ import {
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,
+  Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   createHistorikk,
+  erOpplaringstiltak,
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
-  Oppstartstype,
-  erKursTiltak,
-  lagHistorikkFellesOppstart,
-  Pameldingstype
+  lagHistorikkFellesOppstart
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -202,15 +202,7 @@ export class MockHandler {
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (
-        erKursTiltak(
-          tiltakskode,
-          oppdatertDeltaker.deltakerliste.pameldingstype
-        )
-      ) {
-        // Obs disse kan ha løpende oppstart også.
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-      } else if (erEnkeltplassFraArena) {
+      if (erOpplaringstiltak(tiltakskode) || erEnkeltplassFraArena) {
         oppdatertDeltaker.bakgrunnsinformasjon = null
       } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
