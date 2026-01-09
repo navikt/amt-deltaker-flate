@@ -1,3 +1,4 @@
+import { Oppstartstype, Tiltakskode } from 'deltaker-flate-common'
 import { DeltakerDetaljer } from '../api/data/deltaker'
 import { Beskyttelsesmarkering, Deltaker } from '../api/data/deltakerliste'
 
@@ -90,4 +91,18 @@ export const gaTilGjennomforingerMulighetsrommet = () => {
 
     window.location.pathname = newPath
   }
+}
+
+// TODO må de flere tiltakstypene med?
+export const kanDeleDeltakerMedArrangorForVurdering = (
+  oppstartstype: Oppstartstype | null,
+  tiltakskode: Tiltakskode
+) => {
+  return (
+    oppstartstype === Oppstartstype.FELLES &&
+    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING)
+  )
 }
