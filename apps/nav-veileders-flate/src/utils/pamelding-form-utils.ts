@@ -1,6 +1,6 @@
 import {
+  erOpplaringstiltak,
   INNHOLD_TYPE_ANNET,
-  skalViseInnholdOgBakgrunnaFelt,
   Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -22,10 +22,7 @@ export const generateInnholdFromResponse = (
   if (
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    skalViseInnholdOgBakgrunnaFelt(
-      pamelding.deltakerliste.tiltakskode,
-      pamelding.deltakerliste.pameldingstype
-    )
+    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
   ) {
     return innholdsTekst
       ? [

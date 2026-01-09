@@ -7,7 +7,7 @@ import {
   Oppmotested,
   Tiltakskode,
   deltakerprosentText,
-  erKursEllerDigitalt,
+  harBakgrunnsinfo,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
@@ -33,16 +33,10 @@ export const Utkast = ({
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfo = !erKursEllerDigitalt(
-    tiltakskode,
-    deltakerliste.pameldingstype
-  )
-
   return (
     <VStack>
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
-        pameldingstype={deltakerliste.pameldingstype}
         deltakelsesinnhold={innhold}
         heading={
           <Heading level="3" size="small" className="mb-2">
@@ -52,7 +46,7 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      {visBakgrunnsinfo && (
+      {harBakgrunnsinfo(tiltakskode) && (
         <div className="mt-8">
           <Heading level="3" size="small">
             Bakgrunnsinfo

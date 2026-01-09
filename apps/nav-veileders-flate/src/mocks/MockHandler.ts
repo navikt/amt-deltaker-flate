@@ -1,13 +1,12 @@
 import dayjs from 'dayjs'
 import {
-  Tiltakskode,
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
-  erKursTiltak,
+  erOpplaringstiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -20,7 +19,8 @@ import {
   Innhold,
   lagHistorikkFellesOppstart,
   Oppstartstype,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -446,15 +446,7 @@ export class MockHandler {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (
-        erKursTiltak(
-          tiltakskode,
-          oppdatertPamelding.deltakerliste.pameldingstype
-        )
-      ) {
-        // Obs disse kan ha løpende oppstart også.
-        oppdatertPamelding.bakgrunnsinformasjon = null
-      } else if (erEnkeltplassFraArena) {
+      if (erOpplaringstiltak(tiltakskode) || erEnkeltplassFraArena) {
         oppdatertPamelding.bakgrunnsinformasjon = null
       } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon

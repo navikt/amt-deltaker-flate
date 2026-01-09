@@ -69,7 +69,7 @@ export const DeltakerlisteTabell = () => {
 
   const skalViseVurderinger =
     kanDeleDeltakerMedArrangorForVurdering(
-      deltakerlisteDetaljer.oppstartstype,
+      deltakerlisteDetaljer.pameldingstype,
       deltakerlisteDetaljer.tiltakskode
     ) &&
     !!deltakere.find(

@@ -2,9 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Heading, Textarea } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
-  erKursEllerDigitalt,
-  erKursTiltak,
+  erOpplaringstiltak,
   fjernUgyldigeTegn,
+  harBakgrunnsinfo,
   INNHOLD_TYPE_ANNET,
   kanMeldePaaDirekte,
   OmKurset,
@@ -24,10 +24,10 @@ import {
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
+import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
-import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 
 interface Props {
   pamelding: PameldingResponse
@@ -51,10 +51,6 @@ export const PameldingForm = ({
   const errorSummaryRef = useRef<HTMLDivElement>(null)
   const tiltakskode = pamelding.deltakerliste.tiltakskode
   const status = pamelding.status.type
-  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(
-    tiltakskode,
-    pamelding.deltakerliste.pameldingstype
-  )
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -99,10 +95,7 @@ export const PameldingForm = ({
 
   const erKursMedLopendeOppstartPameldesDirekte =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erKursTiltak(
-      pamelding.deltakerliste.tiltakskode,
-      pamelding.deltakerliste.pameldingstype
-    ) &&
+    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) &&
     kanMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
 
   return (
@@ -130,7 +123,7 @@ export const PameldingForm = ({
             visForUtkast
           />
 
-          {skalViseBakgrunnsinfo && (
+          {harBakgrunnsinfo(tiltakskode) && (
             <section>
               <Heading size="medium" level="3" className="mb-4">
                 Bakgrunnsinfo

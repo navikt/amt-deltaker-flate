@@ -1,10 +1,12 @@
+import dayjs from 'dayjs'
 import {
-  Tiltakskode,
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
-  erKursEllerDigitalt,
-  Oppstartstype
+  harBakgrunnsinfo,
+  harInnhold,
+  Oppstartstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
@@ -13,7 +15,6 @@ import {
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
-import dayjs from 'dayjs'
 
 const ikkeAktuellKanEndres = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
@@ -38,17 +39,12 @@ const skalViseForlengKnapp = (
 
 const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(
-    pamelding.deltakerliste.tiltakskode,
-    pamelding.deltakerliste.pameldingstype
-  )
+  // TODO skal de gamle og få lov å endre innhold?
+  harInnhold(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(
-    pamelding.deltakerliste.tiltakskode,
-    pamelding.deltakerliste.pameldingstype
-  )
+  harBakgrunnsinfo(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
