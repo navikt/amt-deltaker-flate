@@ -4,12 +4,11 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
-  Oppstartstype,
-  SeEndringer,
-  Tiltakskode
+  SeEndringer
 } from 'deltaker-flate-common'
 import { getDeltakerHistorikk } from '../../api/api'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../../api/data/deltaker'
+import { kanDeleDeltakerMedArrangorForVurdering } from '../../utils/utils'
 import { Vurdering } from '../Vurdering'
 import { DeltakerEndringer } from './DeltakerEndringer'
 
@@ -22,11 +21,10 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
-  // TODO må de nye tiltakstypene med?
-  const visVurdering = deltaker.oppstartstype === Oppstartstype.FELLES && [
-    deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-      deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ]
+  const visVurdering = kanDeleDeltakerMedArrangorForVurdering(
+    deltaker.oppstartstype,
+    deltaker.tiltakskode
+  )
 
   return (
     <div className="flex flex-col mb-4">

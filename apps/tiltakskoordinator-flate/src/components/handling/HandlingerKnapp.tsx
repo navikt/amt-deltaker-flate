@@ -6,7 +6,6 @@ import {
   XMarkIcon
 } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
-import { Oppstartstype, Tiltakskode } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import {
@@ -15,6 +14,7 @@ import {
 } from '../../context-providers/HandlingContext'
 import { useShadowDom } from '../../context-providers/ShadowDomContext'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
+import { kanDeleDeltakerMedArrangorForVurdering } from '../../utils/utils.ts'
 
 interface Props {
   onModalOpen: () => void
@@ -57,13 +57,12 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
     }
   }
 
-  const kanDeleMedArrangor =
-    deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES &&
-    (deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-      deltakerlisteDetaljer.tiltakskode ==
-        Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING)
+  const kanDeleMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
+    deltakerlisteDetaljer.oppstartstype,
+    deltakerlisteDetaljer.tiltakskode
+  )
 
+  // TODO denne er kanskje ikke riktig lenger? Kanskje bare komet må være master?
   if (!kanDeleMedArrangor && !kometErMaster) {
     return <div className="mt-8"></div>
   }
