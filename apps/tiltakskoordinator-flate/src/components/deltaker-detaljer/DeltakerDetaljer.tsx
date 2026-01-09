@@ -4,6 +4,7 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
+  Oppstartstype,
   SeEndringer,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -21,10 +22,11 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
-  // TODO denne må kanskje sjekkes også på oppstartstypen er felles?
-  const visVurdering =
+  // TODO må de nye tiltakstypene med?
+  const visVurdering = deltaker.oppstartstype === Oppstartstype.FELLES && [
     deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+      deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  ]
 
   return (
     <div className="flex flex-col mb-4">
