@@ -32,13 +32,18 @@ const getHistorikkItem = (
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return (
-        <HistorikkVedtak endringsVedtak={historikk} tiltakskode={tiltakskode} />
+        <HistorikkVedtak
+          endringsVedtak={historikk}
+          tiltakskode={tiltakskode}
+          pameldingstype={pameldingstype}
+        />
       )
     case HistorikkType.InnsokPaaFellesOppstart:
       return (
         <HistorikkSoktInn
           soktInnHistorikk={historikk}
           tiltakskode={tiltakskode}
+          pameldingstype={pameldingstype}
         />
       )
     case HistorikkType.Endring:
