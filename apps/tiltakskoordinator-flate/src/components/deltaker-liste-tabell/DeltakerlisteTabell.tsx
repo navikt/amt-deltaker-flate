@@ -4,8 +4,7 @@ import {
   DeltakerStatusType,
   formatDate,
   Oppstartstype,
-  Pameldingstype,
-  Tiltakskode
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
@@ -15,24 +14,27 @@ import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext.tsx'
-import { getDeltakerUrl } from '../../navigation.ts'
-import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
-import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
-import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
-import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
-import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
-import { HandlingModalController } from '../handling/HandlingModalController.tsx'
-import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
-import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
-import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
+import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
 import {
   ScopedSortState,
   SortKey,
   useDeltakerSortering
 } from '../../hooks/useDeltakerSortering.tsx'
-import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
+import { getDeltakerUrl } from '../../navigation.ts'
+import {
+  kanDeleDeltakerMedArrangorForVurdering,
+  lagDeltakerNavnEtternavnForst
+} from '../../utils/utils.ts'
+import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
+import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
+import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
+import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFeilAlert.tsx'
+import { HandlingModalController } from '../handling/HandlingModalController.tsx'
 import { Vurdering } from '../Vurdering.tsx'
+import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
+import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
+import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
 export const DeltakerlisteTabell = () => {
   const { deltakere, filtrerteDeltakere, deltakerlisteDetaljer } =
@@ -66,11 +68,10 @@ export const DeltakerlisteTabell = () => {
   }, [handlingValg])
 
   const skalViseVurderinger =
-    erFellesOppstart &&
-    (deltakerlisteDetaljer.tiltakskode ==
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-      deltakerlisteDetaljer.tiltakskode ==
-        Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) &&
+    kanDeleDeltakerMedArrangorForVurdering(
+      deltakerlisteDetaljer.oppstartstype,
+      deltakerlisteDetaljer.tiltakskode
+    ) &&
     !!deltakere.find(
       (deltaker) =>
         deltaker.vurdering !== null || deltaker.erManueltDeltMedArrangor
