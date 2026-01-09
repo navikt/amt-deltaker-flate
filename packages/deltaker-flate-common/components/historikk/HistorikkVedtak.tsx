@@ -1,6 +1,6 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
-import { Tiltakskode } from '../../model/deltaker.ts'
+import { Pameldingstype, Tiltakskode } from '../../model/deltaker.ts'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { deltakerprosentText } from '../../utils/displayText'
 import {
@@ -14,9 +14,14 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   endringsVedtak: Vedtak
   tiltakskode: Tiltakskode
+  pameldingstype: Pameldingstype
 }
 
-export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
+export const HistorikkVedtak = ({
+  endringsVedtak,
+  tiltakskode,
+  pameldingstype
+}: Props) => {
   const {
     fattet,
     fattetAvNav,
@@ -36,6 +41,7 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
     >
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
+        pameldingstype={pameldingstype}
         deltakelsesinnhold={deltakelsesinnhold}
         heading={
           <BodyLong size="small" weight="semibold">
