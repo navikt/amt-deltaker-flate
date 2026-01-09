@@ -45,7 +45,7 @@ export const InnholdOgBakgrunn = ({ pamelding, isDisabled }: Props) => {
     <div>
       <Textarea
         label="Dette er innholdet (valgfritt)"
-        description="Du kan for eksempel skrive hva personen trenger opplæring i, eller bakgrunnsinfo som det er nødvendig at arrangøren får vite om"
+        description="Hvis arrangøren har ulike tilbud skal du skrive hva personen trenger opplæring i. Ta bare med bakgrunnsinfo som er nødvendig."
         {...register('innholdsTekst')}
         onChange={(e) => {
           setValue('innholdsTekst', fjernUgyldigeTegn(e.target.value), {
@@ -65,7 +65,7 @@ export const InnholdOgBakgrunn = ({ pamelding, isDisabled }: Props) => {
       {harFritekstSomDelesMedArrangor(tiltakskode) && (
         <Alert variant="info" size="small" inline className="mt-4">
           Opplysningene blir synlig for deltakeren, tiltakskoordinator i Nav og
-          tiltaksarrangør.
+          tiltaksarrangøren.
         </Alert>
       )}
     </div>
