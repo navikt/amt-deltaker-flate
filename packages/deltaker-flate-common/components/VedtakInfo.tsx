@@ -65,20 +65,19 @@ const vedtakEndretAv = (vedtaksinformasjon: Vedtaksinformasjon): string => {
 const forskriftskapitler: { [Key in Tiltakskode]: string } = {
   [Tiltakskode.ARBEIDSFORBEREDENDE_TRENING]: '13',
   [Tiltakskode.ARBEIDSRETTET_REHABILITERING]: '12',
+  [Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET]: '14',
   [Tiltakskode.AVKLARING]: '2',
   [Tiltakskode.OPPFOLGING]: '4',
   [Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK]: '4',
+  [Tiltakskode.JOBBKLUBB]: '4',
   [Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING]: '7',
   [Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING]: '7',
-  [Tiltakskode.JOBBKLUBB]: '4',
-  [Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET]: '14',
   [Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING]: '7',
   [Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING]: '7',
   [Tiltakskode.HOYERE_UTDANNING]: '7',
-  // TODO
-  [Tiltakskode.ARBEIDSMARKEDSOPPLAERING]: '',
-  [Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV]: '',
-  [Tiltakskode.STUDIESPESIALISERING]: '',
-  [Tiltakskode.FAG_OG_YRKESOPPLAERING]: '',
-  [Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING]: ''
+  [Tiltakskode.ARBEIDSMARKEDSOPPLAERING]: '7',
+  [Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV]: '7',
+  [Tiltakskode.STUDIESPESIALISERING]: '7',
+  [Tiltakskode.FAG_OG_YRKESOPPLAERING]: '7',
+  [Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING]: '7'
 }
