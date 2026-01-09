@@ -22,7 +22,7 @@ import {
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -68,9 +68,9 @@ export const DeltakerInfo = ({ className }: Props) => {
 
   const visDeltMedArrangor =
     pamelding.erManueltDeltMedArrangor &&
-    kanDeleDeltakerMedArrangor(
-      pamelding.deltakerliste.tiltakskode,
-      pamelding.deltakerliste.oppstartstype
+    kanDeleDeltakerMedArrangorForVurdering(
+      pamelding.deltakerliste.pameldingstype,
+      pamelding.deltakerliste.tiltakskode
     ) &&
     (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
       pamelding.status.type === DeltakerStatusType.VURDERES)
@@ -147,7 +147,6 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <DeltakelseInnhold
         tiltakskode={pamelding.deltakerliste.tiltakskode}
-        pameldingstype={pamelding.deltakerliste.pameldingstype}
         deltakelsesinnhold={pamelding.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
@@ -181,7 +180,6 @@ export const DeltakerInfo = ({ className }: Props) => {
         <SeEndringer
           className="mt-8"
           tiltakskode={pamelding.deltakerliste.tiltakskode}
-          pameldingstype={pamelding.deltakerliste.pameldingstype}
           deltakerId={pamelding.deltakerId}
           fetchHistorikk={getHistorikk}
         />
@@ -202,8 +200,8 @@ export const DeltakerInfo = ({ className }: Props) => {
           adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
           tiltakskode={pamelding.deltakerliste.tiltakskode}
           statusType={pamelding.status.type}
-          pameldingstype={pamelding.deltakerliste.pameldingstype}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
+          pameldingstype={pamelding.deltakerliste.pameldingstype}
           className="mt-8"
           erEnkeltplassUtenRammeavtale={
             pamelding.deltakerliste.erEnkeltplassUtenRammeavtale

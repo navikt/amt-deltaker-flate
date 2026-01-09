@@ -30,9 +30,7 @@ test.describe('Smoketest og UU', () => {
 
   test('Nav veileders flate - utkast', async ({ page }) => {
     await page.getByTestId('select_status').selectOption('UTKAST_TIL_PAMELDING')
-    await expect(
-      page.getByRole('heading', { name: 'Utkast til påmelding' })
-    ).toBeVisible()
+    await expect(page.getByText('Utkastet er delt')).toBeVisible()
     await sjekkUU(page, 'page_utkast')
   })
 
