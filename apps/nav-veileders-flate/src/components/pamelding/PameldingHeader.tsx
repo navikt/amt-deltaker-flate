@@ -31,6 +31,9 @@ export const PameldingHeader = ({
     case DeltakerStatusType.UTKAST_TIL_PAMELDING:
       statusTekst = 'Utkastet er delt og venter på godkjenning'
       break
+    case DeltakerStatusType.KLADD:
+      statusTekst = 'Kladd til påmelding'
+      break
   }
 
   const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
