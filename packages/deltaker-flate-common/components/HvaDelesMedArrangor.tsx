@@ -9,6 +9,7 @@ import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
 import {
   harAdresse,
   harBakgrunnsinfo,
+  harInnhold,
   kanDeleDeltakerMedArrangorForVurdering
 } from '../utils/utils'
 
@@ -36,10 +37,10 @@ export const HvaDelesMedArrangor = ({
   if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
     return null
   }
-  /* TODO kommentar i skissene
-  const visBakgrunnsinfo = harBakgrunnsinfo(tiltakskode)
-  const visInnhold = harInnhold(tiltakskode)
-  */
+
+  const visInnholdOgBakgrunnsinfo =
+    harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
+
   const visDelMedArrangorInfo =
     kanDeleDeltakerMedArrangorForVurdering(pameldingstype, tiltakskode) &&
     (statusType === DeltakerStatusType.SOKT_INN ||
@@ -81,7 +82,7 @@ export const HvaDelesMedArrangor = ({
             Navn og kontaktinformasjonen til Nav-veilederen din
           </List.Item>
 
-          {harBakgrunnsinfo(tiltakskode) && (
+          {visInnholdOgBakgrunnsinfo && (
             <List.Item>
               Innholdet og bakgrunnsinformasjonen i påmeldingen
             </List.Item>

@@ -39,7 +39,6 @@ const skalViseForlengKnapp = (
 
 const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
   venterDeltarEllerKanEndres(pamelding) &&
-  // TODO skal de gamle og få lov å endre innhold?
   harInnhold(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>

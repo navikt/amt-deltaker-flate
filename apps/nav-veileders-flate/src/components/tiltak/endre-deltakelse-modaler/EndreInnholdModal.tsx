@@ -7,6 +7,7 @@ import {
 } from '@navikt/ds-react'
 import {
   EndreDeltakelseType,
+  erOpplaringstiltak,
   fjernUgyldigeTegn,
   haveSameContents,
   Innhold,
@@ -67,7 +68,8 @@ export const EndreInnholdModal = ({
 
   const visCheckbokser =
     pamelding.deltakerliste.tiltakskode !==
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+    !erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
 
   const validertRequest = () => {
     if (visCheckbokser && valgteInnhold.length <= 0) {
@@ -201,7 +203,19 @@ export const EndreInnholdModal = ({
               setInnholdsTekst(fjernUgyldigeTegn(e.target.value))
               setInnholdsTekstError(null)
             }}
-            label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
+            label={
+              pamelding.deltakerliste.tiltakskode ===
+              Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+                ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
+                : 'Dette er innholdet (valgfritt)'
+            }
+            description={
+              erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
+                ? 'Hvis arrangøren har ulike tilbud skal du skrive hva personen trenger opplæring i. Ta bare med bakgrunnsinfo som er nødvendig.'
+                : null
+            }
+            aria-label="Innhold beskrivelse"
+            aria-required
             value={innholdsTekst ?? ''}
             disabled={!pamelding.erUnderOppfolging}
             maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
