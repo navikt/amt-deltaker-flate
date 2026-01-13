@@ -10,7 +10,7 @@ import {
   OmKurset,
   Oppmotested,
   Oppstartstype,
-  Tiltakskode
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -150,8 +150,7 @@ export const PameldingForm = ({
             </section>
           )}
 
-          {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-            tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) && (
+          {visDeltakelsesmengde(tiltakskode) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde

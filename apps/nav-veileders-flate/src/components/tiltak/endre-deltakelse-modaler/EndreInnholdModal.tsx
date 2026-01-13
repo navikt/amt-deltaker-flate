@@ -66,10 +66,12 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
+  const erOpplaringsTiltak = erOpplaringstiltak(
+    pamelding.deltakerliste.tiltakskode
+  )
   const visCheckbokser =
     pamelding.deltakerliste.tiltakskode !==
-      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-    !erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET && !erOpplaringsTiltak
 
   const validertRequest = () => {
     if (visCheckbokser && valgteInnhold.length <= 0) {
@@ -147,9 +149,12 @@ export const EndreInnholdModal = ({
       validertRequest={validertRequest}
       forslag={null}
     >
-      <Heading level="2" size="small" className="mb-4">
-        Dette er innholdet
-      </Heading>
+      {!erOpplaringsTiltak && (
+        <Heading level="2" size="small" className="mb-4">
+          Dette er innholdet
+        </Heading>
+      )}
+
       <section>
         {pamelding.deltakerliste.tilgjengeligInnhold?.ledetekst && (
           <BodyLong size="small">
@@ -204,13 +209,12 @@ export const EndreInnholdModal = ({
               setInnholdsTekstError(null)
             }}
             label={
-              pamelding.deltakerliste.tiltakskode ===
-              Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-                ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
-                : 'Dette er innholdet (valgfritt)'
+              erOpplaringsTiltak
+                ? 'Dette er innholdet (valgfritt)'
+                : 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
             }
             description={
-              erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
+              erOpplaringsTiltak
                 ? 'Hvis arrangøren har ulike tilbud skal du skrive hva personen trenger opplæring i. Ta bare med bakgrunnsinfo som er nødvendig.'
                 : null
             }
