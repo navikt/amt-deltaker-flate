@@ -3,6 +3,7 @@ import {
   DeltakerStatusType,
   lagHistorikkFellesOppstart,
   Oppstartstype,
+  Pameldingstype,
   UlestHendelseType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -70,6 +71,14 @@ export class MockHandler {
     this.deltakerlisteDetaljer = {
       ...this.deltakerlisteDetaljer,
       oppstartstype
+    } as DeltakerlisteDetaljer
+    return HttpResponse.json(this.deltakerlisteDetaljer)
+  }
+
+  setPameldingstype(pameldingstype: Pameldingstype) {
+    this.deltakerlisteDetaljer = {
+      ...this.deltakerlisteDetaljer,
+      pameldingstype
     } as DeltakerlisteDetaljer
     return HttpResponse.json(this.deltakerlisteDetaljer)
   }
