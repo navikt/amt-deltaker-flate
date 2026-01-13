@@ -14,7 +14,10 @@ import {
 } from '../../context-providers/HandlingContext'
 import { useShadowDom } from '../../context-providers/ShadowDomContext'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
-import { kanDeleDeltakerMedArrangorForVurdering } from 'deltaker-flate-common'
+import {
+  kanDeleDeltakerMedArrangorForVurdering,
+  Pameldingstype
+} from 'deltaker-flate-common'
 
 interface Props {
   onModalOpen: () => void
@@ -62,8 +65,11 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
     deltakerlisteDetaljer.tiltakskode
   )
 
-  // TODO denne er kanskje ikke riktig lenger? Kanskje bare komet må være master?
-  if (!kanDeleMedArrangor && !kometErMaster) {
+  if (
+    !kometErMaster &&
+    deltakerlisteDetaljer.pameldingstype !== Pameldingstype.TRENGER_GODKJENNING
+    // TODO skal det styres på Felles oppstart også?
+  ) {
     return <div className="mt-8"></div>
   }
 
