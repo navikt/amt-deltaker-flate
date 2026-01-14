@@ -67,9 +67,10 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         </Detail>
 
         {deltaker.deltakelsesinnhold && (
-          <Detail title="Dette er innholdet">
+          <div>
+            <Label size="small">Dette er innholdet:</Label>
             <BodyShort size="small">{deltaker.deltakelsesinnhold}</BodyShort>
-          </Detail>
+          </div>
         )}
       </div>
 
