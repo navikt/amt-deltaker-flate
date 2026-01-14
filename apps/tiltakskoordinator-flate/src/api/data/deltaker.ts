@@ -46,6 +46,7 @@ export const deltakerDetaljerSchema = z.object({
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   navEnhet: z.string().nullable(),
+  deltakelsesinnhold: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),

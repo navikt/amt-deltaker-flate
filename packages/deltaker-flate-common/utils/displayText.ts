@@ -57,8 +57,6 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
       return 'Fag- og yrkesopplæring (enkeltplass)'
     case Tiltakskode.HOYERE_UTDANNING:
       return 'Høyere utdanning'
-
-    // TODO skal vi har med (enkeltplass)?
     case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring'
     case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
@@ -72,22 +70,6 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   }
 }
 
-export const hentTiltakGjennomforingNavnArrangorTittel = (
-  navnPaGjennomforing: string,
-  tiltakskode: Tiltakskode,
-  arrangorNavn: string
-) => {
-  // TODO sjekk denne for pamelidngstype og nye tiltakskoder?
-  // skal Kurs fjernes? siden de ble fjernet i aktivitetskort?
-  if (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING) {
-    return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
-  }
-  if (tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) {
-    return `${navnPaGjennomforing} hos ${arrangorNavn}`
-  }
-  return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
-}
-
 export const hentTiltakNavnHosArrangorTekst = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string
@@ -98,10 +80,18 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
-  // TODO sjekk denne for pamelidngstype og nye tiltakskoder?
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
+    // TODO sjekk denne for pamelidngstype og nye og gammel tiltakskoder?
+    // Tiltakskode.HOYERE_UTDANNING,
+    // Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    // Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
     ? `${deltakerlisteNavn} hos ${arrangorNavn}`
     : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
