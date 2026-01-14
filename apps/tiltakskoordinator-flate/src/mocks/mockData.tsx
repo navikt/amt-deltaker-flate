@@ -134,7 +134,8 @@ export const createMockDeltaker = (
     harOppdateringFraNav: harOppdateringFraNav,
     aktiveForslag: aktiveForslag,
     kanEndres: statusType !== DeltakerStatusType.AVBRUTT,
-    ulesteHendelser: ulesteHendelserUtvalg
+    ulesteHendelser: ulesteHendelserUtvalg,
+    deltakelsesinnhold: 'Test'
   }
 }
 

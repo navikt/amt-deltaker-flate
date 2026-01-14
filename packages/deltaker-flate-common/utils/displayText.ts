@@ -83,12 +83,14 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    // TODO For tiltakskodene under må vi sjekkes for om vi har rammeavtale.
+    // Vi har deltakerliste.erEnkeltplassUtenRammeavtale
     Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
     Tiltakskode.STUDIESPESIALISERING,
     Tiltakskode.FAG_OG_YRKESOPPLAERING,
     Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
-    // TODO sjekk denne for pamelidngstype og nye og gammel tiltakskoder?
+    // TODO skal disse også være med men kun ved rammeavtaler?
     // Tiltakskode.HOYERE_UTDANNING,
     // Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
     // Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
