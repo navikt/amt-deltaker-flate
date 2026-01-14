@@ -5,7 +5,7 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   getTiltakskodeDisplayText,
-  hentTiltakGjennomforingNavnArrangorTittel,
+  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
@@ -41,9 +41,9 @@ export const PameldingHeader = ({
   return (
     <div>
       <Heading level="1" size="large">
-        {hentTiltakGjennomforingNavnArrangorTittel(
-          deltakerliste.deltakerlisteNavn,
+        {hentTiltakEllerGjennomforingNavnHosArrangorTekst(
           deltakerliste.tiltakskode,
+          deltakerliste.deltakerlisteNavn,
           deltakerliste.arrangorNavn
         )}
       </Heading>

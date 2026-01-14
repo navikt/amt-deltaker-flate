@@ -65,6 +65,12 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
               : EMDASH}
           </BodyShort>
         </Detail>
+
+        {deltaker.deltakelsesinnhold && (
+          <Detail title="Dette er innholdet">
+            <BodyShort size="small">{deltaker.deltakelsesinnhold}</BodyShort>
+          </Detail>
+        )}
       </div>
 
       <DeltakerEndringer
