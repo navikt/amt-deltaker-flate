@@ -83,17 +83,13 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-    // TODO For tiltakskodene under må vi sjekkes for om vi har rammeavtale.
-    // Vi har deltakerliste.erEnkeltplassUtenRammeavtale
+    // deltakerlisteNavn blis satt til tilatkstypenavn hvis det er enkeltplasss uten rammeavtale
     Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
     Tiltakskode.STUDIESPESIALISERING,
     Tiltakskode.FAG_OG_YRKESOPPLAERING,
     Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
-    // TODO skal disse også være med men kun ved rammeavtaler?
-    // Tiltakskode.HOYERE_UTDANNING,
-    // Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
-    // Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+    // TODO Ta med når vi kan gjøre påmelding: Tiltakskode.HOYERE_UTDANNING,
   ].includes(tiltakskode)
     ? `${deltakerlisteNavn} hos ${arrangorNavn}`
     : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
