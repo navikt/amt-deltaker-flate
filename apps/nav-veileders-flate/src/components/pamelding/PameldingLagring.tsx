@@ -32,12 +32,14 @@ export const PameldingLagring = ({ pamelding }: Props) => {
     const innhold = generateInnholdFromResponse(
       pamelding,
       data.valgteInnhold,
-      data.innholdAnnetBeskrivelse
+      data.innholdAnnetBeskrivelse,
+      data.innholdsTekst
     )
 
     const innholdAnnet = innhold.find(
       (i) => i.innholdskode === INNHOLD_TYPE_ANNET
     )
+
     const korrigertInnhold = [
       ...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)
     ]

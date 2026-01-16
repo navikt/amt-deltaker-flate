@@ -182,9 +182,9 @@ export class MockHandler {
         oppdatertDeltaker.dagerPerUke = null
       }
       if (harBakgrunnsinfo(tiltakskode)) {
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-      } else {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
+      } else {
+        oppdatertDeltaker.bakgrunnsinformasjon = null
       }
 
       if (erEnkeltplassFraArena) {
