@@ -205,7 +205,7 @@ export const harAdresse = (tiltakskode: Tiltakskode) =>
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
 
-export const kanMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
+export const skalMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
   pameldingstype === Pameldingstype.DIREKTE_VEDTAK
 
 export const getDeltakerStatusAarsakTypeText = (

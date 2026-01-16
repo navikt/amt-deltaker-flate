@@ -21,9 +21,9 @@ import {
   VedtakOgKlage,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
+  skalMeldePaaDirekte,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -85,7 +85,7 @@ export const TiltakPage = () => {
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            {harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
+            {!skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) ||
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
               ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
               : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}

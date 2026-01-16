@@ -19,10 +19,10 @@ import {
   deltakerprosentText,
   harAdresse,
   harBakgrunnsinfo,
-  harFellesOppstart,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
+  skalMeldePaaDirekte,
   useDeferredFetch,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -39,7 +39,7 @@ export const UtkastPage = () => {
   const [godattError, setGodTattError] = useState(false)
 
   const erUtkastTilSoknad =
-    harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
+    !skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) ||
     deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
