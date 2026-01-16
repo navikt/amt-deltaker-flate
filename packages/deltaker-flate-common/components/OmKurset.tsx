@@ -10,7 +10,7 @@ import {
   formatDate,
   formatDateWithMonthName,
   kanDeleDeltakerMedArrangorForVurdering,
-  kanMeldePaaDirekte
+  skalMeldePaaDirekte
 } from '../utils/utils'
 
 interface Props {
@@ -72,7 +72,7 @@ export const OmKurset = ({
     return null
   }
 
-  const kreverGodkjenning = !kanMeldePaaDirekte(pameldingstype)
+  const kreverGodkjenning = !skalMeldePaaDirekte(pameldingstype)
 
   return (
     <section className={className ?? ''}>

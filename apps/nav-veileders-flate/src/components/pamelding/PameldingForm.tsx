@@ -6,7 +6,7 @@ import {
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
   INNHOLD_TYPE_ANNET,
-  kanMeldePaaDirekte,
+  skalMeldePaaDirekte,
   OmKurset,
   Oppmotested,
   Oppstartstype,
@@ -96,7 +96,7 @@ export const PameldingForm = ({
   const erOpplaringLopendeOppstartDirektePamelding =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
     erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) &&
-    kanMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
+    skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
 
   return (
     <form

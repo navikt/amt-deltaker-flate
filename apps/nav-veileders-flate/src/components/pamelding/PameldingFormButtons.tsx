@@ -2,8 +2,8 @@ import { Alert, BodyLong, Button, HelpText, HStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
+  skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -46,12 +46,13 @@ export const PameldingFormButtons = ({
   const kanDeleUtkast = pamelding.digitalBruker
   const harAdresse = pamelding.harAdresse
 
-  const erFellesOppstart = harFellesOppstart(
-    pamelding.deltakerliste.oppstartstype
+  const meldPaDirekte = skalMeldePaaDirekte(
+    pamelding.deltakerliste.pameldingstype
   )
+
   const delEndringKnappTekst = erUtkast
     ? 'Del endring'
-    : `Del utkast og gjør klar ${erFellesOppstart ? 'søknad' : 'påmelding'}`
+    : `Del utkast og gjør klar ${meldPaDirekte ? 'påmelding' : 'søknad'}`
 
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
@@ -61,9 +62,9 @@ export const PameldingFormButtons = ({
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
-      body: erFellesOppstart
-        ? `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
-        : `Vedtaket er gjort klart. Når brukeren godtar, så fattes vedtaket om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+      body: meldPaDirekte
+        ? `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+        : `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -155,7 +156,7 @@ export const PameldingFormButtons = ({
             {erKladd && (
               <div className="ml-2">
                 <HelpText aria-label={`Hjelpetekst: ${delEndringKnappTekst}`}>
-                  {`Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når brukeren godtar utkastet, så ${erFellesOppstart ? 'søkes de inn' : 'fattes vedtaket'}.`}
+                  {`Når utkastet deles med bruker så kan de lese gjennom hva du foreslår å sende til arrangøren. Bruker blir varslet og kan finne lenke på innlogget nav.no og gjennom aktivitetsplanen. Når brukeren godtar utkastet, så ${meldPaDirekte ? 'fattes vedtaket' : 'søkes de inn'}.`}
                 </HelpText>
               </div>
             )}
@@ -239,9 +240,7 @@ export const PameldingFormButtons = ({
           setDelUtkastModalOpen(false)
         }}
         deltakerNavn={getDeltakerNavn(pamelding)}
-        tiltakskode={pamelding.deltakerliste.tiltakskode}
-        arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
+        deltakerliste={pamelding.deltakerliste}
       />
     </>
   )

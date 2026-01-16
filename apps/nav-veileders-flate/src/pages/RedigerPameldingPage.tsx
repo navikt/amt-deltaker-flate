@@ -4,7 +4,7 @@ import {
   DeferredFetchState,
   DeltakerStatusType,
   Tiltakskode,
-  harFellesOppstart,
+  skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -34,8 +34,8 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
-  const erFellesOppstart = harFellesOppstart(
-    pamelding.deltakerliste.oppstartstype
+  const meldPaDirekte = skalMeldePaaDirekte(
+    pamelding.deltakerliste.pameldingstype
   )
 
   const kanEndreUtkast = ![
@@ -129,7 +129,7 @@ export const RedigerPameldingPage = () => {
                   loading={avbrytUtkastState === DeferredFetchState.LOADING}
                   icon={<XMarkIcon />}
                 >
-                  {`Avbryt utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`}
+                  {`Avbryt utkast til ${meldPaDirekte ? 'påmelding' : 'søknad'}`}
                 </Button>
               </>
             )}

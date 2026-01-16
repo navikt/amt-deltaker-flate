@@ -1,10 +1,9 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
 import {
-  Tiltakskode,
-  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  Oppstartstype
+  skalMeldePaaDirekte
 } from 'deltaker-flate-common'
+import { Deltakerliste } from '../../api/data/pamelding'
 import { ModalFooter } from '../ModalFooter'
 
 interface Props {
@@ -12,9 +11,7 @@ interface Props {
   onConfirm: () => void
   onCancel: () => void
   deltakerNavn: string
-  tiltakskode: Tiltakskode
-  arrangorNavn: string
-  oppstartstype: Oppstartstype | null
+  deltakerliste: Deltakerliste
 }
 
 export const DelUtkastModal = ({
@@ -22,17 +19,14 @@ export const DelUtkastModal = ({
   onConfirm,
   onCancel,
   deltakerNavn,
-  tiltakskode,
-  arrangorNavn,
-  oppstartstype
+  deltakerliste
 }: Props) => {
-  const erFellesOppstart = harFellesOppstart(oppstartstype)
-
+  const meldPaDirekte = skalMeldePaaDirekte(deltakerliste.pameldingstype)
   return (
     <Modal
       open={open}
       header={{
-        heading: `Del utkast og gjør klar ${erFellesOppstart ? 'søknad' : 'vedtak'}`
+        heading: `Del utkast og gjør klar ${meldPaDirekte ? 'påmelding' : 'søknad'}`
       }}
       onClose={onCancel}
     >
@@ -45,17 +39,17 @@ export const DelUtkastModal = ({
         </BodyLong>
 
         <BodyLong size="small" className="mt-6 mb-6">
-          {erFellesOppstart
-            ? 'Når brukeren godtar utkastet, søkes de inn. Når det nærmer seg oppstart av kurset, vil Nav gjøre en vurdering av om brukeren oppfyller kravene for å delta.'
-            : 'Når brukeren godtar utkastet, så fattes vedtaket. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.'}
+          {meldPaDirekte
+            ? 'Når brukeren godtar utkastet, så fattes vedtaket. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.'
+            : 'Når brukeren godtar utkastet, søkes de inn. Når det nærmer seg oppstart av kurset, vil Nav gjøre en vurdering av om brukeren oppfyller kravene for å delta.'}
         </BodyLong>
 
         <BodyLong weight="semibold">
-          {`${deltakerNavn} ${erFellesOppstart ? 'søkes inn' : 'meldes'} på ${hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)}`}
+          {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
         </BodyLong>
       </Modal.Body>
       <ModalFooter
-        confirmButtonText={`Del utkast og gjør klar ${erFellesOppstart ? 'søknad' : 'vedtak'}`}
+        confirmButtonText={`Del utkast og gjør klar ${meldPaDirekte ? 'påmelding' : 'søknad'}`}
         cancelButtonText="Avbryt"
         onConfirm={onConfirm}
         onCancel={onCancel}
