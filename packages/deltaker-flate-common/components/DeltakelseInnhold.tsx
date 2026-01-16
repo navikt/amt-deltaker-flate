@@ -1,5 +1,5 @@
 import { BodyLong, List } from '@navikt/ds-react'
-import { Deltakelsesinnhold, Tiltakskode } from '../model/deltaker'
+import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 import { erOpplaringstiltak } from '../utils/utils'
 
@@ -24,6 +24,15 @@ export const DeltakelseInnhold = ({
     tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     erOpplaringstiltak(tiltakskode)
 
+  const annetFelt: Innhold | undefined = getAnnetFeltForInnhold(
+    harInnholdsTekst,
+    deltakelsesinnhold
+  )
+
+  if (harInnholdsTekst && !annetFelt) {
+    return null
+  }
+
   return (
     <>
       {heading ?? null}
@@ -32,23 +41,15 @@ export const DeltakelseInnhold = ({
         <BodyLong size="small">{deltakelsesinnhold.ledetekst}</BodyLong>
       )}
 
-      {harInnholdsTekst &&
-        deltakelsesinnhold.innhold.length > 0 &&
-        deltakelsesinnhold.innhold
-          .filter((i) => i.valgt)
-          .map((i) => {
-            if (i.innholdskode === INNHOLD_TYPE_ANNET) {
-              return (
-                <BodyLong
-                  className={`${deltakelsesinnhold.ledetekst ? 'mt-4' : ''} whitespace-pre-wrap`}
-                  key={i.innholdskode}
-                  size="small"
-                >
-                  {i.beskrivelse}
-                </BodyLong>
-              )
-            }
-          })}
+      {harInnholdsTekst && annetFelt && (
+        <BodyLong
+          className={`${deltakelsesinnhold.ledetekst ? 'mt-4' : ''} whitespace-pre-wrap`}
+          key={annetFelt.innholdskode}
+          size="small"
+        >
+          {annetFelt.beskrivelse}
+        </BodyLong>
+      )}
 
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small" className={listClassName ?? ''}>
@@ -67,6 +68,18 @@ export const DeltakelseInnhold = ({
         </List>
       )}
     </>
+  )
+}
+
+const getAnnetFeltForInnhold = (
+  harInnholdsTekst: boolean,
+  deltakelsesinnhold: Deltakelsesinnhold
+): Innhold | undefined => {
+  if (!harInnholdsTekst) {
+    return undefined
+  }
+  return deltakelsesinnhold.innhold.find(
+    (i) => i.innholdskode === INNHOLD_TYPE_ANNET && i.valgt
   )
 }
 
