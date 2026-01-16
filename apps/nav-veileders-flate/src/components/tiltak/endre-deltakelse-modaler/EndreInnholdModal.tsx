@@ -7,6 +7,7 @@ import {
 } from '@navikt/ds-react'
 import {
   EndreDeltakelseType,
+  erOpplaringstiltak,
   fjernUgyldigeTegn,
   haveSameContents,
   Innhold,
@@ -65,9 +66,12 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
+  const erOpplaringsTiltak = erOpplaringstiltak(
+    pamelding.deltakerliste.tiltakskode
+  )
   const visCheckbokser =
     pamelding.deltakerliste.tiltakskode !==
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET && !erOpplaringsTiltak
 
   const validertRequest = () => {
     if (visCheckbokser && valgteInnhold.length <= 0) {
@@ -145,9 +149,12 @@ export const EndreInnholdModal = ({
       validertRequest={validertRequest}
       forslag={null}
     >
-      <Heading level="2" size="small" className="mb-4">
-        Dette er innholdet
-      </Heading>
+      {!erOpplaringsTiltak && (
+        <Heading level="2" size="small" className="mb-4">
+          Dette er innholdet
+        </Heading>
+      )}
+
       <section>
         {pamelding.deltakerliste.tilgjengeligInnhold?.ledetekst && (
           <BodyLong size="small">
@@ -201,7 +208,18 @@ export const EndreInnholdModal = ({
               setInnholdsTekst(fjernUgyldigeTegn(e.target.value))
               setInnholdsTekstError(null)
             }}
-            label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
+            label={
+              erOpplaringsTiltak
+                ? 'Dette er innholdet (valgfritt)'
+                : 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
+            }
+            description={
+              erOpplaringsTiltak
+                ? 'Hvis arrangøren har ulike tilbud skal du skrive hva personen trenger opplæring i. Ta bare med bakgrunnsinfo som er nødvendig.'
+                : null
+            }
+            aria-label="Innhold beskrivelse"
+            aria-required
             value={innholdsTekst ?? ''}
             disabled={!pamelding.erUnderOppfolging}
             maxLength={BESKRIVELSE_ANNET_MAX_TEGN}

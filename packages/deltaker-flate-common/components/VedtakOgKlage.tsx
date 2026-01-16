@@ -36,7 +36,8 @@ export const VedtakOgKlage = ({
 
   const harRettTilAKlage = !(
     harFellesOppstart(oppstartstype) &&
-    tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING)
   )
 
   return harVedtak ? (

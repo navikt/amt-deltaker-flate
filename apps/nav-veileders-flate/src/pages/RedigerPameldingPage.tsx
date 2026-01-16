@@ -3,9 +3,8 @@ import { Button, VStack } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  UtkastHeader,
-  erKursEllerDigitalt,
-  harFellesOppstart,
+  Tiltakskode,
+  skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -35,17 +34,14 @@ export const RedigerPameldingPage = () => {
   const { doRedirect } = useModiaLink()
   const { enhetId } = useAppContext()
 
-  const erFellesOppstart = harFellesOppstart(
-    pamelding.deltakerliste.oppstartstype
+  const meldPaDirekte = skalMeldePaaDirekte(
+    pamelding.deltakerliste.pameldingstype
   )
-  const erUtkastAvbrutt =
-    pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
-  const tittel = erUtkastAvbrutt
-    ? 'Avbrutt utkast'
-    : `Utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`
-  const kanEndreUtkast = !erKursEllerDigitalt(
-    pamelding.deltakerliste.tiltakskode
-  )
+
+  const kanEndreUtkast = ![
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
+    Tiltakskode.JOBBKLUBB
+  ].includes(pamelding.deltakerliste.tiltakskode)
 
   const returnToFrontpage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
@@ -68,20 +64,13 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div className="max-w-[47.5rem] md:m-auto m-4" data-testid="page_utkast">
+    <div className="max-w-190 md:m-auto m-4" data-testid="page_utkast">
       <Tilbakeknapp />
-      <div>
-        <PameldingHeader
-          title={tittel}
-          deltakerliste={pamelding.deltakerliste}
-        />
-        <UtkastHeader
-          visStatusVenterPaaBruker={!erUtkastAvbrutt}
-          vedtaksinformasjon={pamelding.vedtaksinformasjon}
-          deltakerStatus={pamelding.status}
-          erNAVVeileder
-        />
-      </div>
+      <PameldingHeader
+        deltakerStatus={pamelding.status}
+        deltakerliste={pamelding.deltakerliste}
+        vedtaksinformasjon={pamelding.vedtaksinformasjon}
+      />
 
       <VStack gap="2" align="start" className="md:p-8 p-4 bg-white">
         {redigerUtkast && (
@@ -140,7 +129,7 @@ export const RedigerPameldingPage = () => {
                   loading={avbrytUtkastState === DeferredFetchState.LOADING}
                   icon={<XMarkIcon />}
                 >
-                  {`Avbryt utkast til ${erFellesOppstart ? 'søknad' : 'påmelding'}`}
+                  {`Avbryt utkast til ${meldPaDirekte ? 'påmelding' : 'søknad'}`}
                 </Button>
               </>
             )}

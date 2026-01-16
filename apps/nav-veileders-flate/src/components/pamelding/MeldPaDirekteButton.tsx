@@ -3,8 +3,8 @@ import { Alert, Button, HelpText } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
-  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
+  skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
@@ -50,12 +50,13 @@ export const MeldPaDirekteButton = ({
   const [newPameldingValues, setNewPameldingValues] = useState(
     useOldPamelding ? generateFormDefaultValues(pamelding) : undefined
   )
-  const erFellesOppstart = harFellesOppstart(
-    pamelding.deltakerliste.oppstartstype
+
+  const meldPaDirekte = skalMeldePaaDirekte(
+    pamelding.deltakerliste.pameldingstype
   )
   const methods = useFormContext<PameldingFormValues>()
 
-  const meldPaText = erFellesOppstart ? 'Søk inn' : 'Meld på'
+  const meldPaText = meldPaDirekte ? 'Meld på' : 'Søk inn'
 
   const meldPaDirekteTekst =
     pamelding.status.type === DeltakerStatusType.KLADD
@@ -63,14 +64,14 @@ export const MeldPaDirekteButton = ({
       : `${meldPaText} uten godkjent utkast`
 
   const returnToFrontpage = () => {
-    const body = erFellesOppstart
+    const body = meldPaDirekte
       ? {
-          heading: 'Bruker er søkt inn',
-          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
-        }
-      : {
           heading: 'Bruker er meldt på',
           body: `Vedtak om ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)} er fattet.`
+        }
+      : {
+          heading: 'Bruker er søkt inn',
+          body: `Innsøkt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
         }
     doRedirect(DELTAKELSESOVERSIKT_LINK, body)
   }

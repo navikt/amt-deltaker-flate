@@ -1,11 +1,17 @@
 import { BodyLong, ExpansionCard, Link, List } from '@navikt/ds-react'
+import {
+  DeltakerStatusType,
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
+} from '../model/deltaker'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
 import {
-  Tiltakskode,
-  DeltakerStatusType,
-  Oppstartstype
-} from '../model/deltaker'
-import { erKursEllerDigitalt, kanDeleDeltakerMedArrangor } from '../utils/utils'
+  harAdresse,
+  harBakgrunnsinfo,
+  harInnhold,
+  kanDeleDeltakerMedArrangorForVurdering
+} from '../utils/utils'
 
 interface Props {
   adresseDelesMedArrangor: boolean
@@ -13,6 +19,7 @@ interface Props {
   arrangorNavn: string
   tiltakskode: Tiltakskode
   oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   erEnkeltplassUtenRammeavtale: boolean
   className?: string
 }
@@ -23,15 +30,19 @@ export const HvaDelesMedArrangor = ({
   arrangorNavn,
   tiltakskode,
   oppstartstype,
+  pameldingstype,
   erEnkeltplassUtenRammeavtale,
   className
 }: Props) => {
   if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
     return null
   }
-  const erKurs = erKursEllerDigitalt(tiltakskode)
+
+  const visInnholdOgBakgrunnsinfo =
+    harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
+
   const visDelMedArrangorInfo =
-    kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
+    kanDeleDeltakerMedArrangorForVurdering(pameldingstype, tiltakskode) &&
     (statusType === DeltakerStatusType.SOKT_INN ||
       statusType === DeltakerStatusType.VURDERES)
 
@@ -71,7 +82,7 @@ export const HvaDelesMedArrangor = ({
             Navn og kontaktinformasjonen til Nav-veilederen din
           </List.Item>
 
-          {!erKurs && (
+          {visInnholdOgBakgrunnsinfo && (
             <List.Item>
               Innholdet og bakgrunnsinformasjonen i påmeldingen
             </List.Item>
@@ -80,7 +91,9 @@ export const HvaDelesMedArrangor = ({
           <List.Item>Navn og fødselsnummer</List.Item>
           <List.Item>Telefonnummer og e-postadresse</List.Item>
 
-          {adresseDelesMedArrangor && !erKurs && <List.Item>Adresse</List.Item>}
+          {adresseDelesMedArrangor && harAdresse(tiltakskode) && (
+            <List.Item>Adresse</List.Item>
+          )}
         </List>
         <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
           Se her hvilke opplysninger Nav har om deg.

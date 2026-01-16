@@ -22,7 +22,7 @@ import {
   formatDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -68,9 +68,9 @@ export const DeltakerInfo = ({ className }: Props) => {
 
   const visDeltMedArrangor =
     pamelding.erManueltDeltMedArrangor &&
-    kanDeleDeltakerMedArrangor(
-      pamelding.deltakerliste.tiltakskode,
-      pamelding.deltakerliste.oppstartstype
+    kanDeleDeltakerMedArrangorForVurdering(
+      pamelding.deltakerliste.pameldingstype,
+      pamelding.deltakerliste.tiltakskode
     ) &&
     (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
       pamelding.status.type === DeltakerStatusType.VURDERES)
@@ -130,6 +130,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         tiltakskode={pamelding.deltakerliste.tiltakskode}
         statusType={pamelding.status.type}
         oppstartstype={pamelding.deltakerliste.oppstartstype}
+        pameldingstype={pamelding.deltakerliste.pameldingstype}
         startdato={pamelding.deltakerliste.startdato}
         sluttdato={pamelding.deltakerliste.sluttdato}
         headingLevel={2}
@@ -200,6 +201,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           tiltakskode={pamelding.deltakerliste.tiltakskode}
           statusType={pamelding.status.type}
           oppstartstype={pamelding.deltakerliste.oppstartstype}
+          pameldingstype={pamelding.deltakerliste.pameldingstype}
           className="mt-8"
           erEnkeltplassUtenRammeavtale={
             pamelding.deltakerliste.erEnkeltplassUtenRammeavtale

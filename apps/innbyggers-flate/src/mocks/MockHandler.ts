@@ -7,13 +7,14 @@ import {
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,
+  Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   createHistorikk,
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
-  Oppstartstype,
-  erKursTiltak,
+  harBakgrunnsinfo,
   lagHistorikkFellesOppstart
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -53,6 +54,7 @@ export const createDeltaker = (
       tiltakskode: tiltakskode,
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
+      pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
       startdato: dayjs('2022-10-28').toDate(),
       sluttdato: dayjs('2027-12-20').toDate(),
       erEnkeltplassUtenRammeavtale: false,
@@ -155,7 +157,7 @@ export class MockHandler {
   setTiltakskode(tiltakskode: Tiltakskode) {
     this.tiltakskode = tiltakskode
     const oppdatertDeltaker = this.deltaker
-    const erEnkeltplass =
+    const erEnkeltplassFraArena =
       tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
@@ -179,17 +181,13 @@ export class MockHandler {
         oppdatertDeltaker.deltakelsesprosent = null
         oppdatertDeltaker.dagerPerUke = null
       }
-      if (
-        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplass
-      ) {
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-      } else {
+      if (harBakgrunnsinfo(tiltakskode)) {
         oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
+      } else {
+        oppdatertDeltaker.bakgrunnsinformasjon = null
       }
 
-      if (erEnkeltplass) {
+      if (erEnkeltplassFraArena) {
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = true
         oppdatertDeltaker.forslag = []
         oppdatertDeltaker.importertFraArena = {
@@ -200,20 +198,27 @@ export class MockHandler {
         oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (erKursTiltak(tiltakskode)) {
-        // Obs disse kan ha løpende oppstart også.
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.FELLES
-      } else if (erEnkeltplass) {
-        oppdatertDeltaker.bakgrunnsinformasjon = null
-        oppdatertDeltaker.deltakerliste.oppstartstype = null
-      } else {
-        oppdatertDeltaker.bakgrunnsinformasjon = bakgrunnsinformasjon
-        oppdatertDeltaker.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
-      }
-
       this.deltaker = oppdatertDeltaker
-      return HttpResponse.json(oppdatertDeltaker)
+    }
+    return HttpResponse.json(this.deltaker)
+  }
+
+  setOppstartstype(oppstartstype: Oppstartstype) {
+    const oppdatertDeltaker = this.deltaker
+
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.oppstartstype = oppstartstype
+      this.deltaker = oppdatertDeltaker
+    }
+    return HttpResponse.json(this.deltaker)
+  }
+
+  setPameldingstype(pameldingstype: Pameldingstype) {
+    const oppdatertDeltaker = this.deltaker
+
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.pameldingstype = pameldingstype
+      this.deltaker = oppdatertDeltaker
     }
     return HttpResponse.json(this.deltaker)
   }

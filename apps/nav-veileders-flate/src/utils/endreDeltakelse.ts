@@ -1,10 +1,12 @@
+import dayjs from 'dayjs'
 import {
-  Tiltakskode,
   DeltakerStatusType,
   EMDASH,
   EndreDeltakelseType,
-  erKursEllerDigitalt,
-  Oppstartstype
+  harBakgrunnsinfo,
+  harInnhold,
+  Oppstartstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
 import {
@@ -13,20 +15,19 @@ import {
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
-import dayjs from 'dayjs'
 
-const ikkeAktuellKanEndres = (pamelding: PameldingResponse) =>
+const ikkeAktuell = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const harSluttetEllerFullfortKanEndres = (pamelding: PameldingResponse) =>
+const harSluttetEllerFullfort = (pamelding: PameldingResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const harAvsluttendeStatusKanEndres = (pamelding: PameldingResponse) =>
+const harAvsluttendeStatus = (pamelding: PameldingResponse) =>
   deltakerHarAvsluttendeStatus(pamelding.status.type)
 
-const venterDeltarEllerKanEndres = (pamelding: PameldingResponse) =>
+const venterDeltarEller = (pamelding: PameldingResponse) =>
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  harAvsluttendeStatusKanEndres(pamelding)
+  harAvsluttendeStatus(pamelding)
 
 const skalViseForlengKnapp = (
   pamelding: PameldingResponse,
@@ -34,15 +35,14 @@ const skalViseForlengKnapp = (
 ) =>
   sluttdato &&
   (pamelding.status.type === DeltakerStatusType.DELTAR ||
-    harSluttetEllerFullfortKanEndres(pamelding))
+    harSluttetEllerFullfort(pamelding))
 
 const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
-  venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
+  harInnhold(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
-  venterDeltarEllerKanEndres(pamelding) &&
-  !erKursEllerDigitalt(pamelding.deltakerliste.tiltakskode)
+  venterDeltarEller(pamelding) &&
+  harBakgrunnsinfo(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
@@ -52,13 +52,13 @@ const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
-  venterDeltarEllerKanEndres(pamelding)
+  venterDeltarEller(pamelding)
 
 export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
     pamelding.startdato &&
     pamelding.startdato !== EMDASH) ||
-  harSluttetEllerFullfortKanEndres(pamelding) ||
+  harSluttetEllerFullfort(pamelding) ||
   kanLeggeTilOppstartsdato(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
@@ -147,7 +147,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   if (skalViseEndreAvslutning(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
   }
-  if (ikkeAktuellKanEndres(pamelding) && !deltakelseErLaast) {
+  if (ikkeAktuell(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }
 

@@ -3,6 +3,8 @@ import {
   DeltakerStatusType,
   forslagSchema,
   nullableDateSchema,
+  Oppstartstype,
+  Pameldingstype,
   Tiltakskode,
   Vurderingstype
 } from 'deltaker-flate-common'
@@ -44,11 +46,14 @@ export const deltakerDetaljerSchema = z.object({
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   navEnhet: z.string().nullable(),
+  deltakelsesinnhold: z.string().nullable(),
   navVeileder: navVeilederSchema.nullable(),
   beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
   innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
   tiltakskode: z.enum(Tiltakskode),
+  oppstartstype: z.enum(Oppstartstype).nullable(),
+  pameldingstype: z.enum(Pameldingstype),
   tilgangTilBruker: z.boolean(),
   aktiveForslag: z.array(forslagSchema),
   ulesteHendelser: z.array(ulesthendelseSchema)

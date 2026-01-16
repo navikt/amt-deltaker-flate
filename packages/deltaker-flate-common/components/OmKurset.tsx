@@ -2,19 +2,22 @@ import { BodyLong, Heading, Label, List } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import {
-  erKursTiltak,
+  erOpplaringstiltak,
   formatDate,
   formatDateWithMonthName,
-  kanDeleDeltakerMedArrangor
+  kanDeleDeltakerMedArrangorForVurdering,
+  skalMeldePaaDirekte
 } from '../utils/utils'
 
 interface Props {
   tiltakskode: Tiltakskode
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
@@ -28,6 +31,7 @@ export const OmKurset = ({
   tiltakskode,
   statusType,
   oppstartstype,
+  pameldingstype,
   startdato,
   sluttdato,
   headingLevel,
@@ -36,7 +40,10 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakskode) || !oppstartstype) {
+  const erTiltakSomSkalViseOmKurset =
+    erOpplaringstiltak(tiltakskode) || tiltakskode === Tiltakskode.JOBBKLUBB
+
+  if (!erTiltakSomSkalViseOmKurset || !oppstartstype) {
     return null
   }
 
@@ -65,16 +72,24 @@ export const OmKurset = ({
     return null
   }
 
+  const kreverGodkjenning = !skalMeldePaaDirekte(pameldingstype)
+
   return (
     <section className={className ?? ''}>
       <Heading size={size ?? 'medium'} level={`${headingLevel ?? 3}`}>
         Om kurset
       </Heading>
 
-      {oppstartstype === Oppstartstype.LOPENDE && (
+      {oppstartstype === Oppstartstype.LOPENDE && !kreverGodkjenning && (
         <BodyLong size="small" className="mt-2">
           Når det blir ledig plass, tar Nav eller arrangøren kontakt med deg for
           å avtale når du skal begynne.
+        </BodyLong>
+      )}
+
+      {oppstartstype === Oppstartstype.LOPENDE && kreverGodkjenning && (
+        <BodyLong size="small" className="mt-2">
+          Nav vurderer søknaden din, og du får beskjed om resultatet.
         </BodyLong>
       )}
 
@@ -119,7 +134,10 @@ export const OmKurset = ({
                 </List.Item>
               </List>
 
-              {kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
+              {kanDeleDeltakerMedArrangorForVurdering(
+                pameldingstype,
+                tiltakskode
+              ) &&
                 visDelMedArrangorInfo && (
                   <>
                     <BodyLong size="small" className="mt-4">
