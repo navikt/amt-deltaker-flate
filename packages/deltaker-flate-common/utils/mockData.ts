@@ -724,6 +724,8 @@ export const getInnholdForTiltakskode = (
         },
         annet
       ]
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return [annet]
     case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:

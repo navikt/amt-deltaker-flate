@@ -425,10 +425,11 @@ export class MockHandler {
         oppdatertPamelding.deltakelsesprosent = null
         oppdatertPamelding.dagerPerUke = null
       }
+
       if (harBakgrunnsinfo(tiltakskode)) {
-        oppdatertPamelding.bakgrunnsinformasjon = null
-      } else {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
+      } else {
+        oppdatertPamelding.bakgrunnsinformasjon = null
       }
 
       if (erEnkeltplassFraArena) {
