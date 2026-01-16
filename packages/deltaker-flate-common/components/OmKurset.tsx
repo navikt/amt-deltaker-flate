@@ -40,11 +40,10 @@ export const OmKurset = ({
   visForUtkast,
   className
 }: Props) => {
-  if (
-    !erOpplaringstiltak(tiltakskode) ||
-    !oppstartstype ||
-    tiltakskode !== Tiltakskode.JOBBKLUBB
-  ) {
+  const erTiltakSomSkalViseOmKurset =
+    erOpplaringstiltak(tiltakskode) || tiltakskode === Tiltakskode.JOBBKLUBB
+
+  if (!erTiltakSomSkalViseOmKurset || !oppstartstype) {
     return null
   }
 
