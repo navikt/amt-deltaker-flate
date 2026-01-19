@@ -118,8 +118,7 @@ export const OmKurset = ({
           {statusType !== DeltakerStatusType.VENTELISTE && (
             <>
               <BodyLong size="small" className="mt-2">
-                Nav vurderer søknaden din før kursstart, og du får beskjed om
-                resultatet:
+                Nav vil vurdere søknaden din, og du får beskjed om resultatet.
               </BodyLong>
 
               <List as="ul" size="small" className="-mt-1">

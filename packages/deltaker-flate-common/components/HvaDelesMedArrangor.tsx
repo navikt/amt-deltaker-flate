@@ -50,9 +50,12 @@ export const HvaDelesMedArrangor = ({
     <ExpansionCard
       aria-label="Dette deles med arrangøren"
       className={className || ''}
+      size="small"
     >
       <ExpansionCard.Header>
-        <ExpansionCard.Title>Dette deles med arrangøren</ExpansionCard.Title>
+        <ExpansionCard.Title as="h2">
+          Dette deles med arrangøren
+        </ExpansionCard.Title>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
         {visDelMedArrangorInfo ? (
@@ -64,23 +67,24 @@ export const HvaDelesMedArrangor = ({
             </BodyLong>
             <BodyLong size="small" className="mt-4">
               Du vil få beskjed dersom det oversendes informasjon om deg til
-              arrangør. Arrangøren behandler opplysninger på vegne av NAV.
-            </BodyLong>
-            <BodyLong size="small" className="mt-4">
-              Dette deles {arrangorNavn}:
+              arrangør.
             </BodyLong>
           </>
         ) : (
-          <BodyLong size="small">
-            Nav samarbeider med {arrangorNavn}. Arrangøren behandler
-            opplysninger på vegne av Nav.
-          </BodyLong>
+          <BodyLong size="small">Nav samarbeider med {arrangorNavn}.</BodyLong>
         )}
 
+        <BodyLong size="small" className="mt-2">
+          Dette deles:
+        </BodyLong>
+
         <List as="ul" size="small">
-          <List.Item>
-            Navn og kontaktinformasjonen til Nav-veilederen din
-          </List.Item>
+          <List.Item>Navn og fødselsnummer</List.Item>
+          <List.Item>Telefonnummer og e-postadresse</List.Item>
+
+          {adresseDelesMedArrangor && harAdresse(tiltakskode) && (
+            <List.Item>Adresse</List.Item>
+          )}
 
           {visInnholdOgBakgrunnsinfo && (
             <List.Item>
@@ -88,13 +92,11 @@ export const HvaDelesMedArrangor = ({
             </List.Item>
           )}
 
-          <List.Item>Navn og fødselsnummer</List.Item>
-          <List.Item>Telefonnummer og e-postadresse</List.Item>
-
-          {adresseDelesMedArrangor && harAdresse(tiltakskode) && (
-            <List.Item>Adresse</List.Item>
-          )}
+          <List.Item>
+            Navn og kontaktinformasjonen til Nav-veilederen din
+          </List.Item>
         </List>
+
         <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
           Se her hvilke opplysninger Nav har om deg.
         </Link>

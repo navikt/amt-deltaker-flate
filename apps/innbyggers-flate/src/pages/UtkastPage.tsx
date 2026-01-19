@@ -19,6 +19,7 @@ import {
   deltakerprosentText,
   harAdresse,
   harBakgrunnsinfo,
+  harInnhold,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
@@ -73,8 +74,10 @@ export const UtkastPage = () => {
   }
 
   const tiltakskode = deltaker.deltakerliste.tiltakskode
-  const skalVIseAdresse =
-    deltaker.adresseDelesMedArrangor && !harAdresse(tiltakskode)
+  const skalViseAdresse =
+    deltaker.adresseDelesMedArrangor && harAdresse(tiltakskode)
+  const visInnholdOgBakgrunnsinfo =
+    harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltaker.deltakerliste.pameldingstype,
     deltaker.deltakerliste.tiltakskode
@@ -191,8 +194,7 @@ export const UtkastPage = () => {
             </>
           ) : (
             <BodyLong size="small" className="mt-2">
-              Nav samarbeider med {arrangorNavn}. Arrangøren behandler
-              personopplysninger på vegne av Nav.
+              Nav samarbeider med {arrangorNavn}.
             </BodyLong>
           )}
         </>
@@ -200,17 +202,22 @@ export const UtkastPage = () => {
 
       <List as="ul" size="small" className="-mt-1 -mb-2">
         <List.Item className="mt-2 whitespace-pre-wrap">
-          Navn og kontaktinformasjonen til NAV-veilederen din
-        </List.Item>
-        <List.Item className="mt-2 whitespace-pre-wrap">
           Navn og fødselsnummer
         </List.Item>
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {skalVIseAdresse && (
+        {skalViseAdresse && (
           <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
         )}
+        {visInnholdOgBakgrunnsinfo && (
+          <List.Item>
+            Innholdet og bakgrunnsinformasjonen i påmeldingen
+          </List.Item>
+        )}
+        <List.Item className="mt-2 whitespace-pre-wrap">
+          Navn og kontaktinformasjonen til NAV-veilederen din
+        </List.Item>
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.
