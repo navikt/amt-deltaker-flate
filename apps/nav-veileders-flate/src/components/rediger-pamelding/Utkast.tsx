@@ -1,11 +1,10 @@
-import { BodyLong, Heading, VStack } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   DeltakerStatusType,
   EMDASH,
   OmKurset,
   Oppmotested,
-  Tiltakskode,
   deltakerprosentText,
   harBakgrunnsinfo,
   visDeltakelsesmengde
@@ -34,7 +33,7 @@ export const Utkast = ({
       : EMDASH
 
   return (
-    <VStack>
+    <div className="flex flex-col gap-8">
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={innhold}
@@ -47,7 +46,7 @@ export const Utkast = ({
       />
 
       {harBakgrunnsinfo(tiltakskode) && (
-        <div className="mt-8">
+        <div>
           <Heading level="3" size="small">
             Bakgrunnsinfo
           </Heading>
@@ -58,14 +57,14 @@ export const Utkast = ({
       )}
 
       {visDeltakelsesmengde(tiltakskode) && (
-        <>
-          <Heading level="3" size="small" className="mt-8">
+        <div>
+          <Heading level="3" size="small">
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
           </BodyLong>
-        </>
+        </div>
       )}
 
       <OmKurset
@@ -77,15 +76,12 @@ export const Utkast = ({
         sluttdato={deltakerliste.sluttdato}
         size="small"
         visDelMedArrangorInfo
-        visForUtkast
-        className={tiltakskode === Tiltakskode.JOBBKLUBB ? 'mt-8' : ''}
       />
 
       <Oppmotested
         oppmoteSted={deltakerliste.oppmoteSted}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
-        className="mt-8"
       />
-    </VStack>
+    </div>
   )
 }

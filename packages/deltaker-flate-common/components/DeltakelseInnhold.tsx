@@ -34,7 +34,7 @@ export const DeltakelseInnhold = ({
   }
 
   return (
-    <>
+    <div>
       {heading ?? null}
 
       {deltakelsesinnhold.ledetekst && (
@@ -67,7 +67,7 @@ export const DeltakelseInnhold = ({
             ))}
         </List>
       )}
-    </>
+    </div>
   )
 }
 

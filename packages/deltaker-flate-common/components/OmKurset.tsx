@@ -23,7 +23,6 @@ interface Props {
   size?: 'medium' | 'small'
   headingLevel?: 2 | 3 | 4
   visDelMedArrangorInfo?: boolean
-  visForUtkast?: boolean
   className?: string
 }
 
@@ -37,7 +36,6 @@ export const OmKurset = ({
   headingLevel,
   size,
   visDelMedArrangorInfo,
-  visForUtkast,
   className
 }: Props) => {
   const erTiltakSomSkalViseOmKurset =
@@ -62,13 +60,7 @@ export const OmKurset = ({
     DeltakerStatusType.VENTELISTE
   ]
 
-  const skalViseOmKurset =
-    statusType === DeltakerStatusType.KLADD ||
-    (statusType === DeltakerStatusType.UTKAST_TIL_PAMELDING && visForUtkast) ||
-    (statuserForVisKurs.includes(statusType) &&
-      oppstartstype === Oppstartstype.FELLES)
-
-  if (!skalViseOmKurset) {
+  if (!statuserForVisKurs.includes(statusType)) {
     return null
   }
 

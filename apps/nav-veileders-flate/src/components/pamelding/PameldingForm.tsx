@@ -120,7 +120,6 @@ export const PameldingForm = ({
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
             visDelMedArrangorInfo
-            visForUtkast
           />
 
           {harBakgrunnsinfo(tiltakskode) && (
