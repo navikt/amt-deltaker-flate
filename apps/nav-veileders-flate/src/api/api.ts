@@ -181,7 +181,10 @@ export const endreDeltakelseIkkeAktuell = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke utføre endringen å sette til ikke aktuell.'
         handleError(message, deltakerId, response.status)
@@ -206,7 +209,10 @@ export const endreDeltakelseReaktiver = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre til aktiv deltakelse.'
         handleError(message, deltakerId, response.status)
@@ -238,7 +244,10 @@ export const endreDeltakelseForleng = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke forlenge deltakelsen.'
         handleError(message, deltakerId, response.status)
@@ -263,7 +272,10 @@ export const endreDeltakelseFjernOppstartsdato = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke fjerne oppstartsdato.'
         handleError(message, deltakerId, response.status)
@@ -288,7 +300,10 @@ export const endreDeltakelseStartdato = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre oppstartsdato.'
         handleError(message, deltakerId, response.status)
@@ -313,7 +328,10 @@ export const endreDeltakelseSluttarsak = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre sluttårsak.'
         handleError(message, deltakerId, response.status)
@@ -338,7 +356,10 @@ export const avsluttDeltakelse = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke avslutte deltakelsen.'
         handleError(message, deltakerId, response.status)
@@ -363,7 +384,10 @@ export const endreAvslutning = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre avslutning til deltakeren.'
         handleError(message, deltakerId, response.status)
@@ -388,7 +412,10 @@ export const endreDeltakelseBakgrunnsinfo = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre bakgrunnsinfo..'
         handleError(message, deltakerId, response.status)
@@ -413,7 +440,10 @@ export const endreDeltakelseInnhold = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre innhold.'
         handleError(message, deltakerId, response.status)
@@ -438,7 +468,10 @@ export const endreDeltakelsesmengde = (
     },
     body: JSON.stringify(request)
   })
-    .then((response) => {
+    .then(async (response) => {
+      if (response.status === 400) {
+        await parseValidationError(response)
+      }
       if (response.status !== 200) {
         const message = 'Kunne ikke endre deltakelsesmengde.'
         handleError(message, deltakerId, response.status)
@@ -567,4 +600,60 @@ const handleError = (
 ) => {
   logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
+}
+
+enum UgyldigDeltakerEndring {
+  AVSLUTT_DELTAKELSE_INGEN_ENDRING = 'AVSLUTT_DELTAKELSE_INGEN_ENDRING',
+  ENDRE_DELTAKELSESMENGDE_INGEN_ENDRING = 'ENDRE_DELTAKELSESMENGDE_INGEN_ENDRING',
+  ENDRE_AVSLUTNING_INGEN_ENDRING = 'ENDRE_AVSLUTNING_INGEN_ENDRING',
+  AVBRYT_DELTAKELSE_INGEN_ENDRING = 'AVBRYT_DELTAKELSE_INGEN_ENDRING',
+  ENDRE_BAKGRUNNSINFORMASJON_INGEN_ENDRING = 'ENDRE_BAKGRUNNSINFORMASJON_INGEN_ENDRING',
+  ENDRE_INNHOLD_INGEN_ENDRING = 'ENDRE_INNHOLD_INGEN_ENDRING',
+  ENDRE_SLUTTAARSAK_INGEN_ENDRING = 'ENDRE_SLUTTAARSAK_INGEN_ENDRING',
+  ENDRE_SLUTTDATO_INGEN_ENDRING = 'ENDRE_SLUTTDATO_INGEN_ENDRING',
+  ENDRE_STARTDATO_INGEN_ENDRING = 'ENDRE_STARTDATO_INGEN_ENDRING',
+  FJERN_OPPSTARTSDATO_INGEN_ENDRING = 'FJERN_OPPSTARTSDATO_INGEN_ENDRING',
+  FORLENG_DELTAKELSE_INGEN_ENDRING = 'FORLENG_DELTAKELSE_INGEN_ENDRING',
+  SETT_IKKE_AKTUELL_INGEN_ENDRING = 'SETT_IKKE_AKTUELL_INGEN_ENDRING',
+  REAKTIVER_DELTAKELSE_INGEN_ENDRING = 'REAKTIVER_DELTAKELSE_INGEN_ENDRING'
+}
+
+const VALIDATION_ERROR_MESSAGES: Record<UgyldigDeltakerEndring, string> = {
+  [UgyldigDeltakerEndring.AVSLUTT_DELTAKELSE_INGEN_ENDRING]:
+    'Deltakelsen er allerede avsluttet.',
+  [UgyldigDeltakerEndring.ENDRE_DELTAKELSESMENGDE_INGEN_ENDRING]:
+    'Ny deltakelsesmengde må være forskjellig fra den nåværende.',
+  [UgyldigDeltakerEndring.ENDRE_AVSLUTNING_INGEN_ENDRING]:
+    'Endringen av avslutning til valgte verdier er allerede gjort.',
+  [UgyldigDeltakerEndring.AVBRYT_DELTAKELSE_INGEN_ENDRING]:
+    'Deltakelsen er allerede avbrutt.',
+  [UgyldigDeltakerEndring.ENDRE_BAKGRUNNSINFORMASJON_INGEN_ENDRING]:
+    'Endring av bakgrunnsinformasjon til valgte verdier er allerede gjort.',
+  [UgyldigDeltakerEndring.ENDRE_INNHOLD_INGEN_ENDRING]:
+    'Endring av innhold til valgte verdier er allerede gjort.',
+  [UgyldigDeltakerEndring.ENDRE_SLUTTAARSAK_INGEN_ENDRING]:
+    'Ny sluttårsak må være forskjellig fra den nåværende.',
+  [UgyldigDeltakerEndring.ENDRE_SLUTTDATO_INGEN_ENDRING]:
+    'Ny sluttdato må være forskjellig fra den nåværende.',
+  [UgyldigDeltakerEndring.ENDRE_STARTDATO_INGEN_ENDRING]:
+    'Ny startdato må være forskjellig fra den nåværende.',
+  [UgyldigDeltakerEndring.FJERN_OPPSTARTSDATO_INGEN_ENDRING]:
+    'Oppstartsdato er allerede fjernet.',
+  [UgyldigDeltakerEndring.FORLENG_DELTAKELSE_INGEN_ENDRING]:
+    'Deltakelsen er allerede forlenget til den valgte sluttdatoen.',
+  [UgyldigDeltakerEndring.SETT_IKKE_AKTUELL_INGEN_ENDRING]:
+    'Deltakelsen er allerede satt til ikke aktuell.',
+  [UgyldigDeltakerEndring.REAKTIVER_DELTAKELSE_INGEN_ENDRING]:
+    'Deltakelsen er allerede aktiv.'
+}
+
+const parseValidationError = async (response: Response): Promise<void> => {
+  const errorText = await response.text()
+  const enumValues = Object.values(UgyldigDeltakerEndring)
+
+  for (const value of enumValues) {
+    if (errorText.includes(value)) {
+      throw new Error(VALIDATION_ERROR_MESSAGES[value])
+    }
+  }
 }
