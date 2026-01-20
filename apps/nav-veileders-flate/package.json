@@ -22,19 +22,19 @@
   "dependencies": {
     "@grafana/faro-web-sdk": "^2.1.0",
     "@hookform/resolvers": "^5.2.2",
-    "@navikt/aksel-icons": "^7.36.0",
-    "@navikt/ds-css": "^7.36.0",
-    "@navikt/ds-react": "^7.36.0",
-    "@navikt/ds-tailwind": "^7.36.0",
+    "@navikt/aksel-icons": "^7.37.0",
+    "@navikt/ds-css": "^7.37.0",
+    "@navikt/ds-react": "^7.37.0",
+    "@navikt/ds-tailwind": "^7.37.0",
     "dayjs": "^1.11.19",
     "deltaker-flate-common": "workspace:*",
     "msw": "^2.12.7",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-hook-form": "^7.69.0",
-    "react-router-dom": "^7.11.0",
+    "react-hook-form": "^7.70.0",
+    "react-router-dom": "^7.12.0",
     "uuid": "^13.0.0",
-    "zod": "^4.3.4"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
@@ -55,7 +55,7 @@
     "playwright": "^1.57.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^7.3.0",
+    "vite": "^7.3.1",
     "vitest": "^4.0.16"
   },
   "msw": {
