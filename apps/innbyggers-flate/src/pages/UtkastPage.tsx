@@ -185,11 +185,8 @@ export const UtkastPage = () => {
           {kanDeleDeltakerMedArrangor ? (
             <>
               <BodyLong size="small" className="mt-2">
-                Du vil få beskjed dersom det oversendes informasjon om deg til
-                arrangør. Arrangøren behandler opplysninger på vegne av NAV.
-              </BodyLong>
-              <BodyLong size="small" className="mt-2">
-                Dette deles med {deltaker.deltakerliste.arrangorNavn}:
+                Nav samarbeider med {arrangorNavn}. Du vil få beskjed dersom det
+                oversendes informasjon om deg til arrangør.
               </BodyLong>
             </>
           ) : (
@@ -199,6 +196,10 @@ export const UtkastPage = () => {
           )}
         </>
       )}
+
+      <BodyLong size="small" className="mt-2">
+        Dette deles:
+      </BodyLong>
 
       <List as="ul" size="small" className="-mt-1 -mb-2">
         <List.Item className="mt-2 whitespace-pre-wrap">
@@ -216,7 +217,7 @@ export const UtkastPage = () => {
           </List.Item>
         )}
         <List.Item className="mt-2 whitespace-pre-wrap">
-          Navn og kontaktinformasjonen til NAV-veilederen din
+          Navn og kontaktinformasjonen til Nav-veilederen din
         </List.Item>
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
