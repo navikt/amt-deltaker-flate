@@ -22,7 +22,7 @@ on:
       - closed
 jobs:
   cleanup-pr-tiltakskoordinator-flate:
-    if: github.event.pull_request.head.repo.fork != true
+    if: github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
     name: Rydd applikasjon for PR
     runs-on: ubuntu-latest
     permissions:
