@@ -80,9 +80,9 @@ export const TiltakPage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
 
-  const visSoknadsTekst =
-    kreverGodkjenningForPamelding(deltaker.deltakerliste.pameldingstype) ||
-    deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+  const visSoknadsTekst = kreverGodkjenningForPamelding(
+    deltaker.deltakerliste.pameldingstype
+  )
 
   return (
     <div className={'bg-white w-full mb-8'}>

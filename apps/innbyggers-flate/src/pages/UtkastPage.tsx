@@ -39,9 +39,9 @@ export const UtkastPage = () => {
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
 
-  const erUtkastTilSoknad =
-    kreverGodkjenningForPamelding(deltaker.deltakerliste.pameldingstype) ||
-    deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+  const erUtkastTilSoknad = kreverGodkjenningForPamelding(
+    deltaker.deltakerliste.pameldingstype
+  )
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
