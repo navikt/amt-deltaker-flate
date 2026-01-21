@@ -34,7 +34,7 @@ import { getHistorikk } from '../api/api.ts'
 import { AktiveForslag } from '../components/AktiveForslag.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 
-export const TiltakPage = () => {
+export const DeltakerPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''

@@ -5,7 +5,7 @@ import {
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'
-import { TiltakPage } from '../pages/TiltakPage'
+import { DeltakerPage } from '../pages/DeltakerPage.tsx'
 import { UtkastPage } from '../pages/UtkastPage.tsx'
 import { DIALOG_URL } from '../utils/environment-utils'
 
@@ -33,7 +33,7 @@ export const DeltakerGuard = () => {
       />
     )
   } else {
-    pageToLoad = <TiltakPage />
+    pageToLoad = <DeltakerPage />
   }
 
   return pageToLoad
