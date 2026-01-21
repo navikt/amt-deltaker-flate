@@ -17,11 +17,13 @@ import {
   PERSONOPPLYSNINGER_URL,
   UtkastHeader,
   deltakerprosentText,
-  erKursEllerDigitalt,
-  harFellesOppstart,
+  harAdresse,
+  harBakgrunnsinfo,
+  harInnhold,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
+  kreverGodkjenningForPamelding,
   useDeferredFetch,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -37,9 +39,9 @@ export const UtkastPage = () => {
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
 
-  const erUtkastTilSoknad =
-    harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
-    deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+  const erUtkastTilSoknad = kreverGodkjenningForPamelding(
+    deltaker.deltakerliste.pameldingstype
+  )
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
@@ -72,6 +74,14 @@ export const UtkastPage = () => {
   }
 
   const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const skalViseAdresse =
+    deltaker.adresseDelesMedArrangor && harAdresse(tiltakskode)
+  const visInnholdOgBakgrunnsinfo =
+    harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
+  const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
+    deltaker.deltakerliste.pameldingstype,
+    deltaker.deltakerliste.tiltakskode
+  )
 
   return (
     <div className="flex flex-col items-start mb-8">
@@ -98,10 +108,7 @@ export const UtkastPage = () => {
           <>
             <BodyLong className="mt-2">
               Før søknaden sendes, vil vi gjerne at du leser gjennom.
-              {kanDeleDeltakerMedArrangor(
-                tiltakskode,
-                deltaker.deltakerliste.oppstartstype
-              )
+              {kanDeleDeltakerMedArrangor
                 ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
                 : ''}
             </BodyLong>
@@ -122,6 +129,7 @@ export const UtkastPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         className="mt-6"
@@ -144,7 +152,7 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {!erKursEllerDigitalt(tiltakskode) && deltaker.bakgrunnsinformasjon && (
+      {harBakgrunnsinfo(tiltakskode) && deltaker.bakgrunnsinformasjon && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Bakgrunnsinfo
@@ -172,44 +180,45 @@ export const UtkastPage = () => {
       {!deltaker.deltakerliste.erEnkeltplassUtenRammeavtale && (
         <>
           <Heading level="3" size="medium" className="mt-6">
-            Kontaktinformasjon
+            Dette deles med arrangøren
           </Heading>
-          {kanDeleDeltakerMedArrangor(
-            tiltakskode,
-            deltaker.deltakerliste.oppstartstype
-          ) ? (
+          {kanDeleDeltakerMedArrangor ? (
             <>
               <BodyLong size="small" className="mt-2">
-                Du vil få beskjed dersom det oversendes informasjon om deg til
-                arrangør. Arrangøren behandler opplysninger på vegne av NAV.
-              </BodyLong>
-              <BodyLong size="small" className="mt-2">
-                Dette deles med {deltaker.deltakerliste.arrangorNavn}:
+                Nav samarbeider med {arrangorNavn}. Du vil få beskjed dersom det
+                oversendes informasjon om deg til arrangør.
               </BodyLong>
             </>
           ) : (
             <BodyLong size="small" className="mt-2">
-              Nav samarbeider med {arrangorNavn}. Arrangøren behandler
-              personopplysninger på vegne av Nav.
+              Nav samarbeider med {arrangorNavn}.
             </BodyLong>
           )}
         </>
       )}
 
+      <BodyLong size="small" className="mt-2">
+        Dette deles:
+      </BodyLong>
+
       <List as="ul" size="small" className="-mt-1 -mb-2">
-        <List.Item className="mt-2 whitespace-pre-wrap">
-          Navn og kontaktinformasjonen til NAV-veilederen din
-        </List.Item>
         <List.Item className="mt-2 whitespace-pre-wrap">
           Navn og fødselsnummer
         </List.Item>
         <List.Item className="mt-2 whitespace-pre-wrap">
           Telefonnummer og e-postadresse
         </List.Item>
-        {deltaker.adresseDelesMedArrangor &&
-          !erKursEllerDigitalt(tiltakskode) && (
-            <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
-          )}
+        {skalViseAdresse && (
+          <List.Item className="mt-2 whitespace-pre-wrap">Adresse</List.Item>
+        )}
+        {visInnholdOgBakgrunnsinfo && (
+          <List.Item>
+            Innholdet og bakgrunnsinformasjonen i påmeldingen
+          </List.Item>
+        )}
+        <List.Item className="mt-2 whitespace-pre-wrap">
+          Navn og kontaktinformasjonen til Nav-veilederen din
+        </List.Item>
       </List>
       <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
         Se her hvilke opplysninger Nav har om deg.

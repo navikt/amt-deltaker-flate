@@ -1,12 +1,12 @@
 import { Alert, Button } from '@navikt/ds-react'
-import { HistorikkModal } from './HistorikkModal'
-import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
 import { useEffect, useState } from 'react'
 import {
   DeferredFetchState,
   useDeferredFetch
 } from '../../hooks/useDeferredFetch'
 import { Tiltakskode } from '../../model/deltaker'
+import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
+import { HistorikkModal } from './HistorikkModal'
 
 interface Props {
   deltakerId: string

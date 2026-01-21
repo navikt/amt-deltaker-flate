@@ -59,7 +59,7 @@ interface BoxProps {
 
 const Box = ({ children }: BoxProps) => {
   return (
-    <div className="mb-4 p-4 flex flex-col gap-4 border border-[var(--a-border-default)] min-w-[300px]">
+    <div className="mb-4 p-4 flex flex-col gap-4 border border-(--a-border-default) min-w-[300px]">
       {children}
     </div>
   )

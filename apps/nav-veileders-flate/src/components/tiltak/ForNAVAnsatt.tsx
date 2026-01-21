@@ -44,7 +44,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
             doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
           }}
           border
-          className="mt-4 rounded-sm border-2 border-(--a-border-selected) xl:max-w-[500px]"
+          className="mt-4 rounded-sm border-2 border-(--a-border-selected) xl:max-w-125"
         >
           <LinkPanel.Title className="text-lg text-(--a-text-action) text-nowrap">
             Gå til tiltaks&shy;gjennomføringen

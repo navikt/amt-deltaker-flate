@@ -21,9 +21,9 @@ import {
   VedtakOgKlage,
   formatDateFromString,
   getDeltakerStatusAarsakText,
-  harFellesOppstart,
   hentTiltakNavnHosArrangorTekst,
-  kanDeleDeltakerMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
+  kreverGodkjenningForPamelding,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -52,9 +52,9 @@ export const TiltakPage = () => {
 
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
-    kanDeleDeltakerMedArrangor(
-      deltaker.deltakerliste.tiltakskode,
-      deltaker.deltakerliste.oppstartstype
+    kanDeleDeltakerMedArrangorForVurdering(
+      deltaker.deltakerliste.pameldingstype,
+      deltaker.deltakerliste.tiltakskode
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)
@@ -80,13 +80,16 @@ export const TiltakPage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
 
+  const visSoknadsTekst = kreverGodkjenningForPamelding(
+    deltaker.deltakerliste.pameldingstype
+  )
+
   return (
     <div className={'bg-white w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            {harFellesOppstart(deltaker.deltakerliste.oppstartstype) ||
-            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+            {visSoknadsTekst
               ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
               : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}
           </BodyShort>
@@ -146,6 +149,7 @@ export const TiltakPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         headingLevel={2}
@@ -221,6 +225,7 @@ export const TiltakPage = () => {
           tiltakskode={deltaker.deltakerliste.tiltakskode}
           statusType={deltaker.status.type}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           erEnkeltplassUtenRammeavtale={
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
           }

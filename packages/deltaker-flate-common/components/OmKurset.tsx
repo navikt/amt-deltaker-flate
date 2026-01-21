@@ -2,25 +2,27 @@ import { BodyLong, Heading, Label, List } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import {
-  erKursTiltak,
+  erOpplaringstiltak,
   formatDate,
   formatDateWithMonthName,
-  kanDeleDeltakerMedArrangor
+  kanDeleDeltakerMedArrangorForVurdering,
+  kreverGodkjenningForPamelding
 } from '../utils/utils'
 
 interface Props {
   tiltakskode: Tiltakskode
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
   headingLevel?: 2 | 3 | 4
   visDelMedArrangorInfo?: boolean
-  visForUtkast?: boolean
   className?: string
 }
 
@@ -28,15 +30,18 @@ export const OmKurset = ({
   tiltakskode,
   statusType,
   oppstartstype,
+  pameldingstype,
   startdato,
   sluttdato,
   headingLevel,
   size,
   visDelMedArrangorInfo,
-  visForUtkast,
   className
 }: Props) => {
-  if (!erKursTiltak(tiltakskode) || !oppstartstype) {
+  const erTiltakSomSkalViseOmKurset =
+    erOpplaringstiltak(tiltakskode) || tiltakskode === Tiltakskode.JOBBKLUBB
+
+  if (!erTiltakSomSkalViseOmKurset || !oppstartstype) {
     return null
   }
 
@@ -55,15 +60,11 @@ export const OmKurset = ({
     DeltakerStatusType.VENTELISTE
   ]
 
-  const skalViseOmKurset =
-    statusType === DeltakerStatusType.KLADD ||
-    (statusType === DeltakerStatusType.UTKAST_TIL_PAMELDING && visForUtkast) ||
-    (statuserForVisKurs.includes(statusType) &&
-      oppstartstype === Oppstartstype.FELLES)
-
-  if (!skalViseOmKurset) {
+  if (!statuserForVisKurs.includes(statusType)) {
     return null
   }
+
+  const kreverGodkjenning = kreverGodkjenningForPamelding(pameldingstype)
 
   return (
     <section className={className ?? ''}>
@@ -71,10 +72,16 @@ export const OmKurset = ({
         Om kurset
       </Heading>
 
-      {oppstartstype === Oppstartstype.LOPENDE && (
+      {oppstartstype === Oppstartstype.LOPENDE && !kreverGodkjenning && (
         <BodyLong size="small" className="mt-2">
           Når det blir ledig plass, tar Nav eller arrangøren kontakt med deg for
           å avtale når du skal begynne.
+        </BodyLong>
+      )}
+
+      {oppstartstype === Oppstartstype.LOPENDE && kreverGodkjenning && (
+        <BodyLong size="small" className="mt-2">
+          Nav vurderer søknaden din, og du får beskjed om resultatet.
         </BodyLong>
       )}
 
@@ -103,8 +110,7 @@ export const OmKurset = ({
           {statusType !== DeltakerStatusType.VENTELISTE && (
             <>
               <BodyLong size="small" className="mt-2">
-                Nav vurderer søknaden din før kursstart, og du får beskjed om
-                resultatet:
+                Nav vil vurdere søknaden din, og du får beskjed om resultatet.
               </BodyLong>
 
               <List as="ul" size="small" className="-mt-1">
@@ -119,7 +125,10 @@ export const OmKurset = ({
                 </List.Item>
               </List>
 
-              {kanDeleDeltakerMedArrangor(tiltakskode, oppstartstype) &&
+              {kanDeleDeltakerMedArrangorForVurdering(
+                pameldingstype,
+                tiltakskode
+              ) &&
                 visDelMedArrangorInfo && (
                   <>
                     <BodyLong size="small" className="mt-4">

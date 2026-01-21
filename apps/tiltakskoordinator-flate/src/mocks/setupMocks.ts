@@ -2,7 +2,8 @@ import {
   DeltakerStatusAarsak,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN,
-  Oppstartstype
+  Oppstartstype,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
@@ -17,6 +18,14 @@ export const worker = setupWorker(
       await delay(1000)
       const { oppstartstype } = params
       return handler.setOppstartsype(oppstartstype as Oppstartstype)
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
+    async ({ params }) => {
+      await delay(1000)
+      const { pameldingstype } = params
+      return handler.setPameldingstype(pameldingstype as Pameldingstype)
     }
   ),
   http.get(

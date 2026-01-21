@@ -1,13 +1,12 @@
-import { BodyLong, Heading, VStack } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   DeltakerStatusType,
   EMDASH,
   OmKurset,
   Oppmotested,
-  Tiltakskode,
   deltakerprosentText,
-  erKursEllerDigitalt,
+  harBakgrunnsinfo,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
@@ -33,10 +32,8 @@ export const Utkast = ({
       ? bakgrunnsinformasjon
       : EMDASH
 
-  const visBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
-
   return (
-    <VStack>
+    <div className="flex flex-col gap-8">
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={innhold}
@@ -48,8 +45,8 @@ export const Utkast = ({
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      {visBakgrunnsinfo && (
-        <div className="mt-8">
+      {harBakgrunnsinfo(tiltakskode) && (
+        <div>
           <Heading level="3" size="small">
             Bakgrunnsinfo
           </Heading>
@@ -60,33 +57,31 @@ export const Utkast = ({
       )}
 
       {visDeltakelsesmengde(tiltakskode) && (
-        <>
-          <Heading level="3" size="small" className="mt-8">
+        <div>
+          <Heading level="3" size="small">
             Deltakelsesmengde
           </Heading>
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
           </BodyLong>
-        </>
+        </div>
       )}
 
       <OmKurset
         tiltakskode={deltakerliste.tiltakskode}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltakerliste.oppstartstype}
+        pameldingstype={deltakerliste.pameldingstype}
         startdato={deltakerliste.startdato}
         sluttdato={deltakerliste.sluttdato}
         size="small"
         visDelMedArrangorInfo
-        visForUtkast
-        className={tiltakskode === Tiltakskode.JOBBKLUBB ? 'mt-8' : ''}
       />
 
       <Oppmotested
         oppmoteSted={deltakerliste.oppmoteSted}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
-        className="mt-8"
       />
-    </VStack>
+    </div>
   )
 }

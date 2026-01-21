@@ -1,13 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Heading, Textarea } from '@navikt/ds-react'
+import { Alert, Heading, Textarea } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
-  erKursEllerDigitalt,
+  erOpplaringstiltak,
   fjernUgyldigeTegn,
+  harBakgrunnsinfo,
   INNHOLD_TYPE_ANNET,
+  skalMeldePaaDirekte,
   OmKurset,
   Oppmotested,
-  Tiltakskode
+  Oppstartstype,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -21,6 +24,7 @@ import {
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
+import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
@@ -47,7 +51,6 @@ export const PameldingForm = ({
   const errorSummaryRef = useRef<HTMLDivElement>(null)
   const tiltakskode = pamelding.deltakerliste.tiltakskode
   const status = pamelding.status.type
-  const skalViseBakgrunnsinfo = !erKursEllerDigitalt(tiltakskode)
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
@@ -90,6 +93,11 @@ export const PameldingForm = ({
     }
   }, [valgteInnhold])
 
+  const erOpplaringLopendeOppstartDirektePamelding =
+    pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) &&
+    skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
+
   return (
     <form
       autoComplete="off"
@@ -108,13 +116,13 @@ export const PameldingForm = ({
             tiltakskode={pamelding.deltakerliste.tiltakskode}
             statusType={pamelding.status.type}
             oppstartstype={pamelding.deltakerliste.oppstartstype}
+            pameldingstype={pamelding.deltakerliste.pameldingstype}
             startdato={pamelding.deltakerliste.startdato}
             sluttdato={pamelding.deltakerliste.sluttdato}
             visDelMedArrangorInfo
-            visForUtkast
           />
 
-          {skalViseBakgrunnsinfo && (
+          {harBakgrunnsinfo(tiltakskode) && (
             <section>
               <Heading size="medium" level="3" className="mb-4">
                 Bakgrunnsinfo
@@ -141,8 +149,7 @@ export const PameldingForm = ({
             </section>
           )}
 
-          {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-            tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) && (
+          {visDeltakelsesmengde(tiltakskode) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde
@@ -155,6 +162,20 @@ export const PameldingForm = ({
             oppmoteSted={pamelding.deltakerliste.oppmoteSted}
             statusType={pamelding.status.type}
           />
+
+          <InnholdOgBakgrunn pamelding={pamelding} isDisabled={isDisabled} />
+
+          {erOpplaringLopendeOppstartDirektePamelding && (
+            <Alert variant="info" size="small">
+              <Heading size="xsmall" level="3">
+                Ved å fullføre denne påmeldingen fatter du også vedtaket om
+                tiltaksplass
+              </Heading>
+              Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
+              kravene for å delta i tiltaket. Deltakeren får vedtak og
+              informasjonen deles med arrangøren.
+            </Alert>
+          )}
 
           <PameldingFormButtons
             pamelding={pamelding}

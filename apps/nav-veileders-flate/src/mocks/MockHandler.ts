@@ -1,13 +1,11 @@
 import dayjs from 'dayjs'
 import {
-  Tiltakskode,
   createHistorikk,
   Deltakelsesmengde,
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   EMDASH,
-  erKursTiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -16,10 +14,13 @@ import {
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
+  harBakgrunnsinfo,
   HistorikkType,
   Innhold,
   lagHistorikkFellesOppstart,
-  Oppstartstype
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -96,6 +97,7 @@ export class MockHandler {
           ledetekst: ledetekst
         },
         erEnkeltplassUtenRammeavtale: false,
+        pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
       },
@@ -394,7 +396,7 @@ export class MockHandler {
   setTiltakskode(tiltakskode: Tiltakskode) {
     this.tiltakskode = tiltakskode
     const oppdatertPamelding = this.pamelding
-    const erEnkeltplass =
+    const erEnkeltplassFraArena =
       tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
@@ -423,17 +425,14 @@ export class MockHandler {
         oppdatertPamelding.deltakelsesprosent = null
         oppdatertPamelding.dagerPerUke = null
       }
-      if (
-        tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        erEnkeltplass
-      ) {
-        oppdatertPamelding.bakgrunnsinformasjon = null
-      } else {
+
+      if (harBakgrunnsinfo(tiltakskode)) {
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
+      } else {
+        oppdatertPamelding.bakgrunnsinformasjon = null
       }
 
-      if (erEnkeltplass) {
+      if (erEnkeltplassFraArena) {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = true
         oppdatertPamelding.forslag = []
         oppdatertPamelding.importertFraArena = {
@@ -444,20 +443,27 @@ export class MockHandler {
         oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
       }
 
-      if (erKursTiltak(tiltakskode)) {
-        // Obs disse kan ha løpende oppstart også.
-        oppdatertPamelding.bakgrunnsinformasjon = null
-        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.FELLES
-      } else if (erEnkeltplass) {
-        oppdatertPamelding.bakgrunnsinformasjon = null
-        oppdatertPamelding.deltakerliste.oppstartstype = null
-      } else {
-        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
-        oppdatertPamelding.deltakerliste.oppstartstype = Oppstartstype.LOPENDE
-      }
-
       this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+    }
+    return HttpResponse.json(this.pamelding)
+  }
+
+  setOppstartstype(oppstartstype: Oppstartstype) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.oppstartstype = oppstartstype
+      this.pamelding = oppdatertPamelding
+    }
+    return HttpResponse.json(this.pamelding)
+  }
+
+  setPameldingstype(pameldingstype: Pameldingstype) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.pameldingstype = pameldingstype
+      this.pamelding = oppdatertPamelding
     }
     return HttpResponse.json(this.pamelding)
   }

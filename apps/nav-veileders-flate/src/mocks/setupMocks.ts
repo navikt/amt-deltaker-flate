@@ -2,7 +2,9 @@ import {
   Tiltakskode,
   DeltakerStatusType,
   KOMET_ER_MASTER,
-  LES_ARENA_DELTAKERE_TOGGLE_NAVN
+  LES_ARENA_DELTAKERE_TOGGLE_NAVN,
+  Oppstartstype,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
@@ -38,6 +40,26 @@ export const worker = setupWorker(
       const { tiltakskode } = params
 
       const response = handler.setTiltakskode(tiltakskode as Tiltakskode)
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
+    async ({ params }) => {
+      const { oppstartstype } = params
+
+      const response = handler.setOppstartstype(oppstartstype as Oppstartstype)
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
+    async ({ params }) => {
+      const { pameldingstype } = params
+
+      const response = handler.setPameldingstype(
+        pameldingstype as Pameldingstype
+      )
       return response
     }
   ),

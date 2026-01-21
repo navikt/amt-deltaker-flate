@@ -9,11 +9,11 @@ import { HistorikkArrangorEndring } from './HistorikkArrangorEndring'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkForslag } from './HistorikkForslag'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
-import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkSkeleton } from './HistorikkSkeleton'
-import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
 import { HistorikkSoktInn } from './HistorikkSoktInn.tsx'
 import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinatorEndring.tsx'
+import { HistorikkVedtak } from './HistorikkVedtak'
+import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null

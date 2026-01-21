@@ -4,8 +4,8 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
-  SeEndringer,
-  Tiltakskode
+  kanDeleDeltakerMedArrangorForVurdering,
+  SeEndringer
 } from 'deltaker-flate-common'
 import { getDeltakerHistorikk } from '../../api/api'
 import { DeltakerDetaljer as DeltakerDetaljerDomene } from '../../api/data/deltaker'
@@ -21,13 +21,14 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
     return null
   }
 
-  const visVurdering =
-    deltaker.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-    deltaker.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+  const visVurdering = kanDeleDeltakerMedArrangorForVurdering(
+    deltaker.pameldingstype,
+    deltaker.tiltakskode
+  )
 
   return (
     <div className="flex flex-col mb-4">
-      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-[var(--a-border-divider)] mb-4">
+      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-(--a-border-divider) mb-4">
         <Detail title="Status">
           <DeltakerStatusTag statusType={deltaker.status.type} />
         </Detail>
@@ -64,6 +65,15 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
               : EMDASH}
           </BodyShort>
         </Detail>
+
+        {deltaker.deltakelsesinnhold && (
+          <div>
+            <Label size="small">Dette er innholdet:</Label>
+            <BodyShort size="small" className="whitespace-pre-wrap">
+              {deltaker.deltakelsesinnhold}
+            </BodyShort>
+          </div>
+        )}
       </div>
 
       <DeltakerEndringer

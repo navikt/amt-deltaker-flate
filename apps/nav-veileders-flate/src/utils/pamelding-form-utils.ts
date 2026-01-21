@@ -1,4 +1,5 @@
 import {
+  erOpplaringstiltak,
   INNHOLD_TYPE_ANNET,
   Tiltakskode,
   visDeltakelsesmengde
@@ -20,7 +21,8 @@ export const generateInnholdFromResponse = (
 ): InnholdDto[] => {
   if (
     pamelding.deltakerliste.tiltakskode ===
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
   ) {
     return innholdsTekst
       ? [

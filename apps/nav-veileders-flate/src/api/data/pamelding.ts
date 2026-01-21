@@ -8,7 +8,8 @@ import {
   nullableDateSchema,
   Oppstartstype,
   pameldingStatusSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  Pameldingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -35,7 +36,9 @@ export const deltakerlisteSchema = z.object({
   status: deltakerlisteStatusSchema.nullable(),
   tilgjengeligInnhold: tilgjengeligInnholdSchema,
   erEnkeltplassUtenRammeavtale: z.boolean(),
-  oppmoteSted: z.string().nullable()
+  oppmoteSted: z.string().nullable(),
+  pameldingstype: z.enum(Pameldingstype)
+  // TODO for alle tre flater: erOpplaringstiltak: z.boolean()
 })
 
 export const pameldingSchema = z.object({

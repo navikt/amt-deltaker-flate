@@ -3,6 +3,8 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   DeltakerlisteStatus,
+  Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import {
@@ -55,21 +57,17 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
       return 'Fag- og yrkesopplæring (enkeltplass)'
     case Tiltakskode.HOYERE_UTDANNING:
       return 'Høyere utdanning'
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+      return 'Norskopplæring grunnleggende ferdigheter FOV'
+    case Tiltakskode.STUDIESPESIALISERING:
+      return 'Studiespesialisering'
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+      return 'Høyere yrkesfaglig utdanning'
   }
-}
-
-export const hentTiltakGjennomforingNavnArrangorTittel = (
-  navnPaGjennomforing: string,
-  tiltakskode: Tiltakskode,
-  arrangorNavn: string
-) => {
-  if (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING) {
-    return `Kurs: ${navnPaGjennomforing} hos ${arrangorNavn}`
-  }
-  if (tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING) {
-    return `${navnPaGjennomforing} hos ${arrangorNavn}`
-  }
-  return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
 export const hentTiltakNavnHosArrangorTekst = (
@@ -84,7 +82,14 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
 ) => {
   return [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    // deltakerlisteNavn blis satt til tilatkstypenavn hvis det er enkeltplasss uten rammeavtale
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
+    // TODO Ta med når vi kan gjøre påmelding: Tiltakskode.HOYERE_UTDANNING,
   ].includes(tiltakskode)
     ? `${deltakerlisteNavn} hos ${arrangorNavn}`
     : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
@@ -122,6 +127,24 @@ export const getDeltakerStatusDisplayText = (
       return 'Påbegynt Registrering'
     case DeltakerStatusType.AVBRUTT_UTKAST:
       return 'Avbrutt utkast'
+  }
+}
+
+export const getPameldingstypeDisplayText = (type: Pameldingstype): string => {
+  switch (type) {
+    case Pameldingstype.DIREKTE_VEDTAK:
+      return 'Direkte vedtak'
+    case Pameldingstype.TRENGER_GODKJENNING:
+      return 'Trenger godkjenning'
+  }
+}
+
+export const getOppstartstypeDisplayText = (type: Oppstartstype): string => {
+  switch (type) {
+    case Oppstartstype.LOPENDE:
+      return 'Løpende oppstart'
+    case Oppstartstype.FELLES:
+      return 'Felles oppstart'
   }
 }
 

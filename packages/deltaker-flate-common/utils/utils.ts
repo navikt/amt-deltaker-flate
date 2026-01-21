@@ -4,6 +4,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import {
   DeltakerStatusAarsakType,
   Oppstartstype,
+  Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
 import { EMDASH } from './constants'
@@ -138,33 +139,59 @@ export const fjernUgyldigeTegn = (str: string) => {
   return cleanText
 }
 
-export const kanDeleDeltakerMedArrangor = (
-  tiltakskode: Tiltakskode,
-  oppstartstype: Oppstartstype | null
-) =>
-  oppstartstype === Oppstartstype.FELLES &&
+export const kanDeleDeltakerMedArrangorForVurdering = (
+  pameldingstype: Pameldingstype,
+  tiltakskode: Tiltakskode
+) => {
+  return (
+    pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
+    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
+      tiltakskode ===
+        Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV ||
+      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
+      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING)
+  )
+}
+
+export const erOpplaringstiltak = (tiltakskode: Tiltakskode) =>
   [
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
-export const erKursEllerDigitalt = (tiltakskode: Tiltakskode) =>
-  [
-    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
-    Tiltakskode.JOBBKLUBB,
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
+export const harInnhold = (tiltakskode: Tiltakskode) =>
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
 
-export const erKursTiltak = (tiltakskode: Tiltakskode) =>
-  [
-    Tiltakskode.JOBBKLUBB,
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
+export const harBakgrunnsinfo = (tiltakskode: Tiltakskode) =>
+  !erOpplaringstiltak(tiltakskode) &&
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
+
+export const harAdresse = (tiltakskode: Tiltakskode) =>
+  !erOpplaringstiltak(tiltakskode) &&
+  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+  tiltakskode !== Tiltakskode.JOBBKLUBB
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
+
+export const skalMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
+  pameldingstype === Pameldingstype.DIREKTE_VEDTAK
+
+export const kreverGodkjenningForPamelding = (pameldingstype: Pameldingstype) =>
+  pameldingstype === Pameldingstype.TRENGER_GODKJENNING
 
 export const getDeltakerStatusAarsakTypeText = (
   type: DeltakerStatusAarsakType
