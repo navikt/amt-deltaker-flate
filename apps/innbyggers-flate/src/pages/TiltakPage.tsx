@@ -23,7 +23,7 @@ import {
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
-  skalMeldePaaDirekte,
+  kreverGodkjenningForPamelding,
   skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -80,13 +80,16 @@ export const TiltakPage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
 
+  const visSoknadsTekst =
+    kreverGodkjenningForPamelding(deltaker.deltakerliste.pameldingstype) ||
+    deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+
   return (
     <div className={'bg-white w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
-            {!skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) ||
-            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
+            {visSoknadsTekst
               ? `Du er nå søkt inn på ${tiltakOgStedTekst}.`
               : `Du er nå meldt på ${tiltakOgStedTekst} og vedtaket er fattet.`}
           </BodyShort>

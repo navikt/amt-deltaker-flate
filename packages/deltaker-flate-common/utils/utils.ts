@@ -170,24 +170,6 @@ export const erOpplaringstiltak = (tiltakskode: Tiltakskode) =>
     Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
   ].includes(tiltakskode)
 
-export const erOpplaringstiltakMedDirekteVedtak = (
-  tiltakskode: Tiltakskode,
-  pameldingstype: Pameldingstype
-) =>
-  pameldingstype === Pameldingstype.DIREKTE_VEDTAK &&
-  [
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-    Tiltakskode.STUDIESPESIALISERING,
-    Tiltakskode.FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
-    Tiltakskode.HOYERE_UTDANNING,
-    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
-  ].includes(tiltakskode)
-
 export const harInnhold = (tiltakskode: Tiltakskode) =>
   tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
   tiltakskode !== Tiltakskode.JOBBKLUBB
@@ -207,6 +189,9 @@ export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
 
 export const skalMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
   pameldingstype === Pameldingstype.DIREKTE_VEDTAK
+
+export const kreverGodkjenningForPamelding = (pameldingstype: Pameldingstype) =>
+  pameldingstype === Pameldingstype.TRENGER_GODKJENNING
 
 export const getDeltakerStatusAarsakTypeText = (
   type: DeltakerStatusAarsakType

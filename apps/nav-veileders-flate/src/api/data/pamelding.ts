@@ -38,6 +38,7 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplassUtenRammeavtale: z.boolean(),
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype)
+  // TODO for alle tre flater: erOpplaringstiltak: z.boolean()
 })
 
 export const pameldingSchema = z.object({

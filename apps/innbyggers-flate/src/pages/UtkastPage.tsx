@@ -23,7 +23,7 @@ import {
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
-  skalMeldePaaDirekte,
+  kreverGodkjenningForPamelding,
   useDeferredFetch,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -40,7 +40,7 @@ export const UtkastPage = () => {
   const [godattError, setGodTattError] = useState(false)
 
   const erUtkastTilSoknad =
-    !skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) ||
+    kreverGodkjenningForPamelding(deltaker.deltakerliste.pameldingstype) ||
     deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
   const arrangorNavn = deltaker.deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
