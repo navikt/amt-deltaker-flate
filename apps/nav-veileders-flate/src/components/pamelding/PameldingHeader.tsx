@@ -6,6 +6,7 @@ import {
   DeltakerStatusType,
   getTiltakskodeDisplayText,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
@@ -37,6 +38,9 @@ export const PameldingHeader = ({
   }
 
   const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
+  const visGruppe =
+    deltakerliste.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+    deltakerliste.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
   return (
     <div>
@@ -50,6 +54,7 @@ export const PameldingHeader = ({
 
       <Detail className="mb-4">
         {getTiltakskodeDisplayText(deltakerliste.tiltakskode)}
+        {visGruppe && ' (gruppe)'}
       </Detail>
 
       {(erKladd ||
