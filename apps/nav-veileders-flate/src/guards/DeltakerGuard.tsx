@@ -7,7 +7,7 @@ import { DeltakerStatusType } from 'deltaker-flate-common'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
-import { TiltakPage } from '../pages/TiltakPage.tsx'
+import { DeltakerPage } from '../pages/DeltakerPage.tsx'
 
 dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)
@@ -27,7 +27,7 @@ export const DeltakerGuard = () => {
   ) {
     pageToLoad = <RedigerPameldingPage />
   } else {
-    pageToLoad = <TiltakPage />
+    pageToLoad = <DeltakerPage />
   }
 
   return pageToLoad
