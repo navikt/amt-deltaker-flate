@@ -103,18 +103,15 @@ function EndringsmodalBody<T extends EndringRequest>({
     }
   }
 
-  const kanEndresUtenAktivOppfolging = (): boolean => {
-    return (
-      endringstype === EndreDeltakelseType.AVSLUTT_DELTAKELSE ||
-      endringstype === EndreDeltakelseType.ENDRE_AVSLUTNING ||
-      endringstype === EndreDeltakelseType.ENDRE_SLUTTARSAK ||
-      endringstype === EndreDeltakelseType.ENDRE_SLUTTDATO ||
-      endringstype === EndreDeltakelseType.IKKE_AKTUELL
-    )
-  }
+  const kanEndresUtenAktivOppfolging =
+    endringstype === EndreDeltakelseType.AVSLUTT_DELTAKELSE ||
+    endringstype === EndreDeltakelseType.ENDRE_AVSLUTNING ||
+    endringstype === EndreDeltakelseType.ENDRE_SLUTTARSAK ||
+    endringstype === EndreDeltakelseType.ENDRE_SLUTTDATO ||
+    endringstype === EndreDeltakelseType.IKKE_AKTUELL
 
   const erLagringTillatt =
-    deltaker.erUnderOppfolging || kanEndresUtenAktivOppfolging()
+    deltaker.erUnderOppfolging || kanEndresUtenAktivOppfolging
 
   return (
     <>
@@ -125,7 +122,7 @@ function EndringsmodalBody<T extends EndringRequest>({
 
         {forslag && <ModalForslagDetaljer forslag={forslag} />}
 
-        {!deltaker.erUnderOppfolging && !kanEndresUtenAktivOppfolging() && (
+        {!deltaker.erUnderOppfolging && !kanEndresUtenAktivOppfolging && (
           <Alert variant="error" size="small" className="mb-6">
             <Heading level="2" size="xsmall">
               Det kan ikke gjøres endringer på deltakelsen
@@ -135,7 +132,7 @@ function EndringsmodalBody<T extends EndringRequest>({
           </Alert>
         )}
 
-        {!deltaker.erUnderOppfolging && kanEndresUtenAktivOppfolging() && (
+        {!deltaker.erUnderOppfolging && kanEndresUtenAktivOppfolging && (
           <Alert variant="warning" size="small" className="mb-6">
             Brukeren er ikke under oppfølging, og vil derfor ikke automatisk få
             varsel om endringen. Vurder om du skal gi beskjed på annen måte.
