@@ -108,6 +108,7 @@ function EndringsmodalBody<T extends EndringRequest>({
       endringstype === EndreDeltakelseType.AVSLUTT_DELTAKELSE ||
       endringstype === EndreDeltakelseType.ENDRE_AVSLUTNING ||
       endringstype === EndreDeltakelseType.ENDRE_SLUTTARSAK ||
+      endringstype === EndreDeltakelseType.ENDRE_SLUTTDATO ||
       endringstype === EndreDeltakelseType.IKKE_AKTUELL
     )
   }
