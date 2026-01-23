@@ -8,10 +8,7 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { ReactNode, useState } from 'react'
-import {
-  EndringRequest,
-  kanEndresUtenAktivOppfolging as kanEndresUtenAktivOppfolgingRequest
-} from '../../../api/data/endre-deltakelse-request'
+import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
 import { PameldingResponse } from '../../../api/data/pamelding'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalFooter } from '../../ModalFooter'
@@ -62,6 +59,7 @@ export function Endringsmodal<T extends EndringRequest>({
         validertRequest={validertRequest}
         forslag={forslag}
         deltaker={deltaker}
+        endringstype={endringstype}
       >
         {children}
       </EndringsmodalBody>
@@ -75,6 +73,7 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
   deltaker: PameldingResponse
+  endringstype: EndreDeltakelseType
   children: ReactNode
 }
 
@@ -84,6 +83,7 @@ function EndringsmodalBody<T extends EndringRequest>({
   validertRequest,
   forslag,
   deltaker,
+  endringstype,
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
@@ -104,9 +104,12 @@ function EndringsmodalBody<T extends EndringRequest>({
   }
 
   const kanEndresUtenAktivOppfolging = (): boolean => {
-    const request = validertRequest()
-    if (!request) return false
-    return kanEndresUtenAktivOppfolgingRequest(request.body)
+    return (
+      endringstype === EndreDeltakelseType.AVSLUTT_DELTAKELSE ||
+      endringstype === EndreDeltakelseType.ENDRE_AVSLUTNING ||
+      endringstype === EndreDeltakelseType.ENDRE_SLUTTARSAK ||
+      endringstype === EndreDeltakelseType.IKKE_AKTUELL
+    )
   }
 
   const erLagringTillatt =

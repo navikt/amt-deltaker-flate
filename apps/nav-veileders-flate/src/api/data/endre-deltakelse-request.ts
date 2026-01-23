@@ -22,7 +22,6 @@ export const aarsakSchema = z.object({
 })
 
 export const ikkeAktuellSchema = z.object({
-  endringstype: z.literal(Endringstype.IKKE_AKTUELL),
   aarsak: aarsakSchema,
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
@@ -30,7 +29,6 @@ export const ikkeAktuellSchema = z.object({
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
 
 export const forlengDeltakelseSchema = z.object({
-  endringstype: z.literal(Endringstype.FORLENG_DELTAKELSE),
   sluttdato: z.string(),
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
@@ -38,14 +36,12 @@ export const forlengDeltakelseSchema = z.object({
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
 export const fjernOppstartsdatoSchema = z.object({
-  endringstype: z.literal(Endringstype.FJERN_OPPSTARTSDATO),
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
 export type FjernOppstartsdatoRequest = z.infer<typeof fjernOppstartsdatoSchema>
 
 export const endreStartdatoSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_STARTDATO),
   startdato: z.string().nullable(),
   sluttdato: z.string().nullable(),
   begrunnelse: z.string().nullable(),
@@ -54,13 +50,11 @@ export const endreStartdatoSchema = z.object({
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
 
 export const endreBakgrunnsinfoSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_BAKGRUNNSINFO),
   bakgrunnsinformasjon: z.string().nullable()
 })
 export type EndreBakgrunnsinfoRequest = z.infer<typeof endreBakgrunnsinfoSchema>
 
 export const avsluttDeltakelseSchema = z.object({
-  endringstype: z.literal(Endringstype.AVSLUTT_DELTAKELSE),
   aarsak: aarsakSchema.nullable(),
   sluttdato: z.string().nullable(),
   harDeltatt: z.boolean().nullable(),
@@ -71,7 +65,6 @@ export const avsluttDeltakelseSchema = z.object({
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
 
 export const endreAvslutningSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_AVSLUTNING),
   aarsak: aarsakSchema.nullable(),
   harDeltatt: z.boolean().nullable(),
   harFullfort: z.boolean().nullable(),
@@ -82,7 +75,6 @@ export const endreAvslutningSchema = z.object({
 export type EndreAvslutningRequest = z.infer<typeof endreAvslutningSchema>
 
 export const endreSluttarsakSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_SLUTTARSAK),
   aarsak: aarsakSchema,
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullish()
@@ -90,13 +82,11 @@ export const endreSluttarsakSchema = z.object({
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
 
 export const endreInnholdSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_INNHOLD),
   innhold: z.array(innholdDtoSchema)
 })
 export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 
 export const endreDeltakelsesmengdeSchema = z.object({
-  endringstype: z.literal(Endringstype.ENDRE_DELTAKELSESMENGDE),
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional(),
   gyldigFra: z.string(),
@@ -114,7 +104,6 @@ export const avvisForslagSchema = z.object({
 export type AvvisForslagRequest = z.infer<typeof avvisForslagSchema>
 
 export const reaktiverDeltakelseSchema = z.object({
-  endringstype: z.literal(Endringstype.REAKTIVER_DELTAKELSE),
   begrunnelse: z.string()
 })
 export type ReaktiverDeltakelseRequest = z.infer<
@@ -133,19 +122,3 @@ export type EndringRequest =
   | ReaktiverDeltakelseRequest
   | EndreAvslutningRequest
   | FjernOppstartsdatoRequest
-
-export type KanEndresUtenAktivOppfolging =
-  | AvsluttDeltakelseRequest
-  | EndreAvslutningRequest
-  | EndreSluttarsakRequest
-  | IkkeAktuellRequest
-
-export const kanEndresUtenAktivOppfolging = (body: EndringRequest): boolean =>
-  body.endringstype === Endringstype.AVSLUTT_DELTAKELSE ||
-  body.endringstype === Endringstype.ENDRE_AVSLUTNING ||
-  body.endringstype === Endringstype.ENDRE_SLUTTARSAK ||
-  body.endringstype === Endringstype.IKKE_AKTUELL
-
-export const isKanEndresUtenAktivOppfolging = (
-  body: EndringRequest
-): body is KanEndresUtenAktivOppfolging => kanEndresUtenAktivOppfolging(body)
