@@ -132,13 +132,6 @@ function EndringsmodalBody<T extends EndringRequest>({
           </Alert>
         )}
 
-        {!deltaker.erUnderOppfolging && kanEndresUtenAktivOppfolging && (
-          <Alert variant="warning" size="small" className="mb-6">
-            Brukeren er ikke under oppfølging, og vil derfor ikke automatisk få
-            varsel om endringen. Vurder om du skal gi beskjed på annen måte.
-          </Alert>
-        )}
-
         {children}
 
         {!deltaker.digitalBruker && !deltaker.harAdresse && (
