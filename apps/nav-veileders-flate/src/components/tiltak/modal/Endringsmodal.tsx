@@ -137,9 +137,6 @@ function EndringsmodalBody<T extends EndringRequest>({
 
         {!deltaker.erUnderOppfolging && kanEndresUtenAktivOppfolging() && (
           <Alert variant="warning" size="small" className="mb-6">
-            <Heading level="2" size="xsmall">
-              Brukeren er ikke under oppfølging
-            </Heading>
             Brukeren er ikke under oppfølging, og vil derfor ikke automatisk få
             varsel om endringen. Vurder om du skal gi beskjed på annen måte.
           </Alert>
