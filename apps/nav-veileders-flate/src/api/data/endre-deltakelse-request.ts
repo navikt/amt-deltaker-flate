@@ -2,20 +2,6 @@ import { z } from 'zod'
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-inn-pamelding-request'
 
-export enum Endringstype {
-  IKKE_AKTUELL = 'IKKE_AKTUELL',
-  FORLENG_DELTAKELSE = 'FORLENG_DELTAKELSE',
-  ENDRE_STARTDATO = 'ENDRE_STARTDATO',
-  ENDRE_BAKGRUNNSINFO = 'ENDRE_BAKGRUNNSINFO',
-  AVSLUTT_DELTAKELSE = 'AVSLUTT_DELTAKELSE',
-  ENDRE_SLUTTARSAK = 'ENDRE_SLUTTARSAK',
-  ENDRE_INNHOLD = 'ENDRE_INNHOLD',
-  ENDRE_DELTAKELSESMENGDE = 'ENDRE_DELTAKELSESMENGDE',
-  REAKTIVER_DELTAKELSE = 'REAKTIVER_DELTAKELSE',
-  ENDRE_AVSLUTNING = 'ENDRE_AVSLUTNING',
-  FJERN_OPPSTARTSDATO = 'FJERN_OPPSTARTSDATO'
-}
-
 export const aarsakSchema = z.object({
   type: z.enum(DeltakerStatusAarsakType),
   beskrivelse: z.string().nullable()
