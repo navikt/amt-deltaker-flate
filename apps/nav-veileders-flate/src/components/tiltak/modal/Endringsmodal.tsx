@@ -31,6 +31,7 @@ interface Props<T extends EndringRequest> {
   forslag: Forslag | null
   children: ReactNode
 }
+
 export function Endringsmodal<T extends EndringRequest>({
   open,
   endringstype,
@@ -58,6 +59,7 @@ export function Endringsmodal<T extends EndringRequest>({
         validertRequest={validertRequest}
         forslag={forslag}
         deltaker={deltaker}
+        endringstype={endringstype}
       >
         {children}
       </EndringsmodalBody>
@@ -71,14 +73,17 @@ interface EndrinsmodalBodyProps<T extends EndringRequest> {
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
   deltaker: PameldingResponse
+  endringstype: EndreDeltakelseType
   children: ReactNode
 }
+
 function EndringsmodalBody<T extends EndringRequest>({
   onSend,
   apiFunction,
   validertRequest,
   forslag,
   deltaker,
+  endringstype,
   children
 }: EndrinsmodalBodyProps<T>) {
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
@@ -91,7 +96,6 @@ function EndringsmodalBody<T extends EndringRequest>({
         doFetch(request.deltakerId, request.enhetId, request.body).then(
           (data) => onSend(data)
         )
-
         setValideringsError(undefined)
       }
     } catch (e) {
@@ -99,15 +103,26 @@ function EndringsmodalBody<T extends EndringRequest>({
     }
   }
 
+  const kanEndresUtenAktivOppfolging =
+    endringstype === EndreDeltakelseType.AVSLUTT_DELTAKELSE ||
+    endringstype === EndreDeltakelseType.ENDRE_AVSLUTNING ||
+    endringstype === EndreDeltakelseType.ENDRE_SLUTTARSAK ||
+    endringstype === EndreDeltakelseType.ENDRE_SLUTTDATO ||
+    endringstype === EndreDeltakelseType.IKKE_AKTUELL
+
+  const erLagringTillatt =
+    deltaker.erUnderOppfolging || kanEndresUtenAktivOppfolging
+
   return (
     <>
       <Modal.Body>
         <Alert className="mb-6" variant="info" size="small">
           {getEndrePameldingTekst(deltaker)}
         </Alert>
+
         {forslag && <ModalForslagDetaljer forslag={forslag} />}
 
-        {!deltaker.erUnderOppfolging && (
+        {!deltaker.erUnderOppfolging && !kanEndresUtenAktivOppfolging && (
           <Alert variant="error" size="small" className="mb-6">
             <Heading level="2" size="xsmall">
               Det kan ikke gjøres endringer på deltakelsen
@@ -117,7 +132,15 @@ function EndringsmodalBody<T extends EndringRequest>({
           </Alert>
         )}
 
+        {!deltaker.erUnderOppfolging && kanEndresUtenAktivOppfolging && (
+          <Alert variant="warning" size="small" className="mb-6">
+            Brukeren er ikke under oppfølging, og vil derfor ikke automatisk få
+            varsel om endringen. Vurder om du skal gi beskjed på annen måte.
+          </Alert>
+        )}
+
         {children}
+
         {!deltaker.digitalBruker && !deltaker.harAdresse && (
           <div className="flex items-center mt-4">
             <Alert variant="warning" size="small">
@@ -131,13 +154,12 @@ function EndringsmodalBody<T extends EndringRequest>({
           </div>
         )}
       </Modal.Body>
+
       <ModalFooter
         confirmButtonText="Lagre"
         onConfirm={sendEndring}
         confirmLoading={state === DeferredFetchState.LOADING}
-        disabled={
-          state === DeferredFetchState.LOADING || !deltaker.erUnderOppfolging
-        }
+        disabled={state === DeferredFetchState.LOADING || !erLagringTillatt}
         error={valideringsError ?? error ?? undefined}
       />
     </>

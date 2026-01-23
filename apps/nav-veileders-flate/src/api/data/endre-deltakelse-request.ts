@@ -12,7 +12,6 @@ export const ikkeAktuellSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
-
 export type IkkeAktuellRequest = z.infer<typeof ikkeAktuellSchema>
 
 export const forlengDeltakelseSchema = z.object({
@@ -20,14 +19,12 @@ export const forlengDeltakelseSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
-
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
 export const fjernOppstartsdatoSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
-
 export type FjernOppstartsdatoRequest = z.infer<typeof fjernOppstartsdatoSchema>
 
 export const endreStartdatoSchema = z.object({
@@ -36,13 +33,11 @@ export const endreStartdatoSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullish()
 })
-
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
 
 export const endreBakgrunnsinfoSchema = z.object({
   bakgrunnsinformasjon: z.string().nullable()
 })
-
 export type EndreBakgrunnsinfoRequest = z.infer<typeof endreBakgrunnsinfoSchema>
 
 export const avsluttDeltakelseSchema = z.object({
@@ -53,7 +48,6 @@ export const avsluttDeltakelseSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
-
 export type AvsluttDeltakelseRequest = z.infer<typeof avsluttDeltakelseSchema>
 
 export const endreAvslutningSchema = z.object({
@@ -64,7 +58,6 @@ export const endreAvslutningSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable()
 })
-
 export type EndreAvslutningRequest = z.infer<typeof endreAvslutningSchema>
 
 export const endreSluttarsakSchema = z.object({
@@ -72,13 +65,11 @@ export const endreSluttarsakSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullish()
 })
-
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
 
 export const endreInnholdSchema = z.object({
   innhold: z.array(innholdDtoSchema)
 })
-
 export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 
 export const endreDeltakelsesmengdeSchema = z.object({
@@ -88,7 +79,6 @@ export const endreDeltakelsesmengdeSchema = z.object({
   begrunnelse: z.string().nullable(),
   forslagId: z.string().nullable()
 })
-
 export type EndreDeltakelsesmengdeRequest = z.infer<
   typeof endreDeltakelsesmengdeSchema
 >
@@ -102,7 +92,6 @@ export type AvvisForslagRequest = z.infer<typeof avvisForslagSchema>
 export const reaktiverDeltakelseSchema = z.object({
   begrunnelse: z.string()
 })
-
 export type ReaktiverDeltakelseRequest = z.infer<
   typeof reaktiverDeltakelseSchema
 >
