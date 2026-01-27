@@ -51,7 +51,7 @@ export function Endringsmodal<T extends EndringRequest>({
         heading: endringstekst(endringstype)
       }}
       onClose={onClose}
-      className="w-[600px]"
+      className="w-150"
     >
       <EndringsmodalBody
         onSend={onSend}

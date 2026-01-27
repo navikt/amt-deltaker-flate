@@ -88,16 +88,7 @@ export const varighetValgForTiltakskode = (
       return [VarighetValg.TRE_MANEDER, VarighetValg.SEKS_MANEDER]
     case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
       return [VarighetValg.FIRE_UKER]
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
-    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
-    case Tiltakskode.STUDIESPESIALISERING:
-    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
-    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
-      return []
-    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
-
-    default:
+    case Tiltakskode.JOBBKLUBB:
       return [
         VarighetValg.FIRE_UKER,
         VarighetValg.SEKS_UKER,
@@ -105,6 +96,18 @@ export const varighetValgForTiltakskode = (
         VarighetValg.TOLV_UKER,
         VarighetValg.TRE_MANEDER
       ]
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+    case Tiltakskode.STUDIESPESIALISERING:
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+    case Tiltakskode.HOYERE_UTDANNING:
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
+      return []
   }
 }
 
@@ -164,25 +167,27 @@ export function finnVarighetValg(
   }
 }
 
-export function finnValgtVarighet(
+export function finnValgtVarighetForTiltakskode(
   fraDato: Date | null | undefined,
   tilDato: Date | null | undefined,
   tiltakskode: Tiltakskode
 ) {
-  return fraDato && tilDato
-    ? finnVarighetValgForTiltakskode(fraDato, tilDato, tiltakskode)
-    : undefined
+  const varigheter = varighetValgForTiltakskode(tiltakskode)
+  if (varigheter.length === 0) {
+    return VarighetValg.ANNET
+  }
+  if (fraDato && tilDato) {
+    return finnValgtVarighet(fraDato, tilDato, varigheter)
+  }
+
+  return undefined
 }
 
-export function finnVarighetValgForTiltakskode(
+function finnValgtVarighet(
   fraDato: Date,
   tilDato: Date,
-  tiltakskode: Tiltakskode
+  varigheter: VarighetValg[]
 ) {
-  const varigheter = varighetValgForTiltakskode(tiltakskode)
-
-  if (varigheter.length == 0) return undefined
-
   const varighet = finnVarighetValg(fraDato, tilDato)
 
   if (varigheter.includes(varighet.uker)) {

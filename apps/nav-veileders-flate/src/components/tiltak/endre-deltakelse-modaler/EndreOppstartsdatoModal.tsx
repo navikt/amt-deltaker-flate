@@ -30,7 +30,7 @@ import {
   UGYLDIG_DATO_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
-  finnValgtVarighet,
+  finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText
@@ -63,7 +63,7 @@ export const EndreOppstartsdatoModal = ({
   const defaultDatoer = getDatoer(pamelding, forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    finnValgtVarighet(
+    finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,
       defaultDatoer.sluttdato,
       pamelding.deltakerliste.tiltakskode

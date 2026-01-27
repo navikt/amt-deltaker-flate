@@ -22,7 +22,7 @@ import {
   formatDateToString
 } from '../../../utils/utils.ts'
 import {
-  finnValgtVarighet,
+  finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
@@ -63,7 +63,7 @@ export const ForlengDeltakelseModal = ({
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
-    finnValgtVarighet(
+    finnValgtVarighetForTiltakskode(
       sluttdatoFraDeltaker,
       sluttdatoFraForslag,
       pamelding.deltakerliste.tiltakskode
