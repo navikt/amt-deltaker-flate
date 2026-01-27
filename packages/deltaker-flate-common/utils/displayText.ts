@@ -81,15 +81,15 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   arrangorNavn: string
 ) => {
   return [
+    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplasss uten rammeavtale
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-    // deltakerlisteNavn blis satt til tilatkstypenavn hvis det er enkeltplasss uten rammeavtale
     Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
     Tiltakskode.STUDIESPESIALISERING,
     Tiltakskode.FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
-    // TODO Ta med når vi kan gjøre påmelding: Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING
   ].includes(tiltakskode)
     ? `${deltakerlisteNavn} hos ${arrangorNavn}`
     : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)

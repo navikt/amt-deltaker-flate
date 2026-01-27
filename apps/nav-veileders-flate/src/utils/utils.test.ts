@@ -74,7 +74,6 @@ describe('erGyldigDagerPerUke', () => {
     expect(erGyldigDagerPerUke('&1')).toBeFalsy())
 })
 
-// TODO sett opp tester der metoden kommer fra: 'deltaker-flate-common'
 describe('formatDateFromString', () => {
   it('Formates valid date string', () =>
     expect(formatDateFromString('11.11.2021')).toBe('11.11.2021'))

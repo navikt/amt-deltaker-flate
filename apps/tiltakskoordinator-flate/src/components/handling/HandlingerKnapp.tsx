@@ -68,7 +68,6 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
   if (
     !kometErMaster &&
     deltakerlisteDetaljer.pameldingstype !== Pameldingstype.TRENGER_GODKJENNING
-    // TODO skal det styres på Felles oppstart også?
   ) {
     return <div className="mt-8"></div>
   }
