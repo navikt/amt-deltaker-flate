@@ -46,9 +46,19 @@ export const VarighetField = ({
   onChangeSluttDato,
   onValidateSluttDato
 }: Props) => {
-  const [valgtVarighet, settValgtVarighet] = useState<VarighetValg | null>(
-    defaultVarighet || null
+  const varighetsvalg = varighetValgForTiltakskode(tiltakskode)
+  const visRadioAnnet = varighetsvalg.length > 0
+
+  const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | null>(
+    () => {
+      if (defaultVarighet) return defaultVarighet
+      if (varighetsvalg.length === 0) {
+        return VarighetValg.ANNET
+      }
+      return null
+    }
   )
+
   const datePickerRef = useRef<HTMLInputElement>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
   const [dateInput, setDateInput] = useState<string>(
@@ -75,7 +85,7 @@ export const VarighetField = ({
   })
 
   const handleChangeVarighet = (valg: VarighetValg) => {
-    settValgtVarighet(valg)
+    setValgtVarighet(valg)
     onChangeVarighet(valg)
   }
 
@@ -95,7 +105,7 @@ export const VarighetField = ({
 
   return (
     <RadioGroup
-      legend={title}
+      legend={varighetsvalg.length > 0 ? title : 'Hva er forventet sluttdato?'}
       size="small"
       onChange={handleChangeVarighet}
       disabled={disabled}
@@ -104,12 +114,16 @@ export const VarighetField = ({
       className={className || ''}
     >
       <>
-        {varighetValgForTiltakskode(tiltakskode).map((v) => (
+        {varighetsvalg.map((v) => (
           <Radio value={v} key={v}>
             {getVarighet(v).navn}
           </Radio>
         ))}
-        <Radio value={VarighetValg.ANNET}>Annet - velg dato</Radio>
+
+        {visRadioAnnet && (
+          <Radio value={VarighetValg.ANNET}>Annet - velg dato</Radio>
+        )}
+
         {visDatovelger && (
           <div className="mt-2 ml-7">
             <DatePicker {...datepickerProps}>
