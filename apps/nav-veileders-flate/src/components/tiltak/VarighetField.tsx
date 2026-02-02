@@ -125,7 +125,7 @@ export const VarighetField = ({
         )}
 
         {visDatovelger && (
-          <div className="mt-2 ml-7">
+          <div className={visRadioAnnet ? 'mt-2 ml-7' : ''}>
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
                 value={dateInput}
