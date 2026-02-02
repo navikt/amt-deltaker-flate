@@ -102,6 +102,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
             </BodyLong>
           )}
+          {/* TODO bruke pameldingstype? */}
           {endring.oppstartstype === Oppstartstype.FELLES && (
             <BodyLong size="small">
               Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}

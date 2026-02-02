@@ -220,7 +220,7 @@ export const PameldingFormButtons = ({
 
       <SlettKladdModal
         open={slettKladdModalOpen}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
+        pameldingstype={pamelding.deltakerliste.pameldingstype}
         onConfirm={() => {
           doFetchSlettKladd(pamelding.deltakerId)
           setSlettKladdModalOpen(false)

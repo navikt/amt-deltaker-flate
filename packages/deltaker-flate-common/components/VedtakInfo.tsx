@@ -27,6 +27,7 @@ export const VedtakInfo = ({
   importertFraArena,
   className
 }: Props) => {
+  // TODO bruke pameldingstype?
   const vedtaksDato =
     oppstartstype === Oppstartstype.FELLES &&
     statusType === DeltakerStatusType.IKKE_AKTUELL &&

@@ -61,6 +61,7 @@ export const StatusFilter = () => {
           {filterDetaljer
             .filter((filter) => {
               return deltakerlisteDetaljer.oppstartstype ===
+                // TODO sjekk opp
                 Oppstartstype.LOPENDE
                 ? statuserForLopendeOppstart.includes(filter.filtervalg)
                 : statuserForFellesOppstart.includes(filter.filtervalg)

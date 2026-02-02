@@ -11,6 +11,7 @@ export enum HandlingFilterValg {
   NyeDeltakere = 'NyeDeltakere'
 }
 
+// TODO her må vi fikse både for per tiltak og oppstartstype
 export const statuserForFellesOppstart = [
   DeltakerStatusType.SOKT_INN,
   DeltakerStatusType.VENTER_PA_OPPSTART,
@@ -134,6 +135,7 @@ export const getHendelseFilterDetaljer = (
   return Object.values(HandlingFilterValg)
     .filter(
       (filterValg) =>
+        // TODO
         oppstartstype === Oppstartstype.FELLES
           ? true
           : filterValg === HandlingFilterValg.AktiveForslag // Kun vise denne for Løpende oppstart

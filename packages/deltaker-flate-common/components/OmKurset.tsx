@@ -46,6 +46,7 @@ export const OmKurset = ({
   }
 
   if (
+    // TODO bruke pamledingstype?
     oppstartstype === Oppstartstype.LOPENDE &&
     tiltakskode === Tiltakskode.JOBBKLUBB
   ) {

@@ -98,6 +98,7 @@ export const getAvslutningstype = (
   forslag: Forslag | null,
   statusType: DeltakerStatusType,
   harDeltattFraForslag: boolean | null,
+  // TODO sjekk opp
   erFellesOppstart: boolean
 ): Avslutningstype | null => {
   const harFullfortValg = getHarFullfort(forslag)

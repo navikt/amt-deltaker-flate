@@ -44,6 +44,7 @@ export const DeltakerlisteTabell = () => {
 
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
+  // TODO skal det brukes pameldingstype?
   const erFellesOppstart =
     deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
 

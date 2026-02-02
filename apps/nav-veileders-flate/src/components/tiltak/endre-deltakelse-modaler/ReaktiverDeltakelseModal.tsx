@@ -1,16 +1,16 @@
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
-import { useAppContext } from '../../../AppContext.tsx'
-import { useState } from 'react'
+import { BodyLong, ConfirmationPanel } from '@navikt/ds-react'
 import {
   BegrunnelseInput,
   EndreDeltakelseType,
-  Oppstartstype,
+  kreverGodkjenningForPamelding,
   useBegrunnelse
 } from 'deltaker-flate-common'
+import { useState } from 'react'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
-import { BodyLong, ConfirmationPanel } from '@navikt/ds-react'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { useAppContext } from '../../../AppContext.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface ReaktiverDeltakelseModalProps {
   pamelding: PameldingResponse
@@ -60,8 +60,9 @@ export const ReaktiverDeltakelseModal = ({
     return null
   }
 
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const kreverGodkjenning = kreverGodkjenningForPamelding(
+    pamelding.deltakerliste.pameldingstype
+  )
 
   return (
     <Endringsmodal
@@ -80,14 +81,14 @@ export const ReaktiverDeltakelseModal = ({
         onChange={handleChangeConfirm}
         error={errorConfirmed}
         label={
-          erFellesOppstart
+          kreverGodkjenning
             ? 'Ja, brukeren skal søkes inn likevel'
             : 'Ja, brukeren skal delta likevel'
         }
       >
         <BodyLong size="small">
-          {erFellesOppstart
-            ? `Skal brukeren søkes inn på tiltaket likevel? 
+          {kreverGodkjenning
+            ? `Skal brukeren søkes inn på tiltaket likevel?
 						Statusen settes tilbake til “Søkt inn” og brukeren mottar informasjon om søknaden.`
             : `Skal brukeren delta på tiltaket likevel? Statusen settes tilbake til
 						“Venter på oppstart” og brukeren mottar informasjon om påmeldingen.`}

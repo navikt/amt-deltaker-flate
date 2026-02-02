@@ -60,6 +60,7 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: Props) => {
   const defaultSluttdato = getSluttdato(pamelding, forslag)
+  // toDO hva skal vi gjøre i denne modalen?
   const erFellesOppstart =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
   const harDeltattMerEnnFjortenDager = !harDeltattMindreEnn15Dager(
