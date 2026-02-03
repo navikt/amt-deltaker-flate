@@ -5,7 +5,7 @@ import {
   EndreDeltakelseType,
   harBakgrunnsinfo,
   harInnhold,
-  Oppstartstype,
+  harLopendeOppstart,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
@@ -59,8 +59,7 @@ export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
   kanLeggeTilOppstartsdato(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
-  // TODO bruke pameldingstype?
-  pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+  harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
   pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
   pamelding.startdato &&
   pamelding.startdato !== EMDASH

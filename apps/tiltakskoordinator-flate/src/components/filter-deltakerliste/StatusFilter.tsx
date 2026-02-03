@@ -4,16 +4,14 @@ import {
   CheckboxGroup,
   ExpansionCard
 } from '@navikt/ds-react'
-import { Oppstartstype } from 'deltaker-flate-common'
 import { useMemo } from 'react'
 import useLocalStorage from '../../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
 import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
 import {
-  getStatusFilterDetaljer,
-  statuserForFellesOppstart,
-  statuserForLopendeOppstart
+  getFilterStatuser,
+  getStatusFilterDetaljer
 } from '../../utils/filter-deltakerliste'
 
 export const StatusFilter = () => {
@@ -32,6 +30,18 @@ export const StatusFilter = () => {
       valgteHendelseFilter
     )
   }, [valgteStatusFilter, valgteHendelseFilter, deltakere])
+
+  const filtre = useMemo(() => {
+    return getFilterStatuser(
+      deltakerlisteDetaljer.oppstartstype,
+      deltakerlisteDetaljer.pameldingstype,
+      deltakerlisteDetaljer.tiltakskode
+    )
+  }, [
+    deltakerlisteDetaljer.oppstartstype,
+    deltakerlisteDetaljer.pameldingstype,
+    deltakerlisteDetaljer.tiltakskode
+  ])
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteStatusFilter(nyValgteFilter as StatusFilterValg[])
@@ -60,11 +70,7 @@ export const StatusFilter = () => {
         >
           {filterDetaljer
             .filter((filter) => {
-              return deltakerlisteDetaljer.oppstartstype ===
-                // TODO sjekk opp
-                Oppstartstype.LOPENDE
-                ? statuserForLopendeOppstart.includes(filter.filtervalg)
-                : statuserForFellesOppstart.includes(filter.filtervalg)
+              return filtre.includes(filter.filtervalg)
             })
             .map((filter) => (
               <Checkbox

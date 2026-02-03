@@ -187,6 +187,19 @@ export const harAdresse = (tiltakskode: Tiltakskode) =>
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES
 
+export const harLopendeOppstart = (oppstartstype: Oppstartstype | null) =>
+  oppstartstype === Oppstartstype.LOPENDE
+
+/**
+ * Sier om tiltaket bruker avsluttende status: Fullført / Avbrutt.
+ */
+export const harKursAvslutning = (
+  oppstartstype: Oppstartstype | null,
+  tiltakskode: Tiltakskode
+) => {
+  return harFellesOppstart(oppstartstype) || erOpplaringstiltak(tiltakskode)
+}
+
 export const skalMeldePaaDirekte = (pameldingstype: Pameldingstype) =>
   pameldingstype === Pameldingstype.DIREKTE_VEDTAK
 

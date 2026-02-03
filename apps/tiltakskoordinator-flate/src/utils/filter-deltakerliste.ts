@@ -1,7 +1,11 @@
 import {
   DeltakerStatusType,
   getDeltakerStatusDisplayText,
-  Oppstartstype
+  harKursAvslutning,
+  kreverGodkjenningForPamelding,
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { Deltakere } from '../api/data/deltakerliste'
 
@@ -11,26 +15,40 @@ export enum HandlingFilterValg {
   NyeDeltakere = 'NyeDeltakere'
 }
 
-// TODO her må vi fikse både for per tiltak og oppstartstype
-export const statuserForFellesOppstart = [
-  DeltakerStatusType.SOKT_INN,
-  DeltakerStatusType.VENTER_PA_OPPSTART,
-  DeltakerStatusType.DELTAR,
-  DeltakerStatusType.VENTELISTE,
-  DeltakerStatusType.FULLFORT,
-  DeltakerStatusType.AVBRUTT,
-  DeltakerStatusType.IKKE_AKTUELL
-]
+export const getFilterStatuser = (
+  oppstartstype: Oppstartstype | null,
+  pameldingstype: Pameldingstype,
+  tiltakskode: Tiltakskode
+) => {
+  const statuser = []
 
-export const statuserForLopendeOppstart = [
-  DeltakerStatusType.VENTER_PA_OPPSTART,
-  DeltakerStatusType.DELTAR,
-  DeltakerStatusType.HAR_SLUTTET,
-  DeltakerStatusType.IKKE_AKTUELL
-]
+  if (kreverGodkjenningForPamelding(pameldingstype)) {
+    statuser.push(DeltakerStatusType.SOKT_INN, DeltakerStatusType.VENTELISTE)
+  }
+  statuser.push(
+    DeltakerStatusType.VENTER_PA_OPPSTART,
+    DeltakerStatusType.DELTAR
+  )
+
+  if (harKursAvslutning(oppstartstype, tiltakskode)) {
+    statuser.push(DeltakerStatusType.FULLFORT, DeltakerStatusType.AVBRUTT)
+  } else {
+    statuser.push(DeltakerStatusType.HAR_SLUTTET)
+  }
+
+  statuser.push(DeltakerStatusType.IKKE_AKTUELL)
+  return statuser
+}
 
 const statusFilterTyper = [
-  ...new Set([...statuserForFellesOppstart, ...statuserForLopendeOppstart])
+  DeltakerStatusType.SOKT_INN,
+  DeltakerStatusType.VENTELISTE,
+  DeltakerStatusType.VENTER_PA_OPPSTART,
+  DeltakerStatusType.DELTAR,
+  DeltakerStatusType.FULLFORT,
+  DeltakerStatusType.AVBRUTT,
+  DeltakerStatusType.HAR_SLUTTET,
+  DeltakerStatusType.IKKE_AKTUELL
 ] as const
 
 export type StatusFilterValg = (typeof statusFilterTyper)[number]
@@ -125,7 +143,7 @@ export const getHendelseFilterDetaljer = (
   deltakere: Deltakere,
   valgteFilter: HandlingFilterValg[],
   valgteStatusFilter: StatusFilterValg[],
-  oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
 ): HandlingFilterDetaljer[] => {
   const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
     deltakere,
@@ -135,8 +153,7 @@ export const getHendelseFilterDetaljer = (
   return Object.values(HandlingFilterValg)
     .filter(
       (filterValg) =>
-        // TODO
-        oppstartstype === Oppstartstype.FELLES
+        kreverGodkjenningForPamelding(pameldingstype)
           ? true
           : filterValg === HandlingFilterValg.AktiveForslag // Kun vise denne for Løpende oppstart
     )

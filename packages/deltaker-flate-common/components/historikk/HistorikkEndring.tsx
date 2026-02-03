@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
-import { Oppstartstype, Tiltakskode } from '../../model/deltaker.ts'
+import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
@@ -11,7 +11,7 @@ import {
   getDeltakerStatusAarsakText,
   getEndringsTittel
 } from '../../utils/displayText'
-import { formatDate } from '../../utils/utils'
+import { formatDate, harKursAvslutning } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { HistorikkElement } from './HistorikkElement'
@@ -102,8 +102,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
             </BodyLong>
           )}
-          {/* TODO bruke pameldingstype? */}
-          {endring.oppstartstype === Oppstartstype.FELLES && (
+          {harKursAvslutning(endring.oppstartstype, tiltakskode) && (
             <BodyLong size="small">
               Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
             </BodyLong>

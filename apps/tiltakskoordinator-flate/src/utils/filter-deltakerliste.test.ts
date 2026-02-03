@@ -1,3 +1,4 @@
+import { DeltakerStatusType, Pameldingstype } from 'deltaker-flate-common'
 import { describe, expect, it } from 'vitest'
 import { lagMockDeltaker } from '../mocks/mockData'
 import {
@@ -9,7 +10,6 @@ import {
   HandlingFilterValg,
   StatusFilterValg
 } from './filter-deltakerliste'
-import { DeltakerStatusType, Oppstartstype } from 'deltaker-flate-common'
 
 const mockDeltakere = [
   {
@@ -149,7 +149,7 @@ describe('getHendelseFilterDetaljer', () => {
       mockDeltakere,
       [],
       [],
-      Oppstartstype.FELLES
+      Pameldingstype.TRENGER_GODKJENNING
     )
     expect(detaljer).toHaveLength(Object.values(HandlingFilterValg).length)
   })
@@ -159,7 +159,7 @@ describe('getHendelseFilterDetaljer', () => {
       mockDeltakere,
       [],
       [],
-      Oppstartstype.LOPENDE
+      Pameldingstype.DIREKTE_VEDTAK
     )
     expect(detaljer).toHaveLength(1)
   })
@@ -169,7 +169,7 @@ describe('getHendelseFilterDetaljer', () => {
       mockDeltakere,
       [HandlingFilterValg.AktiveForslag, HandlingFilterValg.NyeDeltakere],
       [],
-      Oppstartstype.FELLES
+      Pameldingstype.TRENGER_GODKJENNING
     )
     const aktive = detaljer.find(
       (d) => d.filtervalg === HandlingFilterValg.AktiveForslag
@@ -190,7 +190,7 @@ describe('getHendelseFilterDetaljer', () => {
       mockDeltakere,
       [],
       [],
-      Oppstartstype.FELLES
+      Pameldingstype.TRENGER_GODKJENNING
     )
     const aktive = detaljer.find(
       (d) => d.filtervalg === HandlingFilterValg.AktiveForslag
@@ -237,7 +237,7 @@ describe('getHendelseFilterDetaljer', () => {
       deltakere,
       [],
       [],
-      Oppstartstype.FELLES
+      Pameldingstype.TRENGER_GODKJENNING
     )
     detaljer.forEach((d) => expect(d.antall).toBe(0))
   })
@@ -264,7 +264,7 @@ describe('getHendelseFilterDetaljer', () => {
       ],
       [HandlingFilterValg.OppdateringFraNav],
       ['DELTAR' as StatusFilterValg],
-      Oppstartstype.FELLES
+      Pameldingstype.TRENGER_GODKJENNING
     )
     detaljer.forEach((d) => {
       if (d.filtervalg === HandlingFilterValg.OppdateringFraNav) {
