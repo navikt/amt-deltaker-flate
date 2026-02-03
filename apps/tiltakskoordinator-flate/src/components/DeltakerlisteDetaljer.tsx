@@ -1,5 +1,5 @@
 import { BodyShort, Detail } from '@navikt/ds-react'
-import { formatDate, Oppstartstype } from 'deltaker-flate-common'
+import { formatDate, Pameldingstype } from 'deltaker-flate-common'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext.tsx'
 import { KoordinatorListe } from './deltaker-liste-detaljer/KoordinatorListe.tsx'
 
@@ -9,7 +9,8 @@ export const DeltakerlisteDetaljer = () => {
   return (
     <div
       className={
-        deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
+        deltakerlisteDetaljer.pameldingstype ===
+        Pameldingstype.TRENGER_GODKJENNING
           ? 'mt-14'
           : ''
       }

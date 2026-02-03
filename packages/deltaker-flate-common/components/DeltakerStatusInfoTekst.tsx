@@ -1,12 +1,12 @@
 import { Alert, BodyLong } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
-  Tiltakskode,
   DeltakerStatusType,
-  Oppstartstype,
   formatDateWithMonthName,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
-  isValidDate
+  isValidDate,
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 
 interface DeltakerStatusInfoTekstProps {
@@ -15,7 +15,7 @@ interface DeltakerStatusInfoTekstProps {
   statusType: DeltakerStatusType
   arrangorNavn: string
   oppstartsdato: string | null
-  oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   tiltaketsStartDato: Date | null
   erEnkeltplassUtenRammeavtale: boolean
 }
@@ -35,19 +35,19 @@ export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
 }
 
 const getInfoTekst = (
-  erFellesOppstart: boolean,
+  kreverGodkjenning: boolean,
   status: DeltakerStatusType,
   tiltakOgStedTekst: string
 ) => {
   switch (status) {
     case DeltakerStatusType.VENTER_PA_OPPSTART:
-      return `Du ${erFellesOppstart ? 'har fått plass' : 'er meldt'} på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+      return `Du ${kreverGodkjenning ? 'har fått plass' : 'er meldt'} på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.DELTAR:
       return `Du deltar på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.HAR_SLUTTET:
       return `Du deltok på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
     case DeltakerStatusType.IKKE_AKTUELL:
-      return erFellesOppstart
+      return kreverGodkjenning
         ? `Søknaden om ${tiltakOgStedTekst} er avslått.`
         : `${tiltakOgStedTekst} ble ikke aktuelt.`
     case DeltakerStatusType.VURDERES:
@@ -89,7 +89,7 @@ export const DeltakerStatusInfoTekst = ({
   statusType,
   arrangorNavn,
   oppstartsdato,
-  oppstartstype,
+  pameldingstype,
   tiltaketsStartDato,
   erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
@@ -97,7 +97,7 @@ export const DeltakerStatusInfoTekst = ({
     return getHoyereUtdanningInfo(statusType)
   }
 
-  if (erEnkeltplassUtenRammeavtale || !oppstartstype) {
+  if (erEnkeltplassUtenRammeavtale) {
     return null
   }
 
@@ -107,7 +107,7 @@ export const DeltakerStatusInfoTekst = ({
     <>
       <BodyLong size="small" className="mt-2">
         {getInfoTekst(
-          oppstartstype === Oppstartstype.FELLES,
+          pameldingstype === Pameldingstype.TRENGER_GODKJENNING,
           statusType,
           hentTiltakEllerGjennomforingNavnHosArrangorTekst(
             tiltakskode,
@@ -121,7 +121,7 @@ export const DeltakerStatusInfoTekst = ({
           <Alert variant="info" className="mt-4" size="small">
             {getIngenStartDatoInfoTekst(
               tiltakskode,
-              oppstartstype,
+              pameldingstype,
               arrangorNavn,
               tiltaketsStartDato
             )}
@@ -133,11 +133,11 @@ export const DeltakerStatusInfoTekst = ({
 
 const getIngenStartDatoInfoTekst = (
   tiltakskode: Tiltakskode,
-  oppstartstype: Oppstartstype,
+  pameldingstype: Pameldingstype,
   arrangorNavn: string,
   tiltaketsStartDato: Date | null
 ) => {
-  if (oppstartstype === Oppstartstype.FELLES) {
+  if (pameldingstype === Pameldingstype.TRENGER_GODKJENNING) {
     if (!tiltaketsStartDato) {
       return 'Nav eller arrangøren tar kontakt med deg for å avtale din oppstart.'
     }

@@ -7,7 +7,7 @@ import {
   EndreDeltakelseType,
   Forslag,
   getDateFromString,
-  Oppstartstype,
+  harKursAvslutning,
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -60,8 +60,10 @@ export const AvsluttDeltakelseModal = ({
   onSuccess
 }: Props) => {
   const defaultSluttdato = getSluttdato(pamelding, forslag)
-  const erFellesOppstart =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.FELLES
+  const harKursAvslutendeStatuser = harKursAvslutning(
+    pamelding.deltakerliste.oppstartstype,
+    pamelding.deltakerliste.tiltakskode
+  )
   const harDeltattMerEnnFjortenDager = !harDeltattMindreEnn15Dager(
     pamelding,
     forslag
@@ -74,13 +76,13 @@ export const AvsluttDeltakelseModal = ({
         forslag,
         pamelding.status.type,
         harDeltattFraForslag,
-        erFellesOppstart
+        harKursAvslutendeStatuser
       )
     )
   const [avslutningstypeError, setAvslutningstypeError] = useState<string>()
   const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
     harDeltattFraForslag ??
-      (erFellesOppstart
+      (harKursAvslutendeStatuser
         ? avslutningstype === Avslutningstype.FULLFORT ||
           avslutningstype === Avslutningstype.AVBRUTT
         : harDeltattMerEnnFjortenDager
@@ -109,7 +111,7 @@ export const AvsluttDeltakelseModal = ({
   })
   const { enhetId } = useAppContext()
 
-  const skalViseAarsak = erFellesOppstart
+  const skalViseAarsak = harKursAvslutendeStatuser
     ? avslutningstype === Avslutningstype.AVBRUTT ||
       avslutningstype === Avslutningstype.IKKE_DELTATT
     : true
@@ -138,15 +140,16 @@ export const AvsluttDeltakelseModal = ({
       hasError = true
     }
 
-    if (erFellesOppstart && avslutningstype === null) {
+    if (harKursAvslutendeStatuser && avslutningstype === null) {
       hasError = true
       setAvslutningstypeError('Du må velge om kurset er fullført.')
     }
 
     const skalValidereAarsak =
-      (!erFellesOppstart &&
+      (!harKursAvslutendeStatuser &&
         (pamelding.status.type === DeltakerStatusType.DELTAR || !harDeltatt)) ||
-      (erFellesOppstart && avslutningstype !== Avslutningstype.FULLFORT)
+      (harKursAvslutendeStatuser &&
+        avslutningstype !== Avslutningstype.FULLFORT)
 
     if (skalValidereAarsak && !aarsak.valider()) {
       hasError = true
@@ -186,7 +189,7 @@ export const AvsluttDeltakelseModal = ({
             ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
         harDeltatt: harDeltatt,
-        harFullfort: erFellesOppstart
+        harFullfort: harKursAvslutendeStatuser
           ? avslutningstype === Avslutningstype.FULLFORT
           : null,
         begrunnelse: begrunnelse.begrunnelse || null,
@@ -233,7 +236,7 @@ export const AvsluttDeltakelseModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      {erFellesOppstart && (
+      {harKursAvslutendeStatuser && (
         <section className="mt-4">
           <RadioGroup
             legend="Har deltakeren fullført kurset?"
@@ -271,7 +274,7 @@ export const AvsluttDeltakelseModal = ({
         </section>
       )}
 
-      {!erFellesOppstart && (
+      {!harKursAvslutendeStatuser && (
         <section className="mt-4">
           <RadioGroup
             legend="Har personen deltatt på tiltaket?"

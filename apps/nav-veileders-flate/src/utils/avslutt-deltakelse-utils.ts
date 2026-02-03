@@ -98,10 +98,10 @@ export const getAvslutningstype = (
   forslag: Forslag | null,
   statusType: DeltakerStatusType,
   harDeltattFraForslag: boolean | null,
-  erFellesOppstart: boolean
+  harKursAvslutendeStatuser: boolean
 ): Avslutningstype | null => {
   const harFullfortValg = getHarFullfort(forslag)
-  if (!erFellesOppstart) return null
+  if (!harKursAvslutendeStatuser) return null
 
   if (harFullfortValg === true) return Avslutningstype.FULLFORT
   else if (harDeltattFraForslag === false) return Avslutningstype.IKKE_DELTATT

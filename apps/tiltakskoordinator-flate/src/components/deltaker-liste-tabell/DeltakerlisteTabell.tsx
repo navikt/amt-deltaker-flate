@@ -3,8 +3,8 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   formatDate,
+  harLopendeOppstart,
   kanDeleDeltakerMedArrangorForVurdering,
-  Oppstartstype,
   Pameldingstype
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
@@ -44,8 +44,9 @@ export const DeltakerlisteTabell = () => {
 
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingInfoAlertRef = useRef<HTMLDivElement>(null)
-  const erFellesOppstart =
-    deltakerlisteDetaljer.oppstartstype === Oppstartstype.FELLES
+  const erLopendeOppstart = harLopendeOppstart(
+    deltakerlisteDetaljer.oppstartstype
+  )
 
   const { lagretSorteringsValg, setLagretSorteringsValg } =
     useSorteringContext()
@@ -144,7 +145,7 @@ export const DeltakerlisteTabell = () => {
             )}
             <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
             <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
-            {!erFellesOppstart && (
+            {erLopendeOppstart && (
               <>
                 <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
                 <TableHeaderCell label="Slutt" sortKey={SortKey.SLUTT_DATO} />
@@ -219,7 +220,7 @@ export const DeltakerlisteTabell = () => {
 
                 <TableDataCell text={deltaker.navEnhet} className="min-w-40" />
 
-                {!erFellesOppstart && (
+                {erLopendeOppstart && (
                   <>
                     <TableDataCell text={formatDate(deltaker.startdato)} />
                     <TableDataCell text={formatDate(deltaker.sluttdato)} />

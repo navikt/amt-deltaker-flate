@@ -6,7 +6,7 @@ import {
   DeltakerStatusType,
   Oppstartstype
 } from '../model/deltaker'
-import { formatDate } from '../utils/utils'
+import { formatDate, harFellesOppstart } from '../utils/utils'
 
 interface Props {
   statusType: DeltakerStatusType
@@ -28,7 +28,7 @@ export const VedtakInfo = ({
   className
 }: Props) => {
   const vedtaksDato =
-    oppstartstype === Oppstartstype.FELLES &&
+    harFellesOppstart(oppstartstype) &&
     statusType === DeltakerStatusType.IKKE_AKTUELL &&
     vedtaksinformasjon?.fattet === null
       ? statusDato

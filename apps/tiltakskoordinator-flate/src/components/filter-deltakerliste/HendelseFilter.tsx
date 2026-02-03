@@ -27,7 +27,7 @@ export const HendelseFilter = () => {
       deltakere,
       valgteHendelseFilter,
       valgteStatusFilter,
-      deltakerlisteDetaljer.oppstartstype
+      deltakerlisteDetaljer.pameldingstype
     )
   }, [
     valgteHendelseFilter,

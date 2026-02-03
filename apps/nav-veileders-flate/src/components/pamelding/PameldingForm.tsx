@@ -10,7 +10,8 @@ import {
   OmKurset,
   Oppmotested,
   Oppstartstype,
-  visDeltakelsesmengde
+  visDeltakelsesmengde,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -95,7 +96,8 @@ export const PameldingForm = ({
 
   const erOpplaringLopendeOppstartDirektePamelding =
     pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
-    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) &&
+    (erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) ||
+      pamelding.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB) &&
     skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
 
   return (

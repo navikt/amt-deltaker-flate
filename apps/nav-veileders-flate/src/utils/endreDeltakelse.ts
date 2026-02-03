@@ -5,7 +5,7 @@ import {
   EndreDeltakelseType,
   harBakgrunnsinfo,
   harInnhold,
-  Oppstartstype,
+  harLopendeOppstart,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingResponse } from '../api/data/pamelding'
@@ -22,12 +22,9 @@ const ikkeAktuell = (pamelding: PameldingResponse) =>
 const harSluttetEllerFullfort = (pamelding: PameldingResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const harAvsluttendeStatus = (pamelding: PameldingResponse) =>
-  deltakerHarAvsluttendeStatus(pamelding.status.type)
-
-const venterDeltarEller = (pamelding: PameldingResponse) =>
+const venterDeltarEllerAvsluttet = (pamelding: PameldingResponse) =>
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  harAvsluttendeStatus(pamelding)
+  deltakerHarAvsluttendeStatus(pamelding.status.type)
 
 const skalViseForlengKnapp = (
   pamelding: PameldingResponse,
@@ -41,7 +38,7 @@ const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
   harInnhold(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
-  venterDeltarEller(pamelding) &&
+  venterDeltarEllerAvsluttet(pamelding) &&
   harBakgrunnsinfo(pamelding.deltakerliste.tiltakskode)
 
 const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
@@ -52,7 +49,7 @@ const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
-  venterDeltarEller(pamelding)
+  venterDeltarEllerAvsluttet(pamelding)
 
 export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
   (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
@@ -62,7 +59,7 @@ export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
   kanLeggeTilOppstartsdato(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
-  pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+  harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
   pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
   pamelding.startdato &&
   pamelding.startdato !== EMDASH

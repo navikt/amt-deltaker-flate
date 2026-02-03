@@ -1,17 +1,20 @@
 import { BodyLong, Modal } from '@navikt/ds-react'
+import {
+  kreverGodkjenningForPamelding,
+  Pameldingstype
+} from 'deltaker-flate-common'
 import { ModalFooter } from '../ModalFooter'
-import { Oppstartstype } from 'deltaker-flate-common'
 
 interface Props {
   open: boolean
-  oppstartstype: Oppstartstype | null
+  pameldingstype: Pameldingstype
   onConfirm: () => void
   onCancel: () => void
 }
 
 export const SlettKladdModal = ({
   open,
-  oppstartstype,
+  pameldingstype,
   onConfirm,
   onCancel
 }: Props) => {
@@ -23,7 +26,7 @@ export const SlettKladdModal = ({
     >
       <Modal.Body>
         <BodyLong>
-          {oppstartstype === Oppstartstype.FELLES
+          {kreverGodkjenningForPamelding(pameldingstype)
             ? 'Kladden til søknaden vil bli borte.'
             : 'Påmeldingen og det du har skrevet vil bli borte.'}
         </BodyLong>
