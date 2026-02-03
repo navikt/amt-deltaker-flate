@@ -45,14 +45,6 @@ export const OmKurset = ({
     return null
   }
 
-  if (
-    // TODO bruke pamledingstype?
-    oppstartstype === Oppstartstype.LOPENDE &&
-    tiltakskode === Tiltakskode.JOBBKLUBB
-  ) {
-    return null // Jobbsøkerkurs har innhold ledetekst.
-  }
-
   const statuserForVisKurs = [
     DeltakerStatusType.KLADD,
     DeltakerStatusType.UTKAST_TIL_PAMELDING,
