@@ -5,13 +5,13 @@ import {
   erOpplaringstiltak,
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
+  harLopendeOppstart,
   INNHOLD_TYPE_ANNET,
-  skalMeldePaaDirekte,
   OmKurset,
   Oppmotested,
-  Oppstartstype,
-  visDeltakelsesmengde,
-  Tiltakskode
+  skalMeldePaaDirekte,
+  Tiltakskode,
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -95,10 +95,10 @@ export const PameldingForm = ({
   }, [valgteInnhold])
 
   const erOpplaringLopendeOppstartDirektePamelding =
-    pamelding.deltakerliste.oppstartstype === Oppstartstype.LOPENDE &&
+    harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
+    skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype) &&
     (erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) ||
-      pamelding.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB) &&
-    skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype)
+      pamelding.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB)
 
   return (
     <form
