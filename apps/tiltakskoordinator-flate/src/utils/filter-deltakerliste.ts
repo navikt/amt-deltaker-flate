@@ -35,10 +35,12 @@ export const getFilterStatuser = (
   } else {
     statuser.push(DeltakerStatusType.HAR_SLUTTET)
   }
+
   // I en overgang vil gamle gruppetiltak med løpende oppstart ha avsluttende status HAR_SLUTTET
   if (
-    tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-    tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+    oppstartstype === Oppstartstype.LOPENDE &&
+    (tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING)
   ) {
     statuser.push(DeltakerStatusType.HAR_SLUTTET)
   }
