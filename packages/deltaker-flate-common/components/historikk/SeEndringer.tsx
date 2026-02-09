@@ -7,6 +7,7 @@ import {
 import { Tiltakskode } from '../../model/deltaker'
 import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
 import { HistorikkModal } from './HistorikkModal'
+import { useRef } from 'react'
 
 interface Props {
   deltakerId: string
@@ -26,6 +27,7 @@ export const SeEndringer = ({
   onModalClose
 }: Props) => {
   const [historikkModalOpen, setHistorikkModalOpen] = useState(open ?? false)
+  const knappRef = useRef<HTMLButtonElement>(null)
 
   const {
     data: historikk,
@@ -48,6 +50,7 @@ export const SeEndringer = ({
     <>
       <Button
         className={className ?? ''}
+        ref={knappRef}
         variant="secondary"
         size="small"
         onClick={hentEndringer}
@@ -71,6 +74,9 @@ export const SeEndringer = ({
         onClose={() => {
           setHistorikkModalOpen(false)
           if (onModalClose) onModalClose()
+          if (knappRef.current) {
+            knappRef.current.focus()
+          }
         }}
       />
     </>

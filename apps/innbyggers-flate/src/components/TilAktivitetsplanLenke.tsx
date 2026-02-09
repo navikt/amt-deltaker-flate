@@ -15,7 +15,7 @@ export const TilAktivitetsplanLenke = ({
       className="no-underline hover:underline mb-6"
     >
       <BodyShort size="small">{tekst}</BodyShort>
-      <ArrowRightIcon aria-label="Gå til aktivitetsplanen" />
+      <ArrowRightIcon aria-hidden="true" />
     </Link>
   )
 }
