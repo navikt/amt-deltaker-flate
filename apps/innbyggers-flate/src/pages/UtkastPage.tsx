@@ -239,9 +239,9 @@ export const UtkastPage = () => {
           {`Kan informasjonen deles til ${arrangorNavn}?`}
         </Heading>
         <BodyLong className="mt-4">
-          Hvis du har et spørsmål, innspill eller ikke ønsker at dette deles,{' '}
+          Hvis du har et spørsmål, innspill eller ikke ønsker at dette deles, så{' '}
           <Link href={DIALOG_URL} inlineText>
-            så send en melding til Nav-veilederen din her.
+            send en melding til Nav-veilederen din her.
           </Link>
         </BodyLong>
       </ConfirmationPanel>
