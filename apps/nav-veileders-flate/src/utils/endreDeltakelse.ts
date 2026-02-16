@@ -52,11 +52,8 @@ const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
   venterDeltarEllerAvsluttet(pamelding)
 
 export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
-  (deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) &&
-    pamelding.startdato &&
-    pamelding.startdato !== EMDASH) ||
-  harSluttetEllerFullfort(pamelding) ||
-  kanLeggeTilOppstartsdato(pamelding)
+  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
+  harSluttetEllerFullfort(pamelding)
 
 const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
   harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
@@ -162,17 +159,4 @@ export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
       'Deltaker fikk avsluttende status for mer enn to måneder siden eller det finnes en nyere deltakelse, og kan derfor ikke redigeres.'
     )
   }
-}
-
-export const kanLeggeTilOppstartsdato = (pamelding: PameldingResponse) => {
-  // Noen arrangører bruker ikke deltakerlisten,
-  // derfor må Nav-veileder kunne legge til / endre oppstartsdato
-  return (
-    (pamelding.startdato === null || pamelding.startdato === EMDASH) &&
-    pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
-    [
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
-    ].includes(pamelding.deltakerliste.tiltakskode)
-  )
 }
