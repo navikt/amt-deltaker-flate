@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const innholdDtoSchema = z.object({
   innholdskode: z.string(),
-  beskrivelse: z.string().nullable()
+  beskrivelse: z.string().nullable() //denne er i praksis satt hvis innholdskode=ANNET
 })
 
 export const sendInnPameldingRequestSchema = z.object({
