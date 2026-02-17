@@ -39,7 +39,6 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import {
-  kanLeggeTilOppstartsdato,
   kanEndreOppstartsdato,
   validerDeltakerKanEndres
 } from '../../../utils/endreDeltakelse.ts'
@@ -97,7 +96,7 @@ export const EndreOppstartsdatoModal = ({
     startdato: startdato
   })
 
-  const erLeggTilOppstartsdato = kanLeggeTilOppstartsdato(pamelding)
+  const erLeggTilOppstartsdato = pamelding.startdato === null
 
   const skalHaBegrunnelse =
     (!forslag ||
