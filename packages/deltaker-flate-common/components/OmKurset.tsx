@@ -72,19 +72,32 @@ export const OmKurset = ({
         </BodyLong>
       )}
 
-      {oppstartstype === Oppstartstype.LOPENDE && kreverGodkjenning && (
-        <BodyLong size="small" className="mt-2">
-          Nav vurderer søknaden din, og du får beskjed om resultatet.
-        </BodyLong>
-      )}
+      {oppstartstype === Oppstartstype.LOPENDE &&
+        kreverGodkjenning &&
+        (statusType === DeltakerStatusType.VENTELISTE ? (
+          <>
+            <BodyLong size="small" className="mt-2">
+              Dersom det blir ledig plass, vil Nav eller arrangøren ta kontakt
+              med deg for å avtale når du skal begynne.
+            </BodyLong>
+
+            <BodyLong size="small" className="mt-4">
+              Hvis du ikke får plass, vil søknaden avslås.
+            </BodyLong>
+          </>
+        ) : (
+          <BodyLong size="small" className="mt-2">
+            Nav vurderer søknaden din, og du får beskjed om resultatet.
+          </BodyLong>
+        ))}
 
       {oppstartstype !== Oppstartstype.LOPENDE && (
         <>
           {statusType === DeltakerStatusType.VENTELISTE && (
             <>
               <BodyLong size="small" className="mt-2">
-                Dersom det åpner seg ledig plass, vil Nav eller arrangøren ta
-                kontakt med deg for å avtale når du skal begynne.
+                Dersom det blir ledig plass, vil Nav eller arrangøren ta kontakt
+                med deg for å avtale når du skal begynne.
               </BodyLong>
 
               <BodyLong size="small" className="mt-4">

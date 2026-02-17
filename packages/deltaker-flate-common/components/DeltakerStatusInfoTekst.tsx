@@ -8,6 +8,7 @@ import {
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
+import { Oppstartstype } from '../model/deltaker.ts'
 
 interface DeltakerStatusInfoTekstProps {
   tiltakskode: Tiltakskode
@@ -16,6 +17,7 @@ interface DeltakerStatusInfoTekstProps {
   arrangorNavn: string
   oppstartsdato: string | null
   pameldingstype: Pameldingstype
+  oppstartstype: Oppstartstype | null
   tiltaketsStartDato: Date | null
   erEnkeltplassUtenRammeavtale: boolean
 }
@@ -90,6 +92,7 @@ export const DeltakerStatusInfoTekst = ({
   arrangorNavn,
   oppstartsdato,
   pameldingstype,
+  oppstartstype,
   tiltaketsStartDato,
   erEnkeltplassUtenRammeavtale
 }: DeltakerStatusInfoTekstProps) => {
@@ -122,6 +125,7 @@ export const DeltakerStatusInfoTekst = ({
             {getIngenStartDatoInfoTekst(
               tiltakskode,
               pameldingstype,
+              oppstartstype,
               arrangorNavn,
               tiltaketsStartDato
             )}
@@ -134,6 +138,7 @@ export const DeltakerStatusInfoTekst = ({
 const getIngenStartDatoInfoTekst = (
   tiltakskode: Tiltakskode,
   pameldingstype: Pameldingstype,
+  oppstartstype: Oppstartstype | null,
   arrangorNavn: string,
   tiltaketsStartDato: Date | null
 ) => {
@@ -142,7 +147,12 @@ const getIngenStartDatoInfoTekst = (
       return 'Nav eller arrangøren tar kontakt med deg for å avtale din oppstart.'
     }
     const harKursetStartet = dayjs().isAfter(tiltaketsStartDato)
-    return `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. Nav eller arrangøren tar kontakt med deg for å avtale når du skal begynne.`
+    const fellesOppstartText = `Kurset ${harKursetStartet ? 'startet' : 'starter'} ${formatDateWithMonthName(tiltaketsStartDato)}. `
+    const baseText =
+      'Nav eller arrangøren tar kontakt med deg for å avtale når du skal begynne.'
+    return oppstartstype === Oppstartstype.FELLES
+      ? fellesOppstartText + baseText
+      : baseText
   }
 
   return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
