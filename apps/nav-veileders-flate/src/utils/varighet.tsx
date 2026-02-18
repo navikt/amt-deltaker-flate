@@ -297,6 +297,7 @@ export const Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING =
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
 export const DATO_FØR_SLUTTDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+
 /**
  * Returnerer datoen som kommer først av deltakerlistens sluttdato
  * eller max varighet regnet ut fra 'nyStartdato' eller hvis den ikke er gitt; deltakerens startdato
@@ -310,15 +311,11 @@ export const getSisteGyldigeSluttDato = (
   const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
 
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
-
   if (!deltakerlisteSluttDato) {
     return maxVarighetDato?.toDate()
   } else if (!maxVarighetDato) {
     return deltakerlisteSluttDato
   } else if (dayjs(deltakerlisteSluttDato).isAfter(maxVarighetDato, 'date')) {
-    if (maxVarighetDato.isBefore(pamelding.sluttdato)) {
-      return dayjs(pamelding.sluttdato).toDate()
-    }
     return maxVarighetDato.toDate()
   } else {
     return deltakerlisteSluttDato
@@ -416,9 +413,7 @@ export const getSluttDatoFeilmelding = (
     (!maxVarighetDato &&
       sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date')) ||
     (!deltakerlisteSluttDato &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date')) ||
-    (maxVarighetDato?.isBefore(pamelding.sluttdato, 'date') &&
-      sluttDato.isSameOrBefore(pamelding.sluttdato, 'date'))
+      sluttDato.isSameOrBefore(maxVarighetDato, 'date'))
   ) {
     return null
   }

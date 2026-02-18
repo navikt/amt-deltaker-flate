@@ -6,6 +6,7 @@ import {
 } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import {
+  BegrunnelseInput,
   EndreDeltakelseType,
   Forslag,
   ForslagEndring,
@@ -14,14 +15,17 @@ import {
   Tiltakskode,
   getDateFromString,
   getDeltakerStatusDisplayText,
-  BegrunnelseInput,
   useBegrunnelse
 } from 'deltaker-flate-common'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
 import { PameldingResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import {
+  kanEndreOppstartsdato,
+  validerDeltakerKanEndres
+} from '../../../utils/endreDeltakelse.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
@@ -38,10 +42,6 @@ import {
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import {
-  kanEndreOppstartsdato,
-  validerDeltakerKanEndres
-} from '../../../utils/endreDeltakelse.ts'
 
 interface EndreOppstartsdatoModalProps {
   pamelding: PameldingResponse
@@ -89,6 +89,10 @@ export const EndreOppstartsdatoModal = ({
     defaultDatoer.startdato
   )
 
+  const maxSluttdato = useMemo(() => {
+    return getSisteGyldigeSluttDato(pamelding, startdato)
+  }, [pamelding, startdato])
+
   const sluttdato = useSluttdato({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
@@ -109,8 +113,6 @@ export const EndreOppstartsdatoModal = ({
   const skalBekrefteVarighet =
     startdato &&
     getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, startdato)
-
-  const maxSluttdato = getSisteGyldigeSluttDato(pamelding, startdato)
 
   const validateStartdato = (
     dateValidation: DateValidationT,
