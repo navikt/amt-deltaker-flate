@@ -103,6 +103,7 @@ export const DeltakerInfo = ({ className }: Props) => {
           arrangorNavn={pamelding.deltakerliste.arrangorNavn}
           oppstartsdato={pamelding.startdato}
           pameldingstype={pamelding.deltakerliste.pameldingstype}
+          oppstartstype={pamelding.deltakerliste.oppstartstype}
           erEnkeltplassUtenRammeavtale={
             pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
           }

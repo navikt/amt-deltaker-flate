@@ -122,6 +122,7 @@ export const DeltakerPage = () => {
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
           oppstartsdato={deltaker.startdato}
           pameldingstype={deltaker.deltakerliste.pameldingstype}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
           erEnkeltplassUtenRammeavtale={
             deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
           }
