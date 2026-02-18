@@ -89,6 +89,20 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     expect(result.current.error).toBe(null)
   })
 
+  it('har error når ANNET er valgt men ingen dato er valgt', () => {
+    const { result } = renderHook(() =>
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET,
+        defaultAnnetDato: undefined
+      })
+    )
+    act(() => {
+      result.current.valider()
+    })
+    expect(result.current.error).toBe('Du må velge en sluttdato')
+  })
+
   it('har error med varighet over max-varighet', () => {
     const { result } = renderHook(() =>
       useSluttdato({
