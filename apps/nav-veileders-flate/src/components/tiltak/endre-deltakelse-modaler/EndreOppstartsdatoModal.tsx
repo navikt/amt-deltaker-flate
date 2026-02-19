@@ -144,6 +144,7 @@ export const EndreOppstartsdatoModal = ({
       setErrorStartDato('Du må velge startdato')
       hasError = true
     }
+
     if (skalBekrefteVarighet && !varighetBekreftelse) {
       setErrorVarighetConfirmation(VARIGHET_BEKREFTELSE_FEILMELDING)
       hasError = true
