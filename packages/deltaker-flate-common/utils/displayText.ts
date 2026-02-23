@@ -60,7 +60,7 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
     case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring'
     case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
-      return 'Norskopplæring grunnleggende ferdigheter FOV'
+      return 'Norskopplæring grunnleggende ferdigheter og FOV'
     case Tiltakskode.STUDIESPESIALISERING:
       return 'Studiespesialisering'
     case Tiltakskode.FAG_OG_YRKESOPPLAERING:
