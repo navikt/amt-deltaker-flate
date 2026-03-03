@@ -41,7 +41,9 @@ export const DeltakerStatusTag = ({
     <Tag
       variant={getTagType(statusType)}
       size="small"
-      className={statusType === DeltakerStatusType.DELTAR ? 'bg-white' : ''}
+      className={
+        statusType === DeltakerStatusType.DELTAR ? 'bg-(--ax-bg-default)' : ''
+      }
     >
       {name ?? getDeltakerStatusDisplayText(statusType)}
     </Tag>

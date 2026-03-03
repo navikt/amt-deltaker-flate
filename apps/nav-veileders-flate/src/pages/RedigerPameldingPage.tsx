@@ -72,7 +72,11 @@ export const RedigerPameldingPage = () => {
         vedtaksinformasjon={pamelding.vedtaksinformasjon}
       />
 
-      <VStack gap="space-16" align="start" className="md:p-8 p-4 bg-white">
+      <VStack
+        gap="space-16"
+        align="start"
+        className="md:p-8 p-4 bg-(--ax-bg-default)"
+      >
         {redigerUtkast && (
           <PameldingForm
             focusOnOpen

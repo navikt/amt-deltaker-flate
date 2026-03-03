@@ -20,7 +20,9 @@ export const FeilregistrertInfo = ({
   feilregistrertDato
 }: Props) => {
   return (
-    <div className={`bg-white py-4 px-4 ax-md:px-12 ${className ?? ''}`}>
+    <div
+      className={`bg-(--ax-bg-default) py-4 px-4 ax-md:px-12 ${className ?? ''}`}
+    >
       <Heading
         level="1"
         size="large"

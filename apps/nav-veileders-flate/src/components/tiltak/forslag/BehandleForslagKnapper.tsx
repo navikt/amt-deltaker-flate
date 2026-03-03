@@ -54,7 +54,7 @@ export const BehandleForslagKnapper = ({ forslag }: Props) => {
       <Button
         size="small"
         variant="secondary"
-        className="ml-4 bg-white"
+        className="ml-4 bg-(--ax-bg-default)"
         onClick={() => setAvvisModalOpen(true)}
       >
         Avvis forslag

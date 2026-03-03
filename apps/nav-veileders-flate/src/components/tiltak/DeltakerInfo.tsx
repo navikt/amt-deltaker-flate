@@ -69,7 +69,9 @@ export const DeltakerInfo = ({ className }: Props) => {
       pamelding.status.type === DeltakerStatusType.VURDERES)
 
   return (
-    <div className={`bg-white px-12 py-4 max-ax-md:px-4 ${className}`}>
+    <div
+      className={`bg-(--ax-bg-default) px-12 py-4 max-ax-md:px-4 ${className}`}
+    >
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>

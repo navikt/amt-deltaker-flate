@@ -6,11 +6,6 @@
   background: var(--ax-bg-neutral-soft);
 }
 
-/* Eksplisitt bg-white for shadow DOM */
-.bg-white {
-  background-color: #ffffff;
-}
-
 p,
 li {
   overflow-wrap: break-word;

@@ -78,7 +78,7 @@ export const DeltakerPage = () => {
   )
 
   return (
-    <div className={'bg-white w-full mb-8'}>
+    <div className={'bg-(--ax-bg-default) w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">

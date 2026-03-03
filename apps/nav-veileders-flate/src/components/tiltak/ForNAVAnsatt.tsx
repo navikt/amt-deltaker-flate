@@ -24,7 +24,9 @@ export const ForNAVAnsatt = ({ className }: Props) => {
     pamelding.kanEndres && getEndreDeltakelsesValg(pamelding).length > 0
 
   return (
-    <div className={`bg-white p-4 h-fit ${className} flex flex-col`}>
+    <div
+      className={`bg-(--ax-bg-default) p-4 h-fit ${className} flex flex-col`}
+    >
       <Heading level="2" size="medium" className="mb-4 ">
         For Nav-ansatt
       </Heading>
