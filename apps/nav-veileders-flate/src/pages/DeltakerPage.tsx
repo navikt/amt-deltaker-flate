@@ -19,7 +19,7 @@ export const DeltakerPage = () => {
   return (
     <div className="max-w-313 m-auto" data-testid="page_tiltak">
       <Tilbakeknapp />
-      <div className="flex flex-col gap-4 xl:flex-row-reverse">
+      <div className="flex flex-col gap-4 ax-xl:flex-row-reverse">
         <ForNAVAnsatt className="xl:max-w-103 w-full" />
         {pamelding.status.type === DeltakerStatusType.FEILREGISTRERT ? (
           <FeilregistrertInfo

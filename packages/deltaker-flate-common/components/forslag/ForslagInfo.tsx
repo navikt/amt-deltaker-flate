@@ -11,9 +11,9 @@ interface EndringBoxProps {
 export const EndringerWrapper = ({ children, className }: EndringBoxProps) => {
   return (
     <Box
-      background="bg-subtle"
-      padding={{ xs: '2', md: '4' }}
-      borderRadius="medium"
+      background="neutral-moderate"
+      padding={{ xs: 'space-8', md: 'space-16' }}
+      borderRadius="4"
       className={className ?? ''}
     >
       {children}
@@ -29,10 +29,10 @@ interface EndringBoxProps {
 export const EndringerBox = ({ children, className }: EndringBoxProps) => {
   return (
     <Box
-      background="surface-default"
-      borderColor="border-default"
+      background="default"
+      borderColor="neutral"
       borderWidth="1"
-      borderRadius="medium"
+      borderRadius="4"
       className={className ?? ''}
     >
       {children}
@@ -48,7 +48,7 @@ interface ForslagInfoProps {
 export function ForslagInfo({ children, className }: ForslagInfoProps) {
   return (
     <EndringerWrapper className={className ?? ''}>
-      <VStack gap="4">
+      <VStack gap="space-16">
         <Heading level="2" size="medium">
           Arrangør foreslår en endring:
         </Heading>

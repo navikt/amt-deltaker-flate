@@ -3,7 +3,12 @@
 @config "../tailwind.config.ts";
 
 .deltakelse-wrapper {
-  background: var(--a-surface-subtle);
+  background: var(--ax-bg-neutral-soft);
+}
+
+/* Eksplisitt bg-white for shadow DOM */
+.bg-white {
+  background-color: #ffffff;
 }
 
 p,

@@ -1,4 +1,4 @@
-import { BodyShort, HStack, Heading, Label } from '@navikt/ds-react'
+import { BodyShort, Heading, Label } from '@navikt/ds-react'
 import { DeltakerStatusType } from '../model/deltaker'
 import { formatDateWithMonthName } from '../utils/utils'
 import { DeltakerStatusTag } from './DeltakerStatusTag'
@@ -20,7 +20,7 @@ export const FeilregistrertInfo = ({
   feilregistrertDato
 }: Props) => {
   return (
-    <div className={`bg-white py-4 px-4 md:px-12 ${className ?? ''}`}>
+    <div className={`bg-white py-4 px-4 ax-md:px-12 ${className ?? ''}`}>
       <Heading
         level="1"
         size="large"
@@ -29,10 +29,10 @@ export const FeilregistrertInfo = ({
         {tiltakOgStedTekst}
       </Heading>
 
-      <HStack gap="2" className="mt-8">
+      <div className="flex gap-2 mt-8">
         <Label>Status:</Label>
         <DeltakerStatusTag statusType={DeltakerStatusType.FEILREGISTRERT} />
-      </HStack>
+      </div>
 
       <BodyShort className="mt-4">
         Innholdet er slettet av Nav fordi arbeidsmarkedstiltaket ble registrert

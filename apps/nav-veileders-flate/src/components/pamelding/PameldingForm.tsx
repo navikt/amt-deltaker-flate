@@ -109,7 +109,7 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--a-surface-alt-3) mb-4">
+        <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--ax-bg-brand-blue-strong) mb-4">
           <FormErrorSummary ref={errorSummaryRef} />
 
           <Innhold pamelding={pamelding} isDisabled={isDisabled} />

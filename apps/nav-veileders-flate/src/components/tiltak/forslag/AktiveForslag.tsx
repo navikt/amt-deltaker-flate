@@ -15,9 +15,9 @@ export const AktiveForslag = ({ forslag, className }: Props) => {
         return (
           <AktivtForslagBox forslag={f} key={f.id}>
             <Box
-              background="surface-action-subtle"
+              background="accent-moderate"
               className="p-2"
-              borderRadius="0 0 medium medium"
+              borderRadius="0 0 4 4"
             >
               <div className="flex items-center">
                 <Heading level="3" size="xsmall">

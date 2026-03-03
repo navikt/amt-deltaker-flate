@@ -1,11 +1,4 @@
-import {
-  Alert,
-  BodyLong,
-  BodyShort,
-  HStack,
-  Heading,
-  Label
-} from '@navikt/ds-react'
+import { Alert, BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   DeltakelsesmengdeInfo,
@@ -76,22 +69,22 @@ export const DeltakerInfo = ({ className }: Props) => {
       pamelding.status.type === DeltakerStatusType.VURDERES)
 
   return (
-    <div className={`bg-white px-4 py-4 md:px-12 ${className}`}>
+    <div className={`bg-white px-12 py-4 max-ax-md:px-4 ${className}`}>
       <Heading level="1" size="large">
         {tiltakOgStedTekst}
       </Heading>
 
-      <HStack gap="2" className="mt-8" aria-atomic>
+      <div className="flex gap-2 mt-8" aria-atomic>
         <Label>Status:</Label>
         <DeltakerStatusTag statusType={pamelding.status.type} />
-      </HStack>
+      </div>
       {pamelding.status.aarsak && (
-        <HStack gap="2" className="mt-4" aria-atomic>
+        <div className="flex gap-2 mt-4" aria-atomic>
           <Label>Årsak:</Label>
           <BodyShort as="span" size="small" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
           </BodyShort>
-        </HStack>
+        </div>
       )}
 
       {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
@@ -111,14 +104,14 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       {skalViseDato && (
-        <HStack gap="2" className="mt-4">
+        <div className="flex gap-2 mt-4">
           <Label>
             {pamelding.startdato && !pamelding.sluttdato
               ? 'Oppstartsdato:'
               : 'Dato:'}
           </Label>
           <BodyShort size="small">{dato}</BodyShort>
-        </HStack>
+        </div>
       )}
 
       {visDeltMedArrangor && (

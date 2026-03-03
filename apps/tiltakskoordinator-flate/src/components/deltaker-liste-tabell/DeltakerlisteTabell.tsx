@@ -1,4 +1,4 @@
-import { Alert, BodyShort, HStack, Label, Link, Table } from '@navikt/ds-react'
+import { Alert, BodyShort, Label, Link, Table } from '@navikt/ds-react'
 import {
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -169,7 +169,7 @@ export const DeltakerlisteTabell = () => {
               <Table.Row
                 key={`${deltaker.id}`}
                 selected={!!valgteDeltakere.find((it) => it.id === deltaker.id)}
-                className={disabled ? 'text-(--a-border-subtle-hover)' : ''}
+                className={disabled ? 'text-(--ax-border-neutral)' : ''}
               >
                 {erBatchHandling && (
                   <Table.DataCell>
@@ -193,10 +193,9 @@ export const DeltakerlisteTabell = () => {
                 )}
 
                 <TableDataCell className="min-w-[16rem]">
-                  <HStack
+                  <div
                     id={`id${deltaker.id}`}
-                    gap="1"
-                    className="items-center"
+                    className="flex gap-4 items-center"
                   >
                     {disabled ? (
                       <BodyShort size="small">{navn}</BodyShort>
@@ -215,7 +214,7 @@ export const DeltakerlisteTabell = () => {
                     <BeskyttelsesmarkeringIkoner
                       beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
                     />
-                  </HStack>
+                  </div>
                 </TableDataCell>
 
                 <TableDataCell text={deltaker.navEnhet} className="min-w-40" />

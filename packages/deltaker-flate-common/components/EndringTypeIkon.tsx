@@ -34,7 +34,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <ChevronRightCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-deepblue-300)"
+          color="var(--ax-bg-brand-blue-moderate-pressed)"
         />
       )
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
@@ -42,7 +42,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <ChevronRightDoubleCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-icon-success)"
+          color="var(--ax-text-success-decoration)"
         />
       )
     case UlestHendelseType.AvbrytDeltakelse:
@@ -55,7 +55,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <MinusCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-gray-600)"
+          color="var(--ax-bg-neutral-strong)"
         />
       )
     case TiltakskoordinatorEndringsType.Avslag:
@@ -65,7 +65,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <PlusCircleFillIcon
           className={`${sizeName(size)} rotate-45`}
           aria-hidden
-          color="var(--a-orange-600)"
+          color="var(--ax-bg-warning-strong)"
         />
       )
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
@@ -74,7 +74,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <ChevronRightLastCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-gray-500)"
+          color="var(--ax-bg-neutral-moderate-pressed)"
         />
       )
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
@@ -85,7 +85,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <MenuElipsisHorizontalCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-deepblue-400)"
+          color="var(--ax-bg-brand-blue-strong)"
         />
       )
     case UlestHendelseType.InnbyggerGodkjennUtkast:
@@ -96,7 +96,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <ChevronRightCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-deepblue-300)"
+          color="var(--ax-bg-brand-blue-moderate-pressed)"
         />
       )
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
@@ -104,7 +104,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <PieChartFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-purple-500)"
+          color="var(--ax-bg-meta-purple-strong)"
         />
       )
     case UlestHendelseType.ReaktiverDeltakelse:
@@ -113,7 +113,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <CaretRightCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--a-icon-alt-2)"
+          color="var(--ax-text-meta-lime-decoration)"
         />
       )
   }

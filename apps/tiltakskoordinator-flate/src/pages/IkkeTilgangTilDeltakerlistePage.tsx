@@ -39,7 +39,7 @@ export function IkkeTilgangTilDeltakerlistePage() {
 
   return (
     <Box className="flex justify-center pt-16">
-      <div className="flex flex-col gap-4 max-w-screen-sm">
+      <div className="flex flex-col gap-4 max-w-screen-ax-sm">
         <Heading
           size="small"
           level="2"

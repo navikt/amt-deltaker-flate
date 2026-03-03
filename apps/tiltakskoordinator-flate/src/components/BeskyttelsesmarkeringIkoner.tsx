@@ -1,6 +1,6 @@
-import { HStack, Tooltip } from '@navikt/ds-react'
-import { Beskyttelsesmarkering } from '../api/data/deltakerliste'
 import { EyeSlashIcon, ShieldLockIcon } from '@navikt/aksel-icons'
+import { Tooltip } from '@navikt/ds-react'
+import { Beskyttelsesmarkering } from '../api/data/deltakerliste'
 
 interface Props {
   beskyttelsesmarkering: Beskyttelsesmarkering[]
@@ -11,11 +11,11 @@ export function BeskyttelsesmarkeringIkoner({ beskyttelsesmarkering }: Props) {
   }
 
   return (
-    <HStack>
+    <div className="flex gap-2">
       {beskyttelsesmarkering.map((b) => (
         <BeskyttelsesmarkeringIkon key={b} beskyttelsesmarkering={b} />
       ))}
-    </HStack>
+    </div>
   )
 }
 
@@ -27,7 +27,7 @@ function BeskyttelsesmarkeringIkon({
 }: BeskyttelsesmarkeringIkonProps) {
   const graderingsIkon = (title: string) => (
     <Tooltip content={title}>
-      <ShieldLockIcon className="text-icon-warning" />
+      <ShieldLockIcon className="text-ax-text-warning-decoration" />
     </Tooltip>
   )
 
@@ -41,7 +41,7 @@ function BeskyttelsesmarkeringIkon({
     case Beskyttelsesmarkering.SKJERMET:
       return (
         <Tooltip content="Skjermet">
-          <EyeSlashIcon className="text-icon-info" />
+          <EyeSlashIcon className="text-ax-text-info-decoration" />
         </Tooltip>
       )
     default:

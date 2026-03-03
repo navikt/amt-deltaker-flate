@@ -52,9 +52,9 @@ export const UlestHendelseBox = ({
         </div>
       </div>
       <Box
-        background="surface-action-subtle"
+        background="accent-moderate"
         className="p-2 flex flex-col items-end"
-        borderRadius="0 0 medium medium"
+        borderRadius="0 0 4 4"
       >
         <Button size="small" onClick={doMarkerSomLest}>
           Marker som lest

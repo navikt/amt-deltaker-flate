@@ -16,7 +16,7 @@ export const OpprettPameldingPage = () => {
       />
 
       <PameldingForm
-        className="mt-4 p-4 md:p-8 bg-white"
+        className="mt-4 p-4 ax-md:p-8 bg-white"
         pamelding={pamelding}
       />
     </div>

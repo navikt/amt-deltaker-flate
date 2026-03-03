@@ -4,7 +4,6 @@ import {
   Detail,
   Heading,
   HGrid,
-  HStack,
   Tag,
   VStack
 } from '@navikt/ds-react'
@@ -148,11 +147,10 @@ export const ForslagDetaljer = ({ forslag }: ForslagDetaljerProps) => {
   const endreDeltakelsesType = getEndreDeltakelsesType(forslag.endring)
   return (
     <HGrid columns="2rem auto" className="p-4 items-start">
-      <VStack>
-        <EndringTypeIkon type={endreDeltakelsesType} size="large" />
-      </VStack>
+      <EndringTypeIkon type={endreDeltakelsesType} size="large" />
+
       <VStack className="items-start">
-        <HStack gap="2" className="mb-2">
+        <div className="flex gap-8 mb-2">
           <Heading level="3" size="small">
             {getEndreDeltakelseTypeText(endreDeltakelsesType)}
           </Heading>
@@ -161,7 +159,7 @@ export const ForslagDetaljer = ({ forslag }: ForslagDetaljerProps) => {
               {getForslagStatusTypeText(forslag.status.type)}
             </Tag>
           )}
-        </HStack>
+        </div>
         <ForslagtypeDetaljer
           forslagEndring={forslag.endring}
           begrunnelse={forslag.begrunnelse}

@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Button, HelpText, HStack } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, HelpText } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakerStatusType,
@@ -141,7 +141,7 @@ export const PameldingFormButtons = ({
         </Alert>
       )}
 
-      <HStack gap="4">
+      <div className="flex gap-4">
         {kanDeleUtkast && (
           <div className="flex items-center">
             <Button
@@ -205,7 +205,7 @@ export const PameldingFormButtons = ({
             Forkast endring
           </Button>
         )}
-      </HStack>
+      </div>
 
       <ForkastUtkastEndringModal
         open={forkastUtkastEndringModalOpen}
