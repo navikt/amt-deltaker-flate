@@ -5,6 +5,7 @@ import {
   Vedtaksinformasjon
 } from '../model/deltaker'
 import { formatDate, formatDateWithMonthName } from '../utils/utils'
+import { ACTION_BLUE_TAG_STYLE } from '../utils/forslagUtils'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
@@ -36,7 +37,12 @@ export const UtkastHeader = ({
   return (
     <div className="mt-4 mb-4">
       {visStatusVenterPaaBruker && (
-        <Tag variant="info" size="small" className="mb-4">
+        <Tag
+          variant="outline"
+          data-color="info"
+          size="small"
+          className={`mb-4 ${ACTION_BLUE_TAG_STYLE}`}
+        >
           Utkastet er delt og venter på godkjenning
         </Tag>
       )}

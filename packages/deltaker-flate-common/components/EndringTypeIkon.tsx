@@ -30,11 +30,15 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
   switch (type) {
     case UlestHendelseType.EndreStartdato:
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
+    case UlestHendelseType.InnbyggerGodkjennUtkast:
+    case UlestHendelseType.NavGodkjennUtkast:
+    case UlestHendelseType.LeggTilOppstartsdato:
+    case TiltakskoordinatorEndringsType.TildelPlass:
       return (
         <ChevronRightCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--ax-bg-brand-blue-moderate-pressed)"
+          color="var(--ax-text-accent-decoration)"
         />
       )
     case EndreDeltakelseType.FORLENG_DELTAKELSE:
@@ -55,7 +59,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <MinusCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--ax-bg-neutral-strong)"
+          color="var(--ax-text-neutral-decoration)"
         />
       )
     case TiltakskoordinatorEndringsType.Avslag:
@@ -65,7 +69,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <PlusCircleFillIcon
           className={`${sizeName(size)} rotate-45`}
           aria-hidden
-          color="var(--ax-bg-warning-strong)"
+          color="var(--ax-text-warning-decoration)"
         />
       )
     case EndreDeltakelseType.ENDRE_SLUTTARSAK:
@@ -74,7 +78,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <ChevronRightLastCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--ax-bg-neutral-moderate-pressed)"
+          color="var(--ax-text-neutral-decoration)"
         />
       )
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
@@ -85,18 +89,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <MenuElipsisHorizontalCircleFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--ax-bg-brand-blue-strong)"
-        />
-      )
-    case UlestHendelseType.InnbyggerGodkjennUtkast:
-    case UlestHendelseType.NavGodkjennUtkast:
-    case UlestHendelseType.LeggTilOppstartsdato:
-    case TiltakskoordinatorEndringsType.TildelPlass:
-      return (
-        <ChevronRightCircleFillIcon
-          className={sizeName(size)}
-          aria-hidden
-          color="var(--ax-bg-brand-blue-moderate-pressed)"
+          color="var(--ax-text-info-decoration)"
         />
       )
     case EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE:
@@ -104,7 +97,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
         <PieChartFillIcon
           className={sizeName(size)}
           aria-hidden
-          color="var(--ax-bg-meta-purple-strong)"
+          color="var(--ax-text-meta-purple-decoration)"
         />
       )
     case UlestHendelseType.ReaktiverDeltakelse:

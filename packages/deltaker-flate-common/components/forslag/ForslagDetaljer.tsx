@@ -19,6 +19,7 @@ import {
   getForslagStatusTypeText
 } from '../../utils/displayText.ts'
 import {
+  ACTION_BLUE_TAG_STYLE,
   assertNever,
   getEndreDeltakelsesType
 } from '../../utils/forslagUtils.tsx'
@@ -155,7 +156,11 @@ export const ForslagDetaljer = ({ forslag }: ForslagDetaljerProps) => {
             {getEndreDeltakelseTypeText(endreDeltakelsesType)}
           </Heading>
           {forslag.status.type && (
-            <Tag variant="info" size="small">
+            <Tag
+              variant="outline"
+              className={ACTION_BLUE_TAG_STYLE}
+              size="small"
+            >
               {getForslagStatusTypeText(forslag.status.type)}
             </Tag>
           )}

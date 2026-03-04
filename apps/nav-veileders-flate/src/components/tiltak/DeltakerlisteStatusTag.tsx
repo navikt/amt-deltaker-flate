@@ -8,7 +8,7 @@ const getTagType = (status: DeltakerlisteStatus) => {
   if (status === DeltakerlisteStatus.AVSLUTTET) {
     return 'neutral'
   } else {
-    return 'error'
+    return 'danger'
   }
 }
 
@@ -29,7 +29,12 @@ export const DeltakerlisteStatusTag = ({
 }: DeltakerlisteStatusTagProps) => {
   if (!status || !visDeltakerlisteStatus(status)) return null
   return (
-    <Tag variant={getTagType(status)} size="small" className="mt-2">
+    <Tag
+      variant="outline"
+      data-color={getTagType(status)}
+      size="small"
+      className="mt-2"
+    >
       {getDeltakerlisteStatusText(status)}
     </Tag>
   )

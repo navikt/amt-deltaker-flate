@@ -11,7 +11,7 @@ interface EndringBoxProps {
 export const EndringerWrapper = ({ children, className }: EndringBoxProps) => {
   return (
     <Box
-      background="neutral-moderate"
+      background="sunken"
       padding={{ xs: 'space-8', md: 'space-16' }}
       borderRadius="4"
       className={className ?? ''}
@@ -29,7 +29,7 @@ interface EndringBoxProps {
 export const EndringerBox = ({ children, className }: EndringBoxProps) => {
   return (
     <Box
-      background="default"
+      background="raised"
       borderColor="neutral"
       borderWidth="1"
       borderRadius="4"
