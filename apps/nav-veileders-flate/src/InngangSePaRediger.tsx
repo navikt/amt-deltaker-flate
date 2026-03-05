@@ -1,7 +1,7 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { useFetch } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
-import { ERROR_PERSONIDENT, getPamelding } from './api/api.ts'
+import { ERROR_PERSONIDENT, getDeltaker } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
@@ -29,7 +29,7 @@ const InngangSePaRediger = () => {
     data: pamelding,
     loading,
     error
-  } = useFetch(getPamelding, deltakerId!, personident, enhetId)
+  } = useFetch(getDeltaker, deltakerId!, personident, enhetId)
 
   if (loading) {
     return (
