@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
 import { sendInnPameldingUtenGodkjenning } from '../../api/api.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
@@ -25,7 +25,7 @@ import { generateDirektePameldingRequestForm } from '../../utils/pamelding-form-
 import { MeldPaDirekteModal } from '../opprett-pamelding/MeldPaDirekteModal.tsx'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   useOldPamelding?: boolean
   disabled: boolean
   className?: string

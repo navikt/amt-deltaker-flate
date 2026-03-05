@@ -15,7 +15,7 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   generateFormDefaultValues,
@@ -31,13 +31,13 @@ import { PameldingFormButtons } from './PameldingFormButtons.tsx'
 import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   className?: string
   disabled?: boolean
   focusOnOpen?: boolean
   disableForm?: (disable: boolean) => void
   onCancelUtkast?: () => void
-  onDelEndring?: (pamelding: PameldingResponse) => void
+  onDelEndring?: (pamelding: DeltakerResponse) => void
 }
 
 export const PameldingForm = ({

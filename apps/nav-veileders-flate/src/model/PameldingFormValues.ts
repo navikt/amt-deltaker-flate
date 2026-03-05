@@ -1,7 +1,7 @@
 import { INNHOLD_TYPE_ANNET, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import {
-  PameldingResponse,
+  DeltakerResponse,
   innholdselementSchema
 } from '../api/data/pamelding.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
@@ -115,7 +115,7 @@ export const pameldingFormSchema = z
 export type PameldingFormValues = z.infer<typeof pameldingFormSchema>
 
 export const generateValgtInnholdKoder = (
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
 ): string[] => {
   const tilgjengeligInnnholdskoder =
     pamelding.deltakerliste.tilgjengeligInnhold.innhold.map(
@@ -132,7 +132,7 @@ export const generateValgtInnholdKoder = (
 }
 
 export const generateFormDefaultValues = (
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
 ): PameldingFormValues => {
   const showProsentValg = (): DeltakelsesprosentValg => {
     if (pamelding.deltakelsesprosent && pamelding.deltakelsesprosent < 100) {

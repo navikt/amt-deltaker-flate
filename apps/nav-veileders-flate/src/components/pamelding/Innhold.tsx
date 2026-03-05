@@ -12,7 +12,7 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   erInnholdPakrevd,
@@ -21,7 +21,7 @@ import {
 } from '../../model/PameldingFormValues.ts'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   isDisabled?: boolean
 }
 

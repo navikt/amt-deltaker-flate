@@ -1,7 +1,7 @@
 import { Alert, Button } from '@navikt/ds-react'
 import { usePameldingContext } from '../PameldingContext.tsx'
 import { useState } from 'react'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
 import {
   Forslag,
@@ -25,9 +25,7 @@ export const BehandleForslagKnapper = ({ forslag }: Props) => {
     setBehandleModalOpen(false)
   }
 
-  const handleEndringUtfort = (
-    oppdatertPamelding: PameldingResponse | null
-  ) => {
+  const handleEndringUtfort = (oppdatertPamelding: DeltakerResponse | null) => {
     handleCloseBehandleModal()
     setAvvisModalOpen(false)
     if (oppdatertPamelding) {

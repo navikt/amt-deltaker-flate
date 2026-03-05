@@ -1,7 +1,7 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 import {
   Forslag,
@@ -41,9 +41,7 @@ export const EndreDeltakelseKnapp = () => {
     endreDeltakelseRef?.current?.focus()
   }
 
-  const handleEndringUtført = (
-    oppdatertPamelding: PameldingResponse | null
-  ) => {
+  const handleEndringUtført = (oppdatertPamelding: DeltakerResponse | null) => {
     handleCloseModal()
     if (oppdatertPamelding) {
       setPamelding(oppdatertPamelding)

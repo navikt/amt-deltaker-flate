@@ -8,7 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
-import { PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/pamelding.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   finnVarighetValg,
@@ -26,7 +26,7 @@ import {
 const startdato = dayjs().subtract(1, 'year') // '2023-10-28'
 const sluttdato = dayjs().add(1, 'year')
 
-const pamelding: PameldingResponse = {
+const pamelding: DeltakerResponse = {
   deltakerId: uuidv4(),
   fornavn: 'Navn',
   mellomnavn: null,

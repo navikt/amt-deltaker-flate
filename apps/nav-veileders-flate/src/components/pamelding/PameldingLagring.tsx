@@ -9,13 +9,13 @@ import { useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
 import { oppdaterKladd } from '../../api/api.ts'
 import { KladdRequest } from '../../api/data/kladd-request.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { debounce } from '../../utils/debounce.ts'
 import { generateInnholdFromResponse } from '../../utils/pamelding-form-utils.ts'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
 }
 
 export const PameldingLagring = ({ pamelding }: Props) => {

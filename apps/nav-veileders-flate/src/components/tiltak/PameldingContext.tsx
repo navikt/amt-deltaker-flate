@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { PameldingResponse } from '../../api/data/pamelding'
+import { DeltakerResponse } from '../../api/data/pamelding'
 
 export interface PameldingContextProps {
-  pamelding: PameldingResponse
-  setPamelding: React.Dispatch<React.SetStateAction<PameldingResponse>>
+  pamelding: DeltakerResponse
+  setPamelding: React.Dispatch<React.SetStateAction<DeltakerResponse>>
 }
 
 const PameldingContext = createContext<PameldingContextProps | undefined>(
@@ -26,7 +26,7 @@ const PameldingContextProvider = ({
   initialPamelding,
   children
 }: {
-  initialPamelding: PameldingResponse
+  initialPamelding: DeltakerResponse
   children: React.ReactNode
 }) => {
   const [pamelding, setPamelding] = useState(initialPamelding)

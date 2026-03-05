@@ -1,5 +1,12 @@
 import { z } from 'zod'
-import { innholdDtoSchema } from './send-inn-pamelding-request.ts'
+import { innholdDtoSchema } from './opprett-utkast-request.ts'
+
+export const opprettKladdRequestSchema = z.object({
+  deltakerlisteId: z.uuid(),
+  personident: z.string()
+})
+
+export type OpprettKladdRequest = z.infer<typeof opprettKladdRequestSchema>
 
 export const kladdSchema = z.object({
   innhold: z.array(innholdDtoSchema),

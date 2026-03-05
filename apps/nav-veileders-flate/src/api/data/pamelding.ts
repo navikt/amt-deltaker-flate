@@ -68,6 +68,5 @@ export const pameldingSchema = z.object({
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
-export type PameldingResponse = z.infer<typeof pameldingSchema>
+export type DeltakerResponse = z.infer<typeof pameldingSchema>
 export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
-export type Innholdselement = z.infer<typeof innholdselementSchema>

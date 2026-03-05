@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse, endreAvslutning } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import {
   avslutningsBeskrivelseTekstMapper,
   Avslutningstype,
@@ -43,12 +43,12 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   endreDeltakelseType: EndreDeltakelseType
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const AvsluttDeltakelseModal = ({

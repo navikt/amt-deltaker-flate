@@ -18,7 +18,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
 import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/pamelding'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder
@@ -32,10 +32,10 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreInnholdModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const EndreInnholdModal = ({

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { innholdDtoSchema } from './send-inn-pamelding-request.ts'
+import { innholdDtoSchema } from './opprett-utkast-request.ts'
 
 export const sendInnPameldingUtenGodkjenningRequestSchema = z.object({
   deltakerlisteId: z.uuid(),

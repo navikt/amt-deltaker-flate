@@ -1,14 +1,14 @@
 import { Alert, Textarea } from '@navikt/ds-react'
 import { erOpplaringstiltak, fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   isDisabled?: boolean
 }
 

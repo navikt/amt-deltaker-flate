@@ -10,7 +10,7 @@ import {
 } from './varighet.tsx'
 import dayjs from 'dayjs'
 import { useState } from 'react'
-import { PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/pamelding.ts'
 import { dateValidation } from '../components/tiltak/VarighetField.tsx'
 import { useSluttdato } from './use-sluttdato.ts'
 
@@ -19,7 +19,7 @@ const createDeltaker = (
   sluttdato?: string,
   maxVarighetMnd?: number,
   softMaxVarighetMnd?: number
-): PameldingResponse => {
+): DeltakerResponse => {
   return {
     startdato: startdato,
     sluttdato: sluttdato,
@@ -30,7 +30,7 @@ const createDeltaker = (
     softMaxVarighet: dayjs
       .duration(softMaxVarighetMnd ?? 12, 'month')
       .asMilliseconds()
-  } as unknown as PameldingResponse
+  } as unknown as DeltakerResponse
 }
 
 const deltakerUtenDatoer = createDeltaker()
@@ -49,7 +49,7 @@ describe('useSluttdato - deltakerUtenDatoer', () => {
 })
 
 const useCustomVarighetHook = (
-  deltaker: PameldingResponse,
+  deltaker: DeltakerResponse,
   initVarighet: VarighetValg | undefined,
   initStartdato?: Date
 ) => {

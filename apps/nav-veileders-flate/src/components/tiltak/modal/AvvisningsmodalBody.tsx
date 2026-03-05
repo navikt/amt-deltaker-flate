@@ -8,14 +8,14 @@ import {
 } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
 import { avvisForslag } from '../../../api/api'
-import { PameldingResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/pamelding'
 import { useAppContext } from '../../../AppContext'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 
 interface Props {
-  onSend: (oppdatertPamelding: PameldingResponse | null) => void
+  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
   forslag: Forslag
   children?: ReactNode
 }

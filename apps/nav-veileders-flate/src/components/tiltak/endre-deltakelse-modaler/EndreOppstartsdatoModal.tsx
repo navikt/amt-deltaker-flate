@@ -20,7 +20,7 @@ import {
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import {
   kanEndreOppstartsdato,
@@ -44,11 +44,11 @@ import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreOppstartsdatoModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const EndreOppstartsdatoModal = ({
@@ -299,7 +299,7 @@ function isStartdatoForslag(
   return endring.type === ForslagEndringType.Startdato
 }
 
-function getDatoer(deltaker: PameldingResponse, forslag: Forslag | null) {
+function getDatoer(deltaker: DeltakerResponse, forslag: Forslag | null) {
   if (forslag === null) {
     return {
       startdato: getDateFromString(deltaker.startdato),
