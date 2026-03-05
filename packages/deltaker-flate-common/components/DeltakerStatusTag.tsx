@@ -51,7 +51,7 @@ export const DeltakerStatusTag = ({
 const getSpesialTagTypeClass = (status: DeltakerStatusType) => {
   switch (status) {
     case DeltakerStatusType.DELTAR:
-      return 'bg-(--ax-bg-raised)'
+      return 'bg-(--ax-bg-default)'
     case DeltakerStatusType.UTKAST_TIL_PAMELDING:
       return ACTION_BLUE_TAG_STYLE
     default:
