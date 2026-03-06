@@ -11,7 +11,7 @@ import {
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { createPamelding, getPamelding } from './api/api.ts'
+import { opprettKladd, getDeltaker } from './api/api.ts'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
@@ -35,14 +35,14 @@ const InngangPrEnv = () => {
     state: stateCreate,
     error: errorCreate,
     doFetch: doCreatePamelding
-  } = useDeferredFetch(createPamelding)
+  } = useDeferredFetch(opprettKladd)
 
   const {
     data: pamelding,
     state: stateHent,
     error: errorHent,
     doFetch: doFetchPamelding
-  } = useDeferredFetch(getPamelding)
+  } = useDeferredFetch(getDeltaker)
 
   return (
     <>

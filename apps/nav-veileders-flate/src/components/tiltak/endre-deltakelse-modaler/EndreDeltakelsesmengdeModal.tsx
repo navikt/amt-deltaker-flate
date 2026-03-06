@@ -11,7 +11,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import {
   getDagerPerUkeError,
   getProsentError
@@ -28,11 +28,11 @@ import {
 import dayjs from 'dayjs'
 
 interface EndreDeltakelsesmengdeModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const EndreDeltakelsesmengdeModal = ({
@@ -227,7 +227,7 @@ function isDeltakelsesmengde(
   return endring.type === ForslagEndringType.Deltakelsesmengde
 }
 
-function getMengde(deltaker: PameldingResponse, forslag: Forslag | null) {
+function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
   const defaultGyldigFra = dayjs().isAfter(deltaker.sluttdato)
     ? dayjs(deltaker.sluttdato).toDate()
     : dayjs().toDate()

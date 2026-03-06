@@ -7,16 +7,16 @@ import {
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface ReaktiverDeltakelseModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const ReaktiverDeltakelseModal = ({

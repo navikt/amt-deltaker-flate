@@ -5,7 +5,7 @@ export const innholdDtoSchema = z.object({
   beskrivelse: z.string().nullable() //denne er i praksis satt hvis innholdskode=ANNET
 })
 
-export const sendInnPameldingRequestSchema = z.object({
+export const utkastRequestSchema = z.object({
   deltakerlisteId: z.uuid(),
   innhold: z.array(innholdDtoSchema),
   bakgrunnsinformasjon: z.string().optional(),
@@ -14,6 +14,4 @@ export const sendInnPameldingRequestSchema = z.object({
 })
 
 export type InnholdDto = z.infer<typeof innholdDtoSchema>
-export type SendInnPameldingRequest = z.infer<
-  typeof sendInnPameldingRequestSchema
->
+export type UtkastRequest = z.infer<typeof utkastRequestSchema>

@@ -20,10 +20,10 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
-import { pameldingRequestSchema } from '../api/data/pamelding-request.ts'
-import { sendInnPameldingRequestSchema } from '../api/data/send-inn-pamelding-request.ts'
+import { utkastRequestSchema } from '../api/data/utkast-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
+import { opprettKladdRequestSchema } from '../api/data/kladd-request.ts'
 
 const handler = new MockHandler()
 
@@ -63,16 +63,16 @@ export const worker = setupWorker(
       return response
     }
   ),
-  http.post('/amt-deltaker-bff/pamelding', async ({ request }) => {
+  http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
     await delay(1000)
     const response = await request
       .json()
-      .then((json) => pameldingRequestSchema.parse(json))
+      .then((json) => opprettKladdRequestSchema.parse(json))
       .then((body) => handler.createPamelding(body.deltakerlisteId))
 
     return response
   }),
-  http.delete('/amt-deltaker-bff/pamelding/:deltakerId', async ({ params }) => {
+  http.delete('/amt-deltaker-bff/kladd/:deltakerId', async ({ params }) => {
     await delay(1000)
     const { deltakerId } = params
     return handler.deletePamelding(deltakerId as string)
@@ -82,7 +82,7 @@ export const worker = setupWorker(
 
     const response = await request
       .json()
-      .then((json) => sendInnPameldingRequestSchema.parse(json))
+      .then((json) => utkastRequestSchema.parse(json))
       .then((body) => handler.sendInnPamelding(body))
 
     return response
@@ -252,7 +252,7 @@ export const worker = setupWorker(
       status: 200
     })
   }),
-  http.post('/amt-deltaker-bff/pamelding/:deltakerId/kladd', async () => {
+  http.post('/amt-deltaker-bff/kladd/:deltakerId', async () => {
     await delay(1000)
 
     return new HttpResponse(null, {

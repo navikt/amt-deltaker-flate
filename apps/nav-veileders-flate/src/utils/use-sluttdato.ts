@@ -2,7 +2,7 @@ import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { getDateFromString } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { PameldingResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/pamelding'
 import {
   DATO_FØR_SLUTTDATO_FEILMELDING,
   SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
@@ -13,7 +13,7 @@ import {
 } from './varighet'
 
 interface UseSluttdatoOpts {
-  deltaker: PameldingResponse
+  deltaker: DeltakerResponse
   valgtVarighet?: VarighetValg
   defaultAnnetDato?: Date
   startdato?: Date
@@ -115,7 +115,7 @@ export function useSluttdato({
 }
 
 interface SluttdatoInputOpts {
-  deltaker: PameldingResponse
+  deltaker: DeltakerResponse
   onChange?: (date: Date | undefined) => void
   defaultDato: Date | undefined
   startdato?: Date

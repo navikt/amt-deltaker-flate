@@ -36,8 +36,8 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../api/data/pamelding.ts'
-import { SendInnPameldingRequest } from '../api/data/send-inn-pamelding-request.ts'
+import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { UtkastRequest } from '../api/data/utkast-request.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -51,7 +51,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 }
 
 export class MockHandler {
-  pamelding: PameldingResponse | null = null
+  pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
   tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -62,7 +62,7 @@ export class MockHandler {
     sluttdato?: Date,
     maxVarighetMnd?: number,
     softMaxVarighetMnd?: number
-  ): PameldingResponse {
+  ): DeltakerResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
 
@@ -318,7 +318,7 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(request: SendInnPameldingRequest) {
+  sendInnPamelding(request: UtkastRequest) {
     if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
 
     this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null

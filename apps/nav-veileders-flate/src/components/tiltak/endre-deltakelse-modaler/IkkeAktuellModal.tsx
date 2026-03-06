@@ -11,18 +11,18 @@ import {
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { FEILMELDING_15_DAGER_SIDEN } from '../../../utils/displayText.ts'
 import dayjs from 'dayjs'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface IkkeAktuellModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const IkkeAktuellModal = ({
@@ -109,7 +109,7 @@ export const IkkeAktuellModal = ({
   )
 }
 
-const harDeltattFemtenDagerEllerMer = (pamelding: PameldingResponse) => {
+const harDeltattFemtenDagerEllerMer = (pamelding: DeltakerResponse) => {
   const statusdato = pamelding.status.gyldigFra
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')

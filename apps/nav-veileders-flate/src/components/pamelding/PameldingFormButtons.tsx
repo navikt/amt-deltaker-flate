@@ -8,8 +8,8 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { deletePamelding, sendInnPamelding } from '../../api/api.ts'
-import { PameldingResponse } from '../../api/data/pamelding.ts'
+import { deleteKladd, oppdaterUtkast } from '../../api/api.ts'
+import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import {
   DELTAKELSESOVERSIKT_LINK,
@@ -24,11 +24,11 @@ import { ForkastUtkastEndringModal } from '../opprett-pamelding/ForkastUtkastEnd
 import { SlettKladdModal } from '../opprett-pamelding/SlettKladdModal.tsx'
 
 interface Props {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   disabled: boolean
   disableForm: (disable: boolean) => void
   onCancelUtkast?: () => void
-  onDelEndring?: (pamelding: PameldingResponse) => void
+  onDelEndring?: (pamelding: DeltakerResponse) => void
   onSubmitError?: () => void
 }
 
@@ -82,14 +82,14 @@ export const PameldingFormButtons = ({
     error: sendSomForslagError,
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(
-    sendInnPamelding,
+    oppdaterUtkast,
     erUtkast ? undefined : returnToFrontpageWithSuccessMessage
   )
   const {
     state: slettKladdState,
     error: slettKladdError,
     doFetch: doFetchSlettKladd
-  } = useDeferredFetch(deletePamelding, returnToFrontpage)
+  } = useDeferredFetch(deleteKladd, returnToFrontpage)
 
   const delUtkast = (newFormData: PameldingFormValues) => {
     doFetchSendSomForslag(

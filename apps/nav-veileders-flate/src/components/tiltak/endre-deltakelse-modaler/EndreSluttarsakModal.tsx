@@ -11,17 +11,17 @@ import {
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseSluttarsak } from '../../../api/api.ts'
 import { EndreSluttarsakRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreSluttarsakModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 const sluttarsakSporsmalTekst = (statustype: DeltakerStatusType) => {

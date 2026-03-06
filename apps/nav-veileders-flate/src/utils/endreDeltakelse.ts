@@ -8,7 +8,7 @@ import {
   harLopendeOppstart,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { PameldingResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/pamelding'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
@@ -16,55 +16,55 @@ import {
 } from './statusutils'
 import { dateStrToNullableDate } from './utils'
 
-const ikkeAktuell = (pamelding: PameldingResponse) =>
+const ikkeAktuell = (pamelding: DeltakerResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const harSluttetEllerFullfort = (pamelding: PameldingResponse) =>
+const harSluttetEllerFullfort = (pamelding: DeltakerResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const venterDeltarEllerAvsluttet = (pamelding: PameldingResponse) =>
+const venterDeltarEllerAvsluttet = (pamelding: DeltakerResponse) =>
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
   deltakerHarAvsluttendeStatus(pamelding.status.type)
 
 const skalViseForlengKnapp = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   sluttdato: Date | null
 ) =>
   sluttdato &&
   (pamelding.status.type === DeltakerStatusType.DELTAR ||
     harSluttetEllerFullfort(pamelding))
 
-const skalViseEndreInnholdKnapp = (pamelding: PameldingResponse) =>
+const skalViseEndreInnholdKnapp = (pamelding: DeltakerResponse) =>
   harInnhold(pamelding.deltakerliste.tiltakskode)
 
-const skalViseEndreBakgrunnsinfoKnapp = (pamelding: PameldingResponse) =>
+const skalViseEndreBakgrunnsinfoKnapp = (pamelding: DeltakerResponse) =>
   venterDeltarEllerAvsluttet(pamelding) &&
   harBakgrunnsinfo(pamelding.deltakerliste.tiltakskode)
 
-const skalViseEndreSluttarsakKnapp = (pamelding: PameldingResponse) =>
+const skalViseEndreSluttarsakKnapp = (pamelding: DeltakerResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const skalViseEndreDeltakelsesmengde = (pamelding: PameldingResponse) =>
+const skalViseEndreDeltakelsesmengde = (pamelding: DeltakerResponse) =>
   (pamelding.deltakerliste.tiltakskode ===
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
   venterDeltarEllerAvsluttet(pamelding)
 
-export const kanEndreOppstartsdato = (pamelding: PameldingResponse) =>
+export const kanEndreOppstartsdato = (pamelding: DeltakerResponse) =>
   deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
   harSluttetEllerFullfort(pamelding)
 
-const skalViseFjernOppstartsdato = (pamelding: PameldingResponse) =>
+const skalViseFjernOppstartsdato = (pamelding: DeltakerResponse) =>
   harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
   pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
   pamelding.startdato &&
   pamelding.startdato !== EMDASH
 
-const skalViseEndreAvslutning = (pamelding: PameldingResponse) =>
+const skalViseEndreAvslutning = (pamelding: DeltakerResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const erDeltakelseLaast = (pamelding: PameldingResponse): boolean => {
+const erDeltakelseLaast = (pamelding: DeltakerResponse): boolean => {
   if (!pamelding.kanEndres) {
     return true
   }
@@ -99,7 +99,7 @@ const getNyesteDato = (datoer: (Date | null)[]) => {
   )
 }
 
-export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
+export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
   const deltakelseErLaast = erDeltakelseLaast(pamelding)
@@ -148,7 +148,7 @@ export const getEndreDeltakelsesValg = (pamelding: PameldingResponse) => {
   return valg
 }
 
-export const validerDeltakerKanEndres = (deltaker: PameldingResponse) => {
+export const validerDeltakerKanEndres = (deltaker: DeltakerResponse) => {
   if (deltaker.status.type === DeltakerStatusType.FEILREGISTRERT) {
     throw new Error(
       'Deltakeren er feilregistrert, og kan derfor ikke redigeres.'

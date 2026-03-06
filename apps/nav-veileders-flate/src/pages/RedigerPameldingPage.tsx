@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext.tsx'
 import { avbrytUtkast } from '../api/api.ts'
-import { PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/pamelding.ts'
 import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
@@ -47,7 +47,7 @@ export const RedigerPameldingPage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK)
   }
 
-  const handleDelEndring = (pamelding: PameldingResponse) => {
+  const handleDelEndring = (pamelding: DeltakerResponse) => {
     setPamelding(pamelding)
     setRedigerUtkast(false)
     setIsDisabled(false)

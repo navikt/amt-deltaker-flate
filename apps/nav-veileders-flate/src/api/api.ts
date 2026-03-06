@@ -19,27 +19,27 @@ import {
   IkkeAktuellRequest,
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
-import { KladdRequest } from './data/kladd-request.ts'
-import { DeltakerRequest, PameldingRequest } from './data/pamelding-request.ts'
-import { PameldingResponse, pameldingSchema } from './data/pamelding.ts'
-import { SendInnPameldingRequest } from './data/send-inn-pamelding-request.ts'
+import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
+import { DeltakerRequest } from './data/deltaker-request.ts'
+import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
+import { UtkastRequest } from './data/utkast-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
 export const ERROR_PERSONIDENT =
   'Deltakelsen kunen ikke hentes fordi den tilhører en annen person enn den som er i kontekst.'
 
-export const createPamelding = async (
+export const opprettKladd = async (
   personident: string,
   deltakerlisteId: string,
   enhetId: string
-): Promise<PameldingResponse> => {
-  const request: PameldingRequest = {
+): Promise<DeltakerResponse> => {
+  const request: OpprettKladdRequest = {
     personident: personident,
     deltakerlisteId: deltakerlisteId
   }
 
-  return fetch(`${API_URL}/pamelding`, {
+  return fetch(`${API_URL}/kladd`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -72,11 +72,24 @@ export const createPamelding = async (
     .then(parsePamelding)
 }
 
-export const getPamelding = async (
+export const deleteKladd = (deltakerId: string): Promise<number> => {
+  return fetch(`${API_URL}/kladd/${deltakerId}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  }).then((response) => {
+    if (response.status !== 200) {
+      const message = 'Kladd kunne ikke slettes.'
+      handleError(message, deltakerId, response.status)
+    }
+    return response.status
+  })
+}
+
+export const getDeltaker = async (
   deltakerId: string,
   personident: string,
   enhetId: string
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   const request: DeltakerRequest = {
     personident: personident
   }
@@ -105,24 +118,11 @@ export const getPamelding = async (
     .then(parsePamelding)
 }
 
-export const deletePamelding = (deltakerId: string): Promise<number> => {
-  return fetch(`${API_URL}/pamelding/${deltakerId}`, {
-    method: 'DELETE',
-    credentials: 'include'
-  }).then((response) => {
-    if (response.status !== 200) {
-      const message = 'Kladd kunne ikke slettes.'
-      handleError(message, deltakerId, response.status)
-    }
-    return response.status
-  })
-}
-
-export const sendInnPamelding = async (
+export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,
-  request: SendInnPameldingRequest
-): Promise<PameldingResponse> => {
+  request: UtkastRequest
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
@@ -170,7 +170,7 @@ export const endreDeltakelseIkkeAktuell = (
   deltakerId: string,
   enhetId: string,
   request: IkkeAktuellRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/ikke-aktuell`, {
     method: 'POST',
     credentials: 'include',
@@ -195,7 +195,7 @@ export const endreDeltakelseReaktiver = (
   deltakerId: string,
   enhetId: string,
   request: ReaktiverDeltakelseRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/reaktiver`, {
     method: 'POST',
     credentials: 'include',
@@ -227,7 +227,7 @@ export const endreDeltakelseForleng = (
   deltakerId: string,
   enhetId: string,
   request: ForlengDeltakelseRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/forleng`, {
     method: 'POST',
     credentials: 'include',
@@ -252,7 +252,7 @@ export const endreDeltakelseFjernOppstartsdato = (
   deltakerId: string,
   enhetId: string,
   request: FjernOppstartsdatoRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/fjern-oppstartsdato`, {
     method: 'POST',
     credentials: 'include',
@@ -277,7 +277,7 @@ export const endreDeltakelseStartdato = (
   deltakerId: string,
   enhetId: string,
   request: EndreStartdatoRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/startdato`, {
     method: 'POST',
     credentials: 'include',
@@ -302,7 +302,7 @@ export const endreDeltakelseSluttarsak = (
   deltakerId: string,
   enhetId: string,
   request: EndreSluttarsakRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/sluttarsak`, {
     method: 'POST',
     credentials: 'include',
@@ -327,7 +327,7 @@ export const avsluttDeltakelse = (
   deltakerId: string,
   enhetId: string,
   request: AvsluttDeltakelseRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/avslutt`, {
     method: 'POST',
     credentials: 'include',
@@ -352,7 +352,7 @@ export const endreAvslutning = (
   deltakerId: string,
   enhetId: string,
   request: EndreAvslutningRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/endre-avslutning`, {
     method: 'POST',
     credentials: 'include',
@@ -377,7 +377,7 @@ export const endreDeltakelseBakgrunnsinfo = (
   deltakerId: string,
   enhetId: string,
   request: EndreBakgrunnsinfoRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/bakgrunnsinformasjon`, {
     method: 'POST',
     credentials: 'include',
@@ -402,7 +402,7 @@ export const endreDeltakelseInnhold = (
   deltakerId: string,
   enhetId: string,
   request: EndreInnholdRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/innhold`, {
     method: 'POST',
     credentials: 'include',
@@ -427,7 +427,7 @@ export const endreDeltakelsesmengde = (
   deltakerId: string,
   enhetId: string,
   request: EndreDeltakelsesmengdeRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/deltakelsesmengde`, {
     method: 'POST',
     credentials: 'include',
@@ -452,7 +452,7 @@ export const avvisForslag = (
   forslagId: string,
   enhetId: string,
   request: AvvisForslagRequest
-): Promise<PameldingResponse> => {
+): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/forslag/${forslagId}/avvis`, {
     method: 'POST',
     credentials: 'include',
@@ -502,7 +502,7 @@ export const oppdaterKladd = async (
   enhetId: string,
   request: KladdRequest
 ): Promise<number> => {
-  return fetch(`${API_URL}/pamelding/${deltakerId}/kladd`, {
+  return fetch(`${API_URL}/kladd/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -551,7 +551,7 @@ export const getHistorikk = async (
     })
 }
 
-const parsePamelding = (json: string): PameldingResponse => {
+const parsePamelding = (json: string): DeltakerResponse => {
   try {
     return pameldingSchema.parse(json)
   } catch (error) {

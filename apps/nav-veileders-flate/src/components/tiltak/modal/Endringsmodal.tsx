@@ -9,7 +9,7 @@ import {
 } from 'deltaker-flate-common'
 import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
-import { PameldingResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/pamelding'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
@@ -23,10 +23,10 @@ export type EndringsmodalRequest<T extends EndringRequest> = {
 interface Props<T extends EndringRequest> {
   open: boolean
   endringstype: EndreDeltakelseType
-  deltaker: PameldingResponse
+  deltaker: DeltakerResponse
   onClose: () => void
-  onSend: (oppdatertPamelding: PameldingResponse | null) => void
-  apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
+  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
   children: ReactNode
@@ -68,11 +68,11 @@ export function Endringsmodal<T extends EndringRequest>({
 }
 
 interface EndrinsmodalBodyProps<T extends EndringRequest> {
-  onSend: (oppdatertPamelding: PameldingResponse | null) => void
-  apiFunction: ApiFunction<PameldingResponse | null, [string, string, T]>
+  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
-  deltaker: PameldingResponse
+  deltaker: DeltakerResponse
   endringstype: EndreDeltakelseType
   children: ReactNode
 }

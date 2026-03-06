@@ -1,4 +1,4 @@
-import { PameldingResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/pamelding.ts'
 
 const hvisForslagTekst =
   '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.'
@@ -18,11 +18,11 @@ export const getFeilmeldingIngenEndring = (harForslag: boolean) => {
 export const FEILMELDING_15_DAGER_SIDEN =
   'Det er mer enn 15 dager siden statusen ble “Deltar”, og du kan ikke lenger lagre denne endringen. Du må derfor avvise forslaget.'
 
-export const getDeltakerNavn = (pamelding: PameldingResponse) => {
+export const getDeltakerNavn = (pamelding: DeltakerResponse) => {
   return `${pamelding.fornavn} ${pamelding.mellomnavn ? pamelding.mellomnavn + ' ' : ''}${pamelding.etternavn}`
 }
 
-export const getEndrePameldingTekst = (deltaker: PameldingResponse) => {
+export const getEndrePameldingTekst = (deltaker: DeltakerResponse) => {
   return deltaker.digitalBruker
     ? 'Bruker får beskjed på nav.no og kan se innholdet i begrunnelsen.'
     : 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet.'

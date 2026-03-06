@@ -5,7 +5,7 @@ import {
   ForslagEndringType,
   getDateFromString
 } from 'deltaker-flate-common'
-import { PameldingResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/pamelding'
 
 export enum HarDeltattValg {
   JA = 'JA',
@@ -34,7 +34,7 @@ export const avslutningsBeskrivelseTekstMapper = (
 }
 
 export function getSluttdato(
-  deltaker: PameldingResponse,
+  deltaker: DeltakerResponse,
   forslag: Forslag | null
 ) {
   if (forslag === null) {
@@ -54,7 +54,7 @@ export function getSluttdato(
 }
 
 export const harDeltattMindreEnn15Dager = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   forslag: Forslag | null
 ) => {
   if (getHarDeltatt(forslag) !== null) {

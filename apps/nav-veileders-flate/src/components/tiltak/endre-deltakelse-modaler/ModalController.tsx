@@ -1,4 +1,4 @@
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
@@ -13,11 +13,11 @@ import { FjernOppstartsdatoModal } from './FjernOppstartdatoModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   forslag: Forslag | null
   endringsType: EndreDeltakelseType | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 export const ModalController = (props: ModalControllerProps) => {

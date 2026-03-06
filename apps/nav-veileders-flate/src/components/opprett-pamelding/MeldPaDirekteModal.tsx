@@ -4,12 +4,12 @@ import {
   skalMeldePaaDirekte
 } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { PameldingResponse } from '../../api/data/pamelding'
+import { DeltakerResponse } from '../../api/data/pamelding'
 import { getDeltakerNavn } from '../../utils/displayText'
 import { ModalFooter } from '../ModalFooter'
 
 export interface MeldPaDirekteModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   open: boolean
   onConfirm: () => void
   onCancel: () => void

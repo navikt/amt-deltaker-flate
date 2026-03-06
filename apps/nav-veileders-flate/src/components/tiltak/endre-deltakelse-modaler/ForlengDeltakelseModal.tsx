@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
-import { PameldingResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import {
@@ -34,11 +34,11 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface ForlengDeltakelseModalProps {
-  pamelding: PameldingResponse
+  pamelding: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: PameldingResponse | null) => void
+  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
 const getSluttdatoFraForslag = (forslag: Forslag | null) => {

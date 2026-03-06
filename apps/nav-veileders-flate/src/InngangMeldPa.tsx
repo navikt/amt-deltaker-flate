@@ -2,7 +2,7 @@ import { Loader } from '@navikt/ds-react'
 import { useFetch } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useAppContext } from './AppContext.tsx'
-import { createPamelding } from './api/api.ts'
+import { opprettKladd } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
@@ -21,7 +21,7 @@ const InngangMeldPa = () => {
     data: nyPamelding,
     loading,
     error
-  } = useFetch(createPamelding, personident, deltakerlisteId, enhetId)
+  } = useFetch(opprettKladd, personident, deltakerlisteId, enhetId)
 
   if (loading) {
     return (

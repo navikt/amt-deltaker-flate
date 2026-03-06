@@ -5,7 +5,7 @@ import {
   isValidDate,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { PameldingResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/pamelding'
 
 export enum VarighetValg {
   ANNET = 'ANNET',
@@ -212,7 +212,7 @@ export const kalkulerSluttdato = (
  * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
  */
 export const getMaxVarighetDato = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   nyStartdato?: Date
 ) => {
   if (!pamelding.maxVarighet) {
@@ -305,7 +305,7 @@ export const DATO_FØR_SLUTTDATO_FEILMELDING =
  * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
  */
 export const getSisteGyldigeSluttDato = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   nyStartdato?: Date
 ) => {
   const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
@@ -323,7 +323,7 @@ export const getSisteGyldigeSluttDato = (
 }
 
 export const getSkalBekrefteVarighet = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   nySluttDato?: Date | null,
   nyStartdato?: Date | null
 ) => {
@@ -360,7 +360,7 @@ export const getSkalBekrefteVarighet = (
 }
 
 export const getSluttDatoFeilmelding = (
-  pamelding: PameldingResponse,
+  pamelding: DeltakerResponse,
   nySluttDato: Date,
   nyStartdato?: Date,
   erForleng?: boolean
