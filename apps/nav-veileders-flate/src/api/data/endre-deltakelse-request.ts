@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
-import { innholdDtoSchema } from './opprett-utkast-request.ts'
+import { innholdDtoSchema } from './utkast-request.ts'
 
 export const aarsakSchema = z.object({
   type: z.enum(DeltakerStatusAarsakType),

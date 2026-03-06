@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { innholdDtoSchema } from './opprett-utkast-request.ts'
+import { innholdDtoSchema } from './utkast-request.ts'
 
 export const opprettKladdRequestSchema = z.object({
   deltakerlisteId: z.uuid(),

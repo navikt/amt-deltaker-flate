@@ -20,7 +20,7 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
-import { opprettUtkastRequestSchema } from '../api/data/opprett-utkast-request.ts'
+import { utkastRequestSchema } from '../api/data/utkast-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
 import { opprettKladdRequestSchema } from '../api/data/kladd-request.ts'
@@ -82,7 +82,7 @@ export const worker = setupWorker(
 
     const response = await request
       .json()
-      .then((json) => opprettUtkastRequestSchema.parse(json))
+      .then((json) => utkastRequestSchema.parse(json))
       .then((body) => handler.sendInnPamelding(body))
 
     return response

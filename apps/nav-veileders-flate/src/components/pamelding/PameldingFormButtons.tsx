@@ -8,7 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { deleteKladd, opprettUtkast } from '../../api/api.ts'
+import { deleteKladd, oppdaterUtkast } from '../../api/api.ts'
 import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import {
@@ -82,7 +82,7 @@ export const PameldingFormButtons = ({
     error: sendSomForslagError,
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(
-    opprettUtkast,
+    oppdaterUtkast,
     erUtkast ? undefined : returnToFrontpageWithSuccessMessage
   )
   const {

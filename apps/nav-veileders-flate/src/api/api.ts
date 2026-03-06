@@ -22,7 +22,7 @@ import {
 import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
 import { DeltakerRequest } from './data/deltaker-request.ts'
 import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
-import { OpprettUtkastRequest } from './data/opprett-utkast-request.ts'
+import { UtkastRequest } from './data/utkast-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
 
 const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
@@ -118,10 +118,10 @@ export const getDeltaker = async (
     .then(parsePamelding)
 }
 
-export const opprettUtkast = async (
+export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,
-  request: OpprettUtkastRequest
+  request: UtkastRequest
 ): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'POST',

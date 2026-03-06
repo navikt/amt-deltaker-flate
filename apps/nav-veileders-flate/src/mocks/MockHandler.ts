@@ -37,7 +37,7 @@ import {
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { OpprettUtkastRequest } from '../api/data/opprett-utkast-request.ts'
+import { UtkastRequest } from '../api/data/utkast-request.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -318,7 +318,7 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(request: OpprettUtkastRequest) {
+  sendInnPamelding(request: UtkastRequest) {
     if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
 
     this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null

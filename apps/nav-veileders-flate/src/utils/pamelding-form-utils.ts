@@ -5,10 +5,7 @@ import {
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import {
-  InnholdDto,
-  OpprettUtkastRequest
-} from '../api/data/opprett-utkast-request.ts'
+import { InnholdDto, UtkastRequest } from '../api/data/utkast-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
@@ -69,7 +66,7 @@ const getDeltakerProsent = (
 export const generatePameldingRequestFromForm = (
   pamelding: DeltakerResponse,
   data: PameldingFormValues | undefined
-): OpprettUtkastRequest => {
+): UtkastRequest => {
   if (!data) {
     throw new Error('data should not be undefined')
   }
