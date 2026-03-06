@@ -135,7 +135,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   <CheckmarkCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    color="var(--a-icon-success)"
+                    color="var(--ax-text-success-decoration)"
                     aria-hidden
                   />
                   Tildel plass
@@ -154,7 +154,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                   <MenuElipsisHorizontalCircleIcon
                     width="1.125rem"
                     height="1.125rem"
-                    color="var(--a-lightblue-800)"
+                    color="var(--ax-bg-brand-blue-strong)"
                     aria-hidden
                   />
                   Sett på venteliste
@@ -175,7 +175,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
                     height="1.125rem"
                     className="rotate-45"
                     aria-hidden
-                    color="var(--a-orange-600)"
+                    color="var(--ax-bg-warning-strong)"
                   />
                   Gi avslag
                 </div>

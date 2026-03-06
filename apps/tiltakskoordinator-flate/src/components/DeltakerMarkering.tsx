@@ -19,13 +19,18 @@ export const DeltakerMarkering = ({
   return (
     <div className="flex items-center flex-wrap gap-4">
       {beskyttelsesmarkering.map((markering) => (
-        <Tag key={markering} variant="warning" size="small">
+        <Tag
+          key={markering}
+          variant="outline"
+          data-color="warning"
+          size="small"
+        >
           {getBeskyttelsesMarkeringTekst(markering)}
         </Tag>
       ))}
       {innsatsgruppe && (
         <Tooltip content={getInsatsGruppeGammelTekst(innsatsgruppe)}>
-          <Tag variant="warning" size="small">
+          <Tag variant="outline" data-color="warning" size="small">
             {getInsatsGruppeTekst(innsatsgruppe)}
           </Tag>
         </Tooltip>

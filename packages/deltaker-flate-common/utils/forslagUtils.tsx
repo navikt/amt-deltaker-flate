@@ -10,6 +10,9 @@ import {
 } from '../model/forslag.ts'
 import { getForslagStatusTypeText } from './displayText.ts'
 
+export const ACTION_BLUE_TAG_STYLE =
+  'bg-(--ax-bg-accent-moderate) border-(--ax-border-accent)'
+
 export function assertNever(value: never): never {
   throw new Error(`Unexpected value: ${JSON.stringify(value)}`)
 }
@@ -20,13 +23,13 @@ export const getForslagStatusTag = (forslagStatusType: ForslagStatusType) => {
     case ForslagStatusType.Tilbakekalt:
     case ForslagStatusType.Avvist:
       return (
-        <Tag size="small" variant="neutral">
+        <Tag size="small" variant="outline" data-color="neutral">
           {getForslagStatusTypeText(forslagStatusType)}
         </Tag>
       )
     case ForslagStatusType.VenterPaSvar:
       return (
-        <Tag size="small" variant="info">
+        <Tag size="small" variant="outline" className={ACTION_BLUE_TAG_STYLE}>
           {getForslagStatusTypeText(forslagStatusType)}
         </Tag>
       )

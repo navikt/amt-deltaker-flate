@@ -1,10 +1,11 @@
-import { Detail, HStack, Tag } from '@navikt/ds-react'
+import { Detail, Tag } from '@navikt/ds-react'
 import {
-  Vedtaksinformasjon,
   DeltakerStatus,
-  DeltakerStatusAarsakType
+  DeltakerStatusAarsakType,
+  Vedtaksinformasjon
 } from '../model/deltaker'
 import { formatDate, formatDateWithMonthName } from '../utils/utils'
+import { ACTION_BLUE_TAG_STYLE } from '../utils/forslagUtils'
 
 interface Props {
   vedtaksinformasjon: Vedtaksinformasjon | null
@@ -36,14 +37,19 @@ export const UtkastHeader = ({
   return (
     <div className="mt-4 mb-4">
       {visStatusVenterPaaBruker && (
-        <Tag variant="info" size="small" className="mb-4">
+        <Tag
+          variant="outline"
+          data-color="info"
+          size="small"
+          className={`mb-4 ${ACTION_BLUE_TAG_STYLE}`}
+        >
           Utkastet er delt og venter på godkjenning
         </Tag>
       )}
       {vedtaksinformasjon &&
         (erEndret ? (
           <>
-            <HStack gap="2" aria-atomic>
+            <div className="flex gap-2" aria-atomic>
               <Detail as="span" weight="semibold" textColor={detailTextColor}>
                 Første utkast delt:
               </Detail>
@@ -51,9 +57,9 @@ export const UtkastHeader = ({
                 {formatDateWithMonthName(vedtaksinformasjon.opprettet)}{' '}
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
-            </HStack>
+            </div>
             {(!erEndretSammeDag || avbruttPgaGjennomforing) && (
-              <HStack gap="2" className="mt-2" aria-atomic>
+              <div className="flex gap-2 mt-2" aria-atomic>
                 <Detail as="span" weight="semibold" textColor={detailTextColor}>
                   Sist endret:
                 </Detail>
@@ -68,11 +74,11 @@ export const UtkastHeader = ({
                     {vedtaksinformasjon.sistEndretAv}
                   </Detail>
                 )}
-              </HStack>
+              </div>
             )}
           </>
         ) : (
-          <HStack gap="2" aria-atomic>
+          <div className="flex gap-2" aria-atomic>
             <Detail as="span" weight="semibold" textColor={detailTextColor}>
               Delt:
             </Detail>
@@ -80,7 +86,7 @@ export const UtkastHeader = ({
               {formatDateWithMonthName(vedtaksinformasjon.opprettet)}{' '}
               {vedtaksinformasjon.opprettetAv}
             </Detail>
-          </HStack>
+          </div>
         ))}
     </div>
   )

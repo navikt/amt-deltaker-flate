@@ -60,13 +60,13 @@ function ikonFarge(
   disabled?: boolean | null
 ) {
   if (disabled) {
-    return 'var(--a-border-subtle-hover)'
+    return 'var(--ax-bg-neutral-soft)'
   }
   switch (vurdering) {
     case Vurderingstype.OPPFYLLER_KRAVENE:
-      return 'var(--a-surface-success)'
+      return 'var(--ax-bg-success-strong)'
     case Vurderingstype.OPPFYLLER_IKKE_KRAVENE:
-      return 'var(--a-nav-red)'
+      return 'var(--ax-text-danger-subtle)'
     default:
       return ''
   }

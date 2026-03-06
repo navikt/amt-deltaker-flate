@@ -3,7 +3,7 @@
 @config "../tailwind.config.ts";
 
 .deltakelse-wrapper {
-  background: var(--a-surface-subtle);
+  background: var(--ax-bg-neutral-soft);
 }
 
 p,

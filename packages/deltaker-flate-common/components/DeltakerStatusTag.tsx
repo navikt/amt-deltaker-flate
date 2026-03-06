@@ -1,23 +1,22 @@
 import { Tag } from '@navikt/ds-react'
 import { DeltakerStatusType } from '../model/deltaker'
 import { getDeltakerStatusDisplayText } from '../utils/displayText'
+import { ACTION_BLUE_TAG_STYLE } from '../utils/forslagUtils'
 
 const getTagType = (status: DeltakerStatusType) => {
   switch (status) {
     case DeltakerStatusType.VENTER_PA_OPPSTART:
-      return 'alt3'
+    case DeltakerStatusType.UTKAST_TIL_PAMELDING:
+      return 'info'
     case DeltakerStatusType.KLADD:
       return 'warning'
     case DeltakerStatusType.FULLFORT:
     case DeltakerStatusType.HAR_SLUTTET:
     case DeltakerStatusType.VENTELISTE:
-      return 'alt1'
-    case DeltakerStatusType.UTKAST_TIL_PAMELDING:
-      return 'info'
+      return 'meta-purple'
     case DeltakerStatusType.VURDERES:
-      return 'alt2'
     case DeltakerStatusType.SOKT_INN:
-      return 'alt2'
+      return 'meta-lime'
     case DeltakerStatusType.DELTAR:
     case DeltakerStatusType.AVBRUTT:
     case DeltakerStatusType.AVBRUTT_UTKAST:
@@ -39,11 +38,23 @@ export const DeltakerStatusTag = ({
 }: DeltakerStatusTagProps) => {
   return (
     <Tag
-      variant={getTagType(statusType)}
+      variant="outline"
+      data-color={getTagType(statusType)}
       size="small"
-      className={statusType === DeltakerStatusType.DELTAR ? 'bg-white' : ''}
+      className={getSpesialTagTypeClass(statusType)}
     >
       {name ?? getDeltakerStatusDisplayText(statusType)}
     </Tag>
   )
+}
+
+const getSpesialTagTypeClass = (status: DeltakerStatusType) => {
+  switch (status) {
+    case DeltakerStatusType.DELTAR:
+      return 'bg-(--ax-bg-default)'
+    case DeltakerStatusType.UTKAST_TIL_PAMELDING:
+      return ACTION_BLUE_TAG_STYLE
+    default:
+      return ''
+  }
 }

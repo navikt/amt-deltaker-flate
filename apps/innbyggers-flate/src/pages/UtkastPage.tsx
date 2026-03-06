@@ -100,7 +100,7 @@ export const UtkastPage = () => {
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         deltakerStatus={deltaker.status}
       />
-      <GuidePanel poster illustration={svg}>
+      <GuidePanel illustration={svg}>
         <Heading level="3" size="small">
           {`Dette er et utkast til ${erUtkastTilSoknad ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
         </Heading>

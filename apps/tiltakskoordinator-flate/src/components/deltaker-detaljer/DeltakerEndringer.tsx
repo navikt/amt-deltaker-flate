@@ -25,7 +25,7 @@ export function DeltakerEndringer({
   }
 
   return (
-    <EndringerWrapper className="mt-4 flex flex-col gap-4 min-w-[28rem]">
+    <EndringerWrapper className="mt-4 flex flex-col gap-4 min-w-md">
       {forslag.length > 0 && (
         <div>
           <Heading level="2" size="small" className="mb-2">

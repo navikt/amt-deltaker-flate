@@ -8,7 +8,7 @@ interface ErrorPageProps {
 
 export const ErrorPage = ({ heading, message = undefined }: ErrorPageProps) => {
   return (
-    <div className="m-4 max-w-[47.5rem] mx-auto">
+    <div className="m-4 max-w-190 mx-auto">
       <Tilbakeknapp />
 
       <Alert variant="error">

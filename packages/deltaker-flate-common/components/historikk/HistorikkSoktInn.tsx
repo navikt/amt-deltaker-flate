@@ -24,7 +24,9 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
   return (
     <HistorikkElement
       tittel={`Søknad om plass ${formatDateWithMonthName(innsokt)}`}
-      icon={<CaretRightCircleFillIcon color="var(--a-limegreen-800)" />}
+      icon={
+        <CaretRightCircleFillIcon color="var(--ax-text-meta-lime-decoration)" />
+      }
     >
       <DeltakelseInnhold
         tiltakskode={tiltakskode}

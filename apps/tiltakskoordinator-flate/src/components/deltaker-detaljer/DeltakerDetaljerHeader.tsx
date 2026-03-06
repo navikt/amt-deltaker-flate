@@ -14,7 +14,7 @@ export const DeltakerDetaljerHeader = ({ deltaker }: Props) => {
   }
 
   return (
-    <div className="pt-4 pb-4 border-t border-b border-[var(--a-border-divider)]">
+    <div className="pt-4 pb-4 border-t border-b border-(--ax-border-neutral-subtle)">
       <div className="flex items-center flex-wrap gap-2 pl-10 pr-10">
         <Heading level="2" size="small">
           {lagDeltakerNavn(deltaker)}
@@ -46,7 +46,7 @@ const HeaderSkille = () => (
   <BodyShort
     aria-hidden
     size="medium"
-    className="mr-2 ml-2 text-[var(--a-text-subtle)]"
+    className="mr-2 ml-2 text-(--ax-text-neutral-subtle)"
   >
     /
   </BodyShort>

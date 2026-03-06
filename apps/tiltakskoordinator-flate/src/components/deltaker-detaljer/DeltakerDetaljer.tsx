@@ -28,7 +28,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
 
   return (
     <div className="flex flex-col mb-4">
-      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-(--a-border-divider) mb-4">
+      <div className="flex flex-col pb-6 h-fit gap-4 w-full border-b border-(--ax-border-neutral-subtle) mb-4">
         <Detail title="Status">
           <DeltakerStatusTag statusType={deltaker.status.type} />
         </Detail>
