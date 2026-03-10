@@ -1,5 +1,5 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons'
-import { LinkPanel } from '@navikt/ds-react'
+import { LinkCard } from '@navikt/ds-react'
 
 interface Props {
   dialogUrl: string
@@ -8,14 +8,18 @@ interface Props {
 
 export const DialogLenke = ({ dialogUrl, className }: Props) => {
   return (
-    <LinkPanel href={dialogUrl} className={`${className ?? ''} rounded-lg`}>
-      <div className="grid grid-flow-col items-center gap-4">
-        <ChatElipsisIcon className="text-2xl" aria-hidden />
-        <span>
-          Send en melding her til Nav-veilederen din hvis du har spørsmål eller
-          hvis noe skal endres.
-        </span>
-      </div>
-    </LinkPanel>
+    <LinkCard className={`${className ?? ''} `}>
+      <LinkCard.Icon>
+        <ChatElipsisIcon className="text-5xl" aria-hidden />
+      </LinkCard.Icon>
+      <LinkCard.Title>
+        <LinkCard.Anchor href={dialogUrl}>
+          Har du spørsmål eller ønsker å endre noe
+        </LinkCard.Anchor>
+      </LinkCard.Title>
+      <LinkCard.Description>
+        Send en melding til Nav-veilederen din.
+      </LinkCard.Description>
+    </LinkCard>
   )
 }
