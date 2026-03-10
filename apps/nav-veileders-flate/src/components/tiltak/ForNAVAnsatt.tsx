@@ -1,11 +1,4 @@
-import {
-  Alert,
-  BodyShort,
-  Detail,
-  Heading,
-  LinkCard,
-  LinkPanel
-} from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, Heading, LinkCard } from '@navikt/ds-react'
 import {
   formatDate,
   hentTiltakNavnHosArrangorTekst
@@ -49,77 +42,43 @@ export const ForNAVAnsatt = ({ className }: Props) => {
       )}
 
       {!pamelding.deltakerliste.erEnkeltplassUtenRammeavtale && (
-        <>
-          <LinkPanel
-            href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
-            onClick={(event) => {
-              event.preventDefault()
-              doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
-            }}
-            border
-            className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
-          >
-            <LinkPanel.Title className="text-lg text-(--ax-text-accent-subtle) text-nowrap">
+        <LinkCard
+          onClick={(event) => {
+            event.preventDefault()
+            doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
+          }}
+          className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
+          data-color="accent"
+        >
+          <LinkCard.Title>
+            <LinkCard.Anchor
+              href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
+            >
               Gå til tiltaks&shy;gjennomføringen
-            </LinkPanel.Title>
-            <LinkPanel.Description>
-              <BodyShort size="small">
-                {hentTiltakNavnHosArrangorTekst(
-                  pamelding.deltakerliste.tiltakskode,
-                  pamelding.deltakerliste.arrangorNavn
-                )}
-              </BodyShort>
-              <Detail textColor="subtle" className="mb-1">
-                {pamelding.deltakerliste.deltakerlisteNavn}
-              </Detail>
-              <BodyShort size="small">
-                {formatDate(pamelding.deltakerliste.startdato)} -{' '}
-                {formatDate(pamelding.deltakerliste.sluttdato)}
-              </BodyShort>
+            </LinkCard.Anchor>
+          </LinkCard.Title>
+          <LinkCard.Description>
+            <BodyShort size="small">
+              {hentTiltakNavnHosArrangorTekst(
+                pamelding.deltakerliste.tiltakskode,
+                pamelding.deltakerliste.arrangorNavn
+              )}
+            </BodyShort>
+            <Detail textColor="subtle" className="mb-1">
+              {pamelding.deltakerliste.deltakerlisteNavn}
+            </Detail>
+            <BodyShort size="small">
+              {formatDate(pamelding.deltakerliste.startdato)} -{' '}
+              {formatDate(pamelding.deltakerliste.sluttdato)}
+            </BodyShort>
+          </LinkCard.Description>
+
+          {visDeltakerlisteStatus(pamelding.deltakerliste.status) && (
+            <LinkCard.Footer>
               <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
-            </LinkPanel.Description>
-          </LinkPanel>
-
-          <LinkCard
-            onClick={(event) => {
-              event.preventDefault()
-              doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
-            }}
-            className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
-            data-color="accent"
-          >
-            <LinkCard.Title>
-              <LinkCard.Anchor
-                href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
-              >
-                Gå til tiltaks&shy;gjennomføringen
-              </LinkCard.Anchor>
-            </LinkCard.Title>
-            <LinkCard.Description>
-              <BodyShort size="small">
-                {hentTiltakNavnHosArrangorTekst(
-                  pamelding.deltakerliste.tiltakskode,
-                  pamelding.deltakerliste.arrangorNavn
-                )}
-              </BodyShort>
-              <Detail textColor="subtle" className="mb-1">
-                {pamelding.deltakerliste.deltakerlisteNavn}
-              </Detail>
-              <BodyShort size="small">
-                {formatDate(pamelding.deltakerliste.startdato)} -{' '}
-                {formatDate(pamelding.deltakerliste.sluttdato)}
-              </BodyShort>
-            </LinkCard.Description>
-
-            {visDeltakerlisteStatus(pamelding.deltakerliste.status) && (
-              <LinkCard.Footer>
-                <DeltakerlisteStatusTag
-                  status={pamelding.deltakerliste.status}
-                />
-              </LinkCard.Footer>
-            )}
-          </LinkCard>
-        </>
+            </LinkCard.Footer>
+          )}
+        </LinkCard>
       )}
     </div>
   )
