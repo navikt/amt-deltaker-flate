@@ -47,7 +47,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
             event.preventDefault()
             doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
           }}
-          className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
+          className="mt-4 ax-xl:max-w-125"
           data-color="accent"
         >
           <LinkCard.Title>
