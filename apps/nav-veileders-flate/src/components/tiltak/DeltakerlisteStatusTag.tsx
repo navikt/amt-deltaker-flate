@@ -16,7 +16,9 @@ interface DeltakerlisteStatusTagProps {
   status: DeltakerlisteStatus | null
 }
 
-const visDeltakerlisteStatus = (status: DeltakerlisteStatus): boolean => {
+export const visDeltakerlisteStatus = (
+  status: DeltakerlisteStatus | null
+): boolean => {
   return (
     status === DeltakerlisteStatus.AVLYST ||
     status === DeltakerlisteStatus.AVBRUTT ||

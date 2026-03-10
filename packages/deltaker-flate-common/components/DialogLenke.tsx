@@ -8,7 +8,7 @@ interface Props {
 
 export const DialogLenke = ({ dialogUrl, className }: Props) => {
   return (
-    <LinkCard className={`${className ?? ''} `}>
+    <LinkCard className={`${className ?? ''} `} data-color="neutral">
       <LinkCard.Icon>
         <ChatElipsisIcon className="text-5xl" aria-hidden />
       </LinkCard.Icon>

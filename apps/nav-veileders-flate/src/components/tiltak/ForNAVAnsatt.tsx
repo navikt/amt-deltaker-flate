@@ -1,4 +1,11 @@
-import { Alert, BodyShort, Detail, Heading, LinkPanel } from '@navikt/ds-react'
+import {
+  Alert,
+  BodyShort,
+  Detail,
+  Heading,
+  LinkCard,
+  LinkPanel
+} from '@navikt/ds-react'
 import {
   formatDate,
   hentTiltakNavnHosArrangorTekst
@@ -8,7 +15,10 @@ import {
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
-import { DeltakerlisteStatusTag } from './DeltakerlisteStatusTag.tsx'
+import {
+  DeltakerlisteStatusTag,
+  visDeltakerlisteStatus
+} from './DeltakerlisteStatusTag.tsx'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
 import { usePameldingContext } from './PameldingContext.tsx'
 
@@ -39,35 +49,77 @@ export const ForNAVAnsatt = ({ className }: Props) => {
       )}
 
       {!pamelding.deltakerliste.erEnkeltplassUtenRammeavtale && (
-        <LinkPanel
-          href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
-          onClick={(event) => {
-            event.preventDefault()
-            doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
-          }}
-          border
-          className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
-        >
-          <LinkPanel.Title className="text-lg text-(--ax-text-accent-subtle) text-nowrap">
-            Gå til tiltaks&shy;gjennomføringen
-          </LinkPanel.Title>
-          <LinkPanel.Description>
-            <BodyShort size="small">
-              {hentTiltakNavnHosArrangorTekst(
-                pamelding.deltakerliste.tiltakskode,
-                pamelding.deltakerliste.arrangorNavn
-              )}
-            </BodyShort>
-            <Detail textColor="subtle" className="mb-1">
-              {pamelding.deltakerliste.deltakerlisteNavn}
-            </Detail>
-            <BodyShort size="small">
-              {formatDate(pamelding.deltakerliste.startdato)} -{' '}
-              {formatDate(pamelding.deltakerliste.sluttdato)}
-            </BodyShort>
-            <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
-          </LinkPanel.Description>
-        </LinkPanel>
+        <>
+          <LinkPanel
+            href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
+            onClick={(event) => {
+              event.preventDefault()
+              doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
+            }}
+            border
+            className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
+          >
+            <LinkPanel.Title className="text-lg text-(--ax-text-accent-subtle) text-nowrap">
+              Gå til tiltaks&shy;gjennomføringen
+            </LinkPanel.Title>
+            <LinkPanel.Description>
+              <BodyShort size="small">
+                {hentTiltakNavnHosArrangorTekst(
+                  pamelding.deltakerliste.tiltakskode,
+                  pamelding.deltakerliste.arrangorNavn
+                )}
+              </BodyShort>
+              <Detail textColor="subtle" className="mb-1">
+                {pamelding.deltakerliste.deltakerlisteNavn}
+              </Detail>
+              <BodyShort size="small">
+                {formatDate(pamelding.deltakerliste.startdato)} -{' '}
+                {formatDate(pamelding.deltakerliste.sluttdato)}
+              </BodyShort>
+              <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
+            </LinkPanel.Description>
+          </LinkPanel>
+
+          <LinkCard
+            onClick={(event) => {
+              event.preventDefault()
+              doRedirect(`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`)
+            }}
+            className="mt-4 rounded-sm border-2 border-(--ax-border-accent) ax-xl:max-w-125"
+            data-color="accent"
+          >
+            <LinkCard.Title>
+              <LinkCard.Anchor
+                href={`${TILTAKSGJENNOMFORING_LINK}/${deltakerlisteId}`}
+              >
+                Gå til tiltaks&shy;gjennomføringen
+              </LinkCard.Anchor>
+            </LinkCard.Title>
+            <LinkCard.Description>
+              <BodyShort size="small">
+                {hentTiltakNavnHosArrangorTekst(
+                  pamelding.deltakerliste.tiltakskode,
+                  pamelding.deltakerliste.arrangorNavn
+                )}
+              </BodyShort>
+              <Detail textColor="subtle" className="mb-1">
+                {pamelding.deltakerliste.deltakerlisteNavn}
+              </Detail>
+              <BodyShort size="small">
+                {formatDate(pamelding.deltakerliste.startdato)} -{' '}
+                {formatDate(pamelding.deltakerliste.sluttdato)}
+              </BodyShort>
+            </LinkCard.Description>
+
+            {visDeltakerlisteStatus(pamelding.deltakerliste.status) && (
+              <LinkCard.Footer>
+                <DeltakerlisteStatusTag
+                  status={pamelding.deltakerliste.status}
+                />
+              </LinkCard.Footer>
+            )}
+          </LinkCard>
+        </>
       )}
     </div>
   )
