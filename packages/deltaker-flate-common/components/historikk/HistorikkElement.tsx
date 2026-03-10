@@ -30,12 +30,12 @@ export const HistorikkElement = ({
       </div>
 
       <div className="pt-2">
-        <div className="flex md:flex-row flex-col justify-between w-full">
+        <div className="flex ax-md:flex-row flex-col justify-between w-full">
           <Heading level="2" size="small" className="mb-1">
             {tittel}
           </Heading>
           {forslag && (
-            <div className="w-fit md:mb-0 mb-1">
+            <div className="w-fit ax-md:mb-0 mb-1">
               {getForslagStatusTag(forslag.status.type)}
             </div>
           )}

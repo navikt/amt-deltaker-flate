@@ -114,8 +114,8 @@ export const DemoStatusInnstillinger = () => {
     <Box
       className="mt-[-1.6rem] mb-6 flex gap-4"
       padding="space-16"
-      background="surface-warning-subtle"
-      borderColor="border-warning"
+      background="warning-moderate"
+      borderColor="warning"
       borderWidth="1"
     >
       <Select

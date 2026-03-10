@@ -8,7 +8,7 @@ const getTagType = (status: DeltakerlisteStatus) => {
   if (status === DeltakerlisteStatus.AVSLUTTET) {
     return 'neutral'
   } else {
-    return 'error'
+    return 'danger'
   }
 }
 
@@ -16,7 +16,9 @@ interface DeltakerlisteStatusTagProps {
   status: DeltakerlisteStatus | null
 }
 
-const visDeltakerlisteStatus = (status: DeltakerlisteStatus): boolean => {
+export const visDeltakerlisteStatus = (
+  status: DeltakerlisteStatus | null
+): boolean => {
   return (
     status === DeltakerlisteStatus.AVLYST ||
     status === DeltakerlisteStatus.AVBRUTT ||
@@ -29,7 +31,12 @@ export const DeltakerlisteStatusTag = ({
 }: DeltakerlisteStatusTagProps) => {
   if (!status || !visDeltakerlisteStatus(status)) return null
   return (
-    <Tag variant={getTagType(status)} size="small" className="mt-2">
+    <Tag
+      variant="outline"
+      data-color={getTagType(status)}
+      size="small"
+      className="mt-2"
+    >
       {getDeltakerlisteStatusText(status)}
     </Tag>
   )

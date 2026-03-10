@@ -64,7 +64,7 @@ export const RedigerPameldingPage = () => {
   }, [avbrytUtkastState])
 
   return (
-    <div className="max-w-190 md:m-auto m-4" data-testid="page_utkast">
+    <div className="max-w-190 ax-md:m-auto m-4" data-testid="page_utkast">
       <Tilbakeknapp />
       <PameldingHeader
         deltakerStatus={pamelding.status}
@@ -72,7 +72,11 @@ export const RedigerPameldingPage = () => {
         vedtaksinformasjon={pamelding.vedtaksinformasjon}
       />
 
-      <VStack gap="2" align="start" className="md:p-8 p-4 bg-white">
+      <VStack
+        gap="space-16"
+        align="start"
+        className="md:p-8 p-4 bg-(--ax-bg-default)"
+      >
         {redigerUtkast && (
           <PameldingForm
             focusOnOpen

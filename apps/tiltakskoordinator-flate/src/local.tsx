@@ -26,7 +26,7 @@ const renderAsReactRoot = () => {
   root.render(
     <React.StrictMode>
       <AppContextProvider initialDeltakerlisteId={isPrEnv ? '' : 'abs'}>
-        <div className="m-auto max-w-[1920px]">
+        <div className="m-auto max-w-480">
           <App />
         </div>
       </AppContextProvider>

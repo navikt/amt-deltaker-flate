@@ -55,7 +55,7 @@ export class Deltakerliste extends HTMLElement {
       <ShadowDomContext.Provider
         value={{ shadowRoot, containerElement: this.root }}
       >
-        <div className="m-auto pt-4 min-h-screen max-w-[1920px]">
+        <div className="m-auto pt-4 min-h-screen max-w-480">
           <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
             <App />
           </AppContextProvider>

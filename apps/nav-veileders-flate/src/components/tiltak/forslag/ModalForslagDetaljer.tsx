@@ -9,16 +9,15 @@ export const ModalForslagDetaljer = ({ forslag }: Props) => {
   return (
     <div className="mb-6">
       <Box
-        background="bg-subtle"
-        padding={{ xs: '2', md: '4' }}
-        borderRadius="medium"
+        background="neutral-moderate"
+        padding={{ xs: 'space-8', md: 'space-16' }}
+        borderRadius="4"
         className="mt-4 mb-4"
       >
-        <div className="flex flex-col sm:flex-row sm:justify-between items-start mb-2">
-          <Heading level="2" size="small">
-            Forslag fra arrangør:
-          </Heading>
-        </div>
+        <Heading level="2" size="small" className="mb-2">
+          Forslag fra arrangør:
+        </Heading>
+
         <ForslagtypeDetaljer
           begrunnelse={forslag.begrunnelse}
           forslagEndring={forslag.endring}

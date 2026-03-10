@@ -1,11 +1,4 @@
-import {
-  Alert,
-  BodyLong,
-  BodyShort,
-  HStack,
-  Heading,
-  Label
-} from '@navikt/ds-react'
+import { Alert, BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   DeltakelsesmengdeInfo,
@@ -85,7 +78,7 @@ export const DeltakerPage = () => {
   )
 
   return (
-    <div className={'bg-white w-full mb-8'}>
+    <div className={'bg-(--ax-bg-default) w-full mb-8'}>
       {showSuccessMessage && (
         <Alert variant="success" size="medium" className="mb-8">
           <BodyShort role="alert">
@@ -100,17 +93,17 @@ export const DeltakerPage = () => {
         {tiltakOgStedTekst}
       </Heading>
 
-      <HStack gap="2" className="mt-8" aria-atomic>
+      <div className="flex gap-2 mt-8" aria-atomic>
         <Label>Status:</Label>
         <DeltakerStatusTag statusType={deltaker.status.type} />
-      </HStack>
+      </div>
       {deltaker.status.aarsak && (
-        <HStack gap="2" className="mt-4" aria-atomic>
+        <div className="flex gap-2 mt-4" aria-atomic>
           <Label>Årsak:</Label>
           <BodyShort size="small" as="span" className="whitespace-pre-wrap">
             {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
-        </HStack>
+        </div>
       )}
 
       {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
@@ -136,14 +129,14 @@ export const DeltakerPage = () => {
       )}
 
       {skalViseDato && (
-        <HStack gap="2" className="mt-4">
+        <div className="flex gap-2 mt-4">
           <Label>
             {deltaker.startdato && !deltaker.sluttdato
               ? 'Oppstartsdato:'
               : 'Dato:'}
           </Label>
           <BodyShort size="small">{dato}</BodyShort>
-        </HStack>
+        </div>
       )}
 
       <OmKurset
