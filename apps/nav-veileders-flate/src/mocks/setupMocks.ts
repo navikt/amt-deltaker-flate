@@ -23,7 +23,10 @@ import {
 import { utkastRequestSchema } from '../api/data/utkast-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
-import { opprettKladdRequestSchema } from '../api/data/kladd-request.ts'
+import {
+  opprettKladdEnkeltplassRequestSchema,
+  opprettKladdRequestSchema
+} from '../api/data/kladd-request.ts'
 
 const handler = new MockHandler()
 
@@ -63,7 +66,7 @@ export const worker = setupWorker(
       return response
     }
   ),
-  http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
+  (http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
     await delay(1000)
     const response = await request
       .json()
@@ -72,6 +75,18 @@ export const worker = setupWorker(
 
     return response
   }),
+  http.post(
+    '/amt-deltaker-bff/opprett-kladd-enkeltplass-uten-rammeavtale',
+    async ({ request }) => {
+      await delay(1000)
+      const response = await request
+        .json()
+        .then((json) => opprettKladdEnkeltplassRequestSchema.parse(json))
+        .then((body) => handler.createEnkeltplassPamelding(body.tiltakskode))
+
+      return response
+    }
+  )),
   http.delete('/amt-deltaker-bff/kladd/:deltakerId', async ({ params }) => {
     await delay(1000)
     const { deltakerId } = params

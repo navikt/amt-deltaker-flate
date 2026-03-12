@@ -1,8 +1,8 @@
 import { Loader } from '@navikt/ds-react'
-import { useFetch } from 'deltaker-flate-common'
+import { Tiltakskode, useFetch } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useAppContext } from './AppContext.tsx'
-import { opprettKladd } from './api/api.ts'
+import { opprettKladd, opprettKladdEnkeltplass } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
 import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
@@ -10,10 +10,12 @@ import { ErrorPage } from './pages/ErrorPage.tsx'
 import { useMock } from './utils/environment-utils.ts'
 
 const InngangMeldPa = () => {
-  const { deltakerlisteId } = useParams()
+  const { deltakerlisteId, tiltakskode: tiltakskodeParam } = useParams()
   const { personident, enhetId } = useAppContext()
 
-  if (deltakerlisteId === undefined) {
+  const tiltakskode = tiltakskodeParam as Tiltakskode | undefined
+
+  if (deltakerlisteId === undefined && tiltakskode === undefined) {
     return <ErrorPage />
   }
 
@@ -21,7 +23,9 @@ const InngangMeldPa = () => {
     data: nyPamelding,
     loading,
     error
-  } = useFetch(opprettKladd, personident, deltakerlisteId, enhetId)
+  } = deltakerlisteId
+    ? useFetch(opprettKladd, personident, deltakerlisteId, enhetId)
+    : useFetch(opprettKladdEnkeltplass, personident, tiltakskode!, enhetId)
 
   if (loading) {
     return (

@@ -8,6 +8,7 @@ import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { DeltakerPage } from '../pages/DeltakerPage.tsx'
+import { OpprettEnkeltplassPameldingPage } from '../pages/OpprettEnkeltplassPameldingPage.tsx'
 
 dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)
@@ -19,7 +20,12 @@ export const DeltakerGuard = () => {
 
   let pageToLoad = null
 
-  if (pamelding.status.type === DeltakerStatusType.KLADD) {
+  if (
+    pamelding.status.type === DeltakerStatusType.KLADD &&
+    pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
+  ) {
+    pageToLoad = <OpprettEnkeltplassPameldingPage />
+  } else if (pamelding.status.type === DeltakerStatusType.KLADD) {
     pageToLoad = <OpprettPameldingPage />
   } else if (
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING ||

@@ -54,26 +54,25 @@ export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+  tiltakskode = Tiltakskode.HOYERE_UTDANNING
 
   createDeltaker(
     deltakerlisteId: string,
-    startdato?: Date,
-    sluttdato?: Date,
-    maxVarighetMnd?: number,
-    softMaxVarighetMnd?: number
+    tiltakskode: Tiltakskode = this.tiltakskode
   ): DeltakerResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
 
-    const _startdato = startdato ? dayjs(startdato).toString() : null
-    const _sluttdato = sluttdato ? dayjs(sluttdato).toString() : null
+    if (tiltakskode) this.tiltakskode = tiltakskode
+
+    const _startdato = null
+    const _sluttdato = null
 
     const ledetekst = getLedetekst(this.tiltakskode)
     const innhold = getInnholdForTiltakskode(this.tiltakskode)
 
     const sisteDeltakelsesmengde: Deltakelsesmengde = {
-      gyldigFra: startdato ?? new Date(),
+      gyldigFra: _startdato ?? new Date(),
       dagerPerUke: null,
       deltakelsesprosent: 100
     }
@@ -96,8 +95,8 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: false,
-        pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
+        erEnkeltplassUtenRammeavtale: true,
+        pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
       },
@@ -131,12 +130,8 @@ export class MockHandler {
       kanEndres: true,
       digitalBruker: true,
       harAdresse: true,
-      maxVarighet: dayjs
-        .duration(maxVarighetMnd ?? 12, 'month')
-        .asMilliseconds(),
-      softMaxVarighet: dayjs
-        .duration(softMaxVarighetMnd ?? 6, 'month')
-        .asMilliseconds(),
+      maxVarighet: dayjs.duration(12, 'month').asMilliseconds(),
+      softMaxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
       forslag: [],
       importertFraArena: null,
       erUnderOppfolging: true,
@@ -150,6 +145,14 @@ export class MockHandler {
 
   createPamelding(deltakerlisteId: string) {
     this.pamelding = this.createDeltaker(deltakerlisteId)
+    return HttpResponse.json(this.pamelding)
+  }
+
+  createEnkeltplassPamelding(tiltakskode: Tiltakskode) {
+    this.pamelding = this.createDeltaker(
+      'b21654fe-f0e6-4be1-84b5-da72ad6a4c1a',
+      tiltakskode
+    )
     return HttpResponse.json(this.pamelding)
   }
 

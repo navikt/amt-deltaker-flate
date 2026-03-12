@@ -1,7 +1,8 @@
 import {
   DeltakerHistorikkListe,
   deltakerHistorikkListeSchema,
-  logError
+  logError,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
@@ -19,7 +20,11 @@ import {
   IkkeAktuellRequest,
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
-import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
+import {
+  KladdRequest,
+  OpprettKladdEnkeltplassRequest,
+  OpprettKladdRequest
+} from './data/kladd-request.ts'
 import { DeltakerRequest } from './data/deltaker-request.ts'
 import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
 import { UtkastRequest } from './data/utkast-request.ts'
@@ -28,6 +33,49 @@ import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pameldin
 const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
 export const ERROR_PERSONIDENT =
   'Deltakelsen kunen ikke hentes fordi den tilhører en annen person enn den som er i kontekst.'
+
+export const opprettKladdEnkeltplass = async (
+  personident: string,
+  tiltakskode: Tiltakskode,
+  enhetId: string
+): Promise<DeltakerResponse> => {
+  const request: OpprettKladdEnkeltplassRequest = {
+    personident: personident,
+    tiltakskode: tiltakskode
+  }
+
+  return fetch(`${API_URL}/opprett-kladd-enkeltplass-uten-rammeavtale`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then(async (response) => {
+      if (response.status !== 200) {
+        logError(
+          `Deltakelse kunne ikke hentes / opprettes for tiltakskode: ${tiltakskode}`,
+          response.status
+        )
+
+        const data = await response.text()
+        if (data.includes(DELTAKER_FOR_UNG_ERROR)) {
+          throw new Error(
+            'Brukeren har ikke fylt 19 år når tiltaket starter, og kan derfor ikke delta.'
+          )
+        } else {
+          throw new Error(
+            'Kunne ikke opprette kladd for påmelding. Prøv igjen senere'
+          )
+        }
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
 
 export const opprettKladd = async (
   personident: string,

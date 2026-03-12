@@ -20,6 +20,10 @@ export const AppRoutes = () => {
         path={'/arbeidsmarkedstiltak/deltakelse/:deltakerlisteId'}
         element={<InngangMeldPa />}
       />
+      <Route
+        path={'/arbeidsmarkedstiltak/deltakelse/tiltak/:tiltakskode/'}
+        element={<InngangMeldPa />}
+      />
       {!isEnvLocalDemoOrPr && (
         <Route path={'/*'} element={<RedirectToDeltakeroversikt />} />
       )}
