@@ -1,0 +1,23 @@
+name: Deploy NAIS poao-frontend (Manual)
+on:
+  workflow_dispatch:
+    inputs:
+      module_path:
+        description: Velg app
+        required: true
+        type: choice
+        options:
+          - innbyggers-flate
+          - nav-veileders-flate
+          - tiltakskoordinator-flate
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  call-deploy:
+    uses: ./.github/workflows/reusable-deploy-poao-frontend.yaml
+    with:
+      module_path: ${{ inputs.module_path }}
+      prod_deploy_enabled: ${{ inputs.module_path != 'tiltakskoordinator-flate' }}

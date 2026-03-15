@@ -1,0 +1,43 @@
+name: Deploy NAIS poao-frontend
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+
+    outputs:
+      packages: ${{ steps.filter.outputs.changes }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate: 
+              - .github/workflows/*-deploy-poao-frontend.yaml
+              - apps/innbyggers-flate/nais/nais-*.yaml
+            nav-veileders-flate: 
+              - .github/workflows/*-deploy-poao-frontend.yaml
+              - apps/nav-veileders-flate/nais/nais-*.yaml
+            tiltakskoordinator-flate: 
+              - .github/workflows/*-deploy-poao-frontend.yaml
+              - apps/tiltakskoordinator-flate/nais/nais-*.yaml
+
+  deploy:
+    needs: changes
+    if: ${{ needs.changes.outputs.packages != '[]' }}
+    strategy:
+      matrix:
+        module_path: ${{ fromJSON(needs.changes.outputs.packages) }}
+    uses: ./.github/workflows/reusable-deploy-poao-frontend.yaml
+    with:
+      module_path: ${{ matrix.module_path }}
+      prod_deploy_enabled: ${{ matrix.module_path != 'tiltakskoordinator-flate' }}
