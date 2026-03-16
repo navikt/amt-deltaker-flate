@@ -40,10 +40,10 @@ export function FormDatePicker({
   } = useDatepicker({
     fromDate: dayjs().subtract(2, 'month').toDate(),
     defaultSelected: defaultStartdato ?? undefined,
-    onDateChange: async (date) => {
-      clearErrors('startdato')
-      clearSluttdatoError(date, sluttdato)
+    onDateChange: (date) => {
       setValue('startdato', date, { shouldDirty: true })
+      clearErrors('startdato')
+      handleStardatoChanged(date)
     }
   })
 
@@ -54,39 +54,38 @@ export function FormDatePicker({
     fromDate: startdato ?? dayjs().subtract(2, 'month').toDate(),
     toDate: maxSluttdato ?? undefined,
     defaultSelected: defaultSluttdato ?? undefined,
-    onDateChange: async (date) => {
-      clearErrors('sluttdato')
+    onDateChange: (date) => {
       setValue('sluttdato', date, { shouldDirty: true })
+      clearErrors('sluttdato')
     }
   })
 
-  const handleDateInputChange = (
+  const handleBlur = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: 'startdato' | 'sluttdato'
   ) => {
-    const date = getDayjsFromString(e.target.value)
-    setValue(id, date?.toDate(), { shouldDirty: true })
-    if (date?.isValid()) {
-      if (id === 'startdato') {
-        clearErrors('startdato')
-        clearSluttdatoError(date?.toDate(), sluttdato)
-      } else clearSluttdatoError(startdato, date?.toDate())
+    const parsed = getDayjsFromString(e.target.value)?.toDate()
+    setValue(id, parsed, { shouldDirty: true })
+    clearErrors(id)
+
+    if (id === 'startdato' && parsed) {
+      handleStardatoChanged(parsed)
+    } else if (!startdato && !parsed) {
+      // Fjerne feilmelding på manglende startdato hvis startdato ikke er satt og vi fjerne sluttdatoen
+      clearErrors('startdato')
     }
   }
 
-  const clearSluttdatoError = (nyStartDato?: Date, nySluttDato?: Date) => {
-    if (!nySluttDato) clearErrors('sluttdato')
-    if (!nyStartDato) {
-      return
-    }
+  const handleStardatoChanged = (newStart?: Date) => {
+    // Hvis startdato endres kan sluttdato bli gyldig:
+    const sluttdatoErGyldig =
+      newStart &&
+      sluttdato &&
+      dayjs(sluttdato).isSameOrAfter(dayjs(newStart), 'date') &&
+      (!maxSluttdato ||
+        dayjs(sluttdato).isSameOrBefore(dayjs(maxSluttdato), 'date'))
 
-    if (
-      (dayjs(nySluttDato).isSameOrAfter(dayjs(nyStartDato), 'date') ||
-        dayjs(nySluttDato).isBefore(dayjs(maxSluttdato), 'date')) &&
-      dayjs(nySluttDato).isValid()
-    ) {
-      clearErrors('sluttdato')
-    }
+    if (sluttdatoErGyldig) clearErrors('sluttdato')
   }
 
   return (
@@ -108,7 +107,7 @@ export function FormDatePicker({
                 size="small"
                 onBlur={(event) => {
                   startdatoOnBlur?.(event)
-                  handleDateInputChange(event, 'startdato')
+                  handleBlur(event, 'startdato')
                 }}
                 disabled={disabled}
               />
@@ -132,7 +131,7 @@ export function FormDatePicker({
                 size="small"
                 onBlur={(event) => {
                   sluttdatoOnBlur?.(event)
-                  handleDateInputChange(event, 'sluttdato')
+                  handleBlur(event, 'sluttdato')
                 }}
                 disabled={disabled}
               />
