@@ -3,6 +3,13 @@ import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 
+const schemaFields: (keyof PameldingEnkeltplassFormValues)[] = [
+  'beskrivelse',
+  'startdato',
+  'sluttdato',
+  'prisinformasjon'
+]
+
 export const FormErrorSummary = () => {
   const {
     setFocus,
@@ -26,14 +33,7 @@ export const FormErrorSummary = () => {
         heading="Du må rette opp i dette før du kan gå videre:"
         className="mb-4"
       >
-        {(
-          [
-            'beskrivelseKurs',
-            'startDato',
-            'sluttDato',
-            'prisinformasjon'
-          ] as const
-        ).map((errorName) => {
+        {schemaFields.map((errorName) => {
           const error = errors[errorName]
 
           return (

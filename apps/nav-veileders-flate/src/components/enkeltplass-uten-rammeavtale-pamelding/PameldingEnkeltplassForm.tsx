@@ -1,38 +1,37 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { InfoCard, Textarea } from '@navikt/ds-react'
+import dayjs from 'dayjs'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
+  createPameldingEnkeltplassFormSchema,
   generateFormDefaultValues,
-  pameldingEnkeltplassFormSchema,
   PameldingEnkeltplassFormValues,
   TEKSTFELT_MAX_TEGN
 } from '../../model/PameldingEnkeltplassFormValues'
+import { getMaxVarighetDato } from '../../utils/varighet'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 import { FormDatePicker } from './FormDatePicker'
 import { FormErrorSummary } from './FormErrorSummary'
 import { PameldingFormButtons } from './PameldingFormButtons'
+import { usePameldingFormContext } from './PameldingFormContext'
 
 interface Props {
   className?: string
-  disabled?: boolean
   focusOnOpen?: boolean
 }
 
-export const PameldingEnkeltplassForm = ({
-  className,
-  disabled,
-  focusOnOpen
-}: Props) => {
+export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
 
+  const { disabled } = usePameldingFormContext()
   const { pamelding } = usePameldingContext()
   const defaultValues = generateFormDefaultValues(pamelding)
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
-    resolver: zodResolver(pameldingEnkeltplassFormSchema),
+    resolver: zodResolver(createPameldingEnkeltplassFormSchema(pamelding)),
     shouldFocusError: false
   })
 
@@ -47,6 +46,14 @@ export const PameldingEnkeltplassForm = ({
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
 
+  const startdato = watch('startdato')
+  const maxSluttdato = startdato
+    ? getMaxVarighetDato(
+        pamelding,
+        dayjs(startdato, 'DD.MM.YYYY').toDate()
+      )?.toDate()
+    : undefined
+
   return (
     <form
       autoComplete="off"
@@ -60,31 +67,35 @@ export const PameldingEnkeltplassForm = ({
 
         <Textarea
           label="Beskrivelse av kurset og ønsket utfall"
-          {...register('beskrivelseKurs')}
-          value={watch('beskrivelseKurs')}
+          {...register('beskrivelse')}
+          value={watch('beskrivelse')}
           onChange={(e) => {
-            setValue('beskrivelseKurs', fjernUgyldigeTegn(e.target.value), {
+            setValue('beskrivelse', fjernUgyldigeTegn(e.target.value), {
               shouldValidate: true
             })
           }}
-          error={errors.beskrivelseKurs?.message}
+          error={errors.beskrivelse?.message}
           disabled={disabled}
           maxLength={TEKSTFELT_MAX_TEGN}
-          id="beskrivelseKurs"
+          id="beskrivelse"
           size="small"
         />
 
         <div className="flex gap-4 mt-8">
           <FormDatePicker
             label="Startdato (valgfri)"
-            id="startDato"
-            defaultSelected={defaultValues.startDato}
+            id="startdato"
+            defaultSelected={defaultValues.startdato}
             disabled={disabled}
           />
           <FormDatePicker
             label="Sluttdato (valgfri)"
-            id="sluttDato"
-            defaultSelected={defaultValues.startDato}
+            id="sluttdato"
+            defaultSelected={defaultValues.startdato}
+            fromDate={
+              startdato ? dayjs(startdato, 'DD.MM.YYYY').toDate() : undefined
+            }
+            toDate={maxSluttdato}
             disabled={disabled}
           />
         </div>
@@ -119,7 +130,7 @@ export const PameldingEnkeltplassForm = ({
           </InfoCard.Content>
         </InfoCard>
 
-        <PameldingFormButtons className="mt-8" disabled={disabled} />
+        <PameldingFormButtons className="mt-8" />
       </FormProvider>
     </form>
   )

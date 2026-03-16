@@ -12,6 +12,18 @@ import { EMDASH } from './constants'
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
 
+const DATO_FORMAT = [
+  'D.M.YY',
+  'D.MM.YY',
+  'DD.M.YY',
+  'DD.MM.YY',
+  'D.M.YYYY',
+  'D.MM.YYYY',
+  'DD.M.YYYY',
+  'DD.MM.YYYY',
+  'YYYY-MM-DD'
+]
+
 /**
  * Returns true if date is not null or undefined and is a valid date.
  */
@@ -19,7 +31,18 @@ export const isValidDate = (date?: string | null) => {
   return date ? dayjs(date).isValid() : false
 }
 
+export const getDayjsFromString = (dateString?: string | null) => {
+  if (!dateString) return undefined
+  for (const format of DATO_FORMAT) {
+    const date = dayjs(dateString, format, true)
+    if (date.isValid()) return date
+  }
+  if (dayjs(dateString).isValid()) return dayjs(dateString)
+  return undefined
+}
+
 export const getDateFromString = (dateString?: string | null) => {
+  // return getDayjsFromString(dateString)?.toDate()
   return dateString && dayjs(dateString).isValid()
     ? dayjs(dateString).toDate()
     : undefined

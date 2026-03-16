@@ -73,7 +73,8 @@ export enum DeltakerlisteStatus {
   GJENNOMFORES = 'GJENNOMFORES',
   AVBRUTT = 'AVBRUTT',
   AVLYST = 'AVLYST',
-  AVSLUTTET = 'AVSLUTTET'
+  AVSLUTTET = 'AVSLUTTET',
+  KLADD = 'KLADD'
 }
 
 export enum Vurderingstype {

@@ -7,14 +7,14 @@ export const opprettKladdRequestSchema = z.object({
   personident: z.string()
 })
 
-export const opprettKladdEnkeltplassRequestSchema = z.object({
+export const opprettEnkeltplassKladdRequestSchema = z.object({
   tiltakskode: z.enum(Tiltakskode),
   personident: z.string()
 })
 
 export type OpprettKladdRequest = z.infer<typeof opprettKladdRequestSchema>
-export type OpprettKladdEnkeltplassRequest = z.infer<
-  typeof opprettKladdEnkeltplassRequestSchema
+export type OpprettEnkeltplassKladdRequest = z.infer<
+  typeof opprettEnkeltplassKladdRequestSchema
 >
 
 export const kladdSchema = z.object({
@@ -24,4 +24,12 @@ export const kladdSchema = z.object({
   dagerPerUke: z.number().optional()
 })
 
+export const enkeltplassKladdSchema = z.object({
+  beskrivelse: z.string().optional(),
+  prisinformasjon: z.string().optional(),
+  startdato: z.string().optional(),
+  sluttdato: z.string().optional()
+})
+
 export type KladdRequest = z.infer<typeof kladdSchema>
+export type EnkeltplassKladdRequest = z.infer<typeof enkeltplassKladdSchema>

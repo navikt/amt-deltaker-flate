@@ -3,12 +3,10 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues.ts'
 import { DelUtkastModal } from './DelUtkastModal.tsx'
+import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 
-interface Props {
-  disabled?: boolean
-}
-
-export const DelUtkastButton = ({ disabled }: Props) => {
+export const DelUtkastButton = () => {
+  const { disabled } = usePameldingFormContext()
   const [modalOpen, setModalOpen] = useState(false)
 
   const { handleSubmit } = useFormContext<PameldingEnkeltplassFormValues>()

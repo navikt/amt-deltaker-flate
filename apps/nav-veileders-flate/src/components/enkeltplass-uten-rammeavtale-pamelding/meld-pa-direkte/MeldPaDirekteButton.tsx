@@ -3,12 +3,10 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues.ts'
 import { MeldPaDirekteModal } from './MeldPaDirekteModal.tsx'
+import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 
-interface Props {
-  disabled?: boolean
-}
-
-export const MeldPaDirekteButton = ({ disabled }: Props) => {
+export const MeldPaDirekteButton = () => {
+  const { disabled } = usePameldingFormContext()
   const [modalOpen, setModalOpen] = useState(false)
 
   const { handleSubmit } = useFormContext<PameldingEnkeltplassFormValues>()

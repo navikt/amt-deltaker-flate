@@ -1,13 +1,15 @@
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
-import { Controller, useFormContext } from 'react-hook-form'
-import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues'
-import { formatDateToString } from '../../utils/utils'
 import dayjs from 'dayjs'
+import { Controller, useFormContext } from 'react-hook-form'
+import { getDayjsFromString } from '../../../../../packages/deltaker-flate-common/utils/utils'
+import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues'
 
 interface Props {
   label: string
-  id: 'startDato' | 'sluttDato'
-  defaultSelected?: string
+  id: 'startdato' | 'sluttdato'
+  defaultSelected?: string | null
+  fromDate?: Date | null
+  toDate?: Date | null
   disabled?: boolean
   className?: string
 }
@@ -15,6 +17,8 @@ interface Props {
 export function FormDatePicker({
   label,
   id,
+  fromDate,
+  toDate,
   defaultSelected,
   disabled,
   className
@@ -30,27 +34,23 @@ export function FormDatePicker({
     datepickerProps,
     inputProps: { onBlur: datepickerOnBlur, ...datepickerInputProps }
   } = useDatepicker({
-    fromDate: new Date(),
-    defaultSelected: defaultSelected
-      ? dayjs(defaultSelected).toDate()
-      : undefined,
-    onDateChange: (date) => {
-      setValue(id, formatDateToString(date), { shouldDirty: true })
-      clearErrors(id)
+    fromDate: fromDate ?? undefined,
+    toDate: toDate ?? undefined,
+    defaultSelected: getDayjsFromString(defaultSelected)?.toDate() ?? undefined,
+    onDateChange: async (date) => {
+      setValue(id, dayjs(date).format('DD.MM.YYYY'), { shouldDirty: true })
+      clearErrors('startdato')
+      clearErrors('sluttdato')
     }
   })
 
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(id, e.target.value, { shouldDirty: true })
-
-    const date = dayjs(e.target.value, 'D.M.YY', true)
-    if (date.isValid()) {
-      setValue(id, formatDateToString(date.toDate()), { shouldDirty: true })
-      const isAfter = date.isAfter(dayjs())
-      if (isAfter) {
-        // Bare fjern feilmeldinger, ikke setter dem
-        clearErrors(id)
-      }
+    const date = getDayjsFromString(e.target.value)
+    if (date?.isValid()) {
+      setValue(id, date.format('DD.MM.YYYY'), { shouldDirty: true })
+      clearErrors('startdato')
+      clearErrors('sluttdato')
     }
   }
 

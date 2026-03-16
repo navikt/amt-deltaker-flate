@@ -24,7 +24,7 @@ import { utkastRequestSchema } from '../api/data/utkast-request.ts'
 import { sendInnPameldingUtenGodkjenningRequestSchema } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
 import { MockHandler } from './MockHandler.ts'
 import {
-  opprettKladdEnkeltplassRequestSchema,
+  opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
 
@@ -76,12 +76,12 @@ export const worker = setupWorker(
     return response
   }),
   http.post(
-    '/amt-deltaker-bff/opprett-kladd-enkeltplass-uten-rammeavtale',
+    '/amt-deltaker-bff/opprett-enkeltplass-kladd',
     async ({ request }) => {
       await delay(1000)
       const response = await request
         .json()
-        .then((json) => opprettKladdEnkeltplassRequestSchema.parse(json))
+        .then((json) => opprettEnkeltplassKladdRequestSchema.parse(json))
         .then((body) => handler.createEnkeltplassPamelding(body.tiltakskode))
 
       return response
@@ -267,13 +267,23 @@ export const worker = setupWorker(
       status: 200
     })
   }),
-  http.post('/amt-deltaker-bff/kladd/:deltakerId', async () => {
+  (http.post('/amt-deltaker-bff/kladd/:deltakerId', async () => {
     await delay(1000)
 
     return new HttpResponse(null, {
       status: 200
     })
   }),
+  http.post(
+    '/amt-deltaker-bff/oppdater-enkeltplass-kladd/:deltakerId',
+    async () => {
+      await delay(1000)
+
+      return new HttpResponse(null, {
+        status: 200
+      })
+    }
+  )),
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
     await delay(1000)
     return handler.getHistorikk()

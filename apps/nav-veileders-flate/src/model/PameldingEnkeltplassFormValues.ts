@@ -1,46 +1,76 @@
-import { Tiltakskode } from 'deltaker-flate-common'
 import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-
-dayjs.extend(customParseFormat)
+import {
+  getMaxVarighetDato,
+  VARGIHET_VALG_FEILMELDING
+} from '../utils/varighet.tsx'
 
 export const TEKSTFELT_MAX_TEGN = 1000
 
 const datoSchema = z
   .string()
   .optional()
-  .refine((val) => !val || dayjs(val, 'DD.MM.YYYY', true).isValid(), {
+  .refine((val) => !val || !!getDayjsFromString(val)?.isValid(), {
     message: 'Ugyldig datoformat. Bruk dd.mm.åååå.'
   })
-  .refine(
-    (val) => !val || !dayjs(val, 'DD.MM.YYYY', true).isBefore(dayjs(), 'day'),
-    { message: 'Dato kan ikke være i fortiden.' }
-  )
 
-export const pameldingEnkeltplassFormSchema = z.object({
-  tiltakskode: z.enum(Tiltakskode),
-  beskrivelseKurs: z
-    .string()
-    .min(1, 'Beskrivelse av kurset er påkrevd.')
-    .max(
-      TEKSTFELT_MAX_TEGN,
-      `Beskrivelse av kurset kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
-    ),
-  startDato: datoSchema,
-  sluttDato: datoSchema,
-  prisinformasjon: z
-    .string()
-    .min(1, 'Prisinformasjon er påkrevd.')
-    .max(
-      TEKSTFELT_MAX_TEGN,
-      `Prisinformasjon kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
+export const createPameldingEnkeltplassFormSchema = (
+  pamelding: DeltakerResponse
+) =>
+  z
+    .object({
+      tiltakskode: z.enum(Tiltakskode),
+      beskrivelse: z
+        .string()
+        .min(1, 'Beskrivelse av kurset er påkrevd.')
+        .max(
+          TEKSTFELT_MAX_TEGN,
+          `Beskrivelse av kurset kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
+        ),
+      startdato: datoSchema,
+      sluttdato: datoSchema,
+      prisinformasjon: z
+        .string()
+        .min(1, 'Prisinformasjon er påkrevd.')
+        .max(
+          TEKSTFELT_MAX_TEGN,
+          `Prisinformasjon kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
+        )
+    })
+    .refine(
+      (schema) => {
+        const start = getDayjsFromString(schema.startdato)
+        const slutt = getDayjsFromString(schema.sluttdato)
+        if (start && slutt) {
+          return slutt.isSameOrAfter(start, 'date')
+        }
+        return true
+      },
+      {
+        message: 'Sluttdato må være etter startdato.',
+        path: ['sluttdato']
+      }
     )
-})
+    .refine(
+      (schema) => {
+        const start = getDayjsFromString(schema.startdato)
+        const slutt = getDayjsFromString(schema.sluttdato)
+        if (start && slutt) {
+          const maxVarighetDato = getMaxVarighetDato(pamelding, start.toDate())
+          return slutt.isSameOrBefore(dayjs(maxVarighetDato), 'date')
+        }
+        return true
+      },
+      {
+        message: VARGIHET_VALG_FEILMELDING,
+        path: ['sluttdato']
+      }
+    )
 
 export type PameldingEnkeltplassFormValues = z.infer<
-  typeof pameldingEnkeltplassFormSchema
+  ReturnType<typeof createPameldingEnkeltplassFormSchema>
 >
 
 export const generateFormDefaultValues = (
@@ -48,9 +78,9 @@ export const generateFormDefaultValues = (
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: pamelding.deltakerliste.tiltakskode,
-    beskrivelseKurs: '', // TODO hent dette fra deltakerliste?
-    startDato: pamelding.startdato ?? undefined, // TODO er det fra deltakerliste?
-    sluttDato: pamelding.sluttdato ?? undefined,
+    beskrivelse: '', // TODO hent dette fra deltakerliste?
+    startdato: pamelding.startdato ?? undefined, // TODO er det fra deltakerliste?
+    sluttdato: pamelding.sluttdato ?? undefined,
     prisinformasjon: ''
   }
 }

@@ -130,7 +130,7 @@ export class MockHandler {
       kanEndres: true,
       digitalBruker: true,
       harAdresse: true,
-      maxVarighet: dayjs.duration(12, 'month').asMilliseconds(),
+      maxVarighet: dayjs.duration(1, 'month').asMilliseconds(),
       softMaxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
       forslag: [],
       importertFraArena: null,
