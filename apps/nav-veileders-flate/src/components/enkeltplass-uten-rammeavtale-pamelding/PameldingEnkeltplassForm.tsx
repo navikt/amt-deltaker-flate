@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { InfoCard, Textarea } from '@navikt/ds-react'
-import dayjs from 'dayjs'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -10,7 +9,6 @@ import {
   PameldingEnkeltplassFormValues,
   TEKSTFELT_MAX_TEGN
 } from '../../model/PameldingEnkeltplassFormValues'
-import { getMaxVarighetDato } from '../../utils/varighet'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 import { FormDatePicker } from './FormDatePicker'
 import { FormErrorSummary } from './FormErrorSummary'
@@ -46,14 +44,6 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
 
-  const startdato = watch('startdato')
-  const maxSluttdato = startdato
-    ? getMaxVarighetDato(
-        pamelding,
-        dayjs(startdato, 'DD.MM.YYYY').toDate()
-      )?.toDate()
-    : undefined
-
   return (
     <form
       autoComplete="off"
@@ -83,20 +73,8 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
 
         <div className="flex gap-4 mt-8">
           <FormDatePicker
-            label="Startdato (valgfri)"
-            id="startdato"
-            defaultSelected={defaultValues.startdato}
-            disabled={disabled}
-          />
-          <FormDatePicker
-            label="Sluttdato (valgfri)"
-            id="sluttdato"
-            defaultSelected={defaultValues.startdato}
-            fromDate={
-              startdato ? dayjs(startdato, 'DD.MM.YYYY').toDate() : undefined
-            }
-            toDate={maxSluttdato}
-            disabled={disabled}
+            defaultStartdato={defaultValues.startdato}
+            defaultSluttdato={defaultValues.startdato}
           />
         </div>
 

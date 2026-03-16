@@ -1,94 +1,159 @@
-import { DatePicker, useDatepicker } from '@navikt/ds-react'
+import { DatePicker, ErrorMessage, useDatepicker } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getDayjsFromString } from '../../../../../packages/deltaker-flate-common/utils/utils'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues'
 import { usePameldingFormContext } from './PameldingFormContext'
+import dayjs from 'dayjs'
+import { getMaxVarighetDato } from '../../utils/varighet'
+import { usePameldingContext } from '../tiltak/PameldingContext'
 
 interface Props {
-  label: string
-  id: 'startdato' | 'sluttdato'
-  defaultSelected?: Date
-  fromDate?: Date | null
-  toDate?: Date | null
-  disabled?: boolean
+  defaultStartdato?: Date
+  defaultSluttdato?: Date
   className?: string
 }
 
 export function FormDatePicker({
-  label,
-  id,
-  fromDate,
-  toDate,
-  defaultSelected,
-  disabled,
+  defaultStartdato,
+  defaultSluttdato,
   className
 }: Props) {
   const {
     control,
     setValue,
+    watch,
     clearErrors,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
-  const { errors: contextErrors, setErrors } = usePameldingFormContext()
+  const { disabled } = usePameldingFormContext()
+  const { pamelding } = usePameldingContext()
+
+  const startdato = watch('startdato')
+  const sluttdato = watch('sluttdato')
+  const maxSluttdato = startdato
+    ? getMaxVarighetDato(
+        pamelding,
+        dayjs(startdato, 'DD.MM.YYYY').toDate()
+      )?.toDate()
+    : undefined
 
   const {
-    datepickerProps,
-    inputProps: { onBlur: datepickerOnBlur, ...datepickerInputProps }
+    datepickerProps: datepickerPropsStartdato,
+    inputProps: { onBlur: startdatoOnBlur, ...startdatoInputProps }
   } = useDatepicker({
-    fromDate: fromDate ?? undefined,
-    toDate: toDate ?? undefined,
-    defaultSelected: defaultSelected ?? undefined,
+    fromDate: dayjs().subtract(2, 'month').toDate(),
+    defaultSelected: defaultStartdato ?? undefined,
     onDateChange: async (date) => {
-      setValue(id, date, { shouldDirty: true })
       clearErrors('startdato')
-      clearErrors('sluttdato')
-      setErrors(contextErrors?.filter((error) => error.id !== id))
+      clearSluttdatoError(date, sluttdato)
+      setValue('startdato', date, { shouldDirty: true })
     }
   })
 
-  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = getDayjsFromString(e.target.value)
-    if (date?.isValid()) {
-      setValue(id, date.toDate(), { shouldDirty: true })
-      clearErrors('startdato')
+  const {
+    datepickerProps: datepickerPropsSluttdato,
+    inputProps: { onBlur: sluttdatoOnBlur, ...sluttdatoInputProps }
+  } = useDatepicker({
+    fromDate: startdato ?? dayjs().subtract(2, 'month').toDate(),
+    toDate: maxSluttdato ?? undefined,
+    defaultSelected: defaultSluttdato ?? undefined,
+    onDateChange: async (date) => {
       clearErrors('sluttdato')
+      setValue('sluttdato', date, { shouldDirty: true })
+    }
+  })
 
-      setErrors(contextErrors?.filter((error) => error.id !== id))
-    } else if (e.target.value !== '') {
-      setErrors([
-        ...contextErrors,
-        { id, message: 'Ugyldig datofomat: Bruk dd.mm.åååå' }
-      ])
+  const handleDateInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: 'startdato' | 'sluttdato'
+  ) => {
+    const date = getDayjsFromString(e.target.value)
+    setValue(id, date?.toDate(), { shouldDirty: true })
+    if (date?.isValid()) {
+      if (id === 'startdato') {
+        clearErrors('startdato')
+        clearSluttdatoError(date?.toDate(), sluttdato)
+      } else clearSluttdatoError(startdato, date?.toDate())
+    }
+  }
+
+  const clearSluttdatoError = (nyStartDato?: Date, nySluttDato?: Date) => {
+    if (!nySluttDato) clearErrors('sluttdato')
+    if (!nyStartDato) {
+      return
+    }
+
+    if (
+      (dayjs(nySluttDato).isSameOrAfter(dayjs(nyStartDato), 'date') ||
+        dayjs(nySluttDato).isBefore(dayjs(maxSluttdato), 'date')) &&
+      dayjs(nySluttDato).isValid()
+    ) {
+      clearErrors('sluttdato')
     }
   }
 
   return (
-    <Controller
-      control={control}
-      name={id}
-      render={({ field: { ref } }) => (
-        <DatePicker {...datepickerProps}>
-          <DatePicker.Input
-            className={className ?? ''}
-            label={label}
-            ref={ref}
-            // value={dateInput}
-            {...datepickerInputProps}
-            id={id}
-            error={
-              errors[id]?.message ||
-              contextErrors.find((error) => error.id === id)?.message
-            }
-            size="small"
-            onBlur={(event) => {
-              datepickerOnBlur?.(event)
-              handleDateInputChange(event)
-            }}
-            // onChange={handleDateInputChange}
-            disabled={disabled}
-          />
-        </DatePicker>
-      )}
-    />
+    <div className={`flex flex-col gap-4 ${className ?? ''}`}>
+      <div className="flex gap-4 mt-8">
+        <Controller
+          control={control}
+          name="startdato"
+          render={({ field: { ref } }) => (
+            <DatePicker {...datepickerPropsStartdato}>
+              <DatePicker.Input
+                className={className ?? ''}
+                label="Startdato (valgfri)"
+                ref={ref}
+                {...startdatoInputProps}
+                id="startdato"
+                error={!!errors['startdato']?.message}
+                aria-describedby="date-range-error"
+                size="small"
+                onBlur={(event) => {
+                  startdatoOnBlur?.(event)
+                  handleDateInputChange(event, 'startdato')
+                }}
+                disabled={disabled}
+              />
+            </DatePicker>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="sluttdato"
+          render={({ field: { ref } }) => (
+            <DatePicker {...datepickerPropsSluttdato}>
+              <DatePicker.Input
+                className={className ?? ''}
+                label="Sluttdato (valgfri)"
+                ref={ref}
+                {...sluttdatoInputProps}
+                id="sluttdato"
+                error={!!errors['sluttdato']?.message}
+                aria-describedby="date-range-error"
+                size="small"
+                onBlur={(event) => {
+                  sluttdatoOnBlur?.(event)
+                  handleDateInputChange(event, 'sluttdato')
+                }}
+                disabled={disabled}
+              />
+            </DatePicker>
+          )}
+        />
+      </div>
+      <div
+        id="date-range-error"
+        aria-relevant="additions removals"
+        aria-live="polite"
+      >
+        {(errors.startdato || errors.sluttdato) && (
+          <ErrorMessage showIcon>
+            {errors.startdato?.message || errors.sluttdato?.message}
+          </ErrorMessage>
+        )}
+      </div>
+    </div>
   )
 }
