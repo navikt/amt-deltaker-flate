@@ -10,7 +10,7 @@ import {
   TEKSTFELT_MAX_TEGN
 } from '../../model/PameldingEnkeltplassFormValues'
 import { usePameldingContext } from '../tiltak/PameldingContext'
-import { FormDatePicker } from './FormDatePicker'
+import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from './FormErrorSummary'
 import { PameldingFormButtons } from './PameldingFormButtons'
 import { usePameldingFormContext } from './PameldingFormContext'
@@ -71,12 +71,11 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
           size="small"
         />
 
-        <div className="flex gap-4 mt-8">
-          <FormDatePicker
-            defaultStartdato={defaultValues.startdato}
-            defaultSluttdato={defaultValues.startdato}
-          />
-        </div>
+        <PameldingDatoer
+          className="mt-4"
+          defaultStartdato={defaultValues.startdato}
+          defaultSluttdato={defaultValues.startdato}
+        />
 
         <Textarea
           className="mt-16"

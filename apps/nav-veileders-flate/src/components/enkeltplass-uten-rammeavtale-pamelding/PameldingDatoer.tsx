@@ -13,7 +13,7 @@ interface Props {
   className?: string
 }
 
-export function FormDatePicker({
+export function PameldingDatoer({
   defaultStartdato,
   defaultSluttdato,
   className
