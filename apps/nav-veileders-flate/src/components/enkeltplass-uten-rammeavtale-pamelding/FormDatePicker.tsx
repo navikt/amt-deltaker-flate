@@ -31,10 +31,7 @@ export function FormDatePicker({
   const startdato = watch('startdato')
   const sluttdato = watch('sluttdato')
   const maxSluttdato = startdato
-    ? getMaxVarighetDato(
-        pamelding,
-        dayjs(startdato, 'DD.MM.YYYY').toDate()
-      )?.toDate()
+    ? getMaxVarighetDato(pamelding, startdato)?.toDate()
     : undefined
 
   const {
