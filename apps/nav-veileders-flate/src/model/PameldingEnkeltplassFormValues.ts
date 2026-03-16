@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
+import { Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
 import {
@@ -9,12 +9,13 @@ import {
 
 export const TEKSTFELT_MAX_TEGN = 1000
 
-const datoSchema = z
-  .string()
+const dateShema = z
+  .date()
   .optional()
-  .refine((val) => !val || !!getDayjsFromString(val)?.isValid(), {
-    message: 'Ugyldig datoformat. Bruk dd.mm.åååå.'
-  })
+  .refine((date) => {
+    if (!date) return true
+    return !isNaN(date.getTime())
+  }, 'Ugyldig datofomat: Bruk dd.mm.åååå')
 
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse
@@ -29,8 +30,8 @@ export const createPameldingEnkeltplassFormSchema = (
           TEKSTFELT_MAX_TEGN,
           `Beskrivelse av kurset kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
         ),
-      startdato: datoSchema,
-      sluttdato: datoSchema,
+      startdato: dateShema,
+      sluttdato: dateShema,
       prisinformasjon: z
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')
@@ -41,8 +42,20 @@ export const createPameldingEnkeltplassFormSchema = (
     })
     .refine(
       (schema) => {
-        const start = getDayjsFromString(schema.startdato)
-        const slutt = getDayjsFromString(schema.sluttdato)
+        const harStart = !!schema.startdato
+        const harSlutt = !!schema.sluttdato
+        if (harSlutt && !harStart) return false
+        return true
+      },
+      {
+        message: 'Startdato må fylles ut sammen med sluttdato.',
+        path: ['startdato']
+      }
+    )
+    .refine(
+      (schema) => {
+        const start = dayjs(schema.startdato)
+        const slutt = dayjs(schema.sluttdato)
         if (start && slutt) {
           return slutt.isSameOrAfter(start, 'date')
         }
@@ -55,8 +68,8 @@ export const createPameldingEnkeltplassFormSchema = (
     )
     .refine(
       (schema) => {
-        const start = getDayjsFromString(schema.startdato)
-        const slutt = getDayjsFromString(schema.sluttdato)
+        const start = dayjs(schema.startdato)
+        const slutt = dayjs(schema.sluttdato)
         if (start && slutt) {
           const maxVarighetDato = getMaxVarighetDato(pamelding, start.toDate())
           return slutt.isSameOrBefore(dayjs(maxVarighetDato), 'date')
@@ -79,8 +92,12 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: pamelding.deltakerliste.tiltakskode,
     beskrivelse: '', // TODO hent dette fra deltakerliste?
-    startdato: pamelding.startdato ?? undefined, // TODO er det fra deltakerliste?
-    sluttdato: pamelding.sluttdato ?? undefined,
+    startdato: pamelding.startdato
+      ? dayjs(pamelding.startdato).toDate()
+      : undefined,
+    sluttdato: pamelding.sluttdato
+      ? dayjs(pamelding.sluttdato).toDate()
+      : undefined,
     prisinformasjon: ''
   }
 }

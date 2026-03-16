@@ -1,13 +1,13 @@
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
-import dayjs from 'dayjs'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getDayjsFromString } from '../../../../../packages/deltaker-flate-common/utils/utils'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues'
+import { usePameldingFormContext } from './PameldingFormContext'
 
 interface Props {
   label: string
   id: 'startdato' | 'sluttdato'
-  defaultSelected?: string | null
+  defaultSelected?: Date
   fromDate?: Date | null
   toDate?: Date | null
   disabled?: boolean
@@ -29,6 +29,7 @@ export function FormDatePicker({
     clearErrors,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
+  const { errors: contextErrors, setErrors } = usePameldingFormContext()
 
   const {
     datepickerProps,
@@ -36,21 +37,28 @@ export function FormDatePicker({
   } = useDatepicker({
     fromDate: fromDate ?? undefined,
     toDate: toDate ?? undefined,
-    defaultSelected: getDayjsFromString(defaultSelected)?.toDate() ?? undefined,
+    defaultSelected: defaultSelected ?? undefined,
     onDateChange: async (date) => {
-      setValue(id, dayjs(date).format('DD.MM.YYYY'), { shouldDirty: true })
+      setValue(id, date, { shouldDirty: true })
       clearErrors('startdato')
       clearErrors('sluttdato')
+      setErrors(contextErrors?.filter((error) => error.id !== id))
     }
   })
 
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(id, e.target.value, { shouldDirty: true })
     const date = getDayjsFromString(e.target.value)
     if (date?.isValid()) {
-      setValue(id, date.format('DD.MM.YYYY'), { shouldDirty: true })
+      setValue(id, date.toDate(), { shouldDirty: true })
       clearErrors('startdato')
       clearErrors('sluttdato')
+
+      setErrors(contextErrors?.filter((error) => error.id !== id))
+    } else if (e.target.value !== '') {
+      setErrors([
+        ...contextErrors,
+        { id, message: 'Ugyldig datofomat: Bruk dd.mm.åååå' }
+      ])
     }
   }
 
@@ -64,9 +72,13 @@ export function FormDatePicker({
             className={className ?? ''}
             label={label}
             ref={ref}
+            // value={dateInput}
             {...datepickerInputProps}
             id={id}
-            error={errors[id]?.message}
+            error={
+              errors[id]?.message ||
+              contextErrors.find((error) => error.id === id)?.message
+            }
             size="small"
             onBlur={(event) => {
               datepickerOnBlur?.(event)
