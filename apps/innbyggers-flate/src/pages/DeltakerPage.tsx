@@ -13,6 +13,7 @@ import {
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
+  getDateFromString,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
@@ -113,7 +114,7 @@ export const DeltakerPage = () => {
           tiltaketsStartDato={deltaker.deltakerliste.startdato}
           statusType={deltaker.status.type}
           arrangorNavn={deltaker.deltakerliste.arrangorNavn}
-          oppstartsdato={deltaker.startdato}
+          oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
           pameldingstype={deltaker.deltakerliste.pameldingstype}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           erEnkeltplassUtenRammeavtale={

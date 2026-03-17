@@ -56,7 +56,7 @@ const pamelding: DeltakerResponse = {
     gyldigTil: null,
     opprettet: dayjs().subtract(1, 'day').toDate()
   },
-  startdato: startdato.format('YYYY-MM-DD'),
+  startdato: startdato.toDate(),
   sluttdato: null,
   dagerPerUke: null,
   deltakelsesprosent: 100,
@@ -110,7 +110,7 @@ describe('getMaxVarighetDato', () => {
   it('returns varighet beregnet fra deltakers startdato', () => {
     const maxVarighetDato = getMaxVarighetDato({
       ...pamelding,
-      startdato: '2024-01-20',
+      startdato: dayjs('2024-01-20').toDate(),
       maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
     })
     expect(
@@ -122,7 +122,7 @@ describe('getMaxVarighetDato', () => {
     const maxVarighetDato = getMaxVarighetDato(
       {
         ...pamelding,
-        startdato: '2024-01-20',
+        startdato: dayjs('2024-01-20').toDate(),
         maxVarighet: dayjs.duration(1, 'month').asMilliseconds()
       },
       dayjs('2024-02-20').toDate()
@@ -210,8 +210,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
-        startdato: '2024-03-20',
-        sluttdato: '2025-10-28',
+        startdato: dayjs('2024-03-20').toDate(),
+        sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -228,8 +228,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
-        startdato: '2024-03-20',
-        sluttdato: '2024-04-28',
+        startdato: dayjs('2024-03-20').toDate(),
+        sluttdato: dayjs('2024-04-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -246,8 +246,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
-        startdato: '2024-01-20',
-        sluttdato: '2024-02-28',
+        startdato: dayjs('2024-01-20').toDate(),
+        sluttdato: dayjs('2024-02-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -264,8 +264,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
-        startdato: '2024-01-20',
-        sluttdato: '2025-10-28',
+        startdato: dayjs('2024-01-20').toDate(),
+        sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -282,8 +282,8 @@ describe('getSkalBekrefteVarighet', () => {
     const skalBekrefte = getSkalBekrefteVarighet(
       {
         ...pamelding,
-        startdato: '2024-03-20',
-        sluttdato: '2025-10-28',
+        startdato: dayjs('2024-03-20').toDate(),
+        sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -300,7 +300,7 @@ describe('getSkalBekrefteVarighet', () => {
 describe('getSluttDatoFeilmelding', () => {
   it('returnerer feilmelding for ny sluttdato før startdato feil', () => {
     const feilmelding = getSluttDatoFeilmelding(
-      { ...pamelding, startdato: dayjs().subtract(5, 'day').toString() },
+      { ...pamelding, startdato: dayjs().subtract(5, 'day').toDate() },
       dayjs().subtract(20, 'day').toDate()
     )
     expect(feilmelding).toEqual(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
@@ -308,7 +308,7 @@ describe('getSluttDatoFeilmelding', () => {
 
   it('returnerer feilmelding for ny sluttdato før ny startdato feil', () => {
     const feilmelding = getSluttDatoFeilmelding(
-      { ...pamelding, startdato: dayjs().subtract(5, 'day').toString() },
+      { ...pamelding, startdato: dayjs().subtract(5, 'day').toDate() },
       dayjs().subtract(20, 'day').toDate(),
       dayjs().subtract(9, 'day').toDate()
     )
@@ -359,7 +359,7 @@ describe('getSluttDatoFeilmelding', () => {
     const feilmelding = getSluttDatoFeilmelding(
       {
         ...pamelding,
-        startdato: '2024-04-23',
+        startdato: dayjs('2024-04-23').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
           sluttdato: dayjs('2024-10-23').toDate()
