@@ -114,14 +114,13 @@ export function PameldingDatoer({
 
   return (
     <div className={className ?? ''}>
-      <div className="flex gap-4 mt-8">
+      <div className="flex gap-4">
         <Controller
           control={control}
           name="startdato"
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsStartdato}>
               <DatePicker.Input
-                className={className ?? ''}
                 label="Startdato (valgfri)"
                 ref={ref}
                 {...startdatoInputProps}
@@ -145,7 +144,6 @@ export function PameldingDatoer({
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsSluttdato}>
               <DatePicker.Input
-                className={className ?? ''}
                 label="Sluttdato (valgfri)"
                 ref={ref}
                 {...sluttdatoInputProps}

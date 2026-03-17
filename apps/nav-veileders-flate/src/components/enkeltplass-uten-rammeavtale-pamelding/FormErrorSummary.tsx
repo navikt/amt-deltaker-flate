@@ -31,7 +31,7 @@ export const FormErrorSummary = () => {
     <div ref={ref} tabIndex={-1}>
       <ErrorSummary
         heading="Du må rette opp i dette før du kan gå videre:"
-        className="mb-4"
+        className="mb-8"
       >
         {schemaFields.map((errorName) => {
           const error = errors[errorName]

@@ -73,13 +73,13 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
         />
 
         <PameldingDatoer
-          className="mt-4"
+          className="mt-8"
           defaultStartdato={defaultValues.startdato}
           defaultSluttdato={defaultValues.startdato}
         />
 
         <Textarea
-          className="mt-16"
+          className="mt-8"
           label="Prisinformasjon"
           description="Før opp kostnader for Nav utenom tilleggsstønader og ytelser"
           {...register('prisinformasjon')}
