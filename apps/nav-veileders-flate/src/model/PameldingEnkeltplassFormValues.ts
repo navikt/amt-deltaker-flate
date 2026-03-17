@@ -50,7 +50,7 @@ export const createPameldingEnkeltplassFormSchema = (
       },
       {
         message:
-          'Hvis du angir en startdato eller en sluttdato, må begge datoene fylles ut.',
+          'Hvis du registrerer start- eller sluttdato, må begge datoene fylles ut.',
         path: ['sluttdato']
       }
     )
