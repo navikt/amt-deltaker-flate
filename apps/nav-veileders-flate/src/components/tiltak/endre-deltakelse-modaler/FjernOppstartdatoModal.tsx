@@ -1,7 +1,6 @@
 import {
   BegrunnelseInput,
   DeltakerStatusType,
-  EMDASH,
   EndreDeltakelseType,
   Forslag,
   getDeltakerStatusDisplayText,
@@ -11,8 +10,8 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseFjernOppstartsdato } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface FjernOppstartsdatoModalProps {
   pamelding: DeltakerResponse
@@ -48,7 +47,7 @@ export const FjernOppstartsdatoModal = ({
           `Kan ikke fjerne oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
         )
       }
-      if (!pamelding.startdato || pamelding.startdato === EMDASH) {
+      if (!pamelding.startdato) {
         throw new Error(
           'Kan ikke fjerne oppstartsdato for deltaker som ikke har oppstartsdato.'
         )

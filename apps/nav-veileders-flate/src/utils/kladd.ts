@@ -5,7 +5,10 @@ import {
   KladdRequest
 } from '../api/data/kladd-request'
 import { DeltakerResponse } from '../api/data/pamelding'
-import { PameldingEnkeltplassFormValues } from '../model/PameldingEnkeltplassFormValues'
+import {
+  DATE_FORMAT,
+  PameldingEnkeltplassFormValues
+} from '../model/PameldingEnkeltplassFormValues'
 import { PameldingFormValues } from '../model/PameldingFormValues'
 import { generateInnholdFromResponse } from './pamelding-form-utils'
 import { formatDateToDtoStr } from './utils'
@@ -13,15 +16,14 @@ import { formatDateToDtoStr } from './utils'
 export const formToEnkeltplassKladdRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassKladdRequest => {
+  const startdato = dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
+  const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
+
   return {
     beskrivelse: data.beskrivelse,
     prisinformasjon: data.prisinformasjon,
-    startdato: data.startdato
-      ? formatDateToDtoStr(dayjs(data.startdato).toDate())
-      : undefined,
-    sluttdato: data.sluttdato
-      ? formatDateToDtoStr(dayjs(data.sluttdato).toDate())
-      : undefined
+    startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
+    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
   }
 }
 

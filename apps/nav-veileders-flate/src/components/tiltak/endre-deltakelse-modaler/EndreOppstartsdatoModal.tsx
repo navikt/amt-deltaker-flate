@@ -13,7 +13,6 @@ import {
   ForslagEndringType,
   StartdatoForslag,
   Tiltakskode,
-  getDateFromString,
   getDeltakerStatusDisplayText,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -302,8 +301,8 @@ function isStartdatoForslag(
 function getDatoer(deltaker: DeltakerResponse, forslag: Forslag | null) {
   if (forslag === null) {
     return {
-      startdato: getDateFromString(deltaker.startdato),
-      sluttdato: getDateFromString(deltaker.sluttdato)
+      startdato: deltaker.startdato ?? undefined,
+      sluttdato: deltaker.sluttdato ?? undefined
     }
   }
   if (isStartdatoForslag(forslag.endring)) {

@@ -6,12 +6,11 @@ import {
   DeltakerStatusType,
   EndreDeltakelseType,
   Forslag,
-  getDateFromString,
   harKursAvslutning,
   useAarsak,
   useBegrunnelse
 } from 'deltaker-flate-common'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { avsluttDeltakelse, endreAvslutning } from '../../../api/api.ts'
 import { AvsluttDeltakelseRequest } from '../../../api/data/endre-deltakelse-request.ts'
@@ -29,12 +28,8 @@ import {
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
+import { formatDateToDtoStr } from '../../../utils/utils.ts'
 import {
-  dateStrToNullableDate,
-  formatDateToDtoStr
-} from '../../../utils/utils.ts'
-import {
-  getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   VARIGHET_BEKREFTELSE_FEILMELDING
@@ -104,10 +99,7 @@ export const AvsluttDeltakelseModal = ({
   const sluttdato = useSluttdatoInput({
     deltaker: pamelding,
     defaultDato: defaultSluttdato ?? undefined,
-    startdato: useMemo(
-      () => getDateFromString(pamelding.startdato),
-      [pamelding.startdato]
-    )
+    startdato: pamelding.startdato ?? undefined
   })
   const { enhetId } = useAppContext()
 
@@ -325,8 +317,8 @@ export const AvsluttDeltakelseModal = ({
             label="Hva er ny sluttdato?"
             disabled={false}
             error={sluttdato.error}
-            fromDate={dateStrToNullableDate(pamelding.startdato) || undefined}
-            toDate={getSisteGyldigeSluttDato(pamelding) || undefined}
+            fromDate={pamelding.startdato ?? undefined}
+            toDate={pamelding.sluttdato ?? undefined}
             defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}

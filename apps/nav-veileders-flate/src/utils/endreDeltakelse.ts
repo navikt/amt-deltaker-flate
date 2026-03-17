@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import {
   DeltakerStatusType,
-  EMDASH,
   EndreDeltakelseType,
   harBakgrunnsinfo,
   harInnhold,
@@ -14,7 +13,6 @@ import {
   deltakerHarSluttetEllerFullfort,
   deltakerVenterPaOppstartEllerDeltar
 } from './statusutils'
-import { dateStrToNullableDate } from './utils'
 
 const ikkeAktuell = (pamelding: DeltakerResponse) =>
   pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
@@ -58,8 +56,7 @@ export const kanEndreOppstartsdato = (pamelding: DeltakerResponse) =>
 const skalViseFjernOppstartsdato = (pamelding: DeltakerResponse) =>
   harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
   pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
-  pamelding.startdato &&
-  pamelding.startdato !== EMDASH
+  pamelding.startdato
 
 const skalViseEndreAvslutning = (pamelding: DeltakerResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
@@ -73,7 +70,7 @@ const erDeltakelseLaast = (pamelding: DeltakerResponse): boolean => {
     return false
   }
 
-  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const sluttdato = pamelding.sluttdato
   const statusGyldigFra = pamelding.status.gyldigFra
   const nyesteDato = getNyesteDato([sluttdato, statusGyldigFra])
 
@@ -101,7 +98,7 @@ const getNyesteDato = (datoer: (Date | null)[]) => {
 
 export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
   const valg: EndreDeltakelseType[] = []
-  const sluttdato = dateStrToNullableDate(pamelding.sluttdato)
+  const sluttdato = pamelding.sluttdato
   const deltakelseErLaast = erDeltakelseLaast(pamelding)
 
   if (kanEndreOppstartsdato(pamelding) && !deltakelseErLaast) {

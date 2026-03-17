@@ -14,6 +14,7 @@ import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from './FormErrorSummary'
 import { PameldingFormButtons } from './PameldingFormButtons'
 import { usePameldingFormContext } from './PameldingFormContext'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 interface Props {
   className?: string
@@ -95,16 +96,13 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
           size="small"
         />
 
-        <InfoCard className="mt-8">
-          <InfoCard.Header>
+        <InfoCard className="mt-8" size="small">
+          <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
             <InfoCard.Title>
-              Prisinformasjonen sendes til godkjenning.
+              Prisinformasjonen sendes til godkjenning. Hvis tiltaksøkonomien
+              godkjennes så fattes vedtaket, og brukeren blir varslet.
             </InfoCard.Title>
           </InfoCard.Header>
-          <InfoCard.Content>
-            Hvis tiltaksøkonomien godkjennes så fattes vedtaket, og brukeren
-            blir varslet.
-          </InfoCard.Content>
         </InfoCard>
 
         <PameldingFormButtons className="mt-8" />

@@ -12,7 +12,7 @@ import {
   Oppmotested,
   SeEndringer,
   VedtakOgKlage,
-  formatDateFromString,
+  formatDate,
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
@@ -37,7 +37,6 @@ export const DeltakerInfo = ({ className }: Props) => {
 
   const skalViseDato =
     pamelding.startdato &&
-    pamelding.startdato !== EMDASH &&
     pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
     pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
     pamelding.status.type !== DeltakerStatusType.VENTELISTE
@@ -48,15 +47,10 @@ export const DeltakerInfo = ({ className }: Props) => {
       : EMDASH
 
   let dato = EMDASH
-  if (
-    pamelding.startdato &&
-    pamelding.sluttdato &&
-    pamelding.startdato !== EMDASH &&
-    pamelding.sluttdato !== EMDASH
-  ) {
-    dato = `${formatDateFromString(pamelding.startdato)} - ${formatDateFromString(pamelding.sluttdato)}`
-  } else if (pamelding.startdato && pamelding.startdato !== EMDASH) {
-    dato = formatDateFromString(pamelding.startdato)
+  if (pamelding.startdato && pamelding.sluttdato) {
+    dato = `${formatDate(pamelding.startdato)} - ${formatDate(pamelding.sluttdato)}`
+  } else if (pamelding.startdato) {
+    dato = formatDate(pamelding.startdato)
   }
 
   const visDeltMedArrangor =

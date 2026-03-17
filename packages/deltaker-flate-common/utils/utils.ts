@@ -12,7 +12,7 @@ import { EMDASH } from './constants'
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
 
-const DATO_FORMAT = [
+const DATO_FORMATS = [
   'D.M.YY',
   'D.MM.YY',
   'DD.M.YY',
@@ -31,9 +31,15 @@ export const isValidDate = (date?: string | null) => {
   return date ? dayjs(date).isValid() : false
 }
 
+/**
+ * Returns a dayjs object from a date string if the string is valid.
+ * Should be used with DatePicker.Input
+ * @param dateString
+ * @returns dayjs object or undefined
+ */
 export const getDayjsFromString = (dateString?: string | null) => {
   if (!dateString) return undefined
-  for (const format of DATO_FORMAT) {
+  for (const format of DATO_FORMATS) {
     const date = dayjs(dateString, format, true)
     if (date.isValid()) return date
   }
@@ -42,7 +48,6 @@ export const getDayjsFromString = (dateString?: string | null) => {
 }
 
 export const getDateFromString = (dateString?: string | null) => {
-  // return getDayjsFromString(dateString)?.toDate()
   return dateString && dayjs(dateString).isValid()
     ? dayjs(dateString).toDate()
     : undefined

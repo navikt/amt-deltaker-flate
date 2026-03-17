@@ -5,12 +5,12 @@ import {
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  EMDASH,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
+  getDateFromString,
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
@@ -156,7 +156,7 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
-  getStartdato(newStatusType?: DeltakerStatusType): string {
+  getStartdato(newStatusType?: DeltakerStatusType): Date | null {
     const statusType = newStatusType ?? this.statusType
     if (
       statusType === DeltakerStatusType.DELTAR ||
@@ -166,17 +166,17 @@ export class MockHandler {
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 15)
-      return dayjs(passertDato).format('YYYY-MM-DD')
+      return dayjs(passertDato).toDate()
     }
-    return EMDASH
+    return null
   }
 
-  getSluttdato(newStatusType?: DeltakerStatusType): string {
+  getSluttdato(newStatusType?: DeltakerStatusType): Date | null {
     const statusType = newStatusType ?? this.statusType
     if (statusType === DeltakerStatusType.DELTAR) {
       const fremtidigDato = new Date()
       fremtidigDato.setDate(fremtidigDato.getDate() + 10)
-      return dayjs(fremtidigDato).format('YYYY-MM-DD')
+      return dayjs(fremtidigDato).toDate()
     }
     if (
       statusType === DeltakerStatusType.HAR_SLUTTET ||
@@ -185,9 +185,9 @@ export class MockHandler {
     ) {
       const passertDato = new Date()
       passertDato.setDate(passertDato.getDate() - 10)
-      return dayjs(passertDato).format('YYYY-MM-DD')
+      return dayjs(passertDato).toDate()
     }
-    return EMDASH
+    return null
   }
 
   getForslag(): Forslag[] {
@@ -196,11 +196,9 @@ export class MockHandler {
     if (this.statusType === DeltakerStatusType.DELTAR) {
       const sluttdato = dayjs(this.pamelding?.sluttdato)
         .add(3, 'months')
-        .format('YYYY-MM-DD')
+        .toDate()
 
-      const startdato = dayjs(this.pamelding?.startdato)
-        .add(1, 'week')
-        .format('YYYY-MM-DD')
+      const startdato = dayjs(this.pamelding?.startdato).add(1, 'week').toDate()
 
       const forslag = aktivtForslag({
         begrunnelse:
@@ -209,14 +207,14 @@ export class MockHandler {
           'nå er det totalt sett to hundre tegn. Ja, det er det..',
         endring: {
           type: ForslagEndringType.ForlengDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate()
+          sluttdato: sluttdato
         }
       })
       const forslagAvslutt = aktivtForslag({
         begrunnelse: null,
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
+          sluttdato: sluttdato,
           aarsak: {
             type: ForslagEndringAarsakType.Syk
           },
@@ -228,7 +226,7 @@ export class MockHandler {
         begrunnelse: null,
         endring: {
           type: ForslagEndringType.AvsluttDeltakelse,
-          sluttdato: dayjs(sluttdato).toDate(),
+          sluttdato: sluttdato,
           aarsak: null,
           harDeltatt: true,
           harFullfort: true
@@ -245,8 +243,8 @@ export class MockHandler {
       const forslagStartdato = aktivtForslag({
         endring: {
           type: ForslagEndringType.Startdato,
-          startdato: dayjs(startdato).toDate(),
-          sluttdato: dayjs(sluttdato).toDate()
+          startdato: startdato,
+          sluttdato: sluttdato
         }
       })
       const forslagIkkeAktuell = aktivtForslag({
@@ -505,7 +503,8 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.sluttdato = request.sluttdato
+      oppdatertPamelding.sluttdato =
+        getDateFromString(request.sluttdato) ?? null
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
@@ -518,8 +517,10 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.startdato = request.startdato
-      oppdatertPamelding.sluttdato = request.sluttdato
+      oppdatertPamelding.startdato =
+        getDateFromString(request.startdato) ?? null
+      oppdatertPamelding.sluttdato =
+        getDateFromString(request.sluttdato) ?? null
       this.pamelding = oppdatertPamelding
       this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(oppdatertPamelding)
@@ -573,7 +574,8 @@ export class MockHandler {
           oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
         }
         oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.sluttdato = request.sluttdato
+        oppdatertPamelding.sluttdato =
+          getDateFromString(request.sluttdato) ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
@@ -597,7 +599,8 @@ export class MockHandler {
           ? DeltakerStatusType.FULLFORT
           : DeltakerStatusType.AVBRUTT
         oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.sluttdato = request.sluttdato ?? null
+        oppdatertPamelding.sluttdato =
+          getDateFromString(request.sluttdato) ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
       this.pamelding = oppdatertPamelding
