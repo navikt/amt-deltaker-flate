@@ -66,7 +66,7 @@ export const worker = setupWorker(
       return response
     }
   ),
-  (http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
+  http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
     await delay(1000)
     const response = await request
       .json()
@@ -86,7 +86,7 @@ export const worker = setupWorker(
 
       return response
     }
-  )),
+  ),
   http.delete('/amt-deltaker-bff/kladd/:deltakerId', async ({ params }) => {
     await delay(1000)
     const { deltakerId } = params
@@ -267,7 +267,7 @@ export const worker = setupWorker(
       status: 200
     })
   }),
-  (http.post('/amt-deltaker-bff/kladd/:deltakerId', async () => {
+  http.post('/amt-deltaker-bff/kladd/:deltakerId', async () => {
     await delay(1000)
 
     return new HttpResponse(null, {
@@ -283,7 +283,7 @@ export const worker = setupWorker(
         status: 200
       })
     }
-  )),
+  ),
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
     await delay(1000)
     return handler.getHistorikk()

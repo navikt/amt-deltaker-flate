@@ -24,12 +24,18 @@ const sjekkUU = async (page: Page, testid: string) => {
 test.describe('Smoketest og UU', () => {
   test('Nav veileders flate - kladd', async ({ page }) => {
     await page.getByTestId('select_status').selectOption('KLADD')
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSFORBEREDENDE_TRENING')
     await expect(page).toHaveTitle(/Deltaker/)
     await sjekkUU(page, 'page_kladd')
   })
 
   test('Nav veileders flate - utkast', async ({ page }) => {
     await page.getByTestId('select_status').selectOption('UTKAST_TIL_PAMELDING')
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSFORBEREDENDE_TRENING')
     await expect(page.getByText('Utkastet er delt')).toBeVisible()
     await sjekkUU(page, 'page_utkast')
   })
@@ -37,6 +43,9 @@ test.describe('Smoketest og UU', () => {
   test('Nav veileders flate - tiltaksiden - venter pa oppstart', async ({
     page
   }) => {
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSFORBEREDENDE_TRENING')
     await page.getByTestId('select_status').selectOption('VENTER_PA_OPPSTART')
     await expect(
       page.locator('span').filter({ hasText: 'Venter på oppstart' })
@@ -47,6 +56,9 @@ test.describe('Smoketest og UU', () => {
   test('Nav veileders flate - tiltaksiden - feilregistrert', async ({
     page
   }) => {
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSFORBEREDENDE_TRENING')
     await page.getByTestId('select_status').selectOption('FEILREGISTRERT')
     await expect(
       page.getByTestId('page_tiltak').getByText('Feilregistrert')
@@ -57,6 +69,9 @@ test.describe('Smoketest og UU', () => {
 
   test('Nav veileders flate - endre oppstartsdato', async ({ page }) => {
     await page.getByTestId('select_status').selectOption('DELTAR')
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSFORBEREDENDE_TRENING')
     await page.getByTestId('endre_deltakelse_knapp').click()
     await page.getByRole('button', { name: 'Endre oppstartsdato' }).click()
     await page.getByLabel('Ny oppstartsdato').fill('10.06.2020')
