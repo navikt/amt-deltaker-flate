@@ -48,7 +48,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.1.2",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.3",
     "msw": "^2.12.7",
     "playwright": "^1.57.0",
     "tailwindcss": "^4.1.18",
