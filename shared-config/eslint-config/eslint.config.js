@@ -2,14 +2,12 @@ import eslint from '@eslint/js'
 import globals from 'globals'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import tseslint from 'typescript-eslint'
-import pluginReact from 'eslint-plugin-react'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
   jsxA11y.flatConfigs.recommended,
   eslintConfigPrettier,
   {
@@ -30,7 +28,8 @@ export default [
       '/server/server.js',
       'plugin:react/recommended',
       'node_modules/',
-      'build/'
+      'build/',
+      'shared-config/'
     ]
   },
   {
@@ -48,7 +47,8 @@ export default [
       quotes: [2, 'single', { avoidEscape: true }],
       semi: ['error', 'never'],
       'no-multiple-empty-lines': ['warn', { max: 1, maxEOF: 1 }],
-      'jsx-quotes': [2, 'prefer-double']
+      'jsx-quotes': [2, 'prefer-double'],
+      'preserve-caught-error': 'off'
     }
   }
 ]

@@ -18,23 +18,19 @@ dayjs.extend(duration)
 export const DeltakerGuard = () => {
   const { pamelding } = usePameldingContext()
 
-  let pageToLoad = null
-
   if (
     pamelding.status.type === DeltakerStatusType.KLADD &&
     pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
   ) {
-    pageToLoad = <OpprettEnkeltplassPameldingPage />
+    return <OpprettEnkeltplassPameldingPage />
   } else if (pamelding.status.type === DeltakerStatusType.KLADD) {
-    pageToLoad = <OpprettPameldingPage />
+    return <OpprettPameldingPage />
   } else if (
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING ||
     pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   ) {
-    pageToLoad = <RedigerPameldingPage />
-  } else {
-    pageToLoad = <DeltakerPage />
+    return <RedigerPameldingPage />
   }
 
-  return pageToLoad
+  return <DeltakerPage />
 }
