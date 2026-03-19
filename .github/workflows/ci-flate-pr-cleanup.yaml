@@ -1,0 +1,75 @@
+name: Rydd applikasjon for PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+
+    outputs:
+      innbyggers-flate: ${{ steps.filter.outputs['innbyggers-flate'] }}
+      nav-veileders-flate: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+      tiltakskoordinator-flate: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate: 
+              - apps/innbyggers-flate/**
+              - .github/workflows/innbyggers-flate-*.yaml
+            nav-veileders-flate: 
+              - apps/nav-veileders-flate/**
+              - .github/workflows/nav-veileders-flate-*.yaml
+            tiltakskoordinator-flate: 
+              - apps/tiltakskoordinator-flate/**
+              - .github/workflows/tiltakskoordinator-flate-*.yaml
+
+  cleanup-pr-flate:
+    needs: changes
+    name: Rydd applikasjon for PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Used to authenticate with Google Cloud
+    strategy:
+      matrix:
+        app:
+          - name: innbyggers-flate
+            gs-path: 'gs://amt-deltaker-innbyggers-flate-dev'
+          - name: nav-veileders-flate
+            gs-path: 'gs://amt-deltaker-flate-dev-v2'
+          - name: tiltakskoordinator-flate
+            gs-path: 'gs://amt-tiltakskoordinator-flate-dev-pr'
+
+    steps:
+      - name: Set SHOULD_RUN environment variable
+        run: |
+          echo "SHOULD_RUN=false" >> $GITHUB_ENV
+          if [ "${{ needs.changes.outputs[matrix.app.name] }}" = "true" ] && \
+             [ "${{ github.event.pull_request.head.repo.fork }}" != "true" ] && \
+             [ "${{ github.event.pull_request.user.login }}" != "dependabot[bot]" ]; then
+            echo "SHOULD_RUN=true" >> $GITHUB_ENV
+          fi
+
+      - name: Authenticate to Google Cloud
+        if: env.SHOULD_RUN == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+
+      - name: Set up Cloud SDK
+        if: env.SHOULD_RUN == 'true'
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Delete files on GCS
+        if: env.SHOULD_RUN == 'true'
+        run: gsutil rm -r "${{ matrix.app.gs-path }}/pr-${{ github.event.number }}"

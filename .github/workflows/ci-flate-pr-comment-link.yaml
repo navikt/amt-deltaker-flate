@@ -1,0 +1,77 @@
+name: Opprett lenke til test-applikasjon for PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+
+    outputs:
+      innbyggers-flate: ${{ steps.filter.outputs['innbyggers-flate'] }}
+      nav-veileders-flate: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+      tiltakskoordinator-flate: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate: 
+              - apps/innbyggers-flate/**
+              - .github/workflows/innbyggers-flate-*.yaml
+            nav-veileders-flate: 
+              - apps/nav-veileders-flate/**
+              - .github/workflows/nav-veileders-flate-*.yaml
+            tiltakskoordinator-flate: 
+              - apps/tiltakskoordinator-flate/**
+              - .github/workflows/tiltakskoordinator-flate-*.yaml
+
+  create-link:
+    needs: changes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app:
+          - name: innbyggers-flate
+            lenker:
+              - 'https://amt.intern.dev.nav.no/arbeidsmarkedstiltak'
+          - name: nav-veileders-flate
+            lenker:
+              - 'https://amt-deltaker-flate.intern.dev.nav.no'
+              - 'https://amt-deltaker-flate.ansatt.dev.nav.no'
+          - name: tiltakskoordinator-flate
+            lenker:
+              - 'https://amt-tiltakskoordinator-flate.intern.dev.nav.no'
+              - 'https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no'
+
+    steps:
+      - name: Bygg lenke(r) til test-applikasjon
+        id: build-links
+        run: |
+          links=()
+          for base in ${{ join(matrix.app.lenker, ' ') }}; do
+            links+=("${base}/pr-${{ github.event.number }}/index.html")
+          done
+          {
+            echo "links<<EOF"
+            printf '%s\n' "${links[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Opprett lenke(r) til test-applikasjon
+        uses: thollander/actions-comment-pull-request@v3
+        if: needs.changes.outputs[matrix.app.name] == 'true' && github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
+        with:
+          message: |
+            Lenke(r) for testing av ${{ matrix.app.name }}:
+            ${{ steps.build-links.outputs.links }}

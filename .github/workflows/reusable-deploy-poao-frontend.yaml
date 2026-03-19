@@ -1,0 +1,35 @@
+name: Reusable Deploy NAIS poao-frontend
+on:
+  workflow_call:
+    inputs:
+      module_path:
+        required: true
+        type: string
+
+      prod_deploy_enabled:
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [dev, prod]
+    name: Deploy poao-frontend ${{ matrix.target }} - ${{ inputs.module_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Deploy application
+        if: matrix.target == 'dev' || (matrix.target == 'prod' && github.ref == 'refs/heads/main' && inputs.prod_deploy_enabled == true)
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ matrix.target == 'dev' && 'dev-gcp' || 'prod-gcp' }}
+          RESOURCE: apps/${{ inputs.module_path }}/nais/nais-${{ matrix.target }}.yaml
+          PRINT_PAYLOAD: true
