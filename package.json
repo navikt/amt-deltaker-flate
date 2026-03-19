@@ -34,5 +34,10 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@10.28.0"
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "overrides": {
+      "undici@>=7.23.0 <7.24.0": ">=7.24.0"
+    }
+  }
 }
