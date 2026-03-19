@@ -16,14 +16,16 @@ export const DeltakerGuard = () => {
     deltaker.deltakerliste.arrangorNavn
   )
 
-  let pageToLoad = null
-
   if (deltaker.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
-    pageToLoad = <UtkastPage />
-  } else if (deltaker.status.type === DeltakerStatusType.AVBRUTT_UTKAST) {
-    pageToLoad = <AvbruttUtkastPage />
-  } else if (deltaker.status.type === DeltakerStatusType.FEILREGISTRERT) {
-    pageToLoad = (
+    return <UtkastPage />
+  }
+
+  if (deltaker.status.type === DeltakerStatusType.AVBRUTT_UTKAST) {
+    return <AvbruttUtkastPage />
+  }
+
+  if (deltaker.status.type === DeltakerStatusType.FEILREGISTRERT) {
+    return (
       <FeilregistrertInfo
         className="w-full"
         dialogUrl={DIALOG_URL}
@@ -32,9 +34,7 @@ export const DeltakerGuard = () => {
         feilregistrertDato={deltaker.status.gyldigFra}
       />
     )
-  } else {
-    pageToLoad = <DeltakerPage />
   }
 
-  return pageToLoad
+  return <DeltakerPage />
 }

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest"
   },
   "dependencies": {
@@ -26,7 +26,7 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^19.2.14",
-    "eslint": "^9.39.4",
+    "eslint": "^10.0.3",
     "vitest": "^4.0.18"
   }
 }
