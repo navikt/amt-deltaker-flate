@@ -6,7 +6,6 @@ import {
   EndreDeltakelseType,
   Forslag,
   ForslagEndringType,
-  getDateFromString,
   getDeltakerStatusDisplayText,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -15,12 +14,9 @@ import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
-import {
-  dateStrToNullableDate,
-  formatDateToDtoStr,
-  formatDateToString
-} from '../../../utils/utils.ts'
+import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
@@ -31,7 +27,6 @@ import {
 } from '../../../utils/varighet.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface ForlengDeltakelseModalProps {
   pamelding: DeltakerResponse
@@ -59,7 +54,7 @@ export const ForlengDeltakelseModal = ({
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const sluttdatoFraDeltaker = dateStrToNullableDate(pamelding.sluttdato)
+  const sluttdatoFraDeltaker = pamelding.sluttdato
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
@@ -77,8 +72,7 @@ export const ForlengDeltakelseModal = ({
   const sluttdato = useSluttdato({
     deltaker: pamelding,
     valgtVarighet: valgtVarighet,
-    defaultAnnetDato:
-      sluttdatoFraForslag || getDateFromString(pamelding.sluttdato),
+    defaultAnnetDato: sluttdatoFraForslag || pamelding.sluttdato || undefined,
     erForleng: true
   })
 
@@ -157,9 +151,7 @@ export const ForlengDeltakelseModal = ({
         errorVarighet={sluttdato.error}
         errorSluttDato={null}
         defaultVarighet={valgtVarighet}
-        defaultAnnetDato={
-          sluttdatoFraForslag || getDateFromString(pamelding.sluttdato)
-        }
+        defaultAnnetDato={sluttdatoFraForslag || pamelding.sluttdato}
         onChangeVarighet={handleChangeVarighet}
         onChangeSluttDato={sluttdato.handleChange}
         onValidateSluttDato={sluttdato.validerDato}

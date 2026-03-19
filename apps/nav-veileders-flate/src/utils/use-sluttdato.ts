@@ -1,6 +1,5 @@
 import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import { getDateFromString } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { DeltakerResponse } from '../api/data/pamelding'
 import {
@@ -33,7 +32,7 @@ export function useSluttdato({
   validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
   handleChange: (date: Date | undefined) => void
 } {
-  const opprinneligSluttdato = getDateFromString(deltaker.sluttdato)
+  const opprinneligSluttdato = deltaker.sluttdato
 
   const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)

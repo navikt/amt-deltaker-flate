@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import {
   BegrunnelseInput,
   DeltakelsesmengdeForslag,
@@ -17,15 +18,11 @@ import {
   getProsentError
 } from '../../../utils/deltakelsesmengdeValidering.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { NumberTextField } from '../../NumberTextField.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { formatDateToDtoStr } from '../../../utils/utils.ts'
+import { NumberTextField } from '../../NumberTextField.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import {
-  dateStrToNullableDate,
-  formatDateToDtoStr
-} from '../../../utils/utils.ts'
-import dayjs from 'dayjs'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreDeltakelsesmengdeModalProps {
   pamelding: DeltakerResponse
@@ -189,8 +186,8 @@ export const EndreDeltakelsesmengdeModal = ({
         <SimpleDatePicker
           label="Fra når gjelder ny deltakelsesmengde?"
           defaultDate={gyldigFra}
-          fromDate={dateStrToNullableDate(pamelding.startdato) ?? undefined}
-          toDate={dateStrToNullableDate(pamelding.sluttdato) ?? undefined}
+          fromDate={pamelding.startdato ?? undefined}
+          toDate={pamelding.sluttdato ?? undefined}
           error={gyldigFraError ?? null}
           onValidate={(validation) => {
             if (validation.isBefore) {

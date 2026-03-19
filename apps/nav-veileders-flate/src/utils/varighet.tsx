@@ -1,10 +1,6 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import {
-  getDateFromString,
-  isValidDate,
-  Tiltakskode
-} from 'deltaker-flate-common'
+import { Tiltakskode } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/pamelding'
 
 export enum VarighetValg {
@@ -220,7 +216,7 @@ export const getMaxVarighetDato = (
   } else if (nyStartdato) {
     return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
   } else {
-    return isValidDate(pamelding.startdato)
+    return pamelding.startdato
       ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
       : null
   }
@@ -328,7 +324,7 @@ export const getSkalBekrefteVarighet = (
   nyStartdato?: Date | null
 ) => {
   const tiltakskode = pamelding.deltakerliste.tiltakskode
-  const startdato = nyStartdato || getDateFromString(pamelding.startdato)
+  const startdato = nyStartdato || pamelding.startdato || undefined
   const softMaxVarighetDato =
     startdato && pamelding.softMaxVarighet
       ? dayjs(startdato).add(pamelding.softMaxVarighet, 'millisecond')
@@ -365,7 +361,7 @@ export const getSluttDatoFeilmelding = (
   nyStartdato?: Date,
   erForleng?: boolean
 ) => {
-  const deltakerstartDato = getDateFromString(pamelding.startdato)
+  const deltakerstartDato = pamelding.startdato
   const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
 
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
@@ -380,7 +376,7 @@ export const getSluttDatoFeilmelding = (
     return SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
   }
 
-  const opprinneligSluttdato = getDateFromString(pamelding.sluttdato)
+  const opprinneligSluttdato = pamelding.sluttdato
   if (
     erForleng &&
     opprinneligSluttdato &&

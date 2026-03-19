@@ -2,8 +2,7 @@ import dayjs from 'dayjs'
 import {
   DeltakerStatusType,
   Forslag,
-  ForslagEndringType,
-  getDateFromString
+  ForslagEndringType
 } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/pamelding'
 
@@ -38,14 +37,14 @@ export function getSluttdato(
   forslag: Forslag | null
 ) {
   if (forslag === null) {
-    return getDateFromString(deltaker.sluttdato)
+    return deltaker.sluttdato
   }
   if (
     forslag.endring.type === ForslagEndringType.AvsluttDeltakelse ||
     forslag.endring.type === ForslagEndringType.EndreAvslutning ||
     forslag.endring.type === ForslagEndringType.Sluttdato
   ) {
-    return forslag.endring.sluttdato ?? getDateFromString(deltaker.sluttdato)
+    return forslag.endring.sluttdato ?? deltaker.sluttdato
   } else {
     throw new Error(
       `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`

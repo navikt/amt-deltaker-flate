@@ -97,7 +97,7 @@ export const HvaDelesMedArrangor = ({
           </List.Item>
         </List>
 
-        <Link href={PERSONOPPLYSNINGER_URL} className="text-base">
+        <Link href={PERSONOPPLYSNINGER_URL} className="text-base mt-4">
           Se her hvilke opplysninger Nav har om deg.
         </Link>
       </ExpansionCard.Content>

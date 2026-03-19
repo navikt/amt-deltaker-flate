@@ -4,7 +4,6 @@ import {
   DeltakerStatusType,
   formatDateWithMonthName,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
-  isValidDate,
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -15,7 +14,7 @@ interface DeltakerStatusInfoTekstProps {
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
-  oppstartsdato: string | null
+  oppstartsdato: Date | null
   pameldingstype: Pameldingstype
   oppstartstype: Oppstartstype | null
   tiltaketsStartDato: Date | null
@@ -104,8 +103,6 @@ export const DeltakerStatusInfoTekst = ({
     return null
   }
 
-  const harOppstartsDato = isValidDate(oppstartsdato)
-
   return (
     <>
       <BodyLong size="small" className="mt-2">
@@ -119,7 +116,7 @@ export const DeltakerStatusInfoTekst = ({
           )
         )}
       </BodyLong>
-      {!harOppstartsDato &&
+      {!oppstartsdato &&
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
             {getIngenStartDatoInfoTekst(

@@ -15,6 +15,8 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { oppdaterKladd } from '../../api/api.ts'
+import { KladdRequest } from '../../api/data/kladd-request.ts'
 import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
@@ -22,13 +24,14 @@ import {
   pameldingFormSchema,
   PameldingFormValues
 } from '../../model/PameldingFormValues.ts'
+import { formToKladdRequest } from '../../utils/kladd.ts'
+import { KladdLagring } from '../KladdLagring.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
 import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
 import { PameldingFormButtons } from './PameldingFormButtons.tsx'
-import { PameldingLagring } from './PameldingLagring.tsx'
 
 interface Props {
   pamelding: DeltakerResponse
@@ -198,7 +201,11 @@ export const PameldingForm = ({
           />
 
           {status === DeltakerStatusType.KLADD && (
-            <PameldingLagring pamelding={pamelding} />
+            <KladdLagring<PameldingFormValues, KladdRequest>
+              pamelding={pamelding}
+              oppdaterKladd={oppdaterKladd}
+              formToKladdRequest={(data) => formToKladdRequest(pamelding, data)}
+            />
           )}
         </div>
       </FormProvider>

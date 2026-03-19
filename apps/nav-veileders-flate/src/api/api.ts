@@ -5,6 +5,7 @@ import {
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
+import { DeltakerRequest } from './data/deltaker-request.ts'
 import {
   AvsluttDeltakelseRequest,
   AvvisForslagRequest,
@@ -20,14 +21,15 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
-import { DeltakerRequest } from './data/deltaker-request.ts'
 import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
-import { UtkastRequest } from './data/utkast-request.ts'
 import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-
-const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
-export const ERROR_PERSONIDENT =
-  'Deltakelsen kunen ikke hentes fordi den tilhører en annen person enn den som er i kontekst.'
+import { UtkastRequest } from './data/utkast-request.ts'
+import {
+  DELTAKER_FOR_UNG_ERROR,
+  ERROR_PERSONIDENT,
+  handleError,
+  parsePamelding
+} from './utils.ts'
 
 export const opprettKladd = async (
   personident: string,
@@ -549,22 +551,4 @@ export const getHistorikk = async (
         throw new Error('Kunne ikke laste inn endringene. Prøv igjen senere')
       }
     })
-}
-
-const parsePamelding = (json: string): DeltakerResponse => {
-  try {
-    return pameldingSchema.parse(json)
-  } catch (error) {
-    logError('Kunne ikke parse pameldingSchema:', error)
-    throw new Error('Kunne ikke laste inn påmeldingen. Prøv igjen senere')
-  }
-}
-
-const handleError = (
-  message: string,
-  deltakerId: string,
-  responseStatus: number
-) => {
-  logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
-  throw new Error(`${message} Prøv igjen senere.`)
 }
