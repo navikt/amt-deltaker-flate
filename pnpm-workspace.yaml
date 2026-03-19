@@ -10,3 +10,7 @@ onlyBuiltDependencies:
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
 # Et sikkerhetstiltak i tilfelle en pakke blir komprimittert
 minimumReleaseAge: 10080 # 24 x 60 x 7
+
+# Unntak for manuelt oppdaterte pakker innenfor minimumReleaseAge
+minimumReleaseAgeExclude:
+  - undici@7.24.0 # CWE-248. sjekk pnpm overrides
