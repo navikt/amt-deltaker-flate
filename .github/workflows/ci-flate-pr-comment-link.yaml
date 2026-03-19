@@ -6,6 +6,9 @@ on:
       - main
     types:
       - opened
+    paths:
+      - apps/**
+      - .github/workflows/*-flate-*.yaml
 
 permissions:
   contents: read

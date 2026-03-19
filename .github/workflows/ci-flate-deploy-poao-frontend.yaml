@@ -5,9 +5,7 @@ on:
       - main
     paths:
       - .github/workflows/*-deploy-poao-frontend.yaml
-      - apps/innbyggers-flate/nais/nais-*.yaml
-      - apps/nav-veileders-flate/nais/nais-*.yaml
-      - apps/tiltakskoordinator-flate/nais/nais-*.yaml
+      - apps/**/nais/nais-*.yaml
 
 permissions:
   contents: read
