@@ -912,6 +912,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.5.1':
     resolution: {integrity: sha512-F4loMHBEj23PbizFyOV5+e4ntsbU2y5NDiZ0o0a9Y/4qag7yFBqP3KM5TD4maNjAzGSuLIPBWsVHGBgXWEVBiw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.5.1/8f27e6eb9ae1f814d01c9a2b0ee1c2d76b0b1d7e}
@@ -927,6 +930,9 @@ packages:
       html-react-parser: '>=5.x'
       jsdom: '>=16.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
@@ -3664,11 +3670,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/aksel-icons': 8.5.1
       '@navikt/ds-tokens': 8.5.1
-      '@types/react': 19.2.9
       date-fns: 4.1.0
       react: 19.2.3
       react-day-picker: 9.7.0(react@19.2.3)
       react-dom: 19.2.3(react@19.2.3)
+    optionalDependencies:
+      '@types/react': 19.2.9
 
   '@navikt/ds-tailwind@8.5.1': {}
 
@@ -3680,6 +3687,7 @@ snapshots:
       html-react-parser: 5.2.8(@types/react@19.2.9)(react@19.2.3)
       js-cookie: 3.0.5
       jsdom: 28.1.0
+    optionalDependencies:
       react: 19.2.3
 
   '@open-draft/deferred-promise@2.2.0': {}
