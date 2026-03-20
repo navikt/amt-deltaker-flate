@@ -37,7 +37,7 @@ import {
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { UtkastRequest } from '../api/data/utkast-request.ts'
+import { PameldingRequest } from '../api/data/send-pamelding.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -95,7 +95,7 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: true,
+        erEnkeltplassUtenRammeavtale: false, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
@@ -319,7 +319,7 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  sendInnPamelding(request: UtkastRequest) {
+  sendInnPamelding(request: PameldingRequest) {
     if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
 
     this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null

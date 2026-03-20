@@ -1,5 +1,6 @@
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
-import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { PameldingFormContextProvider } from '../components/pamelding/PameldingFormContext.tsx'
+import { PameldingForm } from '../components/pamelding/standard/PameldingForm.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
 
@@ -15,10 +16,9 @@ export const OpprettPameldingPage = () => {
         vedtaksinformasjon={pamelding.vedtaksinformasjon}
       />
 
-      <PameldingForm
-        className="mt-4 p-4 ax-md:p-8 bg-(--ax-bg-default)"
-        pamelding={pamelding}
-      />
+      <PameldingFormContextProvider>
+        <PameldingForm className="mt-4 p-4 ax-md:p-8 bg-(--ax-bg-default)" />
+      </PameldingFormContextProvider>
     </div>
   )
 }

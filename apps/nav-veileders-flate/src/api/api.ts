@@ -22,8 +22,7 @@ import {
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
 import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from './data/send-inn-pamelding-uten-godkjenning-request.ts'
-import { UtkastRequest } from './data/utkast-request.ts'
+import { PameldingRequest } from './data/send-pamelding.ts'
 import {
   DELTAKER_FOR_UNG_ERROR,
   ERROR_PERSONIDENT,
@@ -123,7 +122,7 @@ export const getDeltaker = async (
 export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,
-  request: UtkastRequest
+  request: PameldingRequest
 ): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}`, {
     method: 'POST',
@@ -148,7 +147,7 @@ export const oppdaterUtkast = async (
 export const sendInnPameldingUtenGodkjenning = (
   deltakerId: string,
   enhetId: string,
-  request: SendInnPameldingUtenGodkjenningRequest
+  request: PameldingRequest
 ): Promise<number> => {
   return fetch(`${API_URL}/pamelding/${deltakerId}/utenGodkjenning`, {
     method: 'POST',

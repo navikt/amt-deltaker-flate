@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { innholdDtoSchema } from './utkast-request.ts'
+import { innholdDtoSchema } from './send-pamelding.ts'
 import { Tiltakskode } from 'deltaker-flate-common'
 
 export const opprettKladdRequestSchema = z.object({
