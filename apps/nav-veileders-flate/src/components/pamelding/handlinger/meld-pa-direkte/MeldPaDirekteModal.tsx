@@ -16,7 +16,10 @@ import {
 } from '../../../../hooks/useModiaLink'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
-import { generatePameldingRequestFromForm } from '../../../../utils/pamelding-form-utils'
+import {
+  generatePameldingRequest,
+  generatePameldingRequestFromForm
+} from '../../../../utils/pamelding-form-utils'
 import { ConfirmInfoCard } from '../../../ConfirmInfoCard'
 import { usePameldingContext } from '../../../tiltak/PameldingContext'
 
@@ -43,7 +46,9 @@ export const MeldPaDirekteModal = ({
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
 
-  const { getValues } = useFormContext<PameldingFormValues>()
+  // const { getValues } = useFormContext<PameldingFormValues>()
+  const formContext = useFormContext<PameldingFormValues>()
+
   const { doRedirect } = useModiaLink()
 
   const returnToFrontpageWithSuccessMessage = () => {
@@ -109,7 +114,12 @@ export const MeldPaDirekteModal = ({
               doFetchMeldPaDirekte(
                 pamelding.deltakerId,
                 enhetId,
-                generatePameldingRequestFromForm(pamelding, getValues())
+                formContext
+                  ? generatePameldingRequestFromForm(
+                      pamelding,
+                      formContext.getValues()
+                    )
+                  : generatePameldingRequest(pamelding)
               ).then(() => onClose())
             }
           }}

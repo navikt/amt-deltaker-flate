@@ -85,25 +85,19 @@ export const generatePameldingRequestFromForm = (
   }
 }
 
-// TODO  slette denne er lik den over
-export const generateDirektePameldingRequestForm = (
-  pamelding: DeltakerResponse,
-  data: PameldingFormValues | undefined
+export const generatePameldingRequest = (
+  pamelding: DeltakerResponse
 ): PameldingRequest => {
-  if (!data) {
-    throw new Error('data should not be undefined')
-  }
   return {
     deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
-    dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent: getDeltakerProsent(pamelding, data),
-    bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    innhold: generateInnholdFromResponse(
-      pamelding,
-      data.valgteInnhold,
-      data.innholdAnnetBeskrivelse,
-      data.innholdsTekst
-    )
+    dagerPerUke: pamelding.dagerPerUke || undefined,
+    deltakelsesprosent: pamelding.deltakelsesprosent || undefined,
+    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon || undefined,
+    innhold:
+      pamelding.deltakelsesinnhold?.innhold.map((i) => ({
+        innholdskode: i.innholdskode,
+        beskrivelse: i.beskrivelse
+      })) || []
   }
 }
 
