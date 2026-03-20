@@ -1,10 +1,8 @@
 import dayjs from 'dayjs'
 import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
-import {
-  EnkeltplassKladdRequest,
-  KladdRequest
-} from '../api/data/kladd-request'
+import { KladdRequest } from '../api/data/kladd-request'
 import { DeltakerResponse } from '../api/data/pamelding'
+import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
@@ -13,14 +11,14 @@ import { PameldingFormValues } from '../model/PameldingFormValues'
 import { generateInnholdFromResponse } from './pamelding-form-utils'
 import { formatDateToDtoStr } from './utils'
 
-export const formToEnkeltplassKladdRequest = (
+export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
-): EnkeltplassKladdRequest => {
+): EnkeltplassPameldingRequest => {
   const startdato = dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
   const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
 
   return {
-    beskrivelse: data.beskrivelse,
+    beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined

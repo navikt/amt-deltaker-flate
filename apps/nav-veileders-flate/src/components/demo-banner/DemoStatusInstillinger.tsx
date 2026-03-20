@@ -185,7 +185,7 @@ const DemoStatusInstillinger = () => {
   }
 
   useEffect(() => {
-    handlePameldingStatusChange(DeltakerStatusType.KLADD)
+    handlePameldingStatusChange(DeltakerStatusType.UTKAST_TIL_PAMELDING)
   }, [])
 
   return (

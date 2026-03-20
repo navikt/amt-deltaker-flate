@@ -1,0 +1,17 @@
+import { z } from 'zod'
+
+export const innholdDtoSchema = z.object({
+  innholdskode: z.string(),
+  beskrivelse: z.string().nullable() //denne er i praksis satt hvis innholdskode=ANNET
+})
+
+export const pameldingRequestSchema = z.object({
+  deltakerlisteId: z.uuid(),
+  innhold: z.array(innholdDtoSchema),
+  bakgrunnsinformasjon: z.string().optional(),
+  deltakelsesprosent: z.number().optional(),
+  dagerPerUke: z.number().optional()
+})
+
+export type InnholdDto = z.infer<typeof innholdDtoSchema>
+export type PameldingRequest = z.infer<typeof pameldingRequestSchema>

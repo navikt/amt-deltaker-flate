@@ -49,7 +49,7 @@ export const ModalFooter = ({
         <Alert
           size="small"
           variant="error"
-          className="w-auto !ml-0 whitespace-pre-wrap"
+          className="w-auto ml-0! whitespace-pre-wrap"
           role="alert"
         >
           <Heading size="xsmall" level="2">

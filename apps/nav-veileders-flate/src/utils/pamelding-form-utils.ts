@@ -5,8 +5,8 @@ import {
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { InnholdDto, UtkastRequest } from '../api/data/utkast-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { PameldingRequest } from '../api/data/send-pamelding.ts'
+import { InnholdDto } from '../api/data/send-pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
 
@@ -66,7 +66,7 @@ const getDeltakerProsent = (
 export const generatePameldingRequestFromForm = (
   pamelding: DeltakerResponse,
   data: PameldingFormValues | undefined
-): UtkastRequest => {
+): PameldingRequest => {
   if (!data) {
     throw new Error('data should not be undefined')
   }
@@ -85,10 +85,11 @@ export const generatePameldingRequestFromForm = (
   }
 }
 
+// TODO  slette denne er lik den over
 export const generateDirektePameldingRequestForm = (
   pamelding: DeltakerResponse,
   data: PameldingFormValues | undefined
-): SendInnPameldingUtenGodkjenningRequest => {
+): PameldingRequest => {
   if (!data) {
     throw new Error('data should not be undefined')
   }
@@ -104,4 +105,11 @@ export const generateDirektePameldingRequestForm = (
       data.innholdsTekst
     )
   }
+}
+
+/**
+ * Sjekker om pameldingen er en enkeltplass uten rammeavtale
+ */
+export const erEnkeltPlassUtenRammeavtale = (pamelding: DeltakerResponse) => {
+  return pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
 }

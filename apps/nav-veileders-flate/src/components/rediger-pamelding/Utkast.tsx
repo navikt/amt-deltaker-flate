@@ -1,86 +1,79 @@
-import { BodyLong, Heading } from '@navikt/ds-react'
-import {
-  DeltakelseInnhold,
-  DeltakerStatusType,
-  EMDASH,
-  OmKurset,
-  Oppmotested,
-  deltakerprosentText,
-  harBakgrunnsinfo,
-  visDeltakelsesmengde
-} from 'deltaker-flate-common'
-import { Deltakelsesinnhold, Deltakerliste } from '../../api/data/pamelding.ts'
+import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { Button } from '@navikt/ds-react'
+import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import { useState } from 'react'
+import { erEnkeltPlassUtenRammeavtale } from '../../utils/pamelding-form-utils.ts'
+import { MeldPaDirekteButton } from '../pamelding/handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
+import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
+import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
+import { HorisontalLine } from '../HorisontalLine.tsx'
+import { PameldingForm } from '../pamelding/standard/PameldingForm.tsx'
+import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { AvbrytUtkastDeltMedBrukerModal } from './AvbrytUtkastDeltMedBrukerModal.tsx'
+import { UtkastDeltaker } from './UtkastDeltaker.tsx'
 
-interface Props {
-  innhold: Deltakelsesinnhold | null
-  bakgrunnsinformasjon: string | null
-  deltakelsesprosent: number | null
-  dagerPerUke: number | null
-  deltakerliste: Deltakerliste
-}
+export const Utkast = () => {
+  const { pamelding } = usePameldingContext()
+  const { disabled, redigerUtkast, setRedigerUtkast } =
+    usePameldingFormContext()
 
-export const Utkast = ({
-  innhold,
-  bakgrunnsinformasjon,
-  deltakelsesprosent,
-  dagerPerUke,
-  deltakerliste
-}: Props) => {
-  const tiltakskode = deltakerliste.tiltakskode
-  const bakgrunnsinfoVisningstekst =
-    bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0
-      ? bakgrunnsinformasjon
-      : EMDASH
+  const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
+
+  const kanEndreUtkast = ![
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
+    Tiltakskode.JOBBKLUBB
+  ].includes(pamelding.deltakerliste.tiltakskode)
+
+  if (redigerUtkast) {
+    return erEnkeltPlassUtenRammeavtale(pamelding) ? (
+      <PameldingEnkeltplassForm focusOnOpen />
+    ) : (
+      <PameldingForm focusOnOpen />
+    )
+  }
 
   return (
     <div className="flex flex-col gap-8">
-      <DeltakelseInnhold
-        tiltakskode={tiltakskode}
-        deltakelsesinnhold={innhold}
-        heading={
-          <Heading level="3" size="small" className="mb-2">
-            Dette er innholdet
-          </Heading>
-        }
-        listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
-      />
+      <UtkastDeltaker />
 
-      {harBakgrunnsinfo(tiltakskode) && (
-        <div>
-          <Heading level="3" size="small">
-            Bakgrunnsinfo
-          </Heading>
-          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-            {bakgrunnsinfoVisningstekst}
-          </BodyLong>
-        </div>
+      <HorisontalLine className="mt-8 mb-8" />
+
+      {pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+        <>
+          <MeldPaDirekteButton name="Meld på uten godkjent utkast" />
+
+          {kanEndreUtkast && (
+            <Button
+              size="small"
+              variant="secondary"
+              icon={<PencilIcon aria-hidden />}
+              disabled={disabled}
+              onClick={() => setRedigerUtkast(true)}
+              className="mt-8"
+            >
+              Endre utkast
+            </Button>
+          )}
+
+          <Button
+            size="small"
+            variant="tertiary"
+            disabled={disabled}
+            onClick={() => {
+              setAvbrytModalOpen(true)
+            }}
+            icon={<XMarkIcon aria-hidden />}
+          >
+            Avbryt utkast
+          </Button>
+        </>
       )}
 
-      {visDeltakelsesmengde(tiltakskode) && (
-        <div>
-          <Heading level="3" size="small">
-            Deltakelsesmengde
-          </Heading>
-          <BodyLong size="small" className="mt-2">
-            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
-          </BodyLong>
-        </div>
-      )}
-
-      <OmKurset
-        tiltakskode={deltakerliste.tiltakskode}
-        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
-        oppstartstype={deltakerliste.oppstartstype}
-        pameldingstype={deltakerliste.pameldingstype}
-        startdato={deltakerliste.startdato}
-        sluttdato={deltakerliste.sluttdato}
-        size="small"
-        visDelMedArrangorInfo
-      />
-
-      <Oppmotested
-        oppmoteSted={deltakerliste.oppmoteSted}
-        statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
+      <AvbrytUtkastDeltMedBrukerModal
+        open={avbrytModalOpen}
+        onClose={() => {
+          setAvbrytModalOpen(false)
+        }}
       />
     </div>
   )
