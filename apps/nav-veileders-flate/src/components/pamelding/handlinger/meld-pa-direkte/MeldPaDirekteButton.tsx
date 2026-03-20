@@ -11,27 +11,33 @@ import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
 
 interface Props {
   name?: string
+  variant?: 'primary' | 'secondary'
 }
 
-export const MeldPaDirekteButton = ({ name }: Props) => {
+export const MeldPaDirekteButton = ({ name, variant }: Props) => {
   const { disabled } = usePameldingFormContext()
   const { pamelding } = usePameldingContext()
 
   const [modalOpen, setModalOpen] = useState(false)
 
   const erEnkeltplass = erEnkeltPlassUtenRammeavtale(pamelding)
-  const { handleSubmit } = erEnkeltplass
-    ? useFormContext<PameldingEnkeltplassFormValues>()
-    : useFormContext<PameldingFormValues>()
+
+  const formContext = useFormContext<
+    PameldingEnkeltplassFormValues | PameldingFormValues
+  >()
+
+  const handleMeldPa = formContext
+    ? formContext.handleSubmit(() => setModalOpen(true))
+    : () => setModalOpen(true)
 
   return (
     <>
       <Button
-        onClick={handleSubmit(() => setModalOpen(true))}
+        onClick={handleMeldPa}
         size="small"
         disabled={disabled}
         type="button"
-        variant="secondary"
+        variant={variant || 'secondary'}
       >
         {name || 'Meld på uten å dele utkast'}
       </Button>

@@ -39,8 +39,11 @@ export const Utkast = () => {
       <HorisontalLine className="mt-8 mb-8" />
 
       {pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
-        <>
-          <MeldPaDirekteButton name="Meld på uten godkjent utkast" />
+        <div className="flex gap-4">
+          <MeldPaDirekteButton
+            name="Meld på uten godkjent utkast"
+            variant="primary"
+          />
 
           {kanEndreUtkast && (
             <Button
@@ -66,7 +69,7 @@ export const Utkast = () => {
           >
             Avbryt utkast
           </Button>
-        </>
+        </div>
       )}
 
       <AvbrytUtkastDeltMedBrukerModal

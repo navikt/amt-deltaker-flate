@@ -1,11 +1,11 @@
 import { Textarea } from '@navikt/ds-react'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
+import { usePameldingFormContext } from '../PameldingFormContext'
 import {
   INNHOLD_MAX_TEGN,
   PameldingEnkeltplassFormValues
-} from '../../model/PameldingEnkeltplassFormValues'
-import { usePameldingFormContext } from '../pamelding/PameldingFormContext'
+} from '../../../model/PameldingEnkeltplassFormValues'
 
 export const InnholdBeskrivelse = () => {
   const { disabled } = usePameldingFormContext()
