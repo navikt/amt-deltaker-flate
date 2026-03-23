@@ -23,9 +23,9 @@ import { usePameldingContext } from '../../tiltak/PameldingContext.tsx'
 import { PameldingFormButtons } from '../FormButtons.tsx'
 import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
-import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
 import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
+import { FormErrorSummary } from '../FormErrorSummary.tsx'
 
 interface Props {
   className?: string
@@ -35,7 +35,6 @@ interface Props {
 export const PameldingForm = ({ className, focusOnOpen }: Props) => {
   const { pamelding } = usePameldingContext()
   const { disabled } = usePameldingFormContext()
-  const errorSummaryRef = useRef<HTMLDivElement>(null)
   const tiltakskode = pamelding.deltakerliste.tiltakskode
 
   const defaultValues = generateFormDefaultValues(pamelding)
@@ -74,8 +73,10 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     >
       <FormProvider {...methods}>
         <div className="flex flex-col gap-8 mb-4">
-          <FormErrorSummary ref={errorSummaryRef} />
+          <FormErrorSummary erEnkeltplass={false} />
+
           <Innhold pamelding={pamelding} isDisabled={disabled} />
+
           <OmKurset
             tiltakskode={pamelding.deltakerliste.tiltakskode}
             statusType={pamelding.status.type}

@@ -44,47 +44,49 @@ export const PameldingFormButtons = ({ className }: Props) => {
         </LocalAlert>
       )}
 
-      {!kanDeleUtkast && !harAdresse && (
-        <LocalAlert status="warning" size="small">
-          <LocalAlert.Header>
-            <LocalAlert.Title>
-              Personen har ingen registrert kontaktadresse og er reservert mot
-              digital kommunikasjon
-            </LocalAlert.Title>
-          </LocalAlert.Header>
-          <LocalAlert.Content>
-            Personen vil derfor ikke motta et varsel, og brevet som journalføres
-            i Gosys må skrives ut og leveres på en annen måte.
-          </LocalAlert.Content>
-        </LocalAlert>
-      )}
+      <div className="flex flex-col gap-4">
+        {!kanDeleUtkast && !harAdresse && (
+          <LocalAlert status="warning" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Personen har ingen registrert kontaktadresse og er reservert mot
+                digital kommunikasjon
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              Personen vil derfor ikke motta et varsel, og brevet som
+              journalføres i Gosys må skrives ut og leveres på en annen måte.
+            </LocalAlert.Content>
+          </LocalAlert>
+        )}
 
-      {status === DeltakerStatusType.KLADD && (
-        <LagreKladd pamelding={pamelding} />
-      )}
+        {status === DeltakerStatusType.KLADD && (
+          <LagreKladd pamelding={pamelding} />
+        )}
 
-      {error && (
-        <LocalAlert size="small" status="error">
-          <LocalAlert.Header>
-            <LocalAlert.Title>{error}</LocalAlert.Title>
-          </LocalAlert.Header>
-        </LocalAlert>
-      )}
+        {error && (
+          <LocalAlert size="small" status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>{error}</LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
 
-      {status === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
-        <div className="flex gap-4 items-end">
-          <LagreUtkastButton />
-          <ForkastUtkastEndringButton />
-        </div>
-      )}
+        {status === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+          <div className="flex gap-4 items-end">
+            <LagreUtkastButton />
+            <ForkastUtkastEndringButton />
+          </div>
+        )}
 
-      {status === DeltakerStatusType.KLADD && (
-        <div className="flex gap-4">
-          {kanDeleUtkast && <DelUtkastButton />}
-          <MeldPaDirekteButton variant="secondary" />
-          <SlettKladdButton />
-        </div>
-      )}
+        {status === DeltakerStatusType.KLADD && (
+          <div className="flex gap-4">
+            {kanDeleUtkast && <DelUtkastButton />}
+            <MeldPaDirekteButton variant="secondary" />
+            <SlettKladdButton />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

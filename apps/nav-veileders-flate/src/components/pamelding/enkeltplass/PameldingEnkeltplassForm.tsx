@@ -11,7 +11,7 @@ import { PameldingFormButtons } from '../FormButtons'
 import { PrisOgBetaling } from './PrisOgBetaling'
 import { InnholdBeskrivelse } from './InnholdBeskrivelse'
 import { PameldingDatoer } from './PameldingDatoer'
-import { FormErrorSummary } from './FormErrorSummary'
+import { FormErrorSummary } from '../FormErrorSummary.tsx'
 
 interface Props {
   className?: string
@@ -43,7 +43,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <FormErrorSummary />
+        <FormErrorSummary erEnkeltplass={true} />
 
         <InnholdBeskrivelse />
 
