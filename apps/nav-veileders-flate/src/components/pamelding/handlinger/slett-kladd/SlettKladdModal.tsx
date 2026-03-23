@@ -4,13 +4,13 @@ import {
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { getDeltakerNavn } from '../../../../utils/displayText.ts'
-import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 import { deleteKladd } from '../../../../api/api.ts'
 import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../../../../hooks/useModiaLink.ts'
+import { getDeltakerNavn } from '../../../../utils/displayText.ts'
+import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 
 interface Props {
   open: boolean
@@ -28,9 +28,10 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
   }
   const {
     state: slettKladdState,
-    error: slettKladdError, // TODO vise feilmelding
+    error, // TODO vise feil
     doFetch: doFetchSlettKladd
   } = useDeferredFetch(deleteKladd, returnToFrontpage)
+
   return (
     <Modal
       open={open}

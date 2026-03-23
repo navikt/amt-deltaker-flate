@@ -26,15 +26,16 @@ interface Props {
 export const DelUtkastModal = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
   const { pamelding } = usePameldingContext()
+  const { getValues } = useFormContext<PameldingFormValues>()
+
   const deltakerNavn = getDeltakerNavn(pamelding)
   const meldPaDirekte = skalMeldePaaDirekte(
     pamelding.deltakerliste.pameldingstype
   )
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
-  const { doRedirect } = useModiaLink()
-  const { getValues } = useFormContext<PameldingFormValues>()
 
+  const { doRedirect } = useModiaLink()
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
@@ -46,7 +47,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    error: fetchStateError,
+    error, // TODO vise feil
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(
     oppdaterUtkast,
@@ -79,6 +80,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
           {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyLong>
       </Modal.Body>
+
       <Modal.Footer>
         <Button
           type="button"

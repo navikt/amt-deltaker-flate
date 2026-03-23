@@ -1,13 +1,13 @@
 import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { DelUtkastModalEnkeltPlass } from './DelUtkastModalEnkeltPlass.tsx'
+import { DelUtkastEnkeltPlassModal } from './DelUtkastEnkeltPlassModal.tsx'
 import { usePameldingFormContext } from '../../PameldingFormContext.tsx'
 import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
-import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-form-utils.ts'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { DelUtkastModal } from './DelUtkastModal.tsx'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
+import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-ekeltplass.ts'
 
 export const DelUtkastButton = () => {
   const { disabled } = usePameldingFormContext()
@@ -31,7 +31,7 @@ export const DelUtkastButton = () => {
       </Button>
 
       {erEnkeltplass && (
-        <DelUtkastModalEnkeltPlass
+        <DelUtkastEnkeltPlassModal
           open={modalOpen}
           onClose={() => setModalOpen(false)}
         />

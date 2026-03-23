@@ -2,11 +2,11 @@ import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { erEnkeltPlassUtenRammeavtale } from '../../utils/pamelding-form-utils.ts'
-import { MeldPaDirekteButton } from '../pamelding/handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
-import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
-import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
+import { erEnkeltPlassUtenRammeavtale } from '../../utils/pamelding-ekeltplass.ts'
 import { HorisontalLine } from '../HorisontalLine.tsx'
+import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
+import { MeldPaDirekteButton } from '../pamelding/handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
+import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
 import { PameldingForm } from '../pamelding/standard/PameldingForm.tsx'
 import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
 import { AvbrytUtkastDeltMedBrukerModal } from './AvbrytUtkastDeltMedBrukerModal.tsx'
@@ -36,7 +36,7 @@ export const Utkast = () => {
     <div className="flex flex-col gap-8">
       <UtkastDeltaker />
 
-      <HorisontalLine className="mt-8 mb-8" />
+      <HorisontalLine />
 
       {pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
         <div className="flex gap-4">
@@ -52,7 +52,6 @@ export const Utkast = () => {
               icon={<PencilIcon aria-hidden />}
               disabled={disabled}
               onClick={() => setRedigerUtkast(true)}
-              className="mt-8"
             >
               Endre utkast
             </Button>

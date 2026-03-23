@@ -15,7 +15,10 @@ import {
 } from '../../../../hooks/useModiaLink.ts'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { getDeltakerNavn } from '../../../../utils/displayText.ts'
-import { formToEnkeltplassRequest } from '../../../../utils/kladd.ts'
+import {
+  formToEnkeltplassRequest,
+  generateEnkeltplassPameldingRequest
+} from '../../../../utils/pamelding-ekeltplass.ts'
 import { ConfirmInfoCard } from '../../../ConfirmInfoCard.tsx'
 import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 
@@ -27,18 +30,17 @@ interface Props {
 export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
   const { pamelding } = usePameldingContext()
+  const formContext = useFormContext<PameldingEnkeltplassFormValues>()
+
   const deltakerNavn = getDeltakerNavn(pamelding)
   const { deltakerliste } = pamelding
+  const erUtkast =
+    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
 
   const [confirmed, setConfirmed] = useState(false)
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
-  const erUtkast =
-    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
-
-  const { getValues } = useFormContext<PameldingEnkeltplassFormValues>()
   const { doRedirect } = useModiaLink()
-
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
@@ -48,7 +50,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    error: fetchStateError, // TODO hvor vise feilmeldingen?
+    error, // TODO vise feil
     doFetch: doFetchMeldPaDirekteEnkeltplass
   } = useDeferredFetch(
     meldPaDirekteEnkeltplass,
@@ -67,6 +69,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
         <ConfirmInfoCard
           title="Er personen informert?"
           checkboxLabel="Ja, personen er informert"
+          isConfirmed={confirmed}
           error={confirmError}
           onConfirmedChange={(checked) => {
             setConfirmed(checked)
@@ -95,7 +98,9 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
               doFetchMeldPaDirekteEnkeltplass(
                 pamelding.deltakerId,
                 enhetId,
-                formToEnkeltplassRequest(getValues())
+                formContext
+                  ? formToEnkeltplassRequest(formContext.getValues())
+                  : generateEnkeltplassPameldingRequest(pamelding)
               ).then(() => onClose())
             }
           }}

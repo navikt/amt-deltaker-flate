@@ -4,13 +4,13 @@ import {
   Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
+import { KladdRequest } from '../api/data/kladd-request.ts'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { PameldingRequest } from '../api/data/send-pamelding.ts'
-import { InnholdDto } from '../api/data/send-pamelding.ts'
+import { InnholdDto, PameldingRequest } from '../api/data/send-pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
 
-export const generateInnholdFromResponse = (
+export const generateInnholdForRequest = (
   pamelding: DeltakerResponse,
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null,
@@ -32,10 +32,10 @@ export const generateInnholdFromResponse = (
   }
 
   return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
-    const valgtInnhold = valgteInnhold.find(
+    const erInnholdValgt = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
     )
-    if (valgtInnhold === undefined) return []
+    if (erInnholdValgt === undefined) return []
 
     return [
       {
@@ -76,12 +76,46 @@ export const generatePameldingRequestFromForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: getDeltakerProsent(pamelding, data),
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    innhold: generateInnholdFromResponse(
+    innhold: generateInnholdForRequest(
       pamelding,
       data.valgteInnhold,
       data.innholdAnnetBeskrivelse,
       data.innholdsTekst
     )
+  }
+}
+
+export const formToKladdRequest = (
+  pamelding: DeltakerResponse,
+  data: PameldingFormValues
+): KladdRequest => {
+  // TODO kan vi fjerne dette tullet?
+  /*
+  const innholdAnnet = innhold.find(
+    (i) => i.innholdskode === INNHOLD_TYPE_ANNET
+  )
+
+  const korrigertInnhold = [
+    ...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)
+  ]
+
+  if (innholdAnnet) {
+    korrigertInnhold.push({
+      innholdskode: INNHOLD_TYPE_ANNET,
+      beskrivelse: innholdAnnet.beskrivelse || ''
+    })
+  }
+*/
+  return {
+    innhold: generateInnholdForRequest(
+      pamelding,
+      data.valgteInnhold,
+      data.innholdAnnetBeskrivelse,
+      data.innholdsTekst
+    ),
+    bakgrunnsinformasjon: data.bakgrunnsinformasjon,
+    deltakelsesprosent: data.deltakelsesprosent,
+    dagerPerUke: data.dagerPerUke
   }
 }
 
@@ -94,16 +128,11 @@ export const generatePameldingRequest = (
     deltakelsesprosent: pamelding.deltakelsesprosent || undefined,
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon || undefined,
     innhold:
-      pamelding.deltakelsesinnhold?.innhold.map((i) => ({
-        innholdskode: i.innholdskode,
-        beskrivelse: i.beskrivelse
-      })) || []
+      pamelding.deltakelsesinnhold?.innhold
+        .filter((i) => i.valgt)
+        .map((i) => ({
+          innholdskode: i.innholdskode,
+          beskrivelse: i.beskrivelse
+        })) || []
   }
-}
-
-/**
- * Sjekker om pameldingen er en enkeltplass uten rammeavtale
- */
-export const erEnkeltPlassUtenRammeavtale = (pamelding: DeltakerResponse) => {
-  return pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
 }

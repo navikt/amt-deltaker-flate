@@ -39,15 +39,13 @@ export const MeldPaDirekteModal = ({
 }: MeldPaDirekteModalProps) => {
   const { enhetId } = useAppContext()
   const { pamelding } = usePameldingContext()
+  const formContext = useFormContext<PameldingFormValues>()
 
   const [confirmed, setConfirmed] = useState(false)
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
-
-  // const { getValues } = useFormContext<PameldingFormValues>()
-  const formContext = useFormContext<PameldingFormValues>()
 
   const { doRedirect } = useModiaLink()
 
@@ -65,7 +63,7 @@ export const MeldPaDirekteModal = ({
 
   const {
     state: fetchState,
-    error: fetchStateError, // TODO hvor vise feilmeldingen?
+    error, // TODO vise feil
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(
     sendInnPameldingUtenGodkjenning,
@@ -85,6 +83,7 @@ export const MeldPaDirekteModal = ({
           title="Er personen informert?"
           checkboxLabel="Ja, personen er informert"
           error={confirmError}
+          isConfirmed={confirmed}
           onConfirmedChange={(checked) => {
             setConfirmed(checked)
             setConfirmError(undefined)

@@ -10,17 +10,18 @@ import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {
-  formToEnkeltplassRequest,
-  formToKladdRequest
-} from '../../utils/kladd.ts'
-import { erEnkeltPlassUtenRammeavtale } from '../../utils/pamelding-form-utils.ts'
-import { KladdLagring } from './KladdLagring.tsx'
+  erEnkeltPlassUtenRammeavtale,
+  formToEnkeltplassRequest
+} from '../../utils/pamelding-ekeltplass.ts'
+import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
+import { ForkastUtkastEndringButton } from '../rediger-pamelding/ForkastUtkastEndringButton.tsx'
+import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
 import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { DelUtkastButton } from './handlinger/del-utkast/DelUtkastButton.tsx'
 import { MeldPaDirekteButton } from './handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
 import { SlettKladdButton } from './handlinger/slett-kladd/SlettKladdButton.tsx'
-import { ForkastUtkastButton } from '../rediger-pamelding/ForkastUtkastButton.tsx'
-import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
-import { DelUtkastButton } from './handlinger/del-utkast/DelUtkastButton.tsx'
+import { KladdLagring } from './KladdLagring.tsx'
+import { usePameldingFormContext } from './PameldingFormContext.tsx'
 
 interface Props {
   className?: string
@@ -28,6 +29,7 @@ interface Props {
 
 export const PameldingFormButtons = ({ className }: Props) => {
   const { pamelding } = usePameldingContext()
+  const { error } = usePameldingFormContext()
   const kanDeleUtkast = pamelding.digitalBruker
   const harAdresse = pamelding.harAdresse
   const status = pamelding.status.type
@@ -61,17 +63,25 @@ export const PameldingFormButtons = ({ className }: Props) => {
         <LagreKladd pamelding={pamelding} />
       )}
 
+      {error && (
+        <LocalAlert size="small" status="error">
+          <LocalAlert.Header>
+            <LocalAlert.Title>{error}</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
+      )}
+
       {status === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-end">
           <LagreUtkastButton />
-          <ForkastUtkastButton />
+          <ForkastUtkastEndringButton />
         </div>
       )}
 
       {status === DeltakerStatusType.KLADD && (
         <div className="flex gap-4">
           {kanDeleUtkast && <DelUtkastButton />}
-          <MeldPaDirekteButton />
+          <MeldPaDirekteButton variant="secondary" />
           <SlettKladdButton />
         </div>
       )}

@@ -3,15 +3,15 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { MeldPaDirekteModalEnkeltPlass as MeldPaDirekteModalEnkeltPlass } from './MeldPaDirekteModalEnkeltPlass.tsx'
 import { usePameldingFormContext } from '../../PameldingFormContext.tsx'
-import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-form-utils.ts'
 import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 import { MeldPaDirekteModal } from './MeldPaDirekteModal.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
+import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-ekeltplass.ts'
 
 interface Props {
   name?: string
-  variant?: 'primary' | 'secondary'
+  variant: 'primary' | 'secondary'
 }
 
 export const MeldPaDirekteButton = ({ name, variant }: Props) => {
@@ -37,7 +37,7 @@ export const MeldPaDirekteButton = ({ name, variant }: Props) => {
         size="small"
         disabled={disabled}
         type="button"
-        variant={variant || 'secondary'}
+        variant={variant}
       >
         {name || 'Meld på uten å dele utkast'}
       </Button>

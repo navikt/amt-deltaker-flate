@@ -27,7 +27,7 @@ import {
   getFeilmeldingIngenEndring,
   getFeilmeldingIngenEndringTekst
 } from '../../../utils/displayText.ts'
-import { generateInnholdFromResponse } from '../../../utils/pamelding-form-utils'
+import { generateInnholdForRequest } from '../../../utils/pamelding-form-utils'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
@@ -115,14 +115,14 @@ export const EndreInnholdModal = ({
       ) {
         throw new Error(
           pamelding.deltakerliste.tiltakskode ===
-          Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+            Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
             ? getFeilmeldingIngenEndringTekst(false)
             : getFeilmeldingIngenEndring(false)
         )
       }
 
       const endring: EndreInnholdRequest = {
-        innhold: generateInnholdFromResponse(
+        innhold: generateInnholdForRequest(
           pamelding,
           valgteInnhold,
           annetBeskrivelse,

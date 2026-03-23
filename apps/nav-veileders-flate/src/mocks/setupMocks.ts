@@ -26,6 +26,7 @@ import {
   opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
+import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
 
 const handler = new MockHandler()
 
@@ -109,6 +110,45 @@ export const worker = setupWorker(
       const response = await request
         .json()
         .then((json) => pameldingRequestSchema.parse(json))
+        .then(() => new HttpResponse(null, { status: 200 }))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/pamelding/enkeltplass-delutkast/:deltakerId',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => enkeltplassPameldingSchema.parse(json))
+        .then(() => new HttpResponse(null, { status: 200 }))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/pamelding/enkeltplass-oppdater-utkast/:deltakerId',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => enkeltplassPameldingSchema.parse(json))
+        .then((body) => handler.sendInnPameldingEnkeltplass(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/pamelding/:deltakerId/enkeltplass-utengodkjening',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => enkeltplassPameldingSchema.parse(json))
         .then(() => new HttpResponse(null, { status: 200 }))
 
       return response

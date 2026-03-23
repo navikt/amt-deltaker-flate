@@ -5,7 +5,6 @@ import {
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
   harLopendeOppstart,
-  INNHOLD_TYPE_ANNET,
   OmKurset,
   Oppmotested,
   skalMeldePaaDirekte,
@@ -20,9 +19,9 @@ import {
   pameldingFormSchema,
   PameldingFormValues
 } from '../../../model/PameldingFormValues.ts'
+import { usePameldingContext } from '../../tiltak/PameldingContext.tsx'
 import { PameldingFormButtons } from '../FormButtons.tsx'
 import { usePameldingFormContext } from '../PameldingFormContext.tsx'
-import { usePameldingContext } from '../../tiltak/PameldingContext.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
@@ -52,21 +51,12 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     register,
     setValue,
     watch,
-    clearErrors,
     formState: { errors }
   } = methods
-
-  const valgteInnhold = watch('valgteInnhold')
 
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
-
-  useEffect(() => {
-    if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
-      clearErrors('innholdAnnetBeskrivelse')
-    }
-  }, [valgteInnhold])
 
   const erOpplaringLopendeOppstartDirektePamelding =
     harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&

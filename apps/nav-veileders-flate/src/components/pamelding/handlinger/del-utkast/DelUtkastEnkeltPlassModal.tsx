@@ -14,7 +14,7 @@ import {
 } from '../../../../hooks/useModiaLink'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
-import { formToEnkeltplassRequest } from '../../../../utils/kladd'
+import { formToEnkeltplassRequest } from '../../../../utils/pamelding-ekeltplass'
 import { usePameldingContext } from '../../../tiltak/PameldingContext'
 
 interface Props {
@@ -22,17 +22,17 @@ interface Props {
   onClose: () => void
 }
 
-export const DelUtkastModalEnkeltPlass = ({ open, onClose }: Props) => {
+export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
   const { pamelding } = usePameldingContext()
+  const { getValues } = useFormContext<PameldingEnkeltplassFormValues>()
+
   const deltakerNavn = getDeltakerNavn(pamelding)
   const { deltakerliste } = pamelding
   const erUtkast =
     pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
 
-  const { getValues } = useFormContext<PameldingEnkeltplassFormValues>()
   const { doRedirect } = useModiaLink()
-
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
@@ -42,7 +42,7 @@ export const DelUtkastModalEnkeltPlass = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    error: fetchStateError, // TODO hvor vise feilmeldingen?
+    error, // TODO vise feil
     doFetch: doFetchDelUtkastEnkeltplass
   } = useDeferredFetch(
     delUtkastEnkeltplass,

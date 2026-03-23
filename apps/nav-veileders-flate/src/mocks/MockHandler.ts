@@ -17,6 +17,7 @@ import {
   harBakgrunnsinfo,
   HistorikkType,
   Innhold,
+  INNHOLD_TYPE_ANNET,
   lagHistorikkFellesOppstart,
   Oppstartstype,
   Pameldingstype,
@@ -38,6 +39,7 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
+import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -54,11 +56,11 @@ export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakskode = Tiltakskode.HOYERE_UTDANNING
+  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
 
   createDeltaker(
     deltakerlisteId: string,
-    tiltakskode: Tiltakskode = this.tiltakskode
+    tiltakskode?: Tiltakskode
   ): DeltakerResponse {
     const yesterday = dayjs().subtract(1, 'day')
     const today = dayjs()
@@ -95,7 +97,7 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: false, // Endre her for enkeltplass
+        erEnkeltplassUtenRammeavtale: true, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
@@ -317,6 +319,30 @@ export class MockHandler {
     }
 
     return new HttpResponse(null, { status: 404 })
+  }
+
+  sendInnPameldingEnkeltplass(request: EnkeltplassPameldingRequest) {
+    this.pamelding = {
+      ...this.pamelding,
+      deltakelsesinnhold: {
+        ...this.pamelding?.deltakelsesinnhold,
+        innhold: request.beskrivelse
+          ? [
+              {
+                tekst: '',
+                innholdskode: INNHOLD_TYPE_ANNET,
+                beskrivelse: request.beskrivelse,
+                valgt: true
+              }
+            ]
+          : []
+      },
+      startdato: request.startdato
+        ? getDateFromString(request.startdato)
+        : null,
+      sluttdato: request.sluttdato ? getDateFromString(request.sluttdato) : null
+    } as DeltakerResponse
+    return HttpResponse.json(this.pamelding)
   }
 
   sendInnPamelding(request: PameldingRequest) {

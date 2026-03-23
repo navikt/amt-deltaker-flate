@@ -16,7 +16,7 @@ export const RedigerPameldingPage = () => {
         vedtaksinformasjon={pamelding.vedtaksinformasjon}
       />
 
-      <div className="md:p-8 p-4 bg-(--ax-bg-default)">
+      <div className="mt-4 md:p-8 p-4 bg-(--ax-bg-default)">
         <PameldingFormContextProvider>
           <Utkast />
         </PameldingFormContextProvider>

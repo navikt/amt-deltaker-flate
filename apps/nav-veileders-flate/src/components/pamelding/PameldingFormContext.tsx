@@ -3,8 +3,10 @@ import { createContext, useContext, useState } from 'react'
 export interface PameldingFormContextProps {
   disabled: boolean
   redigerUtkast: boolean
+  error: string | null
   setRedigerUtkast: React.Dispatch<React.SetStateAction<boolean>>
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>
+  setError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const PameldingFormContext = createContext<
@@ -30,12 +32,15 @@ const PameldingFormContextProvider = ({
 }) => {
   const [disabled, setDisabled] = useState(false)
   const [redigerUtkast, setRedigerUtkast] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const contextValue: PameldingFormContextProps = {
     disabled,
     redigerUtkast,
+    error,
     setRedigerUtkast,
-    setDisabled
+    setDisabled,
+    setError
   }
 
   return (
