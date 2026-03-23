@@ -1,7 +1,6 @@
 import { BodyLong, BodyShort, Button, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  DeltakerStatusType,
   hentTiltakNavnHosArrangorTekst,
   skalMeldePaaDirekte,
   useDeferredFetch
@@ -44,9 +43,6 @@ export const MeldPaDirekteModal = ({
   const [confirmed, setConfirmed] = useState(false)
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
-  const erUtkast =
-    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
-
   const { doRedirect } = useModiaLink()
 
   const returnToFrontpageWithSuccessMessage = () => {
@@ -67,7 +63,7 @@ export const MeldPaDirekteModal = ({
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(
     sendInnPameldingUtenGodkjenning,
-    erUtkast ? undefined : returnToFrontpageWithSuccessMessage
+    returnToFrontpageWithSuccessMessage
   )
 
   return (

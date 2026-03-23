@@ -1,7 +1,6 @@
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  DeltakerStatusType,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -29,8 +28,6 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
 
   const deltakerNavn = getDeltakerNavn(pamelding)
   const { deltakerliste } = pamelding
-  const erUtkast =
-    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING
 
   const { doRedirect } = useModiaLink()
   const returnToFrontpageWithSuccessMessage = () => {
@@ -46,7 +43,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
     doFetch: doFetchDelUtkastEnkeltplass
   } = useDeferredFetch(
     delUtkastEnkeltplass,
-    erUtkast ? undefined : returnToFrontpageWithSuccessMessage
+    returnToFrontpageWithSuccessMessage
   )
 
   return (
