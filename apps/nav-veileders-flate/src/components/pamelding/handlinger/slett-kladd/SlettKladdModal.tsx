@@ -28,7 +28,7 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
   }
   const {
     state: slettKladdState,
-    error, // TODO vise feil
+    // error, // TODO vise feil
     doFetch: doFetchSlettKladd
   } = useDeferredFetch(deleteKladd, returnToFrontpage)
 

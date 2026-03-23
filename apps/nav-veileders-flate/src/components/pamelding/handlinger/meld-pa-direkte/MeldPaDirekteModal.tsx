@@ -63,7 +63,7 @@ export const MeldPaDirekteModal = ({
 
   const {
     state: fetchState,
-    error, // TODO vise feil
+    // error, // TODO vise feil
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(
     sendInnPameldingUtenGodkjenning,

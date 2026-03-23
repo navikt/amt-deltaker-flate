@@ -26,7 +26,7 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
   }
   const {
     state: avbrytUtkastState,
-    error, // TODO vise feil
+    // error, // TODO vise feil
     doFetch: fetchAvbrytUtkast
   } = useDeferredFetch(avbrytUtkast, returnToFrontpage)
 

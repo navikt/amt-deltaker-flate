@@ -1,7 +1,7 @@
 import { ErrorSummary } from '@navikt/ds-react'
 import { forwardRef } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
+import { PameldingFormValues } from '../../../model/PameldingFormValues'
 
 export const FormErrorSummary = forwardRef<HTMLDivElement>(
   function FormErrorSummary(_props, ref: React.Ref<HTMLDivElement>) {

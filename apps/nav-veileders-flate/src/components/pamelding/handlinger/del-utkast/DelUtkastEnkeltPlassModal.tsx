@@ -42,7 +42,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    error, // TODO vise feil
+    //  error, // TODO vise feil
     doFetch: doFetchDelUtkastEnkeltplass
   } = useDeferredFetch(
     delUtkastEnkeltplass,
