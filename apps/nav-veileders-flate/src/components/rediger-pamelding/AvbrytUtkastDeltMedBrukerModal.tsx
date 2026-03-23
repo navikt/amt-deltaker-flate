@@ -48,31 +48,29 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <div className="flex gap-4 items-center justify-start">
-          <Button
-            type="button"
-            size="small"
-            onClick={() => {
-              fetchAvbrytUtkast(pamelding.deltakerId, enhetId).then(() => {
-                onClose()
-              })
-            }}
-            disabled={disabled}
-            loading={avbrytUtkastState === DeferredFetchState.LOADING}
-          >
-            Avbryt utkast
-          </Button>
+        <Button
+          type="button"
+          size="small"
+          onClick={() => {
+            fetchAvbrytUtkast(pamelding.deltakerId, enhetId).then(() => {
+              onClose()
+            })
+          }}
+          disabled={disabled}
+          loading={avbrytUtkastState === DeferredFetchState.LOADING}
+        >
+          Avbryt utkast
+        </Button>
 
-          <Button
-            type="button"
-            variant="secondary"
-            size="small"
-            onClick={onClose}
-            disabled={disabled}
-          >
-            Nei, ikke avbryt utkastet
-          </Button>
-        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          size="small"
+          onClick={onClose}
+          disabled={disabled}
+        >
+          Nei, ikke avbryt utkastet
+        </Button>
       </Modal.Footer>
     </Modal>
   )

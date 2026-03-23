@@ -18,6 +18,7 @@ export const ForkastUtkastEndringModal = ({ open, onClose }: Props) => {
       <Modal.Body>
         <BodyLong>Endringene dine vil bli borte.</BodyLong>
       </Modal.Body>
+
       <Modal.Footer>
         <Button
           type="button"
