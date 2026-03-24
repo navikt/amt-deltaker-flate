@@ -1,15 +1,10 @@
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  hentTiltakNavnHosArrangorTekst,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { deleteKladd } from '../../../../api/api.ts'
 import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../../../../hooks/useModiaLink.ts'
-import { getDeltakerNavn } from '../../../../utils/displayText.ts'
 import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 
 interface Props {
@@ -19,8 +14,6 @@ interface Props {
 
 export const SlettKladdModal = ({ open, onClose }: Props) => {
   const { pamelding } = usePameldingContext()
-  const deltakerNavn = getDeltakerNavn(pamelding)
-  const { deltakerliste } = pamelding
 
   const { doRedirect } = useModiaLink()
   const returnToFrontpage = () => {
@@ -43,10 +36,6 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
       <Modal.Body>
         <BodyLong size="small">
           Påmeldingen og det du har skrevet vil bli borte.
-        </BodyLong>
-
-        <BodyLong weight="semibold" className="mt-8">
-          {`${deltakerNavn} meldes på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
         </BodyLong>
       </Modal.Body>
 

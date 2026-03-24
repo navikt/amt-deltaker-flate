@@ -97,7 +97,7 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: false, // Endre her for enkeltplass
+        erEnkeltplassUtenRammeavtale: true, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '

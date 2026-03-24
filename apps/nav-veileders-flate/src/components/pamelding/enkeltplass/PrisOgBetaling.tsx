@@ -1,5 +1,5 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
-import { BodyShort, InfoCard, ReadMore, Textarea } from '@navikt/ds-react'
+import { BodyShort, InfoCard, Link, ReadMore, Textarea } from '@navikt/ds-react'
 import { List } from '@navikt/ds-react/List'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
@@ -8,6 +8,7 @@ import {
   PRISINFO_MAX_TEGN
 } from '../../../model/PameldingEnkeltplassFormValues'
 import { usePameldingFormContext } from '../PameldingFormContext'
+import { NAVET_OPPLAERINGSTILTAK_URL } from '../../../constants'
 
 interface Props {
   className?: string
@@ -53,8 +54,12 @@ export const PrisOgBetaling = ({ className }: Props) => {
           <List.Item>Hva kostnadene består av og totalbeløp for Nav</List.Item>
           <List.Item>Om brukeren skal dekke deler av kostnadene selv</List.Item>
         </List>
-        <BodyShort className="mt-4">
-          Les mer på navet: Opplæringstiltak - anskaffelse eller tilskudd?
+
+        <BodyShort size="small" className="mt-4">
+          Les mer på navet:{' '}
+          <Link href={NAVET_OPPLAERINGSTILTAK_URL}>
+            Opplæringstiltak - anskaffelse eller tilskudd?
+          </Link>
         </BodyShort>
       </ReadMore>
 
