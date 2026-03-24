@@ -26,7 +26,6 @@ export const PrisOgBetaling = ({ className }: Props) => {
     <div className={className}>
       <Textarea
         label="Pris og betalingsbetingelser"
-        description="Før opp kostnader for Nav utenom tilleggsstønader og ytelser"
         {...register('prisinformasjon')}
         value={watch('prisinformasjon')}
         onChange={(e) => {

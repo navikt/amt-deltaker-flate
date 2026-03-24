@@ -27,7 +27,7 @@ export const DelUtkastButton = () => {
         disabled={disabled}
         type="button"
       >
-        Del utkast med bruker
+        Del utkast med brukeren
       </Button>
 
       {erEnkeltplass && (
