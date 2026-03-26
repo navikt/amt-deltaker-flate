@@ -1,67 +1,11 @@
-import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
-import { Button, VStack } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  DeltakerStatusType,
-  Tiltakskode,
-  skalMeldePaaDirekte,
-  useDeferredFetch
-} from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
-import { useAppContext } from '../AppContext.tsx'
-import { avbrytUtkast } from '../api/api.ts'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { HorisontalLine } from '../components/HorisontalLine.tsx'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
-import { MeldPaDirekteButton } from '../components/pamelding/MeldPaDirekteButton.tsx'
-import { PameldingForm } from '../components/pamelding/PameldingForm.tsx'
+import { PameldingFormContextProvider } from '../components/pamelding/PameldingFormContext.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
-import { AvbrytUtkastDeltMedBrukerModal } from '../components/rediger-pamelding/AvbrytUtkastDeltMedBrukerModal.tsx'
 import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
-import {
-  DELTAKELSESOVERSIKT_LINK,
-  useModiaLink
-} from '../hooks/useModiaLink.ts'
-import { ErrorPage } from './ErrorPage.tsx'
 
 export const RedigerPameldingPage = () => {
-  const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
-  const [redigerUtkast, setRedigerUtkast] = useState<boolean>(false)
-  const [idDisabled, setIsDisabled] = useState<boolean>(false)
-  const { pamelding, setPamelding } = usePameldingContext()
-
-  const { doRedirect } = useModiaLink()
-  const { enhetId } = useAppContext()
-
-  const meldPaDirekte = skalMeldePaaDirekte(
-    pamelding.deltakerliste.pameldingstype
-  )
-
-  const kanEndreUtkast = ![
-    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
-    Tiltakskode.JOBBKLUBB
-  ].includes(pamelding.deltakerliste.tiltakskode)
-
-  const returnToFrontpage = () => {
-    doRedirect(DELTAKELSESOVERSIKT_LINK)
-  }
-
-  const handleDelEndring = (pamelding: DeltakerResponse) => {
-    setPamelding(pamelding)
-    setRedigerUtkast(false)
-    setIsDisabled(false)
-  }
-
-  const {
-    state: avbrytUtkastState,
-    error: avbrytUtkastError,
-    doFetch: fetchAvbrytUtkast
-  } = useDeferredFetch(avbrytUtkast, returnToFrontpage)
-
-  useEffect(() => {
-    setIsDisabled(avbrytUtkastState === DeferredFetchState.LOADING)
-  }, [avbrytUtkastState])
+  const { pamelding } = usePameldingContext()
 
   return (
     <div className="max-w-190 ax-md:m-auto m-4" data-testid="page_utkast">
@@ -72,84 +16,11 @@ export const RedigerPameldingPage = () => {
         vedtaksinformasjon={pamelding.vedtaksinformasjon}
       />
 
-      <VStack
-        gap="space-16"
-        align="start"
-        className="md:p-8 p-4 bg-(--ax-bg-default)"
-      >
-        {redigerUtkast && (
-          <PameldingForm
-            focusOnOpen
-            pamelding={pamelding}
-            disabled={idDisabled}
-            disableForm={(disabled) => setIsDisabled(disabled)}
-            onCancelUtkast={() => setRedigerUtkast(false)}
-            onDelEndring={handleDelEndring}
-          />
-        )}
-
-        {!redigerUtkast && (
-          <>
-            <Utkast
-              innhold={pamelding.deltakelsesinnhold}
-              bakgrunnsinformasjon={pamelding.bakgrunnsinformasjon}
-              deltakelsesprosent={pamelding.deltakelsesprosent}
-              dagerPerUke={pamelding.dagerPerUke}
-              deltakerliste={pamelding.deltakerliste}
-            />
-            {pamelding.status.type ===
-              DeltakerStatusType.UTKAST_TIL_PAMELDING && (
-              <>
-                {kanEndreUtkast && (
-                  <Button
-                    size="small"
-                    variant="secondary"
-                    icon={<PencilIcon />}
-                    disabled={idDisabled}
-                    onClick={() => setRedigerUtkast(true)}
-                    className="mt-8"
-                  >
-                    Endre utkastet
-                  </Button>
-                )}
-                <HorisontalLine className="mt-8 mb-8" />
-                <MeldPaDirekteButton
-                  className="mb-2"
-                  pamelding={pamelding}
-                  disabled={idDisabled}
-                  useOldPamelding
-                  disableForm={(disabled) => setIsDisabled(disabled)}
-                />
-                {avbrytUtkastState === DeferredFetchState.ERROR && (
-                  <ErrorPage message={avbrytUtkastError} />
-                )}
-                <Button
-                  size="small"
-                  variant="secondary"
-                  disabled={idDisabled}
-                  onClick={() => {
-                    setAvbrytModalOpen(true)
-                  }}
-                  loading={avbrytUtkastState === DeferredFetchState.LOADING}
-                  icon={<XMarkIcon />}
-                >
-                  {`Avbryt utkast til ${meldPaDirekte ? 'påmelding' : 'søknad'}`}
-                </Button>
-              </>
-            )}
-          </>
-        )}
-        <AvbrytUtkastDeltMedBrukerModal
-          open={avbrytModalOpen}
-          onConfirm={() => {
-            fetchAvbrytUtkast(pamelding.deltakerId, enhetId)
-            setAvbrytModalOpen(false)
-          }}
-          onCancel={() => {
-            setAvbrytModalOpen(false)
-          }}
-        />
-      </VStack>
+      <div className="mt-4 md:p-8 p-4 bg-(--ax-bg-default)">
+        <PameldingFormContextProvider>
+          <Utkast />
+        </PameldingFormContextProvider>
+      </div>
     </div>
   )
 }

@@ -12,13 +12,13 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/pamelding.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   erInnholdPakrevd,
   generateFormDefaultValues,
   PameldingFormValues
-} from '../../model/PameldingFormValues.ts'
+} from '../../../model/PameldingFormValues.ts'
 
 interface Props {
   pamelding: DeltakerResponse

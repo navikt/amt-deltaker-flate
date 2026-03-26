@@ -6,8 +6,10 @@ import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
 } from '../utils/varighet.tsx'
+import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
 
-export const TEKSTFELT_MAX_TEGN = 1000
+export const INNHOLD_MAX_TEGN = 250
+export const PRISINFO_MAX_TEGN = 600
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
 const dateShema = z
@@ -24,12 +26,12 @@ export const createPameldingEnkeltplassFormSchema = (
   z
     .object({
       tiltakskode: z.enum(Tiltakskode),
-      beskrivelse: z
+      innhold: z
         .string()
-        .min(1, 'Beskrivelse av kurset er påkrevd.')
+        .min(1, 'Innholdet til kurset er påkrevd.')
         .max(
-          TEKSTFELT_MAX_TEGN,
-          `Beskrivelse av kurset kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
+          INNHOLD_MAX_TEGN,
+          `Innholdet til kurset kan ikke ha mer enn ${INNHOLD_MAX_TEGN} tegn.`
         ),
       startdato: dateShema,
       sluttdato: dateShema,
@@ -37,8 +39,8 @@ export const createPameldingEnkeltplassFormSchema = (
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')
         .max(
-          TEKSTFELT_MAX_TEGN,
-          `Prisinformasjon kan ikke ha mer enn ${TEKSTFELT_MAX_TEGN} tegn.`
+          PRISINFO_MAX_TEGN,
+          `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         )
     })
     .refine(
@@ -93,13 +95,13 @@ export const generateFormDefaultValues = (
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: pamelding.deltakerliste.tiltakskode,
-    beskrivelse: '', // TODO hent dette fra deltakerliste?
+    innhold: getInnholdAnnetBeskrivelse(pamelding) ?? '',
     startdato: pamelding.startdato
       ? dayjs(pamelding.startdato).format(DATE_FORMAT)
       : undefined,
     sluttdato: pamelding.sluttdato
       ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
       : undefined,
-    prisinformasjon: ''
+    prisinformasjon: '' // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
   }
 }

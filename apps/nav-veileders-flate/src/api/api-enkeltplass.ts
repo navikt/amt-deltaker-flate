@@ -1,12 +1,12 @@
 import { logError, Tiltakskode } from 'deltaker-flate-common'
-import { DeltakerResponse } from './data/pamelding'
+import { API_URL } from '../utils/environment-utils'
+import { EnkeltplassPameldingRequest } from './data/enkeltplass-pamelding'
 import {
   EnkeltplassKladdRequest,
   OpprettEnkeltplassKladdRequest
 } from './data/kladd-request'
-import { API_URL } from '../utils/environment-utils'
+import { DeltakerResponse } from './data/pamelding'
 import { DELTAKER_FOR_UNG_ERROR, handleError, parsePamelding } from './utils'
-import { EnkeltplassPameldingRequest } from './data/enkeltplass-pamelding'
 
 export const opprettEnkeltplassKladd = async (
   personident: string,
@@ -74,14 +74,12 @@ export const oppdaterKladd = async (
   })
 }
 
-// TODO oppdaterUtkast
-/*
 export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,
-  request: UtkastRequest
+  request: EnkeltplassPameldingRequest
 ): Promise<DeltakerResponse> => {
-  return fetch(`${API_URL}/pamelding/${deltakerId}`, {
+  return fetch(`${API_URL}/utkast-enkeltplass/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -100,7 +98,6 @@ export const oppdaterUtkast = async (
     })
     .then(parsePamelding)
 }
-*/
 
 export const meldPaDirekteEnkeltplass = (
   deltakerId: string,
@@ -108,7 +105,7 @@ export const meldPaDirekteEnkeltplass = (
   request: EnkeltplassPameldingRequest
 ): Promise<number> => {
   return fetch(
-    `${API_URL}/pamelding/${deltakerId}/enekltplass-utengodkjening`,
+    `${API_URL}/pamelding/${deltakerId}/enkeltplass-utengodkjening`,
     {
       method: 'POST',
       credentials: 'include',
@@ -122,29 +119,6 @@ export const meldPaDirekteEnkeltplass = (
   ).then((response) => {
     if (response.status !== 200) {
       const message = 'Påmeldingen uten godkjenning kunne ikke sendes inn.'
-      handleError(message, deltakerId, response.status)
-    }
-    return response.status
-  })
-}
-
-export const delUtkastEnkeltplass = (
-  deltakerId: string,
-  enhetId: string,
-  request: EnkeltplassPameldingRequest
-): Promise<number> => {
-  return fetch(`${API_URL}/pamelding/${deltakerId}/enekltplass-delutkast`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  }).then((response) => {
-    if (response.status !== 200) {
-      const message = 'Utkastet kunne ikke deles.'
       handleError(message, deltakerId, response.status)
     }
     return response.status

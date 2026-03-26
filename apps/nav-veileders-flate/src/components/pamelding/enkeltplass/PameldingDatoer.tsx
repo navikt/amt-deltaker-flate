@@ -1,14 +1,14 @@
 import { DatePicker, ErrorMessage, useDatepicker } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { Controller, useFormContext } from 'react-hook-form'
-import { getDayjsFromString } from '../../../../../packages/deltaker-flate-common/utils/utils'
+import { usePameldingFormContext } from '../PameldingFormContext'
+import { usePameldingContext } from '../../tiltak/PameldingContext'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
-} from '../../model/PameldingEnkeltplassFormValues'
-import { getMaxVarighetDato } from '../../utils/varighet'
-import { usePameldingContext } from '../tiltak/PameldingContext'
-import { usePameldingFormContext } from './PameldingFormContext'
+} from '../../../model/PameldingEnkeltplassFormValues'
+import { getMaxVarighetDato } from '../../../utils/varighet'
+import { getDayjsFromString } from 'deltaker-flate-common'
 
 interface Props {
   defaultStartdato?: string

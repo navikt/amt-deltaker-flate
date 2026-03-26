@@ -116,7 +116,7 @@ const DemoStatusInstillinger = () => {
   const { setPamelding } = usePameldingContext()
 
   const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
-    Tiltakskode.HOYERE_UTDANNING
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
   )
   const [pameldingStatus, setPameldingStatus] = useState<DeltakerStatusType>(
     DeltakerStatusType.KLADD

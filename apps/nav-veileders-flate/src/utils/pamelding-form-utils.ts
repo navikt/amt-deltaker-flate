@@ -4,13 +4,13 @@ import {
   Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
+import { KladdRequest } from '../api/data/kladd-request.ts'
 import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { InnholdDto, UtkastRequest } from '../api/data/utkast-request.ts'
-import { SendInnPameldingUtenGodkjenningRequest } from '../api/data/send-inn-pamelding-uten-godkjenning-request.ts'
+import { InnholdDto, PameldingRequest } from '../api/data/send-pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
 
-export const generateInnholdFromResponse = (
+export const generateInnholdForRequest = (
   pamelding: DeltakerResponse,
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null,
@@ -32,10 +32,10 @@ export const generateInnholdFromResponse = (
   }
 
   return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
-    const valgtInnhold = valgteInnhold.find(
+    const erInnholdValgt = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
     )
-    if (valgtInnhold === undefined) return []
+    if (erInnholdValgt === undefined) return []
 
     return [
       {
@@ -66,7 +66,7 @@ const getDeltakerProsent = (
 export const generatePameldingRequestFromForm = (
   pamelding: DeltakerResponse,
   data: PameldingFormValues | undefined
-): UtkastRequest => {
+): PameldingRequest => {
   if (!data) {
     throw new Error('data should not be undefined')
   }
@@ -76,7 +76,7 @@ export const generatePameldingRequestFromForm = (
     dagerPerUke: data.dagerPerUke,
     deltakelsesprosent: getDeltakerProsent(pamelding, data),
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    innhold: generateInnholdFromResponse(
+    innhold: generateInnholdForRequest(
       pamelding,
       data.valgteInnhold,
       data.innholdAnnetBeskrivelse,
@@ -85,23 +85,37 @@ export const generatePameldingRequestFromForm = (
   }
 }
 
-export const generateDirektePameldingRequestForm = (
+export const formToKladdRequest = (
   pamelding: DeltakerResponse,
-  data: PameldingFormValues | undefined
-): SendInnPameldingUtenGodkjenningRequest => {
-  if (!data) {
-    throw new Error('data should not be undefined')
-  }
+  data: PameldingFormValues
+): KladdRequest => {
   return {
-    deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
-    dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent: getDeltakerProsent(pamelding, data),
-    bakgrunnsinformasjon: data.bakgrunnsinformasjon,
-    innhold: generateInnholdFromResponse(
+    innhold: generateInnholdForRequest(
       pamelding,
       data.valgteInnhold,
       data.innholdAnnetBeskrivelse,
       data.innholdsTekst
-    )
+    ),
+    bakgrunnsinformasjon: data.bakgrunnsinformasjon,
+    deltakelsesprosent: data.deltakelsesprosent,
+    dagerPerUke: data.dagerPerUke
+  }
+}
+
+export const generatePameldingRequest = (
+  pamelding: DeltakerResponse
+): PameldingRequest => {
+  return {
+    deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
+    dagerPerUke: pamelding.dagerPerUke || undefined,
+    deltakelsesprosent: pamelding.deltakelsesprosent || undefined,
+    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon || undefined,
+    innhold:
+      pamelding.deltakelsesinnhold?.innhold
+        .filter((i) => i.valgt)
+        .map((i) => ({
+          innholdskode: i.innholdskode,
+          beskrivelse: i.beskrivelse
+        })) || []
   }
 }

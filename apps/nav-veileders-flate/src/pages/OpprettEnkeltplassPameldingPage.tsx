@@ -2,8 +2,8 @@ import { Detail, Heading, Tag } from '@navikt/ds-react'
 import { getTiltakskodeDisplayText } from 'deltaker-flate-common'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
-import { PameldingEnkeltplassForm } from '../components/enkeltplass-uten-rammeavtale-pamelding/PameldingEnkeltplassForm.tsx'
-import { PameldingFormContextProvider } from '../components/enkeltplass-uten-rammeavtale-pamelding/PameldingFormContext.tsx'
+import { PameldingEnkeltplassForm } from '../components/pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
+import { PameldingFormContextProvider } from '../components/pamelding/PameldingFormContext.tsx'
 
 export const OpprettEnkeltplassPameldingPage = () => {
   const { pamelding } = usePameldingContext()

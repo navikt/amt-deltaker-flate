@@ -1,64 +1,44 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Heading, Textarea } from '@navikt/ds-react'
 import {
-  DeltakerStatusType,
   erOpplaringstiltak,
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
   harLopendeOppstart,
-  INNHOLD_TYPE_ANNET,
   OmKurset,
   Oppmotested,
   skalMeldePaaDirekte,
   Tiltakskode,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { oppdaterKladd } from '../../api/api.ts'
-import { KladdRequest } from '../../api/data/kladd-request.ts'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import {
   BAKGRUNNSINFORMASJON_MAKS_TEGN,
   generateFormDefaultValues,
   pameldingFormSchema,
   PameldingFormValues
-} from '../../model/PameldingFormValues.ts'
-import { formToKladdRequest } from '../../utils/kladd.ts'
-import { KladdLagring } from '../KladdLagring.tsx'
+} from '../../../model/PameldingFormValues.ts'
+import { usePameldingContext } from '../../tiltak/PameldingContext.tsx'
+import { PameldingFormButtons } from '../FormButtons.tsx'
+import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
-import { FormErrorSummary } from './FormErrorSummary.tsx'
 import { Innhold } from './Innhold.tsx'
 import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
-import { MeldPaDirekteButton } from './MeldPaDirekteButton.tsx'
-import { PameldingFormButtons } from './PameldingFormButtons.tsx'
+import { FormErrorSummary } from '../FormErrorSummary.tsx'
 
 interface Props {
-  pamelding: DeltakerResponse
   className?: string
-  disabled?: boolean
   focusOnOpen?: boolean
-  disableForm?: (disable: boolean) => void
-  onCancelUtkast?: () => void
-  onDelEndring?: (pamelding: DeltakerResponse) => void
 }
 
-export const PameldingForm = ({
-  pamelding,
-  className,
-  disabled,
-  focusOnOpen,
-  disableForm,
-  onCancelUtkast,
-  onDelEndring
-}: Props) => {
-  const errorSummaryRef = useRef<HTMLDivElement>(null)
+export const PameldingForm = ({ className, focusOnOpen }: Props) => {
+  const { pamelding } = usePameldingContext()
+  const { disabled } = usePameldingFormContext()
   const tiltakskode = pamelding.deltakerliste.tiltakskode
-  const status = pamelding.status.type
 
   const defaultValues = generateFormDefaultValues(pamelding)
   const formRef = useRef<HTMLFormElement>(null)
-  const [isDisabled, setIsDisabled] = useState<boolean>(!!disabled)
 
   const methods = useForm<PameldingFormValues>({
     defaultValues,
@@ -70,32 +50,12 @@ export const PameldingForm = ({
     register,
     setValue,
     watch,
-    clearErrors,
     formState: { errors }
   } = methods
-
-  const valgteInnhold = watch('valgteInnhold')
-
-  const handleDisableForm = (disable: boolean) => {
-    setIsDisabled(disable)
-    if (disableForm) {
-      disableForm(disable)
-    }
-  }
 
   useEffect(() => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
-
-  const onSubmitError = () => {
-    errorSummaryRef.current?.focus()
-  }
-
-  useEffect(() => {
-    if (!valgteInnhold.find((i) => i === INNHOLD_TYPE_ANNET)) {
-      clearErrors('innholdAnnetBeskrivelse')
-    }
-  }, [valgteInnhold])
 
   const erOpplaringLopendeOppstartDirektePamelding =
     harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
@@ -112,10 +72,10 @@ export const PameldingForm = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <div className="flex flex-col gap-8 p-4 border rounded-sm border-(--ax-bg-brand-blue-strong) mb-4">
-          <FormErrorSummary ref={errorSummaryRef} />
+        <div className="flex flex-col gap-8 mb-4">
+          <FormErrorSummary erEnkeltplass={false} />
 
-          <Innhold pamelding={pamelding} isDisabled={isDisabled} />
+          <Innhold pamelding={pamelding} isDisabled={disabled} />
 
           <OmKurset
             tiltakskode={pamelding.deltakerliste.tiltakskode}
@@ -126,7 +86,6 @@ export const PameldingForm = ({
             sluttdato={pamelding.deltakerliste.sluttdato}
             visDelMedArrangorInfo
           />
-
           {harBakgrunnsinfo(tiltakskode) && (
             <section>
               <Heading size="medium" level="3" className="mb-4">
@@ -146,30 +105,26 @@ export const PameldingForm = ({
                   )
                 }}
                 error={errors.bakgrunnsinformasjon?.message}
-                disabled={isDisabled}
+                disabled={disabled}
                 maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
                 id="bakgrunnsinformasjon"
                 size="small"
               />
             </section>
           )}
-
           {visDeltakelsesmengde(tiltakskode) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde
               </Heading>
-              <Deltakelsesprosent disabled={isDisabled} />
+              <Deltakelsesprosent disabled={disabled} />
             </div>
           )}
-
           <Oppmotested
             oppmoteSted={pamelding.deltakerliste.oppmoteSted}
             statusType={pamelding.status.type}
           />
-
-          <InnholdOgBakgrunn pamelding={pamelding} isDisabled={isDisabled} />
-
+          <InnholdOgBakgrunn pamelding={pamelding} isDisabled={disabled} />
           {erOpplaringLopendeOppstartDirektePamelding && (
             <Alert variant="info" size="small">
               <Heading size="xsmall" level="3">
@@ -182,31 +137,7 @@ export const PameldingForm = ({
             </Alert>
           )}
 
-          <PameldingFormButtons
-            pamelding={pamelding}
-            disabled={isDisabled}
-            disableForm={handleDisableForm}
-            onCancelUtkast={onCancelUtkast}
-            onDelEndring={onDelEndring}
-            onSubmitError={onSubmitError}
-          />
-        </div>
-
-        <div className="flex justify-between items-center">
-          <MeldPaDirekteButton
-            pamelding={pamelding}
-            disabled={isDisabled}
-            disableForm={handleDisableForm}
-            onSubmitError={onSubmitError}
-          />
-
-          {status === DeltakerStatusType.KLADD && (
-            <KladdLagring<PameldingFormValues, KladdRequest>
-              pamelding={pamelding}
-              oppdaterKladd={oppdaterKladd}
-              formToKladdRequest={(data) => formToKladdRequest(pamelding, data)}
-            />
-          )}
+          <PameldingFormButtons />
         </div>
       </FormProvider>
     </form>

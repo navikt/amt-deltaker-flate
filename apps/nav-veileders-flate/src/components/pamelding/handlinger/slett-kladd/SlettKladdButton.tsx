@@ -1,8 +1,8 @@
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
-import { SlettKlassModal } from './SlettKlassModal.tsx'
-import { usePameldingFormContext } from '../PameldingFormContext.tsx'
+import { SlettKladdModal } from './SlettKladdModal.tsx'
+import { usePameldingFormContext } from '../../PameldingFormContext.tsx'
 
 export const SlettKladdButton = () => {
   const { disabled } = usePameldingFormContext()
@@ -21,7 +21,7 @@ export const SlettKladdButton = () => {
         Slett kladd
       </Button>
 
-      <SlettKlassModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <SlettKladdModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   )
 }

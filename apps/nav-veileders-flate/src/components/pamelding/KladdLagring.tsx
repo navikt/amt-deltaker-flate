@@ -2,12 +2,11 @@ import { Detail, ErrorMessage, Loader } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
 import { FieldValues, useFormContext } from 'react-hook-form'
-import { useAppContext } from '../AppContext.tsx'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
-import { debounce } from '../utils/debounce.ts'
+import { useAppContext } from '../../AppContext.tsx'
+import { debounce } from '../../utils/debounce.ts'
+import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
 
 interface Props<TFormValues extends FieldValues, TKladdRequest> {
-  pamelding: DeltakerResponse
   oppdaterKladd: (
     deltakerId: string,
     enhetId: string,
@@ -17,11 +16,11 @@ interface Props<TFormValues extends FieldValues, TKladdRequest> {
 }
 
 export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
-  pamelding,
   oppdaterKladd,
   formToKladdRequest
 }: Props<TFormValues, TKladdRequest>) => {
   const { enhetId } = useAppContext()
+  const { pamelding } = usePameldingContext()
   const [storedKladd, setStoredKladd] = useState<TKladdRequest>()
   const { watch, getValues } = useFormContext<TFormValues>()
 

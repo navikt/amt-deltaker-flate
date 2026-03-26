@@ -1,8 +1,8 @@
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
-import { DeltakelsesprosentValg } from '../../utils/utils.ts'
-import { NumberTextField } from '../NumberTextField.tsx'
+import { PameldingFormValues } from '../../../model/PameldingFormValues.ts'
+import { DeltakelsesprosentValg } from '../../../utils/utils.ts'
+import { NumberTextField } from '../../NumberTextField.tsx'
 
 export interface DeltakelsesprosentProps {
   disabled: boolean

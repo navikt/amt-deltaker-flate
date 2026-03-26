@@ -8,7 +8,9 @@ import { ReactNode } from 'react'
 
 interface Props {
   title: string
+  size: 'small' | 'medium'
   checkboxLabel: string
+  isConfirmed: boolean
   error?: string
   onConfirmedChange: (confirmed: boolean) => void
   children: ReactNode
@@ -16,13 +18,18 @@ interface Props {
 
 export const ConfirmInfoCard = ({
   title,
+  size,
   checkboxLabel,
+  isConfirmed,
   error,
   onConfirmedChange,
   children
 }: Props) => {
   return (
-    <InfoCard data-color={error ? 'danger' : 'warning'}>
+    <InfoCard
+      size={size}
+      data-color={error ? 'danger' : isConfirmed ? 'success' : 'warning'}
+    >
       <InfoCard.Header
         icon={
           error ? (
