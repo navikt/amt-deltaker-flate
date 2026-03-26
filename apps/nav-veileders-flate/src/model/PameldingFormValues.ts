@@ -141,26 +141,28 @@ export const generateFormDefaultValues = (
     return DeltakelsesprosentValg.JA
   }
 
-  const getInnholdAnnetBeskrivelse = (): string | undefined => {
-    const annetCheckbox = pamelding.deltakelsesinnhold?.innhold.find(
-      (i) => i.innholdskode === INNHOLD_TYPE_ANNET
-    )
-
-    if (annetCheckbox?.valgt) {
-      return annetCheckbox.beskrivelse ?? undefined
-    }
-    return undefined
-  }
-
   return {
     tiltakskode: pamelding.deltakerliste.tiltakskode,
     tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold.innhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
-    innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(),
-    innholdsTekst: getInnholdAnnetBeskrivelse(),
+    innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(pamelding),
+    innholdsTekst: getInnholdAnnetBeskrivelse(pamelding),
     bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,
     dagerPerUke: pamelding.dagerPerUke ?? undefined
   }
+}
+
+export const getInnholdAnnetBeskrivelse = (
+  pamelding: DeltakerResponse
+): string | undefined => {
+  const annetCheckbox = pamelding.deltakelsesinnhold?.innhold.find(
+    (i) => i.innholdskode === INNHOLD_TYPE_ANNET
+  )
+
+  if (annetCheckbox?.valgt) {
+    return annetCheckbox.beskrivelse ?? undefined
+  }
+  return undefined
 }

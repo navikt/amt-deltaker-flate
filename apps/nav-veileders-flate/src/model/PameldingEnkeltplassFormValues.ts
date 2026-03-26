@@ -6,6 +6,7 @@ import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
 } from '../utils/varighet.tsx'
+import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
@@ -94,13 +95,13 @@ export const generateFormDefaultValues = (
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: pamelding.deltakerliste.tiltakskode,
-    innhold: '', // TODO hent dette fra deltakerliste?
+    innhold: getInnholdAnnetBeskrivelse(pamelding) ?? '',
     startdato: pamelding.startdato
       ? dayjs(pamelding.startdato).format(DATE_FORMAT)
       : undefined,
     sluttdato: pamelding.sluttdato
       ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
       : undefined,
-    prisinformasjon: ''
+    prisinformasjon: '' // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
   }
 }

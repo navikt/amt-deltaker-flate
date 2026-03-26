@@ -89,23 +89,6 @@ export const formToKladdRequest = (
   pamelding: DeltakerResponse,
   data: PameldingFormValues
 ): KladdRequest => {
-  // TODO kan vi fjerne dette tullet?
-  /*
-  const innholdAnnet = innhold.find(
-    (i) => i.innholdskode === INNHOLD_TYPE_ANNET
-  )
-
-  const korrigertInnhold = [
-    ...innhold.filter((i) => i.innholdskode !== INNHOLD_TYPE_ANNET)
-  ]
-
-  if (innholdAnnet) {
-    korrigertInnhold.push({
-      innholdskode: INNHOLD_TYPE_ANNET,
-      beskrivelse: innholdAnnet.beskrivelse || ''
-    })
-  }
-*/
   return {
     innhold: generateInnholdForRequest(
       pamelding,

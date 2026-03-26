@@ -119,7 +119,6 @@ export const getDeltaker = async (
     .then(parsePamelding)
 }
 
-// TODO fiks navn? siden den er lik som
 export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,
