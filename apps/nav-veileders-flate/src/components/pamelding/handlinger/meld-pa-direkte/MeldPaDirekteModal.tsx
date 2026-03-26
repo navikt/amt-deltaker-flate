@@ -1,4 +1,10 @@
-import { BodyLong, BodyShort, Button, Modal } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  Button,
+  LocalAlert,
+  Modal
+} from '@navikt/ds-react'
 import {
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
@@ -59,7 +65,7 @@ export const MeldPaDirekteModal = ({
 
   const {
     state: fetchState,
-    // error, // TODO vise feil
+    error,
     doFetch: doFetchMeldPaDirekte
   } = useDeferredFetch(
     sendInnPameldingUtenGodkjenning,
@@ -77,6 +83,7 @@ export const MeldPaDirekteModal = ({
       <Modal.Body>
         <ConfirmInfoCard
           title="Er personen informert?"
+          size="small"
           checkboxLabel="Ja, personen er informert"
           error={confirmError}
           isConfirmed={confirmed}
@@ -90,12 +97,22 @@ export const MeldPaDirekteModal = ({
           </BodyLong>
         </ConfirmInfoCard>
 
-        <BodyLong size="small" className="mt-8 mb-4">
+        <BodyLong size="small" className="mt-4 mb-4">
           {getInfoText(meldPaDirekte, pamelding.digitalBruker)}
         </BodyLong>
         <BodyShort weight="semibold">
           {`${getDeltakerNavn(pamelding)} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyShort>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke melde brukeren på, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>

@@ -1,4 +1,4 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
@@ -47,7 +47,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    // error, // TODO vise feil
+    error,
     doFetch: doFetchMeldPaDirekteEnkeltplass
   } = useDeferredFetch(
     meldPaDirekteEnkeltplass,
@@ -64,6 +64,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
     >
       <Modal.Body>
         <ConfirmInfoCard
+          size="small"
           title="Er personen informert?"
           checkboxLabel="Ja, personen er informert"
           isConfirmed={confirmed}
@@ -79,9 +80,19 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
           </BodyLong>
         </ConfirmInfoCard>
 
-        <BodyLong weight="semibold" className="mt-8">
+        <BodyLong weight="semibold" className="mt-4">
           {`${deltakerNavn} meldes på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
         </BodyLong>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke melde brukeren på, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>

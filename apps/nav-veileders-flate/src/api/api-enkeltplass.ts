@@ -79,19 +79,16 @@ export const oppdaterUtkast = async (
   enhetId: string,
   request: EnkeltplassPameldingRequest
 ): Promise<DeltakerResponse> => {
-  return fetch(
-    `${API_URL}/pamelding/enkeltplass-oppdater-utkast/${deltakerId}`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  )
+  return fetch(`${API_URL}/utkast-enkeltplass/${deltakerId}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Påmeldingen kunne ikke sendes inn.'
@@ -122,29 +119,6 @@ export const meldPaDirekteEnkeltplass = (
   ).then((response) => {
     if (response.status !== 200) {
       const message = 'Påmeldingen uten godkjenning kunne ikke sendes inn.'
-      handleError(message, deltakerId, response.status)
-    }
-    return response.status
-  })
-}
-
-export const delUtkastEnkeltplass = (
-  deltakerId: string,
-  enhetId: string,
-  request: EnkeltplassPameldingRequest
-): Promise<number> => {
-  return fetch(`${API_URL}/pamelding/enkeltplass-delutkast/${deltakerId}`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    },
-    body: JSON.stringify(request)
-  }).then((response) => {
-    if (response.status !== 200) {
-      const message = 'Utkastet kunne ikke deles.'
       handleError(message, deltakerId, response.status)
     }
     return response.status

@@ -16,7 +16,7 @@ export const ForkastUtkastEndringModal = ({ open, onClose }: Props) => {
       onClose={onClose}
     >
       <Modal.Body>
-        <BodyLong>Endringene dine vil bli borte.</BodyLong>
+        <BodyLong size="small">Endringene dine vil bli borte.</BodyLong>
       </Modal.Body>
 
       <Modal.Footer>

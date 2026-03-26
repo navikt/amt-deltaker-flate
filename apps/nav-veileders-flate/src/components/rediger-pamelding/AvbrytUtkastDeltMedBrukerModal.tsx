@@ -1,4 +1,4 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { avbrytUtkast } from '../../api/api.ts'
@@ -26,7 +26,7 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
   }
   const {
     state: avbrytUtkastState,
-    // error, // TODO vise feil
+    error,
     doFetch: fetchAvbrytUtkast
   } = useDeferredFetch(avbrytUtkast, returnToFrontpage)
 
@@ -41,10 +41,20 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
       onClose={onClose}
     >
       <Modal.Body>
-        <BodyLong className="mb-4" size="small">
+        <BodyLong size="small">
           Når du avbryter utkastet så får personen beskjed. Aktiviteten i
           aktivitetsplanen blir flyttet til avbrutt.
         </BodyLong>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke avbryte utkastet, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>

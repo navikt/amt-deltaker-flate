@@ -1,4 +1,4 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { deleteKladd } from '../../../../api/api.ts'
 import {
@@ -21,7 +21,7 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
   }
   const {
     state: slettKladdState,
-    // error, // TODO vise feil
+    error,
     doFetch: doFetchSlettKladd
   } = useDeferredFetch(deleteKladd, returnToFrontpage)
 
@@ -37,6 +37,16 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
         <BodyLong size="small">
           Påmeldingen og det du har skrevet vil bli borte.
         </BodyLong>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke slette kladden, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>

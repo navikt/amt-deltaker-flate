@@ -116,20 +116,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/pamelding/enkeltplass-delutkast/:deltakerId',
-    async ({ request }) => {
-      await delay(1000)
-
-      const response = await request
-        .json()
-        .then((json) => enkeltplassPameldingSchema.parse(json))
-        .then(() => new HttpResponse(null, { status: 200 }))
-
-      return response
-    }
-  ),
-  http.post(
-    '/amt-deltaker-bff/pamelding/enkeltplass-oppdater-utkast/:deltakerId',
+    '/amt-deltaker-bff/utkast-enkeltplass/:deltakerId',
     async ({ request }) => {
       await delay(1000)
 

@@ -1,11 +1,11 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
-import { delUtkastEnkeltplass } from '../../../../api/api-enkeltplass'
+import { oppdaterUtkast } from '../../../../api/api-enkeltplass'
 import { useAppContext } from '../../../../AppContext'
 import {
   DELTAKELSESOVERSIKT_LINK,
@@ -39,12 +39,9 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    //  error, // TODO vise feil
+    error,
     doFetch: doFetchDelUtkastEnkeltplass
-  } = useDeferredFetch(
-    delUtkastEnkeltplass,
-    returnToFrontpageWithSuccessMessage
-  )
+  } = useDeferredFetch(oppdaterUtkast, returnToFrontpageWithSuccessMessage)
 
   return (
     <Modal
@@ -61,9 +58,19 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
           brukeren har spørsmål så kan de ta kontakt gjennom dialogen.
         </BodyLong>
 
-        <BodyLong weight="semibold" className="mt-8">
+        <BodyLong weight="semibold" className="mt-4" size="small">
           {`${deltakerNavn} meldes på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
         </BodyLong>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke dele utkastet, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>

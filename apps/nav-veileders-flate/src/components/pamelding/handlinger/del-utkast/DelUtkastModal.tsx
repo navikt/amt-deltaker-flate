@@ -1,4 +1,4 @@
-import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
@@ -44,7 +44,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
 
   const {
     state: fetchState,
-    // error, // TODO vise feil
+    error,
     doFetch: doFetchSendSomForslag
   } = useDeferredFetch(oppdaterUtkast, returnToFrontpageWithSuccessMessage)
 
@@ -64,15 +64,25 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
           gjennom dialogen.
         </BodyLong>
 
-        <BodyLong size="small" className="mt-6 mb-6">
+        <BodyLong size="small" className="mt-4 mb-4">
           {meldPaDirekte
             ? 'Når brukeren godtar utkastet, så fattes vedtaket. I Deltakeroversikten på nav.no ser arrangøren påmeldingen, kontaktinformasjonen til bruker og tildelt veileder.'
             : 'Når brukeren godtar utkastet, søkes de inn. Når det nærmer seg oppstart av kurset, vil Nav gjøre en vurdering av om brukeren oppfyller kravene for å delta.'}
         </BodyLong>
 
-        <BodyLong weight="semibold">
+        <BodyLong weight="semibold" size="small">
           {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
         </BodyLong>
+
+        {error && (
+          <LocalAlert className="mt-8 -mb-4" status="error" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Vi fikk en feil og kunne ikke dele utkastet, prøv igjen.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
       </Modal.Body>
 
       <Modal.Footer>
