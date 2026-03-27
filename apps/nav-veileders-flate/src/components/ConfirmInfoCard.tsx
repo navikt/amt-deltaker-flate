@@ -1,8 +1,9 @@
-import { Checkbox, CheckboxGroup, InfoCard } from '@navikt/ds-react'
 import {
+  CheckmarkCircleIcon,
   ExclamationmarkTriangleIcon,
   XMarkOctagonIcon
 } from '@navikt/aksel-icons'
+import { Checkbox, CheckboxGroup, InfoCard } from '@navikt/ds-react'
 
 import { ReactNode } from 'react'
 
@@ -34,6 +35,8 @@ export const ConfirmInfoCard = ({
         icon={
           error ? (
             <XMarkOctagonIcon aria-hidden />
+          ) : isConfirmed ? (
+            <CheckmarkCircleIcon aria-hidden />
           ) : (
             <ExclamationmarkTriangleIcon aria-hidden />
           )
