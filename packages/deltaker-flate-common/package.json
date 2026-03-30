@@ -14,8 +14,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^8.7.0",
-    "@navikt/ds-react": "^8.7.0",
+    "@navikt/aksel-icons": "^8.8.0",
+    "@navikt/ds-react": "^8.8.0",
     "dayjs": "^1.11.20",
     "react": "^19.2.4",
     "typescript": "^5.9.3",
