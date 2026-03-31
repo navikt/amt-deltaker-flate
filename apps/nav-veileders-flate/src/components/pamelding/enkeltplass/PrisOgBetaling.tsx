@@ -82,7 +82,7 @@ export const PrisOgBetaling = ({ className }: Props) => {
       <TextField
         label="Arrangørens organisasjonsnummer"
         {...register('arrangorOrgnummer')}
-        value={watch('arrangorOrgnummer')}
+        value={watch('arrangorOrgnummer') ?? ''}
         onChange={(e) => {
           setValue('arrangorOrgnummer', fjernUgyldigeTegn(e.target.value), {
             shouldValidate: true
@@ -92,6 +92,8 @@ export const PrisOgBetaling = ({ className }: Props) => {
         disabled={disabled}
         id="arrangorOrgnummer"
         size="small"
+        maxLength={9}
+        inputMode="numeric"
       />
     </div>
   )
