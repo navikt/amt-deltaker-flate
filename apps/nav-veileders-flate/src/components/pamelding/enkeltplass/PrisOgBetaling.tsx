@@ -1,5 +1,12 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
-import { BodyShort, InfoCard, Link, ReadMore, Textarea } from '@navikt/ds-react'
+import {
+  BodyShort,
+  InfoCard,
+  Link,
+  ReadMore,
+  Textarea,
+  TextField
+} from '@navikt/ds-react'
 import { List } from '@navikt/ds-react/List'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
@@ -71,6 +78,21 @@ export const PrisOgBetaling = ({ className }: Props) => {
           </InfoCard.Title>
         </InfoCard.Header>
       </InfoCard>
+
+      <TextField
+        label="Arrangørens organisasjonsnummer"
+        {...register('arrangorOrgnummer')}
+        value={watch('arrangorOrgnummer')}
+        onChange={(e) => {
+          setValue('arrangorOrgnummer', fjernUgyldigeTegn(e.target.value), {
+            shouldValidate: true
+          })
+        }}
+        error={errors.arrangorOrgnummer?.message}
+        disabled={disabled}
+        id="arrangorOrgnummer"
+        size="small"
+      />
     </div>
   )
 }

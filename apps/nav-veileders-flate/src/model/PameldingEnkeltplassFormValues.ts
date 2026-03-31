@@ -35,6 +35,12 @@ export const createPameldingEnkeltplassFormSchema = (
         ),
       startdato: dateShema,
       sluttdato: dateShema,
+      arrangorOrgnummer: z
+        .string()
+        .regex(
+          /^[89]\d{8}$/,
+          'Organisasjonsnummer må starte med 8 eller 9 og ha 9 siffer.'
+        ),
       prisinformasjon: z
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')

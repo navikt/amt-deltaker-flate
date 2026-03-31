@@ -27,6 +27,7 @@ export const kladdSchema = z.object({
 export const enkeltplassKladdSchema = z.object({
   beskrivelse: z.string().optional(),
   prisinformasjon: z.string().optional(),
+  arrangorOrgnummer: z.string().optional(),
   startdato: z.string().optional(),
   sluttdato: z.string().optional()
 })

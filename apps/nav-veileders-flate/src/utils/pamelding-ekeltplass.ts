@@ -21,6 +21,7 @@ export const formToEnkeltplassRequest = (
   return {
     beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
+    arrangorOrgnummer: data.arrangorOrgnummer,
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
   }
@@ -42,6 +43,7 @@ export const generateEnkeltplassPameldingRequest = (
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
     prisinformasjon: '', // TODO fra gjennomføring pamelding.prisinformasjon,
+    arrangorOrgnummer: '', // TODO: Populer fra nytt UI for valg av arrangør
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
   }
