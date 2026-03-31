@@ -108,6 +108,7 @@ export const generateFormDefaultValues = (
     sluttdato: pamelding.sluttdato
       ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
       : undefined,
-    prisinformasjon: '' // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
+    prisinformasjon: '', // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
+    arrangorOrgnummer: '' // TODO
   }
 }
