@@ -79,7 +79,7 @@ export const oppdaterUtkast = async (
   enhetId: string,
   request: EnkeltplassPameldingRequest
 ): Promise<DeltakerResponse> => {
-  return fetch(`${API_URL}/utkast-enkeltplass/${deltakerId}`, {
+  return fetch(`${API_URL}/enkeltplass-utkast/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -104,19 +104,16 @@ export const meldPaDirekteEnkeltplass = (
   enhetId: string,
   request: EnkeltplassPameldingRequest
 ): Promise<number> => {
-  return fetch(
-    `${API_URL}/pamelding/${deltakerId}/enkeltplass-utengodkjening`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'aktiv-enhet': enhetId
-      },
-      body: JSON.stringify(request)
-    }
-  ).then((response) => {
+  return fetch(`${API_URL}/enkeltplass-utkast/${deltakerId}/meld-paa-direkte`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  }).then((response) => {
     if (response.status !== 200) {
       const message = 'Påmeldingen uten godkjenning kunne ikke sendes inn.'
       handleError(message, deltakerId, response.status)
