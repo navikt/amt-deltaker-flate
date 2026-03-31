@@ -115,7 +115,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
           disabled={fetchState === DeferredFetchState.LOADING}
           loading={fetchState === DeferredFetchState.LOADING}
         >
-          Del utkast og gjør klar påmelding
+          Meld på uten å dele utkast
         </Button>
         <Button
           type="button"
