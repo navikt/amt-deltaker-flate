@@ -35,6 +35,13 @@ export const createPameldingEnkeltplassFormSchema = (
         ),
       startdato: dateShema,
       sluttdato: dateShema,
+      arrangorOrgnummer: z
+        .string()
+        .min(1, 'Organisasjonsnummer er påkrevd.')
+        .regex(
+          /^[89]\d{8}$/,
+          'Organisasjonsnummer må starte med 8 eller 9 og ha 9 siffer.'
+        ),
       prisinformasjon: z
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')
@@ -102,6 +109,7 @@ export const generateFormDefaultValues = (
     sluttdato: pamelding.sluttdato
       ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
       : undefined,
-    prisinformasjon: '' // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
+    prisinformasjon: '', // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
+    arrangorOrgnummer: '' // TODO
   }
 }
