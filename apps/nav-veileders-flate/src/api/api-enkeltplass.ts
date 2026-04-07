@@ -126,7 +126,7 @@ export const meldPaDirekteEnkeltplass = (
   })
 }
 
-export const sokHovedEnhet = async (
+export const sokHovedenhet = async (
   term: string,
   enhetId: string
 ): Promise<ArrangorEnhetResponse> => {
@@ -156,6 +156,40 @@ export const sokHovedEnhet = async (
       } catch (error) {
         logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
         throw new Error('Kunne ikke laste inn hovedenhet. Prøv igjen senere.')
+      }
+    })
+}
+
+export const getUnderenheter = async (
+  orgnummer: string,
+  enhetId: string
+): Promise<ArrangorEnhetResponse> => {
+  return fetch(`${API_URL}/arrangor/hovedenhet/${orgnummer}/underenheter`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    }
+  })
+    .then(async (response) => {
+      if (response.status !== 200) {
+        logError(
+          `Get underenheter feilet for orgnummer: ${orgnummer}`,
+          response.status
+        )
+
+        throw new Error('Get underenheter feilet. Prøv igjen senere.')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return arrangorEnhetResponseSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
+        throw new Error('Kunne ikke laste inn underenheter. Prøv igjen senere.')
       }
     })
 }

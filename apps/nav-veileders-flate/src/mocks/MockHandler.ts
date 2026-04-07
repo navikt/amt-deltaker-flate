@@ -52,29 +52,6 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
-export const mockArrangorEnheter = [
-  {
-    organisasjonsnummer: '123456789',
-    navn: 'Muligheter AS'
-  },
-  {
-    organisasjonsnummer: '111111111',
-    navn: 'Den Beste Arrangøren AS'
-  },
-  {
-    organisasjonsnummer: '222222222',
-    navn: 'Arrangør og sånt AS'
-  },
-  {
-    organisasjonsnummer: '333333333',
-    navn: 'Arrangør småfix AS'
-  },
-  {
-    organisasjonsnummer: '444444444',
-    navn: 'Arrangør og Co AS'
-  }
-]
-
 export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
@@ -802,3 +779,49 @@ function aktivtForslag({
     }
   }
 }
+
+export const mockArrangorenheter = [
+  {
+    organisasjonsnummer: '123456789',
+    navn: 'Muligheter AS',
+    underenheter: [
+      {
+        organisasjonsnummer: '555555555',
+        navn: 'Muligheter Oslo AS'
+      },
+      {
+        organisasjonsnummer: '666666666',
+        navn: 'Muligheter Bergen AS'
+      }
+    ]
+  },
+  {
+    organisasjonsnummer: '111111111',
+    navn: 'Den Beste Arrangøren AS',
+    underenheter: [
+      {
+        organisasjonsnummer: '777777777',
+        navn: 'Den Beste Arrangøren Oslo AS'
+      },
+      {
+        organisasjonsnummer: '888888888',
+        navn: 'Den Beste Arrangøren Bergen AS'
+      }
+    ]
+  },
+  {
+    organisasjonsnummer: '222222222',
+    navn: 'Arrangør og sånt AS',
+    underenheter: []
+  },
+  {
+    organisasjonsnummer: '333333333',
+    navn: 'Arrangør småfix AS',
+    underenheter: []
+  },
+  {
+    organisasjonsnummer: '444444444',
+    navn: 'Arrangør og Co AS',
+    underenheter: []
+  }
+]

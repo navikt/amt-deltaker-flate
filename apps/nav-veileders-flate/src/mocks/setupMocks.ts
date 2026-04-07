@@ -1,10 +1,10 @@
 import {
-  Tiltakskode,
   DeltakerStatusType,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN,
   Oppstartstype,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
@@ -20,13 +20,13 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
-import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
-import { mockArrangorEnheter, MockHandler } from './MockHandler.ts'
+import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
 import {
   opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
-import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
+import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
+import { mockArrangorenheter, MockHandler } from './MockHandler.ts'
 
 const handler = new MockHandler()
 
@@ -299,7 +299,7 @@ export const worker = setupWorker(
     })
   }),
   http.post(
-    '/amt-deltaker-bff/oppdater-enkeltplass-kladd/:deltakerId',
+    '/amt-deltaker-bff/enkeltplass/oppdater-kladd/:deltakerId',
     async () => {
       await delay(1000)
 
@@ -327,9 +327,24 @@ export const worker = setupWorker(
       const { term } = params as { term: string }
 
       return HttpResponse.json(
-        mockArrangorEnheter.filter((enhet) =>
+        mockArrangorenheter.filter((enhet) =>
           enhet.navn.toLowerCase().includes(term.toLowerCase())
         )
+      )
+    }
+  ),
+  http.get(
+    '/amt-deltaker-bff/arrangor/hovedenhet/:orgnummer/underenheter',
+    async ({ params }) => {
+      await delay(1000)
+      const { orgnummer } = params as { orgnummer: string }
+
+      return HttpResponse.json(
+        mockArrangorenheter
+          .filter(
+            (enhet) => enhet.organisasjonsnummer.trim() === orgnummer.trim()
+          )
+          .flatMap((enhet) => enhet.underenheter)
       )
     }
   )
