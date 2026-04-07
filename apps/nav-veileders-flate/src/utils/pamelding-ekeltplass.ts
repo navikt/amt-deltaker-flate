@@ -27,21 +27,21 @@ export const formToEnkeltplassRequest = (
 }
 
 export const generateEnkeltplassPameldingRequest = (
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const startdato = pamelding.startdato
-    ? dayjs(pamelding.startdato, DATE_FORMAT, true)?.toDate()
+  const startdato = deltaker.startdato
+    ? dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
     : null
-  const sluttdato = pamelding.sluttdato
-    ? dayjs(pamelding.sluttdato, DATE_FORMAT, true)?.toDate()
+  const sluttdato = deltaker.sluttdato
+    ? dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
     : null
 
   return {
     beskrivelse:
-      pamelding.deltakelsesinnhold?.innhold.find(
+      deltaker.deltakelsesinnhold?.innhold.find(
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
-    prisinformasjon: '', // TODO fra gjennomføring pamelding.prisinformasjon,
+    prisinformasjon: deltaker.prisinformasjon || '',
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
   }

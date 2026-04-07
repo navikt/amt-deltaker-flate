@@ -40,7 +40,7 @@ export const deltakerlisteSchema = z.object({
   pameldingstype: z.enum(Pameldingstype)
 })
 
-export const pameldingSchema = z.object({
+export const deltakerSchema = z.object({
   deltakerId: z.uuid(),
   fornavn: z.string(),
   mellomnavn: z.string().nullable(),
@@ -64,9 +64,9 @@ export const pameldingSchema = z.object({
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
   erUnderOppfolging: z.boolean(),
   deltakelsesmengder: deltakelsesmengderSchema,
-  erManueltDeltMedArrangor: z.boolean()
+  erManueltDeltMedArrangor: z.boolean(),
+  prisinformasjon: z.string().nullable()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
-export type DeltakerResponse = z.infer<typeof pameldingSchema>
-export type Deltakelsesinnhold = z.infer<typeof deltakelsesinnholdSchema>
+export type DeltakerResponse = z.infer<typeof deltakerSchema>

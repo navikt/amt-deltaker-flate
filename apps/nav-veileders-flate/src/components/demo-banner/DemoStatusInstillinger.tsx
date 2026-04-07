@@ -12,7 +12,7 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { DeltakerResponse, pameldingSchema } from '../../api/data/pamelding'
+import { DeltakerResponse, deltakerSchema } from '../../api/data/pamelding'
 import { API_URL, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 
@@ -32,7 +32,7 @@ export const endreMockTiltakskode = (
     })
     .then((json) => {
       try {
-        return pameldingSchema.parse(json)
+        return deltakerSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse pameldingSchema:', error)
         throw error
@@ -56,7 +56,7 @@ export const endreMockDeltakelseStatus = (
     })
     .then((json) => {
       try {
-        return pameldingSchema.parse(json)
+        return deltakerSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse pameldingSchema:', error)
         throw error
@@ -80,7 +80,7 @@ export const endreMockOppstartstype = (
     })
     .then((json) => {
       try {
-        return pameldingSchema.parse(json)
+        return deltakerSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse deltakerSchema:', error)
         throw error
@@ -104,7 +104,7 @@ export const endreMockPameldingstype = (
     })
     .then((json) => {
       try {
-        return pameldingSchema.parse(json)
+        return deltakerSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse deltakerSchema:', error)
         throw error
