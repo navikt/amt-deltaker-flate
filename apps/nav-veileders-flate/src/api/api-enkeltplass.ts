@@ -79,7 +79,7 @@ export const oppdaterUtkast = async (
   enhetId: string,
   request: EnkeltplassPameldingRequest
 ): Promise<DeltakerResponse> => {
-  return fetch(`${API_URL}/enkeltplass-utkast/${deltakerId}`, {
+  return fetch(`${API_URL}/enkeltplass/utkast/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -104,7 +104,7 @@ export const meldPaDirekteEnkeltplass = (
   enhetId: string,
   request: EnkeltplassPameldingRequest
 ): Promise<number> => {
-  return fetch(`${API_URL}/enkeltplass-utkast/${deltakerId}/meld-paa-direkte`, {
+  return fetch(`${API_URL}/enkeltplass/utkast/${deltakerId}/meld-paa-direkte`, {
     method: 'POST',
     credentials: 'include',
     headers: {
