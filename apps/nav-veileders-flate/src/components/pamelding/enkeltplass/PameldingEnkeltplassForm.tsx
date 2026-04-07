@@ -12,6 +12,7 @@ import { PrisOgBetaling } from './PrisOgBetaling'
 import { InnholdBeskrivelse } from './InnholdBeskrivelse'
 import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from '../FormErrorSummary.tsx'
+import { ArrangorValg } from './ArrangorValg.tsx'
 
 interface Props {
   className?: string
@@ -53,6 +54,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
           defaultSluttdato={defaultValues.sluttdato}
         />
 
+        <ArrangorValg className="mt-8" />
         <PrisOgBetaling className="mt-8" />
 
         <PameldingFormButtons className="mt-8" />

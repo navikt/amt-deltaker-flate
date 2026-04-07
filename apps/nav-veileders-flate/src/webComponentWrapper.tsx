@@ -5,6 +5,8 @@ import appCss from './app.css?inline'
 import { AppContextProvider } from './AppContext.tsx'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { AppRoutes } from './Routes.tsx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './queryClient.ts'
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
@@ -60,7 +62,9 @@ export class Deltaker extends HTMLElement {
           initialEnhetId={initialEnhetId}
         >
           <BrowserRouter>
-            <AppRoutes />
+            <QueryClientProvider client={queryClient}>
+              <AppRoutes />
+            </QueryClientProvider>
           </BrowserRouter>
         </AppContextProvider>
       </div>

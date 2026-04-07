@@ -33,6 +33,8 @@ export const createPameldingEnkeltplassFormSchema = (
           INNHOLD_MAX_TEGN,
           `Innholdet til kurset kan ikke ha mer enn ${INNHOLD_MAX_TEGN} tegn.`
         ),
+      arrangorHovedenhet: z.string(), // TODO mer validering?
+      arrangorUnderenhet: z.string(), // TODO mer validering?
       startdato: dateShema,
       sluttdato: dateShema,
       prisinformasjon: z
@@ -96,6 +98,8 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
     innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
+    arrangorHovedenhet: '', // TODO
+    arrangorUnderenhet: '', // TODO
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)
       : undefined,

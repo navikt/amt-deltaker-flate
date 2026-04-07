@@ -52,6 +52,29 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
+export const mockArrangorEnheter = [
+  {
+    organisasjonsnummer: '123456789',
+    navn: 'Muligheter AS'
+  },
+  {
+    organisasjonsnummer: '111111111',
+    navn: 'Den Beste Arrangøren AS'
+  },
+  {
+    organisasjonsnummer: '222222222',
+    navn: 'Arrangør og sånt AS'
+  },
+  {
+    organisasjonsnummer: '333333333',
+    navn: 'Arrangør småfix AS'
+  },
+  {
+    organisasjonsnummer: '444444444',
+    navn: 'Arrangør og Co AS'
+  }
+]
+
 export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'

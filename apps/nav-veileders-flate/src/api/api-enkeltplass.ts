@@ -7,6 +7,10 @@ import {
 } from './data/kladd-request'
 import { DeltakerResponse } from './data/pamelding'
 import { DELTAKER_FOR_UNG_ERROR, handleError, parsePamelding } from './utils'
+import {
+  ArrangorEnhetResponse,
+  arrangorEnhetResponseSchema
+} from './data/arrangorSok'
 
 export const opprettEnkeltplassKladd = async (
   personident: string,
@@ -120,4 +124,38 @@ export const meldPaDirekteEnkeltplass = (
     }
     return response.status
   })
+}
+
+export const sokHovedEnhet = async (
+  term: string,
+  enhetId: string
+): Promise<ArrangorEnhetResponse> => {
+  return fetch(`${API_URL}/arrangor/hovedenhet/sok/${term}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    }
+  })
+    .then(async (response) => {
+      if (response.status !== 200) {
+        logError(
+          `Søking etter hovedenhet feilet for søkestreng: ${term}`,
+          response.status
+        )
+
+        throw new Error('Søking etter hovedenhet feilet. Prøv igjen senere.')
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return arrangorEnhetResponseSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
+        throw new Error('Kunne ikke laste inn hovedenhet. Prøv igjen senere.')
+      }
+    })
 }

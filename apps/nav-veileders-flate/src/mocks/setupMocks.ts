@@ -21,7 +21,7 @@ import {
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
 import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
-import { MockHandler } from './MockHandler.ts'
+import { mockArrangorEnheter, MockHandler } from './MockHandler.ts'
 import {
   opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
@@ -319,5 +319,18 @@ export const worker = setupWorker(
       [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
     }
     return HttpResponse.json(toggles)
-  })
+  }),
+  http.get(
+    '/amt-deltaker-bff/arrangor/hovedenhet/sok/:term',
+    async ({ params }) => {
+      await delay(1000)
+      const { term } = params as { term: string }
+
+      return HttpResponse.json(
+        mockArrangorEnheter.filter((enhet) =>
+          enhet.navn.toLowerCase().includes(term.toLowerCase())
+        )
+      )
+    }
+  )
 )
