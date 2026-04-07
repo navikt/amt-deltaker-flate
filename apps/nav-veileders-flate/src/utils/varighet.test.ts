@@ -76,7 +76,8 @@ const pamelding: DeltakerResponse = {
     nesteDeltakelsesmengde: null
   },
   erUnderOppfolging: true,
-  erManueltDeltMedArrangor: true
+  erManueltDeltMedArrangor: true,
+  prisinformasjon: null
 }
 
 describe('kalkulerSluttdato', () => {

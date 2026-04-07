@@ -18,7 +18,7 @@ export const opprettEnkeltplassKladd = async (
     tiltakskode: tiltakskode
   }
 
-  return fetch(`${API_URL}/opprett-enkeltplass-kladd`, {
+  return fetch(`${API_URL}/enkeltplass/opprett-kladd`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -56,7 +56,7 @@ export const oppdaterKladd = async (
   enhetId: string,
   request: EnkeltplassKladdRequest
 ): Promise<number> => {
-  return fetch(`${API_URL}/oppdater-enkeltplass-kladd/${deltakerId}`, {
+  return fetch(`${API_URL}/enkeltplass/oppdater-kladd/${deltakerId}`, {
     method: 'POST',
     credentials: 'include',
     headers: {

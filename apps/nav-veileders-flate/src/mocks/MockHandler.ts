@@ -141,7 +141,8 @@ export class MockHandler {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
       },
-      erManueltDeltMedArrangor: true
+      erManueltDeltMedArrangor: true,
+      prisinformasjon: null
     }
   }
 

@@ -91,17 +91,17 @@ export type PameldingEnkeltplassFormValues = z.infer<
 >
 
 export const generateFormDefaultValues = (
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
 ): PameldingEnkeltplassFormValues => {
   return {
-    tiltakskode: pamelding.deltakerliste.tiltakskode,
-    innhold: getInnholdAnnetBeskrivelse(pamelding) ?? '',
-    startdato: pamelding.startdato
-      ? dayjs(pamelding.startdato).format(DATE_FORMAT)
+    tiltakskode: deltaker.deltakerliste.tiltakskode,
+    innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
+    startdato: deltaker.startdato
+      ? dayjs(deltaker.startdato).format(DATE_FORMAT)
       : undefined,
-    sluttdato: pamelding.sluttdato
-      ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
+    sluttdato: deltaker.sluttdato
+      ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : undefined,
-    prisinformasjon: '' // TODO snakk med backend: er erEnkeltplass tilgjengelig i prod? og hvor lagres pris?
+    prisinformasjon: deltaker.prisinformasjon ?? ''
   }
 }

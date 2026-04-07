@@ -21,7 +21,7 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
-import { DeltakerResponse, pameldingSchema } from './data/pamelding.ts'
+import { DeltakerResponse, deltakerSchema } from './data/pamelding.ts'
 import { PameldingRequest } from './data/send-pamelding.ts'
 import {
   DELTAKER_FOR_UNG_ERROR,
@@ -216,7 +216,7 @@ export const endreDeltakelseReaktiver = (
     })
     .then((json) => {
       try {
-        return pameldingSchema.parse(json)
+        return deltakerSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse pameldingSchema:', error)
         throw error
