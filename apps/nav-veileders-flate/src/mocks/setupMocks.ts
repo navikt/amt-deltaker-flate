@@ -326,9 +326,6 @@ export const worker = setupWorker(
       await delay(1000)
       const { term } = params as { term: string }
 
-      return new HttpResponse(null, {
-        status: 500
-      })
       return HttpResponse.json(
         mockArrangorenheter.filter((enhet) =>
           enhet.navn.toLowerCase().includes(term.toLowerCase())
@@ -342,9 +339,6 @@ export const worker = setupWorker(
       await delay(1000)
       const { orgnummer } = params as { orgnummer: string }
 
-      return new HttpResponse(null, {
-        status: 500
-      })
       return HttpResponse.json(
         mockArrangorenheter
           .filter(

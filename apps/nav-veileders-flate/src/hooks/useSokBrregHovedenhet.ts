@@ -10,9 +10,10 @@ export function useSokBrregHovedenhet(sokestreng: string, enhetId: string) {
 
   return useQuery({
     queryKey: ['sokBrregHovedenhet', debouncedSok],
-    queryFn: () => sokHovedenhet(debouncedSok, enhetId),
+    queryFn: () => sokHovedenhet(debouncedSok.trim(), enhetId),
     enabled: !!debouncedSok,
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    throwOnError: false
   })
 }
 
@@ -20,6 +21,7 @@ export function useBrregUnderenheter(orgnr: string, enhetId: string) {
   return useQuery({
     queryKey: ['getBrregUnderenheter', orgnr],
     queryFn: () => getUnderenheter(orgnr, enhetId),
-    enabled: !!orgnr
+    enabled: !!orgnr,
+    throwOnError: false
   })
 }
