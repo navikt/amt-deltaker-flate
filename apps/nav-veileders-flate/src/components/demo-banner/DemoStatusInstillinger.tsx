@@ -12,7 +12,7 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { DeltakerResponse, deltakerSchema } from '../../api/data/pamelding'
+import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker'
 import { API_URL, useMock } from '../../utils/environment-utils'
 import { usePameldingContext } from '../tiltak/PameldingContext'
 

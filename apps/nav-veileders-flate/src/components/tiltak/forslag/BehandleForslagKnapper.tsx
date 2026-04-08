@@ -1,7 +1,7 @@
 import { Alert, Button } from '@navikt/ds-react'
 import { usePameldingContext } from '../PameldingContext.tsx'
 import { useState } from 'react'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
 import {
   Forslag,

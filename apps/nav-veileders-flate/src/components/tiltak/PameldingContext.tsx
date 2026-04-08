@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { DeltakerResponse } from '../../api/data/pamelding'
+import { DeltakerResponse } from '../../api/data/deltaker'
 
 export interface PameldingContextProps {
   pamelding: DeltakerResponse

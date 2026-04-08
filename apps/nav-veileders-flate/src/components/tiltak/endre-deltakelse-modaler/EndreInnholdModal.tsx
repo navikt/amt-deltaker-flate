@@ -18,7 +18,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext'
 import { endreDeltakelseInnhold } from '../../../api/api'
 import { EndreInnholdRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   generateValgtInnholdKoder

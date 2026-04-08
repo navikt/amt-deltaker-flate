@@ -1,7 +1,7 @@
 import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { DeltakerResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/deltaker'
 import {
   DATO_FØR_SLUTTDATO_FEILMELDING,
   SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,

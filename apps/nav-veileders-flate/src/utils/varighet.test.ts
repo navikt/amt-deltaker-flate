@@ -8,7 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   finnVarighetValg,

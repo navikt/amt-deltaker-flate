@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
-import { DeltakerResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/deltaker'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
@@ -22,7 +22,9 @@ export const formToEnkeltplassRequest = (
     beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
+    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    arrangorHovedenhet: data.arrangorHovedenhet,
+    arrangorUnderenhet: data.arrangorUnderenhet
   }
 }
 
@@ -43,7 +45,9 @@ export const generateEnkeltplassPameldingRequest = (
       )?.beskrivelse || '',
     prisinformasjon: deltaker.prisinformasjon || '',
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined
+    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    arrangorHovedenhet: '', // TODO deltaker.deltakerliste.arrangorHovedenhet,
+    arrangorUnderenhet: '' // TODO deltaker.deltakerliste.arrangorUnderenhet
   }
 }
 

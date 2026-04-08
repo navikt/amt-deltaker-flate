@@ -6,7 +6,7 @@ import {
   EnkeltplassKladdRequest,
   KladdRequest
 } from '../../api/data/kladd-request.ts'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {

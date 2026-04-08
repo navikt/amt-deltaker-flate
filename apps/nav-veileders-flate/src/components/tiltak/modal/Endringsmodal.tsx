@@ -9,7 +9,7 @@ import {
 } from 'deltaker-flate-common'
 import { ReactNode, useState } from 'react'
 import { EndringRequest } from '../../../api/data/endre-deltakelse-request'
-import { DeltakerResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/deltaker'
 import { getEndrePameldingTekst } from '../../../utils/displayText'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'

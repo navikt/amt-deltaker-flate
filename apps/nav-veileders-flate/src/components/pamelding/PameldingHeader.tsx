@@ -10,7 +10,7 @@ import {
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
-import { Deltakerliste } from '../../api/data/pamelding.ts'
+import { Deltakerliste } from '../../api/data/deltaker.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {

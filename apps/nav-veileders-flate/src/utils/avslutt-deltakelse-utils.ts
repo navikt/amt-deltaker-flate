@@ -4,7 +4,7 @@ import {
   Forslag,
   ForslagEndringType
 } from 'deltaker-flate-common'
-import { DeltakerResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/deltaker'
 
 export enum HarDeltattValg {
   JA = 'JA',

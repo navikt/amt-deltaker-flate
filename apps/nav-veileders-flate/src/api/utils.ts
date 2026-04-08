@@ -1,5 +1,5 @@
 import { logError } from 'deltaker-flate-common'
-import { DeltakerResponse, deltakerSchema } from './data/pamelding'
+import { DeltakerResponse, deltakerSchema } from './data/deltaker'
 
 export const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
 export const ERROR_PERSONIDENT =

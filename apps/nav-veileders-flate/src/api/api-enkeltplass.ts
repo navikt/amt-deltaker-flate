@@ -5,7 +5,7 @@ import {
   EnkeltplassKladdRequest,
   OpprettEnkeltplassKladdRequest
 } from './data/kladd-request'
-import { DeltakerResponse } from './data/pamelding'
+import { DeltakerResponse } from './data/deltaker'
 import { DELTAKER_FOR_UNG_ERROR, handleError, parsePamelding } from './utils'
 import {
   ArrangorEnhetResponse,

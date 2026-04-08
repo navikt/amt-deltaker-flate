@@ -1,7 +1,7 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { Tiltakskode } from 'deltaker-flate-common'
-import { DeltakerResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/deltaker'
 
 export enum VarighetValg {
   ANNET = 'ANNET',

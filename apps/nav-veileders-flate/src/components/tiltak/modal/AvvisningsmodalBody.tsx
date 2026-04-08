@@ -8,7 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
 import { avvisForslag } from '../../../api/api'
-import { DeltakerResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/deltaker'
 import { useAppContext } from '../../../AppContext'
 import { ErrorPage } from '../../../pages/ErrorPage'
 import { ModalFooter } from '../../ModalFooter'

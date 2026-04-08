@@ -5,7 +5,7 @@ import {
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { KladdRequest } from '../api/data/kladd-request.ts'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { InnholdDto, PameldingRequest } from '../api/data/send-pamelding.ts'
 import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'

@@ -1,7 +1,7 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Dropdown } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 import {
   Forslag,

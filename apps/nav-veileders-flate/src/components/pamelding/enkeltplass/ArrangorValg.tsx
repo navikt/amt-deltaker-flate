@@ -1,13 +1,14 @@
-import { UNSAFE_Combobox } from '@navikt/ds-react'
+import { LocalAlert, UNSAFE_Combobox } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../../AppContext'
 import { ArrangorEnhetResponse } from '../../../api/data/arrangorSok'
-import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
 import {
   useBrregUnderenheter,
   useSokBrregHovedenhet
 } from '../../../hooks/useSokBrregHovedenhet'
+import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
+import { usePameldingFormContext } from '../PameldingFormContext'
 
 interface Props {
   className?: string
@@ -15,6 +16,7 @@ interface Props {
 
 export const ArrangorValg = ({ className }: Props) => {
   const { enhetId } = useAppContext()
+  const { disabled } = usePameldingFormContext()
   const [sokArrangor, setSokArrangor] = useState('')
 
   const {
@@ -31,11 +33,13 @@ export const ArrangorValg = ({ className }: Props) => {
   const arrangorHovedenhetOptions = getArrangorOptions(brregVirksomheter)
 
   const arrangorHovedenhet = watch('arrangorHovedenhet') ?? ''
-  const { data: brregUnderenheter = [] } = useBrregUnderenheter(
-    arrangorHovedenhet,
-    enhetId
-  )
+  const { data: brregUnderenheter = [], isFetched: underenheterFetched } =
+    useBrregUnderenheter(arrangorHovedenhet, enhetId)
   const arrangorUnderenhetOptions = getArrangorOptions(brregUnderenheter ?? [])
+
+  const arrangørNavn = brregVirksomheter.find(
+    (enhet) => enhet.organisasjonsnummer === arrangorHovedenhet
+  )?.navn
 
   return (
     <div className={className}>
@@ -50,12 +54,13 @@ export const ArrangorValg = ({ className }: Props) => {
             selectedOptions={arrangorHovedenhetOptions.filter((v) =>
               field.value?.includes(v.value)
             )}
+            ref={field.ref}
             size="small"
             onChange={setSokArrangor}
-            name={field.name}
             error={errors.arrangorHovedenhet?.message}
             filteredOptions={arrangorHovedenhetOptions}
             options={arrangorHovedenhetOptions}
+            disabled={disabled}
             onToggleSelected={(option, isSelected) => {
               if (isSelected) {
                 field.onChange(option)
@@ -68,6 +73,20 @@ export const ArrangorValg = ({ className }: Props) => {
         )}
       />
 
+      {arrangorHovedenhet &&
+        underenheterFetched &&
+        arrangorUnderenhetOptions.length === 0 && (
+          <LocalAlert status="warning" className="mt-4" size="small">
+            <LocalAlert.Header>
+              <LocalAlert.Title>
+                Bedriften {arrangørNavn} mangler underenheter i
+                Brønnøysundregistrene og kan derfor ikke velges som
+                tiltaksarrangør.
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+          </LocalAlert>
+        )}
+
       <Controller
         control={control}
         name="arrangorUnderenhet"
@@ -75,14 +94,14 @@ export const ArrangorValg = ({ className }: Props) => {
           <UNSAFE_Combobox
             id="arrangorUnderenhet"
             className="mt-8"
+            ref={field.ref}
             label="Tiltaksarrangørens underenhet"
             description="Velg underenhet for arrangøren"
             selectedOptions={arrangorUnderenhetOptions.filter((v) =>
               field.value?.includes(v.value)
             )}
             size="small"
-            disabled={arrangorUnderenhetOptions.length === 0}
-            name={field.name}
+            disabled={disabled || arrangorUnderenhetOptions.length === 0}
             error={errors.arrangorUnderenhet?.message}
             options={arrangorUnderenhetOptions}
             onToggleSelected={(option, isSelected) => {
