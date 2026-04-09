@@ -76,7 +76,7 @@ export const worker = setupWorker(
     return response
   }),
   http.post(
-    '/amt-deltaker-bff/opprett-enkeltplass-kladd',
+    '/amt-deltaker-bff/enkeltplass/opprett-kladd',
     async ({ request }) => {
       await delay(1000)
       const response = await request
@@ -129,7 +129,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/pamelding/:deltakerId/enkeltplass-utengodkjening',
+    '/amt-deltaker-bff/enkelplass/utkast/:deltakerId/meld-paa-direkte',
     async ({ request }) => {
       await delay(1000)
 
@@ -299,7 +299,7 @@ export const worker = setupWorker(
     })
   }),
   http.post(
-    '/amt-deltaker-bff/oppdater-enkeltplass-kladd/:deltakerId',
+    '/amt-deltaker-bff/enkeltplass/oppdater-kladd/:deltakerId',
     async () => {
       await delay(1000)
 
