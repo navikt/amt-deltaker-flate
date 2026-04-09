@@ -51,7 +51,7 @@
     "msw": "^2.12.14",
     "playwright": "^1.59.0",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "vite": "^8.0.3",
     "vitest": "^4.1.2"
   },
