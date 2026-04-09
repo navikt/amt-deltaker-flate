@@ -23,7 +23,6 @@ export const formToEnkeltplassRequest = (
     prisinformasjon: data.prisinformasjon,
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
-    arrangorHovedenhet: data.arrangorHovedenhet,
     arrangorUnderenhet: data.arrangorUnderenhet
   }
 }
@@ -46,7 +45,6 @@ export const generateEnkeltplassPameldingRequest = (
     prisinformasjon: deltaker.prisinformasjon || '',
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
-    arrangorHovedenhet: '', // TODO deltaker.deltakerliste.arrangorHovedenhet,
     arrangorUnderenhet: '' // TODO deltaker.deltakerliste.arrangorUnderenhet
   }
 }

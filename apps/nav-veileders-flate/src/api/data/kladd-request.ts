@@ -29,7 +29,6 @@ export const enkeltplassKladdSchema = z.object({
   prisinformasjon: z.string().optional(),
   startdato: z.string().optional(),
   sluttdato: z.string().optional(),
-  arrangorHovedenhet: z.string().optional(),
   arrangorUnderenhet: z.string().optional()
 })
 

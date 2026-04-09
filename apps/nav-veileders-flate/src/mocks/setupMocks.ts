@@ -26,7 +26,7 @@ import {
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
 import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
-import { mockArrangorenheter, MockHandler } from './MockHandler.ts'
+import { MockHandler, sokArrangor } from './MockHandler.ts'
 
 const handler = new MockHandler()
 
@@ -321,31 +321,12 @@ export const worker = setupWorker(
     return HttpResponse.json(toggles)
   }),
   http.get(
-    '/amt-deltaker-bff/arrangor/hovedenhet/sok/:term',
+    '/amt-deltaker-bff/arrangor/underenhet/sok/:term',
     async ({ params }) => {
       await delay(1000)
       const { term } = params as { term: string }
 
-      return HttpResponse.json(
-        mockArrangorenheter.filter((enhet) =>
-          enhet.navn.toLowerCase().includes(term.toLowerCase())
-        )
-      )
-    }
-  ),
-  http.get(
-    '/amt-deltaker-bff/arrangor/hovedenhet/:orgnummer/underenheter',
-    async ({ params }) => {
-      await delay(1000)
-      const { orgnummer } = params as { orgnummer: string }
-
-      return HttpResponse.json(
-        mockArrangorenheter
-          .filter(
-            (enhet) => enhet.organisasjonsnummer.trim() === orgnummer.trim()
-          )
-          .flatMap((enhet) => enhet.underenheter)
-      )
+      return HttpResponse.json(sokArrangor(term))
     }
   )
 )

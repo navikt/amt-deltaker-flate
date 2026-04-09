@@ -1,27 +1,18 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 import useDebounce from './useDebounce'
-import { getUnderenheter, sokHovedenhet } from '../api/api-enkeltplass'
+import { sokUnderenhet } from '../api/api-enkeltplass'
 
 // Søk etter org i Brønnøysundregisteret
 
-export function useSokBrregHovedenhet(sokestreng: string, enhetId: string) {
+export function useSokBrregUnderenhet(sokestreng: string, enhetId: string) {
   const debouncedSok = useDebounce(sokestreng, 300)
 
   return useQuery({
-    queryKey: ['sokBrregHovedenhet', debouncedSok],
-    queryFn: () => sokHovedenhet(debouncedSok.trim(), enhetId),
+    queryKey: ['sokBrregUnderenhet', debouncedSok],
+    queryFn: () => sokUnderenhet(debouncedSok.trim(), enhetId),
     enabled: !!debouncedSok,
     placeholderData: keepPreviousData,
-    throwOnError: false
-  })
-}
-
-export function useBrregUnderenheter(orgnr: string, enhetId: string) {
-  return useQuery({
-    queryKey: ['getBrregUnderenheter', orgnr],
-    queryFn: () => getUnderenheter(orgnr, enhetId),
-    enabled: !!orgnr,
     throwOnError: false
   })
 }

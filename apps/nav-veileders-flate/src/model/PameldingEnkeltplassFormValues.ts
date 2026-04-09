@@ -33,9 +33,6 @@ export const createPameldingEnkeltplassFormSchema = (
           INNHOLD_MAX_TEGN,
           `Innholdet til kurset kan ikke ha mer enn ${INNHOLD_MAX_TEGN} tegn.`
         ),
-      arrangorHovedenhet: z
-        .string()
-        .min(1, 'Tiltaksarrangørens hovedenhet er påkrevd.'),
       arrangorUnderenhet: z
         .string()
         .min(1, 'Tiltaksarrangørens underenhet er påkrevd.'),
@@ -102,7 +99,6 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
     innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
-    arrangorHovedenhet: '', // TODO deltaker.deltakerliste.arrangorHovedenhet,
     arrangorUnderenhet: '', // TODO deltaker.deltakerliste.arrangorUnderenhet
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)

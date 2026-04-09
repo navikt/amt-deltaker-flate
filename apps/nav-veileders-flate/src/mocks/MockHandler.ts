@@ -780,7 +780,31 @@ function aktivtForslag({
   }
 }
 
-export const mockArrangorenheter = [
+export const sokArrangor = (term: string) => {
+  const lower = term.toLowerCase()
+  const result: { organisasjonsnummer: string; navn: string }[] = []
+
+  for (const enhet of mockArrangorenheter) {
+    const hovedenhetMatch = enhet.organisasjonsnummer === term
+
+    if (hovedenhetMatch) {
+      result.push(...enhet.underenheter)
+    } else {
+      for (const underenhet of enhet.underenheter) {
+        if (
+          underenhet.navn.toLowerCase().includes(lower) ||
+          underenhet.organisasjonsnummer.includes(term)
+        ) {
+          result.push(underenhet)
+        }
+      }
+    }
+  }
+
+  return result
+}
+
+const mockArrangorenheter = [
   {
     organisasjonsnummer: '123456789',
     navn: 'Muligheter AS',

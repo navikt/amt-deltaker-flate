@@ -126,11 +126,11 @@ export const meldPaDirekteEnkeltplass = (
   })
 }
 
-export const sokHovedenhet = async (
+export const sokUnderenhet = async (
   term: string,
   enhetId: string
 ): Promise<ArrangorEnhetResponse> => {
-  return fetch(`${API_URL}/arrangor/hovedenhet/sok/${term}`, {
+  return fetch(`${API_URL}/arrangor/underenhet/sok/${term}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -142,11 +142,11 @@ export const sokHovedenhet = async (
     .then(async (response) => {
       if (response.status !== 200) {
         logError(
-          `Søking etter hovedenhet feilet for søkestreng: ${term}`,
+          `Søking etter underenhet feilet for søkestreng: ${term}`,
           response.status
         )
 
-        throw new Error('Søking etter hovedenhet feilet. Prøv igjen senere.')
+        throw new Error('Søking etter underenhet feilet. Prøv igjen senere.')
       }
       return response.json()
     })
@@ -155,41 +155,7 @@ export const sokHovedenhet = async (
         return arrangorEnhetResponseSchema.parse(json)
       } catch (error) {
         logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
-        throw new Error('Kunne ikke laste inn hovedenhet. Prøv igjen senere.')
-      }
-    })
-}
-
-export const getUnderenheter = async (
-  orgnummer: string,
-  enhetId: string
-): Promise<ArrangorEnhetResponse> => {
-  return fetch(`${API_URL}/arrangor/hovedenhet/${orgnummer}/underenheter`, {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
-    }
-  })
-    .then(async (response) => {
-      if (response.status !== 200) {
-        logError(
-          `Get underenheter feilet for orgnummer: ${orgnummer}`,
-          response.status
-        )
-
-        throw new Error('Get underenheter feilet. Prøv igjen senere.')
-      }
-      return response.json()
-    })
-    .then((json) => {
-      try {
-        return arrangorEnhetResponseSchema.parse(json)
-      } catch (error) {
-        logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
-        throw new Error('Kunne ikke laste inn underenheter. Prøv igjen senere.')
+        throw new Error('Kunne ikke laste inn underenhet. Prøv igjen senere.')
       }
     })
 }
