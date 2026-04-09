@@ -1,5 +1,5 @@
 import { Alert, Button } from '@navikt/ds-react'
-import { usePameldingContext } from '../PameldingContext.tsx'
+import { useDeltakerContext } from '../DeltakerContext.tsx'
 import { useState } from 'react'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const BehandleForslagKnapper = ({ forslag }: Props) => {
-  const { pamelding: deltaker, setPamelding } = usePameldingContext()
+  const { deltaker, setDeltaker } = useDeltakerContext()
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [behandleModalOpen, setBehandleModalOpen] = useState(false)
   const [avvisModalOpen, setAvvisModalOpen] = useState(false)
@@ -29,7 +29,7 @@ export const BehandleForslagKnapper = ({ forslag }: Props) => {
     handleCloseBehandleModal()
     setAvvisModalOpen(false)
     if (oppdatertPamelding) {
-      setPamelding(oppdatertPamelding)
+      setDeltaker(oppdatertPamelding)
     }
   }
 

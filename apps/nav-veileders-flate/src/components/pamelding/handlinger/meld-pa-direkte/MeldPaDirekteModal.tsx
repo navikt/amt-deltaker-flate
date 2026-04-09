@@ -26,7 +26,7 @@ import {
   generatePameldingRequestFromForm
 } from '../../../../utils/pamelding-form-utils'
 import { ConfirmInfoCard } from '../../../ConfirmInfoCard'
-import { usePameldingContext } from '../../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 export interface MeldPaDirekteModalProps {
   open: boolean
@@ -43,7 +43,7 @@ export const MeldPaDirekteModal = ({
   onClose
 }: MeldPaDirekteModalProps) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const formContext = useFormContext<PameldingFormValues>()
 
   const [confirmed, setConfirmed] = useState(false)
@@ -54,12 +54,12 @@ export const MeldPaDirekteModal = ({
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
-      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
     })
   }
 
   const meldPaDirekte = skalMeldePaaDirekte(
-    pamelding.deltakerliste.pameldingstype
+    deltaker.deltakerliste.pameldingstype
   )
   const meldPaText = meldPaDirekte ? 'Meld på' : 'Søk inn'
 
@@ -98,10 +98,10 @@ export const MeldPaDirekteModal = ({
         </ConfirmInfoCard>
 
         <BodyLong size="small" className="mt-4 mb-4">
-          {getInfoText(meldPaDirekte, pamelding.digitalBruker)}
+          {getInfoText(meldPaDirekte, deltaker.digitalBruker)}
         </BodyLong>
         <BodyShort weight="semibold">
-          {`${getDeltakerNavn(pamelding)} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
+          {`${getDeltakerNavn(deltaker)} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}`}
         </BodyShort>
 
         {error && (
@@ -124,14 +124,14 @@ export const MeldPaDirekteModal = ({
               setConfirmError('Du må bekrefte før du kan fortsette.')
             } else {
               doFetchMeldPaDirekte(
-                pamelding.deltakerId,
+                deltaker.deltakerId,
                 enhetId,
                 formContext
                   ? generatePameldingRequestFromForm(
-                      pamelding,
+                      deltaker,
                       formContext.getValues()
                     )
-                  : generatePameldingRequest(pamelding)
+                  : generatePameldingRequest(deltaker)
               ).then(() => onClose())
             }
           }}

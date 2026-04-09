@@ -8,12 +8,12 @@ import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnke
 import { MeldPaDirekteButton } from '../pamelding/handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
 import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
 import { PameldingForm } from '../pamelding/standard/PameldingForm.tsx'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { AvbrytUtkastDeltMedBrukerModal } from './AvbrytUtkastDeltMedBrukerModal.tsx'
 import { UtkastDeltaker } from './UtkastDeltaker.tsx'
 
 export const Utkast = () => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { disabled, redigerUtkast, setRedigerUtkast } =
     usePameldingFormContext()
 
@@ -22,10 +22,10 @@ export const Utkast = () => {
   const kanEndreUtkast = ![
     Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
     Tiltakskode.JOBBKLUBB
-  ].includes(pamelding.deltakerliste.tiltakskode)
+  ].includes(deltaker.deltakerliste.tiltakskode)
 
   if (redigerUtkast) {
-    return erEnkeltPlass(pamelding) ? (
+    return erEnkeltPlass(deltaker) ? (
       <PameldingEnkeltplassForm focusOnOpen />
     ) : (
       <PameldingForm focusOnOpen />
@@ -38,7 +38,7 @@ export const Utkast = () => {
 
       <HorisontalLine />
 
-      {pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
+      {deltaker.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING && (
         <div className="flex gap-4">
           <MeldPaDirekteButton
             name="Meld på uten godkjent utkast"

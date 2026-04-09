@@ -3,7 +3,7 @@ import { useFetch } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { getDeltaker } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
-import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
+import { DeltakerContextProvider } from './components/tiltak/DeltakerContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 import { isEnvLocalDemoOrPr } from './utils/environment-utils.ts'
@@ -54,10 +54,10 @@ const InngangSePaRediger = () => {
   }
 
   return (
-    <PameldingContextProvider initialPamelding={pamelding}>
+    <DeltakerContextProvider initialDeltaker={pamelding}>
       {isEnvLocalDemoOrPr && <DemoBanner />}
       <DeltakerGuard />
-    </PameldingContextProvider>
+    </DeltakerContextProvider>
   )
 }
 

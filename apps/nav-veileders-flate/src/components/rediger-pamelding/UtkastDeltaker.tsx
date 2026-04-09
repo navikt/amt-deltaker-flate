@@ -9,21 +9,21 @@ import {
   harBakgrunnsinfo,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
-  const { pamelding } = usePameldingContext()
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const { deltaker } = useDeltakerContext()
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
   const bakgrunnsinfoVisningstekst =
-    pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
-      ? pamelding.bakgrunnsinformasjon
+    deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
+      ? deltaker.bakgrunnsinformasjon
       : EMDASH
 
   return (
     <div className="flex flex-col gap-8">
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
-        deltakelsesinnhold={pamelding.deltakelsesinnhold}
+        deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="small" className="mb-2">
             Dette er innholdet
@@ -50,26 +50,26 @@ export const UtkastDeltaker = () => {
           </Heading>
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(
-              pamelding.deltakelsesprosent,
-              pamelding.dagerPerUke
+              deltaker.deltakelsesprosent,
+              deltaker.dagerPerUke
             )}
           </BodyLong>
         </div>
       )}
 
       <OmKurset
-        tiltakskode={pamelding.deltakerliste.tiltakskode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
-        pameldingstype={pamelding.deltakerliste.pameldingstype}
-        startdato={pamelding.deltakerliste.startdato}
-        sluttdato={pamelding.deltakerliste.sluttdato}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        startdato={deltaker.deltakerliste.startdato}
+        sluttdato={deltaker.deltakerliste.sluttdato}
         size="small"
         visDelMedArrangorInfo
       />
 
       <Oppmotested
-        oppmoteSted={pamelding.deltakerliste.oppmoteSted}
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
       />
     </div>

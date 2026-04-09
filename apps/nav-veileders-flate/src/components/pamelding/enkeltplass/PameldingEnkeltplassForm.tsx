@@ -6,7 +6,7 @@ import {
   generateFormDefaultValues,
   PameldingEnkeltplassFormValues
 } from '../../../model/PameldingEnkeltplassFormValues'
-import { usePameldingContext } from '../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import { PameldingFormButtons } from '../FormButtons'
 import { PrisOgBetaling } from './PrisOgBetaling'
 import { InnholdBeskrivelse } from './InnholdBeskrivelse'
@@ -22,12 +22,12 @@ interface Props {
 export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
 
-  const { pamelding } = usePameldingContext()
-  const defaultValues = generateFormDefaultValues(pamelding)
+  const { deltaker } = useDeltakerContext()
+  const defaultValues = generateFormDefaultValues(deltaker)
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
-    resolver: zodResolver(createPameldingEnkeltplassFormSchema(pamelding)),
+    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
     shouldFocusError: false
   })
 

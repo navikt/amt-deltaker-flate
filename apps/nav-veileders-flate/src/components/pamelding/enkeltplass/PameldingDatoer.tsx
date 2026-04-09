@@ -2,7 +2,7 @@ import { DatePicker, ErrorMessage, useDatepicker } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { Controller, useFormContext } from 'react-hook-form'
 import { usePameldingFormContext } from '../PameldingFormContext'
-import { usePameldingContext } from '../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
@@ -29,7 +29,7 @@ export function PameldingDatoer({
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
   const { disabled } = usePameldingFormContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
 
   const startdato = watch('startdato')
   const startdatoDayjs = startdato
@@ -37,7 +37,7 @@ export function PameldingDatoer({
     : undefined
   const sluttdato = watch('sluttdato')
   const maxSluttdato = startdatoDayjs
-    ? getMaxVarighetDato(pamelding, startdatoDayjs?.toDate())?.toDate()
+    ? getMaxVarighetDato(deltaker, startdatoDayjs?.toDate())?.toDate()
     : undefined
 
   const {

@@ -10,26 +10,26 @@ import {
   getEndreDeltakelseTypeText,
   getEndreDeltakelsesType
 } from 'deltaker-flate-common'
-import { usePameldingContext } from './PameldingContext.tsx'
+import { useDeltakerContext } from './DeltakerContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
 import { useFeatureToggles } from '../../hooks/useFeatureToggles.ts'
 
 export const EndreDeltakelseKnapp = () => {
-  const { pamelding, setPamelding } = usePameldingContext()
+  const { deltaker, setDeltaker } = useDeltakerContext()
   const endreDeltakelseRef = useRef<HTMLButtonElement>(null)
   const [modalType, setModalType] = useState<EndreDeltakelseType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [forslag, setForslag] = useState<Forslag | null>(null)
   const { erKometMasterForTiltak } = useFeatureToggles()
   const enableEndreDeltakelse = erKometMasterForTiltak(
-    pamelding.deltakerliste.tiltakskode
+    deltaker.deltakerliste.tiltakskode
   )
 
   const openModal = (type: EndreDeltakelseType) => {
     setModalType(type)
     setModalOpen(true)
     setForslag(
-      pamelding.forslag.filter(
+      deltaker.forslag.filter(
         (f) => getEndreDeltakelsesType(f.endring) === type
       )[0] ?? null
     )
@@ -44,11 +44,11 @@ export const EndreDeltakelseKnapp = () => {
   const handleEndringUtført = (oppdatertPamelding: DeltakerResponse | null) => {
     handleCloseModal()
     if (oppdatertPamelding) {
-      setPamelding(oppdatertPamelding)
+      setDeltaker(oppdatertPamelding)
     }
   }
 
-  if (pamelding.importertFraArena && !enableEndreDeltakelse) {
+  if (deltaker.importertFraArena && !enableEndreDeltakelse) {
     return (
       <Alert inline variant="info">
         For å endre aktiviteten må du gå til Arena.
@@ -77,7 +77,7 @@ export const EndreDeltakelseKnapp = () => {
 
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            {getEndreDeltakelsesValg(pamelding).map((valgType) => (
+            {getEndreDeltakelsesValg(deltaker).map((valgType) => (
               <Dropdown.Menu.List.Item
                 key={valgType}
                 onClick={() => openModal(valgType)}
@@ -95,7 +95,7 @@ export const EndreDeltakelseKnapp = () => {
         open={modalOpen}
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
-        pamelding={pamelding}
+        pamelding={deltaker}
         forslag={forslag}
       />
     </>

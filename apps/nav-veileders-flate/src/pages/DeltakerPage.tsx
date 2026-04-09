@@ -6,14 +6,14 @@ import {
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { DeltakerInfo } from '../components/tiltak/DeltakerInfo.tsx'
 import { ForNAVAnsatt } from '../components/tiltak/ForNAVAnsatt.tsx'
-import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../components/tiltak/DeltakerContext.tsx'
 import { DIALOG_URL } from '../utils/environment-utils.ts'
 
 export const DeltakerPage = () => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    pamelding.deltakerliste.tiltakskode,
-    pamelding.deltakerliste.arrangorNavn
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.arrangorNavn
   )
 
   return (
@@ -21,13 +21,13 @@ export const DeltakerPage = () => {
       <Tilbakeknapp />
       <div className="flex flex-col gap-4 ax-xl:flex-row-reverse">
         <ForNAVAnsatt className="xl:max-w-103 w-full" />
-        {pamelding.status.type === DeltakerStatusType.FEILREGISTRERT ? (
+        {deltaker.status.type === DeltakerStatusType.FEILREGISTRERT ? (
           <FeilregistrertInfo
             className="w-full"
             dialogUrl={DIALOG_URL}
             tiltakOgStedTekst={tiltakOgStedTekst}
-            meldtPaDato={pamelding.vedtaksinformasjon?.fattet}
-            feilregistrertDato={pamelding.status.gyldigFra}
+            meldtPaDato={deltaker.vedtaksinformasjon?.fattet}
+            feilregistrertDato={deltaker.status.gyldigFra}
           />
         ) : (
           <DeltakerInfo className="w-full" />

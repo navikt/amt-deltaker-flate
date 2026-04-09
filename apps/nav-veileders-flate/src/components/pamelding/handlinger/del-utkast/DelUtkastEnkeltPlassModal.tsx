@@ -14,7 +14,7 @@ import {
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
 import { formToEnkeltplassRequest } from '../../../../utils/pamelding-ekeltplass'
-import { usePameldingContext } from '../../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 interface Props {
   open: boolean
@@ -23,17 +23,17 @@ interface Props {
 
 export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { getValues } = useFormContext<PameldingEnkeltplassFormValues>()
 
-  const deltakerNavn = getDeltakerNavn(pamelding)
-  const { deltakerliste } = pamelding
+  const deltakerNavn = getDeltakerNavn(deltaker)
+  const { deltakerliste } = deltaker
 
   const { doRedirect } = useModiaLink()
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
-      body: `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+      body: `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -79,7 +79,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
           size="small"
           onClick={() => {
             doFetchDelUtkastEnkeltplass(
-              pamelding.deltakerId,
+              deltaker.deltakerId,
               enhetId,
               formToEnkeltplassRequest(getValues())
             ).then(() => onClose())

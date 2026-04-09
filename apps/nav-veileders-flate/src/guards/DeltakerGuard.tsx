@@ -4,7 +4,7 @@ import duration from 'dayjs/plugin/duration'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import { DeltakerStatusType } from 'deltaker-flate-common'
-import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../components/tiltak/DeltakerContext.tsx'
 import { OpprettPameldingPage } from '../pages/OpprettPameldingPage.tsx'
 import { RedigerPameldingPage } from '../pages/RedigerPameldingPage.tsx'
 import { DeltakerPage } from '../pages/DeltakerPage.tsx'
@@ -16,18 +16,18 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(duration)
 
 export const DeltakerGuard = () => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
 
   if (
-    pamelding.status.type === DeltakerStatusType.KLADD &&
-    pamelding.deltakerliste.erEnkeltplass
+    deltaker.status.type === DeltakerStatusType.KLADD &&
+    deltaker.deltakerliste.erEnkeltplass
   ) {
     return <OpprettEnkeltplassPameldingPage />
-  } else if (pamelding.status.type === DeltakerStatusType.KLADD) {
+  } else if (deltaker.status.type === DeltakerStatusType.KLADD) {
     return <OpprettPameldingPage />
   } else if (
-    pamelding.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING ||
-    pamelding.status.type === DeltakerStatusType.AVBRUTT_UTKAST
+    deltaker.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING ||
+    deltaker.status.type === DeltakerStatusType.AVBRUTT_UTKAST
   ) {
     return <RedigerPameldingPage />
   }
