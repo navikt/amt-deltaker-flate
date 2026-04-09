@@ -11,7 +11,7 @@ export function useSokBrregUnderenhet(sokestreng: string, enhetId: string) {
   return useQuery({
     queryKey: ['sokBrregUnderenhet', debouncedSok],
     queryFn: () => sokUnderenhet(debouncedSok.trim(), enhetId),
-    enabled: !!debouncedSok,
+    enabled: debouncedSok.trim().length > 0,
     placeholderData: keepPreviousData,
     throwOnError: false
   })

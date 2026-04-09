@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../../AppContext'
 import { ArrangorEnhetResponse } from '../../../api/data/arrangorSok'
-import { useSokBrregUnderenhet } from '../../../hooks/useSokBrregHovedenhet'
+import { useSokBrregUnderenhet } from '../../../hooks/useSokBrregUnderenhet'
 import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
 import { usePameldingFormContext } from '../PameldingFormContext'
 
@@ -37,8 +37,8 @@ export const ArrangorValg = ({ className }: Props) => {
             id="arrangorUnderenhet"
             label="Tiltaksarrangør"
             description="Søk etter navn eller organisasjonsnummer"
-            selectedOptions={arrangorUnderenhetOptions.filter((v) =>
-              field.value?.includes(v.value)
+            selectedOptions={arrangorUnderenhetOptions.filter(
+              (v) => field.value === v.value
             )}
             ref={field.ref}
             size="small"
@@ -51,7 +51,7 @@ export const ArrangorValg = ({ className }: Props) => {
               if (isSelected) {
                 field.onChange(option)
               } else {
-                field.onChange()
+                field.onChange(undefined)
               }
             }}
           />
