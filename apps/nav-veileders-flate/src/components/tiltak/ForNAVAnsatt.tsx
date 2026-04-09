@@ -41,7 +41,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
         </Alert>
       )}
 
-      {!pamelding.deltakerliste.erEnkeltplassUtenRammeavtale && (
+      {!pamelding.deltakerliste.erEnkeltplass && (
         <LinkCard
           onClick={(event) => {
             event.preventDefault()

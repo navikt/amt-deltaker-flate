@@ -117,9 +117,7 @@ export const DeltakerPage = () => {
           oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
           pameldingstype={deltaker.deltakerliste.pameldingstype}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
-          erEnkeltplassUtenRammeavtale={
-            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
-          }
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         />
       )}
 
@@ -221,9 +219,7 @@ export const DeltakerPage = () => {
           statusType={deltaker.status.type}
           oppstartstype={deltaker.deltakerliste.oppstartstype}
           pameldingstype={deltaker.deltakerliste.pameldingstype}
-          erEnkeltplassUtenRammeavtale={
-            deltaker.deltakerliste.erEnkeltplassUtenRammeavtale
-          }
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
           className="mt-8"
         />
       </div>

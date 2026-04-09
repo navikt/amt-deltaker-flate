@@ -21,7 +21,7 @@ export const deltakerlisteSchema = z.object({
   pameldingstype: z.enum(Pameldingstype),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
-  erEnkeltplassUtenRammeavtale: z.boolean(),
+  erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable()
 })
 

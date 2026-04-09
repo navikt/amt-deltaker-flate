@@ -10,7 +10,7 @@ import { DeltakerResponse } from '../../api/data/pamelding.ts'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {
-  erEnkeltPlassUtenRammeavtale,
+  erEnkeltPlass,
   formToEnkeltplassRequest
 } from '../../utils/pamelding-ekeltplass.ts'
 import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
@@ -96,7 +96,7 @@ interface LagreKladdProps {
 }
 
 const LagreKladd = ({ pamelding }: LagreKladdProps) => {
-  if (erEnkeltPlassUtenRammeavtale(pamelding)) {
+  if (erEnkeltPlass(pamelding)) {
     return (
       <KladdLagring<PameldingEnkeltplassFormValues, EnkeltplassKladdRequest>
         oppdaterKladd={oppdaterEnkeltplassKladd}

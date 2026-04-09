@@ -7,14 +7,14 @@ import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { DelUtkastModal } from './DelUtkastModal.tsx'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
-import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-ekeltplass.ts'
+import { erEnkeltPlass } from '../../../../utils/pamelding-ekeltplass.ts'
 
 export const DelUtkastButton = () => {
   const { disabled } = usePameldingFormContext()
   const { pamelding } = usePameldingContext()
   const [modalOpen, setModalOpen] = useState(false)
 
-  const erEnkeltplass = erEnkeltPlassUtenRammeavtale(pamelding)
+  const erEnkeltplass = erEnkeltPlass(pamelding)
   const { handleSubmit } = useFormContext<
     PameldingFormValues | PameldingEnkeltplassFormValues
   >()

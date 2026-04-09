@@ -2,7 +2,7 @@ import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { erEnkeltPlassUtenRammeavtale } from '../../utils/pamelding-ekeltplass.ts'
+import { erEnkeltPlass } from '../../utils/pamelding-ekeltplass.ts'
 import { HorisontalLine } from '../HorisontalLine.tsx'
 import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
 import { MeldPaDirekteButton } from '../pamelding/handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
@@ -25,7 +25,7 @@ export const Utkast = () => {
   ].includes(pamelding.deltakerliste.tiltakskode)
 
   if (redigerUtkast) {
-    return erEnkeltPlassUtenRammeavtale(pamelding) ? (
+    return erEnkeltPlass(pamelding) ? (
       <PameldingEnkeltplassForm focusOnOpen />
     ) : (
       <PameldingForm focusOnOpen />

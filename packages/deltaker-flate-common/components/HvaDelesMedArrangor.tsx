@@ -20,7 +20,7 @@ interface Props {
   tiltakskode: Tiltakskode
   oppstartstype: Oppstartstype | null
   pameldingstype: Pameldingstype
-  erEnkeltplassUtenRammeavtale: boolean
+  erEnkeltplass: boolean
   className?: string
 }
 
@@ -31,10 +31,10 @@ export const HvaDelesMedArrangor = ({
   tiltakskode,
   oppstartstype,
   pameldingstype,
-  erEnkeltplassUtenRammeavtale,
+  erEnkeltplass,
   className
 }: Props) => {
-  if (!oppstartstype || erEnkeltplassUtenRammeavtale) {
+  if (!oppstartstype || erEnkeltplass) {
     return null
   }
 

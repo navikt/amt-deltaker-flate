@@ -97,7 +97,7 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplassUtenRammeavtale: true, // Endre her for enkeltplass
+        erEnkeltplass: true, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
@@ -461,14 +461,14 @@ export class MockHandler {
       }
 
       if (erEnkeltplassFraArena) {
-        oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = true
+        oppdatertPamelding.deltakerliste.erEnkeltplass = true
         oppdatertPamelding.forslag = []
         oppdatertPamelding.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
       } else {
         oppdatertPamelding.importertFraArena = null
-        oppdatertPamelding.deltakerliste.erEnkeltplassUtenRammeavtale = false
+        oppdatertPamelding.deltakerliste.erEnkeltplass = false
       }
 
       this.pamelding = oppdatertPamelding

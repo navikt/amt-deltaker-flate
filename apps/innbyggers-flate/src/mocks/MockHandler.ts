@@ -57,7 +57,7 @@ export const createDeltaker = (
       pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
       startdato: dayjs('2022-10-28').toDate(),
       sluttdato: dayjs('2027-12-20').toDate(),
-      erEnkeltplassUtenRammeavtale: false,
+      erEnkeltplass: false,
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
     },
@@ -188,14 +188,14 @@ export class MockHandler {
       }
 
       if (erEnkeltplassFraArena) {
-        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = true
+        oppdatertDeltaker.deltakerliste.erEnkeltplass = true
         oppdatertDeltaker.forslag = []
         oppdatertDeltaker.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
       } else {
         oppdatertDeltaker.importertFraArena = null
-        oppdatertDeltaker.deltakerliste.erEnkeltplassUtenRammeavtale = false
+        oppdatertDeltaker.deltakerliste.erEnkeltplass = false
       }
 
       this.deltaker = oppdatertDeltaker
