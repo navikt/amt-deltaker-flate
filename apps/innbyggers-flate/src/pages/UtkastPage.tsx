@@ -177,7 +177,7 @@ export const UtkastPage = () => {
         </>
       )}
 
-      {!deltaker.deltakerliste.erEnkeltplassUtenRammeavtale && (
+      {!deltaker.deltakerliste.erEnkeltplass && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Dette deles med arrangøren

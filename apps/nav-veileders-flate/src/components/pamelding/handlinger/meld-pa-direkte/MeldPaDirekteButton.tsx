@@ -7,7 +7,7 @@ import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
 import { MeldPaDirekteModal } from './MeldPaDirekteModal.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
-import { erEnkeltPlassUtenRammeavtale } from '../../../../utils/pamelding-ekeltplass.ts'
+import { erEnkeltPlass } from '../../../../utils/pamelding-ekeltplass.ts'
 
 interface Props {
   name?: string
@@ -20,7 +20,7 @@ export const MeldPaDirekteButton = ({ name, variant }: Props) => {
 
   const [modalOpen, setModalOpen] = useState(false)
 
-  const erEnkeltplass = erEnkeltPlassUtenRammeavtale(pamelding)
+  const erEnkeltplass = erEnkeltPlass(pamelding)
 
   const formContext = useFormContext<
     PameldingEnkeltplassFormValues | PameldingFormValues

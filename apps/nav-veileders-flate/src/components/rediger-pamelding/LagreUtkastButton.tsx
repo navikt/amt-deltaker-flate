@@ -27,7 +27,7 @@ export const LagreUtkastButton = () => {
     deltakerId: string,
     enhetId: string
   ): Promise<DeltakerResponse> => {
-    if (pamelding.deltakerliste.erEnkeltplassUtenRammeavtale) {
+    if (pamelding.deltakerliste.erEnkeltplass) {
       return oppdaterUtkastEnkeltplass(
         deltakerId,
         enhetId,

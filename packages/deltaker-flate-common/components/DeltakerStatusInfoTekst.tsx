@@ -18,7 +18,7 @@ interface DeltakerStatusInfoTekstProps {
   pameldingstype: Pameldingstype
   oppstartstype: Oppstartstype | null
   tiltaketsStartDato: Date | null
-  erEnkeltplassUtenRammeavtale: boolean
+  erEnkeltplass: boolean
 }
 
 export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
@@ -93,13 +93,13 @@ export const DeltakerStatusInfoTekst = ({
   pameldingstype,
   oppstartstype,
   tiltaketsStartDato,
-  erEnkeltplassUtenRammeavtale
+  erEnkeltplass
 }: DeltakerStatusInfoTekstProps) => {
   if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
     return getHoyereUtdanningInfo(statusType)
   }
 
-  if (erEnkeltplassUtenRammeavtale) {
+  if (erEnkeltplass) {
     return null
   }
 

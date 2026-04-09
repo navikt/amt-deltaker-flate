@@ -20,7 +20,7 @@ export const DeltakerGuard = () => {
 
   if (
     pamelding.status.type === DeltakerStatusType.KLADD &&
-    pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
+    pamelding.deltakerliste.erEnkeltplass
   ) {
     return <OpprettEnkeltplassPameldingPage />
   } else if (pamelding.status.type === DeltakerStatusType.KLADD) {

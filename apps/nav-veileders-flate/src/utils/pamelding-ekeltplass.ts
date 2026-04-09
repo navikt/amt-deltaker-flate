@@ -50,6 +50,6 @@ export const generateEnkeltplassPameldingRequest = (
 /**
  * Sjekker om pameldingen er en enkeltplass uten rammeavtale
  */
-export const erEnkeltPlassUtenRammeavtale = (pamelding: DeltakerResponse) => {
-  return pamelding.deltakerliste.erEnkeltplassUtenRammeavtale
+export const erEnkeltPlass = (pamelding: DeltakerResponse) => {
+  return pamelding.deltakerliste.erEnkeltplass
 }

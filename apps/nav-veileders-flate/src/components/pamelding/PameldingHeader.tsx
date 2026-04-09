@@ -78,7 +78,7 @@ export const PameldingHeader = ({
         />
       )}
 
-      {!deltakerliste.erEnkeltplassUtenRammeavtale && (
+      {!deltakerliste.erEnkeltplass && (
         <TiltaksgjennomforingLink
           deltakerlisteId={deltakerliste.deltakerlisteId}
         >

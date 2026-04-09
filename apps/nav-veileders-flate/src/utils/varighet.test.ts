@@ -45,7 +45,7 @@ const pamelding: DeltakerResponse = {
       ledetekst: ''
     },
     oppmoteSted: 'Oslo',
-    erEnkeltplassUtenRammeavtale: false,
+    erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK
   },
   status: {
