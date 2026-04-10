@@ -130,15 +130,18 @@ export const sokUnderenhet = async (
   term: string,
   enhetId: string
 ): Promise<ArrangorEnhetResponse> => {
-  return fetch(`${API_URL}/arrangor/underenhet/sok/${term}`, {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'aktiv-enhet': enhetId
+  return fetch(
+    `${API_URL}/arrangor/underenhet/sok/${encodeURIComponent(term)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      }
     }
-  })
+  )
     .then(async (response) => {
       if (response.status !== 200) {
         logError(
