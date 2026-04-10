@@ -19,7 +19,7 @@ import {
   pameldingFormSchema,
   PameldingFormValues
 } from '../../../model/PameldingFormValues.ts'
-import { usePameldingContext } from '../../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import { PameldingFormButtons } from '../FormButtons.tsx'
 import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
@@ -33,11 +33,11 @@ interface Props {
 }
 
 export const PameldingForm = ({ className, focusOnOpen }: Props) => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { disabled } = usePameldingFormContext()
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
 
-  const defaultValues = generateFormDefaultValues(pamelding)
+  const defaultValues = generateFormDefaultValues(deltaker)
   const formRef = useRef<HTMLFormElement>(null)
 
   const methods = useForm<PameldingFormValues>({
@@ -58,10 +58,10 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
   }, [])
 
   const erOpplaringLopendeOppstartDirektePamelding =
-    harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
-    skalMeldePaaDirekte(pamelding.deltakerliste.pameldingstype) &&
-    (erOpplaringstiltak(pamelding.deltakerliste.tiltakskode) ||
-      pamelding.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB)
+    harLopendeOppstart(deltaker.deltakerliste.oppstartstype) &&
+    skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) &&
+    (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode) ||
+      deltaker.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB)
 
   return (
     <form
@@ -75,15 +75,15 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
         <div className="flex flex-col gap-8 mb-4">
           <FormErrorSummary erEnkeltplass={false} />
 
-          <Innhold pamelding={pamelding} isDisabled={disabled} />
+          <Innhold pamelding={deltaker} isDisabled={disabled} />
 
           <OmKurset
-            tiltakskode={pamelding.deltakerliste.tiltakskode}
-            statusType={pamelding.status.type}
-            oppstartstype={pamelding.deltakerliste.oppstartstype}
-            pameldingstype={pamelding.deltakerliste.pameldingstype}
-            startdato={pamelding.deltakerliste.startdato}
-            sluttdato={pamelding.deltakerliste.sluttdato}
+            tiltakskode={deltaker.deltakerliste.tiltakskode}
+            statusType={deltaker.status.type}
+            oppstartstype={deltaker.deltakerliste.oppstartstype}
+            pameldingstype={deltaker.deltakerliste.pameldingstype}
+            startdato={deltaker.deltakerliste.startdato}
+            sluttdato={deltaker.deltakerliste.sluttdato}
             visDelMedArrangorInfo
           />
           {harBakgrunnsinfo(tiltakskode) && (
@@ -121,10 +121,10 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             </div>
           )}
           <Oppmotested
-            oppmoteSted={pamelding.deltakerliste.oppmoteSted}
-            statusType={pamelding.status.type}
+            oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+            statusType={deltaker.status.type}
           />
-          <InnholdOgBakgrunn pamelding={pamelding} isDisabled={disabled} />
+          <InnholdOgBakgrunn pamelding={deltaker} isDisabled={disabled} />
           {erOpplaringLopendeOppstartDirektePamelding && (
             <Alert variant="info" size="small">
               <Heading size="xsmall" level="3">

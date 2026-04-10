@@ -1,4 +1,4 @@
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 
 const hvisForslagTekst =
   '\n\nDersom du ikke ønsker å gjøre endringer i tiltaket, må du avvise forslaget fra tiltaksarrangør øverst i skjemaet.'

@@ -6,7 +6,7 @@ import {
   EnkeltplassKladdRequest,
   KladdRequest
 } from '../../api/data/kladd-request.ts'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {
@@ -16,7 +16,7 @@ import {
 import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
 import { ForkastUtkastEndringButton } from '../rediger-pamelding/ForkastUtkastEndringButton.tsx'
 import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { DelUtkastButton } from './handlinger/del-utkast/DelUtkastButton.tsx'
 import { MeldPaDirekteButton } from './handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
 import { SlettKladdButton } from './handlinger/slett-kladd/SlettKladdButton.tsx'
@@ -28,11 +28,11 @@ interface Props {
 }
 
 export const PameldingFormButtons = ({ className }: Props) => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { error } = usePameldingFormContext()
-  const kanDeleUtkast = pamelding.digitalBruker
-  const harAdresse = pamelding.harAdresse
-  const status = pamelding.status.type
+  const kanDeleUtkast = deltaker.digitalBruker
+  const harAdresse = deltaker.harAdresse
+  const status = deltaker.status.type
 
   return (
     <div className={`flex flex-col gap-8 ${className ?? ''}`}>
@@ -61,7 +61,7 @@ export const PameldingFormButtons = ({ className }: Props) => {
         )}
 
         {status === DeltakerStatusType.KLADD && (
-          <LagreKladd pamelding={pamelding} />
+          <LagreKladd pamelding={deltaker} />
         )}
 
         {error && (

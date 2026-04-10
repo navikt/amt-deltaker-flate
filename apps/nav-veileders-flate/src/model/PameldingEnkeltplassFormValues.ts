@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
@@ -33,6 +33,9 @@ export const createPameldingEnkeltplassFormSchema = (
           INNHOLD_MAX_TEGN,
           `Innholdet til kurset kan ikke ha mer enn ${INNHOLD_MAX_TEGN} tegn.`
         ),
+      arrangorUnderenhet: z
+        .string()
+        .min(1, 'Tiltaksarrangørens underenhet er påkrevd.'),
       startdato: dateShema,
       sluttdato: dateShema,
       prisinformasjon: z
@@ -96,6 +99,7 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
     innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
+    arrangorUnderenhet: '', // TODO deltaker.deltakerliste.arrangorUnderenhet
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)
       : undefined,

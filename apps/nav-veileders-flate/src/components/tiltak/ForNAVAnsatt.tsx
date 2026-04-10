@@ -13,18 +13,18 @@ import {
   visDeltakerlisteStatus
 } from './DeltakerlisteStatusTag.tsx'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp.tsx'
-import { usePameldingContext } from './PameldingContext.tsx'
+import { useDeltakerContext } from './DeltakerContext.tsx'
 
 interface Props {
   className: string
 }
 
 export const ForNAVAnsatt = ({ className }: Props) => {
-  const { pamelding } = usePameldingContext()
-  const deltakerlisteId = pamelding.deltakerliste.deltakerlisteId
+  const { deltaker } = useDeltakerContext()
+  const deltakerlisteId = deltaker.deltakerliste.deltakerlisteId
   const { doRedirect } = useModiaLink()
   const kanEndres =
-    pamelding.kanEndres && getEndreDeltakelsesValg(pamelding).length > 0
+    deltaker.kanEndres && getEndreDeltakelsesValg(deltaker).length > 0
 
   return (
     <div
@@ -41,7 +41,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
         </Alert>
       )}
 
-      {!pamelding.deltakerliste.erEnkeltplass && (
+      {!deltaker.deltakerliste.erEnkeltplass && (
         <LinkCard
           onClick={(event) => {
             event.preventDefault()
@@ -60,22 +60,22 @@ export const ForNAVAnsatt = ({ className }: Props) => {
           <LinkCard.Description>
             <BodyShort size="small">
               {hentTiltakNavnHosArrangorTekst(
-                pamelding.deltakerliste.tiltakskode,
-                pamelding.deltakerliste.arrangorNavn
+                deltaker.deltakerliste.tiltakskode,
+                deltaker.deltakerliste.arrangorNavn
               )}
             </BodyShort>
             <Detail textColor="subtle" className="mb-1">
-              {pamelding.deltakerliste.deltakerlisteNavn}
+              {deltaker.deltakerliste.deltakerlisteNavn}
             </Detail>
             <BodyShort size="small">
-              {formatDate(pamelding.deltakerliste.startdato)} -{' '}
-              {formatDate(pamelding.deltakerliste.sluttdato)}
+              {formatDate(deltaker.deltakerliste.startdato)} -{' '}
+              {formatDate(deltaker.deltakerliste.sluttdato)}
             </BodyShort>
           </LinkCard.Description>
 
-          {visDeltakerlisteStatus(pamelding.deltakerliste.status) && (
+          {visDeltakerlisteStatus(deltaker.deltakerliste.status) && (
             <LinkCard.Footer>
-              <DeltakerlisteStatusTag status={pamelding.deltakerliste.status} />
+              <DeltakerlisteStatusTag status={deltaker.deltakerliste.status} />
             </LinkCard.Footer>
           )}
         </LinkCard>

@@ -12,7 +12,7 @@ import {
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import {
   BESKRIVELSE_ANNET_MAX_TEGN,
   erInnholdPakrevd,

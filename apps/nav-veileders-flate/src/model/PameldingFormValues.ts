@@ -3,7 +3,7 @@ import { z } from 'zod'
 import {
   DeltakerResponse,
   innholdselementSchema
-} from '../api/data/pamelding.ts'
+} from '../api/data/deltaker.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250

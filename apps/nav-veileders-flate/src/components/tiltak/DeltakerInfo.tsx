@@ -21,7 +21,7 @@ import {
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
-import { usePameldingContext } from './PameldingContext.tsx'
+import { useDeltakerContext } from './DeltakerContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
 
 interface Props {
@@ -29,38 +29,38 @@ interface Props {
 }
 
 export const DeltakerInfo = ({ className }: Props) => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    pamelding.deltakerliste.tiltakskode,
-    pamelding.deltakerliste.arrangorNavn
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.arrangorNavn
   )
 
   const skalViseDato =
-    pamelding.startdato &&
-    pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
-    pamelding.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
-    pamelding.status.type !== DeltakerStatusType.VENTELISTE
+    deltaker.startdato &&
+    deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL &&
+    deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
+    deltaker.status.type !== DeltakerStatusType.VENTELISTE
 
   const bakgrunnsinformasjon =
-    pamelding.bakgrunnsinformasjon && pamelding.bakgrunnsinformasjon.length > 0
-      ? pamelding.bakgrunnsinformasjon
+    deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
+      ? deltaker.bakgrunnsinformasjon
       : EMDASH
 
   let dato = EMDASH
-  if (pamelding.startdato && pamelding.sluttdato) {
-    dato = `${formatDate(pamelding.startdato)} - ${formatDate(pamelding.sluttdato)}`
-  } else if (pamelding.startdato) {
-    dato = formatDate(pamelding.startdato)
+  if (deltaker.startdato && deltaker.sluttdato) {
+    dato = `${formatDate(deltaker.startdato)} - ${formatDate(deltaker.sluttdato)}`
+  } else if (deltaker.startdato) {
+    dato = formatDate(deltaker.startdato)
   }
 
   const visDeltMedArrangor =
-    pamelding.erManueltDeltMedArrangor &&
+    deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
-      pamelding.deltakerliste.pameldingstype,
-      pamelding.deltakerliste.tiltakskode
+      deltaker.deltakerliste.pameldingstype,
+      deltaker.deltakerliste.tiltakskode
     ) &&
-    (pamelding.status.type === DeltakerStatusType.SOKT_INN ||
-      pamelding.status.type === DeltakerStatusType.VURDERES)
+    (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
+      deltaker.status.type === DeltakerStatusType.VURDERES)
 
   return (
     <div
@@ -72,35 +72,35 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <div className="flex gap-2 mt-8" aria-atomic>
         <Label>Status:</Label>
-        <DeltakerStatusTag statusType={pamelding.status.type} />
+        <DeltakerStatusTag statusType={deltaker.status.type} />
       </div>
-      {pamelding.status.aarsak && (
+      {deltaker.status.aarsak && (
         <div className="flex gap-2 mt-4" aria-atomic>
           <Label>Årsak:</Label>
           <BodyShort as="span" size="small" className="whitespace-pre-wrap">
-            {getDeltakerStatusAarsakText(pamelding.status.aarsak)}
+            {getDeltakerStatusAarsakText(deltaker.status.aarsak)}
           </BodyShort>
         </div>
       )}
 
-      {skalViseDeltakerStatusInfoTekst(pamelding.status.type) && (
+      {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
         <DeltakerStatusInfoTekst
-          tiltakskode={pamelding.deltakerliste.tiltakskode}
-          deltakerlisteNavn={pamelding.deltakerliste.deltakerlisteNavn}
-          tiltaketsStartDato={pamelding.deltakerliste.startdato}
-          statusType={pamelding.status.type}
-          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          oppstartsdato={pamelding.startdato}
-          pameldingstype={pamelding.deltakerliste.pameldingstype}
-          oppstartstype={pamelding.deltakerliste.oppstartstype}
-          erEnkeltplass={pamelding.deltakerliste.erEnkeltplass}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
+          deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+          tiltaketsStartDato={deltaker.deltakerliste.startdato}
+          statusType={deltaker.status.type}
+          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+          oppstartsdato={deltaker.startdato}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         />
       )}
 
       {skalViseDato && (
         <div className="flex gap-2 mt-4">
           <Label>
-            {pamelding.startdato && !pamelding.sluttdato
+            {deltaker.startdato && !deltaker.sluttdato
               ? 'Oppstartsdato:'
               : 'Dato:'}
           </Label>
@@ -115,27 +115,27 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <OmKurset
-        tiltakskode={pamelding.deltakerliste.tiltakskode}
-        statusType={pamelding.status.type}
-        oppstartstype={pamelding.deltakerliste.oppstartstype}
-        pameldingstype={pamelding.deltakerliste.pameldingstype}
-        startdato={pamelding.deltakerliste.startdato}
-        sluttdato={pamelding.deltakerliste.sluttdato}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        statusType={deltaker.status.type}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        startdato={deltaker.deltakerliste.startdato}
+        sluttdato={deltaker.deltakerliste.sluttdato}
         headingLevel={2}
         className="mt-8"
       />
 
       <Oppmotested
-        oppmoteSted={pamelding.deltakerliste.oppmoteSted}
-        statusType={pamelding.status.type}
+        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        statusType={deltaker.status.type}
         className="mt-4"
       />
 
-      <AktiveForslag className="mt-8" forslag={pamelding.forslag} />
+      <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
-        tiltakskode={pamelding.deltakerliste.tiltakskode}
-        deltakelsesinnhold={pamelding.deltakelsesinnhold}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="2" size="medium" className="mt-8 mb-2">
             Dette er innholdet
@@ -155,43 +155,43 @@ export const DeltakerInfo = ({ className }: Props) => {
             </BodyLong>
           </>
         )}
-        {visDeltakelsesmengde(pamelding.deltakerliste.tiltakskode) && (
+        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
           <DeltakelsesmengdeInfo
-            deltakelsesprosent={pamelding.deltakelsesprosent}
-            dagerPerUke={pamelding.dagerPerUke}
+            deltakelsesprosent={deltaker.deltakelsesprosent}
+            dagerPerUke={deltaker.dagerPerUke}
             nesteDeltakelsesmengde={
-              pamelding.deltakelsesmengder.nesteDeltakelsesmengde
+              deltaker.deltakelsesmengder.nesteDeltakelsesmengde
             }
           />
         )}
 
         <SeEndringer
           className="mt-8"
-          tiltakskode={pamelding.deltakerliste.tiltakskode}
-          deltakerId={pamelding.deltakerId}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
+          deltakerId={deltaker.deltakerId}
           fetchHistorikk={getHistorikk}
         />
 
         <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
         <VedtakOgKlage
-          statusType={pamelding.status.type}
-          statusDato={pamelding.status.opprettet}
-          tiltakskode={pamelding.deltakerliste.tiltakskode}
-          oppstartstype={pamelding.deltakerliste.oppstartstype}
-          vedtaksinformasjon={pamelding.vedtaksinformasjon}
-          importertFraArena={pamelding.importertFraArena}
+          statusType={deltaker.status.type}
+          statusDato={deltaker.status.opprettet}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
+          vedtaksinformasjon={deltaker.vedtaksinformasjon}
+          importertFraArena={deltaker.importertFraArena}
         />
 
         <HvaDelesMedArrangor
-          arrangorNavn={pamelding.deltakerliste.arrangorNavn}
-          adresseDelesMedArrangor={pamelding.adresseDelesMedArrangor}
-          tiltakskode={pamelding.deltakerliste.tiltakskode}
-          statusType={pamelding.status.type}
-          oppstartstype={pamelding.deltakerliste.oppstartstype}
-          pameldingstype={pamelding.deltakerliste.pameldingstype}
+          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+          adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
+          tiltakskode={deltaker.deltakerliste.tiltakskode}
+          statusType={deltaker.status.type}
+          oppstartstype={deltaker.deltakerliste.oppstartstype}
+          pameldingstype={deltaker.deltakerliste.pameldingstype}
           className="mt-8"
-          erEnkeltplass={pamelding.deltakerliste.erEnkeltplass}
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         />
       </div>
     </div>

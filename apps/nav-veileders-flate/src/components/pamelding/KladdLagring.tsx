@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { FieldValues, useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
 import { debounce } from '../../utils/debounce.ts'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 interface Props<TFormValues extends FieldValues, TKladdRequest> {
   oppdaterKladd: (
@@ -20,7 +20,7 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
   formToKladdRequest
 }: Props<TFormValues, TKladdRequest>) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const [storedKladd, setStoredKladd] = useState<TKladdRequest>()
   const { watch, getValues } = useFormContext<TFormValues>()
 
@@ -34,7 +34,7 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
 
     if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
       setStoredKladd(newKladd)
-      fetchSaveKladd(pamelding.deltakerId, enhetId, newKladd)
+      fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
     }
   }
 

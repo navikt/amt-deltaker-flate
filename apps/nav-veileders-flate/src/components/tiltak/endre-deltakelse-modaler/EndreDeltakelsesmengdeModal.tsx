@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelsesmengde } from '../../../api/api.ts'
 import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import {
   getDagerPerUkeError,
   getProsentError

@@ -8,7 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseFjernOppstartsdato } from '../../../api/api.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'

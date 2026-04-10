@@ -12,9 +12,9 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useEffect, useState } from 'react'
-import { DeltakerResponse, deltakerSchema } from '../../api/data/pamelding'
+import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker'
 import { API_URL, useMock } from '../../utils/environment-utils'
-import { usePameldingContext } from '../tiltak/PameldingContext'
+import { useDeltakerContext } from '../tiltak/DeltakerContext'
 
 export const endreMockTiltakskode = (
   nyTiltakskode: Tiltakskode
@@ -113,7 +113,7 @@ export const endreMockPameldingstype = (
 }
 
 const DemoStatusInstillinger = () => {
-  const { setPamelding } = usePameldingContext()
+  const { setDeltaker } = useDeltakerContext()
 
   const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
@@ -145,7 +145,7 @@ const DemoStatusInstillinger = () => {
     if (useMock) {
       doFetchEndreMockDeltakelseStatus(nyStatus).then((data) => {
         if (data) {
-          setPamelding(data as DeltakerResponse)
+          setDeltaker(data as DeltakerResponse)
         }
       })
     }
@@ -156,7 +156,7 @@ const DemoStatusInstillinger = () => {
     if (useMock) {
       doFetchEndreMockTiltakskode(nyTiltakskode).then((data) => {
         if (data) {
-          setPamelding(data as DeltakerResponse)
+          setDeltaker(data as DeltakerResponse)
         }
       })
     }
@@ -167,7 +167,7 @@ const DemoStatusInstillinger = () => {
     if (useMock) {
       doFetchEndreMockOppstartstype(nyOppstartstype).then((data) => {
         if (data) {
-          setPamelding(data as DeltakerResponse)
+          setDeltaker(data as DeltakerResponse)
         }
       })
     }
@@ -178,7 +178,7 @@ const DemoStatusInstillinger = () => {
     if (useMock) {
       doFetchEndreMockPameldingstype(nyPameldingstype).then((data) => {
         if (data) {
-          setPamelding(data as DeltakerResponse)
+          setDeltaker(data as DeltakerResponse)
         }
       })
     }

@@ -10,7 +10,7 @@ import {
 } from './varighet.tsx'
 import dayjs from 'dayjs'
 import { useState } from 'react'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { dateValidation } from '../components/tiltak/VarighetField.tsx'
 import { useSluttdato } from './use-sluttdato.ts'
 

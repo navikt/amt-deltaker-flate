@@ -26,6 +26,7 @@
     "@navikt/ds-css": "^8.9.0",
     "@navikt/ds-react": "^8.9.0",
     "@navikt/ds-tailwind": "^8.9.0",
+    "@tanstack/react-query": "^5.95.2",
     "dayjs": "^1.11.20",
     "deltaker-flate-common": "workspace:*",
     "msw": "^2.12.14",

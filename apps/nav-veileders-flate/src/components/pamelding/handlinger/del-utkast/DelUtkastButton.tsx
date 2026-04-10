@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { DelUtkastEnkeltPlassModal } from './DelUtkastEnkeltPlassModal.tsx'
 import { usePameldingFormContext } from '../../PameldingFormContext.tsx'
-import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { DelUtkastModal } from './DelUtkastModal.tsx'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
@@ -11,10 +11,10 @@ import { erEnkeltPlass } from '../../../../utils/pamelding-ekeltplass.ts'
 
 export const DelUtkastButton = () => {
   const { disabled } = usePameldingFormContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const [modalOpen, setModalOpen] = useState(false)
 
-  const erEnkeltplass = erEnkeltPlass(pamelding)
+  const erEnkeltplass = erEnkeltPlass(deltaker)
   const { handleSubmit } = useFormContext<
     PameldingFormValues | PameldingEnkeltplassFormValues
   >()

@@ -7,7 +7,7 @@ import {
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { endreDeltakelseReaktiver } from '../../../api/api.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'

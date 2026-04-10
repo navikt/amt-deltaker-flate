@@ -21,7 +21,7 @@ import {
   ReaktiverDeltakelseRequest
 } from './data/endre-deltakelse-request.ts'
 import { KladdRequest, OpprettKladdRequest } from './data/kladd-request.ts'
-import { DeltakerResponse, deltakerSchema } from './data/pamelding.ts'
+import { DeltakerResponse, deltakerSchema } from './data/deltaker.ts'
 import { PameldingRequest } from './data/send-pamelding.ts'
 import {
   DELTAKER_FOR_UNG_ERROR,

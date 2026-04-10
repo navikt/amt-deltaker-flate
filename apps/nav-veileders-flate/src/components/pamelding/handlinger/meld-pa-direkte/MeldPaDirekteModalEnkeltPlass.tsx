@@ -19,7 +19,7 @@ import {
   generateEnkeltplassPameldingRequest
 } from '../../../../utils/pamelding-ekeltplass.ts'
 import { ConfirmInfoCard } from '../../../ConfirmInfoCard.tsx'
-import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 
 interface Props {
   open: boolean
@@ -28,11 +28,11 @@ interface Props {
 
 export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const formContext = useFormContext<PameldingEnkeltplassFormValues>()
 
-  const deltakerNavn = getDeltakerNavn(pamelding)
-  const { deltakerliste } = pamelding
+  const deltakerNavn = getDeltakerNavn(deltaker)
+  const { deltakerliste } = deltaker
 
   const [confirmed, setConfirmed] = useState(false)
   const [confirmError, setConfirmError] = useState<string | undefined>()
@@ -41,7 +41,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
-      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -104,11 +104,11 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
               setConfirmError('Du må bekrefte før du kan fortsette')
             } else {
               doFetchMeldPaDirekteEnkeltplass(
-                pamelding.deltakerId,
+                deltaker.deltakerId,
                 enhetId,
                 formContext
                   ? formToEnkeltplassRequest(formContext.getValues())
-                  : generateEnkeltplassPameldingRequest(pamelding)
+                  : generateEnkeltplassPameldingRequest(deltaker)
               ).then(() => onClose())
             }
           }}

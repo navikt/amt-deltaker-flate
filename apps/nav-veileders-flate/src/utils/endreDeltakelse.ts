@@ -7,7 +7,7 @@ import {
   harLopendeOppstart,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { DeltakerResponse } from '../api/data/pamelding'
+import { DeltakerResponse } from '../api/data/deltaker'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,

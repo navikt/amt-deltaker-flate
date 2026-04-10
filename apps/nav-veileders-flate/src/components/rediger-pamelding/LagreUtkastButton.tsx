@@ -4,18 +4,18 @@ import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { oppdaterUtkast as oppdaterUtkastEnkeltplass } from '../../api/api-enkeltplass.ts'
 import { oppdaterUtkast } from '../../api/api.ts'
-import { DeltakerResponse } from '../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { useAppContext } from '../../AppContext.tsx'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import { formToEnkeltplassRequest } from '../../utils/pamelding-ekeltplass.ts'
 import { generatePameldingRequestFromForm } from '../../utils/pamelding-form-utils.ts'
 import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const LagreUtkastButton = () => {
   const { enhetId } = useAppContext()
-  const { pamelding, setPamelding } = usePameldingContext()
+  const { deltaker, setDeltaker } = useDeltakerContext()
   const { disabled, setRedigerUtkast, setDisabled, setError } =
     usePameldingFormContext()
 
@@ -27,7 +27,7 @@ export const LagreUtkastButton = () => {
     deltakerId: string,
     enhetId: string
   ): Promise<DeltakerResponse> => {
-    if (pamelding.deltakerliste.erEnkeltplass) {
+    if (deltaker.deltakerliste.erEnkeltplass) {
       return oppdaterUtkastEnkeltplass(
         deltakerId,
         enhetId,
@@ -38,7 +38,7 @@ export const LagreUtkastButton = () => {
       deltakerId,
       enhetId,
       generatePameldingRequestFromForm(
-        pamelding,
+        deltaker,
         getValues() as PameldingFormValues
       )
     )
@@ -62,8 +62,8 @@ export const LagreUtkastButton = () => {
   return (
     <Button
       onClick={handleSubmit(() => {
-        doFetchDelUtkast(pamelding.deltakerId, enhetId).then((newPamelding) => {
-          if (newPamelding) setPamelding(newPamelding)
+        doFetchDelUtkast(deltaker.deltakerId, enhetId).then((newDeltaker) => {
+          if (newDeltaker) setDeltaker(newDeltaker)
           setRedigerUtkast(false)
           setError(null)
         })

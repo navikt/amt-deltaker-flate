@@ -28,7 +28,8 @@ export const enkeltplassKladdSchema = z.object({
   beskrivelse: z.string().optional(),
   prisinformasjon: z.string().optional(),
   startdato: z.string().optional(),
-  sluttdato: z.string().optional()
+  sluttdato: z.string().optional(),
+  arrangorUnderenhet: z.string().optional()
 })
 
 export type KladdRequest = z.infer<typeof kladdSchema>

@@ -19,7 +19,7 @@ import {
 import { useMemo, useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseStartdato } from '../../../api/api.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import {
   kanEndreOppstartsdato,

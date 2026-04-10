@@ -1,6 +1,6 @@
 import { Modal } from '@navikt/ds-react'
 import AvvisningsmodalBody from './AvvisningsmodalBody'
-import { DeltakerResponse } from '../../../api/data/pamelding'
+import { DeltakerResponse } from '../../../api/data/deltaker'
 import { Forslag } from 'deltaker-flate-common'
 
 interface Props {

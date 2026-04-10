@@ -7,6 +7,8 @@ import './webComponentWrapper.tsx'
 import { AppContextProvider } from './AppContext.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './queryClient.ts'
 
 export async function enableMocking() {
   if (useMock) {
@@ -47,7 +49,9 @@ const renderAsReactRoot = () => {
           initialEnhetId={'0106'}
         >
           <BrowserRouter>
-            <AppRoutes />
+            <QueryClientProvider client={queryClient}>
+              <AppRoutes />
+            </QueryClientProvider>
           </BrowserRouter>
         </AppContextProvider>
       </div>

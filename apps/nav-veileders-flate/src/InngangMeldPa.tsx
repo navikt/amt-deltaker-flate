@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useAppContext } from './AppContext.tsx'
 import { opprettKladd } from './api/api.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
-import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
+import { DeltakerContextProvider } from './components/tiltak/DeltakerContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 import { useMock } from './utils/environment-utils.ts'
@@ -41,10 +41,10 @@ const InngangMeldPa = () => {
   }
 
   return (
-    <PameldingContextProvider initialPamelding={nyPamelding}>
+    <DeltakerContextProvider initialDeltaker={nyPamelding}>
       {useMock && <DemoBanner />}
       <DeltakerGuard />
-    </PameldingContextProvider>
+    </DeltakerContextProvider>
   )
 }
 

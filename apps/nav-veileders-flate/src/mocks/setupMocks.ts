@@ -1,10 +1,10 @@
 import {
-  Tiltakskode,
   DeltakerStatusType,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN,
   Oppstartstype,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
@@ -20,13 +20,13 @@ import {
   forlengDeltakelseSchema,
   ikkeAktuellSchema
 } from '../api/data/endre-deltakelse-request.ts'
-import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
-import { MockHandler } from './MockHandler.ts'
+import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
 import {
   opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
-import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
+import { pameldingRequestSchema } from '../api/data/send-pamelding.ts'
+import { MockHandler, sokArrangor } from './MockHandler.ts'
 
 const handler = new MockHandler()
 
@@ -76,7 +76,7 @@ export const worker = setupWorker(
     return response
   }),
   http.post(
-    '/amt-deltaker-bff/opprett-enkeltplass-kladd',
+    '/amt-deltaker-bff/enkeltplass/opprett-kladd',
     async ({ request }) => {
       await delay(1000)
       const response = await request
@@ -116,7 +116,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/utkast-enkeltplass/:deltakerId',
+    '/amt-deltaker-bff/enkeltplass/utkast/:deltakerId',
     async ({ request }) => {
       await delay(1000)
 
@@ -129,7 +129,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/pamelding/:deltakerId/enkeltplass-utengodkjening',
+    '/amt-deltaker-bff/enkeltplass/utkast/:deltakerId/meld-paa-direkte',
     async ({ request }) => {
       await delay(1000)
 
@@ -299,7 +299,7 @@ export const worker = setupWorker(
     })
   }),
   http.post(
-    '/amt-deltaker-bff/oppdater-enkeltplass-kladd/:deltakerId',
+    '/amt-deltaker-bff/enkeltplass/oppdater-kladd/:deltakerId',
     async () => {
       await delay(1000)
 
@@ -319,5 +319,14 @@ export const worker = setupWorker(
       [LES_ARENA_DELTAKERE_TOGGLE_NAVN]: true
     }
     return HttpResponse.json(toggles)
-  })
+  }),
+  http.get(
+    '/amt-deltaker-bff/arrangor/underenhet/sok/:term',
+    async ({ params }) => {
+      await delay(1000)
+      const { term } = params as { term: string }
+
+      return HttpResponse.json(sokArrangor(term))
+    }
+  )
 )

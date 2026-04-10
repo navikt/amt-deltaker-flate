@@ -8,7 +8,7 @@ import {
   useModiaLink
 } from '../../hooks/useModiaLink.ts'
 import { usePameldingFormContext } from '../pamelding/PameldingFormContext.tsx'
-import { usePameldingContext } from '../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 interface Props {
   open: boolean
@@ -17,7 +17,7 @@ interface Props {
 
 export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { disabled, setDisabled } = usePameldingFormContext()
 
   const { doRedirect } = useModiaLink()
@@ -62,7 +62,7 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            fetchAvbrytUtkast(pamelding.deltakerId, enhetId).then(() => {
+            fetchAvbrytUtkast(deltaker.deltakerId, enhetId).then(() => {
               onClose()
             })
           }}

@@ -5,7 +5,7 @@ import {
   DELTAKELSESOVERSIKT_LINK,
   useModiaLink
 } from '../../../../hooks/useModiaLink.ts'
-import { usePameldingContext } from '../../../tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 
 interface Props {
   open: boolean
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const SlettKladdModal = ({ open, onClose }: Props) => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
 
   const { doRedirect } = useModiaLink()
   const returnToFrontpage = () => {
@@ -54,7 +54,7 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            doFetchSlettKladd(pamelding.deltakerId).then(() => {
+            doFetchSlettKladd(deltaker.deltakerId).then(() => {
               onClose()
             })
           }}

@@ -2,18 +2,18 @@ import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { PameldingFormContextProvider } from '../components/pamelding/PameldingFormContext.tsx'
 import { PameldingForm } from '../components/pamelding/standard/PameldingForm.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
-import { usePameldingContext } from '../components/tiltak/PameldingContext.tsx'
+import { useDeltakerContext } from '../components/tiltak/DeltakerContext.tsx'
 
 export const OpprettPameldingPage = () => {
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
 
   return (
     <div className="md:m-auto m-4 max-w-190" data-testid="page_kladd">
       <Tilbakeknapp />
       <PameldingHeader
-        deltakerStatus={pamelding.status}
-        deltakerliste={pamelding.deltakerliste}
-        vedtaksinformasjon={pamelding.vedtaksinformasjon}
+        deltakerStatus={deltaker.status}
+        deltakerliste={deltaker.deltakerliste}
+        vedtaksinformasjon={deltaker.vedtaksinformasjon}
       />
 
       <PameldingFormContextProvider>

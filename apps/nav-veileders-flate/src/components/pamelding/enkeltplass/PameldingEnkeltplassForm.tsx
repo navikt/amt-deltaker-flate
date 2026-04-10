@@ -6,12 +6,13 @@ import {
   generateFormDefaultValues,
   PameldingEnkeltplassFormValues
 } from '../../../model/PameldingEnkeltplassFormValues'
-import { usePameldingContext } from '../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import { PameldingFormButtons } from '../FormButtons'
 import { PrisOgBetaling } from './PrisOgBetaling'
 import { InnholdBeskrivelse } from './InnholdBeskrivelse'
 import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from '../FormErrorSummary.tsx'
+import { ArrangorValg } from './ArrangorValg.tsx'
 
 interface Props {
   className?: string
@@ -21,12 +22,12 @@ interface Props {
 export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
 
-  const { pamelding } = usePameldingContext()
-  const defaultValues = generateFormDefaultValues(pamelding)
+  const { deltaker } = useDeltakerContext()
+  const defaultValues = generateFormDefaultValues(deltaker)
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
-    resolver: zodResolver(createPameldingEnkeltplassFormSchema(pamelding)),
+    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
     shouldFocusError: false
   })
 
@@ -53,6 +54,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
           defaultSluttdato={defaultValues.sluttdato}
         />
 
+        <ArrangorValg className="mt-8" />
         <PrisOgBetaling className="mt-8" />
 
         <PameldingFormButtons className="mt-8" />

@@ -11,7 +11,7 @@ import {
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseIkkeAktuell } from '../../../api/api.ts'
 import { IkkeAktuellRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { DeltakerResponse } from '../../../api/data/pamelding.ts'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { FEILMELDING_15_DAGER_SIDEN } from '../../../utils/displayText.ts'
 import dayjs from 'dayjs'

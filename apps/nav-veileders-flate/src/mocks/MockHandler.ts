@@ -37,7 +37,7 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { DeltakerResponse } from '../api/data/pamelding.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 
@@ -779,3 +779,73 @@ function aktivtForslag({
     }
   }
 }
+
+export const sokArrangor = (term: string) => {
+  const lower = term.toLowerCase()
+  const result: { organisasjonsnummer: string; navn: string }[] = []
+
+  for (const enhet of mockArrangorenheter) {
+    const hovedenhetMatch = enhet.organisasjonsnummer === term
+
+    if (hovedenhetMatch) {
+      result.push(...enhet.underenheter)
+    } else {
+      for (const underenhet of enhet.underenheter) {
+        if (
+          underenhet.navn.toLowerCase().includes(lower) ||
+          underenhet.organisasjonsnummer.includes(term)
+        ) {
+          result.push(underenhet)
+        }
+      }
+    }
+  }
+
+  return result
+}
+
+const mockArrangorenheter = [
+  {
+    organisasjonsnummer: '123456789',
+    navn: 'Muligheter AS',
+    underenheter: [
+      {
+        organisasjonsnummer: '555555555',
+        navn: 'Muligheter Oslo AS'
+      },
+      {
+        organisasjonsnummer: '666666666',
+        navn: 'Muligheter Bergen AS'
+      }
+    ]
+  },
+  {
+    organisasjonsnummer: '111111111',
+    navn: 'Den Beste Arrangøren AS',
+    underenheter: [
+      {
+        organisasjonsnummer: '777777777',
+        navn: 'Den Beste Arrangøren Oslo AS'
+      },
+      {
+        organisasjonsnummer: '888888888',
+        navn: 'Den Beste Arrangøren Bergen AS'
+      }
+    ]
+  },
+  {
+    organisasjonsnummer: '222222222',
+    navn: 'Arrangør og sånt AS',
+    underenheter: []
+  },
+  {
+    organisasjonsnummer: '333333333',
+    navn: 'Arrangør småfix AS',
+    underenheter: []
+  },
+  {
+    organisasjonsnummer: '444444444',
+    navn: 'Arrangør og Co AS',
+    underenheter: []
+  }
+]

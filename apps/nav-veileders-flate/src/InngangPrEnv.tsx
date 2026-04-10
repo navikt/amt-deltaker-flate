@@ -12,7 +12,7 @@ import {
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { opprettKladd, getDeltaker } from './api/api.ts'
-import { PameldingContextProvider } from './components/tiltak/PameldingContext.tsx'
+import { DeltakerContextProvider } from './components/tiltak/DeltakerContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
 
@@ -119,14 +119,14 @@ const InngangPrEnv = () => {
         ))}
 
       {lagNyPamelding && nyPamelding && (
-        <PameldingContextProvider initialPamelding={nyPamelding}>
+        <DeltakerContextProvider initialDeltaker={nyPamelding}>
           <DeltakerGuard />
-        </PameldingContextProvider>
+        </DeltakerContextProvider>
       )}
       {!lagNyPamelding && pamelding && (
-        <PameldingContextProvider initialPamelding={pamelding}>
+        <DeltakerContextProvider initialDeltaker={pamelding}>
           <DeltakerGuard />
-        </PameldingContextProvider>
+        </DeltakerContextProvider>
       )}
     </>
   )

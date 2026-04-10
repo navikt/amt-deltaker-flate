@@ -15,7 +15,7 @@ import {
 import { PameldingFormValues } from '../../../../model/PameldingFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
 import { generatePameldingRequestFromForm } from '../../../../utils/pamelding-form-utils'
-import { usePameldingContext } from '../../../tiltak/PameldingContext'
+import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 interface Props {
   open: boolean
@@ -24,12 +24,12 @@ interface Props {
 
 export const DelUtkastModal = ({ open, onClose }: Props) => {
   const { enhetId } = useAppContext()
-  const { pamelding } = usePameldingContext()
+  const { deltaker } = useDeltakerContext()
   const { getValues } = useFormContext<PameldingFormValues>()
 
-  const deltakerNavn = getDeltakerNavn(pamelding)
+  const deltakerNavn = getDeltakerNavn(deltaker)
   const meldPaDirekte = skalMeldePaaDirekte(
-    pamelding.deltakerliste.pameldingstype
+    deltaker.deltakerliste.pameldingstype
   )
 
   const { doRedirect } = useModiaLink()
@@ -37,8 +37,8 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
       body: meldPaDirekte
-        ? `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
-        : `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}.`
+        ? `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
+        : `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
     })
   }
 
@@ -71,7 +71,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
         </BodyLong>
 
         <BodyLong weight="semibold" size="small">
-          {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(pamelding.deltakerliste.tiltakskode, pamelding.deltakerliste.arrangorNavn)}`}
+          {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}`}
         </BodyLong>
 
         {error && (
@@ -91,9 +91,9 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
           size="small"
           onClick={() => {
             doFetchSendSomForslag(
-              pamelding.deltakerId,
+              deltaker.deltakerId,
               enhetId,
-              generatePameldingRequestFromForm(pamelding, getValues())
+              generatePameldingRequestFromForm(deltaker, getValues())
             ).then(() => onClose())
           }}
           disabled={fetchState === DeferredFetchState.LOADING}
