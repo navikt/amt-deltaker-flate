@@ -49,11 +49,9 @@ export function PameldingDatoer({
       ? dayjs(defaultStartdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
-      setValue(
-        'startdato',
-        date ? dayjs(date).format(DATE_FORMAT) : undefined,
-        { shouldDirty: true }
-      )
+      setValue('startdato', dayjs(date).format(DATE_FORMAT), {
+        shouldDirty: true
+      })
       clearErrors('startdato')
       handleStardatoChanged(date)
     }
@@ -69,11 +67,9 @@ export function PameldingDatoer({
       ? dayjs(defaultSluttdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
-      setValue(
-        'sluttdato',
-        date ? dayjs(date).format(DATE_FORMAT) : undefined,
-        { shouldDirty: true }
-      )
+      setValue('sluttdato', dayjs(date).format(DATE_FORMAT), {
+        shouldDirty: true
+      })
       clearErrors('sluttdato')
     }
   })
@@ -121,7 +117,7 @@ export function PameldingDatoer({
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsStartdato}>
               <DatePicker.Input
-                label="Startdato (valgfri)"
+                label="Startdato"
                 ref={ref}
                 {...startdatoInputProps}
                 id="startdato"
@@ -144,7 +140,7 @@ export function PameldingDatoer({
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsSluttdato}>
               <DatePicker.Input
-                label="Sluttdato (valgfri)"
+                label="Sluttdato"
                 ref={ref}
                 {...sluttdatoInputProps}
                 id="sluttdato"
