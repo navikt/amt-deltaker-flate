@@ -35,7 +35,7 @@ export const deltakerlisteSchema = z.object({
       navn: z.string(),
       organisasjonsnummer: z.string()
     })
-    .nullable(),
+    .nullish(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
