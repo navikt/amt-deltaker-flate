@@ -2,22 +2,16 @@ import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import * as brregHook from '../../../../hooks/useSokBrregUnderenhet'
 import { ArrangorValg } from '../ArrangorValg'
 import { createDeltaker, renderWithProviders } from './test-utils'
-
-vi.mock('../../../hooks/useSokBrregUnderenhet', () => ({
-  useSokBrregUnderenhet: vi.fn().mockReturnValue({ data: [] })
-}))
-
-const { useSokBrregUnderenhet } =
-  await import('../../../../hooks/useSokBrregUnderenhet')
 
 const mockSokResult = (
   enheter: { organisasjonsnummer: string; navn: string }[]
 ) => {
-  vi.mocked(useSokBrregUnderenhet).mockReturnValue({
+  vi.spyOn(brregHook, 'useSokBrregUnderenhet').mockReturnValue({
     data: enheter
-  } as ReturnType<typeof useSokBrregUnderenhet>)
+  } as ReturnType<typeof brregHook.useSokBrregUnderenhet>)
 }
 
 const renderArrangorValg = (
@@ -39,7 +33,9 @@ describe('ArrangorValg', () => {
 
   it('rendrer combobox med label', () => {
     renderArrangorValg()
-    expect(screen.getByLabelText('Tiltaksarrangør')).toBeInTheDocument()
+    expect(
+      screen.getByLabelText('Tiltaksarrangør - underenhet')
+    ).toBeInTheDocument()
   })
 
   it('viser initial arrangør som valgt når den finnes', () => {
@@ -68,7 +64,7 @@ describe('ArrangorValg', () => {
 
     renderArrangorValg()
 
-    const input = screen.getByLabelText('Tiltaksarrangør')
+    const input = screen.getByLabelText('Tiltaksarrangør - underenhet')
     await user.click(input)
     await user.type(input, 'Ny')
 
@@ -88,7 +84,7 @@ describe('ArrangorValg', () => {
 
     renderArrangorValg()
 
-    const input = screen.getByLabelText('Tiltaksarrangør')
+    const input = screen.getByLabelText('Tiltaksarrangør - underenhet')
     await user.click(input)
     await user.type(input, 'Ny')
 
@@ -115,7 +111,7 @@ describe('ArrangorValg', () => {
     mockSokResult([arrangor])
     renderArrangorValg(arrangor)
 
-    const input = screen.getByLabelText('Tiltaksarrangør')
+    const input = screen.getByLabelText('Tiltaksarrangør - underenhet')
     await user.click(input)
 
     const selectedOption = screen.getByRole('option', {
@@ -142,7 +138,7 @@ describe('ArrangorValg', () => {
     mockSokResult([arrangor])
     renderArrangorValg(arrangor)
 
-    const input = screen.getByLabelText('Tiltaksarrangør')
+    const input = screen.getByLabelText('Tiltaksarrangør - underenhet')
     await user.click(input)
 
     const selectedOption = screen.getByRole('option', {
