@@ -17,7 +17,7 @@ import { getDeltakerNavn } from '../../../../utils/displayText.ts'
 import {
   formToEnkeltplassRequest,
   generateEnkeltplassPameldingRequest
-} from '../../../../utils/pamelding-ekeltplass.ts'
+} from '../../../../utils/pamelding-enkeltplass.ts'
 import { ConfirmInfoCard } from '../../../ConfirmInfoCard.tsx'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 

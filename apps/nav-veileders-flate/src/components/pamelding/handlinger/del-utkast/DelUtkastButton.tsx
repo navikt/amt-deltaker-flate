@@ -7,7 +7,7 @@ import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { DelUtkastModal } from './DelUtkastModal.tsx'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
-import { erEnkeltPlass } from '../../../../utils/pamelding-ekeltplass.ts'
+import { erEnkeltPlass } from '../../../../utils/pamelding-enkeltplass.ts'
 
 export const DelUtkastButton = () => {
   const { disabled } = usePameldingFormContext()

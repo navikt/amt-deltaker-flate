@@ -11,18 +11,14 @@ import { formatDateToDtoStr } from './utils'
 export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassPameldingRequest => {
-  const startdato = data.startdato
-    ? dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
-    : null
-  const sluttdato = data.sluttdato
-    ? dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
-    : null
+  const startdato = dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
+  const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
 
   return {
     beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
-    startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    startdato: formatDateToDtoStr(startdato),
+    sluttdato: formatDateToDtoStr(sluttdato),
     arrangorUnderenhet: data.arrangorUnderenhet
   }
 }
@@ -30,12 +26,8 @@ export const formToEnkeltplassRequest = (
 export const generateEnkeltplassPameldingRequest = (
   deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const startdato = deltaker.startdato
-    ? dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
-    : null
-  const sluttdato = deltaker.sluttdato
-    ? dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
-    : null
+  const startdato = dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
+  const sluttdato = dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
 
   return {
     beskrivelse:
@@ -43,8 +35,8 @@ export const generateEnkeltplassPameldingRequest = (
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
     prisinformasjon: deltaker.prisinformasjon || '',
-    startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    startdato: startdato ? formatDateToDtoStr(startdato) : '',
+    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : '',
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || ''
   }

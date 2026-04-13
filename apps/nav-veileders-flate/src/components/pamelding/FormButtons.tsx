@@ -12,7 +12,7 @@ import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {
   erEnkeltPlass,
   formToEnkeltplassRequest
-} from '../../utils/pamelding-ekeltplass.ts'
+} from '../../utils/pamelding-enkeltplass.ts'
 import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
 import { ForkastUtkastEndringButton } from '../rediger-pamelding/ForkastUtkastEndringButton.tsx'
 import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
