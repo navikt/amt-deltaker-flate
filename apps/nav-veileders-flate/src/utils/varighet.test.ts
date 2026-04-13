@@ -36,6 +36,10 @@ const pamelding: DeltakerResponse = {
     deltakerlisteNavn: 'Testliste',
     tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     arrangorNavn: 'Den Beste Arrangøren AS',
+    arrangor: {
+      navn: 'Den Beste Arrangøren AS',
+      organisasjonsnummer: '123456789'
+    },
     oppstartstype: Oppstartstype.LOPENDE,
     startdato: startdato.toDate(),
     sluttdato: sluttdato.toDate(),
