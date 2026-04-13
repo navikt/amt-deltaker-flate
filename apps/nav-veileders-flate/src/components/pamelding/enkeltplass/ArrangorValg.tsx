@@ -53,8 +53,8 @@ export const ArrangorValg = ({ className }: Props) => {
         render={({ field }) => (
           <UNSAFE_Combobox
             id="arrangorUnderenhet"
-            label="Tiltaksarrangør"
-            description="Søk etter navn eller organisasjonsnummer"
+            label="Tiltaksarrangør - underenhet"
+            description="Søk etter navn eller organisasjonsnummer på underenheten"
             selectedOptions={getSelectedOptions(field.value)}
             ref={field.ref}
             size="small"
