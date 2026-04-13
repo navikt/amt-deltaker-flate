@@ -6,6 +6,7 @@ import { ArrangorEnhetResponse } from '../../../api/data/arrangorSok'
 import { useSokBrregUnderenhet } from '../../../hooks/useSokBrregUnderenhet'
 import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
 import { usePameldingFormContext } from '../PameldingFormContext'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 
 interface Props {
   className?: string
@@ -14,6 +15,7 @@ interface Props {
 export const ArrangorValg = ({ className }: Props) => {
   const { enhetId } = useAppContext()
   const { disabled } = usePameldingFormContext()
+  const { deltaker } = useDeltakerContext()
   const [sokArrangor, setSokArrangor] = useState('')
 
   const {
@@ -27,6 +29,22 @@ export const ArrangorValg = ({ className }: Props) => {
   )
   const arrangorUnderenhetOptions = getArrangorOptions(brregVirksomheter)
 
+  const getSelectedOptions = (fieldValue: string | undefined) => {
+    if (!fieldValue) return []
+    const fromSearch = arrangorUnderenhetOptions.find(
+      (v) => v.value === fieldValue
+    )
+    if (fromSearch) return [fromSearch]
+
+    const initArrangorOption = deltaker.deltakerliste.arrangor
+      ? getArrangorOptions([deltaker.deltakerliste.arrangor])[0]
+      : undefined
+
+    if (initArrangorOption && fieldValue === initArrangorOption.value)
+      return [initArrangorOption]
+    return []
+  }
+
   return (
     <div className={className}>
       <Controller
@@ -37,9 +55,7 @@ export const ArrangorValg = ({ className }: Props) => {
             id="arrangorUnderenhet"
             label="Tiltaksarrangør"
             description="Søk etter navn eller organisasjonsnummer"
-            selectedOptions={arrangorUnderenhetOptions.filter(
-              (v) => field.value === v.value
-            )}
+            selectedOptions={getSelectedOptions(field.value)}
             ref={field.ref}
             size="small"
             onChange={setSokArrangor}
@@ -48,11 +64,7 @@ export const ArrangorValg = ({ className }: Props) => {
             options={arrangorUnderenhetOptions}
             disabled={disabled}
             onToggleSelected={(option, isSelected) => {
-              if (isSelected) {
-                field.onChange(option)
-              } else {
-                field.onChange(undefined)
-              }
+              field.onChange(isSelected ? option : '')
             }}
           />
         )}

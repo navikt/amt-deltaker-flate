@@ -99,7 +99,8 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
     innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
-    arrangorUnderenhet: '', // TODO deltaker.deltakerliste.arrangorUnderenhet
+    arrangorUnderenhet:
+      deltaker.deltakerliste.arrangor?.organisasjonsnummer ?? '',
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)
       : undefined,

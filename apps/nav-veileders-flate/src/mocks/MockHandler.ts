@@ -78,6 +78,7 @@ export class MockHandler {
       dagerPerUke: null,
       deltakelsesprosent: 100
     }
+    const arrangor = mockArrangorenheter[0].underenheter[0]
 
     return {
       deltakerId: uuidv4(),
@@ -89,7 +90,11 @@ export class MockHandler {
         deltakerlisteNavn: 'Testliste',
         tiltakskode: this.tiltakskode,
         oppstartstype: Oppstartstype.LOPENDE,
-        arrangorNavn: 'Den Beste Arrangøren AS',
+        arrangorNavn: arrangor.navn,
+        arrangor: {
+          navn: arrangor.navn,
+          organisasjonsnummer: arrangor.organisasjonsnummer
+        },
         startdato: dayjs('2022-10-28').toDate(),
         sluttdato: dayjs('2030-02-20').toDate(),
         status: DeltakerlisteStatus.GJENNOMFORES,
