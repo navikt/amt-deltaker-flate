@@ -29,7 +29,7 @@
     "@tanstack/react-query": "^5.96.2",
     "dayjs": "^1.11.20",
     "deltaker-flate-common": "workspace:*",
-    "msw": "^2.12.14",
+    "msw": "^2.13.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.72.1",
@@ -55,7 +55,7 @@
     "playwright": "^1.59.1",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.2",
-    "vite": "^8.0.3",
+    "vite": "^8.0.5",
     "vitest": "^4.1.2"
   },
   "msw": {
