@@ -11,10 +11,11 @@ import { PameldingForm } from '../pamelding/standard/PameldingForm.tsx'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { AvbrytUtkastDeltMedBrukerModal } from './AvbrytUtkastDeltMedBrukerModal.tsx'
 import { UtkastDeltaker } from './UtkastDeltaker.tsx'
+import { UtkastDeltakerEnkeltplass } from './UtkastDeltakerEnkeltplass.tsx'
 
 export const Utkast = () => {
   const { deltaker } = useDeltakerContext()
-  const { disabled, redigerUtkast, setRedigerUtkast } =
+  const { disabled, redigerUtkastModus, setRedigerUtkastModus } =
     usePameldingFormContext()
 
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
@@ -24,7 +25,7 @@ export const Utkast = () => {
     Tiltakskode.JOBBKLUBB
   ].includes(deltaker.deltakerliste.tiltakskode)
 
-  if (redigerUtkast) {
+  if (redigerUtkastModus) {
     return erEnkeltPlass(deltaker) ? (
       <PameldingEnkeltplassForm focusOnOpen />
     ) : (
@@ -34,7 +35,11 @@ export const Utkast = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <UtkastDeltaker />
+      {deltaker.deltakerliste.erEnkeltplass ? (
+        <UtkastDeltakerEnkeltplass />
+      ) : (
+        <UtkastDeltaker />
+      )}
 
       <HorisontalLine />
 
@@ -51,7 +56,7 @@ export const Utkast = () => {
               variant="secondary"
               icon={<PencilIcon aria-hidden />}
               disabled={disabled}
-              onClick={() => setRedigerUtkast(true)}
+              onClick={() => setRedigerUtkastModus(true)}
             >
               Endre utkast
             </Button>

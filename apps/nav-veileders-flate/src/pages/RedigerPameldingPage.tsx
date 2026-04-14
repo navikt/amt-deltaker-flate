@@ -1,7 +1,7 @@
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { PameldingFormContextProvider } from '../components/pamelding/PameldingFormContext.tsx'
 import { PameldingHeader } from '../components/pamelding/PameldingHeader.tsx'
-import { Utkast } from '../components/rediger-pamelding/Utkast.tsx'
+import { Utkast } from '../components/utkast/Utkast.tsx'
 import { useDeltakerContext } from '../components/tiltak/DeltakerContext.tsx'
 
 export const RedigerPameldingPage = () => {

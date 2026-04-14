@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ForkastUtkastEndringModal = ({ open, onClose }: Props) => {
-  const { setRedigerUtkast } = usePameldingFormContext()
+  const { setRedigerUtkastModus } = usePameldingFormContext()
 
   return (
     <Modal
@@ -24,7 +24,7 @@ export const ForkastUtkastEndringModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            setRedigerUtkast(false)
+            setRedigerUtkastModus(false)
             onClose()
           }}
         >

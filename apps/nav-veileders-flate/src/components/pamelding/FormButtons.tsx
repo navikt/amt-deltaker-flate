@@ -14,8 +14,8 @@ import {
   formToEnkeltplassKladdRequest
 } from '../../utils/pamelding-enkeltplass.ts'
 import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
-import { ForkastUtkastEndringButton } from '../rediger-pamelding/ForkastUtkastEndringButton.tsx'
-import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
+import { ForkastUtkastEndringButton } from '../utkast/ForkastUtkastEndringButton.tsx'
+import { LagreUtkastButton } from '../utkast/LagreUtkastButton.tsx'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { DelUtkastButton } from './handlinger/del-utkast/DelUtkastButton.tsx'
 import { MeldPaDirekteButton } from './handlinger/meld-pa-direkte/MeldPaDirekteButton.tsx'
