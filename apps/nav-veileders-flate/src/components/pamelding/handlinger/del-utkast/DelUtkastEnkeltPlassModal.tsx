@@ -13,7 +13,7 @@ import {
 } from '../../../../hooks/useModiaLink'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
-import { formToEnkeltplassRequest } from '../../../../utils/pamelding-ekeltplass'
+import { formToEnkeltplassRequest } from '../../../../utils/pamelding-enkeltplass'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 interface Props {

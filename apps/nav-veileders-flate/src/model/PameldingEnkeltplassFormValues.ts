@@ -12,13 +12,13 @@ export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
-const dateShema = z
-  .string()
-  .optional()
-  .refine((date) => {
-    if (!date) return true
-    return dayjs(date, DATE_FORMAT, true).isValid()
-  }, 'Ugyldig datofomat: Bruk dd.mm.åååå')
+const dateSchema = (feltnavn: string) =>
+  z
+    .string()
+    .min(1, `${feltnavn} er påkrevd.`)
+    .refine((date) => {
+      return dayjs(date, DATE_FORMAT, true).isValid()
+    }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
 
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse
@@ -36,8 +36,8 @@ export const createPameldingEnkeltplassFormSchema = (
       arrangorUnderenhet: z
         .string()
         .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
-      startdato: dateShema,
-      sluttdato: dateShema,
+      startdato: dateSchema('Startdato'),
+      sluttdato: dateSchema('Sluttdato'),
       prisinformasjon: z
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')
@@ -46,19 +46,6 @@ export const createPameldingEnkeltplassFormSchema = (
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         )
     })
-    .refine(
-      (schema) => {
-        const harStart = !!schema.startdato
-        const harSlutt = !!schema.sluttdato
-        if (harSlutt != harStart) return false
-        return true
-      },
-      {
-        message:
-          'Hvis du registrerer start- eller sluttdato, må begge datoene fylles ut.',
-        path: ['sluttdato']
-      }
-    )
     .refine(
       (schema) => {
         const start = getDayjsFromString(schema.startdato)
@@ -103,10 +90,10 @@ export const generateFormDefaultValues = (
       deltaker.deltakerliste.arrangor?.organisasjonsnummer ?? '',
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)
-      : undefined,
+      : '',
     sluttdato: deltaker.sluttdato
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
-      : undefined,
+      : '',
     prisinformasjon: deltaker.prisinformasjon ?? ''
   }
 }

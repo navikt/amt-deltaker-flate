@@ -7,24 +7,36 @@ import {
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
 import { formatDateToDtoStr } from './utils'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
 
-export const formToEnkeltplassRequest = (
-  data: PameldingEnkeltplassFormValues
-): EnkeltplassPameldingRequest => {
-  const startdato = data.startdato
-    ? dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
-    : null
-  const sluttdato = data.sluttdato
-    ? dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
-    : null
+const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
+  const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
+  const sluttdatoParsed = dayjs(data.sluttdato, DATE_FORMAT, true)
+  const startdato = startdatoParsed.isValid()
+    ? formatDateToDtoStr(startdatoParsed.toDate())
+    : undefined
+  const sluttdato = sluttdatoParsed.isValid()
+    ? formatDateToDtoStr(sluttdatoParsed.toDate())
+    : undefined
 
   return {
     beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
-    startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    startdato,
+    sluttdato,
     arrangorUnderenhet: data.arrangorUnderenhet
   }
+}
+
+export const formToEnkeltplassKladdRequest = (
+  data: PameldingEnkeltplassFormValues
+): EnkeltplassKladdRequest => formToEnkeltplassData(data)
+
+export const formToEnkeltplassRequest = (
+  data: PameldingEnkeltplassFormValues
+): EnkeltplassPameldingRequest => {
+  const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
+  return { ...rest, startdato: startdato ?? '', sluttdato: sluttdato ?? '' }
 }
 
 export const generateEnkeltplassPameldingRequest = (
@@ -43,8 +55,8 @@ export const generateEnkeltplassPameldingRequest = (
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
     prisinformasjon: deltaker.prisinformasjon || '',
-    startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
+    startdato: startdato ? formatDateToDtoStr(startdato) : '',
+    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : '',
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || ''
   }

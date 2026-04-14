@@ -49,11 +49,9 @@ export function PameldingDatoer({
       ? dayjs(defaultStartdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
-      setValue(
-        'startdato',
-        date ? dayjs(date).format(DATE_FORMAT) : undefined,
-        { shouldDirty: true }
-      )
+      setValue('startdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
+        shouldDirty: true
+      })
       clearErrors('startdato')
       handleStardatoChanged(date)
     }
@@ -69,11 +67,9 @@ export function PameldingDatoer({
       ? dayjs(defaultSluttdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
-      setValue(
-        'sluttdato',
-        date ? dayjs(date).format(DATE_FORMAT) : undefined,
-        { shouldDirty: true }
-      )
+      setValue('sluttdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
+        shouldDirty: true
+      })
       clearErrors('sluttdato')
     }
   })
@@ -82,18 +78,15 @@ export function PameldingDatoer({
     const parsed = getDayjsFromString(newDate)
 
     if (parsed?.isValid()) {
-      setValue(id, parsed?.format(DATE_FORMAT), { shouldDirty: true })
+      setValue(id, parsed.format(DATE_FORMAT), { shouldDirty: true })
     } else {
-      setValue(id, newDate, { shouldDirty: true })
+      setValue(id, newDate || '', { shouldDirty: true })
     }
 
     clearErrors(id)
 
     if (id === 'startdato' && parsed) {
       handleStardatoChanged(parsed.toDate())
-    } else if (!startdato && !parsed) {
-      // Fjerne feilmelding på manglende startdato hvis startdato ikke er satt og vi fjerne sluttdatoen
-      clearErrors('startdato')
     }
   }
 
@@ -121,7 +114,7 @@ export function PameldingDatoer({
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsStartdato}>
               <DatePicker.Input
-                label="Startdato (valgfri)"
+                label="Startdato"
                 ref={ref}
                 {...startdatoInputProps}
                 id="startdato"
@@ -144,7 +137,7 @@ export function PameldingDatoer({
           render={({ field: { ref } }) => (
             <DatePicker {...datepickerPropsSluttdato}>
               <DatePicker.Input
-                label="Sluttdato (valgfri)"
+                label="Sluttdato"
                 ref={ref}
                 {...sluttdatoInputProps}
                 id="sluttdato"

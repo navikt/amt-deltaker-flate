@@ -2,17 +2,17 @@ import { LocalAlert } from '@navikt/ds-react'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { oppdaterKladd as oppdaterEnkeltplassKladd } from '../../api/api-enkeltplass.ts'
 import { oppdaterKladd } from '../../api/api.ts'
+import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import {
   EnkeltplassKladdRequest,
   KladdRequest
 } from '../../api/data/kladd-request.ts'
-import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../model/PameldingFormValues.ts'
 import {
   erEnkeltPlass,
-  formToEnkeltplassRequest
-} from '../../utils/pamelding-ekeltplass.ts'
+  formToEnkeltplassKladdRequest
+} from '../../utils/pamelding-enkeltplass.ts'
 import { formToKladdRequest } from '../../utils/pamelding-form-utils.ts'
 import { ForkastUtkastEndringButton } from '../rediger-pamelding/ForkastUtkastEndringButton.tsx'
 import { LagreUtkastButton } from '../rediger-pamelding/LagreUtkastButton.tsx'
@@ -100,7 +100,7 @@ const LagreKladd = ({ pamelding }: LagreKladdProps) => {
     return (
       <KladdLagring<PameldingEnkeltplassFormValues, EnkeltplassKladdRequest>
         oppdaterKladd={oppdaterEnkeltplassKladd}
-        formToKladdRequest={formToEnkeltplassRequest}
+        formToKladdRequest={formToEnkeltplassKladdRequest}
       />
     )
   }

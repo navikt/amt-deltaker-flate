@@ -7,7 +7,7 @@ import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 import { MeldPaDirekteModal } from './MeldPaDirekteModal.tsx'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues.ts'
 import { PameldingFormValues } from '../../../../model/PameldingFormValues.ts'
-import { erEnkeltPlass } from '../../../../utils/pamelding-ekeltplass.ts'
+import { erEnkeltPlass } from '../../../../utils/pamelding-enkeltplass.ts'
 
 interface Props {
   name?: string
