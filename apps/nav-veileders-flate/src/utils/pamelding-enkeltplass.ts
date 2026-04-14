@@ -10,11 +10,13 @@ import { formatDateToDtoStr } from './utils'
 import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
-  const startdato = data.startdato
-    ? formatDateToDtoStr(dayjs(data.startdato, DATE_FORMAT, true).toDate())
+  const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
+  const sluttdatoParsed = dayjs(data.sluttdato, DATE_FORMAT, true)
+  const startdato = startdatoParsed.isValid()
+    ? formatDateToDtoStr(startdatoParsed.toDate())
     : undefined
-  const sluttdato = data.sluttdato
-    ? formatDateToDtoStr(dayjs(data.sluttdato, DATE_FORMAT, true).toDate())
+  const sluttdato = sluttdatoParsed.isValid()
+    ? formatDateToDtoStr(sluttdatoParsed.toDate())
     : undefined
 
   return {
