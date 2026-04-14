@@ -80,9 +80,9 @@ export const renderWithProviders = (
           <PameldingFormContext.Provider
             value={{
               disabled: false,
-              redigerUtkast: false,
+              redigerUtkastModus: false,
               error: null,
-              setRedigerUtkast: vi.fn(),
+              setRedigerUtkastModus: vi.fn(),
               setDisabled: vi.fn(),
               setError: vi.fn()
             }}
