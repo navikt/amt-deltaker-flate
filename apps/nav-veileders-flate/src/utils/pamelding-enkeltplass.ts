@@ -7,20 +7,34 @@ import {
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
 import { formatDateToDtoStr } from './utils'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
 
-export const formToEnkeltplassRequest = (
-  data: PameldingEnkeltplassFormValues
-): EnkeltplassPameldingRequest => {
-  const startdato = dayjs(data.startdato, DATE_FORMAT, true).toDate()
-  const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true).toDate()
+const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
+  const startdato = data.startdato
+    ? formatDateToDtoStr(dayjs(data.startdato, DATE_FORMAT, true).toDate())
+    : undefined
+  const sluttdato = data.sluttdato
+    ? formatDateToDtoStr(dayjs(data.sluttdato, DATE_FORMAT, true).toDate())
+    : undefined
 
   return {
     beskrivelse: data.innhold,
     prisinformasjon: data.prisinformasjon,
-    startdato: formatDateToDtoStr(startdato),
-    sluttdato: formatDateToDtoStr(sluttdato),
+    startdato,
+    sluttdato,
     arrangorUnderenhet: data.arrangorUnderenhet
   }
+}
+
+export const formToEnkeltplassKladdRequest = (
+  data: PameldingEnkeltplassFormValues
+): EnkeltplassKladdRequest => formToEnkeltplassData(data)
+
+export const formToEnkeltplassRequest = (
+  data: PameldingEnkeltplassFormValues
+): EnkeltplassPameldingRequest => {
+  const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
+  return { ...rest, startdato: startdato ?? '', sluttdato: sluttdato ?? '' }
 }
 
 export const generateEnkeltplassPameldingRequest = (
