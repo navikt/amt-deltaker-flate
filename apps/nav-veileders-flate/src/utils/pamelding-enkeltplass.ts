@@ -11,8 +11,8 @@ import { formatDateToDtoStr } from './utils'
 export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassPameldingRequest => {
-  const startdato = dayjs(data.startdato, DATE_FORMAT, true)?.toDate()
-  const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true)?.toDate()
+  const startdato = dayjs(data.startdato, DATE_FORMAT, true).toDate()
+  const sluttdato = dayjs(data.sluttdato, DATE_FORMAT, true).toDate()
 
   return {
     beskrivelse: data.innhold,
@@ -26,8 +26,12 @@ export const formToEnkeltplassRequest = (
 export const generateEnkeltplassPameldingRequest = (
   deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const startdato = dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
-  const sluttdato = dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
+  const startdato = deltaker.startdato
+    ? dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
+    : null
+  const sluttdato = deltaker.sluttdato
+    ? dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
+    : null
 
   return {
     beskrivelse:

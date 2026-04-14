@@ -12,12 +12,13 @@ export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
-const dateShema = z
-  .string()
-  .min(1, 'Dato er påkrevd.')
-  .refine((date) => {
-    return dayjs(date, DATE_FORMAT, true).isValid()
-  }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
+const dateSchema = (feltnavn: string) =>
+  z
+    .string()
+    .min(1, `${feltnavn} er påkrevd.`)
+    .refine((date) => {
+      return dayjs(date, DATE_FORMAT, true).isValid()
+    }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
 
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse
@@ -35,8 +36,8 @@ export const createPameldingEnkeltplassFormSchema = (
       arrangorUnderenhet: z
         .string()
         .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
-      startdato: dateShema,
-      sluttdato: dateShema,
+      startdato: dateSchema('Startdato'),
+      sluttdato: dateSchema('Sluttdato'),
       prisinformasjon: z
         .string()
         .min(1, 'Prisinformasjon er påkrevd.')
