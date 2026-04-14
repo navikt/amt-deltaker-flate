@@ -78,6 +78,34 @@ export const oppdaterKladd = async (
   })
 }
 
+export const delUtkastMedInnbygger = async (
+  deltakerId: string,
+  enhetId: string,
+  request: EnkeltplassPameldingRequest
+): Promise<DeltakerResponse> => {
+  return fetch(
+    `${API_URL}/enkeltplass/utkast/${deltakerId}/del-med-innbygger`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      },
+      body: JSON.stringify(request)
+    }
+  )
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Påmeldingen kunne ikke sendes inn.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
 export const oppdaterUtkast = async (
   deltakerId: string,
   enhetId: string,

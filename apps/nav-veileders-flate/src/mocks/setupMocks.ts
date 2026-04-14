@@ -129,6 +129,19 @@ export const worker = setupWorker(
     }
   ),
   http.post(
+    '/amt-deltaker-bff/enkeltplass/utkast/:deltakerId/del-med-innbygger',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => enkeltplassPameldingSchema.parse(json))
+        .then((body) => handler.sendInnPameldingEnkeltplass(body))
+
+      return response
+    }
+  ),
+  http.post(
     '/amt-deltaker-bff/enkeltplass/utkast/:deltakerId/meld-paa-direkte',
     async ({ request }) => {
       await delay(1000)

@@ -5,7 +5,7 @@ import {
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
-import { oppdaterUtkast } from '../../../../api/api-enkeltplass'
+import { delUtkastMedInnbygger } from '../../../../api/api-enkeltplass'
 import { useAppContext } from '../../../../AppContext'
 import {
   DELTAKELSESOVERSIKT_LINK,
@@ -41,7 +41,10 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
     state: fetchState,
     error,
     doFetch: doFetchDelUtkastEnkeltplass
-  } = useDeferredFetch(oppdaterUtkast, returnToFrontpageWithSuccessMessage)
+  } = useDeferredFetch(
+    delUtkastMedInnbygger,
+    returnToFrontpageWithSuccessMessage
+  )
 
   return (
     <Modal
