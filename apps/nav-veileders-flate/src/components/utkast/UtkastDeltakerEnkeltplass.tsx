@@ -1,6 +1,7 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import { DeltakelseInnhold, formatDate } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
+import { VeilederSnakkeboble } from 'deltaker-flate-common'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
@@ -8,11 +9,16 @@ export const UtkastDeltakerEnkeltplass = () => {
 
   return (
     <div className="flex flex-col gap-8">
+      <VeilederSnakkeboble
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        tiltakskode={tiltakskode}
+        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+      />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-        Dato: {formatDate(deltaker.startdato)} -{' '}
+        <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}
         {formatDate(deltaker.sluttdato)}
       </BodyLong>
-
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
