@@ -45,7 +45,8 @@ export const generateEnkeltplassPameldingRequest = (
     prisinformasjon: deltaker.prisinformasjon || '',
     startdato: startdato ? formatDateToDtoStr(startdato) : undefined,
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : undefined,
-    arrangorUnderenhet: '' // TODO deltaker.deltakerliste.arrangorUnderenhet
+    arrangorUnderenhet:
+      deltaker.deltakerliste.arrangor?.organisasjonsnummer || ''
   }
 }
 

@@ -30,7 +30,12 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteNavn: z.string(),
   tiltakskode: z.enum(Tiltakskode),
   arrangorNavn: z.string(),
-  // TODO backend må sende arrangorHovedenhet / arrangorUnderenhet
+  arrangor: z
+    .object({
+      navn: z.string(),
+      organisasjonsnummer: z.string()
+    })
+    .nullish(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,

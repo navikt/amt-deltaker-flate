@@ -35,7 +35,7 @@ export const createPameldingEnkeltplassFormSchema = (
         ),
       arrangorUnderenhet: z
         .string()
-        .min(1, 'Tiltaksarrangørens underenhet er påkrevd.'),
+        .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
       startdato: dateShema,
       sluttdato: dateShema,
       prisinformasjon: z
@@ -99,7 +99,8 @@ export const generateFormDefaultValues = (
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
     innhold: getInnholdAnnetBeskrivelse(deltaker) ?? '',
-    arrangorUnderenhet: '', // TODO deltaker.deltakerliste.arrangorUnderenhet
+    arrangorUnderenhet:
+      deltaker.deltakerliste.arrangor?.organisasjonsnummer ?? '',
     startdato: deltaker.startdato
       ? dayjs(deltaker.startdato).format(DATE_FORMAT)
       : undefined,
