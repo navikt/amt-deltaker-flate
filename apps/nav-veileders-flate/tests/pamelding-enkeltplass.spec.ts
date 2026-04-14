@@ -45,8 +45,8 @@ test.describe('Enkeltplass påmelding', () => {
   test('kan fylle ut skjema og dele utkast', async ({ page }) => {
     await page.getByLabel('Dette er innholdet').fill('Kurs i arbeidsmarkedsfag')
 
-    const startdato = page.getByLabel('Startdato (valgfri)')
-    const sluttdato = page.getByLabel('Sluttdato (valgfri)')
+    const startdato = page.getByLabel('Startdato')
+    const sluttdato = page.getByLabel('Sluttdato')
     await startdato.fill(dayjs().format('DD.MM.YYYY'))
     await startdato.blur()
     await sluttdato.fill(dayjs().add(1, 'month').format('DD.MM.YYYY'))
