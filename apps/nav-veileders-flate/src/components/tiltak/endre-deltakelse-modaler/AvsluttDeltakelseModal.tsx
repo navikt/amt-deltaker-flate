@@ -199,7 +199,9 @@ export const AvsluttDeltakelseModal = ({
         pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
         !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
         pamelding.status.aarsak?.type !== aarsak.aarsak ||
-        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse
+        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse ||
+        (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
+          harDeltatt === false)
       if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
