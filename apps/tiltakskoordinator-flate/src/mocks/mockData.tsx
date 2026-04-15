@@ -221,6 +221,7 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     id: uuidv4(),
     navn: 'Kometrytter Kurs',
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    erEnkeltplass: false,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),
     oppstartstype: Oppstartstype.FELLES,

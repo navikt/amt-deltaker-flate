@@ -62,6 +62,7 @@ export const UtkastDeltaker = () => {
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         size="small"

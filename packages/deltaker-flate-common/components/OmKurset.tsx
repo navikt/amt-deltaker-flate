@@ -18,6 +18,7 @@ interface Props {
   statusType: DeltakerStatusType
   oppstartstype: Oppstartstype | null
   pameldingstype: Pameldingstype
+  erEnkeltplass: boolean
   startdato: Date | null
   sluttdato: Date | null
   size?: 'medium' | 'small'
@@ -31,6 +32,7 @@ export const OmKurset = ({
   statusType,
   oppstartstype,
   pameldingstype,
+  erEnkeltplass,
   startdato,
   sluttdato,
   headingLevel,
@@ -133,7 +135,8 @@ export const OmKurset = ({
 
               {kanDeleDeltakerMedArrangorForVurdering(
                 pameldingstype,
-                tiltakskode
+                tiltakskode,
+                erEnkeltplass
               ) &&
                 visDelMedArrangorInfo && (
                   <>
