@@ -57,7 +57,8 @@ export const DeltakerInfo = ({ className }: Props) => {
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
-      deltaker.deltakerliste.tiltakskode
+      deltaker.deltakerliste.tiltakskode,
+      deltaker.deltakerliste.erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)

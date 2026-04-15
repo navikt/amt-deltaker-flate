@@ -70,7 +70,8 @@ export const deltakerlisteDetaljerSchema = z.object({
   apentForPamelding: z.boolean(),
   antallPlasser: z.number().nullable(),
   pameldingstype: z.enum(Pameldingstype),
-  koordinatorer: z.array(koordinatorSchema)
+  koordinatorer: z.array(koordinatorSchema),
+  erEnkeltplass: z.boolean()
 })
 
 export type Deltaker = z.infer<typeof deltakerSchema>

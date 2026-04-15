@@ -80,7 +80,8 @@ export const UtkastPage = () => {
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltaker.deltakerliste.pameldingstype,
-    deltaker.deltakerliste.tiltakskode
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.erEnkeltplass
   )
 
   return (

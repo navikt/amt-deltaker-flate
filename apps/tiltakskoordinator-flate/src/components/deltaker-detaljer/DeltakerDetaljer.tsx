@@ -23,7 +23,14 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
 
   const visVurdering = kanDeleDeltakerMedArrangorForVurdering(
     deltaker.pameldingstype,
-    deltaker.tiltakskode
+    deltaker.tiltakskode,
+    /*
+        dataene er ikke tilgjengelige i dette endepunktet enda,
+        funksjonalitet er ekvivalent som tidligere
+        for det som er i prodved å sette til false
+
+     */
+    false //TODO: fix
   )
 
   return (

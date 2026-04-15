@@ -13,6 +13,7 @@ export const UtkastDeltakerEnkeltplass = () => {
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
