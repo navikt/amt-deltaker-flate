@@ -229,13 +229,6 @@ const DemoStatusInstillinger = () => {
 
   return (
     <div className="mt-2 flex gap-4 flex-wrap">
-      <Checkbox
-        value={erEnkeltplass}
-        onChange={(e) => handleErEnkeltplassChange(e.target.checked)}
-      >
-        Er enkeltplass
-      </Checkbox>
-
       <Select
         value={tiltakskode}
         label="Velg tiltakskode"
@@ -303,6 +296,14 @@ const DemoStatusInstillinger = () => {
           </option>
         ))}
       </Select>
+
+      <Checkbox
+        className="self-end -mb-2"
+        checked={erEnkeltplass}
+        onChange={(e) => handleErEnkeltplassChange(e.target.checked)}
+      >
+        Er enkeltplass
+      </Checkbox>
     </div>
   )
 }

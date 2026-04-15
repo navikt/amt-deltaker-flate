@@ -3,5 +3,7 @@ interface Props {
 }
 
 export const HorisontalLine = ({ className }: Props) => (
-  <div className={`bg-black h-px w-full border ${className ?? ''}`} />
+  <div
+    className={`h-px w-full bg-(--ax-border-neutral-subtle) ${className ?? ''}`}
+  />
 )
