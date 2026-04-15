@@ -726,7 +726,13 @@ export const getInnholdForTiltakskode = (
       ]
     case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
     case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+    case Tiltakskode.HOYERE_UTDANNING:
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+    case Tiltakskode.STUDIESPESIALISERING:
       return [annet]
     case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
     default:

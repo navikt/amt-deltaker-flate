@@ -25,6 +25,7 @@ import {
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import {
   AvsluttDeltakelseRequest,
   EndreAvslutningRequest,
@@ -37,9 +38,8 @@ import {
   ForlengDeltakelseRequest,
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
-import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
+import { PameldingRequest } from '../api/data/send-pamelding.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -147,7 +147,7 @@ export class MockHandler {
         nesteDeltakelsesmengde: null
       },
       erManueltDeltMedArrangor: true,
-      prisinformasjon: null
+      prisinformasjon: 'Koster penger'
     }
   }
 
@@ -497,15 +497,19 @@ export class MockHandler {
       oppdatertPamelding.deltakerliste.erEnkeltplass = erEnkeltplass
       if (erEnkeltplass) {
         oppdatertPamelding.deltakerliste.oppmoteSted = null
-        oppdatertPamelding.prisinformasjon = 'Koster masse penger'
+        oppdatertPamelding.prisinformasjon = 'Koster penger'
         oppdatertPamelding.startdato = dayjs().subtract(1, 'day').toDate()
         oppdatertPamelding.sluttdato = dayjs().add(1, 'day').toDate()
       } else {
         oppdatertPamelding.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
         oppdatertPamelding.prisinformasjon = null
-        oppdatertPamelding.startdato = null
-        oppdatertPamelding.sluttdato = null
+        oppdatertPamelding.startdato = this.getStartdato(
+          oppdatertPamelding.status.type
+        )
+        oppdatertPamelding.sluttdato = this.getSluttdato(
+          oppdatertPamelding.status.type
+        )
       }
     }
 
