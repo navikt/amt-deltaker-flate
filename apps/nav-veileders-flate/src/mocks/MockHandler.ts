@@ -500,6 +500,7 @@ export class MockHandler {
         oppdatertPamelding.prisinformasjon = 'Koster penger'
         oppdatertPamelding.startdato = dayjs().subtract(1, 'day').toDate()
         oppdatertPamelding.sluttdato = dayjs().add(1, 'day').toDate()
+        oppdatertPamelding.bakgrunnsinformasjon = null
       } else {
         oppdatertPamelding.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
@@ -510,6 +511,7 @@ export class MockHandler {
         oppdatertPamelding.sluttdato = this.getSluttdato(
           oppdatertPamelding.status.type
         )
+        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
       }
     }
 

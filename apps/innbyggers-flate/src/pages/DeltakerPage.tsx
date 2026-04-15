@@ -1,5 +1,6 @@
-import { Alert, BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading, Label } from '@navikt/ds-react'
 import {
+  Bakgrunnsinformasjon,
   DeltakelseInnhold,
   DeltakelsesmengdeInfo,
   DeltakerStatusInfoTekst,
@@ -10,6 +11,7 @@ import {
   HvaDelesMedArrangor,
   OmKurset,
   Oppmotested,
+  PrisOgBetaling,
   SeEndringer,
   VedtakOgKlage,
   formatDateFromString,
@@ -18,7 +20,6 @@ import {
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
-  skalViseDeltakerStatusInfoTekst,
   visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
@@ -53,11 +54,6 @@ export const DeltakerPage = () => {
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)
-
-  const bakgrunnsinformasjon =
-    deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
-      ? deltaker.bakgrunnsinformasjon
-      : EMDASH
 
   let dato = EMDASH
   if (
@@ -108,19 +104,17 @@ export const DeltakerPage = () => {
         </div>
       )}
 
-      {skalViseDeltakerStatusInfoTekst(deltaker.status.type) && (
-        <DeltakerStatusInfoTekst
-          tiltakskode={deltaker.deltakerliste.tiltakskode}
-          deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
-          tiltaketsStartDato={deltaker.deltakerliste.startdato}
-          statusType={deltaker.status.type}
-          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
-          oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
-          pameldingstype={deltaker.deltakerliste.pameldingstype}
-          oppstartstype={deltaker.deltakerliste.oppstartstype}
-          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        />
-      )}
+      <DeltakerStatusInfoTekst
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+        tiltaketsStartDato={deltaker.deltakerliste.startdato}
+        statusType={deltaker.status.type}
+        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+      />
 
       {visDeltMedArrangor && (
         <Alert variant="info" size="small" className="mt-4">
@@ -170,61 +164,58 @@ export const DeltakerPage = () => {
         listClassName="mt-2"
       />
 
-      <div>
-        {bakgrunnsinformasjon !== EMDASH && (
-          <>
-            <Heading level="2" size="medium" className="mt-8">
-              Bakgrunnsinfo
-            </Heading>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-              {bakgrunnsinformasjon}
-            </BodyLong>
-          </>
-        )}
+      <PrisOgBetaling
+        prisinformasjon={deltaker.prisinformasjon}
+        className="mt-8"
+      />
 
-        {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
-          <DeltakelsesmengdeInfo
-            deltakelsesprosent={deltaker.deltakelsesprosent}
-            dagerPerUke={deltaker.dagerPerUke}
-            nesteDeltakelsesmengde={
-              deltaker.deltakelsesmengder.nesteDeltakelsesmengde
-            }
-          />
-        )}
+      <Bakgrunnsinformasjon
+        bakgrunnsinformasjon={deltaker.bakgrunnsinformasjon}
+        className="mt-8"
+      />
 
-        <SeEndringer
-          className="mt-8"
-          tiltakskode={deltaker.deltakerliste.tiltakskode}
-          deltakerId={deltaker.deltakerId}
-          fetchHistorikk={getHistorikk}
-          open={visEndringer}
-          onModalClose={() => {
-            setSearchParams()
-          }}
+      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
+        <DeltakelsesmengdeInfo
+          deltakelsesprosent={deltaker.deltakelsesprosent}
+          dagerPerUke={deltaker.dagerPerUke}
+          nesteDeltakelsesmengde={
+            deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+          }
         />
+      )}
 
-        <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
+      <SeEndringer
+        className="mt-8"
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        deltakerId={deltaker.deltakerId}
+        fetchHistorikk={getHistorikk}
+        open={visEndringer}
+        onModalClose={() => {
+          setSearchParams()
+        }}
+      />
 
-        <VedtakOgKlage
-          statusType={deltaker.status.type}
-          statusDato={deltaker.status.opprettet}
-          tiltakskode={deltaker.deltakerliste.tiltakskode}
-          oppstartstype={deltaker.deltakerliste.oppstartstype}
-          vedtaksinformasjon={deltaker.vedtaksinformasjon}
-          importertFraArena={deltaker.importertFraArena}
-        />
+      <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
-        <HvaDelesMedArrangor
-          arrangorNavn={deltaker.deltakerliste.arrangorNavn}
-          adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-          tiltakskode={deltaker.deltakerliste.tiltakskode}
-          statusType={deltaker.status.type}
-          oppstartstype={deltaker.deltakerliste.oppstartstype}
-          pameldingstype={deltaker.deltakerliste.pameldingstype}
-          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-          className="mt-8"
-        />
-      </div>
+      <VedtakOgKlage
+        statusType={deltaker.status.type}
+        statusDato={deltaker.status.opprettet}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        vedtaksinformasjon={deltaker.vedtaksinformasjon}
+        importertFraArena={deltaker.importertFraArena}
+      />
+
+      <HvaDelesMedArrangor
+        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        statusType={deltaker.status.type}
+        oppstartstype={deltaker.deltakerliste.oppstartstype}
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        className="mt-8"
+      />
     </div>
   )
 }

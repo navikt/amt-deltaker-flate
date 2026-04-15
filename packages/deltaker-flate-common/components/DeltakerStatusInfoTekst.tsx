@@ -21,69 +21,6 @@ interface DeltakerStatusInfoTekstProps {
   erEnkeltplass: boolean
 }
 
-export const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
-  return (
-    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
-    status === DeltakerStatusType.DELTAR ||
-    status === DeltakerStatusType.HAR_SLUTTET ||
-    status === DeltakerStatusType.IKKE_AKTUELL ||
-    status === DeltakerStatusType.VURDERES ||
-    status === DeltakerStatusType.VENTELISTE ||
-    status === DeltakerStatusType.SOKT_INN ||
-    status === DeltakerStatusType.FULLFORT ||
-    status === DeltakerStatusType.AVBRUTT
-  )
-}
-
-const getInfoTekst = (
-  kreverGodkjenning: boolean,
-  status: DeltakerStatusType,
-  tiltakOgStedTekst: string
-) => {
-  switch (status) {
-    case DeltakerStatusType.VENTER_PA_OPPSTART:
-      return `Du ${kreverGodkjenning ? 'har fått plass' : 'er meldt'} på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
-    case DeltakerStatusType.DELTAR:
-      return `Du deltar på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
-    case DeltakerStatusType.HAR_SLUTTET:
-      return `Du deltok på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
-    case DeltakerStatusType.IKKE_AKTUELL:
-      return kreverGodkjenning
-        ? `Søknaden om ${tiltakOgStedTekst} er avslått.`
-        : `${tiltakOgStedTekst} ble ikke aktuelt.`
-    case DeltakerStatusType.VURDERES:
-    case DeltakerStatusType.SOKT_INN:
-      return `Du er søkt inn på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
-    case DeltakerStatusType.VENTELISTE:
-      return `Du er satt på venteliste for arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
-    case DeltakerStatusType.FULLFORT:
-    case DeltakerStatusType.AVBRUTT:
-      return `Du deltok på ${tiltakOgStedTekst}.`
-  }
-}
-
-const getHoyereUtdanningInfo = (statusType: DeltakerStatusType) => {
-  if (
-    !(
-      statusType === DeltakerStatusType.SOKT_INN ||
-      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
-    )
-  ) {
-    return null
-  }
-
-  const infoTekst =
-    statusType === DeltakerStatusType.SOKT_INN
-      ? 'Nav har søkt deg inn på tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
-      : 'Nav har godkjent tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
-
-  return (
-    <Alert variant="info" className="mt-4" size="small">
-      {infoTekst}
-    </Alert>
-  )
-}
-
 export const DeltakerStatusInfoTekst = ({
   tiltakskode,
   deltakerlisteNavn,
@@ -95,12 +32,21 @@ export const DeltakerStatusInfoTekst = ({
   tiltaketsStartDato,
   erEnkeltplass
 }: DeltakerStatusInfoTekstProps) => {
-  if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
-    return getHoyereUtdanningInfo(statusType)
+  if (!skalViseDeltakerStatusInfoTekst(statusType)) {
+    return null
   }
 
   if (erEnkeltplass) {
-    return null
+    const infotekst = getEnkeltplassInfoTekst(statusType)
+    return infotekst ? (
+      <BodyLong size="small" className="mt-2">
+        {infotekst}
+      </BodyLong>
+    ) : null
+  }
+
+  if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
+    return getHoyereUtdanningInfo(statusType)
   }
 
   return (
@@ -132,6 +78,70 @@ export const DeltakerStatusInfoTekst = ({
   )
 }
 
+const getInfoTekst = (
+  kreverGodkjenning: boolean,
+  status: DeltakerStatusType,
+  tiltakOgStedTekst: string
+) => {
+  switch (status) {
+    case DeltakerStatusType.VENTER_PA_OPPSTART:
+      return `Du ${kreverGodkjenning ? 'har fått plass' : 'er meldt'} på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.DELTAR:
+      return `Du deltar på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.HAR_SLUTTET:
+      return `Du deltok på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.IKKE_AKTUELL:
+      return kreverGodkjenning
+        ? `Søknaden om ${tiltakOgStedTekst} er avslått.`
+        : `${tiltakOgStedTekst} ble ikke aktuelt.`
+    case DeltakerStatusType.VURDERES:
+    case DeltakerStatusType.SOKT_INN:
+      return `Du er søkt inn på arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.VENTELISTE:
+      return `Du er satt på venteliste for arbeidsmarkedstiltaket: ${tiltakOgStedTekst}.`
+    case DeltakerStatusType.FULLFORT:
+    case DeltakerStatusType.AVBRUTT:
+      return `Du deltok på ${tiltakOgStedTekst}.`
+  }
+}
+
+const getEnkeltplassInfoTekst = (statusType: DeltakerStatusType) => {
+  switch (statusType) {
+    case DeltakerStatusType.SOKT_INN:
+      return 'Du er søkt inn og Nav vurderer søknaden din. Du vil få beskjed om resultatet.'
+    case DeltakerStatusType.VENTER_PA_OPPSTART:
+      return 'Nav mener at denne opplæringen vil gi deg bedre muligheter til å komme i arbeid. Opplæringen kan ha egne opptakskrav. I så fall er det opplæringsstedet som avgjør om du får plass.'
+    case DeltakerStatusType.IKKE_AKTUELL:
+      return 'Opplæringen ble ikke aktuelt.'
+    case DeltakerStatusType.FULLFORT:
+      return 'Du deltok på opplæringen.'
+    default:
+      return null
+  }
+}
+
+const getHoyereUtdanningInfo = (statusType: DeltakerStatusType) => {
+  if (
+    !(
+      statusType === DeltakerStatusType.SOKT_INN ||
+      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+    )
+  ) {
+    return null
+  }
+
+  const infoTekst =
+    statusType === DeltakerStatusType.SOKT_INN
+      ? 'Nav har søkt deg inn på tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
+      : 'Nav har godkjent tiltaket Høyere utdanning. Du må selv sende søknad til opplæringsstedet, som avgjør om du får plass på utdanningen.'
+
+  return (
+    <Alert variant="info" className="mt-4" size="small">
+      {infoTekst}
+    </Alert>
+  )
+}
+
 const getIngenStartDatoInfoTekst = (
   tiltakskode: Tiltakskode,
   pameldingstype: Pameldingstype,
@@ -155,4 +165,18 @@ const getIngenStartDatoInfoTekst = (
   return tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     ? `${arrangorNavn} avgjør om du tilbys plass. Ved tilbud om plass vil du bli ansatt. Når arrangøren har en ledig plass, vil de ta kontakt med deg for å avtale når du skal begynne.`
     : 'Nav eller arrangøren tar kontakt med deg for å avtale når du skal begynne.'
+}
+
+const skalViseDeltakerStatusInfoTekst = (status: DeltakerStatusType) => {
+  return (
+    status === DeltakerStatusType.VENTER_PA_OPPSTART ||
+    status === DeltakerStatusType.DELTAR ||
+    status === DeltakerStatusType.HAR_SLUTTET ||
+    status === DeltakerStatusType.IKKE_AKTUELL ||
+    status === DeltakerStatusType.VURDERES ||
+    status === DeltakerStatusType.VENTELISTE ||
+    status === DeltakerStatusType.SOKT_INN ||
+    status === DeltakerStatusType.FULLFORT ||
+    status === DeltakerStatusType.AVBRUTT
+  )
 }
