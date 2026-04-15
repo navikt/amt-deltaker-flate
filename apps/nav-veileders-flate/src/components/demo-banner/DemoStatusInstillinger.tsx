@@ -1,4 +1,4 @@
-import { Select } from '@navikt/ds-react'
+import { Checkbox, Select } from '@navikt/ds-react'
 import {
   DeltakerStatusType,
   getDeltakerStatusDisplayText,
@@ -112,6 +112,30 @@ export const endreMockPameldingstype = (
     })
 }
 
+export const endreMockEnkeltplass = (
+  erEnkeltplass: boolean
+): Promise<DeltakerResponse> => {
+  return fetch(`${API_URL}/setup/er-enkeltplass/${erEnkeltplass}`, {
+    method: 'POST'
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Kunne ikke endre enkeltplass. Prøv igjen senere. (${response.status})`
+        )
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return deltakerSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse deltakerSchema:', error)
+        throw error
+      }
+    })
+}
+
 const DemoStatusInstillinger = () => {
   const { setDeltaker } = useDeltakerContext()
 
@@ -128,6 +152,8 @@ const DemoStatusInstillinger = () => {
     Pameldingstype.TRENGER_GODKJENNING
   )
 
+  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(true)
+
   const { doFetch: doFetchEndreMockTiltakskode } =
     useDeferredFetch(endreMockTiltakskode)
   const { doFetch: doFetchEndreMockDeltakelseStatus } = useDeferredFetch(
@@ -139,6 +165,8 @@ const DemoStatusInstillinger = () => {
   const { doFetch: doFetchEndreMockPameldingstype } = useDeferredFetch(
     endreMockPameldingstype
   )
+  const { doFetch: doFetchEndreMockEnkeltplass } =
+    useDeferredFetch(endreMockEnkeltplass)
 
   const handlePameldingStatusChange = (nyStatus: DeltakerStatusType) => {
     setPameldingStatus(nyStatus)
@@ -184,12 +212,30 @@ const DemoStatusInstillinger = () => {
     }
   }
 
+  const handleErEnkeltplassChange = (erEnkeltplass: boolean) => {
+    setErEnkeltplass(erEnkeltplass)
+    if (useMock) {
+      doFetchEndreMockEnkeltplass(erEnkeltplass).then((data) => {
+        if (data) {
+          setDeltaker(data as DeltakerResponse)
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     handlePameldingStatusChange(DeltakerStatusType.KLADD)
   }, [])
 
   return (
     <div className="mt-2 flex gap-4 flex-wrap">
+      <Checkbox
+        value={erEnkeltplass}
+        onChange={(e) => handleErEnkeltplassChange(e.target.checked)}
+      >
+        Er enkeltplass
+      </Checkbox>
+
       <Select
         value={tiltakskode}
         label="Velg tiltakskode"

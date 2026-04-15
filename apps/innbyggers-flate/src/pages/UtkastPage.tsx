@@ -31,7 +31,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
 import { godkjennUtkast } from '../api/api'
-import { svg } from '../ikoner/nav-veileder'
+import { svg } from 'deltaker-flate-common'
 import { DIALOG_URL } from '../utils/environment-utils'
 
 export const UtkastPage = () => {

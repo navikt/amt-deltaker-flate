@@ -491,6 +491,26 @@ export class MockHandler {
     return HttpResponse.json(this.pamelding)
   }
 
+  setErEnkeltplass(erEnkeltplass: boolean) {
+    const oppdatertPamelding = this.pamelding
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.erEnkeltplass = erEnkeltplass
+      if (erEnkeltplass) {
+        oppdatertPamelding.deltakerliste.oppmoteSted = null
+        oppdatertPamelding.prisinformasjon = 'Koster masse penger'
+        oppdatertPamelding.startdato = dayjs().subtract(1, 'day').toDate()
+        oppdatertPamelding.sluttdato = dayjs().add(1, 'day').toDate()
+      } else {
+        oppdatertPamelding.deltakerliste.oppmoteSted =
+          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
+        oppdatertPamelding.prisinformasjon = null
+        oppdatertPamelding.startdato = null
+        oppdatertPamelding.sluttdato = null
+      }
+    }
+
+    return HttpResponse.json(this.pamelding)
+  }
   setPameldingstype(pameldingstype: Pameldingstype) {
     const oppdatertPamelding = this.pamelding
 

@@ -16,7 +16,7 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 export const LagreUtkastButton = () => {
   const { enhetId } = useAppContext()
   const { deltaker, setDeltaker } = useDeltakerContext()
-  const { disabled, setRedigerUtkast, setDisabled, setError } =
+  const { disabled, setRedigerUtkastModus, setDisabled, setError } =
     usePameldingFormContext()
 
   const { handleSubmit, getValues } = useFormContext<
@@ -64,7 +64,7 @@ export const LagreUtkastButton = () => {
       onClick={handleSubmit(() => {
         doFetchDelUtkast(deltaker.deltakerId, enhetId).then((newDeltaker) => {
           if (newDeltaker) setDeltaker(newDeltaker)
-          setRedigerUtkast(false)
+          setRedigerUtkastModus(false)
           setError(null)
         })
       })}
