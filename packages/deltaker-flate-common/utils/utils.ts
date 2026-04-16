@@ -169,10 +169,12 @@ export const fjernUgyldigeTegn = (str: string) => {
 
 export const kanDeleDeltakerMedArrangorForVurdering = (
   pameldingstype: Pameldingstype,
-  tiltakskode: Tiltakskode
+  tiltakskode: Tiltakskode,
+  erEnkeltplass: boolean
 ) => {
   return (
     pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
+    !erEnkeltplass &&
     (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||

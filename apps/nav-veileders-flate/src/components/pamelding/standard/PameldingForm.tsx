@@ -82,6 +82,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             statusType={deltaker.status.type}
             oppstartstype={deltaker.deltakerliste.oppstartstype}
             pameldingstype={deltaker.deltakerliste.pameldingstype}
+            erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
             startdato={deltaker.deltakerliste.startdato}
             sluttdato={deltaker.deltakerliste.sluttdato}
             visDelMedArrangorInfo

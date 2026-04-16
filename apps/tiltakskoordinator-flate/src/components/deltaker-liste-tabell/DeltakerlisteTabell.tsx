@@ -69,7 +69,8 @@ export const DeltakerlisteTabell = () => {
   const skalViseVurderinger =
     kanDeleDeltakerMedArrangorForVurdering(
       deltakerlisteDetaljer.pameldingstype,
-      deltakerlisteDetaljer.tiltakskode
+      deltakerlisteDetaljer.tiltakskode,
+      deltakerlisteDetaljer.erEnkeltplass
     ) &&
     !!deltakere.find(
       (deltaker) =>

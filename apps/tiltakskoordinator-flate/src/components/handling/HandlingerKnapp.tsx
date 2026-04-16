@@ -62,7 +62,8 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
 
   const kanDeleMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltakerlisteDetaljer.pameldingstype,
-    deltakerlisteDetaljer.tiltakskode
+    deltakerlisteDetaljer.tiltakskode,
+    deltakerlisteDetaljer.erEnkeltplass
   )
 
   if (

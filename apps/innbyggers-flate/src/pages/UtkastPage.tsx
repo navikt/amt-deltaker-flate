@@ -80,7 +80,8 @@ export const UtkastPage = () => {
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltaker.deltakerliste.pameldingstype,
-    deltaker.deltakerliste.tiltakskode
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.erEnkeltplass
   )
 
   return (
@@ -130,6 +131,7 @@ export const UtkastPage = () => {
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         className="mt-6"

@@ -12,12 +12,15 @@ interface Props {
   pameldingstype: Pameldingstype
   arrangorNavn: string
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
   deltakerlisteNavn: string
 }
+
 export const VeilederSnakkeboble = ({
   pameldingstype,
   arrangorNavn,
   tiltakskode,
+  erEnkeltplass,
   deltakerlisteNavn
 }: Props) => {
   const erUtkastTilSoknad = kreverGodkjenningForPamelding(pameldingstype)
@@ -29,7 +32,8 @@ export const VeilederSnakkeboble = ({
 
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     pameldingstype,
-    tiltakskode
+    tiltakskode,
+    erEnkeltplass
   )
 
   return (

@@ -42,7 +42,11 @@ export const HvaDelesMedArrangor = ({
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
 
   const visDelMedArrangorInfo =
-    kanDeleDeltakerMedArrangorForVurdering(pameldingstype, tiltakskode) &&
+    kanDeleDeltakerMedArrangorForVurdering(
+      pameldingstype,
+      tiltakskode,
+      erEnkeltplass
+    ) &&
     (statusType === DeltakerStatusType.SOKT_INN ||
       statusType === DeltakerStatusType.VURDERES)
 
