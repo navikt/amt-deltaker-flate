@@ -302,7 +302,7 @@ const DemoStatusInstillinger = () => {
         checked={erEnkeltplass}
         onChange={(e) => handleErEnkeltplassChange(e.target.checked)}
       >
-        Er enkeltplass
+        Enkeltplass
       </Checkbox>
     </div>
   )

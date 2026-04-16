@@ -515,6 +515,7 @@ export class MockHandler {
 
     return HttpResponse.json(this.pamelding)
   }
+
   setPameldingstype(pameldingstype: Pameldingstype) {
     const oppdatertPamelding = this.pamelding
 
