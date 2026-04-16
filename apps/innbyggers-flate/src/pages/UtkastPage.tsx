@@ -3,7 +3,6 @@ import {
   BodyLong,
   Button,
   ConfirmationPanel,
-  GuidePanel,
   Heading,
   Link,
   List
@@ -25,32 +24,32 @@ import {
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   useDeferredFetch,
-  visDeltakelsesmengde
+  visDeltakelsesmengde,
+  VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
 import { godkjennUtkast } from '../api/api'
-import { svg } from 'deltaker-flate-common'
 import { DIALOG_URL } from '../utils/environment-utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const [godatt, setGodTatt] = useState(false)
   const [godattError, setGodTattError] = useState(false)
-
+  const deltakerliste = deltaker.deltakerliste
   const erUtkastTilSoknad = kreverGodkjenningForPamelding(
-    deltaker.deltakerliste.pameldingstype
+    deltakerliste.pameldingstype
   )
-  const arrangorNavn = deltaker.deltakerliste.arrangorNavn
+  const arrangorNavn = deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.deltakerlisteNavn,
+    deltakerliste.tiltakskode,
+    deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.arrangorNavn
+    deltakerliste.tiltakskode,
+    deltakerliste.arrangorNavn
   )
 
   const { deltakerId } = useParams()
@@ -73,15 +72,15 @@ export const UtkastPage = () => {
     }
   }
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const tiltakskode = deltakerliste.tiltakskode
   const skalViseAdresse =
     deltaker.adresseDelesMedArrangor && harAdresse(tiltakskode)
   const visInnholdOgBakgrunnsinfo =
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
-    deltaker.deltakerliste.pameldingstype,
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.erEnkeltplass
+    deltakerliste.pameldingstype,
+    deltakerliste.tiltakskode,
+    deltakerliste.erEnkeltplass
   )
 
   return (
@@ -101,50 +100,33 @@ export const UtkastPage = () => {
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         deltakerStatus={deltaker.status}
       />
-      <GuidePanel illustration={svg}>
-        <Heading level="3" size="small">
-          {`Dette er et utkast til ${erUtkastTilSoknad ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
-        </Heading>
-        {erUtkastTilSoknad ? (
-          <>
-            <BodyLong className="mt-2">
-              Før søknaden sendes, vil vi gjerne at du leser gjennom.
-              {kanDeleDeltakerMedArrangor
-                ? ' For å avgjøre hvem som skal få plass, kan Nav be om hjelp til vurdering fra arrangøren av kurset. Arrangør eller Nav vil kontakte deg hvis det er behov for et møte.'
-                : ''}
-            </BodyLong>
-            <BodyLong className="mt-2">
-              Hvis du godkjenner utkastet blir søknaden sendt inn.
-            </BodyLong>
-          </>
-        ) : (
-          <BodyLong className="mt-2">
-            Før vi sender dette til {arrangorNavn} vil vi gjerne at du leser
-            gjennom. Hvis du godkjenner utkastet blir du meldt på, vedtaket
-            fattes og {arrangorNavn} mottar informasjon.
-          </BodyLong>
-        )}
-      </GuidePanel>
+      <VeilederSnakkeboble
+        pameldingstype={deltakerliste.pameldingstype}
+        arrangorNavn={navnHosArrangorTekst}
+        tiltakskode={deltakerliste.tiltakskode}
+        erEnkeltplass={deltakerliste.erEnkeltplass}
+        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
+      />
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskode}
         statusType={deltaker.status.type}
-        oppstartstype={deltaker.deltakerliste.oppstartstype}
-        pameldingstype={deltaker.deltakerliste.pameldingstype}
-        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        startdato={deltaker.deltakerliste.startdato}
-        sluttdato={deltaker.deltakerliste.sluttdato}
+        oppstartstype={deltakerliste.oppstartstype}
+        pameldingstype={deltakerliste.pameldingstype}
+        erEnkeltplass={deltakerliste.erEnkeltplass}
+        startdato={deltakerliste.startdato}
+        sluttdato={deltakerliste.sluttdato}
         className="mt-6"
       />
 
       <Oppmotested
-        oppmoteSted={deltaker.deltakerliste.oppmoteSted}
+        oppmoteSted={deltakerliste.oppmoteSted}
         statusType={deltaker.status.type}
         className="mt-6"
       />
 
       <DeltakelseInnhold
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6 mb-2">
@@ -165,7 +147,7 @@ export const UtkastPage = () => {
         </>
       )}
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
+      {visDeltakelsesmengde(deltakerliste.tiltakskode) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde
@@ -179,7 +161,7 @@ export const UtkastPage = () => {
         </>
       )}
 
-      {!deltaker.deltakerliste.erEnkeltplass && (
+      {!deltakerliste.erEnkeltplass && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Dette deles med arrangøren

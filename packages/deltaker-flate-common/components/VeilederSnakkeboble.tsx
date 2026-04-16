@@ -23,7 +23,8 @@ export const VeilederSnakkeboble = ({
   erEnkeltplass,
   deltakerlisteNavn
 }: Props) => {
-  const erUtkastTilSoknad = kreverGodkjenningForPamelding(pameldingstype)
+  const pameldingTrengerGodkjenning =
+    kreverGodkjenningForPamelding(pameldingstype)
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     tiltakskode,
     deltakerlisteNavn,
@@ -39,9 +40,9 @@ export const VeilederSnakkeboble = ({
   return (
     <GuidePanel illustration={svg}>
       <Heading level="3" size="small">
-        {`Dette er et utkast til ${erUtkastTilSoknad ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
+        {`Dette er et utkast til ${pameldingTrengerGodkjenning ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
       </Heading>
-      {erUtkastTilSoknad ? (
+      {pameldingTrengerGodkjenning ? (
         <>
           <BodyLong className="mt-2">
             Før søknaden sendes, vil vi gjerne at du leser gjennom.

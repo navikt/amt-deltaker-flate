@@ -62,6 +62,14 @@ export const worker = setupWorker(
       return response
     }
   ),
+  http.post(
+    'amt-deltaker-bff/setup/er-enkeltplass/:erEnkeltplass',
+    async ({ params }) => {
+      const { erEnkeltplass } = params
+
+      return handler.setErEnkeltplass(erEnkeltplass === 'true')
+    }
+  ),
   http.get('amt-deltaker-bff/innbygger/:deltakerId', async () => {
     await delay(1000)
     return handler.getDeltaker()

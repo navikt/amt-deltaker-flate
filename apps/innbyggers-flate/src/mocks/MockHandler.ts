@@ -223,6 +223,25 @@ export class MockHandler {
     return HttpResponse.json(this.deltaker)
   }
 
+  setErEnkeltplass(erEnkeltplass: boolean) {
+    const deltaker = this.deltaker
+    if (deltaker) {
+      deltaker.deltakerliste.erEnkeltplass = erEnkeltplass
+      if (erEnkeltplass) {
+        deltaker.deltakerliste.oppmoteSted = null
+        deltaker.startdato = dayjs().subtract(1, 'day').toString()
+        deltaker.sluttdato = dayjs().add(1, 'day').toString()
+      } else {
+        deltaker.deltakerliste.oppmoteSted =
+          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
+        deltaker.startdato = this.getStartdato(deltaker.status.type)
+        deltaker.sluttdato = this.getSluttdato(deltaker.status.type)
+      }
+    }
+
+    return HttpResponse.json(this.deltaker)
+  }
+
   getStartdato(nyStatus: DeltakerStatusType): string {
     if (
       nyStatus === DeltakerStatusType.DELTAR ||
