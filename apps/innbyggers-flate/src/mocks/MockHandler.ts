@@ -94,7 +94,8 @@ export const createDeltaker = (
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
-    erManueltDeltMedArrangor: true
+    erManueltDeltMedArrangor: true,
+    prisinformasjon: 'Koster masse penger'
   }
 }
 

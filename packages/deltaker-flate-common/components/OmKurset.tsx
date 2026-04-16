@@ -43,7 +43,7 @@ export const OmKurset = ({
   const erTiltakSomSkalViseOmKurset =
     erOpplaringstiltak(tiltakskode) || tiltakskode === Tiltakskode.JOBBKLUBB
 
-  if (!erTiltakSomSkalViseOmKurset || !oppstartstype) {
+  if (!erTiltakSomSkalViseOmKurset || !oppstartstype || erEnkeltplass) {
     return null
   }
 
