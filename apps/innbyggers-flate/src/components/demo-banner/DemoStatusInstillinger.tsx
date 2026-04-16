@@ -137,7 +137,7 @@ export const endreMockEnkeltplass = (
 
 const DemoStatusInstillinger = () => {
   const { setDeltaker } = useDeltakerContext()
-  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(true)
+  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(false)
 
   const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING

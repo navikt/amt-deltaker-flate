@@ -8,6 +8,7 @@ import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'
 import { DeltakerPage } from '../pages/DeltakerPage.tsx'
 import { UtkastPage } from '../pages/UtkastPage.tsx'
 import { DIALOG_URL } from '../utils/environment-utils'
+import { UtkastEnkeltplassPage } from '../pages/UtkastEnkeltplassPage.tsx'
 
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()
@@ -17,7 +18,11 @@ export const DeltakerGuard = () => {
   )
 
   if (deltaker.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
-    return <UtkastPage />
+    return deltaker.deltakerliste.erEnkeltplass ? (
+      <UtkastEnkeltplassPage />
+    ) : (
+      <UtkastPage />
+    )
   }
 
   if (deltaker.status.type === DeltakerStatusType.AVBRUTT_UTKAST) {

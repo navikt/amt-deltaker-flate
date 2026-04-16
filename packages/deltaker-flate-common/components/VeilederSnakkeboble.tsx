@@ -51,7 +51,8 @@ export const VeilederSnakkeboble = ({
               : ''}
           </BodyLong>
           <BodyLong className="mt-2">
-            Hvis du godkjenner utkastet blir søknaden sendt inn.
+            Hvis du godkjenner utkastet blir søknaden sendt inn. Nav vil
+            deretter vurdere søknaden, og du får beskjed om resultatet.
           </BodyLong>
         </>
       ) : (

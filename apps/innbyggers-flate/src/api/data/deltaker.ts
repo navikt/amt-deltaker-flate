@@ -40,7 +40,8 @@ export const deltakerSchema = z.object({
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
   deltakelsesmengder: deltakelsesmengderSchema,
-  erManueltDeltMedArrangor: z.boolean()
+  erManueltDeltMedArrangor: z.boolean(),
+  prisinformasjon: z.string().nullable()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
