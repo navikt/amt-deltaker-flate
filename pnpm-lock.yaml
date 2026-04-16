@@ -41,17 +41,17 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1
       '@navikt/aksel-icons':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-css':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-react':
-        specifier: ^8.9.0
-        version: 8.9.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^3.7.1
-        version: 3.7.1(html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
+        version: 3.7.1(html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
@@ -59,14 +59,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/deltaker-flate-common
       react:
-        specifier: ^19.2.4
-        version: 19.2.4
+        specifier: ^19.2.5
+        version: 19.2.5
       react-dom:
-        specifier: ^19.2.4
-        version: 19.2.4(react@19.2.4)
+        specifier: ^19.2.5
+        version: 19.2.5(react@19.2.5)
       react-router-dom:
         specifier: ^7.14.0
-        version: 7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -94,7 +94,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -114,8 +114,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
       msw:
-        specifier: ^2.13.1
-        version: 2.13.1(@types/node@25.5.2)(typescript@6.0.2)
+        specifier: ^2.13.2
+        version: 2.13.2(@types/node@25.5.2)(typescript@6.0.2)
       playwright:
         specifier: ^1.59.1
         version: 1.59.1
@@ -130,7 +130,7 @@ importers:
         version: 8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)
       vitest:
         specifier: ^4.1.3
-        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
+        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
 
   apps/nav-veileders-flate:
     dependencies:
@@ -139,22 +139,22 @@ importers:
         version: 2.3.1
       '@hookform/resolvers':
         specifier: ^5.2.2
-        version: 5.2.2(react-hook-form@7.72.1(react@19.2.4))
+        version: 5.2.2(react-hook-form@7.72.1(react@19.2.5))
       '@navikt/aksel-icons':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-css':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-react':
-        specifier: ^8.9.0
-        version: 8.9.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/ds-tailwind':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@tanstack/react-query':
         specifier: ^5.96.2
-        version: 5.96.2(react@19.2.4)
+        version: 5.96.2(react@19.2.5)
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
@@ -162,20 +162,20 @@ importers:
         specifier: workspace:*
         version: link:../../packages/deltaker-flate-common
       msw:
-        specifier: ^2.13.1
-        version: 2.13.1(@types/node@25.5.2)(typescript@6.0.2)
+        specifier: ^2.13.2
+        version: 2.13.2(@types/node@25.5.2)(typescript@6.0.2)
       react:
-        specifier: ^19.2.4
-        version: 19.2.4
+        specifier: ^19.2.5
+        version: 19.2.5
       react-dom:
-        specifier: ^19.2.4
-        version: 19.2.4(react@19.2.4)
+        specifier: ^19.2.5
+        version: 19.2.5(react@19.2.5)
       react-hook-form:
         specifier: ^7.72.1
-        version: 7.72.1(react@19.2.4)
+        version: 7.72.1(react@19.2.5)
       react-router-dom:
         specifier: ^7.14.0
-        version: 7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -203,7 +203,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -239,7 +239,7 @@ importers:
         version: 8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)
       vitest:
         specifier: ^4.1.3
-        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
+        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
 
   apps/tiltakskoordinator-flate:
     dependencies:
@@ -247,17 +247,17 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1
       '@navikt/aksel-icons':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-css':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-react':
-        specifier: ^8.9.0
-        version: 8.9.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/ds-tailwind':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
@@ -265,17 +265,17 @@ importers:
         specifier: workspace:*
         version: link:../../packages/deltaker-flate-common
       msw:
-        specifier: ^2.13.1
-        version: 2.13.1(@types/node@25.5.2)(typescript@6.0.2)
+        specifier: ^2.13.2
+        version: 2.13.2(@types/node@25.5.2)(typescript@6.0.2)
       react:
-        specifier: ^19.2.4
-        version: 19.2.4
+        specifier: ^19.2.5
+        version: 19.2.5
       react-dom:
-        specifier: ^19.2.4
-        version: 19.2.4(react@19.2.4)
+        specifier: ^19.2.5
+        version: 19.2.5(react@19.2.5)
       react-router-dom:
         specifier: ^7.14.0
-        version: 7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -306,7 +306,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -342,22 +342,22 @@ importers:
         version: 8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)
       vitest:
         specifier: ^4.1.3
-        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
+        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/deltaker-flate-common:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@navikt/ds-react':
-        specifier: ^8.9.0
-        version: 8.9.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
       react:
-        specifier: ^19.2.4
-        version: 19.2.4
+        specifier: ^19.2.5
+        version: 19.2.5
       typescript:
         specifier: ^6.0.2
         version: 6.0.2
@@ -379,7 +379,7 @@ importers:
         version: 19.2.14
       vitest:
         specifier: ^4.1.3
-        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
+        version: 4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
 
   shared-config/eslint-config:
     dependencies:
@@ -406,8 +406,8 @@ importers:
   shared-config/tailwind:
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: ^8.9.0
-        version: 8.9.0
+        specifier: ^8.9.1
+        version: 8.9.1
       '@tailwindcss/postcss':
         specifier: 4.2.2
         version: 4.2.2
@@ -833,24 +833,24 @@ packages:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
 
-  '@navikt/aksel-icons@8.9.0':
-    resolution: {integrity: sha512-AaHoHwSlULrQxNPLV1tmWNdx4RL6QTdzhkM7NcKrnaq0hUPvcUbHyVLiecubiDmjEiAAPVQQboo6/QRuw2UvXg==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.9.0/6aa76719a9783fd0de5c01291adc8b920d2cf065}
+  '@navikt/aksel-icons@8.9.1':
+    resolution: {integrity: sha512-yjeyQPBHvaeRs5BMRRgzwo1cMC/249f4rkxmeIX2CjZDjJvqDycJphqrddjQKUmBcf6XVfv0nx6dcqnf0Z8obQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.9.1/ff1f10cabbda2ee7f6baa457cadcabb13adc64cc}
 
-  '@navikt/ds-css@8.9.0':
-    resolution: {integrity: sha512-CmUcpiogi1O63nlbufpjt+CbkflPvxGiWqv3VSwRA0IiSCu/lagnU/z23+qraAu0LXOxmAcCsaZzRde2OC042A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.9.0/c2c6e77cb08c9433f12b9bb2b610ee74320a0495}
+  '@navikt/ds-css@8.9.1':
+    resolution: {integrity: sha512-Q0BExRIpH88AsivTET5bEAPSpXoob9mslcWSACQeXZ4h68KRdxkOcrE/aJPUacO8kHAM6EDL7zrgs2LfRGdTMA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.9.1/f827d1a6ff83ec30606991f5208ea37eb68f2362}
 
-  '@navikt/ds-react@8.9.0':
-    resolution: {integrity: sha512-FJd+LvVQbdWWocIdc6POWuXRAeBCOmEQY4kAiKT+sZl1TX48YF6DP9aqg65U+EAio2ZA8T9q64VBOoGWe3CjXQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/8.9.0/702b26c818eee38d01777e541e5e419c314a0d60}
+  '@navikt/ds-react@8.9.1':
+    resolution: {integrity: sha512-TG9AWjQMtHj1ORibdXmtbIFTsg17fBTYHSOI75SUA+zLcG0SSpFAbkn7Ltc6wpc6oDAH46vNJJh8ky5F3YHjPQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/8.9.1/a9dfd4b309cee1dc078b6d43b5ec791d238e16fe}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
 
-  '@navikt/ds-tailwind@8.9.0':
-    resolution: {integrity: sha512-xnrhtq97EiQSG2jGs1Dy7Y07DugUxtnfmkUT9q8ObV3Q7Nv1BTEdZ0mMjGfkx1vEN2jvfVv4SsUNBL8iVfRSdw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.9.0/55a855e85b1799d16384214a592d5fa1fd37068c}
+  '@navikt/ds-tailwind@8.9.1':
+    resolution: {integrity: sha512-Ye3j0uK/StBVfGZmafwyswh4FAbfOC+jkEjRj2e3/JIH1yxGJGJ9wvsWooTw5WUqnEUGALFGcaisZLbc8EOzNA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.9.1/f8b730a978199467fa2718f9c2bd768a1622bbb7}
 
-  '@navikt/ds-tokens@8.9.0':
-    resolution: {integrity: sha512-dIdV405Nxa5YsIOG51DjAhU5kDM3HE00VitV59RlujEJk92I4hSMpA9ysdetLEBEWlmpjXFgue9Tgg8bIorttA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.9.0/c7f62f91df5fb35b063add5aad4636a7cfc4b802}
+  '@navikt/ds-tokens@8.9.1':
+    resolution: {integrity: sha512-a1njXFPstX2w2/rlhnlyuUyIDJlSm8SOej7RrMl7FjNL3p0bktwzyt7ylsJU1y0vH8MnEnq7QGXWf6goIkgkWw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.9.1/961db4bb606a0858e6cd01292adff493f474b5da}
 
   '@navikt/nav-dekoratoren-moduler@3.7.1':
     resolution: {integrity: sha512-MQLxR4uoADCd6i0hFnWHN/XLPevEfxkBK9yEgbtcY0v2gsj69nALH/7DvTKqSxqRovxOHibVa7mZKZEBAMRBvg==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.7.1/09490a131cedd7779e35d413d20c36bd01ef57a0}
@@ -2340,8 +2340,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  msw@2.13.1:
-    resolution: {integrity: sha512-4wjFzJ+osaUDS2OakrXSl5tCFBUbzsaHbi5QRycRtVciOuYmnWn16CpNxcqh3UyslFkHbzKaj/GfYr7Hn67QPQ==}
+  msw@2.13.2:
+    resolution: {integrity: sha512-go2H1TIERKkC48pXiwec5l6sbNqYuvqOk3/vHGo1Zd+pq/H63oFawDQerH+WQdUw/flJFHDG7F+QdWMwhntA/A==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -2483,10 +2483,10 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
 
-  react-dom@19.2.4:
-    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
+  react-dom@19.2.5:
+    resolution: {integrity: sha512-J5bAZz+DXMMwW/wV3xzKke59Af6CHY7G4uYLN1OvBcKEsWOs4pQExj86BBKamxl/Ik5bx9whOrvBlSDfWzgSag==}
     peerDependencies:
-      react: ^19.2.4
+      react: ^19.2.5
 
   react-hook-form@7.72.1:
     resolution: {integrity: sha512-RhwBoy2ygeVZje+C+bwJ8g0NjTdBmDlJvAUHTxRjTmSUKPYsKfMphkS2sgEMotsY03bP358yEYlnUeZy//D9Ig==}
@@ -2517,8 +2517,8 @@ packages:
       react-dom:
         optional: true
 
-  react@19.2.4:
-    resolution: {integrity: sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==}
+  react@19.2.5:
+    resolution: {integrity: sha512-llUJLzz1zTUBrskt2pwZgLq59AemifIftw4aB7JxOqf1HY2FDaGDxgwpAPVzHU1kdWabH7FauP4i1oEeer2WCA==}
     engines: {node: '>=0.10.0'}
 
   redent@3.0.0:
@@ -3226,18 +3226,18 @@ snapshots:
       '@floating-ui/core': 1.7.5
       '@floating-ui/utils': 0.2.11
 
-  '@floating-ui/react-dom@2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@floating-ui/react-dom@2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@floating-ui/dom': 1.7.6
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
 
-  '@floating-ui/react@0.27.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@floating-ui/react@0.27.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@floating-ui/utils': 0.2.11
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
       tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.11': {}
@@ -3253,10 +3253,10 @@ snapshots:
       ua-parser-js: 1.0.41
       web-vitals: 5.2.0
 
-  '@hookform/resolvers@5.2.2(react-hook-form@7.72.1(react@19.2.4))':
+  '@hookform/resolvers@5.2.2(react-hook-form@7.72.1(react@19.2.5))':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.72.1(react@19.2.4)
+      react-hook-form: 7.72.1(react@19.2.5)
 
   '@humanfs/core@0.19.1': {}
 
@@ -3332,32 +3332,32 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@navikt/aksel-icons@8.9.0': {}
+  '@navikt/aksel-icons@8.9.1': {}
 
-  '@navikt/ds-css@8.9.0': {}
+  '@navikt/ds-css@8.9.1': {}
 
-  '@navikt/ds-react@8.9.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@navikt/ds-react@8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
-      '@floating-ui/react': 0.27.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@floating-ui/react-dom': 2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@navikt/aksel-icons': 8.9.0
-      '@navikt/ds-tokens': 8.9.0
+      '@floating-ui/react': 0.27.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@navikt/aksel-icons': 8.9.1
+      '@navikt/ds-tokens': 8.9.1
       '@types/react': 19.2.14
       date-fns: 4.1.0
-      react: 19.2.4
-      react-day-picker: 9.7.0(react@19.2.4)
-      react-dom: 19.2.4(react@19.2.4)
+      react: 19.2.5
+      react-day-picker: 9.7.0(react@19.2.5)
+      react-dom: 19.2.5(react@19.2.5)
 
-  '@navikt/ds-tailwind@8.9.0': {}
+  '@navikt/ds-tailwind@8.9.1': {}
 
-  '@navikt/ds-tokens@8.9.0': {}
+  '@navikt/ds-tokens@8.9.1': {}
 
-  '@navikt/nav-dekoratoren-moduler@3.7.1(html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)':
+  '@navikt/nav-dekoratoren-moduler@3.7.1(html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)':
     dependencies:
       csp-header: 6.3.1
-      html-react-parser: 5.2.8(@types/react@19.2.14)(react@19.2.4)
+      html-react-parser: 5.2.8(@types/react@19.2.14)(react@19.2.5)
       js-cookie: 3.0.5
-      react: 19.2.4
+      react: 19.2.5
 
   '@open-draft/deferred-promise@2.2.0': {}
 
@@ -3635,10 +3635,10 @@ snapshots:
 
   '@tanstack/query-core@5.96.2': {}
 
-  '@tanstack/react-query@5.96.2(react@19.2.4)':
+  '@tanstack/react-query@5.96.2(react@19.2.5)':
     dependencies:
       '@tanstack/query-core': 5.96.2
-      react: 19.2.4
+      react: 19.2.5
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -3660,12 +3660,12 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
-  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@babel/runtime': 7.28.6
       '@testing-library/dom': 10.4.1
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
     optionalDependencies:
       '@types/react': 19.2.14
       '@types/react-dom': 19.2.3(@types/react@19.2.14)
@@ -3852,13 +3852,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.3(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.3(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.3
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      msw: 2.13.1(@types/node@25.5.2)(typescript@6.0.2)
+      msw: 2.13.2(@types/node@25.5.2)(typescript@6.0.2)
       vite: 8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.3':
@@ -4531,11 +4531,11 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
 
-  html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.4):
+  html-react-parser@5.2.8(@types/react@19.2.14)(react@19.2.5):
     dependencies:
       domhandler: 5.0.3
       html-dom-parser: 5.1.1
-      react: 19.2.4
+      react: 19.2.5
       react-property: 2.0.2
       style-to-js: 1.1.19
     optionalDependencies:
@@ -4849,7 +4849,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2):
+  msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2):
     dependencies:
       '@inquirer/confirm': 5.1.21(@types/node@25.5.2)
       '@mswjs/interceptors': 0.41.3
@@ -5001,41 +5001,41 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  react-day-picker@9.7.0(react@19.2.4):
+  react-day-picker@9.7.0(react@19.2.5):
     dependencies:
       '@date-fns/tz': 1.2.0
       date-fns: 4.1.0
       date-fns-jalali: 4.1.0-0
-      react: 19.2.4
+      react: 19.2.5
 
-  react-dom@19.2.4(react@19.2.4):
+  react-dom@19.2.5(react@19.2.5):
     dependencies:
-      react: 19.2.4
+      react: 19.2.5
       scheduler: 0.27.0
 
-  react-hook-form@7.72.1(react@19.2.4):
+  react-hook-form@7.72.1(react@19.2.5):
     dependencies:
-      react: 19.2.4
+      react: 19.2.5
 
   react-is@17.0.2: {}
 
   react-property@2.0.2: {}
 
-  react-router-dom@7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-      react-router: 7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      react-router: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
-  react-router@7.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
       cookie: 1.1.1
-      react: 19.2.4
+      react: 19.2.5
       set-cookie-parser: 2.7.2
     optionalDependencies:
-      react-dom: 19.2.4(react@19.2.4)
+      react-dom: 19.2.5(react@19.2.5)
 
-  react@19.2.4: {}
+  react@19.2.5: {}
 
   redent@3.0.0:
     dependencies:
@@ -5426,10 +5426,10 @@ snapshots:
       jiti: 2.6.1
       yaml: 2.8.3
 
-  vitest@4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)):
+  vitest@4.1.3(@opentelemetry/api@1.9.1)(@types/node@25.5.2)(jsdom@29.0.2)(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.3
-      '@vitest/mocker': 4.1.3(msw@2.13.1(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.3(msw@2.13.2(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.3
       '@vitest/runner': 4.1.3
       '@vitest/snapshot': 4.1.3
