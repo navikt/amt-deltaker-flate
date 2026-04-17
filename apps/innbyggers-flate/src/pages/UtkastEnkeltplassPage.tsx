@@ -3,7 +3,6 @@ import {
   DeferredFetchState,
   DeltakelseInnhold,
   UtkastHeader,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
   VeilederSnakkeboble,
@@ -17,12 +16,6 @@ export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
 
-  const arrangorNavn = deltakerliste.arrangorNavn
-  const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-    deltakerliste.tiltakskode,
-    deltakerliste.deltakerlisteNavn,
-    arrangorNavn
-  )
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn
@@ -65,7 +58,7 @@ export const UtkastEnkeltplassPage = () => {
       />
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
-        arrangorNavn={navnHosArrangorTekst}
+        arrangorNavn={deltakerliste.arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
