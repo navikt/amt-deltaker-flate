@@ -101,7 +101,7 @@ export const UtkastPage = () => {
       />
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
-        arrangorNavn={navnHosArrangorTekst}
+        arrangorNavn={arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
