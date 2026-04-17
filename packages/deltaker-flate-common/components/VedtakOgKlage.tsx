@@ -34,13 +34,17 @@ export const VedtakOgKlage = ({
     statusType !== DeltakerStatusType.VENTELISTE &&
     statusType !== DeltakerStatusType.VURDERES
 
+  if (!harVedtak) {
+    return null
+  }
+
   const harRettTilAKlage = !(
     harFellesOppstart(oppstartstype) &&
     (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING)
   )
 
-  return harVedtak ? (
+  return (
     <>
       <VedtakInfo
         statusDato={statusDato}
@@ -78,5 +82,5 @@ export const VedtakOgKlage = ({
         </>
       )}
     </>
-  ) : null
+  )
 }

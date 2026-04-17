@@ -1,8 +1,8 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
+  Bakgrunnsinformasjon,
   DeltakelseInnhold,
   DeltakerStatusType,
-  EMDASH,
   OmKurset,
   Oppmotested,
   deltakerprosentText,
@@ -14,10 +14,6 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakskode = deltaker.deltakerliste.tiltakskode
-  const bakgrunnsinfoVisningstekst =
-    deltaker.bakgrunnsinformasjon && deltaker.bakgrunnsinformasjon.length > 0
-      ? deltaker.bakgrunnsinformasjon
-      : EMDASH
 
   return (
     <div className="flex flex-col gap-8">
@@ -33,14 +29,11 @@ export const UtkastDeltaker = () => {
       />
 
       {harBakgrunnsinfo(tiltakskode) && (
-        <div>
-          <Heading level="3" size="small">
-            Bakgrunnsinfo
-          </Heading>
-          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-            {bakgrunnsinfoVisningstekst}
-          </BodyLong>
-        </div>
+        <Bakgrunnsinformasjon
+          bakgrunnsinformasjon={deltaker.bakgrunnsinformasjon}
+          headinglevel="3"
+          headingsize="small"
+        />
       )}
 
       {visDeltakelsesmengde(tiltakskode) && (

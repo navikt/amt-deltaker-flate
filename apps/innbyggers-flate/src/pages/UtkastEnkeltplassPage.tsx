@@ -6,7 +6,8 @@ import {
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
   VeilederSnakkeboble,
-  formatDateFromString
+  formatDateFromString,
+  PrisOgBetaling
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -47,7 +48,7 @@ export const UtkastEnkeltplassPage = () => {
       <Heading
         level="2"
         size="large"
-        className="mt-6"
+        className="mt-8"
         data-testid="heading_utkast"
       >
         Utkast til søknad
@@ -64,32 +65,32 @@ export const UtkastEnkeltplassPage = () => {
         deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
       />
 
-      <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+      <BodyLong size="small" className="mt-8 whitespace-pre-wrap">
         <b>Dato:</b> {formatDateFromString(deltaker.startdato)} -{' '}
         {formatDateFromString(deltaker.sluttdato)}
       </BodyLong>
+
       <DeltakelseInnhold
         tiltakskode={deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
-          <Heading level="3" size="medium" className="mt-6 mb-2">
+          <Heading level="3" size="medium" className="mt-8 mb-2">
             Dette er innholdet
           </Heading>
         }
         listClassName="mt-2"
       />
 
-      <Heading level="3" size="medium" className="mt-6">
-        Pris og betalingsbetingelser
-      </Heading>
-      <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-        {deltaker.prisinformasjon || 'Ingen prisinformasjon tilgjengelig'}
-      </BodyLong>
+      <PrisOgBetaling
+        prisinformasjon={deltaker.prisinformasjon}
+        headinglevel="3"
+        className="mt-8"
+      />
 
       <Button
         variant="primary"
         onClick={handleGodkjennUtkast}
-        className="mt-4"
+        className="mt-8"
         loading={state === DeferredFetchState.LOADING}
         data-testid="godkjenn_utkast"
       >

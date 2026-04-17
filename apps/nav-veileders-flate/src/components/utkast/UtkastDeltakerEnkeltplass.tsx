@@ -1,5 +1,9 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
-import { DeltakelseInnhold, formatDate } from 'deltaker-flate-common'
+import {
+  DeltakelseInnhold,
+  formatDate,
+  PrisOgBetaling
+} from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { VeilederSnakkeboble } from 'deltaker-flate-common'
 
@@ -20,25 +24,22 @@ export const UtkastDeltakerEnkeltplass = () => {
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}
         {formatDate(deltaker.sluttdato)}
       </BodyLong>
+
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
-          <Heading level="3" size="small" className="mb-2">
+          <Heading level="3" size="medium" className="mb-2">
             Dette er innholdet
           </Heading>
         }
         listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
-      <div>
-        <Heading level="3" size="small">
-          Pris og betalingsbetingelser
-        </Heading>
-        <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-          {deltaker.prisinformasjon}
-        </BodyLong>
-      </div>
+      <PrisOgBetaling
+        prisinformasjon={deltaker.prisinformasjon}
+        headinglevel="3"
+      />
     </div>
   )
 }
