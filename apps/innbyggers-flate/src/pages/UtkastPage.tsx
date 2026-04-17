@@ -7,12 +7,13 @@ import {
   Link
 } from '@navikt/ds-react'
 import {
+  Bakgrunnsinformasjon,
   DeferredFetchState,
   DeltakelseInnhold,
-  EMDASH,
   OmKurset,
   Oppmotested,
   UtkastHeader,
+  VeilederSnakkeboble,
   deltakerprosentText,
   harAdresse,
   harBakgrunnsinfo,
@@ -22,15 +23,14 @@ import {
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   useDeferredFetch,
-  visDeltakelsesmengde,
-  VeilederSnakkeboble
+  visDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
 import { godkjennUtkast } from '../api/api'
-import { DIALOG_URL } from '../utils/environment-utils'
 import { DetteDelesMedArrangor } from '../components/DetteDelesMedArrangor.tsx'
+import { DIALOG_URL } from '../utils/environment-utils'
 
 export const UtkastPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
@@ -135,15 +135,12 @@ export const UtkastPage = () => {
         listClassName="mt-2"
       />
 
-      {harBakgrunnsinfo(tiltakskode) && deltaker.bakgrunnsinformasjon && (
-        <>
-          <Heading level="3" size="medium" className="mt-6">
-            Bakgrunnsinfo
-          </Heading>
-          <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
-            {deltaker.bakgrunnsinformasjon || EMDASH}
-          </BodyLong>
-        </>
+      {harBakgrunnsinfo(tiltakskode) && (
+        <Bakgrunnsinformasjon
+          bakgrunnsinformasjon={deltaker.bakgrunnsinformasjon}
+          headinglevel="3"
+          className="mt-6"
+        />
       )}
 
       {visDeltakelsesmengde(deltakerliste.tiltakskode) && (

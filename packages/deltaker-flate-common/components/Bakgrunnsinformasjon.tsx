@@ -3,11 +3,15 @@ import { EMDASH } from '../utils/constants'
 
 interface Props {
   bakgrunnsinformasjon: string | null
+  headinglevel: '2' | '3'
+  headingsize?: 'medium' | 'small'
   className?: string
 }
 
 export const Bakgrunnsinformasjon = ({
   bakgrunnsinformasjon,
+  headinglevel,
+  headingsize = 'medium',
   className
 }: Props) => {
   if (
@@ -20,7 +24,7 @@ export const Bakgrunnsinformasjon = ({
 
   return (
     <div className={className ?? ''}>
-      <Heading level="2" size="medium">
+      <Heading level={headinglevel} size={headingsize}>
         Bakgrunnsinfo
       </Heading>
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">

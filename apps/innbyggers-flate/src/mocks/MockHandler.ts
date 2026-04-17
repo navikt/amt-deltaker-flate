@@ -95,7 +95,7 @@ export const createDeltaker = (
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
     erManueltDeltMedArrangor: true,
-    prisinformasjon: null
+    prisinformasjon: 'Koster penger'
   }
 }
 

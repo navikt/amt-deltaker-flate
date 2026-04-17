@@ -298,7 +298,8 @@ const DemoStatusInstillinger = () => {
       </Select>
 
       <Checkbox
-        className="self-end -mb-2"
+        className="self-end"
+        size="small"
         checked={erEnkeltplass}
         onChange={(e) => handleErEnkeltplassChange(e.target.checked)}
       >
