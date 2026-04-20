@@ -51,6 +51,8 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
       return 'Jobbsøkerkurs'
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid'
+    case Tiltakskode.TILPASSET_JOBBSTOTTE:
+      return 'Tilpasset jobbstøtte'
     case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring (enkeltplass)'
     case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:

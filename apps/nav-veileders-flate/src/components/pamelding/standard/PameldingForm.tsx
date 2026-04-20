@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Alert, Heading, Textarea } from '@navikt/ds-react'
+import { Heading, InfoCard, Textarea } from '@navikt/ds-react'
 import {
   erOpplaringstiltak,
   fjernUgyldigeTegn,
@@ -21,11 +21,12 @@ import {
 } from '../../../model/PameldingFormValues.ts'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import { PameldingFormButtons } from '../FormButtons.tsx'
+import { FormErrorSummary } from '../FormErrorSummary.tsx'
 import { usePameldingFormContext } from '../PameldingFormContext.tsx'
 import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Innhold } from './Innhold.tsx'
 import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
-import { FormErrorSummary } from '../FormErrorSummary.tsx'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 interface Props {
   className?: string
@@ -61,7 +62,8 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     harLopendeOppstart(deltaker.deltakerliste.oppstartstype) &&
     skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) &&
     (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode) ||
-      deltaker.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB)
+      deltaker.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB ||
+      deltaker.deltakerliste.tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE)
 
   return (
     <form
@@ -87,6 +89,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             sluttdato={deltaker.deltakerliste.sluttdato}
             visDelMedArrangorInfo
           />
+
           {harBakgrunnsinfo(tiltakskode) && (
             <section>
               <Heading size="medium" level="3" className="mb-4">
@@ -113,6 +116,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
               />
             </section>
           )}
+
           {visDeltakelsesmengde(tiltakskode) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
@@ -121,21 +125,28 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
               <Deltakelsesprosent disabled={disabled} />
             </div>
           )}
+
           <Oppmotested
             oppmoteSted={deltaker.deltakerliste.oppmoteSted}
             statusType={deltaker.status.type}
           />
+
           <InnholdOgBakgrunn pamelding={deltaker} isDisabled={disabled} />
+
           {erOpplaringLopendeOppstartDirektePamelding && (
-            <Alert variant="info" size="small">
-              <Heading size="xsmall" level="3">
-                Ved å fullføre denne påmeldingen fatter du også vedtaket om
-                tiltaksplass
-              </Heading>
-              Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
-              kravene for å delta i tiltaket. Deltakeren får vedtak og
-              informasjonen deles med arrangøren.
-            </Alert>
+            <InfoCard data-color="info" size="small">
+              <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                <InfoCard.Title>
+                  Ved å fullføre denne påmeldingen fatter du også vedtaket om
+                  tiltaksplass
+                </InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                Nav gjør ingen ytterligere vurdering av om deltakeren oppfyller
+                kravene for å delta i tiltaket. Deltakeren får vedtak og
+                informasjonen deles med arrangøren.
+              </InfoCard.Content>
+            </InfoCard>
           )}
 
           <PameldingFormButtons />

@@ -46,7 +46,8 @@ const skalViseEndreDeltakelsesmengde = (pamelding: DeltakerResponse) =>
   (pamelding.deltakerliste.tiltakskode ===
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     pamelding.deltakerliste.tiltakskode ===
-      Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
+      Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
+    pamelding.deltakerliste.tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE) &&
   venterDeltarEllerAvsluttet(pamelding)
 
 export const kanEndreOppstartsdato = (pamelding: DeltakerResponse) =>

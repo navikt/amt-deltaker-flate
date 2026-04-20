@@ -131,7 +131,8 @@ export const formatDateFromString = (
 export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
   return (
     tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
   )
 }
 
@@ -209,10 +210,12 @@ export const harBakgrunnsinfo = (tiltakskode: Tiltakskode) =>
   tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
   tiltakskode !== Tiltakskode.JOBBKLUBB
 
+// TODO kan feltet fra backend holde og vi kan fjerne denne?
 export const harAdresse = (tiltakskode: Tiltakskode) =>
   !erOpplaringstiltak(tiltakskode) &&
   tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
-  tiltakskode !== Tiltakskode.JOBBKLUBB
+  tiltakskode !== Tiltakskode.JOBBKLUBB &&
+  tiltakskode !== Tiltakskode.TILPASSET_JOBBSTOTTE
 
 export const harFellesOppstart = (oppstartstype: Oppstartstype | null) =>
   oppstartstype === Oppstartstype.FELLES

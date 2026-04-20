@@ -52,11 +52,19 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const skalViseInnhold =
     pamelding.deltakelsesinnhold?.ledetekst ||
     skalViseInnholdSjekkbokser ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
 
   if (!pamelding.deltakelsesinnhold || !skalViseInnhold) {
     return null
   }
+
+  const innholdsTekstlabel =
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+      ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
+      : tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
+        ? 'Her kan du beskrive hvor personen skal jobbe eller hva tiltaket skal inneholde (valgfritt)'
+        : null
 
   return (
     <div>
@@ -71,10 +79,11 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
         )}
       </section>
 
-      {tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET && (
+      {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+        tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE) && (
         <section className="mt-4">
           <Textarea
-            label="Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)"
+            label={innholdsTekstlabel}
             {...register('innholdsTekst')}
             onChange={(e) => {
               setValue('innholdsTekst', fjernUgyldigeTegn(e.target.value), {
@@ -84,7 +93,6 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
             value={watch('innholdsTekst')}
             error={errors.innholdAnnetBeskrivelse?.message}
             disabled={isDisabled}
-            aria-label="Annet innhold beskrivelse"
             aria-required
             maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
             size="small"
@@ -92,7 +100,6 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
           />
         </section>
       )}
-
       {skalViseInnholdSjekkbokser && (
         <section className="mt-4">
           <CheckboxGroup

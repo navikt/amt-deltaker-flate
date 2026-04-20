@@ -93,6 +93,7 @@ export const varighetValgForTiltakskode = (
         VarighetValg.TRE_MANEDER
       ]
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+    case Tiltakskode.TILPASSET_JOBBSTOTTE:
     case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
     case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
     case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
