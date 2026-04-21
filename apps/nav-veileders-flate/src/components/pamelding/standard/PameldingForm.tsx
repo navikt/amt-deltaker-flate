@@ -58,7 +58,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [])
 
-  const erOpplaringLopendeOppstartDirektePamelding =
+  const visVedtaksvarselVedDirektePamelding =
     harLopendeOppstart(deltaker.deltakerliste.oppstartstype) &&
     skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) &&
     (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode) ||
@@ -133,7 +133,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
 
           <InnholdOgBakgrunn pamelding={deltaker} isDisabled={disabled} />
 
-          {erOpplaringLopendeOppstartDirektePamelding && (
+          {visVedtaksvarselVedDirektePamelding && (
             <InfoCard data-color="info" size="small">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                 <InfoCard.Title>

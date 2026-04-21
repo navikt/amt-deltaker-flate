@@ -5,6 +5,7 @@ import {
   DeltakerStatusType,
   OmKurset,
   Oppmotested,
+  VeilederSnakkeboble,
   deltakerprosentText,
   harBakgrunnsinfo,
   visDeltakelsesmengde
@@ -17,6 +18,14 @@ export const UtkastDeltaker = () => {
 
   return (
     <div className="flex flex-col gap-8">
+      <VeilederSnakkeboble
+        pameldingstype={deltaker.deltakerliste.pameldingstype}
+        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        tiltakskode={tiltakskode}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+      />
+
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
