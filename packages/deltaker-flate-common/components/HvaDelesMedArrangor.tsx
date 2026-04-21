@@ -7,7 +7,6 @@ import {
 } from '../model/deltaker'
 import { PERSONOPPLYSNINGER_URL } from '../utils/constants'
 import {
-  harAdresse,
   harBakgrunnsinfo,
   harInnhold,
   kanDeleDeltakerMedArrangorForVurdering
@@ -86,10 +85,7 @@ export const HvaDelesMedArrangor = ({
           <List.Item>Navn og fødselsnummer</List.Item>
           <List.Item>Telefonnummer og e-postadresse</List.Item>
 
-          {/** TODO adresseDelesMedArrangor fra backend burde være nok. sjekk opp */}
-          {adresseDelesMedArrangor && harAdresse(tiltakskode) && (
-            <List.Item>Adresse</List.Item>
-          )}
+          {adresseDelesMedArrangor && <List.Item>Adresse</List.Item>}
 
           {visInnholdOgBakgrunnsinfo && (
             <List.Item>

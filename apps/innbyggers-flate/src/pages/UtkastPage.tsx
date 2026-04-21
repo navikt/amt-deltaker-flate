@@ -15,7 +15,6 @@ import {
   UtkastHeader,
   VeilederSnakkeboble,
   deltakerprosentText,
-  harAdresse,
   harBakgrunnsinfo,
   harInnhold,
   hentTiltakEllerGjennomforingNavnHosArrangorTekst,
@@ -72,8 +71,6 @@ export const UtkastPage = () => {
   }
 
   const tiltakskode = deltakerliste.tiltakskode
-  const skalViseAdresse =
-    deltaker.adresseDelesMedArrangor && harAdresse(tiltakskode)
   const visInnholdOgBakgrunnsinfo =
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
@@ -160,7 +157,7 @@ export const UtkastPage = () => {
       <DetteDelesMedArrangor
         kanDeleDeltakerMedArrangor={kanDeleDeltakerMedArrangor}
         arrangorNavn={navnHosArrangorTekst}
-        skalViseAdresse={skalViseAdresse}
+        skalViseAdresse={deltaker.adresseDelesMedArrangor}
         visInnholdOgBakgrunnsinfo={visInnholdOgBakgrunnsinfo}
       />
 

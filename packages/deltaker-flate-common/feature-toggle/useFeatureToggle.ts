@@ -19,7 +19,7 @@ const alltidMasterForTiltakskoder = [
   Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
   Tiltakskode.STUDIESPESIALISERING,
   Tiltakskode.FAG_OG_YRKESOPPLAERING
-  //  Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+  // Denne eksisterer fra før i Arena Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
   // TODO når vi er master, sett inn Tiltakskode.TILPASSET_JOBBSTOTTE
 ]
 const nyeTiltakskoder: unknown[] = []
