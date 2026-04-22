@@ -41,6 +41,8 @@ describe('erGyldigProsent', () => {
     expect(erGyldigProsent('12abc1')).toBeTruthy())
   it('Returenere true for gyldig prosnet med spesialtegn bakkerst 12a!', () =>
     expect(erGyldigProsent('12a!')).toBeTruthy())
+  it('Returenere true for nedre grense 1', () =>
+    expect(erGyldigProsent('1')).toBeTruthy())
 
   it('Returenere false for ugyldig prosnet -1', () =>
     expect(erGyldigProsent('-1')).toBeFalsy())
@@ -50,6 +52,8 @@ describe('erGyldigProsent', () => {
     expect(erGyldigProsent('a12')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med spesialtegn foran &12', () =>
     expect(erGyldigProsent('&12')).toBeFalsy())
+  it('Returnerer false for 0 (deltakelsesprosent må være minst 1)', () =>
+    expect(erGyldigProsent('0')).toBeFalsy())
 })
 
 describe('erGyldigDagerPerUke', () => {
@@ -63,11 +67,19 @@ describe('erGyldigDagerPerUke', () => {
     expect(erGyldigDagerPerUke('1abc1')).toBeTruthy())
   it('Returenere true for gyldig dager per uke  med spesialtegn bakkerst 12a!', () =>
     expect(erGyldigDagerPerUke('1a!')).toBeTruthy())
+  it('Returenere true for øvre grense 5', () =>
+    expect(erGyldigDagerPerUke('5')).toBeTruthy())
 
   it('Returenere false for ugyldig dager per uke -1', () =>
     expect(erGyldigDagerPerUke('-1')).toBeFalsy())
+  it('Returnerer false for 6 (maks er 5 dager per uke)', () =>
+    expect(erGyldigDagerPerUke('6')).toBeFalsy())
+  it('Returnerer false for 7 (maks er 5 dager per uke)', () =>
+    expect(erGyldigDagerPerUke('7')).toBeFalsy())
   it('Returenere false for ugyldig dager per uke 8', () =>
     expect(erGyldigDagerPerUke('8')).toBeFalsy())
+  it('Returnerer false for 0 (dager per uke må være minst 1)', () =>
+    expect(erGyldigDagerPerUke('0')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med bokstaver foran a12', () =>
     expect(erGyldigDagerPerUke('a1')).toBeFalsy())
   it('Returenere true for ugyldig prosnet med spesialtegn foran &12', () =>

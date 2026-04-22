@@ -29,7 +29,7 @@ import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
-  Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
+  LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg,
@@ -152,7 +152,7 @@ export const EndreOppstartsdatoModal = ({
 
     if (erLeggTilOppstartsdato && !leggTilStartDatoBekreftelse) {
       setErrorLeggTilStartDatoBekreftelse(
-        Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING
+        LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING
       )
       hasError = true
     }
