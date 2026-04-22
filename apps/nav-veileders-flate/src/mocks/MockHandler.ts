@@ -5,6 +5,7 @@ import {
   DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
+  erOpplaringstiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -133,7 +134,7 @@ export class MockHandler {
         sistEndretAv: 'Navn Navnesen',
         sistEndretAvEnhet: 'Nav Fredrikstad'
       },
-      adresseDelesMedArrangor: true,
+      adresseDelesMedArrangor: delesAdresseMedArrangor(this.tiltakskode),
       kanEndres: true,
       digitalBruker: true,
       harAdresse: true,
@@ -436,6 +437,8 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
+      oppdatertPamelding.adresseDelesMedArrangor =
+        delesAdresseMedArrangor(tiltakskode)
 
       const ledetekst = getLedetekst(tiltakskode)
       const innhold = getInnholdForTiltakskode(tiltakskode)
@@ -882,3 +885,12 @@ const mockArrangorenheter = [
     underenheter: []
   }
 ]
+
+const delesAdresseMedArrangor = (tiltakskode: Tiltakskode) => {
+  return (
+    tiltakskode !== Tiltakskode.JOBBKLUBB &&
+    tiltakskode !== Tiltakskode.TILPASSET_JOBBSTOTTE &&
+    tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
+    !erOpplaringstiltak(tiltakskode)
+  )
+}
