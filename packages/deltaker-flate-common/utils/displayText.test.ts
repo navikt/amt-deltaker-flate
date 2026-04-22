@@ -38,8 +38,10 @@ describe('getDeltakerlisteStatusText', () => {
   })
 
   it('dekker alle verdier i DeltakerlisteStatus-enum', () => {
-    Object.values(DeltakerlisteStatus).forEach((status) => {
-      expect(getDeltakerlisteStatusText(status)).toBeDefined()
-    })
+    ;(Object.values(DeltakerlisteStatus) as DeltakerlisteStatus[]).forEach(
+      (status) => {
+        expect(getDeltakerlisteStatusText(status)).toBeDefined()
+      }
+    )
   })
 })
