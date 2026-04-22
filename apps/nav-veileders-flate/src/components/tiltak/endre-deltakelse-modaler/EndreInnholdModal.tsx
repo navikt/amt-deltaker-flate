@@ -66,12 +66,12 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
-  const erOpplaringsTiltak = erOpplaringstiltak(
-    pamelding.deltakerliste.tiltakskode
-  )
+  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode)
   const visCheckbokser =
-    pamelding.deltakerliste.tiltakskode !==
-      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET && !erOpplaringsTiltak
+    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+    tiltakskode !== Tiltakskode.TILPASSET_JOBBSTOTTE &&
+    !erOpplaringsTiltak
 
   const validertRequest = () => {
     if (visCheckbokser && valgteInnhold.length <= 0) {
@@ -114,8 +114,8 @@ export const EndreInnholdModal = ({
           innholdsTekst === getAnnetBeskrivelseFraInnhold(innhold))
       ) {
         throw new Error(
-          pamelding.deltakerliste.tiltakskode ===
-            Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+          tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+            tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
             ? getFeilmeldingIngenEndringTekst(false)
             : getFeilmeldingIngenEndring(false)
         )
@@ -211,7 +211,9 @@ export const EndreInnholdModal = ({
             label={
               erOpplaringsTiltak
                 ? 'Dette er innholdet (valgfritt)'
-                : 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
+                : tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+                  ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
+                  : 'Her kan du beskrive hvor personen skal jobbe eller hva tiltaket skal inneholde (valgfritt)'
             }
             description={
               erOpplaringsTiltak

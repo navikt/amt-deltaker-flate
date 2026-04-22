@@ -2,8 +2,10 @@ import { describe, it, expect } from 'vitest'
 import {
   fjernUgyldigeTegn,
   getDayjsFromString,
-  haveSameContents
+  haveSameContents,
+  visDeltakelsesmengde
 } from './utils'
+import { Tiltakskode } from '../model/deltaker'
 
 describe('getDayjsFromString', () => {
   it('returnerer undefined for undefined', () => {
@@ -110,4 +112,25 @@ describe('haveSameContents', () => {
     expect(haveSameContents(['a', 'b'], ['a'])).toBeFalsy())
   it('Returenere false for listene [1] og [a]', () =>
     expect(haveSameContents([1], ['a'])).toBeFalsy())
+})
+
+describe('visDeltakelsesmengde', () => {
+  it.each([
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+    Tiltakskode.TILPASSET_JOBBSTOTTE
+  ])('returnerer true for %s', (kode) => {
+    expect(visDeltakelsesmengde(kode)).toBe(true)
+  })
+
+  it.each(
+    Object.values(Tiltakskode).filter(
+      (kode) =>
+        kode !== Tiltakskode.ARBEIDSFORBEREDENDE_TRENING &&
+        kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+        kode !== Tiltakskode.TILPASSET_JOBBSTOTTE
+    )
+  )('returnerer false for %s', (kode) => {
+    expect(visDeltakelsesmengde(kode)).toBe(false)
+  })
 })

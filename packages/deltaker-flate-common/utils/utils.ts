@@ -131,7 +131,8 @@ export const formatDateFromString = (
 export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
   return (
     tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
   )
 }
 
@@ -205,11 +206,6 @@ export const harInnhold = (tiltakskode: Tiltakskode) =>
   tiltakskode !== Tiltakskode.JOBBKLUBB
 
 export const harBakgrunnsinfo = (tiltakskode: Tiltakskode) =>
-  !erOpplaringstiltak(tiltakskode) &&
-  tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
-  tiltakskode !== Tiltakskode.JOBBKLUBB
-
-export const harAdresse = (tiltakskode: Tiltakskode) =>
   !erOpplaringstiltak(tiltakskode) &&
   tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
   tiltakskode !== Tiltakskode.JOBBKLUBB

@@ -66,6 +66,7 @@ const forskriftskapitler: { [Key in Tiltakskode]: string } = {
   [Tiltakskode.ARBEIDSFORBEREDENDE_TRENING]: '13',
   [Tiltakskode.ARBEIDSRETTET_REHABILITERING]: '12',
   [Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET]: '14',
+  [Tiltakskode.TILPASSET_JOBBSTOTTE]: '14',
   [Tiltakskode.AVKLARING]: '2',
   [Tiltakskode.OPPFOLGING]: '4',
   [Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK]: '4',

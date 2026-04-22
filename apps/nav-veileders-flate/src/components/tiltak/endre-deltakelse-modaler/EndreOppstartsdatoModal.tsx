@@ -82,7 +82,8 @@ export const EndreOppstartsdatoModal = ({
   const tiltakskode = pamelding.deltakerliste.tiltakskode
 
   const skalVelgeVarighet =
-    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+    tiltakskode !== Tiltakskode.TILPASSET_JOBBSTOTTE
 
   const [startdato, setStartdato] = useState<Date | undefined>(
     defaultDatoer.startdato
