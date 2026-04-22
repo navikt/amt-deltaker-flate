@@ -15,9 +15,9 @@ describe('isValidFloatInRange', () => {
     expect(isValidFloatInRange('10.5', 0, 100)).toBeTruthy())
   it('Returnerer true for gyldig float med e 12e-2', () =>
     expect(isValidFloatInRange('12e-2', 0, 100)).toBeTruthy())
-  it('Returnerer true for gyldig float med bokstaver bakkerst 12abc1', () =>
+  it('Returnerer true for gyldig float med bokstaver bakerst 12abc1', () =>
     expect(isValidFloatInRange('12abc1', 0, 100)).toBeTruthy())
-  it('Returnerer true for gyldig float med spesialtegn bakkerst 12a!', () =>
+  it('Returnerer true for gyldig float med spesialtegn bakerst 12a!', () =>
     expect(isValidFloatInRange('12a!', 0, 100)).toBeTruthy())
 
   it('Returnerer false for ugyldig float mindre enn range', () =>
@@ -37,9 +37,9 @@ describe('erGyldigProsent', () => {
     expect(erGyldigProsent('10,5')).toBeTruthy())
   it('Returnerer true for gyldig prosent med punktum 10.5', () =>
     expect(erGyldigProsent('10.5')).toBeTruthy())
-  it('Returnerer true for gyldig prosent med bokstaver bakkerst 12abc1', () =>
+  it('Returnerer true for gyldig prosent med bokstaver bakerst 12abc1', () =>
     expect(erGyldigProsent('12abc1')).toBeTruthy())
-  it('Returnerer true for gyldig prosent med spesialtegn bakkerst 12a!', () =>
+  it('Returnerer true for gyldig prosent med spesialtegn bakerst 12a!', () =>
     expect(erGyldigProsent('12a!')).toBeTruthy())
   it('Returnerer true for nedre grense 1', () =>
     expect(erGyldigProsent('1')).toBeTruthy())
@@ -63,9 +63,9 @@ describe('erGyldigDagerPerUke', () => {
     expect(erGyldigDagerPerUke('1,5')).toBeTruthy())
   it('Returnerer true for gyldig dager per uke med punktum 1.5', () =>
     expect(erGyldigDagerPerUke('1.5')).toBeTruthy())
-  it('Returnerer true for gyldig dager per uke med bokstaver bakkerst 1abc1', () =>
+  it('Returnerer true for gyldig dager per uke med bokstaver bakerst 1abc1', () =>
     expect(erGyldigDagerPerUke('1abc1')).toBeTruthy())
-  it('Returnerer true for gyldig dager per uke med spesialtegn bakkerst 1a!', () =>
+  it('Returnerer true for gyldig dager per uke med spesialtegn bakerst 1a!', () =>
     expect(erGyldigDagerPerUke('1a!')).toBeTruthy())
   it('Returnerer true for øvre grense 5', () =>
     expect(erGyldigDagerPerUke('5')).toBeTruthy())
