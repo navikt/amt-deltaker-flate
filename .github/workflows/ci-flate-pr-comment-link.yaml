@@ -24,8 +24,8 @@ jobs:
       tiltakskoordinator-flate: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
 
     steps:
-      - uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         id: filter
         with:
           filters: |
@@ -72,7 +72,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Opprett lenke(r) til test-applikasjon
-        uses: thollander/actions-comment-pull-request@v3
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         if: needs.changes.outputs[matrix.app.name] == 'true' && github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
         with:
           message: |
