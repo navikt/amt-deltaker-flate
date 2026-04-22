@@ -6,6 +6,7 @@ import {
   Modal
 } from '@navikt/ds-react'
 import {
+  ConfirmInfoCard,
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
   skalMeldePaaDirekte,
@@ -25,7 +26,6 @@ import {
   generatePameldingRequest,
   generatePameldingRequestFromForm
 } from '../../../../utils/pamelding-form-utils'
-import { ConfirmInfoCard } from '../../../ConfirmInfoCard'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 export interface MeldPaDirekteModalProps {

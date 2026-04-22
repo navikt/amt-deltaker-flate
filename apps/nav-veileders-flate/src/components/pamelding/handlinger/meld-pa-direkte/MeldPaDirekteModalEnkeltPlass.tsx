@@ -1,5 +1,6 @@
 import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
+  ConfirmInfoCard,
   DeferredFetchState,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch
@@ -18,7 +19,6 @@ import {
   formToEnkeltplassRequest,
   generateEnkeltplassPameldingRequest
 } from '../../../../utils/pamelding-enkeltplass.ts'
-import { ConfirmInfoCard } from '../../../ConfirmInfoCard.tsx'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 
 interface Props {

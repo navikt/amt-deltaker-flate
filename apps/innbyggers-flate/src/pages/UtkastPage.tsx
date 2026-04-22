@@ -1,13 +1,7 @@
-import {
-  Alert,
-  BodyLong,
-  Button,
-  ConfirmationPanel,
-  Heading,
-  Link
-} from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
+  ConfirmInfoCard,
   DeferredFetchState,
   DeltakelseInnhold,
   OmKurset,
@@ -161,27 +155,27 @@ export const UtkastPage = () => {
         visInnholdOgBakgrunnsinfo={visInnholdOgBakgrunnsinfo}
       />
 
-      <ConfirmationPanel
+      <ConfirmInfoCard
+        size="small"
         className="mt-6"
-        checked={godatt}
-        label="Ja, det ser greit ut."
-        onChange={() => {
+        title={`Kan informasjonen deles til ${arrangorNavn}?`}
+        checkboxLabel="Ja, det ser greit ut."
+        isConfirmed={godatt}
+        error={
+          godattError ? 'Du må si ja for å kunne godkjenne utkastet' : undefined
+        }
+        onConfirmedChange={() => {
           setGodTattError(false)
           setGodTatt((x) => !x)
         }}
-        size="small"
-        error={godattError && 'Du må si ja for å kunne godkjenne utkastet'}
       >
-        <Heading level="3" size="xsmall">
-          {`Kan informasjonen deles til ${arrangorNavn}?`}
-        </Heading>
-        <BodyLong className="mt-4">
+        <BodyLong size="small">
           Hvis du har et spørsmål, innspill eller ikke ønsker at dette deles, så{' '}
           <Link href={DIALOG_URL} inlineText>
             send en melding til Nav-veilederen din her.
           </Link>
         </BodyLong>
-      </ConfirmationPanel>
+      </ConfirmInfoCard>
 
       <Button
         variant="primary"

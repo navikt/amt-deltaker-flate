@@ -15,6 +15,7 @@ interface Props {
   error?: string
   onConfirmedChange: (confirmed: boolean) => void
   children: ReactNode
+  className?: string
 }
 
 export const ConfirmInfoCard = ({
@@ -24,10 +25,12 @@ export const ConfirmInfoCard = ({
   isConfirmed,
   error,
   onConfirmedChange,
-  children
+  children,
+  className
 }: Props) => {
   return (
     <InfoCard
+      className={className ?? ''}
       size={size}
       data-color={error ? 'danger' : isConfirmed ? 'success' : 'warning'}
     >
@@ -52,6 +55,8 @@ export const ConfirmInfoCard = ({
           legend={title}
           hideLegend
           error={error}
+          className="mt-2"
+          size="small"
           onChange={(val: string[]) =>
             onConfirmedChange(val.includes('confirmed'))
           }
