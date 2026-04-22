@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { useFetch } from 'deltaker-flate-common'
 
 describe('useFetch', () => {
-  it('returnerer loading=true initialt', () => {
+  it('returnerer loading=true initielt', () => {
     const apiFunction = vi.fn(() => new Promise(() => {}))
     const { result } = renderHook(() => useFetch(apiFunction))
     expect(result.current.loading).toBe(true)
@@ -22,9 +22,7 @@ describe('useFetch', () => {
   })
 
   it('setter error.message fra Error-objekt ved feil', async () => {
-    const apiFunction = vi
-      .fn()
-      .mockRejectedValue(new Error('Noe gikk galt'))
+    const apiFunction = vi.fn().mockRejectedValue(new Error('Noe gikk galt'))
 
     const { result } = renderHook(() => useFetch(apiFunction))
 
