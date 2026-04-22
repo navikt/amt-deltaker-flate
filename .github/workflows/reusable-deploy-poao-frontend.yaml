@@ -24,11 +24,11 @@ jobs:
     name: Deploy poao-frontend ${{ matrix.target }} - ${{ inputs.module_path }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Deploy application
         if: matrix.target == 'dev' || (matrix.target == 'prod' && github.ref == 'refs/heads/main' && inputs.prod_deploy_enabled == true)
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@fa754451577294aae42872a69b888b3470478ec1 # v2
         env:
           CLUSTER: ${{ matrix.target == 'dev' && 'dev-gcp' || 'prod-gcp' }}
           RESOURCE: apps/${{ inputs.module_path }}/nais/nais-${{ matrix.target }}.yaml
