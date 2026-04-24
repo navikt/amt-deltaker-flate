@@ -13,7 +13,7 @@ export const DeltakerlistePage = () => {
           Deltakerliste - detaljer
         </h2>
         <DeltakerlisteDetaljer />
-        <FilterDeltakerliste className="mt-6 min-w-60" />
+        <FilterDeltakerliste className="mt-6" />
       </div>
 
       <div>

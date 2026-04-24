@@ -64,18 +64,14 @@ export const HendelseFilter = () => {
         <CheckboxGroup
           size="small"
           legend=""
-          className="mt-[-0.5rem]"
+          className="filter-checkboxes -mt-2"
           onChange={handleChange}
           value={valgteHendelseFilter}
         >
           {filterDetaljer.map((filter) => (
-            <Checkbox
-              key={filter.filtervalg}
-              value={filter.filtervalg}
-              className="w-full [&_label_>_span]:w-full"
-            >
-              <span className="flex justify-between gap-4 w-full">
-                <span>{filter.navn}</span>
+            <Checkbox key={filter.filtervalg} value={filter.filtervalg}>
+              <span className="flex justify-between w-full gap-2">
+                <span className="whitespace-nowrap">{filter.navn}</span>
                 <BodyShort as="span" weight="semibold">
                   {filter.antall}
                 </BodyShort>
