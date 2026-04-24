@@ -87,7 +87,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
             startdato={deltaker.deltakerliste.startdato}
             sluttdato={deltaker.deltakerliste.sluttdato}
-            visDelMedArrangorInfo
+            visDelMedArrangorInfo={false}
           />
 
           {harBakgrunnsinfo(tiltakskode) && (
