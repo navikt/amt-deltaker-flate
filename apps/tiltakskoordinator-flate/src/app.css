@@ -6,3 +6,10 @@ p,
 li {
   overflow-wrap: break-word;
 }
+
+/* Strekk checkbox-rader til full bredde i filter-panelet, slik at
+   `justify-between` kan høyrejustere antalls-tallet.
+   Unlayered rules vinner over Aksels layered rule `.aksel-checkbox { width: fit-content }`. */
+.filter-checkboxes .aksel-checkbox {
+  width: 100%;
+}
