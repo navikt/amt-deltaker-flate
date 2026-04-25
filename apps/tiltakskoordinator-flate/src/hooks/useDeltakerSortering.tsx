@@ -80,6 +80,13 @@ export const sorterDeltakere = (
     }
 
     if (sort) {
+      const aVal = a[sort.orderBy]
+      const bVal = b[sort.orderBy]
+
+      if (aVal == null && bVal == null) return 0
+      if (aVal == null) return 1
+      if (bVal == null) return -1
+
       return sort.direction === 'ascending'
         ? comparator(b, a, sort.orderBy)
         : comparator(a, b, sort.orderBy)
