@@ -118,7 +118,14 @@ export const DeltakerlisteTabell = () => {
         </Alert>
       )}
 
-      <div className="w-full overflow-x-auto">
+      <div
+        className="w-full overflow-x-auto focus:outline-none"
+        // tabIndex for keyboard-scrolling; region role for screen readers
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        tabIndex={0}
+        role="region"
+        aria-label="Deltakerliste, skrollbar tabell"
+      >
         <Table
           className="w-full h-fit"
           zebraStripes
@@ -295,7 +302,7 @@ interface TableDataCellProps {
 
 const TableDataCell = ({ text, children, className }: TableDataCellProps) => {
   return (
-    <Table.DataCell className={`px-2 ${className}`}>
+    <Table.DataCell className={className ? `px-2 ${className}` : 'px-2'}>
       {children ?? null}
       {text && <BodyShort size="small">{text}</BodyShort>}
     </Table.DataCell>
