@@ -145,8 +145,16 @@ export const DeltakerlisteTabell = () => {
               {handlingValg === HandlingValg.GI_AVSLAG && (
                 <Table.DataCell></Table.DataCell>
               )}
-              <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
-              <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
+              <TableHeaderCell
+                label="Navn"
+                sortKey={SortKey.NAVN}
+                className="w-full"
+              />
+              <TableHeaderCell
+                label="Nav-enhet"
+                sortKey={SortKey.NAV_ENHET}
+                className="whitespace-nowrap"
+              />
               {erLopendeOppstart && (
                 <>
                   <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
@@ -277,11 +285,21 @@ export const DeltakerlisteTabell = () => {
 interface TableHeaderCellProps {
   label: string
   sortKey: SortKey
+  className?: string
 }
 
-const TableHeaderCell = ({ label, sortKey }: TableHeaderCellProps) => {
+const TableHeaderCell = ({
+  label,
+  sortKey,
+  className
+}: TableHeaderCellProps) => {
   return (
-    <Table.ColumnHeader scope="col" className="px-2" sortKey={sortKey} sortable>
+    <Table.ColumnHeader
+      scope="col"
+      className={`px-2 ${className ?? ''}`}
+      sortKey={sortKey}
+      sortable
+    >
       <Label size="medium">{label}</Label>
     </Table.ColumnHeader>
   )
