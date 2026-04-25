@@ -119,7 +119,7 @@ export const DeltakerlisteTabell = () => {
       )}
 
       <div
-        className="w-full overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        className="w-full overflow-x-auto focus-visible:outline focus-visible:outline-offset-2"
         // tabIndex for keyboard-scrolling; region role for screen readers
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
@@ -154,6 +154,10 @@ export const DeltakerlisteTabell = () => {
               )}
               <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
               <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
+              <TableHeaderCell
+                label="Søkt inn"
+                sortKey={SortKey.SOKT_INN_DATO}
+              />
               {erLopendeOppstart && (
                 <>
                   <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
@@ -232,6 +236,8 @@ export const DeltakerlisteTabell = () => {
                     text={deltaker.navEnhet}
                     className="min-w-32"
                   />
+
+                  <TableDataCell text={formatDate(deltaker.soktInnDato)} />
 
                   {erLopendeOppstart && (
                     <>

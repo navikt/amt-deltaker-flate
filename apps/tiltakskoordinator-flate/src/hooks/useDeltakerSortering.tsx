@@ -11,6 +11,7 @@ export enum SortKey {
   NAV_ENHET = 'navEnhet',
   STATUS = 'status',
   VURDERING = 'vurdering',
+  SOKT_INN_DATO = 'soktInnDato',
   START_DATO = 'startdato',
   SLUTT_DATO = 'sluttdato'
 }
