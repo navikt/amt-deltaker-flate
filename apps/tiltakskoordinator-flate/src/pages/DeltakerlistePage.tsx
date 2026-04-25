@@ -16,7 +16,7 @@ export const DeltakerlistePage = () => {
         <FilterDeltakerliste className="mt-6" />
       </div>
 
-      <div>
+      <div className="flex-1 min-w-0">
         <h2 className="sr-only">Deltakerliste</h2>
         <DeltakerlisteTabell />
       </div>

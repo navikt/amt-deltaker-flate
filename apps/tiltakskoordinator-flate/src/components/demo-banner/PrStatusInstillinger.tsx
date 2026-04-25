@@ -7,7 +7,7 @@ interface Props {
 
 export const PrStatusInstillinger = ({ setDeltakerlisteId }: Props) => {
   const [nyDeltkerlisteId, setNyDeltakerlisteId] = useState(
-    '2830edc3-19e2-486e-8d5f-061173eeada2'
+    'e228c4ab-2837-4c6a-808f-edabadf56f95'
   )
 
   return (
