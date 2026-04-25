@@ -119,7 +119,7 @@ export const DeltakerlisteTabell = () => {
       )}
 
       <div
-        className="w-full overflow-x-auto focus:outline-none"
+        className="w-full overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
         // tabIndex for keyboard-scrolling; region role for screen readers
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
