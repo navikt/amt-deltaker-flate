@@ -68,7 +68,6 @@ export const UtkastDeltaker = () => {
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         size="small"
-        visDelMedArrangorInfo={false}
       />
 
       <Oppmotested
