@@ -116,6 +116,7 @@ export const createMockDeltaker = (
     erManueltDeltMedArrangor: !!vurdering,
     beskyttelsesmarkering,
     navEnhet,
+    soktInnDato: faker.date.past(),
     startdato: faker.date.past(),
     sluttdato: faker.date.future(),
     navVeileder: {
@@ -270,6 +271,7 @@ export const lagMockDeltaker = (): Deltaker => {
     erNyDeltaker: false,
     harOppdateringFraNav: false,
     kanEndres: true,
+    soktInnDato: null,
     startdato: null,
     sluttdato: null
   }

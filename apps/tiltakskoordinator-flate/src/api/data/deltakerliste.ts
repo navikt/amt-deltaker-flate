@@ -47,6 +47,7 @@ export const deltakerSchema = z.object({
   erNyDeltaker: z.boolean(),
   harOppdateringFraNav: z.boolean(),
   kanEndres: z.boolean(),
+  soktInnDato: nullableDateSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema
 })
