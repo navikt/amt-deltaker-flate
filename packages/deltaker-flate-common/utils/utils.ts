@@ -131,8 +131,7 @@ export const formatDateFromString = (
 export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
   return (
     tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   )
 }
 

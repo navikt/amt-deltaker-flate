@@ -117,8 +117,7 @@ describe('haveSameContents', () => {
 describe('visDeltakelsesmengde', () => {
   it.each([
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
-    Tiltakskode.TILPASSET_JOBBSTOTTE
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   ])('returnerer true for %s', (kode) => {
     expect(visDeltakelsesmengde(kode)).toBe(true)
   })
@@ -127,8 +126,7 @@ describe('visDeltakelsesmengde', () => {
     Object.values(Tiltakskode).filter(
       (kode) =>
         kode !== Tiltakskode.ARBEIDSFORBEREDENDE_TRENING &&
-        kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-        kode !== Tiltakskode.TILPASSET_JOBBSTOTTE
+        kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     )
   )('returnerer false for %s', (kode) => {
     expect(visDeltakelsesmengde(kode)).toBe(false)
