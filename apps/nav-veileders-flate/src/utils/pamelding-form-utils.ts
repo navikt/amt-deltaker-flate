@@ -57,11 +57,11 @@ const getDeltakerProsent = (
   const harDeltakelsesmengde = visDeltakelsesmengde(
     pamelding.deltakerliste.tiltakskode
   )
-  const deltakelsesprosen =
+  const deltakelsesprosent =
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
       ? 100
       : data.deltakelsesprosent
-  return harDeltakelsesmengde ? deltakelsesprosen : undefined
+  return harDeltakelsesmengde ? deltakelsesprosent : undefined
 }
 
 export const generatePameldingRequestFromForm = (

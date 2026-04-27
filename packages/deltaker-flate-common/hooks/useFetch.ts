@@ -22,9 +22,8 @@ export const useFetch = <T, U extends unknown[]>(
         const result = await apiFunction(...args)
         setData(result)
       } catch (error) {
-        if (error as Error) {
-          const e = error as Error
-          setError(e.message)
+        if (error instanceof Error) {
+          setError(error.message)
         } else {
           setError('Det skjedde en feil ved henting av data.')
         }
