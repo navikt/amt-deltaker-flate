@@ -3,7 +3,8 @@ import { dateSchema, nullableDateSchema } from './utils'
 
 export enum Oppstartstype {
   LOPENDE = 'LOPENDE',
-  FELLES = 'FELLES'
+  FELLES = 'FELLES',
+  ENKELTPLASS = 'ENKELTPLASS'
 }
 
 export enum Pameldingstype {
