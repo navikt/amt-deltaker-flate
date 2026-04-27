@@ -152,7 +152,7 @@ const DemoStatusInstillinger = () => {
     Pameldingstype.TRENGER_GODKJENNING
   )
 
-  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(true)
+  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(false)
 
   const { doFetch: doFetchEndreMockTiltakskode } =
     useDeferredFetch(endreMockTiltakskode)
