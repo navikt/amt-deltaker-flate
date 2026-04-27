@@ -274,12 +274,11 @@ const DemoStatusInstillinger = () => {
             handleOppstartstypeChange(e.target.value as Oppstartstype)
           }
         >
-          <option value={Oppstartstype.LOPENDE}>
-            {getOppstartstypeDisplayText(Oppstartstype.LOPENDE)}
-          </option>
-          <option value={Oppstartstype.FELLES}>
-            {getOppstartstypeDisplayText(Oppstartstype.FELLES)}
-          </option>
+          {Object.values(Oppstartstype).map((type) => (
+            <option key={type} value={type}>
+              {getOppstartstypeDisplayText(type)}
+            </option>
+          ))}
         </Select>
         <Select
           value={pameldingsType}

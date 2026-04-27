@@ -147,6 +147,8 @@ export const getOppstartstypeDisplayText = (type: Oppstartstype): string => {
       return 'Løpende oppstart'
     case Oppstartstype.FELLES:
       return 'Felles oppstart'
+    case Oppstartstype.ENKELTPLASS:
+      return 'Enkeltplass'
   }
 }
 

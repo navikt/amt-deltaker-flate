@@ -1,5 +1,6 @@
 import { Box, Select } from '@navikt/ds-react'
 import {
+  getOppstartstypeDisplayText,
   getPameldingstypeDisplayText,
   logError,
   Oppstartstype,
@@ -128,8 +129,11 @@ export const DemoStatusInnstillinger = () => {
           handleOppstartstypeChanged(e.target.value as Oppstartstype)
         }
       >
-        <option value={Oppstartstype.FELLES}>Felles</option>
-        <option value={Oppstartstype.LOPENDE}>Løpende</option>
+        {Object.values(Oppstartstype).map((type) => (
+          <option key={type} value={type}>
+            {getOppstartstypeDisplayText(type)}
+          </option>
+        ))}
       </Select>
       <Select
         value={pameldingsType}
