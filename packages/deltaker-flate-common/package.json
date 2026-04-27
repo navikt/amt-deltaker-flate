@@ -18,7 +18,7 @@
     "@navikt/ds-react": "^8.9.1",
     "dayjs": "^1.11.20",
     "react": "^19.2.5",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },

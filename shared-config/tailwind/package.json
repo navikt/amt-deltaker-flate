@@ -11,7 +11,7 @@
     "@navikt/ds-tailwind": "^8.9.1",
     "@tailwindcss/postcss": "4.2.2",
     "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.9",
+    "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2"
   }
 }
