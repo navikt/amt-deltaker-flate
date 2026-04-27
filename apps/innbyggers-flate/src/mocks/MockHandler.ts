@@ -174,8 +174,7 @@ export class MockHandler {
 
       if (
         tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE
+        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
       ) {
         oppdatertDeltaker.deltakelsesprosent = 80
         oppdatertDeltaker.dagerPerUke = 4
