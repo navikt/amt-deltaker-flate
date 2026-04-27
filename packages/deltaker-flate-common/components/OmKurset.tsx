@@ -9,7 +9,6 @@ import {
   erOpplaringstiltak,
   formatDate,
   formatDateWithMonthName,
-  kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding
 } from '../utils/utils'
 
@@ -23,7 +22,6 @@ interface Props {
   sluttdato: Date | null
   size?: 'medium' | 'small'
   headingLevel?: 2 | 3 | 4
-  visDelMedArrangorInfo?: boolean
   className?: string
 }
 
@@ -37,7 +35,6 @@ export const OmKurset = ({
   sluttdato,
   headingLevel,
   size,
-  visDelMedArrangorInfo,
   className
 }: Props) => {
   const erTiltakSomSkalViseOmKurset =
@@ -132,26 +129,6 @@ export const OmKurset = ({
                   Du kan få avslag.
                 </List.Item>
               </List>
-
-              {kanDeleDeltakerMedArrangorForVurdering(
-                pameldingstype,
-                tiltakskode,
-                erEnkeltplass
-              ) &&
-                visDelMedArrangorInfo && (
-                  <>
-                    <BodyLong size="small" className="mt-4">
-                      For å avgjøre hvem som skal få plass, kan Nav be om hjelp
-                      til vurdering fra arrangøren av kurset. Arrangør eller
-                      koordinator hos Nav vil kontakte deg hvis det er behov for
-                      et møte.
-                    </BodyLong>
-                    <BodyLong size="small" className="mt-4">
-                      Du vil få beskjed dersom det oversendes informasjon til
-                      arrangør.
-                    </BodyLong>
-                  </>
-                )}
 
               <div className="flex mt-6">
                 <Label className="mr-2">Kurset starter: </Label>
