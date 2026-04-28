@@ -90,7 +90,7 @@ export const OmKurset = ({
           </BodyLong>
         ))}
 
-      {oppstartstype !== Oppstartstype.LOPENDE && (
+      {oppstartstype === Oppstartstype.FELLES && (
         <>
           {statusType === DeltakerStatusType.VENTELISTE && (
             <>
