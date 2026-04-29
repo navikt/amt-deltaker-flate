@@ -9,6 +9,8 @@ on:
       - .github/workflows/*-flate-*.yaml
     types:
       - closed
+permissions:
+  contents: read
 
 jobs:
   changes:
@@ -25,13 +27,13 @@ jobs:
         id: filter
         with:
           filters: |
-            innbyggers-flate: 
+            innbyggers-flate:
               - apps/innbyggers-flate/**
               - .github/workflows/innbyggers-flate-*.yaml
-            nav-veileders-flate: 
+            nav-veileders-flate:
               - apps/nav-veileders-flate/**
               - .github/workflows/nav-veileders-flate-*.yaml
-            tiltakskoordinator-flate: 
+            tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
               - .github/workflows/tiltakskoordinator-flate-*.yaml
 
@@ -54,11 +56,15 @@ jobs:
 
     steps:
       - name: Set SHOULD_RUN environment variable
+        env:
+          CHANGES_OUTPUT: ${{ needs.changes.outputs[matrix.app.name] }}
+          IS_FORK: ${{ github.event.pull_request.head.repo.fork }}
+          PR_USER: ${{ github.event.pull_request.user.login }}
         run: |
           echo "SHOULD_RUN=false" >> $GITHUB_ENV
-          if [ "${{ needs.changes.outputs[matrix.app.name] }}" = "true" ] && \
-             [ "${{ github.event.pull_request.head.repo.fork }}" != "true" ] && \
-             [ "${{ github.event.pull_request.user.login }}" != "dependabot[bot]" ]; then
+          if [ "$CHANGES_OUTPUT" = "true" ] && \
+             [ "$IS_FORK" != "true" ] && \
+             [ "$PR_USER" != "dependabot[bot]" ]; then
             echo "SHOULD_RUN=true" >> $GITHUB_ENV
           fi
 
