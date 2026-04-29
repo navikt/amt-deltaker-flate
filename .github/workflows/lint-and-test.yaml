@@ -3,6 +3,8 @@ on:
   push:
     branches-ignore:
       - main
+permissions:
+  contents: read
 env:
   CI: true
   TZ: Europe/Amsterdam
@@ -29,8 +31,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: 'read'
-      id-token: 'write'
-      packages: 'write'
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     steps:

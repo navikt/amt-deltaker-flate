@@ -18,6 +18,8 @@ on:
       - apps/tiltakskoordinator-flate/**
     branches:
       - main
+permissions:
+  contents: read
 env:
   CI: true
   TZ: Europe/Oslo
@@ -43,7 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      id-token: 'write' # Used to authenticate with Google Cloud
+      contents: 'read'
+      id-token: 'write'
     needs: playwright-version
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy

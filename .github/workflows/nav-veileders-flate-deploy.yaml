@@ -18,6 +18,8 @@ on:
       - apps/tiltakskoordinator-flate/**
     branches:
       - main
+permissions:
+  contents: read
 env:
   CI: true
   TZ: Europe/Amsterdam
@@ -62,7 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-and-lint
     permissions:
-      id-token: 'write' # Used to authenticate with Google Cloud
+      contents: 'read'
+      id-token: 'write'
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -115,8 +118,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-and-lint
     permissions:
-      id-token: 'write' # Used to authenticate with Google Cloud
-      contents: 'write' # Create release
+      contents: 'read'
+      id-token: 'write'
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
