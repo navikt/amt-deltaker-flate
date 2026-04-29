@@ -1,4 +1,7 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
+import { FaroErrorBoundary } from '@grafana/faro-react'
+import { faroBeforeSend } from 'deltaker-flate-common'
+import { GlobalAlert } from '@navikt/ds-react'
 import { createRoot, Root } from 'react-dom/client'
 import appCss from './app.css?inline'
 import { App } from './App.tsx'
@@ -13,9 +16,11 @@ if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: APPLICATION_NAME
+      name: APPLICATION_NAME,
+      version: import.meta.env.VITE_APP_VERSION || 'local'
     },
-    isolate: true
+    isolate: true,
+    beforeSend: faroBeforeSend
   })
 }
 
@@ -55,11 +60,24 @@ export class Deltakerliste extends HTMLElement {
       <ShadowDomContext.Provider
         value={{ shadowRoot, containerElement: this.root }}
       >
-        <div className="m-auto pt-4 min-h-screen max-w-480">
-          <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
-            <App />
-          </AppContextProvider>
-        </div>
+        <FaroErrorBoundary
+          fallback={
+            <GlobalAlert status="error">
+              <GlobalAlert.Header>
+                <GlobalAlert.Title>Noe gikk galt</GlobalAlert.Title>
+              </GlobalAlert.Header>
+              <GlobalAlert.Content>
+                Noe gikk galt. Prøv igjen senere.
+              </GlobalAlert.Content>
+            </GlobalAlert>
+          }
+        >
+          <div className="m-auto pt-4 min-h-screen max-w-480">
+            <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
+              <App />
+            </AppContextProvider>
+          </div>
+        </FaroErrorBoundary>
       </ShadowDomContext.Provider>
     )
   }

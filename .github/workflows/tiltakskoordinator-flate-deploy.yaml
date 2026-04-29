@@ -76,6 +76,8 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:dev --filter=tiltakskoordinator-flate
+        env:
+          VITE_APP_VERSION: ${{ github.sha }}
       - name: Upload files to CDN
         uses: nais/deploy/actions/cdn-upload/v2@437e4adfe270e3f1c98fd0eed7f86ecf0e0873db # master
         with:
@@ -104,6 +106,8 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:demo --filter=tiltakskoordinator-flate
+        env:
+          VITE_APP_VERSION: ${{ github.sha }}
       - uses: nais/deploy/actions/cdn-upload/v2@437e4adfe270e3f1c98fd0eed7f86ecf0e0873db # master
         with:
           team: amt
@@ -130,6 +134,8 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build --filter=tiltakskoordinator-flate
+        env:
+          VITE_APP_VERSION: ${{ github.sha }}
       - name: Upload files to CDN
         uses: nais/deploy/actions/cdn-upload/v2@437e4adfe270e3f1c98fd0eed7f86ecf0e0873db # master
         with:
