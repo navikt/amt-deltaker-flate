@@ -23,6 +23,7 @@ permissions:
 env:
   CI: true
   TZ: Europe/Amsterdam
+  VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
   playwright-version:
@@ -75,8 +76,6 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:dev --filter=nav-veileders-flate
-        env:
-          VITE_APP_VERSION: ${{ github.sha }}
       - name: Upload files to CDN
         uses: nais/deploy/actions/cdn-upload/v2@437e4adfe270e3f1c98fd0eed7f86ecf0e0873db # master
         with:
@@ -105,8 +104,6 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:demo --filter=nav-veileders-flate
-        env:
-          VITE_APP_VERSION: ${{ github.sha }}
       - uses: nais/deploy/actions/cdn-upload/v2@437e4adfe270e3f1c98fd0eed7f86ecf0e0873db # master
         with:
           team: amt
@@ -133,8 +130,6 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build --filter=nav-veileders-flate
-        env:
-          VITE_APP_VERSION: ${{ github.sha }}
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
