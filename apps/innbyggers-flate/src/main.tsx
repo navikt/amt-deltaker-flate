@@ -1,7 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
 import { FaroErrorBoundary } from '@grafana/faro-react'
-import { faroBeforeSend } from 'deltaker-flate-common'
-import { GlobalAlert } from '@navikt/ds-react'
+import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -25,18 +24,7 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <FaroErrorBoundary
-        fallback={
-          <GlobalAlert status="error">
-            <GlobalAlert.Header>
-              <GlobalAlert.Title>Noe gikk galt</GlobalAlert.Title>
-            </GlobalAlert.Header>
-            <GlobalAlert.Content>
-              Noe gikk galt. Prøv igjen senere.
-            </GlobalAlert.Content>
-          </GlobalAlert>
-        }
-      >
+      <FaroErrorBoundary fallback={<ErrorFallback />}>
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>

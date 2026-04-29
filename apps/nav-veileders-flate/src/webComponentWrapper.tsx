@@ -1,7 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
 import { FaroErrorBoundary } from '@grafana/faro-react'
-import { faroBeforeSend } from 'deltaker-flate-common'
-import { GlobalAlert } from '@navikt/ds-react'
+import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import appCss from './app.css?inline'
@@ -61,18 +60,7 @@ export class Deltaker extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <FaroErrorBoundary
-        fallback={
-          <GlobalAlert status="error">
-            <GlobalAlert.Header>
-              <GlobalAlert.Title>Noe gikk galt</GlobalAlert.Title>
-            </GlobalAlert.Header>
-            <GlobalAlert.Content>
-              Noe gikk galt. Prøv igjen senere.
-            </GlobalAlert.Content>
-          </GlobalAlert>
-        }
-      >
+      <FaroErrorBoundary fallback={<ErrorFallback />}>
         <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
           <AppContextProvider
             initialPersonident={initialPersonident}
