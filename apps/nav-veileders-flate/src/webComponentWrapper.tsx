@@ -1,4 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
+import { FaroErrorBoundary } from '@grafana/faro-react'
+import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import appCss from './app.css?inline'
@@ -12,9 +14,11 @@ if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: 'amt-deltaker-flate'
+      name: 'amt-deltaker-flate',
+      version: import.meta.env.VITE_APP_VERSION || 'local'
     },
-    isolate: true
+    isolate: true,
+    beforeSend: faroBeforeSend
   })
 }
 
@@ -56,18 +60,20 @@ export class Deltaker extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
-        <AppContextProvider
-          initialPersonident={initialPersonident}
-          initialEnhetId={initialEnhetId}
-        >
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <AppRoutes />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </AppContextProvider>
-      </div>
+      <FaroErrorBoundary fallback={<ErrorFallback />}>
+        <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
+          <AppContextProvider
+            initialPersonident={initialPersonident}
+            initialEnhetId={initialEnhetId}
+          >
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <AppRoutes />
+              </QueryClientProvider>
+            </BrowserRouter>
+          </AppContextProvider>
+        </div>
+      </FaroErrorBoundary>
     )
   }
 

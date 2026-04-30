@@ -1,4 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
+import { FaroErrorBoundary } from '@grafana/faro-react'
+import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -22,9 +24,11 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <FaroErrorBoundary fallback={<ErrorFallback />}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </FaroErrorBoundary>
     </React.StrictMode>
   )
 }
@@ -48,9 +52,11 @@ if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: 'amt-deltaker-innbyggers-flate'
+      name: 'amt-deltaker-innbyggers-flate',
+      version: import.meta.env.VITE_APP_VERSION || 'local'
     },
-    isolate: true
+    isolate: true,
+    beforeSend: faroBeforeSend
   })
 }
 

@@ -1,4 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
+import { FaroErrorBoundary } from '@grafana/faro-react'
+import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import appCss from './app.css?inline'
 import { App } from './App.tsx'
@@ -13,9 +15,11 @@ if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
     url: import.meta.env.VITE_FARO_URL,
     app: {
-      name: APPLICATION_NAME
+      name: APPLICATION_NAME,
+      version: import.meta.env.VITE_APP_VERSION || 'local'
     },
-    isolate: true
+    isolate: true,
+    beforeSend: faroBeforeSend
   })
 }
 
@@ -55,11 +59,13 @@ export class Deltakerliste extends HTMLElement {
       <ShadowDomContext.Provider
         value={{ shadowRoot, containerElement: this.root }}
       >
-        <div className="m-auto pt-4 min-h-screen max-w-480">
-          <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
-            <App />
-          </AppContextProvider>
-        </div>
+        <FaroErrorBoundary fallback={<ErrorFallback />}>
+          <div className="m-auto pt-4 min-h-screen max-w-480">
+            <AppContextProvider initialDeltakerlisteId={deltakerlisteId}>
+              <App />
+            </AppContextProvider>
+          </div>
+        </FaroErrorBoundary>
       </ShadowDomContext.Provider>
     )
   }

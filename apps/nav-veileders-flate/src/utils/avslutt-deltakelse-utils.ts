@@ -46,9 +46,7 @@ export function getSluttdato(
   ) {
     return forslag.endring.sluttdato ?? deltaker.sluttdato
   } else {
-    throw new Error(
-      `Kan ikke behandle forslag av type ${forslag.endring.type} som sluttdato`
-    )
+    return null
   }
 }
 
@@ -61,7 +59,7 @@ export const harDeltattMindreEnn15Dager = (
   }
 
   const startDato = pamelding.startdato
-  if (startDato === null) throw Error('startdato er null')
+  if (startDato === null) return true // Dersom startdato er null, antar vi at deltakeren har deltatt mindre enn 15 dager
 
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(startDato).isAfter(femtenDagerSiden, 'day')

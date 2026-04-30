@@ -24,6 +24,7 @@ permissions:
 env:
   CI: true
   TZ: Europe/Amsterdam
+  VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
   playwright-version:
