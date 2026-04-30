@@ -26,6 +26,6 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "^19.2.14",
-    "vitest": "^4.1.3"
+    "vitest": "^4.1.5"
   }
 }
