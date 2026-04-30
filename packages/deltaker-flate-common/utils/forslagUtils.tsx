@@ -13,10 +13,6 @@ import { getForslagStatusTypeText } from './displayText.ts'
 export const ACTION_BLUE_TAG_STYLE =
   'bg-(--ax-bg-accent-moderate) border-(--ax-border-accent)'
 
-export function assertNever(value: never): never {
-  throw new Error(`Unexpected value: ${JSON.stringify(value)}`)
-}
-
 export const getForslagStatusTag = (forslagStatusType: ForslagStatusType) => {
   switch (forslagStatusType) {
     case ForslagStatusType.Erstattet:
@@ -75,7 +71,5 @@ export const getEndreDeltakelsesType = (endring: ForslagEndring) => {
       return EndreDeltakelseType.ENDRE_SLUTTDATO
     case ForslagEndringType.EndreAvslutning:
       return EndreDeltakelseType.ENDRE_AVSLUTNING
-    default:
-      assertNever(endring)
   }
 }
