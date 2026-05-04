@@ -46,9 +46,9 @@ export const isValidFloatInRange = (
 }
 
 export const erGyldigProsent = (value: string) => {
-  return isValidFloatInRange(value, 0, 100)
+  return isValidFloatInRange(value, 1, 100)
 }
 
 export const erGyldigDagerPerUke = (value: string) => {
-  return isValidFloatInRange(value, 0, 7)
+  return isValidFloatInRange(value, 1, 5)
 }

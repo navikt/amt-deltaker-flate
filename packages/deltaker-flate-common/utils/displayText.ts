@@ -193,6 +193,8 @@ export const getDeltakerlisteStatusText = (status: DeltakerlisteStatus) => {
       return 'Avlyst'
     case DeltakerlisteStatus.AVBRUTT:
       return 'Avbrutt'
+    case DeltakerlisteStatus.KLADD:
+      return 'Kladd'
   }
 }
 

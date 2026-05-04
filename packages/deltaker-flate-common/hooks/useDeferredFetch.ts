@@ -36,9 +36,8 @@ export const useDeferredFetch = <T, U extends unknown[]>(
       return result
     } catch (error) {
       setState(DeferredFetchState.ERROR)
-      if (error as Error) {
-        const e = error as Error
-        setError(e.message)
+      if (error instanceof Error) {
+        setError(error.message)
       } else {
         setError('Det skjedde en feil ved henting av data.')
       }
