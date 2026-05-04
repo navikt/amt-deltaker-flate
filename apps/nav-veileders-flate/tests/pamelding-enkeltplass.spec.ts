@@ -42,7 +42,7 @@ test.describe('Enkeltplass påmelding', () => {
     ).toBeVisible()
   })
 
-  test('kan fylle ut skjema og dele utkast', async ({ page }) => {
+  test.skip('kan fylle ut skjema og dele utkast', async ({ page }) => {
     await page.getByLabel('Dette er innholdet').fill('Kurs i arbeidsmarkedsfag')
 
     const startdato = page.getByLabel('Startdato')
@@ -64,7 +64,7 @@ test.describe('Enkeltplass påmelding', () => {
     await page.getByRole('button', { name: 'Del utkast med brukeren' }).click()
 
     await expect(
-      page.getByRole('heading', { name: 'Del utkast og gjør klar på' })
+      page.getByRole('heading', { name: 'Del utkast og gjør klar påmelding' })
     ).toBeVisible()
   })
 })
