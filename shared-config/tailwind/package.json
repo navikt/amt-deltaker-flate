@@ -8,10 +8,10 @@
     "tailwind.config.ts"
   ],
   "devDependencies": {
-    "@navikt/ds-tailwind": "^8.10.1",
+    "@navikt/ds-tailwind": "^8.10.2",
     "@tailwindcss/postcss": "4.2.4",
     "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.12",
     "tailwindcss": "^4.2.4"
   }
 }
