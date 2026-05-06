@@ -29,7 +29,7 @@ export function ValgteDeltakereBox(props: Props) {
         </ExpansionCard.Title>
       </ExpansionCard.Header>
       <ExpansionCard.Content>
-        <List className="-mt-4 -mb-4">
+        <List>
           {props.valgteDeltakere.map((deltaker) => (
             <List.Item key={deltaker.id}>{lagDeltakerNavn(deltaker)}</List.Item>
           ))}
