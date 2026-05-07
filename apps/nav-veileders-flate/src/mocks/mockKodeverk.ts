@@ -33,6 +33,32 @@ export const createMockKodeverkResponse = (): KodeverkResponse => {
             valgt: false
           }
         ]
+      },
+      {
+        type: KodeverkAlternativType.VERDIGRUPPE,
+        id: 'a1b2c3d4-e5f6-4789-9abc-def012345679',
+        visningsnavn: 'Sertifisering',
+        seleksjonstype: Seleksjonstype.ENKELTVALG,
+        alternativer: [
+          {
+            type: 'Verdi',
+            id: 'b2c3d4e5-f6a7-4890-9bcd-ef0123456788',
+            visningsnavn: 'Hekling',
+            valgt: false
+          },
+          {
+            type: 'Verdi',
+            id: 'c3d4e5f6-a7b8-4901-9cde-f01234567891',
+            visningsnavn: 'Makrame',
+            valgt: false
+          },
+          {
+            type: 'Verdi',
+            id: 'd4e5f6a7-b8c9-4012-9def-012345678900',
+            visningsnavn: 'Origami',
+            valgt: false
+          }
+        ]
       }
     ]
   }
