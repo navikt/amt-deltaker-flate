@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
   type KodeverkContainer,
+  type KodeverkGruppe,
   KodeverkAlternativType,
   type KodeverkVerdigruppe,
   Seleksjonstype
@@ -33,12 +34,34 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
     return null
   }
 
-  // Gruppe — render children rekursivt
+  return <GruppeValg gruppe={alternativ} />
+}
+
+const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
+  const [valgtId, setValgtId] = useState<string | null>(null)
+
+  const options = gruppe.alternativer.map((a) => ({
+    value: a.id ?? '',
+    label: a.visningsnavn
+  }))
+
+  const valgt = gruppe.alternativer.find((a) => a.id === valgtId) ?? null
+
   return (
     <div className="flex flex-col gap-4">
-      {alternativ.alternativer.map((child) => (
-        <AlternativValg key={child.id} alternativ={child} />
-      ))}
+      <UNSAFE_Combobox
+        id={`kodeverk-gruppe-${gruppe.id}`}
+        label={gruppe.visningsnavn}
+        selectedOptions={options.filter((o) => o.value === valgtId)}
+        size="small"
+        options={options}
+        isMultiSelect={false}
+        onToggleSelected={(option, isSelected) => {
+          setValgtId(isSelected ? option : null)
+        }}
+      />
+
+      {valgt && <AlternativValg key={valgt.id} alternativ={valgt} />}
     </div>
   )
 }
@@ -50,40 +73,34 @@ const VerdigruppeValg = ({
 }) => {
   const defaultVerdier = verdigruppe.alternativer
     .filter((v) => v.valgt)
-    .map((v) => ({ value: v.id, label: v.visningsnavn }))
+    .map((v) => v.id)
 
-  const [valgte, setValgte] = useState<string[]>(
-    defaultVerdier.map((v) => v.value)
-  )
+  const [valgte, setValgte] = useState<string[]>(defaultVerdier)
 
   const options = verdigruppe.alternativer.map((v) => ({
     value: v.id,
     label: v.visningsnavn
   }))
 
-  const getSelectedOptions = () => {
-    return options.filter((o) => valgte.includes(o.value))
+  const handleToggleSelected = (option: string, isSelected: boolean) => {
+    if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
+      setValgte(isSelected ? [option] : [])
+    } else {
+      setValgte(
+        isSelected ? [...valgte, option] : valgte.filter((v) => v !== option)
+      )
+    }
   }
 
   return (
     <UNSAFE_Combobox
       id={`kodeverk-${verdigruppe.id}`}
       label={verdigruppe.visningsnavn}
-      selectedOptions={getSelectedOptions()}
+      selectedOptions={options.filter((o) => valgte.includes(o.value))}
       size="small"
       options={options}
       isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
-      onToggleSelected={(option, isSelected) => {
-        if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
-          setValgte(isSelected ? [option] : [])
-        } else {
-          setValgte(
-            isSelected
-              ? [...valgte, option]
-              : valgte.filter((v) => v !== option)
-          )
-        }
-      }}
+      onToggleSelected={handleToggleSelected}
     />
   )
 }
