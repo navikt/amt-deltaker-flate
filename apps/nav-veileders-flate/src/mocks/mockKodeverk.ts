@@ -1,15 +1,18 @@
-import { KodeverkResponse } from '../api/data/kodeverk'
+import {
+  KodeverkAlternativType,
+  KodeverkResponse,
+  Seleksjonstype
+} from '../api/data/kodeverk'
 
 export const createMockKodeverkResponse = (): KodeverkResponse => {
   return {
     tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
     alternativer: [
       {
-        type: 'Verdigruppe',
+        type: KodeverkAlternativType.VERDIGRUPPE,
         id: 'a1b2c3d4-e5f6-4789-9abc-def012345678',
         visningsnavn: 'Førerkortklasse',
-        seleksjonstype: 'ENKELTVALG',
-        obligatorisk: true,
+        seleksjonstype: Seleksjonstype.FLERVALG,
         alternativer: [
           {
             type: 'Verdi',

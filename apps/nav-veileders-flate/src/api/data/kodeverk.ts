@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export enum KodeverkAlternativType {
-  GRUPPE = 'GRUPPE',
-  VERDIGRUPPE = 'VERDIGRUPPE',
-  VERDI = 'VERDI'
+  GRUPPE = 'Gruppe',
+  VERDIGRUPPE = 'Verdigruppe',
+  VERDI = 'Verdi'
 }
 export enum Seleksjonstype {
   ENKELTVALG = 'ENKELTVALG',

@@ -12,6 +12,7 @@ import {
   Pameldingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
+import { kodeverkResponseSchema } from './kodeverk.ts'
 
 export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
 
@@ -43,7 +44,8 @@ export const deltakerlisteSchema = z.object({
   tilgjengeligInnhold: tilgjengeligInnholdSchema,
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
-  pameldingstype: z.enum(Pameldingstype)
+  pameldingstype: z.enum(Pameldingstype),
+  kodeverk: kodeverkResponseSchema
 })
 
 export const deltakerSchema = z.object({

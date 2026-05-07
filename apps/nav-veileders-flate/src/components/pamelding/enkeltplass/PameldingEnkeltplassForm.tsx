@@ -13,6 +13,7 @@ import { InnholdBeskrivelse } from './InnholdBeskrivelse'
 import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from '../FormErrorSummary.tsx'
 import { ArrangorValg } from './ArrangorValg.tsx'
+import { KodeverkValg } from './KodeverkValg.tsx'
 
 interface Props {
   className?: string
@@ -46,6 +47,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
       <FormProvider {...methods}>
         <FormErrorSummary erEnkeltplass={true} />
 
+        <KodeverkValg />
         <InnholdBeskrivelse />
 
         <PameldingDatoer

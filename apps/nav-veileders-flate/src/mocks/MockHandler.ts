@@ -41,6 +41,7 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
+import { createMockKodeverkResponse } from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -106,7 +107,8 @@ export class MockHandler {
         erEnkeltplass: true, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
-          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
+          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
+        kodeverk: createMockKodeverkResponse()
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -386,11 +388,8 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      if (status === DeltakerStatusType.FEILREGISTRERT) {
-        oppdatertPamelding.kanEndres = false
-      } else {
-        oppdatertPamelding.kanEndres = true
-      }
+      oppdatertPamelding.kanEndres =
+        status !== DeltakerStatusType.FEILREGISTRERT
 
       if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
