@@ -4,7 +4,8 @@ import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
   type KodeverkContainer,
   KodeverkAlternativType,
-  type KodeverkVerdigruppe
+  type KodeverkVerdigruppe,
+  Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
 
 export const KodeverkValg = () => {
@@ -71,9 +72,9 @@ const VerdigruppeValg = ({
       selectedOptions={getSelectedOptions()}
       size="small"
       options={options}
-      isMultiSelect={verdigruppe.seleksjonstype === 'FLERVALG'}
+      isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
       onToggleSelected={(option, isSelected) => {
-        if (verdigruppe.seleksjonstype === 'ENKELTVALG') {
+        if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
           setValgte(isSelected ? [option] : [])
         } else {
           setValgte(
