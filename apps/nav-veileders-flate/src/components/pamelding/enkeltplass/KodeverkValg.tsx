@@ -2,7 +2,7 @@ import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
-  type KodeverkAlternativ,
+  type KodeverkContainer,
   KodeverkAlternativType,
   type KodeverkVerdigruppe
 } from '../../../api/data/kodeverk.ts'
@@ -22,9 +22,14 @@ export const KodeverkValg = () => {
   )
 }
 
-const AlternativValg = ({ alternativ }: { alternativ: KodeverkAlternativ }) => {
+const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
   if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
     return <VerdigruppeValg verdigruppe={alternativ} />
+  }
+
+  if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
+    // TODO: Implementer søk-basert verdigruppe
+    return null
   }
 
   // Gruppe — render children rekursivt
