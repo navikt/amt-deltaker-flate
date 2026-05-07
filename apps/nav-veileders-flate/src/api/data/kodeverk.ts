@@ -29,22 +29,16 @@ export const kodeverkVerdigruppeSchema = z.object({
 
 export type KodeverkVerdigruppe = z.infer<typeof kodeverkVerdigruppeSchema>
 
-export const kodeverkGruppeSchema: z.ZodType = z.object({
+export const kodeverkGruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.GRUPPE),
   id: z.uuid(),
   visningsnavn: z.string(),
-  alternativer: z.array(
-    z.union([kodeverkVerdigruppeSchema, z.lazy(() => kodeverkGruppeSchema)])
-  )
+  get alternativer() {
+    return z.array(z.union([kodeverkVerdigruppeSchema, kodeverkGruppeSchema]))
+  }
 })
 
-export type KodeverkGruppe = {
-  type: KodeverkAlternativType.GRUPPE
-  id: string
-  visningsnavn: string
-  alternativer: (KodeverkVerdigruppe | KodeverkGruppe)[]
-  valgt: boolean
-}
+export type KodeverkGruppe = z.infer<typeof kodeverkGruppeSchema>
 
 export type KodeverkAlternativ = KodeverkGruppe | KodeverkVerdigruppe
 
