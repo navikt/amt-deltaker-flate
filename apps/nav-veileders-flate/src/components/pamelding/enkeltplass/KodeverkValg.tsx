@@ -13,42 +13,42 @@ export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
   const kodeverk = deltaker.deltakerliste.kodeverk
 
-  if (kodeverk.alternativer.length === 0) return null
+  if (kodeverk.kategorier.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-6 mb-6">
-      {kodeverk.alternativer.map((alternativ) => (
-        <AlternativValg key={alternativ.id} alternativ={alternativ} />
+    <div className="flex flex-col gap-8">
+      {kodeverk.kategorier.map((kategori) => (
+        <KategoriValg key={kategori.id} kategori={kategori} />
       ))}
     </div>
   )
 }
 
-const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
-  if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
-    return <VerdigruppeValg verdigruppe={alternativ} />
+const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
+  if (kategori.type === KodeverkAlternativType.VERDIGRUPPE) {
+    return <VerdigruppeValg verdigruppe={kategori} />
   }
 
-  if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
+  if (kategori.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
     // TODO: Implementer søk-basert verdigruppe
     return null
   }
 
-  return <GruppeValg gruppe={alternativ} />
+  return <GruppeValg gruppe={kategori} />
 }
 
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
   const [valgtId, setValgtId] = useState<string | null>(null)
 
   const options = gruppe.alternativer.map((a) => ({
-    value: a.id ?? '',
+    value: a.id,
     label: a.visningsnavn
   }))
 
   const valgt = gruppe.alternativer.find((a) => a.id === valgtId) ?? null
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
         id={`kodeverk-gruppe-${gruppe.id}`}
         label={gruppe.visningsnavn}
@@ -61,7 +61,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
         }}
       />
 
-      {valgt && <AlternativValg key={valgt.id} alternativ={valgt} />}
+      {valgt && <KategoriValg key={valgt.id} kategori={valgt} />}
     </div>
   )
 }

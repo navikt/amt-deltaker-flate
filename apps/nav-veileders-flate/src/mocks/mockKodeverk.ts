@@ -1,13 +1,25 @@
+import { Tiltakskode } from 'deltaker-flate-common'
 import {
   KodeverkAlternativType,
   KodeverkResponse,
   Seleksjonstype
 } from '../api/data/kodeverk'
 
-export const createMockKodeverkResponse = (): KodeverkResponse => {
-  return {
-    tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-    alternativer: [
+export const createMockKodeverkResponse = (
+  tiltakskode: Tiltakskode
+): KodeverkResponse => {
+  return (
+    mockKodeverk.find((kodeverk) => kodeverk.tiltakskode === tiltakskode) ?? {
+      tiltakskode,
+      kategorier: []
+    }
+  )
+}
+
+const mockKodeverk: KodeverkResponse[] = [
+  {
+    tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    kategorier: [
       {
         type: KodeverkAlternativType.VERDIGRUPPE,
         id: 'a1b2c3d4-e5f6-4789-9abc-def012345678',
@@ -240,4 +252,4 @@ export const createMockKodeverkResponse = (): KodeverkResponse => {
       }
     ]
   }
-}
+]

@@ -8,11 +8,7 @@ import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltpl
 import { usePameldingFormContext } from '../PameldingFormContext'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 
-interface Props {
-  className?: string
-}
-
-export const ArrangorValg = ({ className }: Props) => {
+export const ArrangorValg = () => {
   const { enhetId } = useAppContext()
   const { disabled } = usePameldingFormContext()
   const { deltaker } = useDeltakerContext()
@@ -46,7 +42,7 @@ export const ArrangorValg = ({ className }: Props) => {
   }
 
   return (
-    <div className={className}>
+    <div>
       <Controller
         control={control}
         name="arrangorUnderenhet"

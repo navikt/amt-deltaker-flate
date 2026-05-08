@@ -25,7 +25,7 @@ export const kodeverkVerdiSchema = z.object({
 
 export const kodeverkVerdigruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.VERDIGRUPPE),
-  id: z.uuid().nullable(),
+  id: z.uuid(),
   visningsnavn: z.string(),
   representerer: z.string(),
   seleksjonstype: z.enum(Seleksjonstype),
@@ -36,7 +36,7 @@ export type KodeverkVerdigruppe = z.infer<typeof kodeverkVerdigruppeSchema>
 
 export const kodeverkVerdigruppeSokSchema = z.object({
   type: z.literal(KodeverkAlternativType.VERDIGRUPPE_SOK),
-  id: z.uuid().nullable(),
+  id: z.uuid(),
   visningsnavn: z.string(),
   representerer: z.string(),
   seleksjonstype: z.enum(Seleksjonstype),
@@ -49,7 +49,7 @@ export type KodeverkVerdigruppeSok = z.infer<
 
 export const kodeverkGruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.GRUPPE),
-  id: z.uuid().nullable(),
+  id: z.uuid(),
   visningsnavn: z.string(),
   get alternativer() {
     return z.array(
@@ -71,7 +71,7 @@ export type KodeverkContainer =
 
 export const kodeverkResponseSchema = z.object({
   tiltakskode: z.string(),
-  alternativer: z.array(
+  kategorier: z.array(
     z.union([
       kodeverkGruppeSchema,
       kodeverkVerdigruppeSchema,

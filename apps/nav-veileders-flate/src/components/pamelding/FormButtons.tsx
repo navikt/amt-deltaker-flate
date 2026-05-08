@@ -23,11 +23,7 @@ import { SlettKladdButton } from './handlinger/slett-kladd/SlettKladdButton.tsx'
 import { KladdLagring } from './KladdLagring.tsx'
 import { usePameldingFormContext } from './PameldingFormContext.tsx'
 
-interface Props {
-  className?: string
-}
-
-export const PameldingFormButtons = ({ className }: Props) => {
+export const PameldingFormButtons = () => {
   const { deltaker } = useDeltakerContext()
   const { error } = usePameldingFormContext()
   const kanDeleUtkast = deltaker.digitalBruker
@@ -35,7 +31,7 @@ export const PameldingFormButtons = ({ className }: Props) => {
   const status = deltaker.status.type
 
   return (
-    <div className={`flex flex-col gap-8 ${className ?? ''}`}>
+    <div className="flex flex-col gap-8">
       {!kanDeleUtkast && harAdresse && (
         <LocalAlert status="warning" size="small">
           <LocalAlert.Header>

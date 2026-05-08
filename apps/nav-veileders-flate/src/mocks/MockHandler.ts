@@ -58,7 +58,7 @@ export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+  tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
 
   createDeltaker(
     deltakerlisteId: string,
@@ -108,7 +108,7 @@ export class MockHandler {
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        kodeverk: createMockKodeverkResponse()
+        kodeverk: createMockKodeverkResponse(this.tiltakskode)
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -434,8 +434,17 @@ export class MockHandler {
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
+    const erNyEnkeltplass =
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING ||
+      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
+      tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
+
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
+      oppdatertPamelding.deltakerliste.kodeverk =
+        createMockKodeverkResponse(tiltakskode)
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)
 
@@ -473,6 +482,9 @@ export class MockHandler {
         oppdatertPamelding.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
+      } else if (erNyEnkeltplass) {
+        oppdatertPamelding.deltakerliste.erEnkeltplass = true
+        oppdatertPamelding.importertFraArena = null
       } else {
         oppdatertPamelding.importertFraArena = null
         oppdatertPamelding.deltakerliste.erEnkeltplass = false

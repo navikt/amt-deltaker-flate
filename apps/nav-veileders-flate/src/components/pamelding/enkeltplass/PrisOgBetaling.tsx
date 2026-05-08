@@ -10,11 +10,7 @@ import {
 import { usePameldingFormContext } from '../PameldingFormContext'
 import { NAVET_OPPLAERINGSTILTAK_URL } from '../../../constants'
 
-interface Props {
-  className?: string
-}
-
-export const PrisOgBetaling = ({ className }: Props) => {
+export const PrisOgBetaling = () => {
   const { disabled } = usePameldingFormContext()
   const {
     register,
@@ -24,7 +20,7 @@ export const PrisOgBetaling = ({ className }: Props) => {
   } = useFormContext<PameldingEnkeltplassFormValues>()
 
   return (
-    <div className={className}>
+    <div>
       <Textarea
         label="Pris og betalingsbetingelser"
         {...register('prisinformasjon')}

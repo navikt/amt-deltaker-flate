@@ -13,14 +13,9 @@ import { getDayjsFromString } from 'deltaker-flate-common'
 interface Props {
   defaultStartdato?: string
   defaultSluttdato?: string
-  className?: string
 }
 
-export function PameldingDatoer({
-  defaultStartdato,
-  defaultSluttdato,
-  className
-}: Props) {
+export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
   const {
     control,
     setValue,
@@ -106,7 +101,7 @@ export function PameldingDatoer({
   }
 
   return (
-    <div className={className ?? ''}>
+    <div>
       <div className="flex gap-4">
         <Controller
           control={control}

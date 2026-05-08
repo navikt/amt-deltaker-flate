@@ -39,7 +39,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   return (
     <form
       autoComplete="off"
-      className={className}
+      className={`${className} flex flex-col gap-8`}
       ref={formRef}
       tabIndex={-1}
       aria-label="Skjema for påmelding"
@@ -48,18 +48,18 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
         <FormErrorSummary erEnkeltplass={true} />
 
         <KodeverkValg />
+
         <InnholdBeskrivelse />
 
         <PameldingDatoer
-          className="mt-8"
           defaultStartdato={defaultValues.startdato}
           defaultSluttdato={defaultValues.sluttdato}
         />
 
-        <ArrangorValg className="mt-8" />
-        <PrisOgBetaling className="mt-8" />
+        <ArrangorValg />
+        <PrisOgBetaling />
 
-        <PameldingFormButtons className="mt-8" />
+        <PameldingFormButtons />
       </FormProvider>
     </form>
   )
