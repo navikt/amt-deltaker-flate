@@ -9,6 +9,7 @@ import {
   Seleksjonstype,
   KodeverkResponse
 } from '../../../api/data/kodeverk.ts'
+import { Controller, useFormContext } from 'react-hook-form'
 
 export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
@@ -92,30 +93,45 @@ const VerdigruppeValg = ({
 
   const [valgte, setValgte] = useState<string[]>(defaultVerdier)
 
+  const { control } = useFormContext()
+
   const options = verdigruppe.alternativer.map((v) => ({
     value: v.id,
     label: v.visningsnavn
   }))
 
-  const handleToggleSelected = (option: string, isSelected: boolean) => {
+  function handleToggleSelected(option: string, isSelected: boolean): string[] {
     if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
-      setValgte(isSelected ? [option] : [])
+      const selected = isSelected ? [option] : []
+      setValgte(selected)
+      return selected
     } else {
-      setValgte(
-        isSelected ? [...valgte, option] : valgte.filter((v) => v !== option)
-      )
+      const selected = isSelected
+        ? [...valgte, option]
+        : valgte.filter((v) => v !== option)
+      setValgte(selected)
+      return selected
     }
   }
 
   return (
-    <UNSAFE_Combobox
-      id={`kodeverk-${verdigruppe.id}`}
-      label={verdigruppe.visningsnavn}
-      selectedOptions={options.filter((o) => valgte.includes(o.value))}
-      size="small"
-      options={options}
-      isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
-      onToggleSelected={handleToggleSelected}
+    <Controller
+      name={'kodeverkValg'}
+      control={control}
+      render={({ field }) => (
+        <UNSAFE_Combobox
+          id={`kodeverk-${verdigruppe.id}`}
+          label={verdigruppe.visningsnavn}
+          selectedOptions={options.filter((o) => valgte.includes(o.value))}
+          size="small"
+          options={options}
+          isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
+          onToggleSelected={(option, isSelected) => {
+            const newState = handleToggleSelected(option, isSelected)
+            field.onChange(newState)
+          }}
+        />
+      )}
     />
   )
 }
