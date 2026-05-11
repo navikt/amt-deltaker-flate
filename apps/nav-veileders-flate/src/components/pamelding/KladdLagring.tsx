@@ -1,9 +1,8 @@
 import { Detail, ErrorMessage, Loader } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FieldValues, useFormContext } from 'react-hook-form'
 import { useAppContext } from '../../AppContext.tsx'
-import { debounce } from '../../utils/debounce.ts'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 interface Props<TFormValues extends FieldValues, TKladdRequest> {
@@ -30,20 +29,25 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
     useDeferredFetch(oppdaterKladd)
 
   const watchedFields = watch()
-
-  const onFormChanged = (values: TFormValues) => {
-    const newKladd = formToKladdRequest(values)
-
-    if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
-      setStoredKladd(newKladd)
-      void fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
-    }
-  }
+  const debounceRef = useRef<number | null>(null)
 
   useEffect(() => {
-    debounce(() => {
-      onFormChanged(getValues())
+    if (debounceRef.current) {
+      window.clearTimeout(debounceRef.current)
+    }
+    debounceRef.current = window.setTimeout(() => {
+      const newKladd = formToKladdRequest(getValues())
+      if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
+        setStoredKladd(newKladd)
+        void fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
+      }
     }, 2000)
+
+    return () => {
+      if (debounceRef.current) {
+        window.clearTimeout(debounceRef.current)
+      }
+    }
   }, [watchedFields])
 
   if (saveKladdState === DeferredFetchState.LOADING) {
