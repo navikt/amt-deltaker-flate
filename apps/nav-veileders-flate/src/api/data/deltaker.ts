@@ -45,7 +45,7 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
-  kodeverk: kodeverkResponseSchema.nullable()
+  kodeverk: kodeverkResponseSchema.nullable().optional()
 })
 
 export const deltakerSchema = z.object({
