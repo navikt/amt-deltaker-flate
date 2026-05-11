@@ -96,12 +96,15 @@ const VerdigruppeValg = ({
 
   const [valgte, setValgte] = useState<string[]>(defaultVerdier)
 
-  const { control } = useFormContext()
+  const { control, getValues } = useFormContext()
 
   const options = verdigruppe.alternativer.map((v) => ({
     value: v.id,
     label: v.visningsnavn
   }))
+
+  // IDer som tilhører denne verdigruppen
+  const egneIds = new Set(verdigruppe.alternativer.map((v) => v.id))
 
   function handleToggleSelected(option: string, isSelected: boolean): string[] {
     if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
@@ -130,8 +133,12 @@ const VerdigruppeValg = ({
           options={options}
           isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
           onToggleSelected={(option, isSelected) => {
-            const newState = handleToggleSelected(option, isSelected)
-            field.onChange(newState)
+            const nyeEgneValg = handleToggleSelected(option, isSelected)
+            // Behold valg fra andre verdigrupper, erstatt kun egne
+            const andreValg = (getValues('kodeverkValg') as string[]).filter(
+              (id) => !egneIds.has(id)
+            )
+            field.onChange([...andreValg, ...nyeEgneValg])
           }}
         />
       )}
