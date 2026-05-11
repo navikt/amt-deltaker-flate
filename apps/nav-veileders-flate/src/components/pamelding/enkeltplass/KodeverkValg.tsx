@@ -83,9 +83,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
         }}
       />
 
-      {valgt && (
-        <KategoriValg key={valgt.id ?? valgt.visningsnavn} kategori={valgt} />
-      )}
+      {valgt && <KategoriValg key={valgtId} kategori={valgt} />}
     </div>
   )
 }
