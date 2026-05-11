@@ -2,7 +2,8 @@ import { Tiltakskode } from 'deltaker-flate-common'
 import {
   KodeverkAlternativType,
   KodeverkResponse,
-  Seleksjonstype
+  Seleksjonstype,
+  VerdigruppeSokKilde
 } from '../api/data/kodeverk'
 
 export const createMockKodeverkResponse = (
@@ -22,205 +23,170 @@ const mockKodeverk: KodeverkResponse[] = [
     alternativer: [
       {
         type: KodeverkAlternativType.VERDIGRUPPE,
-        id: 'a1b2c3d4-e5f6-4789-9abc-def012345678',
-        visningsnavn: 'Førerkortklasse',
-        representerer: 'forerkortklasse',
-        seleksjonstype: Seleksjonstype.FLERVALG,
+        id: null,
+        visningsnavn: 'Bransje',
+        representerer: 'bransje',
+        seleksjonstype: Seleksjonstype.ENKELTVALG,
         alternativer: [
           {
-            id: 'b2c3d4e5-f6a7-4890-9bcd-ef0123456789',
-            visningsnavn: 'B',
-            valgt: true
-          },
-          {
-            id: 'c3d4e5f6-a7b8-4901-9cde-f01234567890',
-            visningsnavn: 'C1',
+            id: '14886bad-a495-420a-9bae-d33e2d88041a',
+            visningsnavn: 'Barne- og ungdomsarbeid',
             valgt: false
           },
           {
-            id: 'd4e5f6a7-b8c9-4012-9def-012345678901',
-            visningsnavn: 'CE',
+            id: 'e6749d6c-aacf-452d-baf2-d5fb5021912b',
+            visningsnavn: 'Butikk- og salgsarbeid',
+            valgt: false
+          },
+          {
+            id: '82bd7ce0-70f1-448b-8773-9015dea613e7',
+            visningsnavn: 'Helse, pleie og omsorg',
+            valgt: false
+          },
+          {
+            id: '4733d7ef-d106-47a4-b335-bfd132c8ad31',
+            visningsnavn: 'Industriarbeid',
+            valgt: false
+          },
+          {
+            id: 'd04dff0d-fdca-4839-9bdc-44c722af5d6f',
+            visningsnavn: 'Ingeniør- og IKT-fag',
             valgt: false
           }
         ]
       },
       {
         type: KodeverkAlternativType.VERDIGRUPPE,
-        id: 'a1b2c3d4-e5f6-4789-9abc-def012345679',
-        visningsnavn: 'Sertifisering',
-        representerer: 'sertifisering',
-        seleksjonstype: Seleksjonstype.ENKELTVALG,
+        id: null,
+        visningsnavn: 'Førerkort',
+        representerer: 'forerkort',
+        seleksjonstype: Seleksjonstype.FLERVALG,
         alternativer: [
           {
-            id: 'b2c3d4e5-f6a7-4890-9bcd-ef0123456788',
-            visningsnavn: 'Hekling',
+            id: '79d1a970-e8f0-4ecd-8d5e-e7c8d5f3394c',
+            visningsnavn: 'B - Personbil',
             valgt: false
           },
           {
-            id: 'c3d4e5f6-a7b8-4901-9cde-f01234567891',
-            visningsnavn: 'Makrame',
+            id: 'e3fcf1f7-1f20-4fca-bad5-422b7ee0418f',
+            visningsnavn: 'C - Lastebil',
             valgt: false
           },
           {
-            id: 'd4e5f6a7-b8c9-4012-9def-012345678900',
-            visningsnavn: 'Origami',
+            id: '9a85cdeb-2f6d-44f6-bef2-2add850f7b27',
+            visningsnavn: 'CE - Lastebil med tilhenger',
+            valgt: false
+          },
+          {
+            id: 'e637320c-a5f0-4f7d-ad44-0a7c4654b4c2',
+            visningsnavn: 'D - Buss',
             valgt: false
           }
         ]
       },
       {
-        type: KodeverkAlternativType.GRUPPE,
-        id: 'e5f6a7b8-c9d0-4123-9ef0-123456789abc',
-        visningsnavn: 'Utdanningsprogram og kompetanse',
-        alternativer: [
-          {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'f6a7b8c9-d0e1-4234-9f01-23456789abcd',
-            visningsnavn: 'Utdanningsprogram',
-            representerer: 'utdanningsprogram',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
-            alternativer: [
-              {
-                id: 'a7b8c9d0-e1f2-4345-9012-3456789abcde',
-                visningsnavn: 'Bygg- og anleggsteknikk',
-                valgt: false
-              },
-              {
-                id: 'b8c9d0e1-f2a3-4456-9123-456789abcdef',
-                visningsnavn: 'Helse- og oppvekstfag',
-                valgt: true
-              },
-              {
-                id: 'c9d0e1f2-a3b4-4567-9234-56789abcdef0',
-                visningsnavn: 'Teknologi- og industrifag',
-                valgt: false
-              }
-            ]
-          },
-          {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'd0e1f2a3-b4c5-4678-9345-6789abcdef01',
-            visningsnavn: 'Kompetansenivå',
-            representerer: 'kompetansenivaa',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
-            alternativer: [
-              {
-                id: 'e1f2a3b4-c5d6-4789-9456-789abcdef012',
-                visningsnavn: 'Grunnleggende',
-                valgt: false
-              },
-              {
-                id: 'f2a3b4c5-d6e7-4890-9567-89abcdef0123',
-                visningsnavn: 'Videregående',
-                valgt: false
-              },
-              {
-                id: 'a3b4c5d6-e7f8-4901-9678-9abcdef01234',
-                visningsnavn: 'Fagbrev',
-                valgt: false
-              }
-            ]
-          },
-          {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'b4c5d6e7-f8a9-4012-9789-abcdef012345',
-            visningsnavn: 'Varighet',
-            representerer: 'varighet',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
-            alternativer: [
-              {
-                id: 'c5d6e7f8-a9b0-4123-9890-bcdef0123456',
-                visningsnavn: 'Kort (under 3 måneder)',
-                valgt: false
-              },
-              {
-                id: 'd6e7f8a9-b0c1-4234-9901-cdef01234567',
-                visningsnavn: 'Middels (3–6 måneder)',
-                valgt: false
-              },
-              {
-                id: 'e7f8a9b0-c1d2-4345-9012-def012345678',
-                visningsnavn: 'Lang (over 6 måneder)',
-                valgt: false
-              }
-            ]
-          }
-        ]
-      },
+        type: KodeverkAlternativType.VERDIGRUPPE_SOK,
+        id: null,
+        visningsnavn: 'Sertifiseringer',
+        representerer: 'sertifiseringer',
+        seleksjonstype: Seleksjonstype.FLERVALG,
+        kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
+      }
+    ]
+  },
+  {
+    tiltakskode: Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    alternativer: [
       {
         type: KodeverkAlternativType.GRUPPE,
-        id: 'f8a9b0c1-d2e3-4456-9123-ef0123456789',
-        visningsnavn: 'Språk og kommunikasjon',
+        id: null,
+        visningsnavn: 'Utdanningsprogram',
         alternativer: [
           {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'a9b0c1d2-e3f4-4567-9234-f01234567890',
-            visningsnavn: 'Undervisningsspråk',
-            representerer: 'undervisningssprak',
-            seleksjonstype: Seleksjonstype.FLERVALG,
+            type: KodeverkAlternativType.GRUPPE,
+            id: '1390a963-e9b2-4677-bb87-243f4638b7a1',
+            visningsnavn: 'Bygg- og anleggsteknikk',
             alternativer: [
               {
-                id: 'b0c1d2e3-f4a5-4678-9345-012345678901',
-                visningsnavn: 'Norsk',
-                valgt: true
-              },
-              {
-                id: 'c1d2e3f4-a5b6-4789-9456-123456789012',
-                visningsnavn: 'Engelsk',
-                valgt: false
-              },
-              {
-                id: 'd2e3f4a5-b6c7-4890-9567-234567890123',
-                visningsnavn: 'Arabisk',
-                valgt: false
+                type: KodeverkAlternativType.VERDIGRUPPE,
+                id: null,
+                visningsnavn: 'Lærefag',
+                representerer: 'larefag',
+                seleksjonstype: Seleksjonstype.FLERVALG,
+                alternativer: [
+                  {
+                    id: '4248ce0c-ddea-4eec-8eba-5c9c33d2af66',
+                    visningsnavn: 'Anleggsgartnerfaget',
+                    valgt: false
+                  },
+                  {
+                    id: '157ad180-20b7-48e9-8807-b0cfe002470f',
+                    visningsnavn: 'Snekkerfaget',
+                    valgt: false
+                  },
+                  {
+                    id: '291287d3-8cdd-4f95-863a-6c6bdee822eb',
+                    visningsnavn: 'Tømrerfaget',
+                    valgt: false
+                  }
+                ]
               }
             ]
           },
           {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'e3f4a5b6-c7d8-4901-9678-345678901234',
-            visningsnavn: 'Norsknivå',
-            representerer: 'norsknivaa',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
+            type: KodeverkAlternativType.GRUPPE,
+            id: 'f1bc4b14-56d6-4907-8fdf-48c982a4c759',
+            visningsnavn: 'Elektro og datateknologi',
             alternativer: [
               {
-                id: 'f4a5b6c7-d8e9-4012-9789-456789012345',
-                visningsnavn: 'A1 – Nybegynner',
-                valgt: false
-              },
-              {
-                id: 'a5b6c7d8-e9f0-4123-9890-567890123456',
-                visningsnavn: 'A2 – Grunnleggende',
-                valgt: false
-              },
-              {
-                id: 'b6c7d8e9-f0a1-4234-9901-678901234567',
-                visningsnavn: 'B1 – Selvstendig',
-                valgt: false
+                type: KodeverkAlternativType.VERDIGRUPPE,
+                id: null,
+                visningsnavn: 'Lærefag',
+                representerer: 'larefag',
+                seleksjonstype: Seleksjonstype.FLERVALG,
+                alternativer: [
+                  {
+                    id: '12db8a0a-93cc-4aae-bd17-49ffe7ebd0a4',
+                    visningsnavn: 'Automatiseringsfaget',
+                    valgt: false
+                  },
+                  {
+                    id: 'cf20e956-2048-45d1-b26f-af7331ffb392',
+                    visningsnavn: 'Elektrikerfaget',
+                    valgt: false
+                  },
+                  {
+                    id: 'c347e158-08e8-495f-84ef-e837e7f615fe',
+                    visningsnavn: 'Heismontørfaget',
+                    valgt: false
+                  }
+                ]
               }
             ]
           },
           {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: 'c7d8e9f0-a1b2-4345-9012-789012345678',
-            visningsnavn: 'Læringsform',
-            representerer: 'laeringsform',
-            seleksjonstype: Seleksjonstype.FLERVALG,
+            type: KodeverkAlternativType.GRUPPE,
+            id: 'a2b3c4d5-e6f7-4890-9abc-def012345678',
+            visningsnavn: 'Helse- og oppvekstfag',
             alternativer: [
               {
-                id: 'd8e9f0a1-b2c3-4456-9123-890123456789',
-                visningsnavn: 'Klasseromsundervisning',
-                valgt: false
-              },
-              {
-                id: 'e9f0a1b2-c3d4-4567-9234-901234567890',
-                visningsnavn: 'Nettbasert',
-                valgt: false
-              },
-              {
-                id: 'f0a1b2c3-d4e5-4678-9345-012345678901',
-                visningsnavn: 'Praksis',
-                valgt: true
+                type: KodeverkAlternativType.VERDIGRUPPE,
+                id: null,
+                visningsnavn: 'Lærefag',
+                representerer: 'larefag',
+                seleksjonstype: Seleksjonstype.FLERVALG,
+                alternativer: [
+                  {
+                    id: 'b3c4d5e6-f7a8-4901-9bcd-ef0123456789',
+                    visningsnavn: 'Helsefagarbeiderfaget',
+                    valgt: false
+                  },
+                  {
+                    id: 'c4d5e6f7-a8b9-4012-9cde-f01234567890',
+                    visningsnavn: 'Barne- og ungdomsarbeiderfaget',
+                    valgt: false
+                  }
+                ]
               }
             ]
           }
