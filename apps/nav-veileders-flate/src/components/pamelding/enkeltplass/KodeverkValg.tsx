@@ -10,7 +10,7 @@ import {
   KodeverkResponse,
   finnAlternativMedValgteVerdier
 } from '../../../api/data/kodeverk.ts'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
@@ -96,7 +96,7 @@ const VerdigruppeValg = ({
 
   const [valgte, setValgte] = useState<string[]>(defaultVerdier)
 
-  const { control, getValues } = useFormContext()
+  const { getValues, setValue } = useFormContext()
 
   const options = verdigruppe.alternativer.map((v) => ({
     value: v.id,
@@ -106,42 +106,36 @@ const VerdigruppeValg = ({
   // IDer som tilhører denne verdigruppen
   const egneIds = new Set(verdigruppe.alternativer.map((v) => v.id))
 
-  function handleToggleSelected(option: string, isSelected: boolean): string[] {
-    if (verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG) {
-      const selected = isSelected ? [option] : []
-      setValgte(selected)
-      return selected
-    } else {
-      const selected = isSelected
-        ? [...valgte, option]
-        : valgte.filter((v) => v !== option)
-      setValgte(selected)
-      return selected
-    }
+  function handleToggleSelected(option: string, isSelected: boolean) {
+    const nyeEgneValg =
+      verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG
+        ? isSelected
+          ? [option]
+          : []
+        : isSelected
+          ? [...valgte, option]
+          : valgte.filter((v) => v !== option)
+
+    setValgte(nyeEgneValg)
+
+    // Behold valg fra andre verdigrupper, erstatt kun egne
+    const andreValg = (getValues('kodeverkValg') as string[]).filter(
+      (id) => !egneIds.has(id)
+    )
+    setValue('kodeverkValg', [...andreValg, ...nyeEgneValg], {
+      shouldDirty: true
+    })
   }
 
   return (
-    <Controller
-      name={'kodeverkValg'}
-      control={control}
-      render={({ field }) => (
-        <UNSAFE_Combobox
-          id={`kodeverk-${verdigruppe.id}`}
-          label={verdigruppe.visningsnavn}
-          selectedOptions={options.filter((o) => valgte.includes(o.value))}
-          size="small"
-          options={options}
-          isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
-          onToggleSelected={(option, isSelected) => {
-            const nyeEgneValg = handleToggleSelected(option, isSelected)
-            // Behold valg fra andre verdigrupper, erstatt kun egne
-            const andreValg = (getValues('kodeverkValg') as string[]).filter(
-              (id) => !egneIds.has(id)
-            )
-            field.onChange([...andreValg, ...nyeEgneValg])
-          }}
-        />
-      )}
+    <UNSAFE_Combobox
+      id={`kodeverk-${verdigruppe.id}`}
+      label={verdigruppe.visningsnavn}
+      selectedOptions={options.filter((o) => valgte.includes(o.value))}
+      size="small"
+      options={options}
+      isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
+      onToggleSelected={handleToggleSelected}
     />
   )
 }
