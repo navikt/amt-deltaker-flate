@@ -79,3 +79,41 @@ export const kodeverkResponseSchema = z.object({
 })
 
 export type KodeverkResponse = z.infer<typeof kodeverkResponseSchema>
+
+/**
+ * Henter alle valgte verdi-IDer fra kodeverket rekursivt.
+ */
+export const getValgteVerdier = (
+  alternativer: KodeverkContainer[]
+): string[] => {
+  return alternativer.flatMap((a) => {
+    if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
+      return a.alternativer.filter((v) => v.valgt).map((v) => v.id)
+    }
+    if (a.type === KodeverkAlternativType.GRUPPE) {
+      return getValgteVerdier(a.alternativer)
+    }
+    return []
+  })
+}
+
+/**
+ * Finner IDen til det første alternativet i en Gruppe som inneholder valgte verdier.
+ */
+export const finnAlternativMedValgteVerdier = (
+  gruppe: KodeverkGruppe
+): string | null => {
+  for (const a of gruppe.alternativer) {
+    if (
+      a.type === KodeverkAlternativType.VERDIGRUPPE &&
+      a.alternativer.some((v) => v.valgt)
+    ) {
+      return a.id ?? a.visningsnavn
+    }
+    if (a.type === KodeverkAlternativType.GRUPPE) {
+      const harValgte = getValgteVerdier(a.alternativer).length > 0
+      if (harValgte) return a.id ?? a.visningsnavn
+    }
+  }
+  return null
+}

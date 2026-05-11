@@ -7,7 +7,8 @@ import {
   KodeverkAlternativType,
   type KodeverkVerdigruppe,
   Seleksjonstype,
-  KodeverkResponse
+  KodeverkResponse,
+  finnAlternativMedValgteVerdier
 } from '../../../api/data/kodeverk.ts'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -50,7 +51,9 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
     return <KategoriValg kategori={gruppe.alternativer[0]} />
   }
 
-  const [valgtId, setValgtId] = useState<string | null>(null)
+  const [valgtId, setValgtId] = useState<string | null>(() =>
+    finnAlternativMedValgteVerdier(gruppe)
+  )
 
   const options = gruppe.alternativer.map((a) => ({
     value: a.id ?? a.visningsnavn,

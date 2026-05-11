@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
+import { getValgteVerdier } from '../api/data/kodeverk.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
@@ -96,6 +97,8 @@ export const generateFormDefaultValues = (
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
     prisinformasjon: deltaker.prisinformasjon ?? '',
-    kodeverkValg: [] // TODO: hente noe fra deltakerliste?
+    kodeverkValg: getValgteVerdier(
+      deltaker.deltakerliste.kodeverk?.alternativer ?? []
+    )
   }
 }
