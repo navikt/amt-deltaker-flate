@@ -21,8 +21,10 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
 }: Props<TFormValues, TKladdRequest>) => {
   const { enhetId } = useAppContext()
   const { deltaker } = useDeltakerContext()
-  const [storedKladd, setStoredKladd] = useState<TKladdRequest>()
   const { watch, getValues } = useFormContext<TFormValues>()
+  const [storedKladd, setStoredKladd] = useState<TKladdRequest>(() =>
+    formToKladdRequest(getValues())
+  )
 
   const { state: saveKladdState, doFetch: fetchSaveKladd } =
     useDeferredFetch(oppdaterKladd)
@@ -34,7 +36,7 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
 
     if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
       setStoredKladd(newKladd)
-      fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
+      void fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
     }
   }
 
