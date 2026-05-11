@@ -24,7 +24,8 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     prisinformasjon: data.prisinformasjon,
     startdato,
     sluttdato,
-    arrangorUnderenhet: data.arrangorUnderenhet
+    arrangorUnderenhet: data.arrangorUnderenhet,
+    kodeverkValg: data.kodeverkValg
   }
 }
 

@@ -5,7 +5,8 @@ export const enkeltplassPameldingSchema = z.object({
   prisinformasjon: z.string(),
   startdato: z.string(),
   sluttdato: z.string(),
-  arrangorUnderenhet: z.string()
+  arrangorUnderenhet: z.string(),
+  kodeverkValg: z.array(z.string()).optional()
 })
 
 export type EnkeltplassPameldingRequest = z.infer<
