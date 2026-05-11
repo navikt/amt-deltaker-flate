@@ -15,15 +15,15 @@ export const KodeverkValg = () => {
 
   const tomtKodeverk: KodeverkResponse = {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
-    kategorier: []
+    alternativer: []
   }
   const kodeverk = deltaker.deltakerliste.kodeverk ?? tomtKodeverk
 
-  if (kodeverk.kategorier.length === 0) return null
+  if (kodeverk.alternativer.length === 0) return null
 
   return (
     <div className="flex flex-col gap-8">
-      {kodeverk.kategorier.map((kategori) => (
+      {kodeverk.alternativer.map((kategori) => (
         <KategoriValg key={kategori.id} kategori={kategori} />
       ))}
     </div>
@@ -46,10 +46,12 @@ const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
   const [valgtId, setValgtId] = useState<string | null>(null)
 
-  const options = gruppe.alternativer.map((a) => ({
-    value: a.id,
-    label: a.visningsnavn
-  }))
+  const options = gruppe.alternativer
+    .filter((a) => a.id !== null)
+    .map((a) => ({
+      value: a.id!,
+      label: a.visningsnavn
+    }))
 
   const valgt = gruppe.alternativer.find((a) => a.id === valgtId) ?? null
 
