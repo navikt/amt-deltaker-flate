@@ -6,12 +6,18 @@ import {
   type KodeverkGruppe,
   KodeverkAlternativType,
   type KodeverkVerdigruppe,
-  Seleksjonstype
+  Seleksjonstype,
+  KodeverkResponse
 } from '../../../api/data/kodeverk.ts'
 
 export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
-  const kodeverk = deltaker.deltakerliste.kodeverk
+
+  const tomtKodeverk: KodeverkResponse = {
+    tiltakskode: deltaker.deltakerliste.tiltakskode,
+    kategorier: []
+  }
+  const kodeverk = deltaker.deltakerliste.kodeverk ?? tomtKodeverk
 
   if (kodeverk.kategorier.length === 0) return null
 
