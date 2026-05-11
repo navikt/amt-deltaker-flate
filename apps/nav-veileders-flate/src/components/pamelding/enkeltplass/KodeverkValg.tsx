@@ -1,5 +1,5 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
   type KodeverkContainer,
@@ -25,8 +25,11 @@ export const KodeverkValg = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      {kodeverk.alternativer.map((kategori) => (
-        <KategoriValg key={kategori.id} kategori={kategori} />
+      {kodeverk.alternativer.map((kategori, index) => (
+        <KategoriValg
+          key={kategori.id ?? `kategori-${index}`}
+          kategori={kategori}
+        />
       ))}
     </div>
   )
@@ -46,6 +49,8 @@ const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
 }
 
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
+  const uniqueId = useId()
+
   // Hvis gruppen bare har ett barn, hopp over combobox og vis barnet direkte
   if (gruppe.alternativer.length === 1) {
     return <KategoriValg kategori={gruppe.alternativer[0]} />
@@ -67,7 +72,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
   return (
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
-        id={`kodeverk-gruppe-${gruppe.id}`}
+        id={`kodeverk-gruppe-${uniqueId}`}
         label={gruppe.visningsnavn}
         selectedOptions={options.filter((o) => o.value === valgtId)}
         size="small"
@@ -90,6 +95,7 @@ const VerdigruppeValg = ({
 }: {
   verdigruppe: KodeverkVerdigruppe
 }) => {
+  const uniqueId = useId()
   const defaultVerdier = verdigruppe.alternativer
     .filter((v) => v.valgt)
     .map((v) => v.id)
@@ -129,7 +135,7 @@ const VerdigruppeValg = ({
 
   return (
     <UNSAFE_Combobox
-      id={`kodeverk-${verdigruppe.id}`}
+      id={`kodeverk-${uniqueId}`}
       label={verdigruppe.visningsnavn}
       selectedOptions={options.filter((o) => valgte.includes(o.value))}
       size="small"
