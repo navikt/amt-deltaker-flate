@@ -44,16 +44,21 @@ const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
 }
 
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
+  // Hvis gruppen bare har ett barn, hopp over combobox og vis barnet direkte
+  if (gruppe.alternativer.length === 1) {
+    return <KategoriValg kategori={gruppe.alternativer[0]} />
+  }
+
   const [valgtId, setValgtId] = useState<string | null>(null)
 
-  const options = gruppe.alternativer
-    .filter((a) => a.id !== null)
-    .map((a) => ({
-      value: a.id!,
-      label: a.visningsnavn
-    }))
+  const options = gruppe.alternativer.map((a) => ({
+    value: a.id ?? a.visningsnavn,
+    label: a.visningsnavn
+  }))
 
-  const valgt = gruppe.alternativer.find((a) => a.id === valgtId) ?? null
+  const valgt =
+    gruppe.alternativer.find((a) => (a.id ?? a.visningsnavn) === valgtId) ??
+    null
 
   return (
     <div className="flex flex-col gap-8">
@@ -69,7 +74,9 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
         }}
       />
 
-      {valgt && <KategoriValg key={valgt.id} kategori={valgt} />}
+      {valgt && (
+        <KategoriValg key={valgt.id ?? valgt.visningsnavn} kategori={valgt} />
+      )}
     </div>
   )
 }
