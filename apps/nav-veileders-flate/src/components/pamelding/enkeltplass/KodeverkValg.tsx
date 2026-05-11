@@ -1,62 +1,71 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { useId, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
   type KodeverkContainer,
   type KodeverkGruppe,
-  KodeverkAlternativType,
   type KodeverkVerdigruppe,
+  KodeverkAlternativType,
   Seleksjonstype,
-  KodeverkResponse,
   finnAlternativMedValgteVerdier,
   getAlleVerdiIder
 } from '../../../api/data/kodeverk.ts'
-import { useFormContext } from 'react-hook-form'
 
+/**
+ * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
+ *
+ * Kodeverket er et hierarki: Gruppe → Verdigruppe → Verdi.
+ * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (flat string-array),
+ * som auto-lagres via KladdLagring.
+ */
 export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
+  const kodeverk = deltaker.deltakerliste.kodeverk
 
-  const tomtKodeverk: KodeverkResponse = {
-    tiltakskode: deltaker.deltakerliste.tiltakskode,
-    alternativer: []
-  }
-  const kodeverk = deltaker.deltakerliste.kodeverk ?? tomtKodeverk
-
-  if (kodeverk.alternativer.length === 0) return null
+  if (!kodeverk || kodeverk.alternativer.length === 0) return null
 
   return (
     <div className="flex flex-col gap-8">
-      {kodeverk.alternativer.map((kategori, index) => (
-        <KategoriValg
-          key={kategori.id ?? `kategori-${index}`}
-          kategori={kategori}
+      {kodeverk.alternativer.map((alternativ, index) => (
+        <AlternativValg
+          key={alternativ.id ?? `alternativ-${index}`}
+          alternativ={alternativ}
         />
       ))}
     </div>
   )
 }
 
-const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
-  if (kategori.type === KodeverkAlternativType.VERDIGRUPPE) {
-    return <VerdigruppeValg verdigruppe={kategori} />
+/**
+ * Dispatcher til riktig komponent basert på alternativ-type.
+ */
+const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
+  switch (alternativ.type) {
+    case KodeverkAlternativType.VERDIGRUPPE:
+      return <VerdigruppeValg verdigruppe={alternativ} />
+    case KodeverkAlternativType.VERDIGRUPPE_SOK:
+      // TODO: Implementer søk-basert verdigruppe (f.eks. JANZZ-sertifiseringer)
+      return null
+    case KodeverkAlternativType.GRUPPE:
+      // Hopp over combobox hvis gruppen bare har ett barn — vis barnet direkte
+      if (alternativ.alternativer.length === 1) {
+        return <AlternativValg alternativ={alternativ.alternativer[0]} />
+      }
+      return <GruppeValg gruppe={alternativ} />
   }
-
-  if (kategori.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
-    // TODO: Implementer søk-basert verdigruppe
-    return null
-  }
-
-  return <GruppeValg gruppe={kategori} />
 }
 
+/**
+ * Viser en Gruppe som en combobox der brukeren velger ett alternativ.
+ * Det valgte alternativet rendres rekursivt under comboboxen.
+ *
+ * Ved bytte av valgt alternativ fjernes forrige alternativs verdi-IDer
+ * fra form-feltet `kodeverkValg` for å unngå at gamle valg henger igjen.
+ */
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
-  const uniqueId = useId()
+  const comboboxId = useId()
   const { getValues, setValue } = useFormContext()
-
-  // Hvis gruppen bare har ett barn, hopp over combobox og vis barnet direkte
-  if (gruppe.alternativer.length === 1) {
-    return <KategoriValg kategori={gruppe.alternativer[0]} />
-  }
 
   const [valgtId, setValgtId] = useState<string | null>(() =>
     finnAlternativMedValgteVerdier(gruppe)
@@ -67,81 +76,87 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
     label: a.visningsnavn
   }))
 
-  const valgt =
+  const valgtAlternativ =
     gruppe.alternativer.find((a) => (a.id ?? a.visningsnavn) === valgtId) ??
     null
 
-  function handleGruppeValg(option: string, isSelected: boolean) {
-    // Fjern verdi-IDer fra den forrige gruppen
-    if (valgt) {
-      const gamleIder = getAlleVerdiIder([valgt])
+  function handleValg(option: string, isSelected: boolean) {
+    // Fjern verdi-IDer som tilhørte det forrige valgte alternativet
+    if (valgtAlternativ) {
+      const gamleIder = getAlleVerdiIder([valgtAlternativ])
       if (gamleIder.size > 0) {
-        const current = getValues('kodeverkValg') as string[]
+        const gjeldende = getValues('kodeverkValg') as string[]
         setValue(
           'kodeverkValg',
-          current.filter((id) => !gamleIder.has(id)),
+          gjeldende.filter((id) => !gamleIder.has(id)),
           { shouldDirty: true }
         )
       }
     }
+
     setValgtId(isSelected ? option : null)
   }
 
   return (
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
-        id={`kodeverk-gruppe-${uniqueId}`}
+        id={comboboxId}
         label={gruppe.visningsnavn}
         selectedOptions={options.filter((o) => o.value === valgtId)}
         size="small"
         options={options}
         isMultiSelect={false}
-        onToggleSelected={handleGruppeValg}
+        onToggleSelected={handleValg}
       />
 
-      {valgt && <KategoriValg key={valgtId} kategori={valgt} />}
+      {/* key={valgtId} sikrer at barnet remountes med fersk state ved bytte */}
+      {valgtAlternativ && (
+        <AlternativValg key={valgtId} alternativ={valgtAlternativ} />
+      )}
     </div>
   )
 }
 
+/**
+ * Viser en Verdigruppe som en combobox der brukeren velger verdier.
+ * Enkeltvalg eller flervalg styres av `seleksjonstype`.
+ *
+ * Leser og skriver direkte til form-feltet `kodeverkValg` (flat string-array
+ * delt mellom alle verdigrupper). For å unngå at én verdigruppe overskriver
+ * en annens valg, filtrerer vi ut egne verdi-IDer og merger med resten.
+ */
 const VerdigruppeValg = ({
   verdigruppe
 }: {
   verdigruppe: KodeverkVerdigruppe
 }) => {
-  const uniqueId = useId()
-  const defaultVerdier = verdigruppe.alternativer
-    .filter((v) => v.valgt)
-    .map((v) => v.id)
+  const comboboxId = useId()
+  const { setValue } = useFormContext()
 
-  const [valgte, setValgte] = useState<string[]>(defaultVerdier)
+  // Les valgte IDer fra form-state (single source of truth)
+  const kodeverkValg = (useWatch({ name: 'kodeverkValg' }) ?? []) as string[]
 
-  const { getValues, setValue } = useFormContext()
+  // Alle verdi-IDer som tilhører denne verdigruppen
+  const egneIds = new Set(verdigruppe.alternativer.map((v) => v.id))
+  const valgteEgne = kodeverkValg.filter((id) => egneIds.has(id))
 
   const options = verdigruppe.alternativer.map((v) => ({
     value: v.id,
     label: v.visningsnavn
   }))
 
-  // IDer som tilhører denne verdigruppen
-  const egneIds = new Set(verdigruppe.alternativer.map((v) => v.id))
-
-  function handleToggleSelected(option: string, isSelected: boolean) {
+  function handleValg(option: string, isSelected: boolean) {
     const nyeEgneValg =
       verdigruppe.seleksjonstype === Seleksjonstype.ENKELTVALG
         ? isSelected
           ? [option]
           : []
         : isSelected
-          ? [...valgte, option]
-          : valgte.filter((v) => v !== option)
+          ? [...valgteEgne, option]
+          : valgteEgne.filter((v) => v !== option)
 
-    setValgte(nyeEgneValg)
-
-    // Behold valg fra andre verdigrupper, erstatt kun egne
-    const andreValg = (getValues('kodeverkValg') as string[]).filter(
-      (id) => !egneIds.has(id)
-    )
+    // Behold andre verdigruppers valg, erstatt kun egne
+    const andreValg = kodeverkValg.filter((id) => !egneIds.has(id))
     setValue('kodeverkValg', [...andreValg, ...nyeEgneValg], {
       shouldDirty: true
     })
@@ -149,13 +164,13 @@ const VerdigruppeValg = ({
 
   return (
     <UNSAFE_Combobox
-      id={`kodeverk-${uniqueId}`}
+      id={comboboxId}
       label={verdigruppe.visningsnavn}
-      selectedOptions={options.filter((o) => valgte.includes(o.value))}
+      selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
       size="small"
       options={options}
       isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
-      onToggleSelected={handleToggleSelected}
+      onToggleSelected={handleValg}
     />
   )
 }
