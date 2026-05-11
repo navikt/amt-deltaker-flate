@@ -14,6 +14,10 @@ import { useFormContext } from 'react-hook-form'
 
 export const KodeverkValg = () => {
   const { deltaker } = useDeltakerContext()
+  const { register } = useFormContext()
+
+  // Registrer feltet slik at watch() i KladdLagring fanger opp endringer
+  register('kodeverkValg')
 
   const tomtKodeverk: KodeverkResponse = {
     tiltakskode: deltaker.deltakerliste.tiltakskode,

@@ -25,7 +25,8 @@ export const createDeltaker = (
       tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
       arrangor,
       erEnkeltplass: true,
-      sluttdato: dayjs('2030-02-20').toDate()
+      sluttdato: dayjs('2030-02-20').toDate(),
+      kodeverk: null
     },
     startdato: null,
     sluttdato: null,
@@ -46,6 +47,7 @@ const FormWrapper = ({
       innhold: '',
       arrangorUnderenhet: '',
       prisinformasjon: '',
+      kodeverkValg: [],
       ...defaultValues
     }
   })
