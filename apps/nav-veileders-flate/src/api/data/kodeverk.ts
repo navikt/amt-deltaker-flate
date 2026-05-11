@@ -81,6 +81,23 @@ export const kodeverkResponseSchema = z.object({
 export type KodeverkResponse = z.infer<typeof kodeverkResponseSchema>
 
 /**
+ * Henter alle verdi-IDer fra en container rekursivt (uavhengig av valgt-status).
+ */
+export const getAlleVerdiIder = (
+  alternativer: KodeverkContainer[]
+): Set<string> => {
+  const ider = new Set<string>()
+  for (const a of alternativer) {
+    if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
+      for (const v of a.alternativer) ider.add(v.id)
+    } else if (a.type === KodeverkAlternativType.GRUPPE) {
+      for (const id of getAlleVerdiIder(a.alternativer)) ider.add(id)
+    }
+  }
+  return ider
+}
+
+/**
  * Henter alle valgte verdi-IDer fra kodeverket rekursivt.
  */
 export const getValgteVerdier = (

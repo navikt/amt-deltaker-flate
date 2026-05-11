@@ -8,7 +8,8 @@ import {
   type KodeverkVerdigruppe,
   Seleksjonstype,
   KodeverkResponse,
-  finnAlternativMedValgteVerdier
+  finnAlternativMedValgteVerdier,
+  getAlleVerdiIder
 } from '../../../api/data/kodeverk.ts'
 import { useFormContext } from 'react-hook-form'
 
@@ -50,6 +51,7 @@ const KategoriValg = ({ kategori }: { kategori: KodeverkContainer }) => {
 
 const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
   const uniqueId = useId()
+  const { getValues, setValue } = useFormContext()
 
   // Hvis gruppen bare har ett barn, hopp over combobox og vis barnet direkte
   if (gruppe.alternativer.length === 1) {
@@ -69,6 +71,22 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
     gruppe.alternativer.find((a) => (a.id ?? a.visningsnavn) === valgtId) ??
     null
 
+  function handleGruppeValg(option: string, isSelected: boolean) {
+    // Fjern verdi-IDer fra den forrige gruppen
+    if (valgt) {
+      const gamleIder = getAlleVerdiIder([valgt])
+      if (gamleIder.size > 0) {
+        const current = getValues('kodeverkValg') as string[]
+        setValue(
+          'kodeverkValg',
+          current.filter((id) => !gamleIder.has(id)),
+          { shouldDirty: true }
+        )
+      }
+    }
+    setValgtId(isSelected ? option : null)
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
@@ -78,9 +96,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
         size="small"
         options={options}
         isMultiSelect={false}
-        onToggleSelected={(option, isSelected) => {
-          setValgtId(isSelected ? option : null)
-        }}
+        onToggleSelected={handleGruppeValg}
       />
 
       {valgt && <KategoriValg key={valgtId} kategori={valgt} />}
