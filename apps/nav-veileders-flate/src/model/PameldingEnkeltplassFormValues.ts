@@ -44,7 +44,8 @@ export const createPameldingEnkeltplassFormSchema = (
         .max(
           PRISINFO_MAX_TEGN,
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
-        )
+        ),
+      kodeverkValg: z.array(z.string())
     })
     .refine(
       (schema) => {
@@ -94,6 +95,7 @@ export const generateFormDefaultValues = (
     sluttdato: deltaker.sluttdato
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
-    prisinformasjon: deltaker.prisinformasjon ?? ''
+    prisinformasjon: deltaker.prisinformasjon ?? '',
+    kodeverkValg: [] // TODO: hente noe fra deltakerliste?
   }
 }
