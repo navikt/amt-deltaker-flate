@@ -39,7 +39,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   return (
     <form
       autoComplete="off"
-      className={`${className} flex flex-col gap-8`}
+      className={`${className ?? ''} flex flex-col gap-8`}
       ref={formRef}
       tabIndex={-1}
       aria-label="Skjema for påmelding"
