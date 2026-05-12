@@ -84,14 +84,12 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
     // Fjern verdi-IDer som tilhørte det forrige valgte alternativet
     if (valgtAlternativ) {
       const gamleIder = getAlleVerdiIder([valgtAlternativ])
-      if (gamleIder.size > 0) {
-        const gjeldende = getValues('kodeverkValg') as string[]
-        setValue(
-          'kodeverkValg',
-          gjeldende.filter((id) => !gamleIder.has(id)),
-          { shouldDirty: true }
-        )
-      }
+      const gjeldende = getValues('kodeverkValg') as string[]
+      setValue(
+        'kodeverkValg',
+        gjeldende.filter((id) => !gamleIder.has(id)),
+        { shouldDirty: true }
+      )
     }
 
     setValgtId(isSelected ? option : null)

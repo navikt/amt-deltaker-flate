@@ -34,7 +34,7 @@ const setupKladdLagring = (
   const oppdaterKladd = vi.fn().mockResolvedValue(200)
   let triggerChange: (name: string, value: unknown) => void = () => {}
 
-  renderWithProviders(
+  const utils = renderWithProviders(
     <>
       <FormChanger onReady={(fn) => (triggerChange = fn)} />
       <KladdLagring<PameldingEnkeltplassFormValues, EnkeltplassKladdRequest>
@@ -47,6 +47,7 @@ const setupKladdLagring = (
 
   return {
     oppdaterKladd,
+    unmount: utils.unmount,
     change: (name: string, value: unknown) =>
       act(() => {
         triggerChange(name, value)
@@ -137,5 +138,29 @@ describe('KladdLagring - auto-lagring', () => {
     await advanceDebounce()
 
     expect(screen.getByText('Kladd lagret')).toBeInTheDocument()
+  })
+
+  it('canceler pending lagring ved unmount og auto-lagrer fersk på remount', async () => {
+    // Første mount: gjør en endring, men unmount før debouncen fyrer
+    const første = setupKladdLagring({ innhold: '' })
+    første.change('innhold', 'forkastet')
+    await første.advanceDebounce(500)
+    første.unmount()
+
+    // Hengende timer skal ikke trigge etter unmount
+    await første.advanceDebounce(3000)
+    expect(første.oppdaterKladd).not.toHaveBeenCalled()
+
+    // Andre mount: ny endring skal lagres normalt
+    const andre = setupKladdLagring({ innhold: '' })
+    andre.change('innhold', 'lagret')
+    await andre.advanceDebounce()
+
+    expect(andre.oppdaterKladd).toHaveBeenCalledTimes(1)
+    expect(andre.oppdaterKladd).toHaveBeenCalledWith(
+      '1',
+      '0101',
+      expect.objectContaining({ beskrivelse: 'lagret' })
+    )
   })
 })
