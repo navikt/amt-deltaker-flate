@@ -11,13 +11,16 @@ import { createRoot } from 'react-dom/client'
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
-  injectDecoratorClientSide({
-    env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
-    params: {
-      level: 'Level4',
-      logoutWarning: true
-    }
-  })
+  if (import.meta.env.MODE !== 'development') {
+    // TODO: only skip when running locally/offline
+    injectDecoratorClientSide({
+      env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
+      params: {
+        level: 'Level4',
+        logoutWarning: true
+      }
+    })
+  }
 
   const container = document.getElementById('root')
   const root = createRoot(container!)
