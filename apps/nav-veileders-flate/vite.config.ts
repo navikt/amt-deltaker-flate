@@ -15,7 +15,15 @@ export default defineConfig({
   server: {
     port: 3004,
     host: '127.0.0.1',
-    open: true
+    open: true,
+    proxy: {
+      '/amt-deltaker-bff': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/amt-deltaker-bff/, ''),
+        headers: { Authorization: 'Bearer myjwt' }
+      }
+    }
   },
   build: {
     outDir: 'build',
