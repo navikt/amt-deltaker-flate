@@ -1,6 +1,6 @@
 export const isPrEnv = import.meta.env.MODE === 'pull-request'
-export const useMock = ['development', 'demo'].includes(import.meta.env.MODE)
+export const useMock = false // ['development', 'demo'].includes(import.meta.env.MODE)
 export const isEnvLocalDemoOrPr = useMock || isPrEnv
 
 export const DIALOG_URL = import.meta.env.VITE_DIALOG_URL
-export const API_URL = `${import.meta.env.BASE_URL}amt-deltaker-bff`
+export const API_URL = 'http://localhost:8080' // `${import.meta.env.BASE_URL}amt-deltaker-bff`
