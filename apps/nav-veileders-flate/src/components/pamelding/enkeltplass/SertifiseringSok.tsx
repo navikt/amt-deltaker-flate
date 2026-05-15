@@ -11,7 +11,7 @@ import { sokSertifiseringer } from '../../../api/api-enkeltplass.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { useState } from 'react'
 
-export function VerdigruppeSok({
+export function SertifiseringSok({
   alternativ
 }: {
   alternativ: KodeverkContainer
@@ -27,16 +27,26 @@ export function VerdigruppeSok({
 
   const sertifiseringerOptions = sertifiseringerAsOptions(sertifiseringer)
 
-  /*
-  const getSelectedOptions = (fieldValue: string | undefined) => {
-    if (!fieldValue) return []
-    const fromSearch = sertifiseringerOptions.find(
-      (v) => v.value === Number(fieldValue)
-    )
-    if (fromSearch) return [fromSearch]
-    return []
+  const handleToggleSelected = (
+    option: string,
+    isSelected: boolean,
+    current: PameldingEnkeltplassFormValues['sertifiseringValg'],
+    onChange: (
+      value: PameldingEnkeltplassFormValues['sertifiseringValg']
+    ) => void
+  ) => {
+    if (isSelected) {
+      const found = sertifiseringerOptions.find((o) => o.value === option)
+      if (found) {
+        onChange([
+          ...current,
+          { id: parseInt(found.value, 10), navn: found.label }
+        ])
+      }
+    } else {
+      onChange(current.filter((v) => v.id.toString() !== option))
+    }
   }
-*/
 
   return (
     <div>
@@ -47,19 +57,24 @@ export function VerdigruppeSok({
           <UNSAFE_Combobox
             id="verdigruppeSok"
             label={alternativ.visningsnavn}
-            selectedOptions={
-              // TODO: finn ut hvordan dette skal fungere
-              []
-            }
+            isMultiSelect
+            selectedOptions={(field.value ?? []).map((v) => ({
+              value: v.id.toString(),
+              label: v.navn
+            }))}
             ref={field.ref}
             size="small"
             onChange={setSoketekst}
             filteredOptions={sertifiseringerOptions}
             options={sertifiseringerOptions}
-            onToggleSelected={(option, isSelected) => {
-              // TODO: tillat flere valg
-              field.onChange(isSelected ? option : '')
-            }}
+            onToggleSelected={(option, isSelected) =>
+              handleToggleSelected(
+                option,
+                isSelected,
+                field.value ?? [],
+                field.onChange
+              )
+            }
           />
         )}
       />

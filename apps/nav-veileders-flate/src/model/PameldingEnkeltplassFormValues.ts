@@ -47,7 +47,7 @@ export const createPameldingEnkeltplassFormSchema = (
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         ),
       kodeverkValg: z.array(z.string()),
-      sertifiseringValg: z.array(z.number())
+      sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
     })
     .refine(
       (schema) => {

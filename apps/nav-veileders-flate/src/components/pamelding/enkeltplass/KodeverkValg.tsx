@@ -11,7 +11,8 @@ import {
   type KodeverkVerdigruppe,
   Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
-import { VerdigruppeSok } from './VerdigruppeSok.tsx'
+import { SertifiseringSok } from './SertifiseringSok.tsx'
+import { logError } from 'deltaker-flate-common'
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
@@ -46,7 +47,15 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
     case KodeverkAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
     case KodeverkAlternativType.VERDIGRUPPE_SOK:
-      return <VerdigruppeSok alternativ={alternativ} />
+      if (alternativ.representerer === 'sertifiseringer') {
+        return <SertifiseringSok alternativ={alternativ} />
+      } else {
+        logError(
+          'Uventet type verdigruppe-søk: kun sertifiseringer støttes',
+          alternativ
+        )
+        return null
+      }
     case KodeverkAlternativType.GRUPPE:
       // Hopp over combobox hvis gruppen bare har ett barn — vis barnet direkte
       if (alternativ.alternativer.length === 1) {
