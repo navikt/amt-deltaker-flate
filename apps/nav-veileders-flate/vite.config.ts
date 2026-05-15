@@ -2,42 +2,53 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vitest/config'
 import tailwindcss from '@tailwindcss/vite'
 
-const LOCAL_TOKEN_ENDPOINT =
-  process.env.LOCAL_DEV_TOKEN_URL ?? 'http://localhost:9002/mock-oauth/token'
-
 async function resolveLocalDevJwt(): Promise<string | undefined> {
-  if (process.env.LOCAL_DEV_JWT?.trim()) {
-    return process.env.LOCAL_DEV_JWT.trim()
-  }
+  const tokenEndpoint = 'http://localhost:9000/azure/token'
 
+  const formBody = new URLSearchParams({
+    grant_type: 'client_credentials',
+    client_id: 'local-client-id',
+    client_secret: 'local-secret',
+    aud: 'local-client-id'
+  })
+
+  let response: Response
   try {
-    const response = await fetch(LOCAL_TOKEN_ENDPOINT)
-    if (!response.ok) {
-      throw new Error(`Token endpoint returned HTTP ${response.status}`)
-    }
-
-    const data = (await response.json()) as { access_token?: string }
-    if (!data.access_token) {
-      throw new Error('Missing access_token in token response')
-    }
-
-    return data.access_token
+    response = await fetch(tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formBody
+    })
   } catch (error) {
     console.warn(
-      `[vite] Failed to fetch local JWT from ${LOCAL_TOKEN_ENDPOINT}:`,
+      `[vite] Failed to fetch local JWT from ${tokenEndpoint}:`,
       error
     )
-    console.warn(
-      '[vite] Continuing without Authorization header. Set LOCAL_DEV_JWT to override.'
-    )
+    console.warn('[vite] Continuing without Authorization header.')
     return undefined
   }
+
+  if (!response.ok) {
+    console.warn(`[vite] Token endpoint returned HTTP ${response.status}.`)
+    console.warn('[vite] Continuing without Authorization header.')
+    return undefined
+  }
+
+  const data = (await response.json()) as { access_token?: string }
+  if (!data.access_token) {
+    console.warn('[vite] Missing access_token in token response.')
+    console.warn('[vite] Continuing without Authorization header.')
+    return undefined
+  }
+
+  return data.access_token
 }
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => {
   const localDevJwt = await resolveLocalDevJwt()
-  console.info('Bruker JWT', localDevJwt)
 
   return {
     plugins: [react(), tailwindcss()],
