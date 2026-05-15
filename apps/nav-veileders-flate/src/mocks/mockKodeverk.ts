@@ -2,6 +2,7 @@ import { Tiltakskode } from 'deltaker-flate-common'
 import {
   KodeverkAlternativType,
   KodeverkResponse,
+  KodeverkSertifiseringResponse,
   Seleksjonstype,
   VerdigruppeSokKilde
 } from '../api/data/kodeverk'
@@ -194,4 +195,11 @@ const mockKodeverk: KodeverkResponse[] = [
       }
     ]
   }
+]
+
+export const mockSertifiseringer: KodeverkSertifiseringResponse = [
+  { konseptId: 90999, label: 'Datakortet del 1' },
+  { konseptId: 2, label: 'Datakortet del 2' },
+  { konseptId: 3, label: 'Sertifisert zumba-instruktør' },
+  { konseptId: 345, label: 'Godkjent jagerpilot' }
 ]

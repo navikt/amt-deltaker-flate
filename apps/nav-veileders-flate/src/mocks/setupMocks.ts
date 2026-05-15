@@ -350,5 +350,13 @@ export const worker = setupWorker(
 
       return HttpResponse.json(sokArrangor(term))
     }
+  ),
+  http.get(
+    '/amt-deltaker-bff/enkeltplass/kodeverk-sertifiseringer/sok/:term',
+    async ({ params }) => {
+      await delay(1000)
+      const { term } = params as { term: string }
+      return HttpResponse.json(handler.sokSertifiseringer(term))
+    }
   )
 )

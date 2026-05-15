@@ -228,7 +228,11 @@ export const sokSertifiseringer = async (
       try {
         return kodeverkSertifiseringResponseSchema.parse(json)
       } catch (error) {
-        logError('Kunne ikke parse kodeverkSertifiseringResponseSchema:', error)
+        logError(
+          'Kunne ikke parse kodeverkSertifiseringResponseSchema:',
+          error,
+          json
+        )
         throw new Error(
           'Kunne ikke laste inn sertifiseringer. Prøv igjen senere.'
         )

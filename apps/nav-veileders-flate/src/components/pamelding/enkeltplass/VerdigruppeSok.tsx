@@ -42,7 +42,7 @@ export function VerdigruppeSok({
     <div>
       <Controller
         control={control}
-        name="kodeverkValg"
+        name="sertifiseringValg"
         render={({ field }) => (
           <UNSAFE_Combobox
             id="verdigruppeSok"

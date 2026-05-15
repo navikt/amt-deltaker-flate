@@ -41,7 +41,10 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
-import { createMockKodeverkResponse } from './mockKodeverk.ts'
+import {
+  createMockKodeverkResponse,
+  mockSertifiseringer
+} from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -798,6 +801,10 @@ export class MockHandler {
         ? lagHistorikkFellesOppstart()
         : createHistorikk()
     )
+  }
+
+  sokSertifiseringer(soketekst: string) {
+    return mockSertifiseringer.filter((it) => it.label.includes(soketekst))
   }
 }
 
