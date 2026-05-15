@@ -1,5 +1,4 @@
 import {
-  Tiltakskode,
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
@@ -8,8 +7,9 @@ import {
   nullableDateSchema,
   Oppstartstype,
   pameldingStatusSchema,
-  vedtaksinformasjonSchema,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode,
+  vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { kodeverkResponseSchema } from './kodeverk.ts'

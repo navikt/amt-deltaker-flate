@@ -101,7 +101,6 @@ export const generateFormDefaultValues = (
     kodeverkValg: getValgteVerdier(
       deltaker.deltakerliste.kodeverk?.alternativer ?? []
     ),
-    // TODO: hente tidligere valg fra deltakerliste?
-    sertifiseringValg: []
+    sertifiseringValg: deltaker.deltakerliste.kodeverk?.sertifiseringValg ?? []
   }
 }

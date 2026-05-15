@@ -75,6 +75,12 @@ export const kodeverkResponseSchema = z.object({
       kodeverkVerdigruppeSchema,
       kodeverkVerdigruppeSokSchema
     ])
+  ),
+  sertifiseringValg: z.array(
+    z.object({
+      id: z.int(),
+      navn: z.string()
+    })
   )
 })
 
