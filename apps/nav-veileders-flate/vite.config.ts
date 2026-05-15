@@ -2,34 +2,70 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vitest/config'
 import tailwindcss from '@tailwindcss/vite'
 
-const DUMMY_JWT =
-  'eyJraWQiOiJhenVyZSIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJhdWQiOiJsb2NhbC1jbGllbnQtaWQiLCJuYmYiOjE3Nzg2NzMzMTMsIk5BVmlkZW50IjoiWjEyMzQ1NiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMC9henVyZSIsImdyb3VwcyI6W10sIm9pZCI6IjExMTExMTExLTExMTEtMTExMS0xMTExLTExMTExMTExMTExMSIsImV4cCI6MTc3ODY3NjkxMywiaWF0IjoxNzc4NjczMzEzLCJqdGkiOiIxNzNlMjE5NS0zMGEzLTRjNDUtYWY2YS05ZjRmYWIwNGM2ZGMifQ.dj0DRffif4TgFFMGcJmVPPY-4nXZAHq7sYjkPkxEPey9-0lN4Km15tJfGveO-E6G7OPKEE1ltfAotu4RXW4wKG6ZW7uzOJke0aReJHT2hmU4rGDhB1f4CYCf5K9RFWFRJXcC73CQPAnQkUwNTGt9MyZHHD66leddRJCfUT6QCQS35Xecr9Nlqouk422n4xtc0ElRCauNykANKpOLBjwXqyWzkyY3YjsVhGW4GvfgXYvIwsjHEDD7Zdq4IuXBI_3pfIEOiBNkNMetnlBOhcLpAMCesGL8kaMfEzyV82wD1GLsPcJvCPG75D4jFrtlr1W5i4kdhR2aDaeBMOQIa2TdZA'
+const LOCAL_TOKEN_ENDPOINT =
+  process.env.LOCAL_DEV_TOKEN_URL ?? 'http://localhost:9002/mock-oauth/token'
+
+async function resolveLocalDevJwt(): Promise<string | undefined> {
+  if (process.env.LOCAL_DEV_JWT?.trim()) {
+    return process.env.LOCAL_DEV_JWT.trim()
+  }
+
+  try {
+    const response = await fetch(LOCAL_TOKEN_ENDPOINT)
+    if (!response.ok) {
+      throw new Error(`Token endpoint returned HTTP ${response.status}`)
+    }
+
+    const data = (await response.json()) as { access_token?: string }
+    if (!data.access_token) {
+      throw new Error('Missing access_token in token response')
+    }
+
+    return data.access_token
+  } catch (error) {
+    console.warn(
+      `[vite] Failed to fetch local JWT from ${LOCAL_TOKEN_ENDPOINT}:`,
+      error
+    )
+    console.warn(
+      '[vite] Continuing without Authorization header. Set LOCAL_DEV_JWT to override.'
+    )
+    return undefined
+  }
+}
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    teardownTimeout: 1000,
-    setupFiles: ['./vitest.setup.ts'],
-    include: ['./src/**/*.test.?(c|m)[jt]s?(x)']
-  },
-  server: {
-    port: 3004,
-    host: '127.0.0.1',
-    open: true,
-    proxy: {
-      '/amt-deltaker-bff': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/amt-deltaker-bff/, ''),
-        headers: { Authorization: `Bearer ${DUMMY_JWT}` }
+export default defineConfig(async () => {
+  const localDevJwt = await resolveLocalDevJwt()
+  console.info('Bruker JWT', localDevJwt)
+
+  return {
+    plugins: [react(), tailwindcss()],
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      teardownTimeout: 1000,
+      setupFiles: ['./vitest.setup.ts'],
+      include: ['./src/**/*.test.?(c|m)[jt]s?(x)']
+    },
+    server: {
+      port: 3004,
+      host: '127.0.0.1',
+      open: true,
+      proxy: {
+        '/amt-deltaker-bff': {
+          target: 'http://localhost:8080',
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/amt-deltaker-bff/, ''),
+          headers: localDevJwt
+            ? { Authorization: `Bearer ${localDevJwt}` }
+            : undefined
+        }
       }
+    },
+    build: {
+      outDir: 'build',
+      sourcemap: true
     }
-  },
-  build: {
-    outDir: 'build',
-    sourcemap: true
   }
 })
