@@ -6,7 +6,10 @@ export const enkeltplassPameldingSchema = z.object({
   startdato: z.string(),
   sluttdato: z.string(),
   arrangorUnderenhet: z.string(),
-  kodeverkValg: z.array(z.string()).optional()
+  kodeverkValg: z.array(z.string()).optional(),
+  sertifiseringValg: z
+    .array(z.object({ id: z.number(), navn: z.string() }))
+    .optional()
 })
 
 export type EnkeltplassPameldingRequest = z.infer<

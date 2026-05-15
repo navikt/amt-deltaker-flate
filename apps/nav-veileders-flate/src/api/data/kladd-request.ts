@@ -30,7 +30,10 @@ export const enkeltplassKladdSchema = z.object({
   startdato: z.string().optional(),
   sluttdato: z.string().optional(),
   arrangorUnderenhet: z.string().optional(),
-  kodeverkValg: z.array(z.string()).optional()
+  kodeverkValg: z.array(z.string()).optional(),
+  sertifiseringValg: z
+    .array(z.object({ id: z.number(), navn: z.string() }))
+    .optional()
 })
 
 export type KladdRequest = z.infer<typeof kladdSchema>
