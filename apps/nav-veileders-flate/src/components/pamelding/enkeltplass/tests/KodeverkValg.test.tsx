@@ -59,7 +59,8 @@ describe('KodeverkValg', () => {
   it('rendrer ikke når alternativer er tom', () => {
     const deltaker = createDeltakerMedKodeverk({
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-      alternativer: []
+      alternativer: [],
+      sertifiseringValg: []
     })
     const { container } = renderWithProviders(<KodeverkValg />, { deltaker })
     expect(container).toBeEmptyDOMElement()
@@ -68,7 +69,8 @@ describe('KodeverkValg', () => {
   it('rendrer combobox for en Verdigruppe', () => {
     const deltaker = createDeltakerMedKodeverk({
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-      alternativer: [bransjeVerdigruppe]
+      alternativer: [bransjeVerdigruppe],
+      sertifiseringValg: []
     })
     renderWithProviders(<KodeverkValg />, { deltaker })
     expect(screen.getByLabelText('Bransje')).toBeInTheDocument()
@@ -84,7 +86,8 @@ describe('KodeverkValg', () => {
             v.id === 'bransje-1' ? { ...v, valgt: true } : v
           )
         }
-      ]
+      ],
+      sertifiseringValg: []
     })
     renderWithProviders(<KodeverkValg />, {
       deltaker,
@@ -100,7 +103,8 @@ describe('KodeverkValg', () => {
       const user = userEvent.setup()
       const deltaker = createDeltakerMedKodeverk({
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-        alternativer: [bransjeVerdigruppe, forerkortVerdigruppe]
+        alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
+        sertifiseringValg: []
       })
       renderWithProviders(<KodeverkValg />, {
         deltaker,
@@ -135,7 +139,8 @@ describe('KodeverkValg', () => {
       const user = userEvent.setup()
       const deltaker = createDeltakerMedKodeverk({
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-        alternativer: [bransjeVerdigruppe, forerkortVerdigruppe]
+        alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
+        sertifiseringValg: []
       })
 
       renderWithProviders(<KodeverkValg />, {
@@ -180,7 +185,8 @@ describe('KodeverkValg', () => {
       const user = userEvent.setup()
       const deltaker = createDeltakerMedKodeverk({
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-        alternativer: [bransjeVerdigruppe]
+        alternativer: [bransjeVerdigruppe],
+        sertifiseringValg: []
       })
 
       renderWithProviders(<KodeverkValg />, {
@@ -218,6 +224,7 @@ describe('KodeverkValg', () => {
   describe('Gruppe med nestede verdigrupper', () => {
     const gruppeKodeverk = {
       tiltakskode: 'FAG_OG_YRKESOPPLAERING',
+      sertifiseringValg: [],
       alternativer: [
         {
           type: KodeverkAlternativType.GRUPPE as const,

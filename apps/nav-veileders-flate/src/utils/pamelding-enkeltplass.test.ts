@@ -49,7 +49,8 @@ describe('generateEnkeltplassPameldingRequest', () => {
               { id: 'b2', visningsnavn: 'Helse', valgt: false }
             ]
           }
-        ]
+        ],
+        sertifiseringValg: []
       })
     )
     expect(request.kodeverkValg).toEqual([])
@@ -90,7 +91,8 @@ describe('generateEnkeltplassPameldingRequest', () => {
               }
             ]
           }
-        ]
+        ],
+        sertifiseringValg: []
       })
     )
 

@@ -13,7 +13,8 @@ export const createMockKodeverkResponse = (
   return (
     mockKodeverk.find((kodeverk) => kodeverk.tiltakskode === tiltakskode) ?? {
       tiltakskode,
-      alternativer: []
+      alternativer: [],
+      sertifiseringValg: []
     }
   )
 }
@@ -93,7 +94,8 @@ const mockKodeverk: KodeverkResponse[] = [
         seleksjonstype: Seleksjonstype.FLERVALG,
         kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
       }
-    ]
+    ],
+    sertifiseringValg: []
   },
   {
     tiltakskode: Tiltakskode.FAG_OG_YRKESOPPLAERING,
@@ -193,7 +195,8 @@ const mockKodeverk: KodeverkResponse[] = [
           }
         ]
       }
-    ]
+    ],
+    sertifiseringValg: []
   }
 ]
 
