@@ -3,14 +3,15 @@ import { useId, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
+  finnAlternativMedValgteVerdier,
+  getAlleVerdiIder,
+  KodeverkAlternativType,
   type KodeverkContainer,
   type KodeverkGruppe,
   type KodeverkVerdigruppe,
-  KodeverkAlternativType,
-  Seleksjonstype,
-  finnAlternativMedValgteVerdier,
-  getAlleVerdiIder
+  Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
+import { VerdigruppeSok } from './VerdigruppeSok.tsx'
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
@@ -45,8 +46,7 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
     case KodeverkAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
     case KodeverkAlternativType.VERDIGRUPPE_SOK:
-      // TODO: Implementer søk-basert verdigruppe (f.eks. JANZZ-sertifiseringer)
-      return null
+      return <VerdigruppeSok alternativ={alternativ} />
     case KodeverkAlternativType.GRUPPE:
       // Hopp over combobox hvis gruppen bare har ett barn — vis barnet direkte
       if (alternativ.alternativer.length === 1) {

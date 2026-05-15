@@ -46,7 +46,8 @@ export const createPameldingEnkeltplassFormSchema = (
           PRISINFO_MAX_TEGN,
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         ),
-      kodeverkValg: z.array(z.string())
+      kodeverkValg: z.array(z.string()),
+      sertifiseringValg: z.array(z.number())
     })
     .refine(
       (schema) => {
@@ -99,6 +100,8 @@ export const generateFormDefaultValues = (
     prisinformasjon: deltaker.prisinformasjon ?? '',
     kodeverkValg: getValgteVerdier(
       deltaker.deltakerliste.kodeverk?.alternativer ?? []
-    )
+    ),
+    // TODO: hente tidligere valg fra deltakerliste?
+    sertifiseringValg: []
   }
 }

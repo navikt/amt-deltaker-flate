@@ -80,6 +80,17 @@ export const kodeverkResponseSchema = z.object({
 
 export type KodeverkResponse = z.infer<typeof kodeverkResponseSchema>
 
+export const kodeverkSertifiseringResponseSchema = z.array(
+  z.object({
+    konseptId: z.int(),
+    label: z.string()
+  })
+)
+
+export type KodeverkSertifiseringResponse = z.infer<
+  typeof kodeverkSertifiseringResponseSchema
+>
+
 /**
  * Henter alle verdi-IDer fra en container rekursivt (uavhengig av valgt-status).
  */
