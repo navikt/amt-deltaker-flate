@@ -15,7 +15,8 @@ const formToKladdRequest = (
   arrangorUnderenhet: data.arrangorUnderenhet,
   startdato: data.startdato,
   sluttdato: data.sluttdato,
-  kodeverkValg: data.kodeverkValg
+  kodeverkValg: data.kodeverkValg,
+  sertifiseringValg: data.sertifiseringValg
 })
 
 const FormChanger = ({
@@ -108,6 +109,24 @@ describe('KladdLagring - auto-lagring', () => {
       '1',
       '0101',
       expect.objectContaining({ kodeverkValg: ['bransje-1', 'fk-1'] })
+    )
+  })
+
+  it('auto-lagrer når sertifiseringValg endres via setValue', async () => {
+    const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
+      sertifiseringValg: []
+    })
+
+    change('sertifiseringValg', [{ id: 90999, navn: 'Datakortet del 1' }])
+    await advanceDebounce()
+
+    expect(oppdaterKladd).toHaveBeenCalledTimes(1)
+    expect(oppdaterKladd).toHaveBeenCalledWith(
+      '1',
+      '0101',
+      expect.objectContaining({
+        sertifiseringValg: [{ id: 90999, navn: 'Datakortet del 1' }]
+      })
     )
   })
 

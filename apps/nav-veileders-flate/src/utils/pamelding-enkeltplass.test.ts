@@ -28,9 +28,10 @@ const lagDeltaker = (
   }) as unknown as DeltakerResponse
 
 describe('generateEnkeltplassPameldingRequest', () => {
-  it('returnerer undefined kodeverkValg når deltaker mangler kodeverk', () => {
+  it('returnerer undefined kodeverkValg og sertifiseringValg når deltaker mangler kodeverk', () => {
     const request = generateEnkeltplassPameldingRequest(lagDeltaker(null))
     expect(request.kodeverkValg).toBeUndefined()
+    expect(request.sertifiseringValg).toBeUndefined()
   })
 
   it('returnerer tom liste når kodeverket ikke har valgte verdier', () => {
@@ -97,5 +98,23 @@ describe('generateEnkeltplassPameldingRequest', () => {
     )
 
     expect(request.kodeverkValg).toEqual(['b1', 'fag-1', 'fag-2'])
+  })
+
+  it('plukker ut sertifiseringValg fra kodeverket', () => {
+    const request = generateEnkeltplassPameldingRequest(
+      lagDeltaker({
+        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+        alternativer: [],
+        sertifiseringValg: [
+          { id: 90999, navn: 'Datakortet del 1' },
+          { id: 2, navn: 'Sertifisert zumba-instruktør' }
+        ]
+      })
+    )
+
+    expect(request.sertifiseringValg).toEqual([
+      { id: 90999, navn: 'Datakortet del 1' },
+      { id: 2, navn: 'Sertifisert zumba-instruktør' }
+    ])
   })
 })
