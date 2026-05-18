@@ -28,7 +28,7 @@ jobs:
 
       - name: Deploy application
         if: matrix.target == 'dev' || (matrix.target == 'prod' && github.ref == 'refs/heads/main' && inputs.prod_deploy_enabled == true)
-        uses: nais/deploy/actions/deploy@fa754451577294aae42872a69b888b3470478ec1 # v2
+        uses: nais/deploy/actions/deploy@a7f8690f9b367fcbf5348a0a1e21d44f1aae50eb # v2
         env:
           CLUSTER: ${{ matrix.target == 'dev' && 'dev-gcp' || 'prod-gcp' }}
           RESOURCE: apps/${{ inputs.module_path }}/nais/nais-${{ matrix.target }}.yaml
