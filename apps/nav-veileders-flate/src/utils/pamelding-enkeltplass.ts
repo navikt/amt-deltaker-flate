@@ -8,6 +8,7 @@ import {
 } from '../model/PameldingEnkeltplassFormValues'
 import { formatDateToDtoStr } from './utils'
 import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
+import { getValgteVerdier } from '../api/data/kodeverk'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
@@ -24,7 +25,9 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     prisinformasjon: data.prisinformasjon,
     startdato,
     sluttdato,
-    arrangorUnderenhet: data.arrangorUnderenhet
+    arrangorUnderenhet: data.arrangorUnderenhet,
+    kodeverkValg: data.kodeverkValg,
+    sertifiseringValg: data.sertifiseringValg
   }
 }
 
@@ -58,7 +61,11 @@ export const generateEnkeltplassPameldingRequest = (
     startdato: startdato ? formatDateToDtoStr(startdato) : '',
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : '',
     arrangorUnderenhet:
-      deltaker.deltakerliste.arrangor?.organisasjonsnummer || ''
+      deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
+    kodeverkValg: deltaker.deltakerliste.kodeverk
+      ? getValgteVerdier(deltaker.deltakerliste.kodeverk.alternativer)
+      : undefined,
+    sertifiseringValg: deltaker.deltakerliste.kodeverk?.sertifiseringValg
   }
 }
 

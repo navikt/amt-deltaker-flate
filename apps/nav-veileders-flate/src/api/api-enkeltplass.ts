@@ -11,6 +11,10 @@ import {
   ArrangorEnhetResponse,
   arrangorEnhetResponseSchema
 } from './data/arrangorSok'
+import {
+  KodeverkSertifiseringResponse,
+  kodeverkSertifiseringResponseSchema
+} from './data/kodeverk.ts'
 
 export const opprettEnkeltplassKladd = async (
   personident: string,
@@ -187,6 +191,51 @@ export const sokUnderenhet = async (
       } catch (error) {
         logError('Kunne ikke parse arrangorEnhetResponseSchema:', error)
         throw new Error('Kunne ikke laste inn underenhet. Prøv igjen senere.')
+      }
+    })
+}
+
+export const sokSertifiseringer = async (
+  term: string,
+  enhetId: string
+): Promise<KodeverkSertifiseringResponse> => {
+  return fetch(
+    `${API_URL}/enkeltplass/kodeverk-sertifiseringer/sok/${encodeURIComponent(term)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'aktiv-enhet': enhetId
+      }
+    }
+  )
+    .then(async (response) => {
+      if (response.status !== 200) {
+        logError(
+          `Søking etter sertifiseringer feilet for søkestreng: ${term}`,
+          response.status
+        )
+
+        throw new Error(
+          'Søking etter sertifiseringer feilet. Prøv igjen senere.'
+        )
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return kodeverkSertifiseringResponseSchema.parse(json)
+      } catch (error) {
+        logError(
+          'Kunne ikke parse kodeverkSertifiseringResponseSchema:',
+          error,
+          json
+        )
+        throw new Error(
+          'Kunne ikke laste inn sertifiseringer. Prøv igjen senere.'
+        )
       }
     })
 }

@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
+import { getValgteVerdier } from '../api/data/kodeverk.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
@@ -44,7 +45,9 @@ export const createPameldingEnkeltplassFormSchema = (
         .max(
           PRISINFO_MAX_TEGN,
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
-        )
+        ),
+      kodeverkValg: z.array(z.string()),
+      sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
     })
     .refine(
       (schema) => {
@@ -94,6 +97,10 @@ export const generateFormDefaultValues = (
     sluttdato: deltaker.sluttdato
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
-    prisinformasjon: deltaker.prisinformasjon ?? ''
+    prisinformasjon: deltaker.prisinformasjon ?? '',
+    kodeverkValg: getValgteVerdier(
+      deltaker.deltakerliste.kodeverk?.alternativer ?? []
+    ),
+    sertifiseringValg: deltaker.deltakerliste.kodeverk?.sertifiseringValg ?? []
   }
 }

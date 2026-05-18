@@ -67,6 +67,8 @@ export const DeltakelseInnhold = ({
               </List.Item>
             ))}
         </List>
+
+        // TODO HER SKAL førerkort og sertifiseringer inn
       )}
     </div>
   )

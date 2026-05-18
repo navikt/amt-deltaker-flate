@@ -23,6 +23,7 @@ import {
   ForslagStatusType,
   HistorikkType
 } from '../model/forslag'
+
 import { INNHOLD_TYPE_ANNET } from './constants'
 
 dayjs.locale(nb)

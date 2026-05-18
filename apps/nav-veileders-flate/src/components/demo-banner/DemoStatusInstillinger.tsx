@@ -140,7 +140,7 @@ const DemoStatusInstillinger = () => {
   const { setDeltaker } = useDeltakerContext()
 
   const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
-    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING
   )
   const [pameldingStatus, setPameldingStatus] = useState<DeltakerStatusType>(
     DeltakerStatusType.KLADD

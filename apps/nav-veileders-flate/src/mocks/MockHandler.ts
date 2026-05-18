@@ -41,6 +41,10 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
+import {
+  createMockKodeverkResponse,
+  mockSertifiseringer
+} from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -57,7 +61,7 @@ export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
   statusType = DeltakerStatusType.KLADD
-  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+  tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
 
   createDeltaker(
     deltakerlisteId: string,
@@ -106,7 +110,8 @@ export class MockHandler {
         erEnkeltplass: true, // Endre her for enkeltplass
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
-          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
+          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
+        kodeverk: createMockKodeverkResponse(this.tiltakskode)
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -386,11 +391,8 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      if (status === DeltakerStatusType.FEILREGISTRERT) {
-        oppdatertPamelding.kanEndres = false
-      } else {
-        oppdatertPamelding.kanEndres = true
-      }
+      oppdatertPamelding.kanEndres =
+        status !== DeltakerStatusType.FEILREGISTRERT
 
       if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
         oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
@@ -435,8 +437,17 @@ export class MockHandler {
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
+    const erNyEnkeltplass =
+      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
+      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING ||
+      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
+      tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
+
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
+      oppdatertPamelding.deltakerliste.kodeverk =
+        createMockKodeverkResponse(tiltakskode)
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)
 
@@ -474,6 +485,9 @@ export class MockHandler {
         oppdatertPamelding.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
+      } else if (erNyEnkeltplass) {
+        oppdatertPamelding.deltakerliste.erEnkeltplass = true
+        oppdatertPamelding.importertFraArena = null
       } else {
         oppdatertPamelding.importertFraArena = null
         oppdatertPamelding.deltakerliste.erEnkeltplass = false
@@ -787,6 +801,10 @@ export class MockHandler {
         ? lagHistorikkFellesOppstart()
         : createHistorikk()
     )
+  }
+
+  sokSertifiseringer(soketekst: string) {
+    return mockSertifiseringer.filter((it) => it.label.includes(soketekst))
   }
 }
 

@@ -1,5 +1,4 @@
 import {
-  Tiltakskode,
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
@@ -8,10 +7,12 @@ import {
   nullableDateSchema,
   Oppstartstype,
   pameldingStatusSchema,
-  vedtaksinformasjonSchema,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode,
+  vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
+import { kodeverkResponseSchema } from './kodeverk.ts'
 
 export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
 
@@ -43,7 +44,8 @@ export const deltakerlisteSchema = z.object({
   tilgjengeligInnhold: tilgjengeligInnholdSchema,
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
-  pameldingstype: z.enum(Pameldingstype)
+  pameldingstype: z.enum(Pameldingstype),
+  kodeverk: kodeverkResponseSchema.nullable()
 })
 
 export const deltakerSchema = z.object({
