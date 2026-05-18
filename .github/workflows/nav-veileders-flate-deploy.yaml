@@ -109,7 +109,7 @@ jobs:
           team: amt
           source: apps/nav-veileders-flate/build
           source_keep_parent_name: false
-          destination: amt-deltaker-nav-veilderes-flate/dev
+          destination: amt-deltaker-nav-veileders-flate/dev
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
