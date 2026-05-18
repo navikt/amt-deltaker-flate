@@ -30,9 +30,11 @@ const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
       kodeverk: null
     },
     status: {
+      id: 'status-id',
       type: DeltakerStatusType.DELTAR,
       aarsak: null,
       gyldigFra: dayjs().subtract(1, 'month').toDate(),
+      gyldigTil: null,
       opprettet: dayjs().subtract(1, 'month').toDate()
     },
     startdato: null,
@@ -71,9 +73,11 @@ const lagAvsluttetDeltaker = (
     kanEndres,
     sluttdato,
     status: {
+      id: 'status-id',
       type: statusType,
       aarsak: null,
       gyldigFra: sluttdato,
+      gyldigTil: null,
       opprettet: sluttdato
     }
   })
@@ -129,9 +133,11 @@ describe('erLaastMenNyligAvsluttet', () => {
     const d = lagDeltaker({
       kanEndres: false,
       status: {
+        id: 'status-id',
         type: DeltakerStatusType.FEILREGISTRERT,
         aarsak: null,
         gyldigFra: dayjs().subtract(1, 'week').toDate(),
+        gyldigTil: null,
         opprettet: dayjs().subtract(1, 'week').toDate()
       }
     })
@@ -212,9 +218,11 @@ describe('validerDeltakerKanEndres – låst men nylig avsluttet', () => {
     const d = lagDeltaker({
       kanEndres: false,
       status: {
+        id: 'status-id',
         type: DeltakerStatusType.FEILREGISTRERT,
         aarsak: null,
         gyldigFra: dayjs().subtract(1, 'week').toDate(),
+        gyldigTil: null,
         opprettet: dayjs().subtract(1, 'week').toDate()
       }
     })
