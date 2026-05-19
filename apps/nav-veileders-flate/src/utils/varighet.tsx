@@ -289,13 +289,15 @@ export const SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før oppstartsdatoen.'
 export const VARIGHET_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at deltakeren oppfyller kravene.'
-export const Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING =
+export const LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at oppstartsdato er avtalt med arrangøren.'
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
 export const DATO_FØR_SLUTTDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
 export const DATO_ETTER_IDAG_FEILMELDING =
   'Du må velge en dato før dagens dato.'
+export const DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING =
+  'Datoen kan ikke velges fordi den er etter nåværende sluttdato.'
 
 /**
  * Returnerer datoen som kommer først av deltakerlistens sluttdato
