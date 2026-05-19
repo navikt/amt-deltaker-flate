@@ -104,6 +104,7 @@ export const AvsluttDeltakelseModal = ({
     deltaker: pamelding,
     defaultDato: defaultSluttdato ?? undefined,
     startdato: pamelding.startdato ?? undefined,
+    toDate: sluttdatoToDate,
     isAfterError: erEndreAvslutning
       ? DATO_ETTER_IDAG_FEILMELDING
       : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING

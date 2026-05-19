@@ -28,6 +28,8 @@ export function useSluttdato({
 }: UseSluttdatoOpts): {
   sluttdato: Date | undefined
   error: string | null
+  varighetError: string | null
+  annetError: string | null
   valider: () => boolean
   validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
   handleChange: (date: Date | undefined) => void
@@ -107,6 +109,8 @@ export function useSluttdato({
   return {
     sluttdato: hasError || valgtVarighet === undefined ? undefined : sluttdato,
     error: error || annet.error,
+    varighetError: error,
+    annetError: annet.error,
     valider,
     validerDato,
     handleChange
@@ -121,6 +125,7 @@ interface SluttdatoInputOpts {
   erSkjult?: boolean
   erForleng?: boolean
   isAfterError?: string
+  toDate?: Date
 }
 export function useSluttdatoInput({
   deltaker,
@@ -129,7 +134,8 @@ export function useSluttdatoInput({
   startdato,
   erSkjult,
   erForleng,
-  isAfterError
+  isAfterError,
+  toDate
 }: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
@@ -163,7 +169,11 @@ export function useSluttdatoInput({
   const handleChange = (date: Date | undefined) => {
     if (date) {
       setSluttdato(date)
-      setError(getSluttDatoFeilmelding(deltaker, date, startdato, erForleng))
+      if (toDate && isAfterError && dayjs(date).isAfter(toDate)) {
+        setError(isAfterError)
+      } else {
+        setError(getSluttDatoFeilmelding(deltaker, date, startdato, erForleng))
+      }
     }
     if (onChange) {
       onChange(date)
