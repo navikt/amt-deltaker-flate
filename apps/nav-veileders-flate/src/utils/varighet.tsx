@@ -294,6 +294,8 @@ export const Legg_TIL_STARTDATO_BEKREFTELSE_FEILMELDING =
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
 export const DATO_FØR_SLUTTDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
+export const DATO_ETTER_IDAG_FEILMELDING =
+  'Du må velge en dato før dagens dato.'
 
 /**
  * Returnerer datoen som kommer først av deltakerlistens sluttdato

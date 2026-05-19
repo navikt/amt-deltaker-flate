@@ -30,6 +30,7 @@ import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr } from '../../../utils/utils.ts'
 import {
+  DATO_ETTER_IDAG_FEILMELDING,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   VARIGHET_BEKREFTELSE_FEILMELDING
@@ -90,18 +91,27 @@ export const AvsluttDeltakelseModal = ({
     string | null
   >(null)
 
+  const { enhetId } = useAppContext()
+
+  const erEndreAvslutning =
+    endreDeltakelseType === EndreDeltakelseType.ENDRE_AVSLUTNING
+  const sluttdatoToDate = erEndreAvslutning
+    ? dayjs().subtract(1, 'day').toDate()
+    : (pamelding.sluttdato ?? undefined)
+
+  const sluttdato = useSluttdatoInput({
+    deltaker: pamelding,
+    defaultDato: defaultSluttdato ?? undefined,
+    startdato: pamelding.startdato ?? undefined,
+    isAfterError: erEndreAvslutning ? DATO_ETTER_IDAG_FEILMELDING : undefined
+  })
+
   const aarsak = useAarsak(
     forslag,
     pamelding.status.aarsak?.type,
     pamelding.status.aarsak?.beskrivelse
   )
   const begrunnelse = useBegrunnelse(true)
-  const sluttdato = useSluttdatoInput({
-    deltaker: pamelding,
-    defaultDato: defaultSluttdato ?? undefined,
-    startdato: pamelding.startdato ?? undefined
-  })
-  const { enhetId } = useAppContext()
 
   const skalViseAarsak = harKursAvslutendeStatuser
     ? avslutningstype === Avslutningstype.AVBRUTT ||
@@ -320,7 +330,7 @@ export const AvsluttDeltakelseModal = ({
             disabled={false}
             error={sluttdato.error}
             fromDate={pamelding.startdato ?? undefined}
-            toDate={pamelding.sluttdato ?? undefined}
+            toDate={sluttdatoToDate}
             defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}

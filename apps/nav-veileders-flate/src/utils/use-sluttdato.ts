@@ -120,6 +120,7 @@ interface SluttdatoInputOpts {
   startdato?: Date
   erSkjult?: boolean
   erForleng?: boolean
+  isAfterError?: string
 }
 export function useSluttdatoInput({
   deltaker,
@@ -127,7 +128,8 @@ export function useSluttdatoInput({
   defaultDato,
   startdato,
   erSkjult,
-  erForleng
+  erForleng,
+  isAfterError
 }: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
@@ -151,6 +153,8 @@ export function useSluttdatoInput({
           ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
           : DATO_FØR_SLUTTDATO_FEILMELDING
       )
+    } else if (dateValidation.isAfter && isAfterError) {
+      setError(isAfterError)
     } else if (newDate) {
       setError(getSluttDatoFeilmelding(deltaker, newDate, startdato, erForleng))
     }
