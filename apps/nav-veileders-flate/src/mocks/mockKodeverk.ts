@@ -38,7 +38,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: 'e6749d6c-aacf-452d-baf2-d5fb5021912b',
             visningsnavn: 'Butikk- og salgsarbeid',
-            valgt: false
+            valgt: true
           },
           {
             id: '82bd7ce0-70f1-448b-8773-9015dea613e7',
