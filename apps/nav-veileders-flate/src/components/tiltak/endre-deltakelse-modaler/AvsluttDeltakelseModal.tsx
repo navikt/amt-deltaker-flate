@@ -31,6 +31,7 @@ import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr } from '../../../utils/utils.ts'
 import {
   DATO_ETTER_IDAG_FEILMELDING,
+  DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   VARIGHET_BEKREFTELSE_FEILMELDING
@@ -103,7 +104,9 @@ export const AvsluttDeltakelseModal = ({
     deltaker: pamelding,
     defaultDato: defaultSluttdato ?? undefined,
     startdato: pamelding.startdato ?? undefined,
-    isAfterError: erEndreAvslutning ? DATO_ETTER_IDAG_FEILMELDING : undefined
+    isAfterError: erEndreAvslutning
+      ? DATO_ETTER_IDAG_FEILMELDING
+      : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING
   })
 
   const aarsak = useAarsak(
