@@ -15,4 +15,4 @@ Web component blir lastet inn i team VALP sin løsning for tiltaksadministrasjon
 
 ## Demo applikasjon
 
-https://amt-tiltakskoordinator-flate.ekstern.dev.nav.no
+https://amt-tiltakskoordinator-flate-demo.ekstern.dev.nav.no

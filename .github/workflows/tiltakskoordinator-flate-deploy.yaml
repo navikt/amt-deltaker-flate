@@ -110,7 +110,7 @@ jobs:
           team: amt
           source: apps/tiltakskoordinator-flate/build
           source_keep_parent_name: false
-          destination: amt-tiltakskoordinator-flate/dev
+          destination: amt-tiltakskoordinator-flate-demo
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 

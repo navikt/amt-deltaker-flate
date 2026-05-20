@@ -1,7 +1,7 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: amt-veileder-flate-demo
+  name: amt-tiltakskoordinator-flate-demo
   namespace: amt
   labels:
     team: amt
@@ -9,7 +9,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.05.04_08.28-44f053d6a1a4
   port: 8080
   ingresses:
-    - https://amt-veileder-flate-demo.ekstern.dev.nav.no
+    - https://amt-tiltakskoordinator-flate-demo.ekstern.dev.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
@@ -27,7 +27,7 @@ spec:
       memory: 128Mi
   gcp:
     buckets:
-      - name: amt-veileder-flate-demo #demo app
+      - name: amt-tiltakskoordinator-flate-demo
         cascadingDelete: false
   env:
     - name: JSON_CONFIG
@@ -36,7 +36,7 @@ spec:
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
             "bucketName": "nais-cdn-nav-amt-a889",
-            "bucketContextPath": "amt/amt-veileder-flate-demo"
+            "bucketContextPath": "amt/amt-tiltakskoordinator-flate-demo"
           }
         }
 
