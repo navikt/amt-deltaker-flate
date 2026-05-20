@@ -11,6 +11,7 @@ spec:
   ingresses:
     - https://amt-deltaker-flate.intern.dev.nav.no
     - https://amt-deltaker-flate.ansatt.dev.nav.no
+    - https://amt-deltaker-nav-veileders-flate-demo.ekstern.dev.nav.no/
   liveness:
     path: /internal/alive
     initialDelay: 10
@@ -39,11 +40,11 @@ spec:
         - /amt-deltaker-bff/**
   gcp:
     buckets:
-      - name: amt-deltaker-flate-dev-v2
+      - name: amt-deltaker-flate-dev-v2 #pr lenke dev
         cascadingDelete: false
-      - name: amt-deltaker-flate-veileder-dev
+      - name: amt-deltaker-flate-veileder-dev #vanlig dev
         cascadingDelete: false
-      - name: amt-deltaker-innbyggers-flate-demo
+      - name: amt-deltaker-nav-veileders-flate-demo #demo app
         cascadingDelete: false
   accessPolicy:
     outbound:
