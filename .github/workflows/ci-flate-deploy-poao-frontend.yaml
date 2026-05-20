@@ -44,3 +44,4 @@ jobs:
     with:
       module_path: ${{ matrix.module_path }}
       prod_deploy_enabled: ${{ matrix.module_path != 'tiltakskoordinator-flate' }}
+      targets: ${{ matrix.module_path == 'nav-veileders-flate' && '["dev","demo","prod"]' || '["dev","prod"]' }}

@@ -21,3 +21,4 @@ jobs:
     with:
       module_path: ${{ inputs.module_path }}
       prod_deploy_enabled: ${{ inputs.module_path != 'tiltakskoordinator-flate' }}
+      targets: ${{ inputs.module_path == 'nav-veileders-flate' && '["dev","demo","prod"]' || '["dev","prod"]' }}
