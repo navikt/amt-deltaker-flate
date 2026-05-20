@@ -7,4 +7,4 @@
 
 ## Demo applikasjon
 
-https://amt-deltaker-innbyggers-flate.ekstern.dev.nav.no
+https://amt-innbygger-flate-demo.ekstern.dev.nav.no

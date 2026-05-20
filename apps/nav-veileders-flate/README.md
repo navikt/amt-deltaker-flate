@@ -23,4 +23,4 @@ Inngang fra "Start påmelding" knappen, for å opprette påmeldinger
 
 ## Demo applikasjon
 
-https://amt-deltaker-nav-veileders-flate.ekstern.dev.nav.no
+https://amt-deltaker-nav-veileders-flate-demo.ekstern.dev.nav.no/

@@ -1,0 +1,50 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: amt-innbygger-flate-demo
+  namespace: amt
+  labels:
+    team: amt
+spec:
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.05.04_08.28-44f053d6a1a4
+  port: 8080
+  ingresses:
+    - https://amt-innbygger-flate-demo.ekstern.dev.nav.no
+  liveness:
+    path: /internal/alive
+    initialDelay: 10
+  readiness:
+    path: /internal/ready
+    initialDelay: 10
+  replicas:
+    disableAutoScaling: true
+    min: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  gcp:
+    buckets:
+      - name: amt-innbygger-flate-demo #demo app
+        cascadingDelete: false
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "nais-cdn-nav-amt-a889",
+            "bucketContextPath": "amt/amt-innbygger-flate-demo"
+          }
+        }
+
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki
