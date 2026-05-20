@@ -34,7 +34,7 @@ const appCards = APPS.map((app) =>
     .replaceAll('{{desc}}', app.desc)
 ).join('\n')
 
-const html = template.replace('    <!-- APPS_PLACEHOLDER -->', appCards)
+const html = template.replace('<!-- APP_CARDS_PLACEHOLDER -->', appCards)
 
 const outputDir = process.argv[2] || '.'
 fs.mkdirSync(outputDir, { recursive: true })
