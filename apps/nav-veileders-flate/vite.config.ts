@@ -7,9 +7,9 @@ async function resolveLocalDevJwt(): Promise<string | undefined> {
 
   const formBody = new URLSearchParams({
     grant_type: 'client_credentials',
-    client_id: 'local-client-id',
-    client_secret: 'local-secret',
-    aud: 'local-client-id'
+    client_id: 'frontend-client-id',
+    client_secret: 'frontend-secret',
+    aud: 'amt-deltaker-bff'
   })
 
   let response: Response
