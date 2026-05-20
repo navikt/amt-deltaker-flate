@@ -29,17 +29,14 @@ spec:
     buckets:
       - name: amt-deltaker-nav-veileders-flate-demo #demo app
         cascadingDelete: false
-  accessPolicy:
-    outbound:
-      rules:
-        - application: amt-deltaker-bff
   env:
     - name: JSON_CONFIG
       value: >
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-nav-veileders-flate-demo"
+            "bucketName": "nais-cdn-nav-amt-a889",
+            "bucketContextPath": "amt/amt-deltaker-nav-veileders-flate-demo"
           }
         }
 
