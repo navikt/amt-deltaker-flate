@@ -61,7 +61,49 @@ const skalViseFjernOppstartsdato = (pamelding: DeltakerResponse) =>
 const skalViseEndreAvslutning = (pamelding: DeltakerResponse) =>
   deltakerHarSluttetEllerFullfort(pamelding.status.type)
 
-const erDeltakelseLaast = (pamelding: DeltakerResponse): boolean => {
+const STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING = [
+  DeltakerStatusType.HAR_SLUTTET,
+  DeltakerStatusType.FULLFORT,
+  DeltakerStatusType.AVBRUTT
+]
+
+/**
+ * Returnerer true dersom deltakelsen er låst (kanEndres=false) men ble avsluttet
+ * for under to måneder siden. I dette tilfellet er det tillatt å endre avslutning
+ * (ENDRE_AVSLUTNING) til en annen avsluttende status.
+ */
+export const erLaastMenNyligAvsluttet = (
+  pamelding: DeltakerResponse
+): boolean => {
+  if (pamelding.kanEndres) return false
+
+  if (
+    !STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING.includes(pamelding.status.type)
+  ) {
+    return false
+  }
+
+  const sluttdato = pamelding.sluttdato
+  const statusGyldigFra = pamelding.status.gyldigFra
+  const nyesteDato = getNyesteDato([sluttdato, statusGyldigFra])
+
+  if (!nyesteDato) return false
+
+  const toMndSiden = new Date()
+  toMndSiden.setMonth(toMndSiden.getMonth() - 2)
+
+  return !dayjs(nyesteDato).isBefore(toMndSiden)
+}
+
+const erDeltakelseLaast = (
+  pamelding: DeltakerResponse,
+  laastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
+): boolean => {
+  // Låst men nylig avsluttet – begrenset redigering er tillatt
+  if (laastMenNyligAvsluttet) {
+    return false
+  }
+
   if (!pamelding.kanEndres) {
     return true
   }
@@ -99,7 +141,19 @@ const getNyesteDato = (datoer: (Date | null)[]) => {
 export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = pamelding.sluttdato
-  const deltakelseErLaast = erDeltakelseLaast(pamelding)
+  const deltakelseErLaastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
+  const deltakelseErLaast = erDeltakelseLaast(
+    pamelding,
+    deltakelseErLaastMenNyligAvsluttet
+  )
+
+  // Låst men nylig avsluttet – kun ENDRE_AVSLUTNING er tillatt
+  if (deltakelseErLaastMenNyligAvsluttet) {
+    if (skalViseEndreAvslutning(pamelding)) {
+      valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
+    }
+    return valg
+  }
 
   if (kanEndreOppstartsdato(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_OPPSTARTSDATO)
@@ -153,7 +207,7 @@ export const validerDeltakerKanEndres = (deltaker: DeltakerResponse) => {
   }
   if (erDeltakelseLaast(deltaker)) {
     throw new Error(
-      'Deltaker fikk avsluttende status for mer enn to måneder siden eller det finnes en nyere deltakelse, og kan derfor ikke redigeres.'
+      'Deltaker fikk avsluttende status for mer enn to måneder siden eller det finnes en nyere aktiv deltakelse, og kan derfor ikke redigeres.'
     )
   }
 }

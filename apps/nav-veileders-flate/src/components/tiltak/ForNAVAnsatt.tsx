@@ -23,8 +23,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
   const deltakerlisteId = deltaker.deltakerliste.deltakerlisteId
   const { doRedirect } = useModiaLink()
-  const kanEndres =
-    deltaker.kanEndres && getEndreDeltakelsesValg(deltaker).length > 0
+  const kanEndres = getEndreDeltakelsesValg(deltaker).length > 0
 
   return (
     <div
