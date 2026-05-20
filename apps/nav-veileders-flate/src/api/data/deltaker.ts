@@ -77,4 +77,5 @@ export const deltakerSchema = z.object({
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
+
 export type DeltakerResponse = z.infer<typeof deltakerSchema>
