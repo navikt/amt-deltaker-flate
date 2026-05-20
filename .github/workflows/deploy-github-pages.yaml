@@ -1,0 +1,48 @@
+name: Deploy all apps to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CI: true
+  TZ: Europe/Amsterdam
+  VITE_APP_VERSION: ${{ github.sha }}
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+
+      - name: Build all apps
+        run: |
+          pnpm --filter=innbyggers-flate exec vite build --mode demo --base /amt-deltaker-flate/innbyggers-flate/
+          pnpm --filter=nav-veileders-flate exec vite build --mode demo --base /amt-deltaker-flate/nav-veileders-flate/
+          pnpm --filter=tiltakskoordinator-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltakskoordinator-flate/
+
+      - name: Prepare GitHub Pages content
+        run: |
+          mkdir -p github-pages
+          cp -r apps/innbyggers-flate/build github-pages/innbyggers-flate
+          cp -r apps/nav-veileders-flate/build github-pages/nav-veileders-flate
+          cp -r apps/tiltakskoordinator-flate/build github-pages/tiltakskoordinator-flate
+
+      - name: Generate index page
+        run: node scripts/build-github-pages.js github-pages
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./github-pages

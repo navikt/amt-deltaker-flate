@@ -27,3 +27,7 @@ dist-ssr
 .vite
 .turbo
 *.tsbuildinfo
+
+# Generated files
+test-output
+github-pages
