@@ -9,8 +9,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.05.04_08.28-44f053d6a1a4
   port: 8080
   ingresses:
-    - https://amt-deltaker-flate.intern.dev.nav.no
-    - https://amt-deltaker-flate.ansatt.dev.nav.no
+    - https://amt-deltaker-nav-veileders-flate-demo.ekstern.dev.nav.no
   liveness:
     path: /internal/alive
     initialDelay: 10
@@ -39,9 +38,7 @@ spec:
         - /amt-deltaker-bff/**
   gcp:
     buckets:
-      - name: amt-deltaker-flate-dev-v2 #pr lenke dev
-        cascadingDelete: false
-      - name: amt-deltaker-flate-veileder-dev #vanlig dev
+      - name: amt-deltaker-nav-veileders-flate-demo #demo app
         cascadingDelete: false
   accessPolicy:
     outbound:
@@ -53,28 +50,8 @@ spec:
         {
           "fallbackStrategy": "SERVE_INDEX_HTML",
           "gcs": {
-            "bucketName": "amt-deltaker-flate-dev-v2"
-          },
-          "auth": {
-            "loginProvider": "AZURE_AD"
-          },
-          "cors": {
-            "origin": [
-              "https://veilarbpersonflate.intern.dev.nav.no",
-              "https://veilarbpersonflate.ansatt.dev.nav.no"
-            ]
-          },
-          "proxies": [
-            {
-              "fromPath": "/pr-:id/amt-deltaker-bff",
-              "toUrl": "http://amt-deltaker-bff",
-              "toApp": {
-                "name": "amt-deltaker-bff",
-                "namespace": "amt",
-                "cluster": "dev-gcp"
-              }
-            }
-          ]
+            "bucketName": "amt-deltaker-nav-veileders-flate-demo"
+          }
         }
 
   observability:
