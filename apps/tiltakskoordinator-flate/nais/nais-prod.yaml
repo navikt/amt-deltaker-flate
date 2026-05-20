@@ -1,0 +1,75 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: amt-deltaker-flate
+  namespace: amt
+  labels:
+    team: amt
+spec:
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.05.04_08.28-44f053d6a1a4
+  port: 8080
+  ingresses:
+    - https://amt-deltaker-flate.intern.nav.no
+  liveness:
+    path: /internal/alive
+    initialDelay: 10
+  readiness:
+    path: /internal/ready
+    initialDelay: 10
+  replicas:
+    min: 2
+    max: 4
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 500
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /assets/*
+        - /asset-manifest.json
+        - /amt-deltaker-bff/**
+  gcp:
+    buckets:
+      - name: amt-deltaker-flate-prod
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      rules:
+        - application: amt-deltaker-bff
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "amt-deltaker-flate-prod"
+          },
+          "auth": {
+            "loginProvider": "AZURE_AD"
+          },
+          "cors": {
+            "origin": [
+              "https://veilarbpersonflate.intern.nav.no"
+            ]
+          }
+        }
+
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki
