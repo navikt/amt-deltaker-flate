@@ -25,17 +25,6 @@ spec:
       memory: 64Mi
     limits:
       memory: 128Mi
-  azure:
-    application:
-      enabled: true
-      allowAllUsers: true
-    sidecar:
-      enabled: true
-      autoLogin: true
-      autoLoginIgnorePaths:
-        - /assets/*
-        - /asset-manifest.json
-        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-deltaker-nav-veileders-flate-demo #demo app
