@@ -18,7 +18,8 @@ export const DeltakerlistePage = () => {
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
-  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, deltakere, setDeltakere } =
+    useDeltakerlisteContext()
 
   const request = useMemo(
     () => ({
@@ -42,6 +43,8 @@ export const DeltakerlistePage = () => {
       request.statuser
     ],
     queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request),
+    initialData: deltakere,
+    staleTime: 60 * 1000, // 1 minutt
     placeholderData: keepPreviousData
   })
 

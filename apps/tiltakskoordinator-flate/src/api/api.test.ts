@@ -58,18 +58,6 @@ describe('getDeltakere', () => {
     expect(calledUrl).toContain('/deltakere-paged')
   })
 
-  it('sender gjennomforingId i body', async () => {
-    server.use(
-      http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
-        parsedBody = (await request.json()) as Record<string, unknown>
-        return HttpResponse.json(mockDeltakere)
-      })
-    )
-
-    await getDeltakere(DELTAKERLISTE_ID)
-    expect(parsedBody.gjennomforingId).toBeUndefined()
-  })
-
   it('sender statuser i body når de er oppgitt', async () => {
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
@@ -100,7 +88,7 @@ describe('getDeltakere', () => {
     expect(parsedBody.harForslagFraArrangor).toBe(true)
   })
 
-  it('gjennomforingId er ikke i body', async () => {
+  it('sender ikke gjennomforingId i body', async () => {
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
         parsedBody = (await request.json()) as Record<string, unknown>
