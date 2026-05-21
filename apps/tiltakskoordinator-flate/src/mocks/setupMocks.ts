@@ -37,7 +37,7 @@ export const worker = setupWorker(
     }
   ),
   http.post(
-    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere-paged',
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere',
     async ({ request }) => {
       await delay(500)
       const body =

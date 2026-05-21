@@ -17,7 +17,7 @@ import { lagMockDeltaker } from '../mocks/mockData'
 const DELTAKERLISTE_ID = uuidv4()
 const API_BASE = '/amt-deltaker-bff'
 const ENDPOINT = (id: string) =>
-  `${API_BASE}/tiltakskoordinator/deltakerliste/${id}/deltakere-paged`
+  `${API_BASE}/tiltakskoordinator/deltakerliste/${id}/deltakere`
 
 const mockDeltakere = [
   {
@@ -55,7 +55,7 @@ describe('getDeltakere', () => {
     )
 
     await getDeltakere(DELTAKERLISTE_ID)
-    expect(calledUrl).toContain('/deltakere-paged')
+    expect(calledUrl).toContain('/deltakere')
   })
 
   it('sender statuser i body når de er oppgitt', async () => {

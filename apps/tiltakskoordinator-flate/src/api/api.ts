@@ -74,7 +74,7 @@ export const getDeltakere = async (
   deltakerlisteId: string,
   filter?: TiltaksKoordinatorDeltakerlisteRequest
 ): Promise<DeltakereResponse> => {
-  return fetch(`${apiUrl(deltakerlisteId)}/deltakere-paged`, {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(filter ?? {}),
