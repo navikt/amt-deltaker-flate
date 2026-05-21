@@ -1,10 +1,57 @@
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
 import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/DeltakerlisteTabell'
 import { FilterDeltakerliste } from '../components/filter-deltakerliste/FilterDeltakerliste'
+import { useAppContext } from '../context-providers/AppContext'
+import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
+import { useFilterContext } from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
+import { HandlingFilterValg } from '../utils/filter-deltakerliste'
+import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
 
 export const DeltakerlistePage = () => {
   const { ref } = useFocusPageLoad('Deltakerliste')
+  const { deltakerlisteId } = useAppContext()
+  const navigate = useNavigate()
+  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
+  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
+
+  const request = useMemo(
+    () => ({
+      gjennomforingId: deltakerlisteDetaljer.id,
+      harForslagFraArrangor: valgteHendelseFilter.includes(
+        HandlingFilterValg.AktiveForslag
+      ),
+      statuser: valgteStatusFilter
+    }),
+    [deltakerlisteDetaljer.id, valgteHendelseFilter, valgteStatusFilter]
+  )
+
+  const { data: deltakereResponse } = useQuery({
+    queryKey: [
+      'deltakere',
+      deltakerlisteDetaljer.id,
+      valgteHendelseFilter,
+      valgteStatusFilter
+    ],
+    queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request)
+  })
+
+  useEffect(() => {
+    if (!deltakereResponse) {
+      return
+    }
+
+    if (isTilgangsFeil(deltakereResponse)) {
+      handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
+      return
+    }
+
+    setDeltakere(deltakereResponse)
+  }, [deltakereResponse, deltakerlisteId, navigate, setDeltakere])
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">

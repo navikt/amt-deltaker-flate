@@ -75,7 +75,16 @@ export const deltakerlisteDetaljerSchema = z.object({
   erEnkeltplass: z.boolean()
 })
 
+export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
+  gjennomforingId: z.uuid(),
+  harForslagFraArrangor: z.boolean().optional(),
+  statuser: z.array(z.enum(DeltakerStatusType)).optional()
+})
+
 export type Deltaker = z.infer<typeof deltakerSchema>
 export type Deltakere = z.infer<typeof deltakereSchema>
 export type DeltakerlisteDetaljer = z.infer<typeof deltakerlisteDetaljerSchema>
 export type Koordinator = z.infer<typeof koordinatorSchema>
+export type TiltaksKoordinatorDeltakerlisteRequest = z.infer<
+  typeof tiltaksKoordinatorDeltakerlisteRequestSchema
+>

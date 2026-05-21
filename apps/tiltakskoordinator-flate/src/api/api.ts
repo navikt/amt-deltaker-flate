@@ -12,7 +12,8 @@ import {
   deltakereSchema,
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema,
-  deltakerSchema
+  deltakerSchema,
+  TiltaksKoordinatorDeltakerlisteRequest
 } from './data/deltakerliste'
 import { ZodError } from 'zod'
 
@@ -70,11 +71,16 @@ export enum TilgangsFeil {
 export type DeltakereResponse = Deltakere | TilgangsFeil
 
 export const getDeltakere = async (
-  deltakerlisteId: string
+  deltakerlisteId: string,
+  request?: TiltaksKoordinatorDeltakerlisteRequest
 ): Promise<DeltakereResponse> => {
-  return fetch(`${apiUrl(deltakerlisteId)}/deltakere`, {
-    method: 'GET',
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere-paged`, {
+    method: 'POST',
     credentials: 'include',
+    body: JSON.stringify({
+      gjennomforingId: deltakerlisteId,
+      ...request
+    }),
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',

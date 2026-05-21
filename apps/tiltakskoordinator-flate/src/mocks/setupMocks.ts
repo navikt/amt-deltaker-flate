@@ -1,5 +1,6 @@
 import {
   DeltakerStatusAarsak,
+  DeltakerStatusType,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN,
   Oppstartstype,
@@ -33,6 +34,17 @@ export const worker = setupWorker(
     async () => {
       await delay(500)
       return handler.getDeltakerlisteDetaljer()
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere-paged',
+    async ({ request }) => {
+      await delay(500)
+      const body = (await request.json()) as {
+        harForslagFraArrangor?: boolean
+        statuser?: DeltakerStatusType[]
+      }
+      return handler.postDeltakere(body)
     }
   ),
   http.get(

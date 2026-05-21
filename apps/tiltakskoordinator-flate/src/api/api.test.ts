@@ -1,0 +1,148 @@
+import { DeltakerStatusType } from 'deltaker-flate-common'
+import { HttpResponse, http } from 'msw'
+import { setupServer } from 'msw/node'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { v4 as uuidv4 } from 'uuid'
+import { getDeltakere, TilgangsFeil } from './api'
+import { lagMockDeltaker } from '../mocks/mockData'
+
+const DELTAKERLISTE_ID = uuidv4()
+const API_BASE = '/amt-deltaker-bff'
+const ENDPOINT = (id: string) =>
+  `${API_BASE}/tiltakskoordinator/deltakerliste/${id}/deltakere-paged`
+
+const mockDeltakere = [
+  {
+    ...lagMockDeltaker(),
+    status: { type: DeltakerStatusType.DELTAR, aarsak: null },
+    harAktiveForslag: true
+  },
+  {
+    ...lagMockDeltaker(),
+    status: { type: DeltakerStatusType.SOKT_INN, aarsak: null },
+    harAktiveForslag: false
+  }
+]
+
+const server = setupServer()
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+
+describe('getDeltakere', () => {
+  it('sender POST til riktig URL', async () => {
+    let calledUrl = ''
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), ({ request }) => {
+        calledUrl = request.url
+        return HttpResponse.json(mockDeltakere)
+      })
+    )
+
+    await getDeltakere(DELTAKERLISTE_ID)
+    expect(calledUrl).toContain('/deltakere-paged')
+  })
+
+  it('sender gjennomforingId i body', async () => {
+    let parsedBody: Record<string, unknown> = {}
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
+        parsedBody = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json(mockDeltakere)
+      })
+    )
+
+    await getDeltakere(DELTAKERLISTE_ID)
+    expect(parsedBody.gjennomforingId).toBe(DELTAKERLISTE_ID)
+  })
+
+  it('sender statuser i body når de er oppgitt', async () => {
+    let parsedBody: Record<string, unknown> = {}
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
+        parsedBody = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json(mockDeltakere)
+      })
+    )
+
+    await getDeltakere(DELTAKERLISTE_ID, {
+      gjennomforingId: DELTAKERLISTE_ID,
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+
+    expect(parsedBody.statuser).toEqual([DeltakerStatusType.DELTAR])
+  })
+
+  it('sender harForslagFraArrangor i body når det er oppgitt', async () => {
+    let parsedBody: Record<string, unknown> = {}
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
+        parsedBody = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json(mockDeltakere)
+      })
+    )
+
+    await getDeltakere(DELTAKERLISTE_ID, {
+      gjennomforingId: DELTAKERLISTE_ID,
+      harForslagFraArrangor: true
+    })
+
+    expect(parsedBody.harForslagFraArrangor).toBe(true)
+  })
+
+  it('returnerer deltakere ved 200-svar', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json(mockDeltakere)
+      )
+    )
+
+    const result = await getDeltakere(DELTAKERLISTE_ID)
+    expect(Array.isArray(result)).toBe(true)
+    expect((result as unknown[]).length).toBe(mockDeltakere.length)
+  })
+
+  it('returnerer TilgangsFeil.ManglerADGruppe ved 401', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      )
+    )
+
+    const result = await getDeltakere(DELTAKERLISTE_ID)
+    expect(result).toBe(TilgangsFeil.ManglerADGruppe)
+  })
+
+  it('returnerer TilgangsFeil.IkkeTilgangTilDeltakerliste ved 403', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json({ error: 'Forbidden' }, { status: 403 })
+      )
+    )
+
+    const result = await getDeltakere(DELTAKERLISTE_ID)
+    expect(result).toBe(TilgangsFeil.IkkeTilgangTilDeltakerliste)
+  })
+
+  it('returnerer TilgangsFeil.DeltakerlisteStengt ved 410', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json({ error: 'Gone' }, { status: 410 })
+      )
+    )
+
+    const result = await getDeltakere(DELTAKERLISTE_ID)
+    expect(result).toBe(TilgangsFeil.DeltakerlisteStengt)
+  })
+
+  it('kaster feil ved 500', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json({ error: 'Server Error' }, { status: 500 })
+      )
+    )
+
+    await expect(getDeltakere(DELTAKERLISTE_ID)).rejects.toThrow()
+  })
+})
