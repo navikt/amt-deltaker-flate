@@ -72,15 +72,12 @@ export type DeltakereResponse = Deltakere | TilgangsFeil
 
 export const getDeltakere = async (
   deltakerlisteId: string,
-  request?: TiltaksKoordinatorDeltakerlisteRequest
+  filter?: TiltaksKoordinatorDeltakerlisteRequest
 ): Promise<DeltakereResponse> => {
   return fetch(`${apiUrl(deltakerlisteId)}/deltakere-paged`, {
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify({
-      gjennomforingId: deltakerlisteId,
-      ...request
-    }),
+    body: JSON.stringify(filter ?? {}),
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',

@@ -1,7 +1,15 @@
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it
+} from 'vitest'
 import { v4 as uuidv4 } from 'uuid'
 import { getDeltakere, TilgangsFeil } from './api'
 import { lagMockDeltaker } from '../mocks/mockData'
@@ -31,6 +39,12 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 describe('getDeltakere', () => {
+  let parsedBody: Record<string, unknown> = {}
+
+  beforeEach(() => {
+    parsedBody = {}
+  })
+
   it('sender POST til riktig URL', async () => {
     let calledUrl = ''
     server.use(
@@ -45,7 +59,6 @@ describe('getDeltakere', () => {
   })
 
   it('sender gjennomforingId i body', async () => {
-    let parsedBody: Record<string, unknown> = {}
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
         parsedBody = (await request.json()) as Record<string, unknown>
@@ -54,11 +67,10 @@ describe('getDeltakere', () => {
     )
 
     await getDeltakere(DELTAKERLISTE_ID)
-    expect(parsedBody.gjennomforingId).toBe(DELTAKERLISTE_ID)
+    expect(parsedBody.gjennomforingId).toBeUndefined()
   })
 
   it('sender statuser i body når de er oppgitt', async () => {
-    let parsedBody: Record<string, unknown> = {}
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
         parsedBody = (await request.json()) as Record<string, unknown>
@@ -67,7 +79,6 @@ describe('getDeltakere', () => {
     )
 
     await getDeltakere(DELTAKERLISTE_ID, {
-      gjennomforingId: DELTAKERLISTE_ID,
       statuser: [DeltakerStatusType.DELTAR]
     })
 
@@ -75,7 +86,6 @@ describe('getDeltakere', () => {
   })
 
   it('sender harForslagFraArrangor i body når det er oppgitt', async () => {
-    let parsedBody: Record<string, unknown> = {}
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
         parsedBody = (await request.json()) as Record<string, unknown>
@@ -84,11 +94,25 @@ describe('getDeltakere', () => {
     )
 
     await getDeltakere(DELTAKERLISTE_ID, {
-      gjennomforingId: DELTAKERLISTE_ID,
       harForslagFraArrangor: true
     })
 
     expect(parsedBody.harForslagFraArrangor).toBe(true)
+  })
+
+  it('gjennomforingId er ikke i body', async () => {
+    server.use(
+      http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
+        parsedBody = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json(mockDeltakere)
+      })
+    )
+
+    await getDeltakere(DELTAKERLISTE_ID, {
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+
+    expect(parsedBody.gjennomforingId).toBeUndefined()
   })
 
   it('returnerer deltakere ved 200-svar', async () => {

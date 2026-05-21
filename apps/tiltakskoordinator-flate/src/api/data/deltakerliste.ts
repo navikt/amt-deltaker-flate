@@ -76,7 +76,6 @@ export const deltakerlisteDetaljerSchema = z.object({
 })
 
 export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
-  gjennomforingId: z.uuid(),
   harForslagFraArrangor: z.boolean().optional(),
   statuser: z.array(z.enum(DeltakerStatusType)).optional()
 })

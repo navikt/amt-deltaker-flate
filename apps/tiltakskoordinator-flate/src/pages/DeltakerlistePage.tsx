@@ -21,13 +21,12 @@ export const DeltakerlistePage = () => {
 
   const request = useMemo(
     () => ({
-      gjennomforingId: deltakerlisteDetaljer.id,
       harForslagFraArrangor: valgteHendelseFilter.includes(
         HandlingFilterValg.AktiveForslag
       ),
       statuser: valgteStatusFilter
     }),
-    [deltakerlisteDetaljer.id, valgteHendelseFilter, valgteStatusFilter]
+    [valgteHendelseFilter, valgteStatusFilter]
   )
 
   const { data: deltakereResponse } = useQuery({
