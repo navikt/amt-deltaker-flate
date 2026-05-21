@@ -102,3 +102,30 @@ describe('MockHandler.postDeltakere', () => {
     expect(response.status).toBe(410)
   })
 })
+
+describe('MockHandler.getDeltakereStatusCounts', () => {
+  let handler: MockHandler
+
+  beforeEach(() => {
+    handler = new MockHandler()
+    handler.mockDeltakere = createMockDeltakere()
+  })
+
+  it('returnerer tellinger for forespurte statuser', async () => {
+    const response = handler.getDeltakereStatusCounts({
+      statuser: [DeltakerStatusType.DELTAR, DeltakerStatusType.HAR_SLUTTET]
+    })
+    const body = await response.json()
+
+    expect(body.DELTAR).toBeTypeOf('number')
+    expect(body.HAR_SLUTTET).toBeTypeOf('number')
+  })
+
+  it('returnerer 403 ved manglende tilgang', async () => {
+    handler.tilgang = false
+    const response = handler.getDeltakereStatusCounts({
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+    expect(response.status).toBe(403)
+  })
+})

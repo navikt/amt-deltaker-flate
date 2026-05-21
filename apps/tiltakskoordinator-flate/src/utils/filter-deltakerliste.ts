@@ -49,7 +49,7 @@ export const getFilterStatuser = (
   return statuser
 }
 
-const statusFilterTyper = [
+export const STATUS_FILTER_TYPER = [
   DeltakerStatusType.SOKT_INN,
   DeltakerStatusType.VENTELISTE,
   DeltakerStatusType.VENTER_PA_OPPSTART,
@@ -60,7 +60,7 @@ const statusFilterTyper = [
   DeltakerStatusType.IKKE_AKTUELL
 ] as const
 
-export type StatusFilterValg = (typeof statusFilterTyper)[number]
+export type StatusFilterValg = (typeof STATUS_FILTER_TYPER)[number]
 
 const getHandlingFilterTypeNavn = (filterValg: HandlingFilterValg): string => {
   switch (filterValg) {
@@ -196,7 +196,7 @@ export const getStatusFilterDetaljer = (
     deltakere,
     valgteHandlingerFilter
   )
-  return statusFilterTyper.map((filterValg) => {
+  return STATUS_FILTER_TYPER.map((filterValg) => {
     const erValgt = valgteFilter.includes(filterValg)
 
     return {

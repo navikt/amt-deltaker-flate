@@ -10,6 +10,8 @@ import {
   Deltaker,
   Deltakere,
   deltakereSchema,
+  DeltakerStatusCounts,
+  deltakerStatusCountsSchema,
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema,
   deltakerSchema,
@@ -69,6 +71,7 @@ export enum TilgangsFeil {
 }
 
 export type DeltakereResponse = Deltakere | TilgangsFeil
+export type DeltakerStatusCountsResponse = DeltakerStatusCounts | TilgangsFeil
 
 export const getDeltakere = async (
   deltakerlisteId: string,
@@ -104,6 +107,47 @@ export const getDeltakere = async (
       }
 
       throw new Error('Kunne ikke laste inn deltakere. Prøv igjen senere')
+    }
+  })
+}
+
+export const getDeltakerStatusCounts = async (
+  deltakerlisteId: string,
+  request: TiltaksKoordinatorDeltakerlisteRequest
+): Promise<DeltakerStatusCountsResponse> => {
+  return fetch(`${apiUrl(deltakerlisteId)}/deltakere/status-counts`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(request),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Nav-Consumer-Id': APP_NAME
+    }
+  }).then(async (response) => {
+    if (harTilgansfeil(response)) {
+      return handleTilgangsfeil(response)
+    }
+    if (response.status !== 200) {
+      const message = 'Status-tellinger kunne ikke hentes.'
+      handleError(message, deltakerlisteId, response.status, null)
+    }
+
+    try {
+      return deltakerStatusCountsSchema.parse(await response.json())
+    } catch (error) {
+      if (error instanceof ZodError) {
+        logError('ZodError', error.issues)
+      } else {
+        logError(
+          'Kunne ikke parse deltakerStatusCountsSchema for getDeltakerStatusCounts',
+          deltakerlisteId
+        )
+      }
+
+      throw new Error(
+        'Kunne ikke laste inn status-tellinger. Prøv igjen senere.'
+      )
     }
   })
 }

@@ -11,13 +11,15 @@ import {
   it
 } from 'vitest'
 import { v4 as uuidv4 } from 'uuid'
-import { getDeltakere, TilgangsFeil } from './api'
+import { getDeltakere, getDeltakerStatusCounts, TilgangsFeil } from './api'
 import { lagMockDeltaker } from '../mocks/mockData'
 
 const DELTAKERLISTE_ID = uuidv4()
 const API_BASE = '/amt-deltaker-bff'
 const ENDPOINT = (id: string) =>
   `${API_BASE}/tiltakskoordinator/deltakerliste/${id}/deltakere`
+const STATUS_COUNTS_ENDPOINT = (id: string) =>
+  `${API_BASE}/tiltakskoordinator/deltakerliste/${id}/deltakere/status-counts`
 
 const mockDeltakere = [
   {
@@ -156,5 +158,45 @@ describe('getDeltakere', () => {
     )
 
     await expect(getDeltakere(DELTAKERLISTE_ID)).rejects.toThrow()
+  })
+})
+
+describe('getDeltakerStatusCounts', () => {
+  it('returnerer status-tellinger fra backend', async () => {
+    const counts = {
+      VENTER_PA_OPPSTART: 1,
+      DELTAR: 6,
+      HAR_SLUTTET: 10
+    }
+
+    server.use(
+      http.post(STATUS_COUNTS_ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json(counts)
+      )
+    )
+
+    const result = await getDeltakerStatusCounts(DELTAKERLISTE_ID, {
+      statuser: [
+        DeltakerStatusType.VENTER_PA_OPPSTART,
+        DeltakerStatusType.DELTAR,
+        DeltakerStatusType.HAR_SLUTTET
+      ]
+    })
+
+    expect(result).toEqual(counts)
+  })
+
+  it('returnerer tilgangsfeil ved 403', async () => {
+    server.use(
+      http.post(STATUS_COUNTS_ENDPOINT(DELTAKERLISTE_ID), () =>
+        HttpResponse.json({ error: 'Forbidden' }, { status: 403 })
+      )
+    )
+
+    const result = await getDeltakerStatusCounts(DELTAKERLISTE_ID, {
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+
+    expect(result).toBe(TilgangsFeil.IkkeTilgangTilDeltakerliste)
   })
 })

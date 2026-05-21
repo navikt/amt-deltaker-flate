@@ -79,6 +79,32 @@ export class MockHandler {
     return HttpResponse.json(mapMockDeltakereToDeltakere(filtrerteDeltakere))
   }
 
+  getDeltakereStatusCounts(request: { statuser?: DeltakerStatusType[] }) {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+
+    const statuser = request.statuser ?? []
+    const counts = Object.fromEntries(
+      statuser.map((status) => [
+        status,
+        this.mockDeltakere.filter((deltaker) => deltaker.status.type === status)
+          .length
+      ])
+    )
+
+    return HttpResponse.json(counts)
+  }
+
   getDeltaker(deltakerId: string) {
     if (this.stengt) {
       return HttpResponse.json(

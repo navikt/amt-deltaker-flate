@@ -2,13 +2,18 @@ import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getDeltakere, getDeltakerlisteDetaljer } from './api/api'
+import {
+  getDeltakere,
+  getDeltakerlisteDetaljer,
+  getDeltakerStatusCounts
+} from './api/api'
 import { Deltakere } from './api/data/deltakerliste'
 import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
 import { DEFAULT_STATUS_FILTERS } from './context-providers/FilterContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
+import { getFilterStatuser } from './utils/filter-deltakerliste'
 import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsFeil'
 
 export const DeltakerListeGuard = () => {
@@ -29,12 +34,33 @@ export const DeltakerListeGuard = () => {
     doFetch: doFetchDeltakere
   } = useDeferredFetch(getDeltakere)
 
+  const { data: statusCountsResponse, doFetch: doFetchStatusCounts } =
+    useDeferredFetch(getDeltakerStatusCounts)
+
   const fetchDeltakerliste = async () => {
+    const detaljer = await doFetchDeltakelisteDetaljer(deltakerlisteId)
+
+    if (!detaljer) {
+      return
+    }
+
+    const statuserForVisning = [
+      ...new Set(
+        getFilterStatuser(
+          detaljer.oppstartstype,
+          detaljer.pameldingstype,
+          detaljer.tiltakskode
+        )
+      )
+    ]
+
     await Promise.allSettled([
       doFetchDeltakere(deltakerlisteId, {
         statuser: DEFAULT_STATUS_FILTERS
       }),
-      doFetchDeltakelisteDetaljer(deltakerlisteId)
+      doFetchStatusCounts(deltakerlisteId, {
+        statuser: statuserForVisning
+      })
     ])
   }
 
@@ -80,6 +106,11 @@ export const DeltakerListeGuard = () => {
         <DeltakerlisteContextProvider
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
           initialDeltakere={deltakere}
+          initialStatusCounts={
+            typeof statusCountsResponse === 'string' || !statusCountsResponse
+              ? {}
+              : statusCountsResponse
+          }
         >
           <DemoStatusInnstillinger />
           <DeltakerlistePage />
