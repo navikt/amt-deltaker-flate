@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { Alert, Loader } from '@navikt/ds-react'
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere } from '../api/api'
@@ -29,14 +30,19 @@ export const DeltakerlistePage = () => {
     [valgteHendelseFilter, valgteStatusFilter]
   )
 
-  const { data: deltakereResponse } = useQuery({
+  const {
+    data: deltakereResponse,
+    isFetching,
+    error
+  } = useQuery({
     queryKey: [
       'deltakere',
       deltakerlisteDetaljer.id,
-      valgteHendelseFilter,
-      valgteStatusFilter
+      request.harForslagFraArrangor,
+      request.statuser
     ],
-    queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request)
+    queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request),
+    placeholderData: keepPreviousData
   })
 
   useEffect(() => {
@@ -64,6 +70,18 @@ export const DeltakerlistePage = () => {
 
       <div className="flex-1 min-w-0">
         <h2 className="sr-only">Deltakerliste</h2>
+        {error && (
+          <Alert variant="error" size="small" className="mt-4">
+            Kunne ikke hente deltakere. Prøv igjen senere.
+          </Alert>
+        )}
+        {isFetching && (
+          <Loader
+            size="small"
+            title="Laster deltakere..."
+            className="mt-4 mb-2"
+          />
+        )}
         <DeltakerlisteTabell />
       </div>
     </div>

@@ -1,6 +1,5 @@
 import {
   DeltakerStatusAarsak,
-  DeltakerStatusType,
   KOMET_ER_MASTER,
   LES_ARENA_DELTAKERE_TOGGLE_NAVN,
   Oppstartstype,
@@ -8,6 +7,7 @@ import {
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
+import { TiltaksKoordinatorDeltakerlisteRequest } from '../api/data/deltakerliste'
 import { MockHandler } from './MockHandler'
 
 const handler = new MockHandler()
@@ -40,10 +40,8 @@ export const worker = setupWorker(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere-paged',
     async ({ request }) => {
       await delay(500)
-      const body = (await request.json()) as {
-        harForslagFraArrangor?: boolean
-        statuser?: DeltakerStatusType[]
-      }
+      const body =
+        (await request.json()) as TiltaksKoordinatorDeltakerlisteRequest
       return handler.postDeltakere(body)
     }
   ),
