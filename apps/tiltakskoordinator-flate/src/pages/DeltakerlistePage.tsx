@@ -8,7 +8,10 @@ import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/Deltake
 import { FilterDeltakerliste } from '../components/filter-deltakerliste/FilterDeltakerliste'
 import { useAppContext } from '../context-providers/AppContext'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
-import { useFilterContext } from '../context-providers/FilterContext'
+import {
+  DEFAULT_STATUS_FILTERS,
+  useFilterContext
+} from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { HandlingFilterValg } from '../utils/filter-deltakerliste'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
@@ -31,6 +34,15 @@ export const DeltakerlistePage = () => {
     [valgteHendelseFilter, valgteStatusFilter]
   )
 
+  const harDefaultStatuser =
+    valgteStatusFilter.length === DEFAULT_STATUS_FILTERS.length &&
+    DEFAULT_STATUS_FILTERS.every((status) =>
+      valgteStatusFilter.includes(status)
+    )
+
+  const erInitialtFiltervalg =
+    !request.harForslagFraArrangor && harDefaultStatuser
+
   const {
     data: deltakereResponse,
     isFetching,
@@ -43,7 +55,7 @@ export const DeltakerlistePage = () => {
       request.statuser
     ],
     queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request),
-    initialData: deltakere,
+    initialData: erInitialtFiltervalg ? deltakere : undefined,
     staleTime: 60 * 1000, // 1 minutt
     placeholderData: keepPreviousData
   })
