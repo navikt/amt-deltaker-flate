@@ -5,7 +5,7 @@ import {
   StatusFilterValg
 } from '../utils/filter-deltakerliste'
 
-const DEFAULT_STATUS_FILTERS: StatusFilterValg[] = [
+export const DEFAULT_STATUS_FILTERS: StatusFilterValg[] = [
   DeltakerStatusType.VENTER_PA_OPPSTART,
   DeltakerStatusType.DELTAR
 ]

@@ -7,6 +7,7 @@ import { Deltakere } from './api/data/deltakerliste'
 import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
+import { DEFAULT_STATUS_FILTERS } from './context-providers/FilterContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsFeil'
 
@@ -28,14 +29,18 @@ export const DeltakerListeGuard = () => {
     doFetch: doFetchDeltakere
   } = useDeferredFetch(getDeltakere)
 
-  const fetchDeltakerliste = () => {
-    doFetchDeltakere(deltakerlisteId)
-    doFetchDeltakelisteDetaljer(deltakerlisteId)
+  const fetchDeltakerliste = async () => {
+    await Promise.allSettled([
+      doFetchDeltakere(deltakerlisteId, {
+        statuser: DEFAULT_STATUS_FILTERS
+      }),
+      doFetchDeltakelisteDetaljer(deltakerlisteId)
+    ])
   }
 
   useEffect(() => {
     if (deltakerlisteId.length > 0) {
-      fetchDeltakerliste()
+      void fetchDeltakerliste()
     }
   }, [deltakerlisteId])
 
