@@ -62,7 +62,9 @@ export const STATUS_FILTER_TYPER = [
 
 export type StatusFilterValg = (typeof STATUS_FILTER_TYPER)[number]
 
-const getHandlingFilterTypeNavn = (filterValg: HandlingFilterValg): string => {
+export const getHandlingFilterTypeNavn = (
+  filterValg: HandlingFilterValg
+): string => {
   switch (filterValg) {
     case HandlingFilterValg.AktiveForslag:
       return 'Forslag fra arrangør'
