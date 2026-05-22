@@ -53,6 +53,8 @@ export const DeltakerListeGuard = () => {
       ? { statusCounts: {}, handlingCounts: {} }
       : filterCountsQuery.data
 
+  const visFilterCountsFeil = !!filterCountsQuery.error
+
   return (
     <>
       {deltakerlisteDetaljerQuery.isLoading && (
@@ -78,6 +80,14 @@ export const DeltakerListeGuard = () => {
           initialStatusCounts={filterCounts.statusCounts}
           initialHandlingCounts={filterCounts.handlingCounts}
         >
+          {visFilterCountsFeil && (
+            <div className="px-4 pt-4">
+              <Alert variant="warning" size="small">
+                Kunne ikke hente filtertellinger. Tellingene kan være
+                ufullstendige.
+              </Alert>
+            </div>
+          )}
           <DemoStatusInnstillinger />
           <DeltakerlistePage />
         </DeltakerlisteContextProvider>
