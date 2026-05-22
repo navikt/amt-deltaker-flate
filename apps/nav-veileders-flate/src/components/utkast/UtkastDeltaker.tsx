@@ -29,12 +29,12 @@ export const UtkastDeltaker = () => {
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        kodeverk={deltaker.deltakerliste.kodeverk}
         heading={
-          <Heading level="3" size="small" className="mb-2">
+          <Heading level="3" size="small">
             Dette er innholdet
           </Heading>
         }
-        listClassName="mt-2 mb-0 [&_ul]:m-0 [&_li:not(:last-child)]:mb-2 [&_li:last-child]:m-0"
       />
 
       {harBakgrunnsinfo(tiltakskode) && (

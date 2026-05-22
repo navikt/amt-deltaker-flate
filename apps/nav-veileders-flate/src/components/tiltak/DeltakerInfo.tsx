@@ -132,12 +132,12 @@ export const DeltakerInfo = ({ className }: Props) => {
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        kodeverk={deltaker.deltakerliste.kodeverk}
         heading={
-          <Heading level="2" size="medium" className="mt-8 mb-2">
+          <Heading level="2" size="medium" className="mt-8">
             Dette er innholdet
           </Heading>
         }
-        listClassName="mt-2"
       />
 
       <PrisOgBetaling

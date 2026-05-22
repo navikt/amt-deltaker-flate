@@ -2,9 +2,11 @@ import { BodyLong, List } from '@navikt/ds-react'
 import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 import { erOpplaringstiltak } from '../utils/utils'
+import { FlattKodeverk } from '../../../apps/nav-veileders-flate/src/api/data/kodeverk'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
+  kodeverk?: FlattKodeverk | null
   tiltakskode: Tiltakskode
   heading: React.ReactNode | null
   listClassName?: string
@@ -12,12 +14,22 @@ interface Props {
 
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
+  kodeverk,
   tiltakskode,
-  heading,
-  listClassName
+  heading
 }: Props) => {
-  if (!skalViseInnhold(deltakelsesinnhold)) {
-    return null
+  if (!harInnhold(deltakelsesinnhold)) {
+    if (!harKodeverk(kodeverk)) {
+      return null
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        {heading ?? null}
+
+        {renderKodeverk(kodeverk, tiltakskode)}
+      </div>
+    )
   }
 
   const harInnholdsTekst =
@@ -30,12 +42,12 @@ export const DeltakelseInnhold = ({
     deltakelsesinnhold
   )
 
-  if (harInnholdsTekst && !annetFelt) {
+  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk)) {
     return null
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {heading ?? null}
 
       {deltakelsesinnhold.ledetekst && (
@@ -44,7 +56,7 @@ export const DeltakelseInnhold = ({
 
       {harInnholdsTekst && annetFelt && (
         <BodyLong
-          className={`${deltakelsesinnhold.ledetekst ? 'mt-4' : ''} whitespace-pre-wrap`}
+          className="whitespace-pre-wrap"
           key={annetFelt.innholdskode}
           size="small"
         >
@@ -52,26 +64,54 @@ export const DeltakelseInnhold = ({
         </BodyLong>
       )}
 
+      {renderKodeverk(kodeverk, tiltakskode)}
+
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
-        <List as="ul" size="small" className={listClassName ?? ''}>
+        <List as="ul" size="small">
           {deltakelsesinnhold.innhold
             .filter((i) => i.valgt)
             .map((i) => (
-              <List.Item
-                key={i.innholdskode}
-                className="mt-2 whitespace-pre-wrap"
-              >
+              <List.Item key={i.innholdskode} className="whitespace-pre-wrap">
                 {i.innholdskode === INNHOLD_TYPE_ANNET
                   ? i.beskrivelse
                   : i.tekst}
               </List.Item>
             ))}
         </List>
-
-        // TODO HER SKAL førerkort og sertifiseringer inn
       )}
     </div>
   )
+}
+
+const renderKodeverk = (
+  kodeverk: FlattKodeverk | null | undefined,
+  tiltakskode: Tiltakskode
+) => {
+  const kodeverkTekst = getKodeverkTekst(kodeverk, tiltakskode)
+
+  return (
+    <>
+      {kodeverkTekst && <BodyLong size="small">{kodeverkTekst}</BodyLong>}
+
+      {kodeverk && kodeverk.valg.length > 0 && (
+        <List as="ul" size="small">
+          {kodeverk.valg.map((valg) => (
+            <List.Item key={valg}>{valg}</List.Item>
+          ))}
+        </List>
+      )}
+    </>
+  )
+}
+
+const getKodeverkTekst = (
+  kodeverk: FlattKodeverk | null | undefined,
+  tiltakskode: Tiltakskode
+) => {
+  return tiltakskode ===
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
+    ? null
+    : kodeverk?.tittel
 }
 
 const getAnnetFeltForInnhold = (
@@ -86,11 +126,15 @@ const getAnnetFeltForInnhold = (
   )
 }
 
-const skalViseInnhold = (
+const harInnhold = (
   deltakelsesinnhold: Deltakelsesinnhold | null
 ): deltakelsesinnhold is Deltakelsesinnhold => {
   return (
     !!deltakelsesinnhold &&
     (deltakelsesinnhold.innhold.length > 0 || !!deltakelsesinnhold.ledetekst)
   )
+}
+
+const harKodeverk = (kodeverk?: FlattKodeverk | null) => {
+  return kodeverk && (kodeverk.valg.length === 0 || !!kodeverk.tittel)
 }

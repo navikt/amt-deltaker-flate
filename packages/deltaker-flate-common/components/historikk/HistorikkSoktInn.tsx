@@ -36,7 +36,8 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
             Dette er innholdet
           </BodyLong>
         }
-        listClassName="-mt-3 -mb-1"
+        // TODO kodeverk
+        // listClassName="-mt-3 -mb-1" TODO sjekk ut
       />
 
       <Detail className="mt-1" textColor="subtle">
