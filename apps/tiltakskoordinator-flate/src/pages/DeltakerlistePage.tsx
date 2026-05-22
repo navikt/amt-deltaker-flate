@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Alert, Loader } from '@navikt/ds-react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
@@ -33,6 +33,7 @@ export const DeltakerlistePage = () => {
   const {
     data: deltakereResponse,
     isFetching,
+    isPlaceholderData,
     error
   } = useQuery({
     queryKey: [
@@ -41,20 +42,26 @@ export const DeltakerlistePage = () => {
       request.harForslagFraArrangor,
       request.statuser
     ],
-    queryFn: async () => {
-      const response = await getDeltakere(deltakerlisteDetaljer.id, request)
-      if (!isTilgangsFeil(response)) {
-        setDeltakere(response)
-      }
-      return response
-    },
+    queryFn: async () => getDeltakere(deltakerlisteDetaljer.id, request),
     staleTime: 0,
     placeholderData: keepPreviousData
   })
 
-  if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
-    handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
-  }
+  useEffect(() => {
+    if (
+      !isPlaceholderData &&
+      deltakereResponse &&
+      !isTilgangsFeil(deltakereResponse)
+    ) {
+      setDeltakere(deltakereResponse)
+    }
+  }, [deltakereResponse, isPlaceholderData, setDeltakere])
+
+  useEffect(() => {
+    if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
+      handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
+    }
+  }, [deltakereResponse, deltakerlisteId, navigate])
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">
