@@ -10,7 +10,10 @@ import { useAppContext } from '../context-providers/AppContext'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
-import { HandlingFilterValg } from '../utils/filter-deltakerliste'
+import {
+  HandlingFilterValg,
+  STATUS_FILTER_TYPER
+} from '../utils/filter-deltakerliste'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
 
 export const DeltakerlistePage = () => {
@@ -20,14 +23,22 @@ export const DeltakerlistePage = () => {
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
   const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
 
+  const normaliserteStatuser = useMemo(
+    () =>
+      STATUS_FILTER_TYPER.filter((status) =>
+        valgteStatusFilter.includes(status)
+      ),
+    [valgteStatusFilter]
+  )
+
   const request = useMemo(
     () => ({
       harForslagFraArrangor: valgteHendelseFilter.includes(
         HandlingFilterValg.AktiveForslag
       ),
-      statuser: valgteStatusFilter
+      statuser: normaliserteStatuser
     }),
-    [valgteHendelseFilter, valgteStatusFilter]
+    [valgteHendelseFilter, normaliserteStatuser]
   )
 
   const {
