@@ -39,20 +39,15 @@ export const useDeltakerSortering = (
     sortKey: ScopedSortState['orderBy'],
     onSortChanged?: (newSort: ScopedSortState) => void
   ) => {
-    const newSort =
-      sort && sortKey === sort.orderBy && sort.direction === 'descending'
-        ? undefined
-        : {
-            orderBy: sortKey,
-            direction:
-              sort && sortKey === sort.orderBy && sort.direction === 'ascending'
-                ? 'descending'
-                : 'ascending'
-          }
-    // @ts-expect-error newSort er riktig
+    const newSort: ScopedSortState = {
+      orderBy: sortKey,
+      direction:
+        sort && sortKey === sort.orderBy && sort.direction === 'descending'
+          ? 'ascending'
+          : 'descending'
+    }
     setSort(newSort)
     if (onSortChanged) {
-      // @ts-expect-error newSort er riktig
       onSortChanged(newSort)
     }
   }
