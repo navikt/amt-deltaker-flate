@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DeltakerStatusType, Pameldingstype } from 'deltaker-flate-common'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   DeltakerHandlingCounts,
   DeltakerStatusCounts
@@ -60,6 +60,10 @@ const renderFilterPanel = (
 }
 
 describe('Filter counts from backend', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   beforeEach(() => {
     const storage = new Map<string, string>()
     vi.stubGlobal('localStorage', {

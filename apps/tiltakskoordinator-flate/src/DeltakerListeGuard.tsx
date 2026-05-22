@@ -53,7 +53,8 @@ export const DeltakerListeGuard = () => {
       ? { statusCounts: {}, handlingCounts: {} }
       : filterCountsQuery.data
 
-  const visFilterCountsFeil = !!filterCountsQuery.error
+  const visFilterCountsFeil =
+    !!filterCountsQuery.error || typeof filterCountsQuery.data === 'string'
 
   return (
     <>

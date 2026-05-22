@@ -21,11 +21,15 @@ export const StatusFilter = () => {
   )
 
   const filtre = useMemo(() => {
-    return getFilterStatuser(
-      deltakerlisteDetaljer.oppstartstype,
-      deltakerlisteDetaljer.pameldingstype,
-      deltakerlisteDetaljer.tiltakskode
-    )
+    return [
+      ...new Set(
+        getFilterStatuser(
+          deltakerlisteDetaljer.oppstartstype,
+          deltakerlisteDetaljer.pameldingstype,
+          deltakerlisteDetaljer.tiltakskode
+        )
+      )
+    ]
   }, [
     deltakerlisteDetaljer.oppstartstype,
     deltakerlisteDetaljer.pameldingstype,
