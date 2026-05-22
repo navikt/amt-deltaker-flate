@@ -16,13 +16,19 @@ export enum SortKey {
   SLUTT_DATO = 'sluttdato'
 }
 
+const DEFAULT_SORT: ScopedSortState = {
+  orderBy: SortKey.SOKT_INN_DATO,
+  direction: 'descending'
+}
+
 export const useDeltakerSortering = (
   deltakere: Deltaker[],
   sorteringsValg?: ScopedSortState
 ) => {
-  const [sort, setSort] = useState<ScopedSortState | undefined>(sorteringsValg)
+  const initialSort = sorteringsValg ?? DEFAULT_SORT
+  const [sort, setSort] = useState<ScopedSortState | undefined>(initialSort)
   const [sorterteDeltagere, setSorterteDeltagere] = useState<Deltaker[]>(
-    sorterDeltakere(deltakere)
+    sorterDeltakere(deltakere, initialSort)
   )
 
   useEffect(() => {
