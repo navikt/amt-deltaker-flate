@@ -92,14 +92,22 @@ export const DeltakerlistePage = () => {
             Kunne ikke hente deltakere. Prøv igjen senere.
           </Alert>
         )}
-        {isFetching && (
+        {isPending && (
           <Loader
             size="small"
             title="Laster deltakere..."
             className="mt-4 mb-2"
           />
         )}
-        {!isPending && <DeltakerlisteTabell />}
+        {!isPending && (
+          <div
+            className={
+              isFetching ? 'opacity-50 transition-opacity duration-150' : ''
+            }
+          >
+            <DeltakerlisteTabell />
+          </div>
+        )}
       </div>
     </div>
   )
