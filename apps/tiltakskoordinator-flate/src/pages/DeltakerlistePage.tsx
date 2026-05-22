@@ -8,10 +8,7 @@ import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/Deltake
 import { FilterDeltakerliste } from '../components/filter-deltakerliste/FilterDeltakerliste'
 import { useAppContext } from '../context-providers/AppContext'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
-import {
-  DEFAULT_STATUS_FILTERS,
-  useFilterContext
-} from '../context-providers/FilterContext'
+import { useFilterContext } from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { HandlingFilterValg } from '../utils/filter-deltakerliste'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
@@ -21,8 +18,7 @@ export const DeltakerlistePage = () => {
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
-  const { deltakerlisteDetaljer, deltakere, setDeltakere } =
-    useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
 
   const request = useMemo(
     () => ({
@@ -33,15 +29,6 @@ export const DeltakerlistePage = () => {
     }),
     [valgteHendelseFilter, valgteStatusFilter]
   )
-
-  const harDefaultStatuser =
-    valgteStatusFilter.length === DEFAULT_STATUS_FILTERS.length &&
-    DEFAULT_STATUS_FILTERS.every((status) =>
-      valgteStatusFilter.includes(status)
-    )
-
-  const erInitialtFiltervalg =
-    !request.harForslagFraArrangor && harDefaultStatuser
 
   const {
     data: deltakereResponse,
@@ -61,7 +48,6 @@ export const DeltakerlistePage = () => {
       }
       return response
     },
-    initialData: erInitialtFiltervalg ? deltakere : undefined,
     staleTime: 60 * 1000, // 1 minutt
     placeholderData: keepPreviousData
   })

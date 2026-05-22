@@ -1,36 +1,19 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  getDeltakere,
-  getDeltakerlisteDetaljer,
-  getDeltakerStatusCounts
-} from './api/api'
+import { getDeltakerlisteDetaljer, getDeltakerStatusCounts } from './api/api'
 import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
-import { DEFAULT_STATUS_FILTERS } from './context-providers/FilterContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import { getFilterStatuser } from './utils/filter-deltakerliste'
-import { handterTilgangsFeil, isTilgangsFeil } from './utils/tilgangsFeil'
 
 export const DeltakerListeGuard = () => {
   const { deltakerlisteId } = useAppContext()
-  const navigate = useNavigate()
 
   const deltakerlisteDetaljerQuery = useQuery({
     queryKey: ['deltakerlisteDetaljer', deltakerlisteId],
     queryFn: () => getDeltakerlisteDetaljer(deltakerlisteId),
-    enabled: deltakerlisteId.length > 0
-  })
-
-  const deltakereQuery = useQuery({
-    queryKey: ['deltakereInit', deltakerlisteId],
-    queryFn: () =>
-      getDeltakere(deltakerlisteId, {
-        statuser: DEFAULT_STATUS_FILTERS
-      }),
     enabled: deltakerlisteId.length > 0
   })
 
@@ -60,22 +43,10 @@ export const DeltakerListeGuard = () => {
   })
 
   const deltakerlisteDetaljer = deltakerlisteDetaljerQuery.data
-  const deltakereResponse = deltakereQuery.data
-
-  if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
-    handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
-  }
 
   const visFeilmelding =
     deltakerlisteDetaljerQuery.error ||
-    deltakereQuery.error ||
-    (deltakerlisteDetaljerQuery.isSuccess && !deltakerlisteDetaljer) ||
-    (deltakereQuery.isSuccess && !deltakereResponse)
-
-  const deltakere =
-    !deltakereResponse || isTilgangsFeil(deltakereResponse)
-      ? null
-      : deltakereResponse
+    (deltakerlisteDetaljerQuery.isSuccess && !deltakerlisteDetaljer)
 
   const filterCounts =
     typeof filterCountsQuery.data === 'string' || !filterCountsQuery.data
@@ -84,7 +55,7 @@ export const DeltakerListeGuard = () => {
 
   return (
     <>
-      {(deltakerlisteDetaljerQuery.isLoading || deltakereQuery.isLoading) && (
+      {deltakerlisteDetaljerQuery.isLoading && (
         <div className="flex justify-center items-center h-screen">
           <Loader size="3xlarge" title="Venter..." />
         </div>
@@ -100,10 +71,10 @@ export const DeltakerListeGuard = () => {
         </div>
       )}
 
-      {deltakerlisteDetaljer && deltakere && (
+      {deltakerlisteDetaljer && (
         <DeltakerlisteContextProvider
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
-          initialDeltakere={deltakere}
+          initialDeltakere={[]}
           initialStatusCounts={filterCounts.statusCounts}
           initialHandlingCounts={filterCounts.handlingCounts}
         >
