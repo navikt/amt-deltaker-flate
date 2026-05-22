@@ -44,6 +44,90 @@ export class MockHandler {
     return HttpResponse.json(mapMockDeltakereToDeltakere(this.mockDeltakere))
   }
 
+  postDeltakere(request: {
+    harForslagFraArrangor?: boolean
+    statuser?: DeltakerStatusType[]
+  }) {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+
+    let filtrerteDeltakere = this.mockDeltakere
+
+    if (request.harForslagFraArrangor) {
+      filtrerteDeltakere = filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      )
+    }
+
+    if ((request.statuser?.length ?? 0) > 0) {
+      const valgteStatuser = new Set(request.statuser)
+      filtrerteDeltakere = filtrerteDeltakere.filter((deltaker) =>
+        valgteStatuser.has(deltaker.status.type)
+      )
+    }
+
+    return HttpResponse.json(mapMockDeltakereToDeltakere(filtrerteDeltakere))
+  }
+
+  getDeltakereStatusCounts(request: {
+    harForslagFraArrangor?: boolean
+    statuser?: DeltakerStatusType[]
+  }) {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+
+    let filtrerteDeltakere = this.mockDeltakere
+
+    if (request.harForslagFraArrangor) {
+      filtrerteDeltakere = filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      )
+    }
+
+    const statuser = request.statuser ?? []
+    const statusCounts = Object.fromEntries(
+      statuser.map((status) => [
+        status,
+        filtrerteDeltakere.filter((deltaker) => deltaker.status.type === status)
+          .length
+      ])
+    )
+
+    const handlingCounts = {
+      AktiveForslag: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      ).length,
+      OppdateringFraNav: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harOppdateringFraNav
+      ).length,
+      NyeDeltakere: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.erNyDeltaker
+      ).length
+    }
+
+    return HttpResponse.json({ statusCounts, handlingCounts })
+  }
+
   getDeltaker(deltakerId: string) {
     if (this.stengt) {
       return HttpResponse.json(
@@ -118,13 +202,12 @@ export class MockHandler {
   }
 
   delMedArrangor(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.erManueltDeltMedArrangor = true
       }
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(
@@ -136,7 +219,7 @@ export class MockHandler {
   }
 
   tildelPlass(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
         deltaker.status.aarsak = null
@@ -144,7 +227,6 @@ export class MockHandler {
       deltaker.feilkode = null
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(
@@ -156,7 +238,7 @@ export class MockHandler {
   }
 
   settPaVenteliste(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.aarsak = null
         deltaker.feilkode = [Feilkode.MIDLERTIDIG_FEIL, null][
@@ -169,7 +251,6 @@ export class MockHandler {
       }
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(

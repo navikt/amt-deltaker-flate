@@ -4,44 +4,47 @@ import {
   CheckboxGroup,
   ExpansionCard
 } from '@navikt/ds-react'
+import { getDeltakerStatusDisplayText } from 'deltaker-flate-common'
 import { useMemo } from 'react'
 import useLocalStorage from '../../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
 import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
-import {
-  getFilterStatuser,
-  getStatusFilterDetaljer
-} from '../../utils/filter-deltakerliste'
+import { getFilterStatuser } from '../../utils/filter-deltakerliste'
 
 export const StatusFilter = () => {
-  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const { valgteStatusFilter, valgteHendelseFilter, setValgteStatusFilter } =
-    useFilterContext()
+  const { deltakerlisteDetaljer, statusCounts, filterCountsLaster } =
+    useDeltakerlisteContext()
+  const { valgteStatusFilter, setValgteStatusFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-status-open',
     false
   )
 
-  const filterDetaljer = useMemo(() => {
-    return getStatusFilterDetaljer(
-      deltakere,
-      valgteStatusFilter,
-      valgteHendelseFilter
-    )
-  }, [valgteStatusFilter, valgteHendelseFilter, deltakere])
-
   const filtre = useMemo(() => {
-    return getFilterStatuser(
-      deltakerlisteDetaljer.oppstartstype,
-      deltakerlisteDetaljer.pameldingstype,
-      deltakerlisteDetaljer.tiltakskode
-    )
+    return [
+      ...new Set(
+        getFilterStatuser(
+          deltakerlisteDetaljer.oppstartstype,
+          deltakerlisteDetaljer.pameldingstype,
+          deltakerlisteDetaljer.tiltakskode
+        )
+      )
+    ]
   }, [
     deltakerlisteDetaljer.oppstartstype,
     deltakerlisteDetaljer.pameldingstype,
     deltakerlisteDetaljer.tiltakskode
   ])
+
+  const filterDetaljer = useMemo(
+    () =>
+      filtre.map((filtervalg) => ({
+        filtervalg,
+        navn: getDeltakerStatusDisplayText(filtervalg)
+      })),
+    [filtre]
+  )
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteStatusFilter(nyValgteFilter as StatusFilterValg[])
@@ -68,20 +71,18 @@ export const StatusFilter = () => {
           onChange={handleChange}
           value={valgteStatusFilter}
         >
-          {filterDetaljer
-            .filter((filter) => {
-              return filtre.includes(filter.filtervalg)
-            })
-            .map((filter) => (
-              <Checkbox key={filter.filtervalg} value={filter.filtervalg}>
-                <span className="flex justify-between w-full gap-2">
-                  <span className="whitespace-nowrap">{filter.navn}</span>
-                  <BodyShort as="span" weight="semibold">
-                    {filter.antall}
-                  </BodyShort>
-                </span>
-              </Checkbox>
-            ))}
+          {filterDetaljer.map((filter) => (
+            <Checkbox key={filter.filtervalg} value={filter.filtervalg}>
+              <span className="flex justify-between w-full gap-2">
+                <span className="whitespace-nowrap">{filter.navn}</span>
+                <BodyShort as="span" weight="semibold">
+                  {filterCountsLaster
+                    ? '-'
+                    : (statusCounts[filter.filtervalg] ?? 0)}
+                </BodyShort>
+              </span>
+            </Checkbox>
+          ))}
         </CheckboxGroup>
       </ExpansionCard.Content>
     </ExpansionCard>

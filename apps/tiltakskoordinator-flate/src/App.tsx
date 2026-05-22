@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import PrBanner from './components/demo-banner/PrBanner.tsx'
 import { useAppContext } from './context-providers/AppContext.tsx'
@@ -9,6 +10,7 @@ import { SorteringContextProvider } from './context-providers/SorteringContext.t
 import { AppRoutes } from './Routes.tsx'
 import { isPrEnv, useMock } from './utils/environment-utils.ts'
 import DemoBanner from './components/demo-banner/DemoBanner.tsx'
+import { queryClient } from './queryClient.ts'
 
 dayjs.locale(nb)
 
@@ -16,7 +18,7 @@ export const App = () => {
   const { setDeltakerlisteId } = useAppContext()
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       {isPrEnv && <PrBanner setDeltakerlisteId={setDeltakerlisteId} />}
       {useMock && <DemoBanner />}
 
@@ -29,6 +31,6 @@ export const App = () => {
           </SorteringContextProvider>
         </FilterContextProvider>
       </HandlingContextProvider>
-    </>
+    </QueryClientProvider>
   )
 }

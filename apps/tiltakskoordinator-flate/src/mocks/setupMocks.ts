@@ -7,6 +7,7 @@ import {
 } from 'deltaker-flate-common'
 import { delay, http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
+import { TiltaksKoordinatorDeltakerlisteRequest } from '../api/data/deltakerliste'
 import { MockHandler } from './MockHandler'
 
 const handler = new MockHandler()
@@ -33,6 +34,24 @@ export const worker = setupWorker(
     async () => {
       await delay(500)
       return handler.getDeltakerlisteDetaljer()
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere',
+    async ({ request }) => {
+      await delay(500)
+      const body =
+        (await request.json()) as TiltaksKoordinatorDeltakerlisteRequest
+      return handler.postDeltakere(body)
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere/status-counts',
+    async ({ request }) => {
+      await delay(500)
+      const body =
+        (await request.json()) as TiltaksKoordinatorDeltakerlisteRequest
+      return handler.getDeltakereStatusCounts(body)
     }
   ),
   http.get(

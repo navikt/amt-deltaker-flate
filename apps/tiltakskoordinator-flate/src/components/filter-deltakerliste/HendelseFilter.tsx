@@ -4,37 +4,37 @@ import {
   CheckboxGroup,
   ExpansionCard
 } from '@navikt/ds-react'
+import { kreverGodkjenningForPamelding } from 'deltaker-flate-common'
 import { useMemo } from 'react'
 import useLocalStorage from '../../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
 import {
   HandlingFilterValg,
-  getHendelseFilterDetaljer
+  getHandlingFilterTypeNavn
 } from '../../utils/filter-deltakerliste'
 
 export const HendelseFilter = () => {
-  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const { valgteHendelseFilter, valgteStatusFilter, setValgteHendelseFilter } =
-    useFilterContext()
+  const { deltakerlisteDetaljer, handlingCounts, filterCountsLaster } =
+    useDeltakerlisteContext()
+  const { valgteHendelseFilter, setValgteHendelseFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-hendelser-open',
     false
   )
 
   const filterDetaljer = useMemo(() => {
-    return getHendelseFilterDetaljer(
-      deltakere,
-      valgteHendelseFilter,
-      valgteStatusFilter,
-      deltakerlisteDetaljer.pameldingstype
-    )
-  }, [
-    valgteHendelseFilter,
-    valgteStatusFilter,
-    deltakere,
-    deltakerlisteDetaljer
-  ])
+    return Object.values(HandlingFilterValg)
+      .filter((filterValg) =>
+        kreverGodkjenningForPamelding(deltakerlisteDetaljer.pameldingstype)
+          ? true
+          : filterValg === HandlingFilterValg.AktiveForslag
+      )
+      .map((filterValg) => ({
+        filtervalg: filterValg,
+        navn: getHandlingFilterTypeNavn(filterValg)
+      }))
+  }, [deltakerlisteDetaljer.pameldingstype])
 
   const handleChange = (nyValgteFilter: string[]) => {
     setValgteHendelseFilter(
@@ -73,7 +73,9 @@ export const HendelseFilter = () => {
               <span className="flex justify-between w-full gap-2">
                 <span className="whitespace-nowrap">{filter.navn}</span>
                 <BodyShort as="span" weight="semibold">
-                  {filter.antall}
+                  {filterCountsLaster
+                    ? '-'
+                    : (handlingCounts[filter.filtervalg] ?? 0)}
                 </BodyShort>
               </span>
             </Checkbox>

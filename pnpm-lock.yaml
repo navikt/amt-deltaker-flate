@@ -267,6 +267,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: ^8.10.3
         version: 8.10.3
+      '@tanstack/react-query':
+        specifier: ^5.100.6
+        version: 5.100.6(react@19.2.5)
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
@@ -720,6 +723,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.10.3':
     resolution: {integrity: sha512-oyv1dLdLvnkcavlFOX7oFkWWyl4AKN8iP/OLN9M2lhcqKCNdYSCetty73tzILuoaHneyoxTYPPn2uwIlxHey0Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.10.3/dd5ab1e6543ceffb74261a3d2250cd9b167dfdf1}
@@ -733,6 +739,9 @@ packages:
     peerDependencies:
       html-react-parser: '>=5.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
@@ -3262,11 +3271,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/aksel-icons': 8.10.3
       '@navikt/ds-tokens': 8.10.3
-      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.5
       react-day-picker: 9.14.0(react@19.2.5)
       react-dom: 19.2.5(react@19.2.5)
+    optionalDependencies:
+      '@types/react': 19.2.14
 
   '@navikt/ds-tailwind@8.10.3': {}
 
@@ -3277,6 +3287,7 @@ snapshots:
       csp-header: 6.3.1
       html-react-parser: 6.0.1(@types/react@19.2.14)(react@19.2.5)
       js-cookie: 3.0.5
+    optionalDependencies:
       react: 19.2.5
 
   '@open-draft/deferred-promise@2.2.0': {}
