@@ -71,7 +71,7 @@ export const DeltakerListeGuard = () => {
         <div id="maincontent" role="main" tabIndex={-1}>
           <Alert variant="error" className="mt-4">
             <Heading spacing size="small" level="3">
-              Kunne ikke hente deltakere. Vennligst prøv igjen.
+              Kunne ikke hente detaljer om deltakerlisten. Vennligst prøv igjen.
             </Heading>
           </Alert>
         </div>
