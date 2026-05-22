@@ -48,7 +48,7 @@ export const DeltakerlistePage = () => {
       }
       return response
     },
-    staleTime: 60 * 1000, // 1 minutt
+    staleTime: 0,
     placeholderData: keepPreviousData
   })
 
