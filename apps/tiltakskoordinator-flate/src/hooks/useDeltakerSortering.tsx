@@ -1,5 +1,5 @@
 import { SortState } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Deltaker } from '../api/data/deltakerliste'
 
 export interface ScopedSortState extends SortState {
@@ -27,13 +27,10 @@ export const useDeltakerSortering = (
 ) => {
   const initialSort = sorteringsValg ?? DEFAULT_SORT
   const [sort, setSort] = useState<ScopedSortState | undefined>(initialSort)
-  const [sorterteDeltagere, setSorterteDeltagere] = useState<Deltaker[]>(
-    sorterDeltakere(deltakere, initialSort)
+  const sorterteDeltagere = useMemo(
+    () => sorterDeltakere(deltakere, sort),
+    [deltakere, sort]
   )
-
-  useEffect(() => {
-    setSorterteDeltagere(sorterDeltakere(deltakere, sort))
-  }, [deltakere, sort])
 
   const handleSort = (
     sortKey: ScopedSortState['orderBy'],
