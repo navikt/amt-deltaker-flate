@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Alert, Loader } from '@navikt/ds-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
@@ -25,6 +25,8 @@ export const DeltakerlistePage = () => {
   const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { setLagretSorteringsValg } = useSorteringContext()
 
+  const erForsteRender = useRef(true)
+
   const normaliserteStatuser = useMemo(
     () =>
       STATUS_FILTER_TYPER.filter((status) =>
@@ -44,6 +46,10 @@ export const DeltakerlistePage = () => {
   )
 
   useEffect(() => {
+    if (erForsteRender.current) {
+      erForsteRender.current = false
+      return
+    }
     setLagretSorteringsValg(undefined)
   }, [request, setLagretSorteringsValg])
 
