@@ -10,6 +10,7 @@ import { useAppContext } from '../context-providers/AppContext'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
+import { useSorteringContext } from '../context-providers/SorteringContext'
 import {
   HandlingFilterValg,
   STATUS_FILTER_TYPER
@@ -22,6 +23,7 @@ export const DeltakerlistePage = () => {
   const navigate = useNavigate()
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
   const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
+  const { setLagretSorteringsValg } = useSorteringContext()
 
   const normaliserteStatuser = useMemo(
     () =>
@@ -40,6 +42,10 @@ export const DeltakerlistePage = () => {
     }),
     [valgteHendelseFilter, normaliserteStatuser]
   )
+
+  useEffect(() => {
+    setLagretSorteringsValg(undefined)
+  }, [request, setLagretSorteringsValg])
 
   const {
     data: deltakereResponse,
