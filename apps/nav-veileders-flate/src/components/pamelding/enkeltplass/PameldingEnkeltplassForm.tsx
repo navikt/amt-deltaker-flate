@@ -14,6 +14,10 @@ import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from '../FormErrorSummary.tsx'
 import { ArrangorValg } from './ArrangorValg.tsx'
 import { KodeverkValg } from './KodeverkValg.tsx'
+import { useQuery } from '@tanstack/react-query'
+import { useAppContext } from '../../../AppContext.tsx'
+import { getKodeverk } from '../../../api/api-enkeltplass.ts'
+import { Loader } from '@navikt/ds-react'
 
 interface Props {
   className?: string
@@ -23,8 +27,21 @@ interface Props {
 export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
 
+  const { enhetId } = useAppContext()
   const { deltaker } = useDeltakerContext()
-  const defaultValues = generateFormDefaultValues(deltaker)
+
+  useEffect(() => {
+    if (focusOnOpen && formRef?.current) formRef.current.focus()
+  }, [])
+
+  const { data: kodeverk, isLoading } = useQuery({
+    queryKey: ['kodeverk', deltaker.deltakerId],
+    queryFn: () => getKodeverk(deltaker.deltakerId, enhetId),
+    // placeholderData: keepPreviousData,
+    throwOnError: false
+  })
+
+  const defaultValues = generateFormDefaultValues(deltaker, kodeverk)
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
@@ -32,9 +49,13 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
     shouldFocusError: false
   })
 
-  useEffect(() => {
-    if (focusOnOpen && formRef?.current) formRef.current.focus()
-  }, [])
+  if (isLoading) {
+    return (
+      <div className="mt-8">
+        <Loader size="3xlarge" title="Henter skjema..." />
+      </div>
+    )
+  }
 
   return (
     <form
@@ -47,7 +68,7 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
       <FormProvider {...methods}>
         <FormErrorSummary erEnkeltplass={true} />
 
-        <KodeverkValg />
+        <KodeverkValg kodeverk={kodeverk} />
 
         <InnholdBeskrivelse />
 

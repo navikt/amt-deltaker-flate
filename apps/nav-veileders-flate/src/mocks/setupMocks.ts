@@ -358,5 +358,9 @@ export const worker = setupWorker(
       const { term } = params as { term: string }
       return HttpResponse.json(handler.sokSertifiseringer(term))
     }
-  )
+  ),
+  http.get('/amt-deltaker-bff/enkeltplass/kodeverk/:deltakerId', async () => {
+    await delay(1000)
+    return HttpResponse.json(handler.getKodeverk())
+  })
 )
