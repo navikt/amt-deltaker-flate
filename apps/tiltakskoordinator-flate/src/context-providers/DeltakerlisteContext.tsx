@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import {
   Deltakere,
+  DeltakerHandlingCounts,
   DeltakerlisteDetaljer,
   DeltakerStatusCounts
 } from '../api/data/deltakerliste'
@@ -9,6 +10,7 @@ export interface DeltakerListeContextProps {
   deltakerlisteDetaljer: DeltakerlisteDetaljer
   deltakere: Deltakere
   statusCounts: DeltakerStatusCounts
+  handlingCounts: DeltakerHandlingCounts
   filtrerteDeltakere: Deltakere
   setDeltakerlisteDetaljer: React.Dispatch<
     React.SetStateAction<DeltakerlisteDetaljer>
@@ -37,11 +39,13 @@ const DeltakerlisteContextProvider = ({
   initialDeltakerlisteDetaljer,
   initialDeltakere,
   initialStatusCounts,
+  initialHandlingCounts,
   children
 }: {
   initialDeltakerlisteDetaljer: DeltakerlisteDetaljer
   initialDeltakere: Deltakere
   initialStatusCounts: DeltakerStatusCounts
+  initialHandlingCounts: DeltakerHandlingCounts
   children: React.ReactNode
 }) => {
   const [deltakerlisteDetaljer, setDeltakerlisteDetaljer] = useState(
@@ -49,12 +53,14 @@ const DeltakerlisteContextProvider = ({
   )
   const [deltakere, setDelakere] = useState(initialDeltakere)
   const [statusCounts] = useState(initialStatusCounts)
+  const [handlingCounts] = useState(initialHandlingCounts)
   const [filtrerteDeltakere, setFiltrerteDeltakere] = useState(initialDeltakere)
 
   const contextValue: DeltakerListeContextProps = {
     deltakerlisteDetaljer: deltakerlisteDetaljer,
     deltakere: deltakere,
     statusCounts: statusCounts,
+    handlingCounts: handlingCounts,
     filtrerteDeltakere: filtrerteDeltakere,
     setDeltakerlisteDetaljer: setDeltakerlisteDetaljer,
     setDeltakere: setDelakere,

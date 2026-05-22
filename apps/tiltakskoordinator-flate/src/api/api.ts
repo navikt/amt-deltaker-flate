@@ -9,9 +9,9 @@ import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
 import {
   Deltaker,
   Deltakere,
+  DeltakerFilterCounts,
+  deltakerFilterCountsSchema,
   deltakereSchema,
-  DeltakerStatusCounts,
-  deltakerStatusCountsSchema,
   DeltakerlisteDetaljer,
   deltakerlisteDetaljerSchema,
   deltakerSchema,
@@ -71,7 +71,7 @@ export enum TilgangsFeil {
 }
 
 export type DeltakereResponse = Deltakere | TilgangsFeil
-export type DeltakerStatusCountsResponse = DeltakerStatusCounts | TilgangsFeil
+export type DeltakerFilterCountsResponse = DeltakerFilterCounts | TilgangsFeil
 
 export const getDeltakere = async (
   deltakerlisteId: string,
@@ -114,7 +114,7 @@ export const getDeltakere = async (
 export const getDeltakerStatusCounts = async (
   deltakerlisteId: string,
   request: TiltaksKoordinatorDeltakerlisteRequest
-): Promise<DeltakerStatusCountsResponse> => {
+): Promise<DeltakerFilterCountsResponse> => {
   return fetch(`${apiUrl(deltakerlisteId)}/deltakere/status-counts`, {
     method: 'POST',
     credentials: 'include',
@@ -134,13 +134,13 @@ export const getDeltakerStatusCounts = async (
     }
 
     try {
-      return deltakerStatusCountsSchema.parse(await response.json())
+      return deltakerFilterCountsSchema.parse(await response.json())
     } catch (error) {
       if (error instanceof ZodError) {
         logError('ZodError', error.issues)
       } else {
         logError(
-          'Kunne ikke parse deltakerStatusCountsSchema for getDeltakerStatusCounts',
+          'Kunne ikke parse deltakerFilterCountsSchema for getDeltakerStatusCounts',
           deltakerlisteId
         )
       }

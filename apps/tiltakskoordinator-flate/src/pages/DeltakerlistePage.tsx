@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Alert, Loader } from '@navikt/ds-react'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
@@ -54,24 +54,21 @@ export const DeltakerlistePage = () => {
       request.harForslagFraArrangor,
       request.statuser
     ],
-    queryFn: () => getDeltakere(deltakerlisteDetaljer.id, request),
+    queryFn: async () => {
+      const response = await getDeltakere(deltakerlisteDetaljer.id, request)
+      if (!isTilgangsFeil(response)) {
+        setDeltakere(response)
+      }
+      return response
+    },
     initialData: erInitialtFiltervalg ? deltakere : undefined,
     staleTime: 60 * 1000, // 1 minutt
     placeholderData: keepPreviousData
   })
 
-  useEffect(() => {
-    if (!deltakereResponse) {
-      return
-    }
-
-    if (isTilgangsFeil(deltakereResponse)) {
-      handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
-      return
-    }
-
-    setDeltakere(deltakereResponse)
-  }, [deltakereResponse, deltakerlisteId, navigate, setDeltakere])
+  if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
+    handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
+  }
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">

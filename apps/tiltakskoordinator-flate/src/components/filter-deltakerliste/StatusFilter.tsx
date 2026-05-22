@@ -78,7 +78,7 @@ export const StatusFilter = () => {
                 <span className="flex justify-between w-full gap-2">
                   <span className="whitespace-nowrap">{filter.navn}</span>
                   <BodyShort as="span" weight="semibold">
-                    {statusCounts[filter.filtervalg] ?? filter.antall}
+                    {statusCounts[filter.filtervalg] ?? 0}
                   </BodyShort>
                 </span>
               </Checkbox>

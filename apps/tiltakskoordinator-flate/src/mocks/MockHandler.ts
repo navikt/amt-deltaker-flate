@@ -79,7 +79,10 @@ export class MockHandler {
     return HttpResponse.json(mapMockDeltakereToDeltakere(filtrerteDeltakere))
   }
 
-  getDeltakereStatusCounts(request: { statuser?: DeltakerStatusType[] }) {
+  getDeltakereStatusCounts(request: {
+    harForslagFraArrangor?: boolean
+    statuser?: DeltakerStatusType[]
+  }) {
     if (this.stengt) {
       return HttpResponse.json(
         { error: 'Deltakerliste stengt' },
@@ -93,16 +96,36 @@ export class MockHandler {
       return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
     }
 
+    let filtrerteDeltakere = this.mockDeltakere
+
+    if (request.harForslagFraArrangor) {
+      filtrerteDeltakere = filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      )
+    }
+
     const statuser = request.statuser ?? []
-    const counts = Object.fromEntries(
+    const statusCounts = Object.fromEntries(
       statuser.map((status) => [
         status,
-        this.mockDeltakere.filter((deltaker) => deltaker.status.type === status)
+        filtrerteDeltakere.filter((deltaker) => deltaker.status.type === status)
           .length
       ])
     )
 
-    return HttpResponse.json(counts)
+    const handlingCounts = {
+      AktiveForslag: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      ).length,
+      OppdateringFraNav: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harOppdateringFraNav
+      ).length,
+      NyeDeltakere: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.erNyDeltaker
+      ).length
+    }
+
+    return HttpResponse.json({ statusCounts, handlingCounts })
   }
 
   getDeltaker(deltakerId: string) {

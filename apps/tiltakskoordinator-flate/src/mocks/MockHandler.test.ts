@@ -117,8 +117,11 @@ describe('MockHandler.getDeltakereStatusCounts', () => {
     })
     const body = await response.json()
 
-    expect(body.DELTAR).toBeTypeOf('number')
-    expect(body.HAR_SLUTTET).toBeTypeOf('number')
+    expect(body.statusCounts.DELTAR).toBeTypeOf('number')
+    expect(body.statusCounts.HAR_SLUTTET).toBeTypeOf('number')
+    expect(body.handlingCounts.AktiveForslag).toBeTypeOf('number')
+    expect(body.handlingCounts.OppdateringFraNav).toBeTypeOf('number')
+    expect(body.handlingCounts.NyeDeltakere).toBeTypeOf('number')
   })
 
   it('returnerer 403 ved manglende tilgang', async () => {

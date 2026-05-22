@@ -85,6 +85,22 @@ export const deltakerStatusCountsSchema = z.partialRecord(
   z.number().int().nonnegative()
 )
 
+export const handlingFilterValgSchema = z.enum([
+  'AktiveForslag',
+  'OppdateringFraNav',
+  'NyeDeltakere'
+])
+
+export const deltakerHandlingCountsSchema = z.partialRecord(
+  handlingFilterValgSchema,
+  z.number().int().nonnegative()
+)
+
+export const deltakerFilterCountsSchema = z.object({
+  statusCounts: deltakerStatusCountsSchema,
+  handlingCounts: deltakerHandlingCountsSchema
+})
+
 export type Deltaker = z.infer<typeof deltakerSchema>
 export type Deltakere = z.infer<typeof deltakereSchema>
 export type DeltakerlisteDetaljer = z.infer<typeof deltakerlisteDetaljerSchema>
@@ -93,3 +109,7 @@ export type TiltaksKoordinatorDeltakerlisteRequest = z.infer<
   typeof tiltaksKoordinatorDeltakerlisteRequestSchema
 >
 export type DeltakerStatusCounts = z.infer<typeof deltakerStatusCountsSchema>
+export type DeltakerHandlingCounts = z.infer<
+  typeof deltakerHandlingCountsSchema
+>
+export type DeltakerFilterCounts = z.infer<typeof deltakerFilterCountsSchema>

@@ -1,13 +1,12 @@
 import { Alert, Heading, Loader } from '@navikt/ds-react'
-import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getDeltakere,
   getDeltakerlisteDetaljer,
   getDeltakerStatusCounts
 } from './api/api'
-import { Deltakere } from './api/data/deltakerliste'
 import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
@@ -20,73 +19,72 @@ export const DeltakerListeGuard = () => {
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
 
-  const {
-    data: deltakerlisteDetaljer,
-    state: stateDeltakerlisteDetaljer,
-    error: errorDeltakerlisteDetaljer,
-    doFetch: doFetchDeltakelisteDetaljer
-  } = useDeferredFetch(getDeltakerlisteDetaljer)
+  const deltakerlisteDetaljerQuery = useQuery({
+    queryKey: ['deltakerlisteDetaljer', deltakerlisteId],
+    queryFn: () => getDeltakerlisteDetaljer(deltakerlisteId),
+    enabled: deltakerlisteId.length > 0
+  })
 
-  const {
-    data: deltakereResponse,
-    state: stateDeltakere,
-    error: errorDeltakere,
-    doFetch: doFetchDeltakere
-  } = useDeferredFetch(getDeltakere)
+  const deltakereQuery = useQuery({
+    queryKey: ['deltakereInit', deltakerlisteId],
+    queryFn: () =>
+      getDeltakere(deltakerlisteId, {
+        statuser: DEFAULT_STATUS_FILTERS
+      }),
+    enabled: deltakerlisteId.length > 0
+  })
 
-  const { data: statusCountsResponse, doFetch: doFetchStatusCounts } =
-    useDeferredFetch(getDeltakerStatusCounts)
-
-  const fetchDeltakerliste = async () => {
-    const detaljer = await doFetchDeltakelisteDetaljer(deltakerlisteId)
-
-    if (!detaljer) {
-      return
+  const statuserForVisning = useMemo(() => {
+    if (!deltakerlisteDetaljerQuery.data) {
+      return []
     }
 
-    const statuserForVisning = [
+    return [
       ...new Set(
         getFilterStatuser(
-          detaljer.oppstartstype,
-          detaljer.pameldingstype,
-          detaljer.tiltakskode
+          deltakerlisteDetaljerQuery.data.oppstartstype,
+          deltakerlisteDetaljerQuery.data.pameldingstype,
+          deltakerlisteDetaljerQuery.data.tiltakskode
         )
       )
     ]
+  }, [deltakerlisteDetaljerQuery.data])
 
-    await Promise.allSettled([
-      doFetchDeltakere(deltakerlisteId, {
-        statuser: DEFAULT_STATUS_FILTERS
-      }),
-      doFetchStatusCounts(deltakerlisteId, {
+  const filterCountsQuery = useQuery({
+    queryKey: ['deltakerFilterCounts', deltakerlisteId, statuserForVisning],
+    queryFn: () =>
+      getDeltakerStatusCounts(deltakerlisteId, {
         statuser: statuserForVisning
-      })
-    ])
-  }
+      }),
+    enabled: deltakerlisteId.length > 0 && statuserForVisning.length > 0
+  })
 
-  useEffect(() => {
-    if (deltakerlisteId.length > 0) {
-      void fetchDeltakerliste()
-    }
-  }, [deltakerlisteId])
+  const deltakerlisteDetaljer = deltakerlisteDetaljerQuery.data
+  const deltakereResponse = deltakereQuery.data
 
-  if (isTilgangsFeil(deltakereResponse)) {
+  if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
     handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
   }
 
   const visFeilmelding =
-    errorDeltakerlisteDetaljer ||
-    errorDeltakere ||
-    (stateDeltakerlisteDetaljer === DeferredFetchState.RESOLVED &&
-      !deltakerlisteDetaljer) ||
-    (stateDeltakere === DeferredFetchState.RESOLVED && !deltakereResponse)
+    deltakerlisteDetaljerQuery.error ||
+    deltakereQuery.error ||
+    (deltakerlisteDetaljerQuery.isSuccess && !deltakerlisteDetaljer) ||
+    (deltakereQuery.isSuccess && !deltakereResponse)
 
-  const deltakere: Deltakere | null = deltakereResponse as Deltakere | null
+  const deltakere =
+    !deltakereResponse || isTilgangsFeil(deltakereResponse)
+      ? null
+      : deltakereResponse
+
+  const filterCounts =
+    typeof filterCountsQuery.data === 'string' || !filterCountsQuery.data
+      ? { statusCounts: {}, handlingCounts: {} }
+      : filterCountsQuery.data
 
   return (
     <>
-      {(stateDeltakerlisteDetaljer === DeferredFetchState.LOADING ||
-        stateDeltakere === DeferredFetchState.LOADING) && (
+      {(deltakerlisteDetaljerQuery.isLoading || deltakereQuery.isLoading) && (
         <div className="flex justify-center items-center h-screen">
           <Loader size="3xlarge" title="Venter..." />
         </div>
@@ -106,11 +104,8 @@ export const DeltakerListeGuard = () => {
         <DeltakerlisteContextProvider
           initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
           initialDeltakere={deltakere}
-          initialStatusCounts={
-            typeof statusCountsResponse === 'string' || !statusCountsResponse
-              ? {}
-              : statusCountsResponse
-          }
+          initialStatusCounts={filterCounts.statusCounts}
+          initialHandlingCounts={filterCounts.handlingCounts}
         >
           <DemoStatusInnstillinger />
           <DeltakerlistePage />

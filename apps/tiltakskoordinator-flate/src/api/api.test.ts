@@ -164,9 +164,16 @@ describe('getDeltakere', () => {
 describe('getDeltakerStatusCounts', () => {
   it('returnerer status-tellinger fra backend', async () => {
     const counts = {
-      VENTER_PA_OPPSTART: 1,
-      DELTAR: 6,
-      HAR_SLUTTET: 10
+      statusCounts: {
+        VENTER_PA_OPPSTART: 1,
+        DELTAR: 6,
+        HAR_SLUTTET: 10
+      },
+      handlingCounts: {
+        AktiveForslag: 3,
+        OppdateringFraNav: 2,
+        NyeDeltakere: 1
+      }
     }
 
     server.use(
