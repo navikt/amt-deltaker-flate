@@ -53,6 +53,9 @@ export const DeltakerListeGuard = () => {
       ? { statusCounts: {}, handlingCounts: {} }
       : filterCountsQuery.data
 
+  const filterCountsLaster =
+    filterCountsQuery.isLoading && !filterCountsQuery.data
+
   const visFilterCountsFeil =
     !!filterCountsQuery.error || typeof filterCountsQuery.data === 'string'
 
@@ -81,6 +84,7 @@ export const DeltakerListeGuard = () => {
           initialDeltakere={[]}
           initialStatusCounts={filterCounts.statusCounts}
           initialHandlingCounts={filterCounts.handlingCounts}
+          initialFilterCountsLaster={filterCountsLaster}
         >
           {visFilterCountsFeil && (
             <div className="px-4 pt-4">

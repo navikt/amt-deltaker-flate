@@ -15,7 +15,8 @@ import {
 } from '../../utils/filter-deltakerliste'
 
 export const HendelseFilter = () => {
-  const { deltakerlisteDetaljer, handlingCounts } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, handlingCounts, filterCountsLaster } =
+    useDeltakerlisteContext()
   const { valgteHendelseFilter, setValgteHendelseFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-hendelser-open',
@@ -72,7 +73,9 @@ export const HendelseFilter = () => {
               <span className="flex justify-between w-full gap-2">
                 <span className="whitespace-nowrap">{filter.navn}</span>
                 <BodyShort as="span" weight="semibold">
-                  {handlingCounts[filter.filtervalg] ?? 0}
+                  {filterCountsLaster
+                    ? '-'
+                    : (handlingCounts[filter.filtervalg] ?? 0)}
                 </BodyShort>
               </span>
             </Checkbox>

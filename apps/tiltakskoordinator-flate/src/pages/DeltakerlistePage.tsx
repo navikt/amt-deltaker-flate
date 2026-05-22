@@ -43,6 +43,7 @@ export const DeltakerlistePage = () => {
 
   const {
     data: deltakereResponse,
+    isPending,
     isFetching,
     isPlaceholderData,
     error
@@ -98,7 +99,7 @@ export const DeltakerlistePage = () => {
             className="mt-4 mb-2"
           />
         )}
-        <DeltakerlisteTabell />
+        {!isPending && <DeltakerlisteTabell />}
       </div>
     </div>
   )

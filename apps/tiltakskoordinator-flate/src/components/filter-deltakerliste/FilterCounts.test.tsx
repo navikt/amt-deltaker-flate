@@ -51,6 +51,7 @@ const renderFilterPanel = (
         initialDeltakere={deltakere}
         initialStatusCounts={statusCounts}
         initialHandlingCounts={handlingCounts}
+        initialFilterCountsLaster={false}
       >
         <HendelseFilter />
         <StatusFilter />

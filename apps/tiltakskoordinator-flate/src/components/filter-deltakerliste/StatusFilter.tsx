@@ -13,7 +13,8 @@ import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
 import { getFilterStatuser } from '../../utils/filter-deltakerliste'
 
 export const StatusFilter = () => {
-  const { deltakerlisteDetaljer, statusCounts } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, statusCounts, filterCountsLaster } =
+    useDeltakerlisteContext()
   const { valgteStatusFilter, setValgteStatusFilter } = useFilterContext()
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     'deltaker-liste-filter-status-open',
@@ -75,7 +76,9 @@ export const StatusFilter = () => {
               <span className="flex justify-between w-full gap-2">
                 <span className="whitespace-nowrap">{filter.navn}</span>
                 <BodyShort as="span" weight="semibold">
-                  {statusCounts[filter.filtervalg] ?? 0}
+                  {filterCountsLaster
+                    ? '-'
+                    : (statusCounts[filter.filtervalg] ?? 0)}
                 </BodyShort>
               </span>
             </Checkbox>

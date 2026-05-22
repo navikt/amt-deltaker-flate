@@ -11,6 +11,7 @@ export interface DeltakerListeContextProps {
   deltakere: Deltakere
   statusCounts: DeltakerStatusCounts
   handlingCounts: DeltakerHandlingCounts
+  filterCountsLaster: boolean
   filtrerteDeltakere: Deltakere
   setDeltakerlisteDetaljer: React.Dispatch<
     React.SetStateAction<DeltakerlisteDetaljer>
@@ -40,12 +41,14 @@ const DeltakerlisteContextProvider = ({
   initialDeltakere,
   initialStatusCounts,
   initialHandlingCounts,
+  initialFilterCountsLaster,
   children
 }: {
   initialDeltakerlisteDetaljer: DeltakerlisteDetaljer
   initialDeltakere: Deltakere
   initialStatusCounts: DeltakerStatusCounts
   initialHandlingCounts: DeltakerHandlingCounts
+  initialFilterCountsLaster: boolean
   children: React.ReactNode
 }) => {
   const [deltakerlisteDetaljer, setDeltakerlisteDetaljer] = useState(
@@ -59,6 +62,7 @@ const DeltakerlisteContextProvider = ({
     deltakere: deltakere,
     statusCounts: initialStatusCounts,
     handlingCounts: initialHandlingCounts,
+    filterCountsLaster: initialFilterCountsLaster,
     filtrerteDeltakere: filtrerteDeltakere,
     setDeltakerlisteDetaljer: setDeltakerlisteDetaljer,
     setDeltakere: setDelakere,
