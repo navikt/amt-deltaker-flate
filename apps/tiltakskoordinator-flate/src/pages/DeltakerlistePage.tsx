@@ -51,7 +51,7 @@ export const DeltakerlistePage = () => {
       return
     }
     setLagretSorteringsValg(undefined)
-  }, [request, setLagretSorteringsValg])
+  }, [valgteHendelseFilter, valgteStatusFilter, setLagretSorteringsValg])
 
   const {
     data: deltakereResponse,
