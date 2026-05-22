@@ -52,15 +52,13 @@ const DeltakerlisteContextProvider = ({
     initialDeltakerlisteDetaljer
   )
   const [deltakere, setDelakere] = useState(initialDeltakere)
-  const [statusCounts] = useState(initialStatusCounts)
-  const [handlingCounts] = useState(initialHandlingCounts)
   const [filtrerteDeltakere, setFiltrerteDeltakere] = useState(initialDeltakere)
 
   const contextValue: DeltakerListeContextProps = {
     deltakerlisteDetaljer: deltakerlisteDetaljer,
     deltakere: deltakere,
-    statusCounts: statusCounts,
-    handlingCounts: handlingCounts,
+    statusCounts: initialStatusCounts,
+    handlingCounts: initialHandlingCounts,
     filtrerteDeltakere: filtrerteDeltakere,
     setDeltakerlisteDetaljer: setDeltakerlisteDetaljer,
     setDeltakere: setDelakere,
