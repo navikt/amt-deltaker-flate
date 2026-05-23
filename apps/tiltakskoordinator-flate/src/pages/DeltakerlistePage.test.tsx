@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DeltakerStatusType } from 'deltaker-flate-common'
+import { TilgangsFeil } from '../api/api'
 import { DeltakerlistePage } from './DeltakerlistePage'
 import { HandlingFilterValg } from '../utils/filter-deltakerliste'
 
@@ -10,15 +11,32 @@ let valgteStatusFilter: DeltakerStatusType[] = []
 const setLagretSorteringsValg = vi.fn()
 const setDeltakere = vi.fn()
 
+const mockQueryState = vi.hoisted(() => ({
+  data: undefined as unknown,
+  isFetching: false
+}))
+
+const { handterTilgangsFeilMock } = vi.hoisted(() => ({
+  handterTilgangsFeilMock: vi.fn()
+}))
+
 vi.mock('@tanstack/react-query', () => ({
   keepPreviousData: Symbol('keepPreviousData'),
   useQuery: () => ({
-    data: undefined,
+    data: mockQueryState.data,
     isPending: false,
-    isFetching: false,
+    isFetching: mockQueryState.isFetching,
     isPlaceholderData: false,
     error: null
   })
+}))
+
+vi.mock('../utils/tilgangsFeil', () => ({
+  isTilgangsFeil: (obj: unknown) =>
+    obj === 'ManglerADGruppe' ||
+    obj === 'IkkeTilgangTilDeltakerliste' ||
+    obj === 'DeltakerlisteStengt',
+  handterTilgangsFeil: handterTilgangsFeilMock
 }))
 
 vi.mock('react-router-dom', () => ({
@@ -69,6 +87,8 @@ describe('DeltakerlistePage sort-reset ved filterendring', () => {
     valgteStatusFilter = []
     setLagretSorteringsValg.mockClear()
     setDeltakere.mockClear()
+    mockQueryState.data = undefined
+    mockQueryState.isFetching = false
   })
 
   it('resetter ikke sortering på første render', () => {
@@ -95,5 +115,41 @@ describe('DeltakerlistePage sort-reset ved filterendring', () => {
 
     expect(setLagretSorteringsValg).toHaveBeenCalledTimes(1)
     expect(setLagretSorteringsValg).toHaveBeenCalledWith(undefined)
+  })
+})
+
+describe('DeltakerlistePage tilgangsfeil-håndtering', () => {
+  beforeEach(() => {
+    mockQueryState.data = undefined
+    mockQueryState.isFetching = false
+    handterTilgangsFeilMock.mockClear()
+  })
+
+  it('kaller ikke handterTilgangsFeil når isFetching er true selv om data er TilgangsFeil', () => {
+    mockQueryState.data = TilgangsFeil.IkkeTilgangTilDeltakerliste
+    mockQueryState.isFetching = true
+
+    render(<DeltakerlistePage />)
+
+    expect(handterTilgangsFeilMock).not.toHaveBeenCalled()
+  })
+
+  it('kaller handterTilgangsFeil når isFetching blir false og data er TilgangsFeil', () => {
+    mockQueryState.data = TilgangsFeil.IkkeTilgangTilDeltakerliste
+    mockQueryState.isFetching = true
+
+    const { rerender } = render(<DeltakerlistePage />)
+
+    expect(handterTilgangsFeilMock).not.toHaveBeenCalled()
+
+    mockQueryState.isFetching = false
+    rerender(<DeltakerlistePage />)
+
+    expect(handterTilgangsFeilMock).toHaveBeenCalledTimes(1)
+    expect(handterTilgangsFeilMock).toHaveBeenCalledWith(
+      TilgangsFeil.IkkeTilgangTilDeltakerliste,
+      'liste-id',
+      expect.any(Function)
+    )
   })
 })
