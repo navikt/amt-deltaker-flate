@@ -82,10 +82,10 @@ export const DeltakerlistePage = () => {
   }, [deltakereResponse, isPlaceholderData, setDeltakere])
 
   useEffect(() => {
-    if (deltakereResponse && isTilgangsFeil(deltakereResponse)) {
+    if (!isFetching && deltakereResponse && isTilgangsFeil(deltakereResponse)) {
       handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
     }
-  }, [deltakereResponse, deltakerlisteId, navigate])
+  }, [deltakereResponse, isFetching, deltakerlisteId, navigate])
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">
