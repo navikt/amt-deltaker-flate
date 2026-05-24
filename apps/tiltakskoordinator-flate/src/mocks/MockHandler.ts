@@ -7,7 +7,11 @@ import {
   UlestHendelseType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
-import { DeltakerlisteDetaljer, Feilkode } from '../api/data/deltakerliste.ts'
+import {
+  DeltakerlisteDetaljer,
+  Feilkode,
+  TiltaksKoordinatorDeltakerlisteRequest
+} from '../api/data/deltakerliste.ts'
 import { HandlingFilterValg } from '../utils/filter-deltakerliste.ts'
 import {
   createMockDeltakere,
@@ -24,58 +28,58 @@ export class MockHandler {
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
   mockDeltakere: MockDeltaker[] = createMockDeltakere()
 
+  private sjekkTilgang() {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+    return null
+  }
+
+  private filtrerPaaHandlinger(
+    deltakere: MockDeltaker[],
+    handlingFilterValg: TiltaksKoordinatorDeltakerlisteRequest['handlingFilterValg']
+  ): MockDeltaker[] {
+    if (!handlingFilterValg?.length) return deltakere
+    const handlinger = new Set(handlingFilterValg)
+    return deltakere.filter(
+      (deltaker) =>
+        (handlinger.has(HandlingFilterValg.AktiveForslag) &&
+          deltaker.harAktiveForslag) ||
+        (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
+          deltaker.harOppdateringFraNav) ||
+        (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
+          deltaker.erNyDeltaker)
+    )
+  }
+
   getDeltakerlisteDetaljer() {
     this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer()
     return HttpResponse.json(this.deltakerlisteDetaljer)
   }
 
   getDeltakere() {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
-      )
-    }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
     return HttpResponse.json(mapMockDeltakereToDeltakere(this.mockDeltakere))
   }
 
-  postDeltakere(request: {
-    handlingFilterValg?: HandlingFilterValg[]
-    statuser?: DeltakerStatusType[]
-  }) {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
-      )
-    }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+  postDeltakere(request: TiltaksKoordinatorDeltakerlisteRequest) {
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
 
-    let filtrerteDeltakere = this.mockDeltakere
-
-    if ((request.handlingFilterValg?.length ?? 0) > 0) {
-      const handlinger = new Set(request.handlingFilterValg)
-      filtrerteDeltakere = filtrerteDeltakere.filter(
-        (deltaker) =>
-          (handlinger.has(HandlingFilterValg.AktiveForslag) &&
-            deltaker.harAktiveForslag) ||
-          (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
-            deltaker.harOppdateringFraNav) ||
-          (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
-            deltaker.erNyDeltaker)
-      )
-    }
+    let filtrerteDeltakere = this.filtrerPaaHandlinger(
+      this.mockDeltakere,
+      request.handlingFilterValg
+    )
 
     if ((request.statuser?.length ?? 0) > 0) {
       const valgteStatuser = new Set(request.statuser)
@@ -87,37 +91,14 @@ export class MockHandler {
     return HttpResponse.json(mapMockDeltakereToDeltakere(filtrerteDeltakere))
   }
 
-  getDeltakereStatusCounts(request: {
-    handlingFilterValg?: HandlingFilterValg[]
-    statuser?: DeltakerStatusType[]
-  }) {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
-      )
-    }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+  getDeltakereStatusCounts(request: TiltaksKoordinatorDeltakerlisteRequest) {
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
 
-    let filtrerteDeltakere = this.mockDeltakere
-
-    if ((request.handlingFilterValg?.length ?? 0) > 0) {
-      const handlinger = new Set(request.handlingFilterValg)
-      filtrerteDeltakere = filtrerteDeltakere.filter(
-        (deltaker) =>
-          (handlinger.has(HandlingFilterValg.AktiveForslag) &&
-            deltaker.harAktiveForslag) ||
-          (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
-            deltaker.harOppdateringFraNav) ||
-          (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
-            deltaker.erNyDeltaker)
-      )
-    }
+    const filtrerteDeltakere = this.filtrerPaaHandlinger(
+      this.mockDeltakere,
+      request.handlingFilterValg
+    )
 
     const statuser = request.statuser ?? []
     const statusCounts = Object.fromEntries(
@@ -144,18 +125,8 @@ export class MockHandler {
   }
 
   getDeltaker(deltakerId: string) {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
-      )
-    }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
     const deltaker = this.mockDeltakere.find(
       (deltaker) => deltaker.id === deltakerId
     )

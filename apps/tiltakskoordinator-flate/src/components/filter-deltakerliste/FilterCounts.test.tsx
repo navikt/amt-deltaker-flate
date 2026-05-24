@@ -12,6 +12,7 @@ import {
   createMockDeltakerlisteDetaljer,
   lagMockDeltaker
 } from '../../mocks/mockData'
+import { getDefaultStatusFilter } from '../../utils/filter-deltakerliste'
 import { HendelseFilter } from './HendelseFilter'
 import { StatusFilter } from './StatusFilter'
 
@@ -45,7 +46,9 @@ const renderFilterPanel = (
   ]
 
   return render(
-    <FilterContextProvider>
+    <FilterContextProvider
+      initialStatusFilter={getDefaultStatusFilter(detaljer.pameldingstype)}
+    >
       <DeltakerlisteContextProvider
         initialDeltakerlisteDetaljer={detaljer}
         initialDeltakere={deltakere}
