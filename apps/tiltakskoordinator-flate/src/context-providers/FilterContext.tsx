@@ -1,14 +1,8 @@
 import { createContext, useContext, useState } from 'react'
-import { DeltakerStatusType } from 'deltaker-flate-common'
 import {
   HandlingFilterValg,
   StatusFilterValg
 } from '../utils/filter-deltakerliste'
-
-export const DEFAULT_STATUS_FILTERS: StatusFilterValg[] = [
-  DeltakerStatusType.VENTER_PA_OPPSTART,
-  DeltakerStatusType.DELTAR
-]
 
 export interface FilterContextProps {
   valgteHendelseFilter: HandlingFilterValg[]
@@ -36,17 +30,22 @@ const useFilterContext = () => {
   return context
 }
 
-const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
+const FilterContextProvider = ({
+  initialStatusFilter,
+  children
+}: {
+  initialStatusFilter: StatusFilterValg[]
+  children: React.ReactNode
+}) => {
   const [valgteHendelseFilter, setValgteHendelseFilter] = useState<
     HandlingFilterValg[]
   >([])
-  const [valgteStatusFilter, setValgteStatusFilter] = useState<
-    StatusFilterValg[]
-  >(DEFAULT_STATUS_FILTERS)
+  const [valgteStatusFilter, setValgteStatusFilter] =
+    useState<StatusFilterValg[]>(initialStatusFilter)
 
   const nullstillFilter = () => {
     setValgteHendelseFilter([])
-    setValgteStatusFilter(DEFAULT_STATUS_FILTERS)
+    setValgteStatusFilter(initialStatusFilter)
   }
 
   const contextValue: FilterContextProps = {

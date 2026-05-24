@@ -1,13 +1,11 @@
 import {
   DeltakerStatusType,
-  getDeltakerStatusDisplayText,
   harKursAvslutning,
   kreverGodkjenningForPamelding,
   Oppstartstype,
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { Deltakere } from '../api/data/deltakerliste'
 
 export enum HandlingFilterValg {
   AktiveForslag = 'AktiveForslag',
@@ -25,6 +23,7 @@ export const getFilterStatuser = (
   if (kreverGodkjenningForPamelding(pameldingstype)) {
     statuser.push(DeltakerStatusType.SOKT_INN, DeltakerStatusType.VENTELISTE)
   }
+
   statuser.push(
     DeltakerStatusType.VENTER_PA_OPPSTART,
     DeltakerStatusType.DELTAR
@@ -62,6 +61,24 @@ export const STATUS_FILTER_TYPER = [
 
 export type StatusFilterValg = (typeof STATUS_FILTER_TYPER)[number]
 
+export const getDefaultStatusFilter = (
+  pameldingstype: Pameldingstype
+): StatusFilterValg[] => {
+  const defaultFilter: StatusFilterValg[] = [
+    DeltakerStatusType.VENTER_PA_OPPSTART,
+    DeltakerStatusType.DELTAR
+  ]
+
+  if (kreverGodkjenningForPamelding(pameldingstype)) {
+    defaultFilter.unshift(
+      DeltakerStatusType.SOKT_INN,
+      DeltakerStatusType.VENTELISTE
+    )
+  }
+
+  return defaultFilter
+}
+
 export const getHandlingFilterTypeNavn = (
   filterValg: HandlingFilterValg
 ): string => {
@@ -75,139 +92,4 @@ export const getHandlingFilterTypeNavn = (
     default:
       return 'Ukjent filter'
   }
-}
-
-export const getFiltrerteDeltakere = (
-  deltakere: Deltakere,
-  handlingFilterValg: HandlingFilterValg[],
-  statusFilterValg: StatusFilterValg[]
-): Deltakere => {
-  let filtrerte = deltakere
-
-  if (handlingFilterValg.length > 0) {
-    filtrerte = getHendelseFiltrerteDeltakere(filtrerte, handlingFilterValg)
-  }
-
-  if (statusFilterValg.length > 0) {
-    filtrerte = getStatusFiltrerteDeltakere(filtrerte, statusFilterValg)
-  }
-
-  return filtrerte
-}
-
-export const getHendelseFiltrerteDeltakere = (
-  deltakere: Deltakere,
-  filterValg: HandlingFilterValg[]
-): Deltakere => {
-  const valgteFilter = new Set(filterValg)
-  if (valgteFilter.size === 0) return deltakere
-
-  return deltakere.filter((deltaker) => {
-    let match = false
-
-    valgteFilter.forEach((filterValg) => {
-      switch (filterValg) {
-        case HandlingFilterValg.AktiveForslag:
-          if (deltaker.harAktiveForslag) match = true
-          break
-        case HandlingFilterValg.OppdateringFraNav:
-          if (deltaker.harOppdateringFraNav) match = true
-          break
-        case HandlingFilterValg.NyeDeltakere:
-          if (deltaker.erNyDeltaker) match = true
-          break
-      }
-    })
-    return match
-  })
-}
-
-export const getStatusFiltrerteDeltakere = (
-  deltakere: Deltakere,
-  filterValg: StatusFilterValg[]
-): Deltakere => {
-  const valgteFilter = new Set(filterValg)
-  if (valgteFilter.size === 0) return deltakere
-
-  return deltakere.filter((deltaker) => {
-    let match = false
-
-    valgteFilter.forEach((filterValg) => {
-      const status = deltaker.status.type
-      if (status === filterValg) {
-        match = true
-      }
-    })
-
-    return match
-  })
-}
-
-export type HandlingFilterDetaljer = {
-  filtervalg: HandlingFilterValg
-  valgt: boolean
-  navn: string
-  antall: number
-}
-
-export const getHendelseFilterDetaljer = (
-  deltakere: Deltakere,
-  valgteFilter: HandlingFilterValg[],
-  valgteStatusFilter: StatusFilterValg[],
-  pameldingstype: Pameldingstype
-): HandlingFilterDetaljer[] => {
-  const deltakereFiltretPaaStatus = getStatusFiltrerteDeltakere(
-    deltakere,
-    valgteStatusFilter
-  )
-
-  return Object.values(HandlingFilterValg)
-    .filter(
-      (filterValg) =>
-        kreverGodkjenningForPamelding(pameldingstype)
-          ? true
-          : filterValg === HandlingFilterValg.AktiveForslag // Kun vise denne for Løpende oppstart
-    )
-    .map((filterValg) => {
-      const erValgt = valgteFilter.includes(filterValg)
-
-      return {
-        filtervalg: filterValg,
-        navn: getHandlingFilterTypeNavn(filterValg),
-        valgt: erValgt,
-        antall: getHendelseFiltrerteDeltakere(deltakereFiltretPaaStatus, [
-          filterValg
-        ]).length
-      }
-    })
-}
-
-export type StatusFilterDetaljer = {
-  filtervalg: StatusFilterValg
-  valgt: boolean
-  navn: string
-  antall: number
-}
-
-export const getStatusFilterDetaljer = (
-  deltakere: Deltakere,
-  valgteFilter: StatusFilterValg[],
-  valgteHandlingerFilter: HandlingFilterValg[]
-): StatusFilterDetaljer[] => {
-  const deltakereFiltretPaaHandlinger = getHendelseFiltrerteDeltakere(
-    deltakere,
-    valgteHandlingerFilter
-  )
-  return STATUS_FILTER_TYPER.map((filterValg) => {
-    const erValgt = valgteFilter.includes(filterValg)
-
-    return {
-      filtervalg: filterValg,
-      navn: getDeltakerStatusDisplayText(filterValg),
-      valgt: erValgt,
-      antall: getStatusFiltrerteDeltakere(deltakereFiltretPaaHandlinger, [
-        filterValg
-      ]).length
-    }
-  })
 }

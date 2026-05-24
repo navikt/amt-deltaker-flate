@@ -75,7 +75,7 @@ describe('getDeltakere', () => {
     expect(parsedBody.statuser).toEqual([DeltakerStatusType.DELTAR])
   })
 
-  it('sender harForslagFraArrangor i body når det er oppgitt', async () => {
+  it('sender handlingFilterValg i body når det er oppgitt', async () => {
     server.use(
       http.post(ENDPOINT(DELTAKERLISTE_ID), async ({ request }) => {
         parsedBody = (await request.json()) as Record<string, unknown>
@@ -84,10 +84,10 @@ describe('getDeltakere', () => {
     )
 
     await getDeltakere(DELTAKERLISTE_ID, {
-      harForslagFraArrangor: true
+      handlingFilterValg: ['AktiveForslag']
     })
 
-    expect(parsedBody.harForslagFraArrangor).toBe(true)
+    expect(parsedBody.handlingFilterValg).toEqual(['AktiveForslag'])
   })
 
   it('sender ikke gjennomforingId i body', async () => {

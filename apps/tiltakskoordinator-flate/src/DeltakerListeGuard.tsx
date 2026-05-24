@@ -5,8 +5,12 @@ import { getDeltakerlisteDetaljer, getDeltakerStatusCounts } from './api/api'
 import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInnstillinger'
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
+import { FilterContextProvider } from './context-providers/FilterContext'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
-import { getFilterStatuser } from './utils/filter-deltakerliste'
+import {
+  getDefaultStatusFilter,
+  getFilterStatuser
+} from './utils/filter-deltakerliste'
 
 export const DeltakerListeGuard = () => {
   const { deltakerlisteId } = useAppContext()
@@ -78,25 +82,32 @@ export const DeltakerListeGuard = () => {
       )}
 
       {deltakerlisteDetaljer && (
-        <DeltakerlisteContextProvider
+        <FilterContextProvider
           key={deltakerlisteDetaljer.id}
-          initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
-          initialDeltakere={[]}
-          initialStatusCounts={filterCounts.statusCounts}
-          initialHandlingCounts={filterCounts.handlingCounts}
-          initialFilterCountsLaster={filterCountsLaster}
-        >
-          {visFilterCountsFeil && (
-            <div className="px-4 pt-4">
-              <Alert variant="warning" size="small">
-                Kunne ikke hente filtertellinger. Tellingene kan være
-                ufullstendige.
-              </Alert>
-            </div>
+          initialStatusFilter={getDefaultStatusFilter(
+            deltakerlisteDetaljer.pameldingstype
           )}
-          <DemoStatusInnstillinger />
-          <DeltakerlistePage />
-        </DeltakerlisteContextProvider>
+        >
+          <DeltakerlisteContextProvider
+            key={deltakerlisteDetaljer.id}
+            initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
+            initialDeltakere={[]}
+            initialStatusCounts={filterCounts.statusCounts}
+            initialHandlingCounts={filterCounts.handlingCounts}
+            initialFilterCountsLaster={filterCountsLaster}
+          >
+            {visFilterCountsFeil && (
+              <div className="px-4 pt-4">
+                <Alert variant="warning" size="small">
+                  Kunne ikke hente filtertellinger. Tellingene kan være
+                  ufullstendige.
+                </Alert>
+              </div>
+            )}
+            <DemoStatusInnstillinger />
+            <DeltakerlistePage />
+          </DeltakerlisteContextProvider>
+        </FilterContextProvider>
       )}
     </>
   )

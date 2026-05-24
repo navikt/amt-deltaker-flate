@@ -54,13 +54,6 @@ export const worker = setupWorker(
       return handler.getDeltakereStatusCounts(body)
     }
   ),
-  http.get(
-    '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/deltakere',
-    async () => {
-      await delay(500)
-      return handler.getDeltakere()
-    }
-  ),
   http.post(
     '/amt-deltaker-bff/tiltakskoordinator/deltakerliste/:deltakerlisteId/tilgang/legg-til',
     async () => {

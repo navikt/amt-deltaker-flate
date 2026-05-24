@@ -2,6 +2,7 @@ import { DeltakerStatusType } from 'deltaker-flate-common'
 import { describe, expect, it, beforeEach } from 'vitest'
 import { MockHandler } from './MockHandler'
 import { createMockDeltakere } from './mockData'
+import { HandlingFilterValg } from '../utils/filter-deltakerliste'
 
 describe('MockHandler.postDeltakere', () => {
   let handler: MockHandler
@@ -17,22 +18,56 @@ describe('MockHandler.postDeltakere', () => {
     expect(body).toHaveLength(handler.mockDeltakere.length)
   })
 
-  it('filtrerer på harForslagFraArrangor=true', async () => {
-    const deltakeremedForslag = handler.mockDeltakere.filter(
-      (d) => d.harAktiveForslag
-    )
-    const response = handler.postDeltakere({ harForslagFraArrangor: true })
+  it('filtrerer på AktiveForslag', async () => {
+    const forventet = handler.mockDeltakere.filter((d) => d.harAktiveForslag)
+    const response = handler.postDeltakere({
+      handlingFilterValg: [HandlingFilterValg.AktiveForslag]
+    })
     const body = await response.json()
-    expect(body).toHaveLength(deltakeremedForslag.length)
+    expect(body).toHaveLength(forventet.length)
     body.forEach((d: { harAktiveForslag: boolean }) => {
       expect(d.harAktiveForslag).toBe(true)
     })
   })
 
-  it('filtrerer ikke på harForslagFraArrangor=false', async () => {
-    const response = handler.postDeltakere({ harForslagFraArrangor: false })
+  it('filtrerer på OppdateringFraNav', async () => {
+    const forventet = handler.mockDeltakere.filter(
+      (d) => d.harOppdateringFraNav
+    )
+    const response = handler.postDeltakere({
+      handlingFilterValg: [HandlingFilterValg.OppdateringFraNav]
+    })
     const body = await response.json()
-    expect(body).toHaveLength(handler.mockDeltakere.length)
+    expect(body).toHaveLength(forventet.length)
+    body.forEach((d: { harOppdateringFraNav: boolean }) => {
+      expect(d.harOppdateringFraNav).toBe(true)
+    })
+  })
+
+  it('filtrerer på NyeDeltakere', async () => {
+    const forventet = handler.mockDeltakere.filter((d) => d.erNyDeltaker)
+    const response = handler.postDeltakere({
+      handlingFilterValg: [HandlingFilterValg.NyeDeltakere]
+    })
+    const body = await response.json()
+    expect(body).toHaveLength(forventet.length)
+    body.forEach((d: { erNyDeltaker: boolean }) => {
+      expect(d.erNyDeltaker).toBe(true)
+    })
+  })
+
+  it('kombinerer flere handlingFilterValg med OR-logikk', async () => {
+    const forventet = handler.mockDeltakere.filter(
+      (d) => d.harAktiveForslag || d.harOppdateringFraNav
+    )
+    const response = handler.postDeltakere({
+      handlingFilterValg: [
+        HandlingFilterValg.AktiveForslag,
+        HandlingFilterValg.OppdateringFraNav
+      ]
+    })
+    const body = await response.json()
+    expect(body).toHaveLength(forventet.length)
   })
 
   it('filtrerer på én status', async () => {
@@ -62,14 +97,14 @@ describe('MockHandler.postDeltakere', () => {
     expect(body).toHaveLength(forventetAntall)
   })
 
-  it('kombinerer harForslagFraArrangor og statuser (AND-logikk)', async () => {
+  it('kombinerer handlingFilterValg og statuser (AND-logikk mellom gruppene)', async () => {
     const forventetAntall = handler.mockDeltakere.filter(
       (d) =>
         d.harAktiveForslag &&
         d.status.type === DeltakerStatusType.VENTER_PA_OPPSTART
     ).length
     const response = handler.postDeltakere({
-      harForslagFraArrangor: true,
+      handlingFilterValg: [HandlingFilterValg.AktiveForslag],
       statuser: [DeltakerStatusType.VENTER_PA_OPPSTART]
     })
     const body = await response.json()
