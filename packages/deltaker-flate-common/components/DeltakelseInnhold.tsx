@@ -19,7 +19,7 @@ export const DeltakelseInnhold = ({
   heading
 }: Props) => {
   if (!harInnhold(deltakelsesinnhold)) {
-    if (!harKodeverk(kodeverk)) {
+    if (!harKodeverk(kodeverk, tiltakskode)) {
       return null
     }
 
@@ -42,7 +42,7 @@ export const DeltakelseInnhold = ({
     deltakelsesinnhold
   )
 
-  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk)) {
+  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk, tiltakskode)) {
     return null
   }
 
@@ -135,6 +135,9 @@ const harInnhold = (
   )
 }
 
-const harKodeverk = (kodeverk?: FlattKodeverk | null): boolean => {
-  return !!kodeverk && (kodeverk.valg.length > 0 || !!kodeverk.tittel)
-}
+const harKodeverk = (
+  kodeverk: FlattKodeverk | null | undefined,
+  tiltakskode: Tiltakskode
+): boolean =>
+  !!kodeverk &&
+  (kodeverk.valg.length > 0 || !!getKodeverkTekst(kodeverk, tiltakskode))
