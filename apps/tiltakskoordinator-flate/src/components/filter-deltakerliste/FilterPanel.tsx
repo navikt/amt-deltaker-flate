@@ -17,7 +17,7 @@ interface FilterPanelProps<T extends string> {
   onChange: (nyValgteFilter: T[]) => void
 }
 
-export const FilterPanel = <T extends string>({
+export function FilterPanel<T extends string>({
   tittel,
   ariaLabel,
   localStorageKey,
@@ -26,7 +26,7 @@ export const FilterPanel = <T extends string>({
   counts,
   filterCountsLaster,
   onChange
-}: FilterPanelProps<T>) => {
+}: FilterPanelProps<T>) {
   const [filterOpen, setFilterOpen] = useLocalStorage<boolean>(
     localStorageKey,
     false
