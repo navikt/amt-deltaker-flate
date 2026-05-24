@@ -48,7 +48,8 @@ export const FilterPanel = <T extends string>({
       <ExpansionCard.Content>
         <CheckboxGroup
           size="small"
-          legend=""
+          legend={tittel}
+          hideLegend
           className="filter-checkboxes -mt-2"
           onChange={(nyValgteFilter) => onChange(nyValgteFilter as T[])}
           value={valgteFilter}

@@ -3,12 +3,6 @@ import { describe, expect, it } from 'vitest'
 import { getDefaultStatusFilter } from './filter-deltakerliste'
 
 describe('getDefaultStatusFilter', () => {
-  it('inkluderer VENTER_PA_OPPSTART og DELTAR for alle pameldingstyper', () => {
-    const result = getDefaultStatusFilter(Pameldingstype.DIREKTE_VEDTAK)
-    expect(result).toContain(DeltakerStatusType.VENTER_PA_OPPSTART)
-    expect(result).toContain(DeltakerStatusType.DELTAR)
-  })
-
   it('inkluderer kun VENTER_PA_OPPSTART og DELTAR for DIREKTE_VEDTAK', () => {
     const result = getDefaultStatusFilter(Pameldingstype.DIREKTE_VEDTAK)
     expect(result).toEqual([
