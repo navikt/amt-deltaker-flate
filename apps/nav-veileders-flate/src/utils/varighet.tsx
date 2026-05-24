@@ -279,20 +279,16 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakskode: Tiltakskode) => {
 
 export const DATO_UTENFOR_TILTAKGJENNOMFORING =
   'Datoen kan ikke velges fordi den er utenfor perioden til tiltaket.'
-export const VARIGHET_VALG_FØR_FEILMELDING =
-  'Datoen kan ikke velges fordi den er før startdato.'
-export const VARIGHET_VALG_ETTER_DELTAKERLISTE_SLUTTDATO_FEILMELDING =
-  'Datoen kan ikke velges fordi den er etter gjennomføringens sluttdato.'
 export const VARGIHET_VALG_FEILMELDING =
   'Datoen kan ikke velges fordi den er utenfor maks varighet.'
-export const SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING =
+export const SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før oppstartsdatoen.'
 export const VARIGHET_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at deltakeren oppfyller kravene.'
 export const LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING =
   'Du må bekrefte at oppstartsdato er avtalt med arrangøren.'
 export const UGYLDIG_DATO_FEILMELDING = 'Ugyldig dato'
-export const DATO_FØR_SLUTTDATO_FEILMELDING =
+export const DATO_FOER_SLUTTDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før nåværende sluttdato.'
 export const DATO_ETTER_IDAG_FEILMELDING =
   'Du må velge en dato før dagens dato.'
@@ -378,7 +374,7 @@ export const getSluttDatoFeilmelding = (
       deltakerstartDato &&
       sluttDato.isBefore(deltakerstartDato, 'date'))
   ) {
-    return SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
+    return SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
   }
 
   const opprinneligSluttdato = pamelding.sluttdato
@@ -387,7 +383,7 @@ export const getSluttDatoFeilmelding = (
     opprinneligSluttdato &&
     sluttDato.isBefore(opprinneligSluttdato)
   ) {
-    return DATO_FØR_SLUTTDATO_FEILMELDING
+    return DATO_FOER_SLUTTDATO_FEILMELDING
   }
 
   if (!maxVarighetDato && !deltakerlisteSluttDato) {

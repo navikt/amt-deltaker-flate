@@ -18,7 +18,7 @@ import {
   getSluttDatoFeilmelding,
   getVarighet,
   kalkulerSluttdato,
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
+  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg
 } from './varighet.tsx'
@@ -51,7 +51,7 @@ const pamelding: DeltakerResponse = {
     oppmoteSted: 'Oslo',
     erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
-    kodeverk: { tiltakskode: '', alternativer: [], sertifiseringValg: [] }
+    kodeverk: null
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -309,7 +309,7 @@ describe('getSluttDatoFeilmelding', () => {
       { ...pamelding, startdato: dayjs().subtract(5, 'day').toDate() },
       dayjs().subtract(20, 'day').toDate()
     )
-    expect(feilmelding).toEqual(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
+    expect(feilmelding).toEqual(SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING)
   })
 
   it('returnerer feilmelding for ny sluttdato før ny startdato feil', () => {
@@ -318,7 +318,7 @@ describe('getSluttDatoFeilmelding', () => {
       dayjs().subtract(20, 'day').toDate(),
       dayjs().subtract(9, 'day').toDate()
     )
-    expect(feilmelding).toEqual(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
+    expect(feilmelding).toEqual(SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING)
   })
 
   it('returnerer ingen feilmelding når vi ikke har maks varighet eller sluttdato for tiltaket', () => {

@@ -3,8 +3,8 @@ import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { DeltakerResponse } from '../api/data/deltaker'
 import {
-  DATO_FØR_SLUTTDATO_FEILMELDING,
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
+  DATO_FOER_SLUTTDATO_FEILMELDING,
+  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VarighetValg,
   getSluttDatoFeilmelding,
@@ -156,8 +156,8 @@ export function useSluttdatoInput({
     } else if (dateValidation.isBefore) {
       setError(
         startdato
-          ? SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING
-          : DATO_FØR_SLUTTDATO_FEILMELDING
+          ? SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
+          : DATO_FOER_SLUTTDATO_FEILMELDING
       )
     } else if (dateValidation.isAfter && isAfterError) {
       setError(isAfterError)

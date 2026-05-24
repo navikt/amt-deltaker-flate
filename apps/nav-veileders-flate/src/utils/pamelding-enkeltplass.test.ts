@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { generateEnkeltplassPameldingRequest } from './pamelding-enkeltplass'
 import { DeltakerResponse } from '../api/data/deltaker'
-import { KodeverkAlternativType, Seleksjonstype } from '../api/data/kodeverk'
 
 dayjs.extend(duration)
 
@@ -34,78 +33,47 @@ describe('generateEnkeltplassPameldingRequest', () => {
     expect(request.sertifiseringValg).toBeUndefined()
   })
 
-  it('returnerer tom liste når kodeverket ikke har valgte verdier', () => {
+  it('returnerer tomme lister når det flate kodeverket ikke har valgte verdier', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
-        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-        alternativer: [
-          {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: null,
-            visningsnavn: 'Bransje',
-            representerer: 'bransje',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
-            alternativer: [
-              { id: 'b1', visningsnavn: 'Bygg', valgt: false },
-              { id: 'b2', visningsnavn: 'Helse', valgt: false }
-            ]
-          }
-        ],
-        sertifiseringValg: []
+        tittel: 'Bransje',
+        valg: [],
+        valgteKodeverkIder: [],
+        valgteSertifiseringer: []
       })
     )
     expect(request.kodeverkValg).toEqual([])
+    expect(request.sertifiseringValg).toEqual([])
   })
 
-  it('plukker ut alle valgte verdi-IDer rekursivt fra kodeverket', () => {
+  it('returnerer valgteKodeverkIder fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
-        tiltakskode: 'FAG_OG_YRKESOPPLAERING',
-        alternativer: [
-          {
-            type: KodeverkAlternativType.VERDIGRUPPE,
-            id: null,
-            visningsnavn: 'Bransje',
-            representerer: 'bransje',
-            seleksjonstype: Seleksjonstype.ENKELTVALG,
-            alternativer: [
-              { id: 'b1', visningsnavn: 'Bygg', valgt: true },
-              { id: 'b2', visningsnavn: 'Helse', valgt: false }
-            ]
-          },
-          {
-            type: KodeverkAlternativType.GRUPPE,
-            id: null,
-            visningsnavn: 'Utdanning',
-            alternativer: [
-              {
-                type: KodeverkAlternativType.VERDIGRUPPE,
-                id: null,
-                visningsnavn: 'Lærefag',
-                representerer: 'larefag',
-                seleksjonstype: Seleksjonstype.FLERVALG,
-                alternativer: [
-                  { id: 'fag-1', visningsnavn: 'Tømrer', valgt: true },
-                  { id: 'fag-2', visningsnavn: 'Rørlegger', valgt: true },
-                  { id: 'fag-3', visningsnavn: 'Maler', valgt: false }
-                ]
-              }
-            ]
-          }
+        tittel: 'Bransje, Lærefag',
+        valg: ['Bygg', 'Tømrer', 'Rørlegger'],
+        valgteKodeverkIder: [
+          '11111111-1111-1111-1111-111111111111',
+          '22222222-2222-2222-2222-222222222222',
+          '33333333-3333-3333-3333-333333333333'
         ],
-        sertifiseringValg: []
+        valgteSertifiseringer: []
       })
     )
 
-    expect(request.kodeverkValg).toEqual(['b1', 'fag-1', 'fag-2'])
+    expect(request.kodeverkValg).toEqual([
+      '11111111-1111-1111-1111-111111111111',
+      '22222222-2222-2222-2222-222222222222',
+      '33333333-3333-3333-3333-333333333333'
+    ])
   })
 
-  it('plukker ut sertifiseringValg fra kodeverket', () => {
+  it('returnerer valgteSertifiseringer fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
-        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
-        alternativer: [],
-        sertifiseringValg: [
+        tittel: null,
+        valg: [],
+        valgteKodeverkIder: [],
+        valgteSertifiseringer: [
           { id: 90999, navn: 'Datakortet del 1' },
           { id: 2, navn: 'Sertifisert zumba-instruktør' }
         ]

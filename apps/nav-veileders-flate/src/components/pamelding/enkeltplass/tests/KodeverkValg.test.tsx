@@ -3,25 +3,12 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { KodeverkValg } from '../KodeverkValg'
-import { createDeltaker, renderWithProviders } from './test-utils'
+import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
+  KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
-import { DeltakerResponse } from '../../../../api/data/deltaker'
-
-const createDeltakerMedKodeverk = (
-  kodeverk: DeltakerResponse['deltakerliste']['kodeverk']
-): DeltakerResponse => {
-  const deltaker = createDeltaker()
-  return {
-    ...deltaker,
-    deltakerliste: {
-      ...deltaker.deltakerliste,
-      kodeverk
-    }
-  } as DeltakerResponse
-}
 
 const bransjeVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
@@ -50,34 +37,35 @@ const forerkortVerdigruppe = {
 }
 
 describe('KodeverkValg', () => {
-  it('rendrer ikke når kodeverk er null', () => {
-    const deltaker = createDeltakerMedKodeverk(null)
-    const { container } = renderWithProviders(<KodeverkValg />, { deltaker })
+  it('rendrer ikke når kodeverk er undefined', () => {
+    const { container } = renderWithProviders(<KodeverkValg />)
     expect(container).toBeEmptyDOMElement()
   })
 
   it('rendrer ikke når alternativer er tom', () => {
-    const deltaker = createDeltakerMedKodeverk({
+    const kodeverk: KodeverkResponse = {
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
       alternativer: [],
       sertifiseringValg: []
-    })
-    const { container } = renderWithProviders(<KodeverkValg />, { deltaker })
+    }
+    const { container } = renderWithProviders(
+      <KodeverkValg kodeverk={kodeverk} />
+    )
     expect(container).toBeEmptyDOMElement()
   })
 
   it('rendrer combobox for en Verdigruppe', () => {
-    const deltaker = createDeltakerMedKodeverk({
+    const kodeverk: KodeverkResponse = {
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
       alternativer: [bransjeVerdigruppe],
       sertifiseringValg: []
-    })
-    renderWithProviders(<KodeverkValg />, { deltaker })
+    }
+    renderWithProviders(<KodeverkValg kodeverk={kodeverk} />)
     expect(screen.getByLabelText('Bransje')).toBeInTheDocument()
   })
 
   it('viser forhåndsvalgte verdier fra valgt: true', () => {
-    const deltaker = createDeltakerMedKodeverk({
+    const kodeverk: KodeverkResponse = {
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
       alternativer: [
         {
@@ -88,9 +76,8 @@ describe('KodeverkValg', () => {
         }
       ],
       sertifiseringValg: []
-    })
-    renderWithProviders(<KodeverkValg />, {
-      deltaker,
+    }
+    renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
       defaultValues: { kodeverkValg: ['bransje-1'] }
     })
     expect(
@@ -101,13 +88,12 @@ describe('KodeverkValg', () => {
   describe('flere verdigrupper - kodeverkValg form-felt', () => {
     it('beholder valg fra begge verdigrupper i form state', async () => {
       const user = userEvent.setup()
-      const deltaker = createDeltakerMedKodeverk({
+      const kodeverk: KodeverkResponse = {
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
         alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
         sertifiseringValg: []
-      })
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      }
+      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
 
@@ -125,7 +111,6 @@ describe('KodeverkValg', () => {
       })
       await user.click(personbilOption)
 
-      // Hent form-verdier via hidden input (registrert felt)
       // Sjekk at begge valg finnes i DOM (selected state)
       expect(
         screen.getByRole('option', { name: 'Bygg og anlegg', selected: true })
@@ -137,14 +122,13 @@ describe('KodeverkValg', () => {
 
     it('endring i én verdigruppe overskriver ikke den andre', async () => {
       const user = userEvent.setup()
-      const deltaker = createDeltakerMedKodeverk({
+      const kodeverk: KodeverkResponse = {
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
         alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
         sertifiseringValg: []
-      })
+      }
 
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
 
@@ -183,14 +167,13 @@ describe('KodeverkValg', () => {
 
     it('enkeltvalg erstatter forrige valg i samme verdigruppe', async () => {
       const user = userEvent.setup()
-      const deltaker = createDeltakerMedKodeverk({
+      const kodeverk: KodeverkResponse = {
         tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
         alternativer: [bransjeVerdigruppe],
         sertifiseringValg: []
-      })
+      }
 
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
 
@@ -222,22 +205,22 @@ describe('KodeverkValg', () => {
   })
 
   describe('Gruppe med nestede verdigrupper', () => {
-    const gruppeKodeverk = {
+    const gruppeKodeverk: KodeverkResponse = {
       tiltakskode: 'FAG_OG_YRKESOPPLAERING',
       sertifiseringValg: [],
       alternativer: [
         {
-          type: KodeverkAlternativType.GRUPPE as const,
+          type: KodeverkAlternativType.GRUPPE,
           id: null,
           visningsnavn: 'Utdanningsprogram',
           alternativer: [
             {
-              type: KodeverkAlternativType.GRUPPE as const,
+              type: KodeverkAlternativType.GRUPPE,
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
               alternativer: [
                 {
-                  type: KodeverkAlternativType.VERDIGRUPPE as const,
+                  type: KodeverkAlternativType.VERDIGRUPPE,
                   id: null,
                   visningsnavn: 'Lærefag',
                   representerer: 'larefag',
@@ -254,12 +237,12 @@ describe('KodeverkValg', () => {
               ]
             },
             {
-              type: KodeverkAlternativType.GRUPPE as const,
+              type: KodeverkAlternativType.GRUPPE,
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
               alternativer: [
                 {
-                  type: KodeverkAlternativType.VERDIGRUPPE as const,
+                  type: KodeverkAlternativType.VERDIGRUPPE,
                   id: null,
                   visningsnavn: 'Lærefag',
                   representerer: 'larefag',
@@ -280,9 +263,7 @@ describe('KodeverkValg', () => {
     }
 
     it('rendrer Gruppe som combobox med undergrupper', () => {
-      const deltaker = createDeltakerMedKodeverk(gruppeKodeverk)
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
       expect(screen.getByLabelText('Utdanningsprogram')).toBeInTheDocument()
@@ -290,9 +271,7 @@ describe('KodeverkValg', () => {
 
     it('viser verdigruppe etter valg av gruppe', async () => {
       const user = userEvent.setup()
-      const deltaker = createDeltakerMedKodeverk(gruppeKodeverk)
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
 
@@ -307,18 +286,30 @@ describe('KodeverkValg', () => {
     })
 
     it('auto-åpner gruppe med valgte verdier', () => {
-      const kodeverkMedValg = {
+      const byggGruppe = gruppeKodeverk.alternativer[0]
+      if (byggGruppe.type !== KodeverkAlternativType.GRUPPE) {
+        throw new Error('Forventet GRUPPE')
+      }
+      const byggUnderGruppe = byggGruppe.alternativer[0]
+      if (byggUnderGruppe.type !== KodeverkAlternativType.GRUPPE) {
+        throw new Error('Forventet GRUPPE')
+      }
+      const larefagVerdigruppe = byggUnderGruppe.alternativer[0]
+      if (larefagVerdigruppe.type !== KodeverkAlternativType.VERDIGRUPPE) {
+        throw new Error('Forventet VERDIGRUPPE')
+      }
+
+      const kodeverkMedValg: KodeverkResponse = {
         ...gruppeKodeverk,
         alternativer: [
           {
-            ...gruppeKodeverk.alternativer[0],
+            ...byggGruppe,
             alternativer: [
               {
-                ...gruppeKodeverk.alternativer[0].alternativer[0],
+                ...byggUnderGruppe,
                 alternativer: [
                   {
-                    ...gruppeKodeverk.alternativer[0].alternativer[0]
-                      .alternativer[0],
+                    ...larefagVerdigruppe,
                     alternativer: [
                       { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: true },
                       {
@@ -330,15 +321,13 @@ describe('KodeverkValg', () => {
                   }
                 ]
               },
-              gruppeKodeverk.alternativer[0].alternativer[1]
+              byggGruppe.alternativer[1]
             ]
           }
         ]
       }
 
-      const deltaker = createDeltakerMedKodeverk(kodeverkMedValg)
-      renderWithProviders(<KodeverkValg />, {
-        deltaker,
+      renderWithProviders(<KodeverkValg kodeverk={kodeverkMedValg} />, {
         defaultValues: { kodeverkValg: ['fag-1'] }
       })
 
