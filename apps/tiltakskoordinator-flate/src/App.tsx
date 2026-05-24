@@ -4,7 +4,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import PrBanner from './components/demo-banner/PrBanner.tsx'
 import { useAppContext } from './context-providers/AppContext.tsx'
-import { FilterContextProvider } from './context-providers/FilterContext.tsx'
 import { HandlingContextProvider } from './context-providers/HandlingContext.tsx'
 import { SorteringContextProvider } from './context-providers/SorteringContext.tsx'
 import { AppRoutes } from './Routes.tsx'
@@ -23,13 +22,11 @@ export const App = () => {
       {useMock && <DemoBanner />}
 
       <HandlingContextProvider>
-        <FilterContextProvider>
-          <SorteringContextProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </SorteringContextProvider>
-        </FilterContextProvider>
+        <SorteringContextProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SorteringContextProvider>
       </HandlingContextProvider>
     </QueryClientProvider>
   )

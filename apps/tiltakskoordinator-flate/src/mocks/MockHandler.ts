@@ -8,6 +8,7 @@ import {
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { DeltakerlisteDetaljer, Feilkode } from '../api/data/deltakerliste.ts'
+import { HandlingFilterValg } from '../utils/filter-deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
@@ -45,7 +46,7 @@ export class MockHandler {
   }
 
   postDeltakere(request: {
-    harForslagFraArrangor?: boolean
+    handlingFilterValg?: HandlingFilterValg[]
     statuser?: DeltakerStatusType[]
   }) {
     if (this.stengt) {
@@ -63,9 +64,16 @@ export class MockHandler {
 
     let filtrerteDeltakere = this.mockDeltakere
 
-    if (request.harForslagFraArrangor) {
+    if ((request.handlingFilterValg?.length ?? 0) > 0) {
+      const handlinger = new Set(request.handlingFilterValg)
       filtrerteDeltakere = filtrerteDeltakere.filter(
-        (deltaker) => deltaker.harAktiveForslag
+        (deltaker) =>
+          (handlinger.has(HandlingFilterValg.AktiveForslag) &&
+            deltaker.harAktiveForslag) ||
+          (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
+            deltaker.harOppdateringFraNav) ||
+          (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
+            deltaker.erNyDeltaker)
       )
     }
 
@@ -80,7 +88,7 @@ export class MockHandler {
   }
 
   getDeltakereStatusCounts(request: {
-    harForslagFraArrangor?: boolean
+    handlingFilterValg?: HandlingFilterValg[]
     statuser?: DeltakerStatusType[]
   }) {
     if (this.stengt) {
@@ -98,9 +106,16 @@ export class MockHandler {
 
     let filtrerteDeltakere = this.mockDeltakere
 
-    if (request.harForslagFraArrangor) {
+    if ((request.handlingFilterValg?.length ?? 0) > 0) {
+      const handlinger = new Set(request.handlingFilterValg)
       filtrerteDeltakere = filtrerteDeltakere.filter(
-        (deltaker) => deltaker.harAktiveForslag
+        (deltaker) =>
+          (handlinger.has(HandlingFilterValg.AktiveForslag) &&
+            deltaker.harAktiveForslag) ||
+          (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
+            deltaker.harOppdateringFraNav) ||
+          (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
+            deltaker.erNyDeltaker)
       )
     }
 

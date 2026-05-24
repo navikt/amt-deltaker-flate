@@ -10,7 +10,7 @@ describe('tiltaksKoordinatorDeltakerlisteRequestSchema', () => {
 
   it('godtar request med alle felter', () => {
     const result = tiltaksKoordinatorDeltakerlisteRequestSchema.safeParse({
-      harForslagFraArrangor: true,
+      handlingFilterValg: ['AktiveForslag', 'NyeDeltakere'],
       statuser: [DeltakerStatusType.DELTAR, DeltakerStatusType.SOKT_INN]
     })
     expect(result.success).toBe(true)
@@ -18,7 +18,7 @@ describe('tiltaksKoordinatorDeltakerlisteRequestSchema', () => {
 
   it('godtar request med tomme statuser', () => {
     const result = tiltaksKoordinatorDeltakerlisteRequestSchema.safeParse({
-      harForslagFraArrangor: false,
+      handlingFilterValg: [],
       statuser: []
     })
     expect(result.success).toBe(true)
@@ -31,9 +31,9 @@ describe('tiltaksKoordinatorDeltakerlisteRequestSchema', () => {
     expect(result.success).toBe(false)
   })
 
-  it('avviser request med ugyldig type for harForslagFraArrangor', () => {
+  it('avviser request med ugyldig handlingFilterValg', () => {
     const result = tiltaksKoordinatorDeltakerlisteRequestSchema.safeParse({
-      harForslagFraArrangor: 'ja'
+      handlingFilterValg: ['UgyldigHandling']
     })
     expect(result.success).toBe(false)
   })

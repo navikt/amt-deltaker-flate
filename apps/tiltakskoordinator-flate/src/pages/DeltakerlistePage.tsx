@@ -11,10 +11,7 @@ import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteConte
 import { useFilterContext } from '../context-providers/FilterContext'
 import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { useSorteringContext } from '../context-providers/SorteringContext'
-import {
-  HandlingFilterValg,
-  STATUS_FILTER_TYPER
-} from '../utils/filter-deltakerliste'
+import { STATUS_FILTER_TYPER } from '../utils/filter-deltakerliste'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
 
 export const DeltakerlistePage = () => {
@@ -37,9 +34,8 @@ export const DeltakerlistePage = () => {
 
   const request = useMemo(
     () => ({
-      harForslagFraArrangor: valgteHendelseFilter.includes(
-        HandlingFilterValg.AktiveForslag
-      ),
+      handlingFilterValg:
+        valgteHendelseFilter.length > 0 ? valgteHendelseFilter : undefined,
       statuser: normaliserteStatuser
     }),
     [valgteHendelseFilter, normaliserteStatuser]
@@ -63,7 +59,7 @@ export const DeltakerlistePage = () => {
     queryKey: [
       'deltakere',
       deltakerlisteDetaljer.id,
-      request.harForslagFraArrangor,
+      request.handlingFilterValg,
       request.statuser
     ],
     queryFn: async () => getDeltakere(deltakerlisteDetaljer.id, request),

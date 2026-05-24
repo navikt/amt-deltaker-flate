@@ -75,21 +75,23 @@ export const deltakerlisteDetaljerSchema = z.object({
   erEnkeltplass: z.boolean()
 })
 
-export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
-  harForslagFraArrangor: z.boolean().optional(),
-  statuser: z.array(z.enum(DeltakerStatusType)).optional()
-})
-
-export const deltakerStatusCountsSchema = z.partialRecord(
-  z.enum(DeltakerStatusType),
-  z.number().int().nonnegative()
-)
-
 export const handlingFilterValgSchema = z.enum([
   'AktiveForslag',
   'OppdateringFraNav',
   'NyeDeltakere'
 ])
+
+export const deltakerStatusTypeSchema = z.enum(DeltakerStatusType)
+
+export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
+  handlingFilterValg: z.array(handlingFilterValgSchema).optional(),
+  statuser: z.array(deltakerStatusTypeSchema).optional()
+})
+
+export const deltakerStatusCountsSchema = z.partialRecord(
+  deltakerStatusTypeSchema,
+  z.number().int().nonnegative()
+)
 
 export const deltakerHandlingCountsSchema = z.partialRecord(
   handlingFilterValgSchema,
