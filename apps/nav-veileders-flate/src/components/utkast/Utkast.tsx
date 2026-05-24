@@ -2,6 +2,7 @@ import { PencilIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { erEnkeltPlass } from '../../utils/pamelding-enkeltplass.ts'
 import { HorisontalLine } from '../HorisontalLine.tsx'
 import { PameldingEnkeltplassForm } from '../pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
@@ -17,6 +18,7 @@ export const Utkast = () => {
   const { deltaker } = useDeltakerContext()
   const { disabled, redigerUtkastModus, setRedigerUtkastModus } =
     usePameldingFormContext()
+  const queryClient = useQueryClient()
 
   const [avbrytModalOpen, setAvbrytModalOpen] = useState<boolean>(false)
 
@@ -56,7 +58,12 @@ export const Utkast = () => {
               variant="secondary"
               icon={<PencilIcon aria-hidden />}
               disabled={disabled}
-              onClick={() => setRedigerUtkastModus(true)}
+              onClick={() => {
+                queryClient.removeQueries({
+                  queryKey: ['kodeverk', deltaker.deltakerId]
+                })
+                setRedigerUtkastModus(true)
+              }}
             >
               Endre utkast
             </Button>
