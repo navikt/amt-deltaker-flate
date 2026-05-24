@@ -17,8 +17,8 @@ export const getFilterStatuser = (
   oppstartstype: Oppstartstype | null,
   pameldingstype: Pameldingstype,
   tiltakskode: Tiltakskode
-) => {
-  const statuser = []
+): StatusFilterValg[] => {
+  const statuser: StatusFilterValg[] = []
 
   if (kreverGodkjenningForPamelding(pameldingstype)) {
     statuser.push(DeltakerStatusType.SOKT_INN, DeltakerStatusType.VENTELISTE)
