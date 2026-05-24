@@ -14,7 +14,7 @@ interface FilterPanelProps<T extends string> {
   valgteFilter: T[]
   counts: Partial<Record<T, number>>
   filterCountsLaster: boolean
-  onChange: (nyValgteFilter: string[]) => void
+  onChange: (nyValgteFilter: T[]) => void
 }
 
 export const FilterPanel = <T extends string>({
@@ -50,7 +50,7 @@ export const FilterPanel = <T extends string>({
           size="small"
           legend=""
           className="filter-checkboxes -mt-2"
-          onChange={onChange}
+          onChange={(nyValgteFilter) => onChange(nyValgteFilter as T[])}
           value={valgteFilter}
         >
           {filterAlternativer.map((filter) => (

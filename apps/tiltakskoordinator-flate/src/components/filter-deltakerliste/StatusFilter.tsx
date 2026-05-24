@@ -2,7 +2,6 @@ import { getDeltakerStatusDisplayText } from 'deltaker-flate-common'
 import { useMemo } from 'react'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../../context-providers/FilterContext'
-import type { StatusFilterValg } from '../../utils/filter-deltakerliste'
 import { getFilterStatuser } from '../../utils/filter-deltakerliste'
 import { FilterPanel } from './FilterPanel'
 
@@ -39,9 +38,7 @@ export const StatusFilter = () => {
       valgteFilter={valgteStatusFilter}
       counts={statusCounts}
       filterCountsLaster={filterCountsLaster}
-      onChange={(nyValgteFilter) =>
-        setValgteStatusFilter(nyValgteFilter as StatusFilterValg[])
-      }
+      onChange={(nyValgteFilter) => setValgteStatusFilter(nyValgteFilter)}
     />
   )
 }

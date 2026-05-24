@@ -35,9 +35,7 @@ export const HendelseFilter = () => {
       valgteFilter={valgteHendelseFilter}
       counts={handlingCounts}
       filterCountsLaster={filterCountsLaster}
-      onChange={(nyValgteFilter) =>
-        setValgteHendelseFilter(nyValgteFilter as HandlingFilterValg[])
-      }
+      onChange={(nyValgteFilter) => setValgteHendelseFilter(nyValgteFilter)}
     />
   )
 }
