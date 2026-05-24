@@ -57,7 +57,7 @@ jobs:
       - name: Lint
         run: pnpm lint
       - name: Run tests
-        run: pnpm test:no-watch
+        run: pnpm test:no-watch --filter=tiltakskoordinator-flate
       - name: Run playwright tests
         run: pnpm playwright --filter=tiltakskoordinator-flate
 
