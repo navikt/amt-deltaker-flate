@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - id: get-version
-        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(yq -r '.catalog.playwright' ../../pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   test-and-lint:
     name: Test and lint
@@ -56,7 +56,7 @@ jobs:
       - name: Lint
         run: pnpm lint
       - name: Run tests
-        run: pnpm test:no-watch
+        run: pnpm test:no-watch --filter=nav-veileders-flate
       - name: Run playwright tests
         run: pnpm playwright --filter=nav-veileders-flate
 

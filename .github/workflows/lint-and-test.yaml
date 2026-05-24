@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - id: get-version
-        run: echo "version=$(cat package.json | jq -r '.devDependencies.playwright' | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(yq -r '.catalog.playwright' ../../pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   lint-and-test:
     name: Lint, run tests & build

@@ -1,8 +1,4 @@
 import { Heading } from '@navikt/ds-react'
-import { useEffect, useMemo } from 'react'
-import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
-import { useFilterContext } from '../../context-providers/FilterContext'
-import { getFiltrerteDeltakere } from '../../utils/filter-deltakerliste'
 import { HendelseFilter } from './HendelseFilter'
 import { StatusFilter } from './StatusFilter'
 
@@ -11,21 +7,6 @@ interface Props {
 }
 
 export const FilterDeltakerliste = ({ className }: Props) => {
-  const { deltakere, setFiltrerteDeltakere } = useDeltakerlisteContext()
-  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
-
-  const filtrerteDeltakere = useMemo(() => {
-    return getFiltrerteDeltakere(
-      deltakere,
-      valgteHendelseFilter,
-      valgteStatusFilter
-    )
-  }, [valgteHendelseFilter, valgteStatusFilter, deltakere])
-
-  useEffect(() => {
-    setFiltrerteDeltakere(filtrerteDeltakere)
-  }, [filtrerteDeltakere, setFiltrerteDeltakere])
-
   return (
     <div className={className ? className : ''}>
       <Heading size="small" level="2" className="sr-only">

@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext.tsx'
+import { useFilterContext } from '../../context-providers/FilterContext.tsx'
 import {
   HandlingValg,
   useHandlingContext
@@ -35,8 +36,9 @@ import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { deltakere, filtrerteDeltakere, deltakerlisteDetaljer } =
+  const { deltakere, deltakerlisteDetaljer, statusCounts } =
     useDeltakerlisteContext()
+  const { valgteHendelseFilter } = useFilterContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()
 
@@ -51,7 +53,7 @@ export const DeltakerlisteTabell = () => {
   const { lagretSorteringsValg, setLagretSorteringsValg } =
     useSorteringContext()
   const { sort, handleSort, sorterteDeltagere } = useDeltakerSortering(
-    filtrerteDeltakere,
+    deltakere,
     lagretSorteringsValg
   )
 
@@ -77,10 +79,13 @@ export const DeltakerlisteTabell = () => {
         deltaker.vurdering !== null || deltaker.erManueltDeltMedArrangor
     )
 
-  if (filtrerteDeltakere.length === 0) {
+  if (deltakere.length === 0) {
+    const harDeltakere = Object.values(statusCounts).some((count) => count! > 0)
+    const filterErAktiv = harDeltakere || valgteHendelseFilter.length > 0
+
     return (
       <Alert inline variant="info" size="small" className="h-fit mt-8">
-        {`Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere${deltakere.length === 0 ? '' : ' som samsvarer med dine filtervalg'}.`}
+        {`Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere${filterErAktiv ? ' som samsvarer med dine filtervalg' : ''}.`}
       </Alert>
     )
   }
@@ -144,7 +149,7 @@ export const DeltakerlisteTabell = () => {
                   <MarkerAlleCheckbox
                     valgbareDeltakere={getValgbareDeltakere(
                       handlingValg,
-                      filtrerteDeltakere
+                      deltakere
                     )}
                   />
                 </Table.DataCell>

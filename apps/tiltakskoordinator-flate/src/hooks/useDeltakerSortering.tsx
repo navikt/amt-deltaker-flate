@@ -1,5 +1,5 @@
 import { SortState } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Deltaker } from '../api/data/deltakerliste'
 
 export interface ScopedSortState extends SortState {
@@ -16,37 +16,40 @@ export enum SortKey {
   SLUTT_DATO = 'sluttdato'
 }
 
+const DEFAULT_SORT: ScopedSortState = {
+  orderBy: SortKey.SOKT_INN_DATO,
+  direction: 'descending'
+}
+
 export const useDeltakerSortering = (
   deltakere: Deltaker[],
   sorteringsValg?: ScopedSortState
 ) => {
-  const [sort, setSort] = useState<ScopedSortState | undefined>(sorteringsValg)
-  const [sorterteDeltagere, setSorterteDeltagere] = useState<Deltaker[]>(
-    sorterDeltakere(deltakere)
-  )
+  const initialSort = sorteringsValg ?? DEFAULT_SORT
+  const [sort, setSort] = useState<ScopedSortState | undefined>(initialSort)
 
   useEffect(() => {
-    setSorterteDeltagere(sorterDeltakere(deltakere, sort))
-  }, [deltakere, sort])
+    setSort(sorteringsValg ?? DEFAULT_SORT)
+  }, [sorteringsValg])
+
+  const sorterteDeltagere = useMemo(
+    () => sorterDeltakere(deltakere, sort),
+    [deltakere, sort]
+  )
 
   const handleSort = (
     sortKey: ScopedSortState['orderBy'],
     onSortChanged?: (newSort: ScopedSortState) => void
   ) => {
-    const newSort =
-      sort && sortKey === sort.orderBy && sort.direction === 'descending'
-        ? undefined
-        : {
-            orderBy: sortKey,
-            direction:
-              sort && sortKey === sort.orderBy && sort.direction === 'ascending'
-                ? 'descending'
-                : 'ascending'
-          }
-    // @ts-expect-error newSort er riktig
+    const newSort: ScopedSortState = {
+      orderBy: sortKey,
+      direction:
+        sort && sortKey === sort.orderBy && sort.direction === 'descending'
+          ? 'ascending'
+          : 'descending'
+    }
     setSort(newSort)
     if (onSortChanged) {
-      // @ts-expect-error newSort er riktig
       onSortChanged(newSort)
     }
   }

@@ -1,15 +1,21 @@
 import { createContext, useContext, useState } from 'react'
-import { Deltakere, DeltakerlisteDetaljer } from '../api/data/deltakerliste'
+import {
+  Deltakere,
+  DeltakerHandlingCounts,
+  DeltakerlisteDetaljer,
+  DeltakerStatusCounts
+} from '../api/data/deltakerliste'
 
 export interface DeltakerListeContextProps {
   deltakerlisteDetaljer: DeltakerlisteDetaljer
   deltakere: Deltakere
-  filtrerteDeltakere: Deltakere
+  statusCounts: DeltakerStatusCounts
+  handlingCounts: DeltakerHandlingCounts
+  filterCountsLaster: boolean
   setDeltakerlisteDetaljer: React.Dispatch<
     React.SetStateAction<DeltakerlisteDetaljer>
   >
   setDeltakere: React.Dispatch<React.SetStateAction<Deltakere>>
-  setFiltrerteDeltakere: React.Dispatch<React.SetStateAction<Deltakere>>
 }
 
 const DeltakerlisteContext = createContext<
@@ -31,25 +37,31 @@ const useDeltakerlisteContext = () => {
 const DeltakerlisteContextProvider = ({
   initialDeltakerlisteDetaljer,
   initialDeltakere,
+  initialStatusCounts,
+  initialHandlingCounts,
+  initialFilterCountsLaster,
   children
 }: {
   initialDeltakerlisteDetaljer: DeltakerlisteDetaljer
   initialDeltakere: Deltakere
+  initialStatusCounts: DeltakerStatusCounts
+  initialHandlingCounts: DeltakerHandlingCounts
+  initialFilterCountsLaster: boolean
   children: React.ReactNode
 }) => {
   const [deltakerlisteDetaljer, setDeltakerlisteDetaljer] = useState(
     initialDeltakerlisteDetaljer
   )
   const [deltakere, setDelakere] = useState(initialDeltakere)
-  const [filtrerteDeltakere, setFiltrerteDeltakere] = useState(initialDeltakere)
 
   const contextValue: DeltakerListeContextProps = {
     deltakerlisteDetaljer: deltakerlisteDetaljer,
     deltakere: deltakere,
-    filtrerteDeltakere: filtrerteDeltakere,
+    statusCounts: initialStatusCounts,
+    handlingCounts: initialHandlingCounts,
+    filterCountsLaster: initialFilterCountsLaster,
     setDeltakerlisteDetaljer: setDeltakerlisteDetaljer,
-    setDeltakere: setDelakere,
-    setFiltrerteDeltakere: setFiltrerteDeltakere
+    setDeltakere: setDelakere
   }
 
   return (

@@ -75,7 +75,43 @@ export const deltakerlisteDetaljerSchema = z.object({
   erEnkeltplass: z.boolean()
 })
 
+export const handlingFilterValgSchema = z.enum([
+  'AktiveForslag',
+  'OppdateringFraNav',
+  'NyeDeltakere'
+])
+
+export const deltakerStatusTypeSchema = z.enum(DeltakerStatusType)
+
+export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
+  handlingFilterValg: z.array(handlingFilterValgSchema).optional(),
+  statuser: z.array(deltakerStatusTypeSchema).optional()
+})
+
+export const deltakerStatusCountsSchema = z.partialRecord(
+  deltakerStatusTypeSchema,
+  z.number().int().nonnegative()
+)
+
+export const deltakerHandlingCountsSchema = z.partialRecord(
+  handlingFilterValgSchema,
+  z.number().int().nonnegative()
+)
+
+export const deltakerFilterCountsSchema = z.object({
+  statusCounts: deltakerStatusCountsSchema,
+  handlingCounts: deltakerHandlingCountsSchema
+})
+
 export type Deltaker = z.infer<typeof deltakerSchema>
 export type Deltakere = z.infer<typeof deltakereSchema>
 export type DeltakerlisteDetaljer = z.infer<typeof deltakerlisteDetaljerSchema>
 export type Koordinator = z.infer<typeof koordinatorSchema>
+export type TiltaksKoordinatorDeltakerlisteRequest = z.infer<
+  typeof tiltaksKoordinatorDeltakerlisteRequestSchema
+>
+export type DeltakerStatusCounts = z.infer<typeof deltakerStatusCountsSchema>
+export type DeltakerHandlingCounts = z.infer<
+  typeof deltakerHandlingCountsSchema
+>
+export type DeltakerFilterCounts = z.infer<typeof deltakerFilterCountsSchema>

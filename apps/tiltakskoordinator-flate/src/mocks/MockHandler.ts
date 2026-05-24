@@ -7,7 +7,12 @@ import {
   UlestHendelseType
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
-import { DeltakerlisteDetaljer, Feilkode } from '../api/data/deltakerliste.ts'
+import {
+  DeltakerlisteDetaljer,
+  Feilkode,
+  TiltaksKoordinatorDeltakerlisteRequest
+} from '../api/data/deltakerliste.ts'
+import { HandlingFilterValg } from '../utils/filter-deltakerliste.ts'
 import {
   createMockDeltakere,
   createMockDeltakerlisteDetaljer,
@@ -23,40 +28,105 @@ export class MockHandler {
   deltakerlisteDetaljer: DeltakerlisteDetaljer | null = null
   mockDeltakere: MockDeltaker[] = createMockDeltakere()
 
+  private sjekkTilgang() {
+    if (this.stengt) {
+      return HttpResponse.json(
+        { error: 'Deltakerliste stengt' },
+        { status: 410 }
+      )
+    }
+    if (!this.harAdRolle) {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!this.tilgang) {
+      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
+    }
+    return null
+  }
+
+  private filtrerPaaHandlinger(
+    deltakere: MockDeltaker[],
+    handlingFilterValg: TiltaksKoordinatorDeltakerlisteRequest['handlingFilterValg']
+  ): MockDeltaker[] {
+    if (!handlingFilterValg?.length) return deltakere
+    const handlinger = new Set(handlingFilterValg)
+    return deltakere.filter(
+      (deltaker) =>
+        (handlinger.has(HandlingFilterValg.AktiveForslag) &&
+          deltaker.harAktiveForslag) ||
+        (handlinger.has(HandlingFilterValg.OppdateringFraNav) &&
+          deltaker.harOppdateringFraNav) ||
+        (handlinger.has(HandlingFilterValg.NyeDeltakere) &&
+          deltaker.erNyDeltaker)
+    )
+  }
+
   getDeltakerlisteDetaljer() {
     this.deltakerlisteDetaljer = createMockDeltakerlisteDetaljer()
     return HttpResponse.json(this.deltakerlisteDetaljer)
   }
 
   getDeltakere() {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
-      )
-    }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
     return HttpResponse.json(mapMockDeltakereToDeltakere(this.mockDeltakere))
   }
 
-  getDeltaker(deltakerId: string) {
-    if (this.stengt) {
-      return HttpResponse.json(
-        { error: 'Deltakerliste stengt' },
-        { status: 410 }
+  postDeltakere(request: TiltaksKoordinatorDeltakerlisteRequest) {
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
+
+    let filtrerteDeltakere = this.filtrerPaaHandlinger(
+      this.mockDeltakere,
+      request.handlingFilterValg
+    )
+
+    if ((request.statuser?.length ?? 0) > 0) {
+      const valgteStatuser = new Set(request.statuser)
+      filtrerteDeltakere = filtrerteDeltakere.filter((deltaker) =>
+        valgteStatuser.has(deltaker.status.type)
       )
     }
-    if (!this.harAdRolle) {
-      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    return HttpResponse.json(mapMockDeltakereToDeltakere(filtrerteDeltakere))
+  }
+
+  getDeltakereStatusCounts(request: TiltaksKoordinatorDeltakerlisteRequest) {
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
+
+    const filtrerteDeltakere = this.filtrerPaaHandlinger(
+      this.mockDeltakere,
+      request.handlingFilterValg
+    )
+
+    const statuser = request.statuser ?? []
+    const statusCounts = Object.fromEntries(
+      statuser.map((status) => [
+        status,
+        filtrerteDeltakere.filter((deltaker) => deltaker.status.type === status)
+          .length
+      ])
+    )
+
+    const handlingCounts = {
+      AktiveForslag: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harAktiveForslag
+      ).length,
+      OppdateringFraNav: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.harOppdateringFraNav
+      ).length,
+      NyeDeltakere: filtrerteDeltakere.filter(
+        (deltaker) => deltaker.erNyDeltaker
+      ).length
     }
-    if (!this.tilgang) {
-      return HttpResponse.json({ error: 'Not Authorized' }, { status: 403 })
-    }
+
+    return HttpResponse.json({ statusCounts, handlingCounts })
+  }
+
+  getDeltaker(deltakerId: string) {
+    const feil = this.sjekkTilgang()
+    if (feil) return feil
     const deltaker = this.mockDeltakere.find(
       (deltaker) => deltaker.id === deltakerId
     )
@@ -118,13 +188,12 @@ export class MockHandler {
   }
 
   delMedArrangor(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.erManueltDeltMedArrangor = true
       }
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(
@@ -136,7 +205,7 @@ export class MockHandler {
   }
 
   tildelPlass(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
         deltaker.status.aarsak = null
@@ -144,7 +213,6 @@ export class MockHandler {
       deltaker.feilkode = null
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(
@@ -156,7 +224,7 @@ export class MockHandler {
   }
 
   settPaVenteliste(delteDeltakerIder: string[]) {
-    const oppdaterteDeltakere = this.mockDeltakere.map((deltaker) => {
+    this.mockDeltakere = this.mockDeltakere.map((deltaker) => {
       if (delteDeltakerIder.includes(deltaker.id)) {
         deltaker.status.aarsak = null
         deltaker.feilkode = [Feilkode.MIDLERTIDIG_FEIL, null][
@@ -169,7 +237,6 @@ export class MockHandler {
       }
       return deltaker
     })
-    this.mockDeltakere = oppdaterteDeltakere
 
     return HttpResponse.json(
       mapMockDeltakereToDeltakere(

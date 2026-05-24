@@ -30,17 +30,22 @@ const useFilterContext = () => {
   return context
 }
 
-const FilterContextProvider = ({ children }: { children: React.ReactNode }) => {
+const FilterContextProvider = ({
+  initialStatusFilter,
+  children
+}: {
+  initialStatusFilter: StatusFilterValg[]
+  children: React.ReactNode
+}) => {
   const [valgteHendelseFilter, setValgteHendelseFilter] = useState<
     HandlingFilterValg[]
   >([])
-  const [valgteStatusFilter, setValgteStatusFilter] = useState<
-    StatusFilterValg[]
-  >([])
+  const [valgteStatusFilter, setValgteStatusFilter] =
+    useState<StatusFilterValg[]>(initialStatusFilter)
 
   const nullstillFilter = () => {
     setValgteHendelseFilter([])
-    setValgteStatusFilter([])
+    setValgteStatusFilter(initialStatusFilter)
   }
 
   const contextValue: FilterContextProps = {
