@@ -18,6 +18,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '../../../AppContext.tsx'
 import { getKodeverk } from '../../../api/api-enkeltplass.ts'
 import { Loader } from '@navikt/ds-react'
+import { DeltakerResponse } from '../../../api/data/deltaker.ts'
+import { KodeverkResponse } from '../../../api/data/kodeverk.ts'
 
 interface Props {
   className?: string
@@ -25,28 +27,13 @@ interface Props {
 }
 
 export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
-  const formRef = useRef<HTMLFormElement>(null)
-
   const { enhetId } = useAppContext()
   const { deltaker } = useDeltakerContext()
 
-  useEffect(() => {
-    if (focusOnOpen && formRef?.current) formRef.current.focus()
-  }, [])
-
   const { data: kodeverk, isLoading } = useQuery({
-    queryKey: ['kodeverk', deltaker.deltakerId],
+    queryKey: ['kodeverk', deltaker.deltakerId, enhetId],
     queryFn: () => getKodeverk(deltaker.deltakerId, enhetId),
-    // placeholderData: keepPreviousData,
     throwOnError: false
-  })
-
-  const defaultValues = generateFormDefaultValues(deltaker, kodeverk)
-
-  const methods = useForm<PameldingEnkeltplassFormValues>({
-    defaultValues,
-    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
-    shouldFocusError: false
   })
 
   if (isLoading) {
@@ -56,6 +43,44 @@ export const PameldingEnkeltplassForm = ({ className, focusOnOpen }: Props) => {
       </div>
     )
   }
+
+  // Mount form etter at kodeverk er ferdig lastet, slik at useForm
+  // initialiseres én gang med riktige defaultValues (inkl. forhåndsvalgte
+  // kodeverk og sertifiseringer).
+  return (
+    <PameldingEnkeltplassFormInner
+      className={className}
+      focusOnOpen={focusOnOpen}
+      deltaker={deltaker}
+      kodeverk={kodeverk}
+    />
+  )
+}
+
+interface InnerProps extends Props {
+  deltaker: DeltakerResponse
+  kodeverk: KodeverkResponse | undefined
+}
+
+const PameldingEnkeltplassFormInner = ({
+  className,
+  focusOnOpen,
+  deltaker,
+  kodeverk
+}: InnerProps) => {
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if (focusOnOpen && formRef?.current) formRef.current.focus()
+  }, [focusOnOpen])
+
+  const defaultValues = generateFormDefaultValues(deltaker, kodeverk)
+
+  const methods = useForm<PameldingEnkeltplassFormValues>({
+    defaultValues,
+    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
+    shouldFocusError: false
+  })
 
   return (
     <form

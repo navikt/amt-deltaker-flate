@@ -1,4 +1,12 @@
 import { z } from 'zod'
+import { sertifiseringValgSchema } from 'deltaker-flate-common'
+
+// Re-eksporter det flate kodeverket fra fellespakken slik at eksisterende
+// imports fra denne fila fortsatt fungerer (FlattKodeverk, utflatetKodeverkSchema).
+export {
+  utflatetKodeverkSchema,
+  type FlattKodeverk
+} from 'deltaker-flate-common'
 
 export enum KodeverkAlternativType {
   GRUPPE = 'Gruppe',
@@ -67,13 +75,6 @@ export type KodeverkContainer =
   | KodeverkVerdigruppe
   | KodeverkVerdigruppeSok
 
-const sertifiseringValgSchema = z.array(
-  z.object({
-    id: z.int(),
-    navn: z.string()
-  })
-)
-
 export const kodeverkResponseSchema = z.object({
   tiltakskode: z.string(),
   alternativer: z.array(
@@ -98,12 +99,3 @@ export const kodeverkSertifiseringResponseSchema = z.array(
 export type KodeverkSertifiseringResponse = z.infer<
   typeof kodeverkSertifiseringResponseSchema
 >
-
-export const utflatetKodeverkSchema = z.object({
-  tittel: z.string().nullable(),
-  valg: z.array(z.string()),
-  valgteKodeverkIder: z.array(z.uuid()), // TODO dette kan fjernes hvis meld på direkte kan sende med tom request fra utkast
-  valgteSertifiseringer: sertifiseringValgSchema // TODO dette kan fjernes hvis meld på direkte kan sende med tom request fra utkast
-})
-
-export type FlattKodeverk = z.infer<typeof utflatetKodeverkSchema>

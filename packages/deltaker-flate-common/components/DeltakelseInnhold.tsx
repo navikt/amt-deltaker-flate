@@ -2,7 +2,7 @@ import { BodyLong, List } from '@navikt/ds-react'
 import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 import { erOpplaringstiltak } from '../utils/utils'
-import { FlattKodeverk } from '../../../apps/nav-veileders-flate/src/api/data/kodeverk'
+import { FlattKodeverk } from '../model/kodeverk'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
@@ -135,6 +135,6 @@ const harInnhold = (
   )
 }
 
-const harKodeverk = (kodeverk?: FlattKodeverk | null) => {
-  return kodeverk && (kodeverk.valg.length === 0 || !!kodeverk.tittel)
+const harKodeverk = (kodeverk?: FlattKodeverk | null): boolean => {
+  return !!kodeverk && (kodeverk.valg.length > 0 || !!kodeverk.tittel)
 }
