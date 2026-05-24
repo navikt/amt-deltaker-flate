@@ -36,8 +36,9 @@ import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { deltakere, deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
+  const { deltakere, deltakerlisteDetaljer, statusCounts } =
+    useDeltakerlisteContext()
+  const { valgteHendelseFilter } = useFilterContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()
 
@@ -79,11 +80,12 @@ export const DeltakerlisteTabell = () => {
     )
 
   if (deltakere.length === 0) {
-    const harAktiveFilter =
-      valgteHendelseFilter.length > 0 || valgteStatusFilter.length > 0
+    const harDeltakere = Object.values(statusCounts).some((count) => count! > 0)
+    const filterErAktiv = harDeltakere || valgteHendelseFilter.length > 0
+
     return (
       <Alert inline variant="info" size="small" className="h-fit mt-8">
-        {`Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere${harAktiveFilter ? ' som samsvarer med dine filtervalg' : ''}.`}
+        {`Innsøkte deltakere vises her. Det er foreløpig ingen innsøkte deltakere${filterErAktiv ? ' som samsvarer med dine filtervalg' : ''}.`}
       </Alert>
     )
   }
