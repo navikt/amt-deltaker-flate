@@ -2,10 +2,11 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   formatDate,
-  PrisOgBetaling
+  hentGjennomforingNavnHosArrangorTekst,
+  PrisOgBetaling,
+  VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
-import { VeilederSnakkeboble } from 'deltaker-flate-common'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
@@ -18,10 +19,12 @@ export const UtkastDeltakerEnkeltplass = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        deltakerlisteNavn={
-          deltaker.deltakerliste.kodeverk?.tittel ??
-          deltaker.deltakerliste.deltakerlisteNavn
-        }
+        tiltaksnavnHosArrangor={hentGjennomforingNavnHosArrangorTekst(
+          tiltakskode,
+          deltaker.deltakerliste.deltakerlisteNavn,
+          deltaker.deltakerliste.arrangorNavn,
+          deltaker.deltakerliste.kodeverk?.tittel
+        )}
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}

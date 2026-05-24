@@ -95,7 +95,11 @@ export const UtkastPage = () => {
         arrangorNavn={arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
+        tiltaksnavnHosArrangor={hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+          deltakerliste.tiltakskode,
+          deltakerliste.deltakerlisteNavn,
+          arrangorNavn
+        )}
       />
 
       <OmKurset

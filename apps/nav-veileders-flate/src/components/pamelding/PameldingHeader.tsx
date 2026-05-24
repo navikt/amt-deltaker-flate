@@ -5,7 +5,7 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   getTiltakskodeDisplayText,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  hentGjennomforingNavnHosArrangorTekst,
   Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
@@ -45,16 +45,12 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
     deltakerliste.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
-  const tiltakNavnHosArrangor =
-    deltakerliste.tiltakskode ===
-      Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
+  const tiltakNavnHosArrangor = hentGjennomforingNavnHosArrangorTekst(
+    deltakerliste.tiltakskode,
+    deltakerliste.deltakerlisteNavn,
+    deltakerliste.arrangorNavn,
     kodeverk?.tittel
-      ? `${kodeverk.tittel} hos ${deltakerliste.arrangorNavn}`
-      : hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-          deltakerliste.tiltakskode,
-          deltakerliste.deltakerlisteNavn,
-          deltakerliste.arrangorNavn
-        )
+  )
 
   return (
     <div>

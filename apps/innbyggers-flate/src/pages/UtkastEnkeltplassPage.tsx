@@ -3,6 +3,7 @@ import {
   DeferredFetchState,
   DeltakelseInnhold,
   UtkastHeader,
+  hentGjennomforingNavnHosArrangorTekst,
   hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
   VeilederSnakkeboble,
@@ -62,7 +63,11 @@ export const UtkastEnkeltplassPage = () => {
         arrangorNavn={deltakerliste.arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
+        tiltaksnavnHosArrangor={hentGjennomforingNavnHosArrangorTekst(
+          deltakerliste.tiltakskode,
+          deltakerliste.deltakerlisteNavn,
+          deltakerliste.arrangorNavn
+        )}
       />
 
       <BodyLong size="small" className="mt-8 whitespace-pre-wrap">
