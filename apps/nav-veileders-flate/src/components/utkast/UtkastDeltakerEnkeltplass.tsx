@@ -18,7 +18,10 @@ export const UtkastDeltakerEnkeltplass = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
+        deltakerlisteNavn={
+          deltaker.deltakerliste.kodeverk?.tittel ??
+          deltaker.deltakerliste.deltakerlisteNavn
+        }
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}
