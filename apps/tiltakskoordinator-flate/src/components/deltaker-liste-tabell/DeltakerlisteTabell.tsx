@@ -21,7 +21,7 @@ import {
   ScopedSortState,
   SortKey,
   useDeltakerSortering
-} from '../../hooks/useDeltakerSortering.tsx'
+} from '../../hooks/useDeltakerSortering.ts'
 import { getDeltakerUrl } from '../../navigation.ts'
 import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
