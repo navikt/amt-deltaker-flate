@@ -91,7 +91,11 @@ vi.mock('../components/DeltakerlisteDetaljer', () => ({
 }))
 
 vi.mock('../components/deltaker-liste-tabell/DeltakerlisteTabell', () => ({
-  DeltakerlisteTabell: () => <div>DeltakerlisteTabell</div>
+  DeltakerlisteTabell: ({ deltakere }: { deltakere: { id: string }[] }) => (
+    <div data-testid="deltakerliste-tabell" data-antall={deltakere.length}>
+      DeltakerlisteTabell
+    </div>
+  )
 }))
 
 vi.mock('../components/filter-deltakerliste/FilterDeltakerliste', () => ({
@@ -296,6 +300,36 @@ describe('DeltakerlistePage rendering-tilstander', () => {
     render(<DeltakerlistePage />)
 
     expect(screen.getByText('DeltakerlisteTabell')).toBeTruthy()
+  })
+
+  it('sender deltakere-array som prop til tabellen', () => {
+    mockQueryState.data = [{ id: '1' }, { id: '2' }]
+
+    render(<DeltakerlistePage />)
+
+    expect(
+      screen.getByTestId('deltakerliste-tabell').getAttribute('data-antall')
+    ).toBe('2')
+  })
+
+  it('sender tom liste når data er TilgangsFeil', () => {
+    mockQueryState.data = TilgangsFeil.IkkeTilgangTilDeltakerliste
+
+    render(<DeltakerlistePage />)
+
+    expect(
+      screen.getByTestId('deltakerliste-tabell').getAttribute('data-antall')
+    ).toBe('0')
+  })
+
+  it('sender tom liste når data er undefined', () => {
+    mockQueryState.data = undefined
+
+    render(<DeltakerlistePage />)
+
+    expect(
+      screen.getByTestId('deltakerliste-tabell').getAttribute('data-antall')
+    ).toBe('0')
   })
 
   it('legger på opacity-50 på tabell-wrapper når isFetching og ikke isPending', () => {

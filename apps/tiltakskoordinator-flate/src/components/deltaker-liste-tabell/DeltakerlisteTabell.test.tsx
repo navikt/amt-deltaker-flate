@@ -38,14 +38,6 @@ const deltakerlisteDetaljer = {
   erEnkeltplass: false
 }
 
-const mockDeltakereResponse = vi.hoisted(() => ({
-  current: [] as Deltaker[] | string | undefined
-}))
-
-vi.mock('../../hooks/useDeltakereQuery', () => ({
-  useDeltakereQuery: () => ({ data: mockDeltakereResponse.current })
-}))
-
 vi.mock('../../context-providers/DeltakerlisteContext', () => ({
   useDeltakerlisteContext: () => ({
     deltakerlisteDetaljer,
@@ -92,40 +84,26 @@ vi.mock('../handling/HandlingerKnapp', () => ({
   HandlingerKnapp: () => null
 }))
 
-const renderTabell = () =>
+const renderTabell = (deltakere: Deltaker[]) =>
   render(
     <MemoryRouter>
-      <DeltakerlisteTabell />
+      <DeltakerlisteTabell deltakere={deltakere} />
     </MemoryRouter>
   )
 
 describe('DeltakerlisteTabell', () => {
-  it('viser navn på deltakere fra useDeltakereQuery', () => {
-    mockDeltakereResponse.current = [
+  it('viser navn på deltakere fra prop', () => {
+    renderTabell([
       lagDeltaker('1', 'Ola', 'Nordmann'),
       lagDeltaker('2', 'Kari', 'Hansen')
-    ]
-
-    renderTabell()
+    ])
 
     expect(screen.getByText(/Nordmann.*Ola/)).toBeTruthy()
     expect(screen.getByText(/Hansen.*Kari/)).toBeTruthy()
   })
 
   it('viser tom-melding når listen er tom', () => {
-    mockDeltakereResponse.current = []
-
-    renderTabell()
-
-    expect(
-      screen.getByText(/Det er foreløpig ingen innsøkte deltakere/)
-    ).toBeTruthy()
-  })
-
-  it('viser tom-melding når data er tilgangsfeil-streng (behandles som tom)', () => {
-    mockDeltakereResponse.current = 'IkkeTilgangTilDeltakerliste'
-
-    renderTabell()
+    renderTabell([])
 
     expect(
       screen.getByText(/Det er foreløpig ingen innsøkte deltakere/)

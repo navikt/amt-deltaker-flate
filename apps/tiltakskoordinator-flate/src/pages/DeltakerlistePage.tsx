@@ -71,7 +71,11 @@ export const DeltakerlistePage = () => {
               isFetching ? 'opacity-50 transition-opacity duration-150' : ''
             }
           >
-            <DeltakerlisteTabell />
+            <DeltakerlisteTabell
+              deltakere={
+                Array.isArray(deltakereResponse) ? deltakereResponse : []
+              }
+            />
           </div>
         )}
       </div>
