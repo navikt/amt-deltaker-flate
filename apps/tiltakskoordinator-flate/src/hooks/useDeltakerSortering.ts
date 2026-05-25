@@ -1,5 +1,5 @@
 import { SortState } from '@navikt/ds-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Deltaker } from '../api/data/deltakerliste'
 
 export interface ScopedSortState extends SortState {
@@ -21,37 +21,33 @@ const DEFAULT_SORT: ScopedSortState = {
   direction: 'descending'
 }
 
+/**
+ * Sorterer deltakere basert på brukerens valg.
+ * Sorterings-staten eies av SorteringContext – denne hooken er ren (ingen intern state).
+ * handleSort beregner ny sortering og melder tilbake via callback.
+ */
 export const useDeltakerSortering = (
   deltakere: Deltaker[],
   sorteringsValg?: ScopedSortState
 ) => {
-  const initialSort = sorteringsValg ?? DEFAULT_SORT
-  const [sort, setSort] = useState<ScopedSortState | undefined>(initialSort)
-
-  useEffect(() => {
-    setSort(sorteringsValg ?? DEFAULT_SORT)
-  }, [sorteringsValg])
+  const sort = sorteringsValg ?? DEFAULT_SORT
 
   const sorterteDeltagere = useMemo(
     () => sorterDeltakere(deltakere, sort),
-    [deltakere, sort]
+    [deltakere, sort.orderBy, sort.direction]
   )
 
   const handleSort = (
     sortKey: ScopedSortState['orderBy'],
-    onSortChanged?: (newSort: ScopedSortState) => void
+    onSortChanged: (newSort: ScopedSortState) => void
   ) => {
-    const newSort: ScopedSortState = {
+    onSortChanged({
       orderBy: sortKey,
       direction:
-        sort && sortKey === sort.orderBy && sort.direction === 'descending'
+        sortKey === sort.orderBy && sort.direction === 'descending'
           ? 'ascending'
           : 'descending'
-    }
-    setSort(newSort)
-    if (onSortChanged) {
-      onSortChanged(newSort)
-    }
+    })
   }
 
   return {

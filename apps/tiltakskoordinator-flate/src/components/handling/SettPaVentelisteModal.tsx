@@ -6,9 +6,8 @@ import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
-import { useOppdaterDeltakereCache } from '../../hooks/useOppdaterDeltakereCache'
+import { useInvaliderDeltakere } from '../../hooks/useInvaliderDeltakere'
 import { HandlingModal } from './HandlingModal'
-import { getDeltakereOppdatert } from '../../utils/utils.ts'
 import { lagInfoTekst } from './text-utils.ts'
 
 interface Props {
@@ -19,7 +18,7 @@ interface Props {
 
 export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const oppdaterDeltakere = useOppdaterDeltakereCache()
+  const invaliderDeltakere = useInvaliderDeltakere()
   const {
     valgteDeltakere,
     handlingValg,
@@ -38,18 +37,17 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
     setError(null)
   }
 
-  const utforHandling = (): Promise<void> => {
+  const utforHandling = async () => {
+    setError(null)
     return settDeltakerePaVenteliste(
       deltakerlisteDetaljer.id,
       valgteDeltakere.map((it) => it.id)
     )
-      .then((deltakereResult) => {
+      .then(async (deltakereResult) => {
         const feiledeDeltakere = deltakereResult.filter(
           (deltaker) => deltaker.feilkode !== null
         )
-        oppdaterDeltakere((deltakere) =>
-          getDeltakereOppdatert(deltakere, deltakereResult)
-        )
+        void invaliderDeltakere()
         onSend()
 
         const infoTekst = lagInfoTekst(
@@ -58,7 +56,9 @@ export const SettPaVentelisteModal = ({ open, onClose, onSend }: Props) => {
         )
         if (feiledeDeltakere.length > 0) {
           setHandlingFeiletText(infoTekst)
-        } else setHandlingUtfortText(infoTekst)
+        } else {
+          setHandlingUtfortText(infoTekst)
+        }
       })
       .catch(() => {
         setError('Kunne ikke sette på venteliste. Vennligst prøv igjen.')

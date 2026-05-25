@@ -1,14 +1,10 @@
-import { Alert, BodyShort, Label, Link, Table } from '@navikt/ds-react'
+import { Alert, Label, Table } from '@navikt/ds-react'
 import {
-  DeltakerStatusTag,
-  DeltakerStatusType,
-  formatDate,
   harLopendeOppstart,
   kanDeleDeltakerMedArrangorForVurdering,
   Pameldingstype
 } from 'deltaker-flate-common'
 import { useEffect, useRef, useState } from 'react'
-import { Link as ReactRouterLink } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste.ts'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext.tsx'
 import { useFilterContext } from '../../context-providers/FilterContext.tsx'
@@ -22,24 +18,19 @@ import {
   SortKey,
   useDeltakerSortering
 } from '../../hooks/useDeltakerSortering.ts'
-import { getDeltakerUrl } from '../../navigation.ts'
-import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
-import { BeskyttelsesmarkeringIkoner } from '../BeskyttelsesmarkeringIkoner.tsx'
 import { HandlingerKnapp } from '../handling/HandlingerKnapp.tsx'
 import { HandlingFullfortAlert } from '../handling/HandlingFullfortAlert.tsx'
 import { HandlingFullfortMedFeilAlert } from '../handling/HandlingFullfortMedFeilAlert.tsx'
 import { HandlingModalController } from '../handling/HandlingModalController.tsx'
-import { Vurdering } from '../Vurdering.tsx'
-import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
+import { DeltakerRad } from './DeltakerRad.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
-import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
-interface Props {
+export const DeltakerlisteTabell = ({
+  deltakere
+}: {
   deltakere: Deltaker[]
-}
-
-export const DeltakerlisteTabell = ({ deltakere }: Props) => {
+}) => {
   const { deltakerlisteDetaljer, statusCounts } = useDeltakerlisteContext()
   const { valgteHendelseFilter } = useFilterContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
@@ -60,6 +51,7 @@ export const DeltakerlisteTabell = ({ deltakere }: Props) => {
     lagretSorteringsValg
   )
 
+  // Flytt fokus til info-alert når handlingValg endres (skjermleser-støtte)
   useEffect(() => {
     if (handlingValg === handlingValgRef.current) {
       return
@@ -71,6 +63,8 @@ export const DeltakerlisteTabell = ({ deltakere }: Props) => {
     }
   }, [handlingValg])
 
+  // Vis vurderingskolonne kun for tiltak som støtter det, og bare
+  // hvis minst én deltaker har vurdering eller er manuelt delt
   const skalViseVurderinger =
     kanDeleDeltakerMedArrangorForVurdering(
       deltakerlisteDetaljer.pameldingstype,
@@ -93,16 +87,9 @@ export const DeltakerlisteTabell = ({ deltakere }: Props) => {
     )
   }
 
+  // Batch-handling = checkboxer i tabellen. GI_AVSLAG er per-deltaker med egen knapp.
   const erBatchHandling =
     handlingValg !== null && handlingValg !== HandlingValg.GI_AVSLAG
-
-  const kanGisAvslag = (deltaker: Deltaker) =>
-    [
-      DeltakerStatusType.SOKT_INN,
-      DeltakerStatusType.VURDERES,
-      DeltakerStatusType.VENTELISTE,
-      DeltakerStatusType.VENTER_PA_OPPSTART
-    ].includes(deltaker.status.type)
 
   return (
     <div className="flex flex-col gap-3">
@@ -148,128 +135,103 @@ export const DeltakerlisteTabell = ({ deltakere }: Props) => {
           <Table.Header>
             <Table.Row>
               {erBatchHandling && (
-                <Table.DataCell>
+                <Table.ColumnHeader scope="col">
                   <MarkerAlleCheckbox
                     valgbareDeltakere={getValgbareDeltakere(
                       handlingValg,
                       deltakere
                     )}
                   />
-                </Table.DataCell>
+                </Table.ColumnHeader>
               )}
               {handlingValg === HandlingValg.GI_AVSLAG && (
-                <Table.DataCell></Table.DataCell>
+                <Table.ColumnHeader scope="col">
+                  <span className="sr-only">Gi avslag</span>
+                </Table.ColumnHeader>
               )}
-              <TableHeaderCell label="Navn" sortKey={SortKey.NAVN} />
-              <TableHeaderCell label="Nav-enhet" sortKey={SortKey.NAV_ENHET} />
-              <TableHeaderCell
-                label="Søkt inn"
+              <Table.ColumnHeader
+                scope="col"
+                className="px-2"
+                sortKey={SortKey.NAVN}
+                sortable
+              >
+                <Label size="medium">Navn</Label>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
+                scope="col"
+                className="px-2"
+                sortKey={SortKey.NAV_ENHET}
+                sortable
+              >
+                <Label size="medium">Nav-enhet</Label>
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
+                scope="col"
+                className="px-2"
                 sortKey={SortKey.SOKT_INN_DATO}
-              />
+                sortable
+              >
+                <Label size="medium">Søkt inn</Label>
+              </Table.ColumnHeader>
               {erLopendeOppstart && (
                 <>
-                  <TableHeaderCell label="Start" sortKey={SortKey.START_DATO} />
-                  <TableHeaderCell label="Slutt" sortKey={SortKey.SLUTT_DATO} />
+                  <Table.ColumnHeader
+                    scope="col"
+                    className="px-2"
+                    sortKey={SortKey.START_DATO}
+                    sortable
+                  >
+                    <Label size="medium">Start</Label>
+                  </Table.ColumnHeader>
+                  <Table.ColumnHeader
+                    scope="col"
+                    className="px-2"
+                    sortKey={SortKey.SLUTT_DATO}
+                    sortable
+                  >
+                    <Label size="medium">Slutt</Label>
+                  </Table.ColumnHeader>
                 </>
               )}
-              <TableHeaderCell label="Status" sortKey={SortKey.STATUS} />
+              <Table.ColumnHeader
+                scope="col"
+                className="px-2"
+                sortKey={SortKey.STATUS}
+                sortable
+              >
+                <Label size="medium">Status</Label>
+              </Table.ColumnHeader>
               {skalViseVurderinger && (
-                <TableHeaderCell
-                  label="Vurdering, arrangør"
+                <Table.ColumnHeader
+                  scope="col"
+                  className="px-2"
                   sortKey={SortKey.VURDERING}
-                />
+                  sortable
+                >
+                  <Label size="medium">Vurdering, arrangør</Label>
+                </Table.ColumnHeader>
               )}
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            {sorterteDeltagere.map((deltaker) => {
-              const disabled = !kanVelges(handlingValg, deltaker)
-              const navn = lagDeltakerNavnEtternavnForst(deltaker)
-              return (
-                <Table.Row
-                  key={`${deltaker.id}`}
-                  selected={valgteDeltakere.some((it) => it.id === deltaker.id)}
-                  className={disabled ? 'text-(--ax-border-neutral)' : ''}
-                >
-                  {erBatchHandling && (
-                    <Table.DataCell>
-                      <VelgDeltakerCheckbox
-                        deltaker={deltaker}
-                        deltakerNavn={navn}
-                      />
-                    </Table.DataCell>
-                  )}
-                  {handlingValg === HandlingValg.GI_AVSLAG && (
-                    <Table.DataCell>
-                      <GiAvslagKnapp
-                        disabled={!kanGisAvslag(deltaker)}
-                        deltakerNavn={navn}
-                        onClick={() => {
-                          setValgteDeltakere([deltaker])
-                          setModalOpen(true)
-                        }}
-                      />
-                    </Table.DataCell>
-                  )}
-
-                  <TableDataCell className="min-w-48">
-                    <div
-                      id={`id${deltaker.id}`}
-                      className="flex gap-4 items-center"
-                    >
-                      {disabled ? (
-                        <BodyShort size="small">{navn}</BodyShort>
-                      ) : (
-                        <Link
-                          as={ReactRouterLink}
-                          to={getDeltakerUrl(
-                            deltakerlisteDetaljer.id,
-                            deltaker.id
-                          )}
-                        >
-                          {navn}
-                        </Link>
-                      )}
-
-                      <BeskyttelsesmarkeringIkoner
-                        beskyttelsesmarkering={deltaker.beskyttelsesmarkering}
-                      />
-                    </div>
-                  </TableDataCell>
-
-                  <TableDataCell
-                    text={deltaker.navEnhet}
-                    className="min-w-32"
-                  />
-
-                  <TableDataCell text={formatDate(deltaker.soktInnDato)} />
-
-                  {erLopendeOppstart && (
-                    <>
-                      <TableDataCell text={formatDate(deltaker.startdato)} />
-                      <TableDataCell text={formatDate(deltaker.sluttdato)} />
-                    </>
-                  )}
-
-                  <TableDataCell className="min-w-32">
-                    <DeltakerStatusTag statusType={deltaker.status.type} />
-                  </TableDataCell>
-
-                  {skalViseVurderinger && (
-                    <TableDataCell>
-                      <Vurdering
-                        vurdering={deltaker.vurdering}
-                        erManueltDeltMedArrangor={
-                          deltaker.erManueltDeltMedArrangor
-                        }
-                        disabled={disabled}
-                      />
-                    </TableDataCell>
-                  )}
-                </Table.Row>
-              )
-            })}
+            {sorterteDeltagere.map((deltaker) => (
+              <DeltakerRad
+                key={deltaker.id}
+                deltaker={deltaker}
+                deltakerlisteId={deltakerlisteDetaljer.id}
+                handlingValg={handlingValg}
+                erBatchHandling={erBatchHandling}
+                erLopendeOppstart={erLopendeOppstart}
+                skalViseVurderinger={skalViseVurderinger}
+                disabled={!kanVelges(handlingValg, deltaker)}
+                selected={valgteDeltakere.some((it) => it.id === deltaker.id)}
+                onGiAvslag={(d) => {
+                  setValgteDeltakere([d])
+                  setModalOpen(true)
+                }}
+              />
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -290,34 +252,6 @@ export const DeltakerlisteTabell = ({ deltakere }: Props) => {
         />
       )}
     </div>
-  )
-}
-
-interface TableHeaderCellProps {
-  label: string
-  sortKey: SortKey
-}
-
-const TableHeaderCell = ({ label, sortKey }: TableHeaderCellProps) => {
-  return (
-    <Table.ColumnHeader scope="col" className="px-2" sortKey={sortKey} sortable>
-      <Label size="medium">{label}</Label>
-    </Table.ColumnHeader>
-  )
-}
-
-interface TableDataCellProps {
-  text?: string | null
-  children?: React.ReactNode
-  className?: string
-}
-
-const TableDataCell = ({ text, children, className }: TableDataCellProps) => {
-  return (
-    <Table.DataCell className={className ? `px-2 ${className}` : 'px-2'}>
-      {children ?? null}
-      {text && <BodyShort size="small">{text}</BodyShort>}
-    </Table.DataCell>
   )
 }
 

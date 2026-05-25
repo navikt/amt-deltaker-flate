@@ -1,43 +1,31 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { DeltakerStatusType } from 'deltaker-flate-common'
 import { getDeltakere } from '../api/api'
 import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../context-providers/FilterContext'
-import {
-  HandlingFilterValg,
-  STATUS_FILTER_TYPER
-} from '../utils/filter-deltakerliste'
+import { STATUS_FILTER_TYPER } from '../utils/filter-deltakerliste'
+import { DELTAKERE_QUERY_KEY } from '../api/tanstack-query-keys'
 
-export type DeltakereQueryKey = readonly [
-  'deltakere',
-  string,
-  HandlingFilterValg[] | undefined,
-  DeltakerStatusType[]
-]
+/**
+ * Henter deltakere for gjeldende deltakerliste med aktive filtre.
+ * staleTime: 0 betyr at data alltid refetches ved mount/focus.
+ * placeholderData: keepPreviousData forhindrer at tabellen blinker ved filterbytte.
+ */
+export const useDeltakereQuery = () => {
+  const { deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
 
-export const buildDeltakereQueryKey = (
-  deltakerlisteId: string,
-  valgteHendelseFilter: HandlingFilterValg[],
-  valgteStatusFilter: DeltakerStatusType[]
-): DeltakereQueryKey => {
   const statuser = STATUS_FILTER_TYPER.filter((status) =>
     valgteStatusFilter.includes(status)
   )
   const handlingFilterValg =
     valgteHendelseFilter.length > 0 ? valgteHendelseFilter : undefined
-  return ['deltakere', deltakerlisteId, handlingFilterValg, statuser]
-}
 
-export const useDeltakereQuery = () => {
-  const { deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
-
-  const queryKey = buildDeltakereQueryKey(
+  const queryKey = [
+    DELTAKERE_QUERY_KEY,
     deltakerlisteDetaljer.id,
-    valgteHendelseFilter,
-    valgteStatusFilter
-  )
-  const [, , handlingFilterValg, statuser] = queryKey
+    handlingFilterValg,
+    statuser
+  ]
 
   return useQuery({
     queryKey,

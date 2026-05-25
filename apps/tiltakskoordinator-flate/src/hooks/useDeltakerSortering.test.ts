@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { lagMockDeltaker } from '../mocks/mockData'
 import {
   ScopedSortState,
@@ -28,49 +28,56 @@ describe('useDeltakerSortering', () => {
     expect(result.current.sort).toEqual(DEFAULT_SORT)
   })
 
-  it('toggler fra descending til ascending på første klikk på aktiv kolonne', () => {
+  it('handleSort kaller onSortChanged med ascending når aktiv kolonne klikkes', () => {
+    const onSortChanged = vi.fn()
+
     const { result } = renderHook(() =>
-      useDeltakerSortering(deltakere, undefined)
+      useDeltakerSortering(deltakere, DEFAULT_SORT)
     )
 
     act(() => {
-      result.current.handleSort(SortKey.SOKT_INN_DATO)
+      result.current.handleSort(SortKey.SOKT_INN_DATO, onSortChanged)
     })
 
-    expect(result.current.sort).toEqual({
+    expect(onSortChanged).toHaveBeenCalledWith({
       orderBy: SortKey.SOKT_INN_DATO,
       direction: 'ascending'
     })
   })
 
-  it('toggler tilbake til descending på andre klikk', () => {
+  it('handleSort kaller onSortChanged med descending når ascending er aktiv', () => {
+    const onSortChanged = vi.fn()
+    const ascSort: ScopedSortState = {
+      orderBy: SortKey.SOKT_INN_DATO,
+      direction: 'ascending'
+    }
+
     const { result } = renderHook(() =>
-      useDeltakerSortering(deltakere, undefined)
+      useDeltakerSortering(deltakere, ascSort)
     )
 
     act(() => {
-      result.current.handleSort(SortKey.SOKT_INN_DATO)
-    })
-    act(() => {
-      result.current.handleSort(SortKey.SOKT_INN_DATO)
+      result.current.handleSort(SortKey.SOKT_INN_DATO, onSortChanged)
     })
 
-    expect(result.current.sort).toEqual({
+    expect(onSortChanged).toHaveBeenCalledWith({
       orderBy: SortKey.SOKT_INN_DATO,
       direction: 'descending'
     })
   })
 
-  it('bytter kolonne og setter descending som default retning', () => {
+  it('handleSort kaller onSortChanged med descending når ny kolonne velges', () => {
+    const onSortChanged = vi.fn()
+
     const { result } = renderHook(() =>
-      useDeltakerSortering(deltakere, undefined)
+      useDeltakerSortering(deltakere, DEFAULT_SORT)
     )
 
     act(() => {
-      result.current.handleSort(SortKey.NAVN)
+      result.current.handleSort(SortKey.NAVN, onSortChanged)
     })
 
-    expect(result.current.sort).toEqual({
+    expect(onSortChanged).toHaveBeenCalledWith({
       orderBy: SortKey.NAVN,
       direction: 'descending'
     })

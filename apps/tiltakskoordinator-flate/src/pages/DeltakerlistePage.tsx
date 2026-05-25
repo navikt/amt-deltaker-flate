@@ -27,6 +27,8 @@ export const DeltakerlistePage = () => {
     error
   } = useDeltakereQuery()
 
+  // Nullstill sortering når filtre endres (unntatt ved første render),
+  // fordi sorteringsrekkefølgen kan bli meningsløs med nytt datasett
   useEffect(() => {
     if (erForsteRender.current) {
       erForsteRender.current = false
@@ -35,6 +37,7 @@ export const DeltakerlistePage = () => {
     setLagretSorteringsValg(undefined)
   }, [valgteHendelseFilter, valgteStatusFilter, setLagretSorteringsValg])
 
+  // Redirect til feilside ved tilgangsfeil (mangler AD-gruppe, stengt liste etc.)
   useEffect(() => {
     if (deltakereResponse && isTilgangsFeil(deltakereResponse) && !isFetching) {
       handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)

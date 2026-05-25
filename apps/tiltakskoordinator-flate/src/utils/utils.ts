@@ -66,17 +66,6 @@ export const formaterTelefonnummer = (
   return tlf
 }
 
-export const getDeltakereOppdatert = (
-  deltakere: Deltaker[],
-  oppdaterteDeltakere: Deltaker[]
-) =>
-  deltakere.map((deltaker) => {
-    const oppdatertDeltaker = oppdaterteDeltakere.find(
-      (oppdaterteDeltaker) => oppdaterteDeltaker.id === deltaker.id
-    )
-    return oppdatertDeltaker ?? deltaker
-  })
-
 export const gaTilGjennomforingerMulighetsrommet = () => {
   const currentPath = window.location.pathname
   const pathSegments = currentPath.split('/').filter(Boolean)
@@ -86,8 +75,7 @@ export const gaTilGjennomforingerMulighetsrommet = () => {
   if (gjennomforingerIndex >= 0) {
     // Inkluder "gjennomforinger" + gjennomforingsId-en i url-en
     const newSegments = pathSegments.slice(0, gjennomforingerIndex + 2)
-    const newPath = '/' + newSegments.join('/') + '/'
 
-    window.location.pathname = newPath
+    window.location.pathname = '/' + newSegments.join('/') + '/'
   }
 }
