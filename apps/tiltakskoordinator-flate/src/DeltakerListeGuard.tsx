@@ -54,7 +54,8 @@ export const DeltakerListeGuard = () => {
       getDeltakerStatusCounts(deltakerlisteId, {
         statuser: statuserForVisning
       }),
-    enabled: deltakerlisteId.length > 0 && statuserForVisning.length > 0
+    enabled: deltakerlisteId.length > 0 && statuserForVisning.length > 0,
+    refetchInterval: 2 * 60 * 1000 // Refetch hvert 2. minutt for å fange opp endringer fra andre brukere
   })
 
   const deltakerlisteDetaljer = deltakerlisteDetaljerQuery.data
