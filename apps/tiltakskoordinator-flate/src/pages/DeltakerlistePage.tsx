@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Alert, Loader } from '@navikt/ds-react'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
@@ -24,22 +24,11 @@ export const DeltakerlistePage = () => {
 
   const erForsteRender = useRef(true)
 
-  const normaliserteStatuser = useMemo(
-    () =>
-      STATUS_FILTER_TYPER.filter((status) =>
-        valgteStatusFilter.includes(status)
-      ),
-    [valgteStatusFilter]
+  const statuser = STATUS_FILTER_TYPER.filter((status) =>
+    valgteStatusFilter.includes(status)
   )
-
-  const request = useMemo(
-    () => ({
-      handlingFilterValg:
-        valgteHendelseFilter.length > 0 ? valgteHendelseFilter : undefined,
-      statuser: normaliserteStatuser
-    }),
-    [valgteHendelseFilter, normaliserteStatuser]
-  )
+  const handlingFilterValg =
+    valgteHendelseFilter.length > 0 ? valgteHendelseFilter : undefined
 
   useEffect(() => {
     if (erForsteRender.current) {
@@ -59,29 +48,38 @@ export const DeltakerlistePage = () => {
     queryKey: [
       'deltakere',
       deltakerlisteDetaljer.id,
-      request.handlingFilterValg,
-      request.statuser
+      handlingFilterValg,
+      statuser
     ],
-    queryFn: async () => getDeltakere(deltakerlisteDetaljer.id, request),
+    queryFn: () =>
+      getDeltakere(deltakerlisteDetaljer.id, { handlingFilterValg, statuser }),
     staleTime: 0,
     placeholderData: keepPreviousData
   })
 
   useEffect(() => {
-    if (
-      !isPlaceholderData &&
-      deltakereResponse &&
-      !isTilgangsFeil(deltakereResponse)
-    ) {
+    if (!deltakereResponse) {
+      return
+    }
+
+    if (isTilgangsFeil(deltakereResponse)) {
+      if (!isFetching) {
+        handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
+      }
+      return
+    }
+
+    if (!isPlaceholderData) {
       setDeltakere(deltakereResponse)
     }
-  }, [deltakereResponse, isPlaceholderData, setDeltakere])
-
-  useEffect(() => {
-    if (!isFetching && deltakereResponse && isTilgangsFeil(deltakereResponse)) {
-      handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
-    }
-  }, [deltakereResponse, isFetching, deltakerlisteId, navigate])
+  }, [
+    deltakereResponse,
+    isFetching,
+    isPlaceholderData,
+    setDeltakere,
+    deltakerlisteId,
+    navigate
+  ])
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">
