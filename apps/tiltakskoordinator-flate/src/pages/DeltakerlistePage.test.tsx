@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { TilgangsFeil } from '../api/api'
@@ -13,23 +13,42 @@ const setDeltakere = vi.fn()
 
 const mockQueryState = vi.hoisted(() => ({
   data: undefined as unknown,
-  isFetching: false
+  isPending: false,
+  isFetching: false,
+  isPlaceholderData: false,
+  error: null as unknown
 }))
 
-const { handterTilgangsFeilMock } = vi.hoisted(() => ({
-  handterTilgangsFeilMock: vi.fn()
-}))
+const { handterTilgangsFeilMock, useQueryMock, getDeltakereMock } = vi.hoisted(
+  () => ({
+    handterTilgangsFeilMock: vi.fn(),
+    useQueryMock: vi.fn(),
+    getDeltakereMock: vi.fn()
+  })
+)
 
 vi.mock('@tanstack/react-query', () => ({
   keepPreviousData: Symbol('keepPreviousData'),
-  useQuery: () => ({
-    data: mockQueryState.data,
-    isPending: false,
-    isFetching: mockQueryState.isFetching,
-    isPlaceholderData: false,
-    error: null
-  })
+  useQuery: (options: unknown) => {
+    useQueryMock(options)
+    return {
+      data: mockQueryState.data,
+      isPending: mockQueryState.isPending,
+      isFetching: mockQueryState.isFetching,
+      isPlaceholderData: mockQueryState.isPlaceholderData,
+      error: mockQueryState.error
+    }
+  }
 }))
+
+vi.mock('../api/api', async () => {
+  const actual =
+    await vi.importActual<typeof import('../api/api')>('../api/api')
+  return {
+    ...actual,
+    getDeltakere: getDeltakereMock
+  }
+})
 
 vi.mock('../utils/tilgangsFeil', () => ({
   isTilgangsFeil: (obj: unknown) =>
@@ -81,14 +100,26 @@ vi.mock('../components/filter-deltakerliste/FilterDeltakerliste', () => ({
   FilterDeltakerliste: () => <div>FilterDeltakerliste</div>
 }))
 
+const resetMockQueryState = () => {
+  mockQueryState.data = undefined
+  mockQueryState.isPending = false
+  mockQueryState.isFetching = false
+  mockQueryState.isPlaceholderData = false
+  mockQueryState.error = null
+}
+
+const lastUseQueryOptions = <T,>() => {
+  const calls = useQueryMock.mock.calls
+  return calls[calls.length - 1]?.[0] as T
+}
+
 describe('DeltakerlistePage sort-reset ved filterendring', () => {
   beforeEach(() => {
     valgteHendelseFilter = []
     valgteStatusFilter = []
     setLagretSorteringsValg.mockClear()
     setDeltakere.mockClear()
-    mockQueryState.data = undefined
-    mockQueryState.isFetching = false
+    resetMockQueryState()
   })
 
   it('resetter ikke sortering på første render', () => {
@@ -120,9 +151,11 @@ describe('DeltakerlistePage sort-reset ved filterendring', () => {
 
 describe('DeltakerlistePage tilgangsfeil-håndtering', () => {
   beforeEach(() => {
-    mockQueryState.data = undefined
-    mockQueryState.isFetching = false
+    valgteHendelseFilter = []
+    valgteStatusFilter = []
+    resetMockQueryState()
     handterTilgangsFeilMock.mockClear()
+    setDeltakere.mockClear()
   })
 
   it('kaller ikke handterTilgangsFeil når isFetching er true selv om data er TilgangsFeil', () => {
@@ -151,5 +184,192 @@ describe('DeltakerlistePage tilgangsfeil-håndtering', () => {
       'liste-id',
       expect.any(Function)
     )
+  })
+
+  it('kaller ikke handterTilgangsFeil når data er gyldige deltakere', () => {
+    mockQueryState.data = []
+    mockQueryState.isFetching = false
+
+    render(<DeltakerlistePage />)
+
+    expect(handterTilgangsFeilMock).not.toHaveBeenCalled()
+  })
+})
+
+describe('DeltakerlistePage setDeltakere-håndtering', () => {
+  beforeEach(() => {
+    valgteHendelseFilter = []
+    valgteStatusFilter = []
+    resetMockQueryState()
+    setDeltakere.mockClear()
+  })
+
+  it('kaller setDeltakere med data når data ankommer og er gyldige deltakere', () => {
+    const deltakere = [{ id: '1' }]
+    mockQueryState.data = deltakere
+
+    render(<DeltakerlistePage />)
+
+    expect(setDeltakere).toHaveBeenCalledTimes(1)
+    expect(setDeltakere).toHaveBeenCalledWith(deltakere)
+  })
+
+  it('kaller ikke setDeltakere når data er placeholder', () => {
+    mockQueryState.data = [{ id: '1' }]
+    mockQueryState.isPlaceholderData = true
+
+    render(<DeltakerlistePage />)
+
+    expect(setDeltakere).not.toHaveBeenCalled()
+  })
+
+  it('kaller ikke setDeltakere når data er TilgangsFeil', () => {
+    mockQueryState.data = TilgangsFeil.IkkeTilgangTilDeltakerliste
+
+    render(<DeltakerlistePage />)
+
+    expect(setDeltakere).not.toHaveBeenCalled()
+  })
+
+  it('kaller ikke setDeltakere når data er undefined', () => {
+    mockQueryState.data = undefined
+
+    render(<DeltakerlistePage />)
+
+    expect(setDeltakere).not.toHaveBeenCalled()
+  })
+})
+
+describe('DeltakerlistePage useQuery-konfigurasjon', () => {
+  beforeEach(() => {
+    valgteHendelseFilter = []
+    valgteStatusFilter = []
+    resetMockQueryState()
+    useQueryMock.mockClear()
+  })
+
+  it('inkluderer deltakerlisteId og filtre i queryKey', () => {
+    valgteHendelseFilter = [HandlingFilterValg.AktiveForslag]
+    valgteStatusFilter = [DeltakerStatusType.DELTAR]
+
+    render(<DeltakerlistePage />)
+
+    const options = lastUseQueryOptions<{ queryKey: unknown[] }>()
+    expect(options.queryKey).toEqual([
+      'deltakere',
+      'liste-id',
+      [HandlingFilterValg.AktiveForslag],
+      [DeltakerStatusType.DELTAR]
+    ])
+  })
+
+  it('sender handlingFilterValg som undefined når hendelsefilter er tomt', async () => {
+    valgteHendelseFilter = []
+    valgteStatusFilter = [DeltakerStatusType.DELTAR]
+
+    render(<DeltakerlistePage />)
+
+    const options = lastUseQueryOptions<{ queryFn: () => Promise<unknown> }>()
+    await options.queryFn()
+
+    expect(getDeltakereMock).toHaveBeenCalledWith('liste-id', {
+      handlingFilterValg: undefined,
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+  })
+
+  it('sender hendelsefilter når det er valgt', async () => {
+    valgteHendelseFilter = [HandlingFilterValg.AktiveForslag]
+    valgteStatusFilter = []
+
+    render(<DeltakerlistePage />)
+
+    const options = lastUseQueryOptions<{ queryFn: () => Promise<unknown> }>()
+    await options.queryFn()
+
+    expect(getDeltakereMock).toHaveBeenCalledWith('liste-id', {
+      handlingFilterValg: [HandlingFilterValg.AktiveForslag],
+      statuser: []
+    })
+  })
+
+  it('filtrerer bort statuser som ikke er i STATUS_FILTER_TYPER', async () => {
+    valgteStatusFilter = [
+      DeltakerStatusType.DELTAR,
+      // KLADD finnes ikke i STATUS_FILTER_TYPER og skal fjernes
+      DeltakerStatusType.KLADD
+    ]
+
+    render(<DeltakerlistePage />)
+
+    const options = lastUseQueryOptions<{ queryFn: () => Promise<unknown> }>()
+    await options.queryFn()
+
+    expect(getDeltakereMock).toHaveBeenCalledWith('liste-id', {
+      handlingFilterValg: undefined,
+      statuser: [DeltakerStatusType.DELTAR]
+    })
+  })
+})
+
+describe('DeltakerlistePage rendering-tilstander', () => {
+  beforeEach(() => {
+    valgteHendelseFilter = []
+    valgteStatusFilter = []
+    resetMockQueryState()
+  })
+
+  it('viser feilmelding når error er satt', () => {
+    mockQueryState.error = new Error('boom')
+
+    render(<DeltakerlistePage />)
+
+    expect(
+      screen.getByText('Kunne ikke hente deltakere. Prøv igjen senere.')
+    ).toBeTruthy()
+  })
+
+  it('viser loader og skjuler tabell når isPending', () => {
+    mockQueryState.isPending = true
+
+    render(<DeltakerlistePage />)
+
+    expect(screen.queryByText('DeltakerlisteTabell')).toBeNull()
+    expect(screen.getByTitle('Laster deltakere...')).toBeTruthy()
+  })
+
+  it('viser tabell når ikke isPending', () => {
+    mockQueryState.isPending = false
+
+    render(<DeltakerlistePage />)
+
+    expect(screen.getByText('DeltakerlisteTabell')).toBeTruthy()
+  })
+
+  it('legger på opacity-50 på tabell-wrapper når isFetching og ikke isPending', () => {
+    mockQueryState.isPending = false
+    mockQueryState.isFetching = true
+
+    const { container } = render(<DeltakerlistePage />)
+
+    const wrapper = container.querySelector('.opacity-50')
+    expect(wrapper).toBeTruthy()
+    expect(wrapper?.textContent).toContain('DeltakerlisteTabell')
+  })
+
+  it('legger ikke på opacity-50 når ikke isFetching', () => {
+    mockQueryState.isPending = false
+    mockQueryState.isFetching = false
+
+    const { container } = render(<DeltakerlistePage />)
+
+    expect(container.querySelector('.opacity-50')).toBeNull()
+  })
+
+  it('rendrer alltid DeltakerlisteDetaljer og FilterDeltakerliste', () => {
+    render(<DeltakerlistePage />)
+
+    expect(screen.getByText('DeltakerlisteDetaljer')).toBeTruthy()
+    expect(screen.getByText('FilterDeltakerliste')).toBeTruthy()
   })
 })
