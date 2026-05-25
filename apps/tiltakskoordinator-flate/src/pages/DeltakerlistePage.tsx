@@ -1,17 +1,14 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Alert, Loader } from '@navikt/ds-react'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getDeltakere } from '../api/api'
 import { DeltakerlisteDetaljer } from '../components/DeltakerlisteDetaljer'
 import { DeltakerlisteTabell } from '../components/deltaker-liste-tabell/DeltakerlisteTabell'
 import { FilterDeltakerliste } from '../components/filter-deltakerliste/FilterDeltakerliste'
 import { useAppContext } from '../context-providers/AppContext'
-import { useDeltakerlisteContext } from '../context-providers/DeltakerlisteContext'
 import { useFilterContext } from '../context-providers/FilterContext'
-import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { useSorteringContext } from '../context-providers/SorteringContext'
-import { STATUS_FILTER_TYPER } from '../utils/filter-deltakerliste'
+import { useDeltakereQuery } from '../hooks/useDeltakereQuery'
+import { useFocusPageLoad } from '../hooks/useFocusPageLoad'
 import { handterTilgangsFeil, isTilgangsFeil } from '../utils/tilgangsFeil'
 
 export const DeltakerlistePage = () => {
@@ -19,16 +16,16 @@ export const DeltakerlistePage = () => {
   const { deltakerlisteId } = useAppContext()
   const navigate = useNavigate()
   const { valgteHendelseFilter, valgteStatusFilter } = useFilterContext()
-  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
   const { setLagretSorteringsValg } = useSorteringContext()
 
   const erForsteRender = useRef(true)
 
-  const statuser = STATUS_FILTER_TYPER.filter((status) =>
-    valgteStatusFilter.includes(status)
-  )
-  const handlingFilterValg =
-    valgteHendelseFilter.length > 0 ? valgteHendelseFilter : undefined
+  const {
+    data: deltakereResponse,
+    isPending,
+    isFetching,
+    error
+  } = useDeltakereQuery()
 
   useEffect(() => {
     if (erForsteRender.current) {
@@ -38,48 +35,11 @@ export const DeltakerlistePage = () => {
     setLagretSorteringsValg(undefined)
   }, [valgteHendelseFilter, valgteStatusFilter, setLagretSorteringsValg])
 
-  const {
-    data: deltakereResponse,
-    isPending,
-    isFetching,
-    isPlaceholderData,
-    error
-  } = useQuery({
-    queryKey: [
-      'deltakere',
-      deltakerlisteDetaljer.id,
-      handlingFilterValg,
-      statuser
-    ],
-    queryFn: () =>
-      getDeltakere(deltakerlisteDetaljer.id, { handlingFilterValg, statuser }),
-    staleTime: 0,
-    placeholderData: keepPreviousData
-  })
-
   useEffect(() => {
-    if (!deltakereResponse) {
-      return
+    if (deltakereResponse && isTilgangsFeil(deltakereResponse) && !isFetching) {
+      handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
     }
-
-    if (isTilgangsFeil(deltakereResponse)) {
-      if (!isFetching) {
-        handterTilgangsFeil(deltakereResponse, deltakerlisteId, navigate)
-      }
-      return
-    }
-
-    if (!isPlaceholderData) {
-      setDeltakere(deltakereResponse)
-    }
-  }, [
-    deltakereResponse,
-    isFetching,
-    isPlaceholderData,
-    setDeltakere,
-    deltakerlisteId,
-    navigate
-  ])
+  }, [deltakereResponse, isFetching, deltakerlisteId, navigate])
 
   return (
     <div className="flex flex-wrap p-4 pt-0" data-testid="page_deltakerliste">

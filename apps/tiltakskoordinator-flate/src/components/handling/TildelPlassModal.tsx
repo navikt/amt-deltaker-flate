@@ -6,6 +6,7 @@ import {
   HandlingValg,
   useHandlingContext
 } from '../../context-providers/HandlingContext'
+import { useOppdaterDeltakereCache } from '../../hooks/useOppdaterDeltakereCache'
 import { HandlingModal } from './HandlingModal'
 import { getDeltakereOppdatert } from '../../utils/utils'
 import { lagInfoTekst } from './text-utils.ts'
@@ -17,7 +18,8 @@ interface Props {
 }
 
 export const TildelPlassModal = ({ open, onClose, onSend }: Props) => {
-  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const oppdaterDeltakere = useOppdaterDeltakereCache()
   const {
     valgteDeltakere,
     handlingValg,
@@ -45,7 +47,7 @@ export const TildelPlassModal = ({ open, onClose, onSend }: Props) => {
         const feiledeDeltakere = deltakereResult.filter(
           (deltaker) => deltaker.feilkode !== null
         )
-        setDeltakere((deltakere) =>
+        oppdaterDeltakere((deltakere) =>
           getDeltakereOppdatert(deltakere, deltakereResult)
         )
         onSend()

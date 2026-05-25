@@ -17,6 +17,7 @@ import {
   useHandlingContext
 } from '../../context-providers/HandlingContext.tsx'
 import { useSorteringContext } from '../../context-providers/SorteringContext.tsx'
+import { useDeltakereQuery } from '../../hooks/useDeltakereQuery.ts'
 import {
   ScopedSortState,
   SortKey,
@@ -36,8 +37,11 @@ import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
 export const DeltakerlisteTabell = () => {
-  const { deltakere, deltakerlisteDetaljer, statusCounts } =
-    useDeltakerlisteContext()
+  const { deltakerlisteDetaljer, statusCounts } = useDeltakerlisteContext()
+  const { data: deltakereResponse } = useDeltakereQuery()
+  const deltakere: Deltaker[] = Array.isArray(deltakereResponse)
+    ? deltakereResponse
+    : []
   const { valgteHendelseFilter } = useFilterContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()

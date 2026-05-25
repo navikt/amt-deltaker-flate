@@ -9,7 +9,6 @@ let valgteHendelseFilter: HandlingFilterValg[] = []
 let valgteStatusFilter: DeltakerStatusType[] = []
 
 const setLagretSorteringsValg = vi.fn()
-const setDeltakere = vi.fn()
 
 const mockQueryState = vi.hoisted(() => ({
   data: undefined as unknown,
@@ -79,8 +78,7 @@ vi.mock('../context-providers/SorteringContext', () => ({
 
 vi.mock('../context-providers/DeltakerlisteContext', () => ({
   useDeltakerlisteContext: () => ({
-    deltakerlisteDetaljer: { id: 'liste-id' },
-    setDeltakere
+    deltakerlisteDetaljer: { id: 'liste-id' }
   })
 }))
 
@@ -118,7 +116,6 @@ describe('DeltakerlistePage sort-reset ved filterendring', () => {
     valgteHendelseFilter = []
     valgteStatusFilter = []
     setLagretSorteringsValg.mockClear()
-    setDeltakere.mockClear()
     resetMockQueryState()
   })
 
@@ -155,7 +152,6 @@ describe('DeltakerlistePage tilgangsfeil-håndtering', () => {
     valgteStatusFilter = []
     resetMockQueryState()
     handterTilgangsFeilMock.mockClear()
-    setDeltakere.mockClear()
   })
 
   it('kaller ikke handterTilgangsFeil når isFetching er true selv om data er TilgangsFeil', () => {
@@ -193,50 +189,6 @@ describe('DeltakerlistePage tilgangsfeil-håndtering', () => {
     render(<DeltakerlistePage />)
 
     expect(handterTilgangsFeilMock).not.toHaveBeenCalled()
-  })
-})
-
-describe('DeltakerlistePage setDeltakere-håndtering', () => {
-  beforeEach(() => {
-    valgteHendelseFilter = []
-    valgteStatusFilter = []
-    resetMockQueryState()
-    setDeltakere.mockClear()
-  })
-
-  it('kaller setDeltakere med data når data ankommer og er gyldige deltakere', () => {
-    const deltakere = [{ id: '1' }]
-    mockQueryState.data = deltakere
-
-    render(<DeltakerlistePage />)
-
-    expect(setDeltakere).toHaveBeenCalledTimes(1)
-    expect(setDeltakere).toHaveBeenCalledWith(deltakere)
-  })
-
-  it('kaller ikke setDeltakere når data er placeholder', () => {
-    mockQueryState.data = [{ id: '1' }]
-    mockQueryState.isPlaceholderData = true
-
-    render(<DeltakerlistePage />)
-
-    expect(setDeltakere).not.toHaveBeenCalled()
-  })
-
-  it('kaller ikke setDeltakere når data er TilgangsFeil', () => {
-    mockQueryState.data = TilgangsFeil.IkkeTilgangTilDeltakerliste
-
-    render(<DeltakerlistePage />)
-
-    expect(setDeltakere).not.toHaveBeenCalled()
-  })
-
-  it('kaller ikke setDeltakere når data er undefined', () => {
-    mockQueryState.data = undefined
-
-    render(<DeltakerlistePage />)
-
-    expect(setDeltakere).not.toHaveBeenCalled()
   })
 })
 
