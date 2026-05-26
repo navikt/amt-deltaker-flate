@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react'
-import useLocalStorage from '../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
+import { createContext, useContext, useEffect, useState } from 'react'
 import {
   HandlingFilterValg,
   StatusFilterValg
@@ -7,6 +6,21 @@ import {
 
 const HENDELSE_FILTER_STORAGE_KEY = 'deltaker-liste-filter-hendelser'
 const STATUS_FILTER_STORAGE_KEY = 'deltaker-liste-filter-status'
+
+function readFromStorage<T>(key: string, fallback: T): T {
+  const item = localStorage.getItem(key)
+  if (item) {
+    try {
+      const parsed = JSON.parse(item)
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed as T
+      }
+    } catch {
+      // ugyldig JSON, bruk fallback
+    }
+  }
+  return fallback
+}
 
 export interface FilterContextProps {
   valgteHendelseFilter: HandlingFilterValg[]
@@ -39,23 +53,41 @@ const FilterContextProvider = ({
   initialStatusFilter: StatusFilterValg[]
   children: React.ReactNode
 }) => {
-  const [valgteHendelseFilter, setValgteHendelseFilter] = useLocalStorage<
-    HandlingFilterValg[]
-  >(`${HENDELSE_FILTER_STORAGE_KEY}_${deltakerlisteId}`, [])
-  const [lagretStatusFilter, setLagretStatusFilter] = useLocalStorage<
-    StatusFilterValg[]
-  >(`${STATUS_FILTER_STORAGE_KEY}_${deltakerlisteId}`, initialStatusFilter)
+  const hendelseStorageKey = `${HENDELSE_FILTER_STORAGE_KEY}_${deltakerlisteId}`
+  const statusStorageKey = `${STATUS_FILTER_STORAGE_KEY}_${deltakerlisteId}`
 
-  const valgteStatusFilter =
-    lagretStatusFilter.length > 0 ? lagretStatusFilter : initialStatusFilter
+  const [valgteHendelseFilter, setValgteHendelseFilterState] = useState<
+    HandlingFilterValg[]
+  >(() => readFromStorage<HandlingFilterValg[]>(hendelseStorageKey, []))
+
+  const [valgteStatusFilter, setValgteStatusFilterState] = useState<
+    StatusFilterValg[]
+  >(() =>
+    readFromStorage<StatusFilterValg[]>(statusStorageKey, initialStatusFilter)
+  )
+
+  useEffect(() => {
+    localStorage.setItem(
+      hendelseStorageKey,
+      JSON.stringify(valgteHendelseFilter)
+    )
+  }, [valgteHendelseFilter, hendelseStorageKey])
+
+  useEffect(() => {
+    localStorage.setItem(statusStorageKey, JSON.stringify(valgteStatusFilter))
+  }, [valgteStatusFilter, statusStorageKey])
+
+  const setValgteHendelseFilter = (value: HandlingFilterValg[]) => {
+    setValgteHendelseFilterState(value)
+  }
 
   const setValgteStatusFilter = (value: StatusFilterValg[]) => {
-    setLagretStatusFilter(value)
+    setValgteStatusFilterState(value.length > 0 ? value : initialStatusFilter)
   }
 
   const nullstillFilter = () => {
-    setValgteHendelseFilter([])
-    setLagretStatusFilter(initialStatusFilter)
+    setValgteHendelseFilterState([])
+    setValgteStatusFilterState(initialStatusFilter)
   }
 
   const contextValue: FilterContextProps = {
