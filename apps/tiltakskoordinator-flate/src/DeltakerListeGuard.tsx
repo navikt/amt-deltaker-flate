@@ -6,12 +6,20 @@ import { DemoStatusInnstillinger } from './components/demo-banner/DemoStatusInns
 import { useAppContext } from './context-providers/AppContext'
 import { DeltakerlisteContextProvider } from './context-providers/DeltakerlisteContext'
 import { FilterContextProvider } from './context-providers/FilterContext'
+import { FILTER_COUNTS_QUERY_KEY } from './api/tanstack-query-keys'
 import { DeltakerlistePage } from './pages/DeltakerlistePage'
 import {
   getDefaultStatusFilter,
   getFilterStatuser
 } from './utils/filter-deltakerliste'
 
+/**
+ * Henter data som trengs før deltakerliste-siden kan vises,
+ * og setter opp context-providers med initialverdier.
+ *
+ * Viser loader mens data hentes, feilmelding ved feil,
+ * og renderer DeltakerlistePage når alt er klart.
+ */
 export const DeltakerListeGuard = () => {
   const { deltakerlisteId } = useAppContext()
 
@@ -21,6 +29,8 @@ export const DeltakerListeGuard = () => {
     enabled: deltakerlisteId.length > 0
   })
 
+  // Beregn hvilke statuser som er relevante for denne deltakerlistens
+  // oppstartstype/påmeldingstype – brukes som parameter til filterCounts-kallet
   const statuserForVisning = useMemo(() => {
     if (!deltakerlisteDetaljerQuery.data) {
       return []
@@ -37,13 +47,15 @@ export const DeltakerListeGuard = () => {
     ]
   }, [deltakerlisteDetaljerQuery.data])
 
+  // Henter antall deltakere per status/handling – vises i filterpanelet
   const filterCountsQuery = useQuery({
-    queryKey: ['deltakerFilterCounts', deltakerlisteId, statuserForVisning],
+    queryKey: [FILTER_COUNTS_QUERY_KEY, deltakerlisteId, statuserForVisning],
     queryFn: () =>
       getDeltakerStatusCounts(deltakerlisteId, {
         statuser: statuserForVisning
       }),
-    enabled: deltakerlisteId.length > 0 && statuserForVisning.length > 0
+    enabled: deltakerlisteId.length > 0 && statuserForVisning.length > 0,
+    refetchInterval: 2 * 60 * 1000 // Refetch hvert 2. minutt for å fange opp endringer fra andre brukere
   })
 
   const deltakerlisteDetaljer = deltakerlisteDetaljerQuery.data
@@ -52,6 +64,8 @@ export const DeltakerListeGuard = () => {
     deltakerlisteDetaljerQuery.error ||
     (deltakerlisteDetaljerQuery.isSuccess && !deltakerlisteDetaljer)
 
+  // Antall deltakere per status og handling – brukes til å vise tellinger i filterpanelet.
+  // Ved tilgangsfeil returnerer API-kallet en TilgangsFeil-string, da faller vi tilbake til tomme objekter.
   const filterCounts =
     typeof filterCountsQuery.data === 'string' || !filterCountsQuery.data
       ? { statusCounts: {}, handlingCounts: {} }
@@ -84,6 +98,7 @@ export const DeltakerListeGuard = () => {
       {deltakerlisteDetaljer && (
         <FilterContextProvider
           key={deltakerlisteDetaljer.id}
+          deltakerlisteId={deltakerlisteDetaljer.id}
           initialStatusFilter={getDefaultStatusFilter(
             deltakerlisteDetaljer.pameldingstype
           )}

@@ -1,34 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { DeltakerStatusType, Pameldingstype } from 'deltaker-flate-common'
+import { Pameldingstype } from 'deltaker-flate-common'
 import { MemoryRouter } from 'react-router-dom'
 import { Deltaker } from '../../api/data/deltakerliste'
 import { DeltakerlisteTabell } from './DeltakerlisteTabell'
 
-const lagDeltaker = (
-  id: string,
-  fornavn: string,
-  etternavn: string
-): Deltaker =>
-  ({
-    id,
-    fornavn,
-    mellomnavn: null,
-    etternavn,
-    status: { type: DeltakerStatusType.SOKT_INN, aarsak: null },
-    vurdering: null,
-    beskyttelsesmarkering: [],
-    navEnhet: 'Nav Grünerløkka',
-    erManueltDeltMedArrangor: false,
-    ikkeDigitalOgManglerAdresse: false,
-    harAktiveForslag: false,
-    erNyDeltaker: false,
-    harOppdateringFraNav: false,
-    kanEndres: true,
-    soktInnDato: null,
-    startdato: null,
-    sluttdato: null
-  }) as unknown as Deltaker
+import { lagTestDeltaker } from '../../test-utils/lagTestDeltaker'
+
+const lagDeltaker = (id: string, fornavn: string, etternavn: string) =>
+  lagTestDeltaker({ id, fornavn, etternavn })
 
 const deltakerlisteDetaljer = {
   id: 'liste-id',
@@ -108,5 +88,38 @@ describe('DeltakerlisteTabell', () => {
     expect(
       screen.getByText(/Det er foreløpig ingen innsøkte deltakere/)
     ).toBeTruthy()
+  })
+
+  it('viser sortérbare kolonneheadere', () => {
+    renderTabell([lagDeltaker('1', 'Ola', 'Nordmann')])
+
+    expect(screen.getByText('Navn')).toBeTruthy()
+    expect(screen.getByText('Nav-enhet')).toBeTruthy()
+    expect(screen.getByRole('columnheader', { name: /Søkt inn/ })).toBeTruthy()
+    expect(screen.getByText('Status')).toBeTruthy()
+  })
+
+  it('viser start- og sluttdato-kolonner når løpende oppstart', () => {
+    renderTabell([lagDeltaker('1', 'Ola', 'Nordmann')])
+
+    expect(screen.getByText('Start')).toBeTruthy()
+    expect(screen.getByText('Slutt')).toBeTruthy()
+  })
+
+  it('rendrer riktig antall rader', () => {
+    renderTabell([
+      lagDeltaker('1', 'Ola', 'Nordmann'),
+      lagDeltaker('2', 'Kari', 'Hansen'),
+      lagDeltaker('3', 'Per', 'Olsen')
+    ])
+
+    expect(screen.getAllByRole('row')).toHaveLength(4) // 1 header + 3 data
+  })
+
+  it('viser ikke filterindikator i tom-melding når ingen deltakere finnes i andre filtre', () => {
+    // statusCounts er {} (tom) i mock, så filterErAktiv = false
+    renderTabell([])
+
+    expect(screen.queryByText(/som samsvarer med dine filtervalg/)).toBeNull()
   })
 })

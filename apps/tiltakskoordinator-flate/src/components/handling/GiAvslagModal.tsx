@@ -11,7 +11,7 @@ import { giAvslag } from '../../api/api'
 import { Deltaker } from '../../api/data/deltakerliste'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useHandlingContext } from '../../context-providers/HandlingContext'
-import { useOppdaterDeltakereCache } from '../../hooks/useOppdaterDeltakereCache'
+import { useInvaliderDeltakere } from '../../hooks/useInvaliderDeltakere'
 import { lagDeltakerNavn } from '../../utils/utils'
 import { HandlingModal } from './HandlingModal'
 
@@ -21,9 +21,9 @@ interface Props {
   onSend: () => void
 }
 
-export function GiAvslagModal({ open, onClose, onSend }: Props) {
+export const GiAvslagModal = ({ open, onClose, onSend }: Props) => {
   const { deltakerlisteDetaljer } = useDeltakerlisteContext()
-  const oppdaterDeltakere = useOppdaterDeltakereCache()
+  const invaliderDeltakere = useInvaliderDeltakere()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
 
@@ -32,13 +32,21 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
 
   const [error, setError] = useState<string | null>(null)
 
+  // Denne modalen håndterer kun én deltaker om gangen
   if (!handlingValg || !open || valgteDeltakere.length === 0) {
     return null
   }
 
   const deltaker: Deltaker = valgteDeltakere[0]
 
-  const utforHandling = () => {
+  const onModalClose = () => {
+    onClose()
+    setError(null)
+  }
+
+  const utforHandling = async () => {
+    setError(null)
+
     if (
       !aarsak.valider() ||
       aarsak.aarsak === undefined ||
@@ -57,14 +65,10 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
       },
       begrunnelse.begrunnelse
     )
-      .then((oppdaterDeltaker: Deltaker) => {
-        oppdaterDeltakere((prev) =>
-          prev.map((d) => (d.id === oppdaterDeltaker.id ? oppdaterDeltaker : d))
-        )
-        setError(null)
-        onSend()
-
+      .then(async () => {
+        void invaliderDeltakere()
         setHandlingUtfortText(`${lagDeltakerNavn(deltaker)} fikk avslag.`)
+        onSend()
       })
       .catch(() => {
         setError('Kunne ikke gi avslag. Vennligst prøv igjen.')
@@ -74,7 +78,7 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
   return (
     <HandlingModal
       open={open}
-      onClose={onClose}
+      onClose={onModalClose}
       onUtforHandling={utforHandling}
       error={error}
     >
