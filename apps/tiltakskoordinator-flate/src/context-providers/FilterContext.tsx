@@ -1,18 +1,18 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext } from 'react'
+import useLocalStorage from '../../../../packages/deltaker-flate-common/hooks/useLocalStorage'
 import {
   HandlingFilterValg,
   StatusFilterValg
 } from '../utils/filter-deltakerliste'
 
+const HENDELSE_FILTER_STORAGE_KEY = 'deltaker-liste-filter-hendelser'
+const STATUS_FILTER_STORAGE_KEY = 'deltaker-liste-filter-status'
+
 export interface FilterContextProps {
   valgteHendelseFilter: HandlingFilterValg[]
   valgteStatusFilter: StatusFilterValg[]
-  setValgteHendelseFilter: React.Dispatch<
-    React.SetStateAction<HandlingFilterValg[]>
-  >
-  setValgteStatusFilter: React.Dispatch<
-    React.SetStateAction<StatusFilterValg[]>
-  >
+  setValgteHendelseFilter: (value: HandlingFilterValg[]) => void
+  setValgteStatusFilter: (value: StatusFilterValg[]) => void
   nullstillFilter?: () => void
 }
 
@@ -31,17 +31,20 @@ const useFilterContext = () => {
 }
 
 const FilterContextProvider = ({
+  deltakerlisteId,
   initialStatusFilter,
   children
 }: {
+  deltakerlisteId: string
   initialStatusFilter: StatusFilterValg[]
   children: React.ReactNode
 }) => {
-  const [valgteHendelseFilter, setValgteHendelseFilter] = useState<
+  const [valgteHendelseFilter, setValgteHendelseFilter] = useLocalStorage<
     HandlingFilterValg[]
-  >([])
-  const [valgteStatusFilter, setValgteStatusFilter] =
-    useState<StatusFilterValg[]>(initialStatusFilter)
+  >(`${HENDELSE_FILTER_STORAGE_KEY}_${deltakerlisteId}`, [])
+  const [valgteStatusFilter, setValgteStatusFilter] = useLocalStorage<
+    StatusFilterValg[]
+  >(`${STATUS_FILTER_STORAGE_KEY}_${deltakerlisteId}`, initialStatusFilter)
 
   const nullstillFilter = () => {
     setValgteHendelseFilter([])

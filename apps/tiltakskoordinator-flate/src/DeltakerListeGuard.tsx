@@ -98,6 +98,7 @@ export const DeltakerListeGuard = () => {
       {deltakerlisteDetaljer && (
         <FilterContextProvider
           key={deltakerlisteDetaljer.id}
+          deltakerlisteId={deltakerlisteDetaljer.id}
           initialStatusFilter={getDefaultStatusFilter(
             deltakerlisteDetaljer.pameldingstype
           )}

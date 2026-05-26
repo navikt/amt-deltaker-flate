@@ -27,6 +27,7 @@ const renderFilterPanel = (
 
   return render(
     <FilterContextProvider
+      deltakerlisteId={detaljer.id}
       initialStatusFilter={getDefaultStatusFilter(detaljer.pameldingstype)}
     >
       <DeltakerlisteContextProvider
