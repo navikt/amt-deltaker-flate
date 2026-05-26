@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DeltakerStatusType, Pameldingstype } from 'deltaker-flate-common'
+import { Pameldingstype } from 'deltaker-flate-common'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   DeltakerHandlingCounts,
@@ -8,10 +8,7 @@ import {
 } from '../../api/data/deltakerliste'
 import { DeltakerlisteContextProvider } from '../../context-providers/DeltakerlisteContext'
 import { FilterContextProvider } from '../../context-providers/FilterContext'
-import {
-  createMockDeltakerlisteDetaljer,
-  lagMockDeltaker
-} from '../../mocks/mockData'
+import { createMockDeltakerlisteDetaljer } from '../../mocks/mockData'
 import { getDefaultStatusFilter } from '../../utils/filter-deltakerliste'
 import { HendelseFilter } from './HendelseFilter'
 import { StatusFilter } from './StatusFilter'
@@ -28,30 +25,12 @@ const renderFilterPanel = (
     pameldingstype: Pameldingstype.TRENGER_GODKJENNING
   }
 
-  const deltakere = [
-    {
-      ...lagMockDeltaker(),
-      status: { type: DeltakerStatusType.DELTAR, aarsak: null },
-      harAktiveForslag: false,
-      harOppdateringFraNav: false,
-      erNyDeltaker: false
-    },
-    {
-      ...lagMockDeltaker(),
-      status: { type: DeltakerStatusType.HAR_SLUTTET, aarsak: null },
-      harAktiveForslag: true,
-      harOppdateringFraNav: true,
-      erNyDeltaker: true
-    }
-  ]
-
   return render(
     <FilterContextProvider
       initialStatusFilter={getDefaultStatusFilter(detaljer.pameldingstype)}
     >
       <DeltakerlisteContextProvider
         initialDeltakerlisteDetaljer={detaljer}
-        initialDeltakere={deltakere}
         initialStatusCounts={statusCounts}
         initialHandlingCounts={handlingCounts}
         initialFilterCountsLaster={false}

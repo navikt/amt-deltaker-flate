@@ -11,6 +11,7 @@ import { giAvslag } from '../../api/api'
 import { Deltaker } from '../../api/data/deltakerliste'
 import { useDeltakerlisteContext } from '../../context-providers/DeltakerlisteContext'
 import { useHandlingContext } from '../../context-providers/HandlingContext'
+import { useOppdaterDeltakereCache } from '../../hooks/useOppdaterDeltakereCache'
 import { lagDeltakerNavn } from '../../utils/utils'
 import { HandlingModal } from './HandlingModal'
 
@@ -21,7 +22,8 @@ interface Props {
 }
 
 export function GiAvslagModal({ open, onClose, onSend }: Props) {
-  const { deltakerlisteDetaljer, setDeltakere } = useDeltakerlisteContext()
+  const { deltakerlisteDetaljer } = useDeltakerlisteContext()
+  const oppdaterDeltakere = useOppdaterDeltakereCache()
   const { valgteDeltakere, handlingValg, setHandlingUtfortText } =
     useHandlingContext()
 
@@ -56,7 +58,7 @@ export function GiAvslagModal({ open, onClose, onSend }: Props) {
       begrunnelse.begrunnelse
     )
       .then((oppdaterDeltaker: Deltaker) => {
-        setDeltakere((prev) =>
+        oppdaterDeltakere((prev) =>
           prev.map((d) => (d.id === oppdaterDeltaker.id ? oppdaterDeltaker : d))
         )
         setError(null)

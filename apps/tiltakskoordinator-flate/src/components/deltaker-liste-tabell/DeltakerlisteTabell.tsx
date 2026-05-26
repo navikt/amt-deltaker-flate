@@ -21,7 +21,7 @@ import {
   ScopedSortState,
   SortKey,
   useDeltakerSortering
-} from '../../hooks/useDeltakerSortering.tsx'
+} from '../../hooks/useDeltakerSortering.ts'
 import { getDeltakerUrl } from '../../navigation.ts'
 import { lagDeltakerNavnEtternavnForst } from '../../utils/utils.ts'
 import { kanVelges } from '../../utils/velgDeltakereUtils.ts'
@@ -35,9 +35,12 @@ import { GiAvslagKnapp } from './GiAvslagKnapp.tsx'
 import { MarkerAlleCheckbox } from './MarkerAlleCheckbox.tsx'
 import { VelgDeltakerCheckbox } from './VelgDeltakerCheckbox.tsx'
 
-export const DeltakerlisteTabell = () => {
-  const { deltakere, deltakerlisteDetaljer, statusCounts } =
-    useDeltakerlisteContext()
+interface Props {
+  deltakere: Deltaker[]
+}
+
+export const DeltakerlisteTabell = ({ deltakere }: Props) => {
+  const { deltakerlisteDetaljer, statusCounts } = useDeltakerlisteContext()
   const { valgteHendelseFilter } = useFilterContext()
   const { handlingValg, valgteDeltakere, setValgteDeltakere, setHandlingValg } =
     useHandlingContext()
@@ -179,16 +182,14 @@ export const DeltakerlisteTabell = () => {
             </Table.Row>
           </Table.Header>
 
-          <Table.Body className="">
+          <Table.Body>
             {sorterteDeltagere.map((deltaker) => {
               const disabled = !kanVelges(handlingValg, deltaker)
               const navn = lagDeltakerNavnEtternavnForst(deltaker)
               return (
                 <Table.Row
                   key={`${deltaker.id}`}
-                  selected={
-                    !!valgteDeltakere.find((it) => it.id === deltaker.id)
-                  }
+                  selected={valgteDeltakere.some((it) => it.id === deltaker.id)}
                   className={disabled ? 'text-(--ax-border-neutral)' : ''}
                 >
                   {erBatchHandling && (

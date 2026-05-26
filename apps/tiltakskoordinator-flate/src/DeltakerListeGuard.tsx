@@ -91,7 +91,6 @@ export const DeltakerListeGuard = () => {
           <DeltakerlisteContextProvider
             key={deltakerlisteDetaljer.id}
             initialDeltakerlisteDetaljer={deltakerlisteDetaljer}
-            initialDeltakere={[]}
             initialStatusCounts={filterCounts.statusCounts}
             initialHandlingCounts={filterCounts.handlingCounts}
             initialFilterCountsLaster={filterCountsLaster}
