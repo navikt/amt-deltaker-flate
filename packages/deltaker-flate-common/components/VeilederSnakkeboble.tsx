@@ -5,7 +5,6 @@ import {
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding
 } from '../utils/utils.ts'
-import { hentTiltakEllerGjennomforingNavnHosArrangorTekst } from '../utils/displayText.ts'
 import { Pameldingstype, Tiltakskode } from '../model/deltaker.ts'
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
   arrangorNavn: string
   tiltakskode: Tiltakskode
   erEnkeltplass: boolean
-  deltakerlisteNavn: string
+  tiltaksnavnHosArrangor: string
 }
 
 export const VeilederSnakkeboble = ({
@@ -21,15 +20,10 @@ export const VeilederSnakkeboble = ({
   arrangorNavn,
   tiltakskode,
   erEnkeltplass,
-  deltakerlisteNavn
+  tiltaksnavnHosArrangor
 }: Props) => {
   const pameldingTrengerGodkjenning =
     kreverGodkjenningForPamelding(pameldingstype)
-  const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-    tiltakskode,
-    deltakerlisteNavn,
-    arrangorNavn
-  )
 
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     pameldingstype,
@@ -40,7 +34,7 @@ export const VeilederSnakkeboble = ({
   return (
     <GuidePanel illustration={svg}>
       <Heading level="3" size="small">
-        {`Dette er et utkast til ${pameldingTrengerGodkjenning ? 'søknad' : 'påmelding'} til ${navnHosArrangorTekst}`}
+        {`Dette er et utkast til ${pameldingTrengerGodkjenning ? 'søknad' : 'påmelding'} til ${tiltaksnavnHosArrangor}`}
       </Heading>
       {pameldingTrengerGodkjenning ? (
         <>

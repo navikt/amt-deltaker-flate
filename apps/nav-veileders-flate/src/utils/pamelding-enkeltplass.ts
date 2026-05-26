@@ -1,14 +1,13 @@
 import dayjs from 'dayjs'
 import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
-import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
 import { DeltakerResponse } from '../api/data/deltaker'
+import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
 import { formatDateToDtoStr } from './utils'
-import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
-import { getValgteVerdier } from '../api/data/kodeverk'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
@@ -62,10 +61,8 @@ export const generateEnkeltplassPameldingRequest = (
     sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : '',
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
-    kodeverkValg: deltaker.deltakerliste.kodeverk
-      ? getValgteVerdier(deltaker.deltakerliste.kodeverk.alternativer)
-      : undefined,
-    sertifiseringValg: deltaker.deltakerliste.kodeverk?.sertifiseringValg
+    kodeverkValg: deltaker.deltakerliste.kodeverk?.valgteKodeverkIder,
+    sertifiseringValg: deltaker.deltakerliste.kodeverk?.valgteSertifiseringer
   }
 }
 

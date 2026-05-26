@@ -14,6 +14,7 @@ export const OpprettPameldingPage = () => {
         deltakerStatus={deltaker.status}
         deltakerliste={deltaker.deltakerliste}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
+        kodeverk={deltaker.deltakerliste.kodeverk}
       />
 
       <PameldingFormContextProvider>

@@ -5,24 +5,27 @@ import {
   DeltakerStatusTag,
   DeltakerStatusType,
   getTiltakskodeDisplayText,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  hentGjennomforingNavnHosArrangorTekst,
   Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/deltaker.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
+import { FlattKodeverk } from 'deltaker-flate-common'
 
 interface Props {
   deltakerStatus: DeltakerStatus
   deltakerliste: Deltakerliste
   vedtaksinformasjon: Vedtaksinformasjon | null
+  kodeverk?: FlattKodeverk | null
 }
 
 export const PameldingHeader = ({
   deltakerStatus,
   deltakerliste,
-  vedtaksinformasjon
+  vedtaksinformasjon,
+  kodeverk
 }: Props) => {
   let statusTekst = undefined
   switch (deltakerStatus.type) {
@@ -42,14 +45,17 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
     deltakerliste.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
+  const tiltakNavnHosArrangor = hentGjennomforingNavnHosArrangorTekst(
+    deltakerliste.tiltakskode,
+    deltakerliste.deltakerlisteNavn,
+    deltakerliste.arrangorNavn,
+    kodeverk?.tittel
+  )
+
   return (
     <div>
       <Heading level="1" size="large">
-        {hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-          deltakerliste.tiltakskode,
-          deltakerliste.deltakerlisteNavn,
-          deltakerliste.arrangorNavn
-        )}
+        {tiltakNavnHosArrangor}
       </Heading>
 
       <Detail className="mb-4">

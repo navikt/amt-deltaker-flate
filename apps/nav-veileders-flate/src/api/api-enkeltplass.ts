@@ -12,6 +12,8 @@ import {
   arrangorEnhetResponseSchema
 } from './data/arrangorSok'
 import {
+  KodeverkResponse,
+  kodeverkResponseSchema,
   KodeverkSertifiseringResponse,
   kodeverkSertifiseringResponseSchema
 } from './data/kodeverk.ts'
@@ -80,6 +82,36 @@ export const oppdaterKladd = async (
     }
     return response.status
   })
+}
+
+export const getKodeverk = async (
+  deltakerId: string,
+  enhetId: string
+): Promise<KodeverkResponse> => {
+  return fetch(`${API_URL}/enkeltplass/kodeverk/${deltakerId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    }
+  })
+    .then(async (response) => {
+      if (response.status !== 200) {
+        const message = 'Henting av kodeverk feilet.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then((json) => {
+      try {
+        return kodeverkResponseSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse kodeverkResponseSchema:', error)
+        throw new Error('Kunne ikke hente kodeverk. Prøv igjen senere.')
+      }
+    })
 }
 
 export const delUtkastMedInnbygger = async (

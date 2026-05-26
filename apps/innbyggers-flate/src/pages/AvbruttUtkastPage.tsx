@@ -33,11 +33,10 @@ export const AvbruttUtkastPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
-          <Heading level="3" size="medium" className="mt-2 mb-2">
+          <Heading level="3" size="medium" className="mt-2">
             Dette er innholdet
           </Heading>
         }
-        listClassName="mt-2"
       />
 
       {deltaker.bakgrunnsinformasjon && (

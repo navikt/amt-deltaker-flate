@@ -2,12 +2,13 @@ import dayjs from 'dayjs'
 import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { getValgteVerdier } from '../api/data/kodeverk.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
 } from '../utils/varighet.tsx'
 import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
+import { getValgteVerdier } from '../utils/kodeverk.ts'
+import { KodeverkResponse } from '../api/data/kodeverk.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
@@ -84,7 +85,8 @@ export type PameldingEnkeltplassFormValues = z.infer<
 >
 
 export const generateFormDefaultValues = (
-  deltaker: DeltakerResponse
+  deltaker: DeltakerResponse,
+  kodeverk?: KodeverkResponse
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
@@ -98,9 +100,7 @@ export const generateFormDefaultValues = (
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
     prisinformasjon: deltaker.prisinformasjon ?? '',
-    kodeverkValg: getValgteVerdier(
-      deltaker.deltakerliste.kodeverk?.alternativer ?? []
-    ),
-    sertifiseringValg: deltaker.deltakerliste.kodeverk?.sertifiseringValg ?? []
+    kodeverkValg: getValgteVerdier(kodeverk?.alternativer ?? []),
+    sertifiseringValg: kodeverk?.sertifiseringValg ?? []
   }
 }

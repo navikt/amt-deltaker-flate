@@ -44,7 +44,8 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
             Dette er innholdet
           </BodyLong>
         }
-        listClassName="-mt-3 -mb-1"
+        // TODO kodeverk
+        // listClassName="-mt-3 -mb-1" TODO sjekk ut
       />
 
       {bakgrunnsinformasjon && bakgrunnsinformasjon.length > 0 && (

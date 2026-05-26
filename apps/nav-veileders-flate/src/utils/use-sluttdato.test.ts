@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import {
-  DATO_FØR_SLUTTDATO_FEILMELDING,
+  DATO_FOER_SLUTTDATO_FEILMELDING,
   DATO_UTENFOR_TILTAKGJENNOMFORING,
-  SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING,
+  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg
@@ -320,7 +320,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    expect(result.current.error).toBe(SLUTTDATO_FØR_OPPSTARTSDATO_FEILMELDING)
+    expect(result.current.error).toBe(SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING)
   })
 
   it('validerDato - startdato ikke satt, dato er før sluttdato - setter error', () => {
@@ -338,7 +338,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    expect(result.current.error).toBe(DATO_FØR_SLUTTDATO_FEILMELDING)
+    expect(result.current.error).toBe(DATO_FOER_SLUTTDATO_FEILMELDING)
   })
 
   it('validerDato - dato er etter max varighet dato - setter error', () => {

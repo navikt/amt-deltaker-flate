@@ -12,7 +12,7 @@ import {
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { kodeverkResponseSchema } from './kodeverk.ts'
+import { utflatetKodeverkSchema } from './kodeverk.ts'
 
 export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
 
@@ -45,7 +45,7 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
-  kodeverk: kodeverkResponseSchema.nullable()
+  kodeverk: utflatetKodeverkSchema.nullable()
 })
 
 export const deltakerSchema = z.object({

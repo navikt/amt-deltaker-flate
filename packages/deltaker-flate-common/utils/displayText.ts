@@ -77,6 +77,26 @@ export const hentTiltakNavnHosArrangorTekst = (
   arrangorNavn: string
 ) => `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
 
+export const hentGjennomforingNavnHosArrangorTekst = (
+  tiltakskode: Tiltakskode,
+  deltakerlisteNavn: string,
+  arrangorNavn: string,
+  kodeverkTittel?: string | null
+) => {
+  if (
+    tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
+    kodeverkTittel
+  ) {
+    return `${kodeverkTittel} hos ${arrangorNavn}`
+  }
+
+  return hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+    tiltakskode,
+    deltakerlisteNavn,
+    arrangorNavn
+  )
+}
+
 export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,

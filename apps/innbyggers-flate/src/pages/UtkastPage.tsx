@@ -95,7 +95,11 @@ export const UtkastPage = () => {
         arrangorNavn={arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        deltakerlisteNavn={deltakerliste.deltakerlisteNavn}
+        tiltaksnavnHosArrangor={hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+          deltakerliste.tiltakskode,
+          deltakerliste.deltakerlisteNavn,
+          arrangorNavn
+        )}
       />
 
       <OmKurset
@@ -119,11 +123,10 @@ export const UtkastPage = () => {
         tiltakskode={deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
-          <Heading level="3" size="medium" className="mt-6 mb-2">
+          <Heading level="3" size="medium" className="mt-6">
             Dette er innholdet
           </Heading>
         }
-        listClassName="mt-2"
       />
 
       {harBakgrunnsinfo(tiltakskode) && (

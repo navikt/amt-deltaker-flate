@@ -1,18 +1,20 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
+import { logError } from 'deltaker-flate-common'
 import { useId, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { useDeltakerContext } from '../../tiltak/DeltakerContext.tsx'
 import {
-  finnAlternativMedValgteVerdier,
-  getAlleVerdiIder,
   KodeverkAlternativType,
   type KodeverkContainer,
   type KodeverkGruppe,
+  KodeverkResponse,
   type KodeverkVerdigruppe,
   Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
+import {
+  finnAlternativMedValgteVerdier,
+  getAlleVerdiIder
+} from '../../../utils/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
-import { logError } from 'deltaker-flate-common'
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
@@ -21,10 +23,7 @@ import { logError } from 'deltaker-flate-common'
  * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (flat string-array),
  * som auto-lagres via KladdLagring.
  */
-export const KodeverkValg = () => {
-  const { deltaker } = useDeltakerContext()
-  const kodeverk = deltaker.deltakerliste.kodeverk
-
+export const KodeverkValg = ({ kodeverk }: { kodeverk?: KodeverkResponse }) => {
   if (!kodeverk || kodeverk.alternativer.length === 0) return null
 
   return (
