@@ -42,13 +42,20 @@ const FilterContextProvider = ({
   const [valgteHendelseFilter, setValgteHendelseFilter] = useLocalStorage<
     HandlingFilterValg[]
   >(`${HENDELSE_FILTER_STORAGE_KEY}_${deltakerlisteId}`, [])
-  const [valgteStatusFilter, setValgteStatusFilter] = useLocalStorage<
+  const [lagretStatusFilter, setLagretStatusFilter] = useLocalStorage<
     StatusFilterValg[]
   >(`${STATUS_FILTER_STORAGE_KEY}_${deltakerlisteId}`, initialStatusFilter)
 
+  const valgteStatusFilter =
+    lagretStatusFilter.length > 0 ? lagretStatusFilter : initialStatusFilter
+
+  const setValgteStatusFilter = (value: StatusFilterValg[]) => {
+    setLagretStatusFilter(value)
+  }
+
   const nullstillFilter = () => {
     setValgteHendelseFilter([])
-    setValgteStatusFilter(initialStatusFilter)
+    setLagretStatusFilter(initialStatusFilter)
   }
 
   const contextValue: FilterContextProps = {

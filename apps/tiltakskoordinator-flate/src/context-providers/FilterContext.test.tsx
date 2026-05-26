@@ -138,6 +138,16 @@ describe('FilterContext', () => {
         HandlingFilterValg.NyeDeltakere
       ])
     })
+
+    it('bruker default statusfilter når localStorage inneholder tom liste', () => {
+      storage.set(STATUS_FILTER_STORAGE_KEY, JSON.stringify([]))
+
+      const { result } = renderFilterContext(Pameldingstype.TRENGER_GODKJENNING)
+
+      expect(result.current.valgteStatusFilter).toEqual(
+        getDefaultStatusFilter(Pameldingstype.TRENGER_GODKJENNING)
+      )
+    })
   })
 
   describe('rekkefølge: localStorage leses før første render', () => {
