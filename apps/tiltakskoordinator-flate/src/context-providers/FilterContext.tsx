@@ -82,7 +82,7 @@ const FilterContextProvider = ({
   }
 
   const setValgteStatusFilter = (value: StatusFilterValg[]) => {
-    setValgteStatusFilterState(value.length > 0 ? value : initialStatusFilter)
+    setValgteStatusFilterState(value)
   }
 
   const nullstillFilter = () => {

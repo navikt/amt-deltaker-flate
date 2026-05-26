@@ -92,6 +92,17 @@ describe('FilterContext', () => {
       ])
     })
 
+    it('tillater tom statusfilter-liste under bruk (søk uten statusfiltre)', () => {
+      const { result } = renderFilterContext(Pameldingstype.TRENGER_GODKJENNING)
+
+      act(() => {
+        result.current.setValgteStatusFilter([])
+      })
+
+      expect(result.current.valgteStatusFilter).toEqual([])
+      expect(JSON.parse(storage.get(STATUS_FILTER_STORAGE_KEY)!)).toEqual([])
+    })
+
     it('lagrer hendelsesfilter til localStorage ved endring', () => {
       const { result } = renderFilterContext(Pameldingstype.TRENGER_GODKJENNING)
 
