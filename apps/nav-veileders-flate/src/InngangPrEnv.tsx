@@ -11,10 +11,11 @@ import {
 } from '@navikt/ds-react'
 import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { opprettKladd, getDeltaker } from './api/api.ts'
+import { getDeltaker, opprettKladd } from './api/api.ts'
 import { DeltakerContextProvider } from './components/tiltak/DeltakerContext.tsx'
 import { DeltakerGuard } from './guards/DeltakerGuard.tsx'
 import { ErrorPage } from './pages/ErrorPage.tsx'
+import { isPrEnv } from './utils/environment-utils.ts'
 
 const InngangPrEnv = () => {
   const [personident, setPersonident] = useState('29847595971')
@@ -47,14 +48,17 @@ const InngangPrEnv = () => {
   return (
     <>
       <Alert variant="warning" className="mb-4" size="small">
-        <BodyShort weight="semibold" size="small" className="mb-1">
-          Denne appen kjører i pr-modus i dev (Q2)
-        </BodyShort>
-
-        <BodyLong size="small" className="mb-2">
-          Feltene er forhandsutfylt for å hente en deltakelse for Egoistisk
-          Maktperson.
-        </BodyLong>
+        {isPrEnv && (
+          <>
+            <BodyShort weight="semibold" size="small" className="mb-1">
+              Denne appen kjører i pr-modus i dev (Q2)
+            </BodyShort>
+            <BodyLong size="small" className="mb-2">
+              Feltene er forhandsutfylt for å hente en deltakelse for Egoistisk
+              Maktperson.
+            </BodyLong>
+          </>
+        )}
 
         <form
           onSubmit={(e) => {
