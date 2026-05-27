@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
   isEnvLocalDemoOrPr,
+  isOffline,
   isPrEnv,
   useMock
 } from './utils/environment-utils.ts'
@@ -40,7 +41,9 @@ export const AppRoutes = () => {
           }
         />
       )}
-      {isPrEnv && <Route path={'/*'} element={<InngangPrEnv />} />}
+      {(isPrEnv || isOffline) && (
+        <Route path={'/*'} element={<InngangPrEnv />} />
+      )}
     </Routes>
   )
 }

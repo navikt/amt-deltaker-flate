@@ -45,7 +45,7 @@ const renderAsReactRoot = () => {
     <React.StrictMode>
       <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
         <AppContextProvider
-          initialPersonident={'29418716256'}
+          initialPersonident={'11111111111'}
           initialEnhetId={'0106'}
         >
           <BrowserRouter>
