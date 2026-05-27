@@ -76,3 +76,32 @@ Interne henvendelser kan sendes via Slack i kanalen #team_komet.
 ## 🤖 KI-assistanse - GitHub Copilot
 
 Dette repoet bruker GitHub Copilot for kodeforslag.
+
+# Testmiljøer
+
+Vi har to typer testmiljøer: **demo** (isolert med mock-data) og **dev** (integrert mot reelle dev-tjenester).
+
+## Demo-apper
+
+Demo-appene kjøres som egne Docker-images via `nais-demo.yaml` og brukes til:
+
+- intern testing i teamet
+- opplæring på Nav-kontor og i fylker
+
+Kjennetegn:
+
+- Appene bygges med **mocker**, slik at frontend kan testes helt isolert fra backend.
+- De serveres av [`poao-frontend`](https://github.com/navikt/poao-frontend) som webserver, fordi vi ikke har en egen webserver satt opp i dette repoet.
+- `poao-frontend` henter de statiske filene fra Navs CDN.
+
+## Dev
+
+I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
+
+| App                        | Hvor den kjører                                  | Hvor statiske filer hentes fra |
+| -------------------------- | ------------------------------------------------ | ------------------------------ |
+| `tiltakskoordinator-flate` | Nav tiltaksadministrasjon                        | Navs CDN                       |
+| `nav-veileders-flate`      | Modia                                            | Navs CDN (i dev)               |
+| `innbyggers-flate`         | Selvstendig app, lenkes til fra aktivitetsplanen | Egen kjørende instans          |
+
+> ⚠️ **Merk:** I prod hentes `nav-veileders-flate` fra den kjørende instansen i stedet for Navs CDN. Dette bør på sikt endres slik at prod og dev fungerer likt.
