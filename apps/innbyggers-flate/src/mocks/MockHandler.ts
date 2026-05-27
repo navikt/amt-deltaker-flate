@@ -20,6 +20,7 @@ import {
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
+import { createMockFlatKodeverk } from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -59,7 +60,8 @@ export const createDeltaker = (
       sluttdato: dayjs('2027-12-20').toDate(),
       erEnkeltplass: false,
       oppmoteSted:
-        'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. '
+        'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
+      kodeverk: createMockFlatKodeverk()
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
