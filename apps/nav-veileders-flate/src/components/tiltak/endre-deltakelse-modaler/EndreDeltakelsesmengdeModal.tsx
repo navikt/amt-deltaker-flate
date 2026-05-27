@@ -227,7 +227,9 @@ function isDeltakelsesmengde(
 function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
   const defaultGyldigFra = dayjs().isAfter(deltaker.sluttdato)
     ? dayjs(deltaker.sluttdato).toDate()
-    : dayjs().toDate()
+    : deltaker.startdato && dayjs().isBefore(deltaker.startdato)
+      ? dayjs(deltaker.startdato).toDate()
+      : dayjs().toDate()
   if (forslag === null)
     return {
       deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,
