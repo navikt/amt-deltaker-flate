@@ -66,7 +66,8 @@ export const UtkastEnkeltplassPage = () => {
         tiltaksnavnHosArrangor={hentGjennomforingNavnHosArrangorTekst(
           deltakerliste.tiltakskode,
           deltakerliste.deltakerlisteNavn,
-          deltakerliste.arrangorNavn
+          deltakerliste.arrangorNavn,
+          deltakerliste.kodeverk?.tittel
         )}
       />
 
@@ -78,6 +79,7 @@ export const UtkastEnkeltplassPage = () => {
       <DeltakelseInnhold
         tiltakskode={deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
+        kodeverk={deltaker.deltakerliste.kodeverk}
         heading={
           <Heading level="3" size="medium" className="mt-8">
             Dette er innholdet

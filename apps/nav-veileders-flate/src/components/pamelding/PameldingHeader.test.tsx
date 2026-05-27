@@ -2,9 +2,9 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { DeltakelseInnhold, Tiltakskode } from 'deltaker-flate-common'
-import { PameldingHeader } from './pamelding/PameldingHeader'
 import { DeltakerStatusType } from 'deltaker-flate-common'
-import { Deltakerliste } from '../api/data/deltaker'
+import { Deltakerliste } from '../../api/data/deltaker'
+import { PameldingHeader } from './PameldingHeader.tsx'
 
 const lagDeltakerliste = (
   overrides: Partial<Deltakerliste> = {}

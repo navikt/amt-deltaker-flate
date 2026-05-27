@@ -8,7 +8,8 @@ import {
   Oppstartstype,
   nullableDateSchema,
   Tiltakskode,
-  Pameldingstype
+  Pameldingstype,
+  utflatetKodeverkSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -22,7 +23,8 @@ export const deltakerlisteSchema = z.object({
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   erEnkeltplass: z.boolean(),
-  oppmoteSted: z.string().nullable()
+  oppmoteSted: z.string().nullable(),
+  kodeverk: utflatetKodeverkSchema.nullable()
 })
 
 export const deltakerSchema = z.object({
