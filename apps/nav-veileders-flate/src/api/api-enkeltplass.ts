@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { logError, Tiltakskode } from 'deltaker-flate-common'
 import { API_URL } from '../utils/environment-utils'
 import { EnkeltplassPameldingRequest } from './data/enkeltplass-pamelding'
@@ -106,16 +105,12 @@ export const getKodeverk = async (
       return response.json()
     })
     .then((json) => {
-      const result = kodeverkResponseSchema.safeParse(json)
-
-      if (!result.success) {
-        console.log(JSON.stringify(result.error.issues, null, 2))
-        logError('Kunne ikke parse kodeverkResponseSchema:', result.error)
-
+      try {
+        return kodeverkResponseSchema.parse(json)
+      } catch (error) {
+        logError('Kunne ikke parse kodeverkResponseSchema:', error)
         throw new Error('Kunne ikke hente kodeverk. Prøv igjen senere.')
       }
-
-      return result.data
     })
 }
 
