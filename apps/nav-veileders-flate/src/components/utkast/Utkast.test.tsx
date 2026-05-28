@@ -9,7 +9,11 @@ import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 import { PameldingFormContextProvider } from '../pamelding/PameldingFormContext'
 import { AppContext } from '../../AppContext'
-import { KodeverkAlternativType, Seleksjonstype } from '../../api/data/kodeverk'
+import {
+  KodeverkAlternativType,
+  OpplaringRepresenterer,
+  Seleksjonstype
+} from '../../api/data/kodeverk'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -119,7 +123,8 @@ describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
           type: KodeverkAlternativType.VERDIGRUPPE,
           id: null,
           visningsnavn: 'Bransje',
-          representerer: 'bransje',
+          representerer: OpplaringRepresenterer.BRANSJE_ID,
+          pakrevd: false,
           seleksjonstype: Seleksjonstype.ENKELTVALG,
           alternativer: [
             { id: 'old-id', visningsnavn: 'Gammel Bransje', valgt: true }
@@ -137,7 +142,8 @@ describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
           type: KodeverkAlternativType.VERDIGRUPPE,
           id: null,
           visningsnavn: 'Bransje',
-          representerer: 'bransje',
+          representerer: OpplaringRepresenterer.BRANSJE_ID,
+          pakrevd: false,
           seleksjonstype: Seleksjonstype.ENKELTVALG,
           alternativer: [
             { id: 'new-id', visningsnavn: 'Ny Bransje', valgt: true },

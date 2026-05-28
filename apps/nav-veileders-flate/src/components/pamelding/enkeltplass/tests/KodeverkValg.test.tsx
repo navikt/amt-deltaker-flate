@@ -6,6 +6,7 @@ import { KodeverkValg } from '../KodeverkValg'
 import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
+  OpplaringRepresenterer,
   KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
@@ -15,7 +16,7 @@ const bransjeVerdigruppe = {
   id: null,
   visningsnavn: 'Bransje',
   pakrevd: false,
-  representerer: 'bransje',
+  representerer: OpplaringRepresenterer.BRANSJE_ID,
   seleksjonstype: Seleksjonstype.ENKELTVALG,
   alternativer: [
     { id: 'bransje-1', visningsnavn: 'Bygg og anlegg', valgt: false },
@@ -29,7 +30,7 @@ const forerkortVerdigruppe = {
   id: null,
   visningsnavn: 'Førerkort',
   pakrevd: false,
-  representerer: 'forerkort',
+  representerer: OpplaringRepresenterer.FORERKORT,
   seleksjonstype: Seleksjonstype.FLERVALG,
   alternativer: [
     { id: 'fk-1', visningsnavn: 'B - Personbil', valgt: false },
@@ -230,7 +231,7 @@ describe('KodeverkValg', () => {
                   id: null,
                   visningsnavn: 'Lærefag',
                   pakrevd: false,
-                  representerer: 'larefag',
+                  representerer: OpplaringRepresenterer.LAREFAG,
                   seleksjonstype: Seleksjonstype.FLERVALG,
                   alternativer: [
                     { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: false },
@@ -255,7 +256,7 @@ describe('KodeverkValg', () => {
                   id: null,
                   visningsnavn: 'Lærefag',
                   pakrevd: false,
-                  representerer: 'larefag',
+                  representerer: OpplaringRepresenterer.LAREFAG,
                   seleksjonstype: Seleksjonstype.FLERVALG,
                   alternativer: [
                     {

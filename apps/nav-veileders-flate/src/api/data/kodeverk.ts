@@ -24,6 +24,17 @@ export enum VerdigruppeSokKilde {
   JANZZ_SERTIFISERING = 'JANZZ_SERTIFISERING'
 }
 
+export enum OpplaringRepresenterer {
+  KURSTYPE_ID = 'KURSTYPE_ID',
+  BRANSJE_ID = 'BRANSJE_ID',
+  SERTIFISERINGER = 'SERTIFISERINGER',
+  FORERKORT = 'FORERKORT',
+  INNHOLDSELEMENTER = 'INNHOLDSELEMENTER',
+  NORSKPROVE = 'NORSKPROVE',
+  UTDANNINGSPROGRAM_ID = 'UTDANNINGSPROGRAM_ID',
+  LAREFAG = 'LAREFAG'
+}
+
 export const kodeverkVerdiSchema = z.object({
   id: z.uuid(),
   visningsnavn: z.string(),
@@ -35,7 +46,7 @@ export const kodeverkVerdigruppeSchema = z.object({
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
   pakrevd: z.boolean().default(false),
-  representerer: z.string(),
+  representerer: z.enum(OpplaringRepresenterer),
   seleksjonstype: z.enum(Seleksjonstype),
   alternativer: z.array(kodeverkVerdiSchema)
 })
@@ -46,7 +57,7 @@ export const kodeverkVerdigruppeSokSchema = z.object({
   type: z.literal(KodeverkAlternativType.VERDIGRUPPE_SOK),
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
-  representerer: z.string().nullable(),
+  representerer: z.enum(OpplaringRepresenterer).nullable(),
   seleksjonstype: z.enum(Seleksjonstype),
   kilde: z.enum(VerdigruppeSokKilde)
 })
@@ -65,7 +76,7 @@ export const kodeverkUtdanningGruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.UTDANNING_GRUPPE),
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
-  representerer: z.string(),
+  representerer: z.enum(OpplaringRepresenterer),
   pakrevd: z.boolean().default(false),
   utdanninger: z.array(kodeverkUtdanningValgSchema)
 })
@@ -78,7 +89,7 @@ export const kodeverkGruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.GRUPPE),
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
-  representerer: z.string().nullable(),
+  representerer: z.enum(OpplaringRepresenterer).nullable(),
   pakrevd: z.boolean().default(false),
   get alternativer() {
     return z.array(

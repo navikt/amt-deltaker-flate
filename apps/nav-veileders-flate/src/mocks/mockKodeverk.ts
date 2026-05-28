@@ -2,6 +2,7 @@ import { Tiltakskode } from 'deltaker-flate-common'
 import {
   FlattKodeverk,
   KodeverkAlternativType,
+  OpplaringRepresenterer,
   KodeverkResponse,
   KodeverkSertifiseringResponse,
   Seleksjonstype,
@@ -41,7 +42,7 @@ const mockKodeverk: KodeverkResponse[] = [
         id: null,
         visningsnavn: 'Bransje',
         pakrevd: false,
-        representerer: 'bransje',
+        representerer: OpplaringRepresenterer.BRANSJE_ID,
         seleksjonstype: Seleksjonstype.ENKELTVALG,
         alternativer: [
           {
@@ -76,7 +77,7 @@ const mockKodeverk: KodeverkResponse[] = [
         id: null,
         visningsnavn: 'Førerkort',
         pakrevd: false,
-        representerer: 'forerkort',
+        representerer: OpplaringRepresenterer.FORERKORT,
         seleksjonstype: Seleksjonstype.FLERVALG,
         alternativer: [
           {
@@ -105,7 +106,7 @@ const mockKodeverk: KodeverkResponse[] = [
         type: KodeverkAlternativType.VERDIGRUPPE_SOK,
         id: null,
         visningsnavn: 'Sertifiseringer',
-        representerer: 'sertifiseringer',
+        representerer: OpplaringRepresenterer.SERTIFISERINGER,
         seleksjonstype: Seleksjonstype.FLERVALG,
         kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
       }
@@ -119,7 +120,7 @@ const mockKodeverk: KodeverkResponse[] = [
         type: KodeverkAlternativType.UTDANNING_GRUPPE,
         id: null,
         visningsnavn: 'Utdanningsprogram',
-        representerer: 'utdanningsprogram',
+        representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
         pakrevd: true,
         utdanninger: [
           {
@@ -130,7 +131,7 @@ const mockKodeverk: KodeverkResponse[] = [
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
-              representerer: 'larefag',
+              representerer: OpplaringRepresenterer.LAREFAG,
               seleksjonstype: Seleksjonstype.FLERVALG,
               alternativer: [
                 {
@@ -159,7 +160,7 @@ const mockKodeverk: KodeverkResponse[] = [
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
-              representerer: 'larefag',
+              representerer: OpplaringRepresenterer.LAREFAG,
               seleksjonstype: Seleksjonstype.FLERVALG,
               alternativer: [
                 {
@@ -188,7 +189,7 @@ const mockKodeverk: KodeverkResponse[] = [
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
-              representerer: 'larefag',
+              representerer: OpplaringRepresenterer.LAREFAG,
               seleksjonstype: Seleksjonstype.FLERVALG,
               alternativer: [
                 {

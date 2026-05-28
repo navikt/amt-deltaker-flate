@@ -7,6 +7,7 @@ import {
   type KodeverkContainer,
   type KodeverkGruppe,
   KodeverkResponse,
+  OpplaringRepresenterer,
   type KodeverkVerdigruppe,
   Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
@@ -46,7 +47,7 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
     case KodeverkAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
     case KodeverkAlternativType.VERDIGRUPPE_SOK:
-      if (alternativ.representerer === 'sertifiseringer') {
+      if (alternativ.representerer === OpplaringRepresenterer.SERTIFISERINGER) {
         return <SertifiseringSok alternativ={alternativ} />
       } else {
         logError(
