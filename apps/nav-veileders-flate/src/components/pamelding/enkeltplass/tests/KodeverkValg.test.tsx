@@ -14,6 +14,7 @@ const bransjeVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Bransje',
+  pakrevd: false,
   representerer: 'bransje',
   seleksjonstype: Seleksjonstype.ENKELTVALG,
   alternativer: [
@@ -27,6 +28,7 @@ const forerkortVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Førerkort',
+  pakrevd: false,
   representerer: 'forerkort',
   seleksjonstype: Seleksjonstype.FLERVALG,
   alternativer: [
@@ -213,16 +215,21 @@ describe('KodeverkValg', () => {
           type: KodeverkAlternativType.GRUPPE,
           id: null,
           visningsnavn: 'Utdanningsprogram',
+          representerer: null,
+          pakrevd: false,
           alternativer: [
             {
               type: KodeverkAlternativType.GRUPPE,
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
+              representerer: null,
+              pakrevd: false,
               alternativer: [
                 {
                   type: KodeverkAlternativType.VERDIGRUPPE,
                   id: null,
                   visningsnavn: 'Lærefag',
+                  pakrevd: false,
                   representerer: 'larefag',
                   seleksjonstype: Seleksjonstype.FLERVALG,
                   alternativer: [
@@ -240,11 +247,14 @@ describe('KodeverkValg', () => {
               type: KodeverkAlternativType.GRUPPE,
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
+              representerer: null,
+              pakrevd: false,
               alternativer: [
                 {
                   type: KodeverkAlternativType.VERDIGRUPPE,
                   id: null,
                   visningsnavn: 'Lærefag',
+                  pakrevd: false,
                   representerer: 'larefag',
                   seleksjonstype: Seleksjonstype.FLERVALG,
                   alternativer: [
