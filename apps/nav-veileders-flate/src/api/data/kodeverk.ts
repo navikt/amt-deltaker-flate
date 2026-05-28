@@ -40,14 +40,21 @@ export const kodeverkVerdiSchema = z.object({
   valgt: z.boolean().default(false)
 })
 
-export const kodeverkVerdigruppeSchema = z.object({
-  type: z.literal(KodeverkAlternativType.VERDIGRUPPE),
+const kodeverkVerdigruppeBaseSchema = z.object({
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
   pakrevd: z.boolean().default(false),
   representerer: z.enum(OpplaringRepresenterer),
   seleksjonstype: z.enum(Seleksjonstype),
   alternativer: z.array(kodeverkVerdiSchema)
+})
+
+export type KodeverkVerdigruppeBase = z.infer<
+  typeof kodeverkVerdigruppeBaseSchema
+>
+
+export const kodeverkVerdigruppeSchema = kodeverkVerdigruppeBaseSchema.extend({
+  type: z.literal(KodeverkAlternativType.VERDIGRUPPE)
 })
 
 export type KodeverkVerdigruppe = z.infer<typeof kodeverkVerdigruppeSchema>
@@ -65,10 +72,19 @@ export type KodeverkVerdigruppeSok = z.infer<
   typeof kodeverkVerdigruppeSokSchema
 >
 
+export const kodeverkVerdigruppeEmbeddedSchema = z.object({
+  id: z.uuid().nullable(),
+  visningsnavn: z.string(),
+  pakrevd: z.boolean().default(false),
+  representerer: z.enum(OpplaringRepresenterer),
+  seleksjonstype: z.enum(Seleksjonstype),
+  alternativer: z.array(kodeverkVerdiSchema)
+})
+
 export const kodeverkUtdanningValgSchema = z.object({
   id: z.uuid(),
   visningsnavn: z.string(),
-  larefag: kodeverkVerdigruppeSchema
+  larefag: kodeverkVerdigruppeEmbeddedSchema
 })
 
 export const kodeverkUtdanningGruppeSchema = z.object({

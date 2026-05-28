@@ -223,7 +223,6 @@ describe('KodeverkValg', () => {
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
               larefag: {
-                type: KodeverkAlternativType.VERDIGRUPPE,
                 id: null,
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
@@ -243,7 +242,6 @@ describe('KodeverkValg', () => {
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
               larefag: {
-                type: KodeverkAlternativType.VERDIGRUPPE,
                 id: null,
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
@@ -292,8 +290,8 @@ describe('KodeverkValg', () => {
       }
       const valgtUtdanning = byggGruppe.utdanninger[0]
       const larefagVerdigruppe = valgtUtdanning.larefag
-      if (larefagVerdigruppe.type !== KodeverkAlternativType.VERDIGRUPPE) {
-        throw new Error('Forventet VERDIGRUPPE')
+      if (larefagVerdigruppe.representerer !== OpplaringRepresenterer.LAREFAG) {
+        throw new Error('Forventet LAREFAG')
       }
 
       const kodeverkMedValg: KodeverkResponse = {

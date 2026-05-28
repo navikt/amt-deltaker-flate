@@ -8,8 +8,8 @@ import {
   KodeverkResponse,
   OpplaringRepresenterer,
   type KodeverkUtdanningGruppe,
-  type KodeverkVerdigruppe,
-  Seleksjonstype
+  Seleksjonstype,
+  KodeverkVerdigruppeBase
 } from '../../../api/data/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
 
@@ -130,7 +130,7 @@ const UtdanningGruppeValg = ({
 const VerdigruppeValg = ({
   verdigruppe
 }: {
-  verdigruppe: KodeverkVerdigruppe
+  verdigruppe: KodeverkVerdigruppeBase
 }) => {
   const comboboxId = useId()
   const { setValue } = useFormContext()

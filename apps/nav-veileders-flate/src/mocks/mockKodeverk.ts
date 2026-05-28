@@ -127,7 +127,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '1390a963-e9b2-4677-bb87-243f4638b7a1',
             visningsnavn: 'Bygg- og anleggsteknikk',
             larefag: {
-              type: KodeverkAlternativType.VERDIGRUPPE,
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
@@ -156,7 +155,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: 'f1bc4b14-56d6-4907-8fdf-48c982a4c759',
             visningsnavn: 'Elektro og datateknologi',
             larefag: {
-              type: KodeverkAlternativType.VERDIGRUPPE,
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
@@ -185,7 +183,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: 'a2b3c4d5-e6f7-4890-9abc-def012345678',
             visningsnavn: 'Helse- og oppvekstfag',
             larefag: {
-              type: KodeverkAlternativType.VERDIGRUPPE,
               id: null,
               visningsnavn: 'Lærefag',
               pakrevd: false,
