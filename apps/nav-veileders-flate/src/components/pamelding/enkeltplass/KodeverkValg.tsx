@@ -8,6 +8,7 @@ import {
   type KodeverkGruppe,
   KodeverkResponse,
   OpplaringRepresenterer,
+  type KodeverkUtdanningGruppe,
   type KodeverkVerdigruppe,
   Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
@@ -46,6 +47,8 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
   switch (alternativ.type) {
     case KodeverkAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
+    case KodeverkAlternativType.UTDANNING_GRUPPE:
+      return <UtdanningGruppeValg utdanningGruppe={alternativ} />
     case KodeverkAlternativType.VERDIGRUPPE_SOK:
       if (alternativ.representerer === OpplaringRepresenterer.SERTIFISERINGER) {
         return <SertifiseringSok alternativ={alternativ} />
@@ -119,6 +122,68 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
       {/* key={valgtId} sikrer at barnet remountes med fersk state ved bytte */}
       {valgtAlternativ && (
         <AlternativValg key={valgtId} alternativ={valgtAlternativ} />
+      )}
+    </div>
+  )
+}
+
+/**
+ * Viser en UtdanningGruppe som en combobox over utdanningsprogram,
+ * og rendrer valgt programs lærefag (Verdigruppe) under.
+ */
+const UtdanningGruppeValg = ({
+  utdanningGruppe
+}: {
+  utdanningGruppe: KodeverkUtdanningGruppe
+}) => {
+  const comboboxId = useId()
+  const { getValues, setValue } = useFormContext()
+
+  const [valgtId, setValgtId] = useState<string | null>(() => {
+    const medValg = utdanningGruppe.utdanninger.find((u) =>
+      u.larefag.alternativer.some((v) => v.valgt)
+    )
+    return medValg?.id ?? null
+  })
+
+  const options = utdanningGruppe.utdanninger.map((u) => ({
+    value: u.id,
+    label: u.visningsnavn
+  }))
+
+  const valgtUtdanning =
+    utdanningGruppe.utdanninger.find((u) => u.id === valgtId) ?? null
+
+  function handleValg(option: string, isSelected: boolean) {
+    if (valgtUtdanning) {
+      const gamleIder = new Set(
+        valgtUtdanning.larefag.alternativer.map((v) => v.id)
+      )
+      const gjeldende = getValues('kodeverkValg') as string[]
+      setValue(
+        'kodeverkValg',
+        gjeldende.filter((id) => !gamleIder.has(id)),
+        { shouldDirty: true }
+      )
+    }
+
+    setValgtId(isSelected ? option : null)
+  }
+
+  return (
+    <div className="flex flex-col gap-8">
+      <UNSAFE_Combobox
+        id={comboboxId}
+        label={utdanningGruppe.visningsnavn}
+        selectedOptions={options.filter((o) => o.value === valgtId)}
+        size="small"
+        options={options}
+        isMultiSelect={false}
+        onToggleSelected={handleValg}
+      />
+
+      {valgtUtdanning && (
+        <VerdigruppeValg verdigruppe={valgtUtdanning.larefag} />
       )}
     </div>
   )

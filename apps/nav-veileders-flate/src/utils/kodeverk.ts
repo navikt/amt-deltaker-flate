@@ -14,6 +14,10 @@ export const getAlleVerdiIder = (
   for (const a of alternativer) {
     if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
       for (const v of a.alternativer) ider.add(v.id)
+    } else if (a.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+      for (const utdanning of a.utdanninger) {
+        for (const v of utdanning.larefag.alternativer) ider.add(v.id)
+      }
     } else if (a.type === KodeverkAlternativType.GRUPPE) {
       for (const id of getAlleVerdiIder(a.alternativer)) ider.add(id)
     }
@@ -30,6 +34,11 @@ export const getValgteVerdier = (
   return alternativer.flatMap((a) => {
     if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
       return a.alternativer.filter((v) => v.valgt).map((v) => v.id)
+    }
+    if (a.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+      return a.utdanninger.flatMap((u) =>
+        u.larefag.alternativer.filter((v) => v.valgt).map((v) => v.id)
+      )
     }
     if (a.type === KodeverkAlternativType.GRUPPE) {
       return getValgteVerdier(a.alternativer)
