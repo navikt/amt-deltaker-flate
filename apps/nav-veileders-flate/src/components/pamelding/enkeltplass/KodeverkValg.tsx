@@ -5,21 +5,18 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import {
   KodeverkAlternativType,
   type KodeverkContainer,
-  type KodeverkGruppe,
   KodeverkResponse,
-  type KodeverkVerdigruppe,
-  Seleksjonstype
+  OpplaringRepresenterer,
+  type KodeverkUtdanningGruppe,
+  Seleksjonstype,
+  KodeverkVerdigruppeBase
 } from '../../../api/data/kodeverk.ts'
-import {
-  finnAlternativMedValgteVerdier,
-  getAlleVerdiIder
-} from '../../../utils/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
  *
- * Kodeverket er et hierarki: Gruppe → Verdigruppe → Verdi.
+ * Kodeverket er et hierarki av UtdanningGruppe/Verdigruppe med Verdi-noder.
  * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (flat string-array),
  * som auto-lagres via KladdLagring.
  */
@@ -45,8 +42,10 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
   switch (alternativ.type) {
     case KodeverkAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
+    case KodeverkAlternativType.UTDANNING_GRUPPE:
+      return <UtdanningGruppeValg utdanningGruppe={alternativ} />
     case KodeverkAlternativType.VERDIGRUPPE_SOK:
-      if (alternativ.representerer === 'sertifiseringer') {
+      if (alternativ.representerer === OpplaringRepresenterer.SERTIFISERINGER) {
         return <SertifiseringSok alternativ={alternativ} />
       } else {
         logError(
@@ -55,43 +54,41 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
         )
         return null
       }
-    case KodeverkAlternativType.GRUPPE:
-      // Hopp over combobox hvis gruppen bare har ett barn — vis barnet direkte
-      if (alternativ.alternativer.length === 1) {
-        return <AlternativValg alternativ={alternativ.alternativer[0]} />
-      }
-      return <GruppeValg gruppe={alternativ} />
   }
 }
 
 /**
- * Viser en Gruppe som en combobox der brukeren velger ett alternativ.
- * Det valgte alternativet rendres rekursivt under comboboxen.
- *
- * Ved bytte av valgt alternativ fjernes forrige alternativs verdi-IDer
- * fra form-feltet `kodeverkValg` for å unngå at gamle valg henger igjen.
+ * Viser en UtdanningGruppe som en combobox over utdanningsprogram,
+ * og rendrer valgt programs lærefag (Verdigruppe) under.
  */
-const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
+const UtdanningGruppeValg = ({
+  utdanningGruppe
+}: {
+  utdanningGruppe: KodeverkUtdanningGruppe
+}) => {
   const comboboxId = useId()
   const { getValues, setValue } = useFormContext()
 
-  const [valgtId, setValgtId] = useState<string | null>(() =>
-    finnAlternativMedValgteVerdier(gruppe)
-  )
+  const [valgtId, setValgtId] = useState<string | null>(() => {
+    const medValg = utdanningGruppe.utdanninger.find((u) =>
+      u.larefag.alternativer.some((v) => v.valgt)
+    )
+    return medValg?.id ?? null
+  })
 
-  const options = gruppe.alternativer.map((a) => ({
-    value: a.id ?? a.visningsnavn,
-    label: a.visningsnavn
+  const options = utdanningGruppe.utdanninger.map((u) => ({
+    value: u.id,
+    label: u.visningsnavn
   }))
 
-  const valgtAlternativ =
-    gruppe.alternativer.find((a) => (a.id ?? a.visningsnavn) === valgtId) ??
-    null
+  const valgtUtdanning =
+    utdanningGruppe.utdanninger.find((u) => u.id === valgtId) ?? null
 
   function handleValg(option: string, isSelected: boolean) {
-    // Fjern verdi-IDer som tilhørte det forrige valgte alternativet
-    if (valgtAlternativ) {
-      const gamleIder = getAlleVerdiIder([valgtAlternativ])
+    if (valgtUtdanning) {
+      const gamleIder = new Set(
+        valgtUtdanning.larefag.alternativer.map((v) => v.id)
+      )
       const gjeldende = getValues('kodeverkValg') as string[]
       setValue(
         'kodeverkValg',
@@ -107,7 +104,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
         id={comboboxId}
-        label={gruppe.visningsnavn}
+        label={utdanningGruppe.visningsnavn}
         selectedOptions={options.filter((o) => o.value === valgtId)}
         size="small"
         options={options}
@@ -115,9 +112,8 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
         onToggleSelected={handleValg}
       />
 
-      {/* key={valgtId} sikrer at barnet remountes med fersk state ved bytte */}
-      {valgtAlternativ && (
-        <AlternativValg key={valgtId} alternativ={valgtAlternativ} />
+      {valgtUtdanning && (
+        <VerdigruppeValg verdigruppe={valgtUtdanning.larefag} />
       )}
     </div>
   )
@@ -134,7 +130,7 @@ const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
 const VerdigruppeValg = ({
   verdigruppe
 }: {
-  verdigruppe: KodeverkVerdigruppe
+  verdigruppe: KodeverkVerdigruppeBase
 }) => {
   const comboboxId = useId()
   const { setValue } = useFormContext()

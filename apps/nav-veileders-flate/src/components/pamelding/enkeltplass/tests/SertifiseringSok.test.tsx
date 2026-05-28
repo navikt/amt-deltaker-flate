@@ -7,6 +7,7 @@ import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
   KodeverkContainer,
+  OpplaringRepresenterer,
   Seleksjonstype,
   VerdigruppeSokKilde
 } from '../../../../api/data/kodeverk'
@@ -27,7 +28,7 @@ const sertifiseringAlternativ: KodeverkContainer = {
   type: KodeverkAlternativType.VERDIGRUPPE_SOK,
   id: null,
   visningsnavn: 'Sertifiseringer',
-  representerer: 'sertifiseringer',
+  representerer: OpplaringRepresenterer.SERTIFISERINGER,
   seleksjonstype: Seleksjonstype.FLERVALG,
   kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
 }

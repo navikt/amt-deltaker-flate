@@ -2,6 +2,7 @@ import { Tiltakskode } from 'deltaker-flate-common'
 import {
   FlattKodeverk,
   KodeverkAlternativType,
+  OpplaringRepresenterer,
   KodeverkResponse,
   KodeverkSertifiseringResponse,
   Seleksjonstype,
@@ -40,7 +41,8 @@ const mockKodeverk: KodeverkResponse[] = [
         type: KodeverkAlternativType.VERDIGRUPPE,
         id: null,
         visningsnavn: 'Bransje',
-        representerer: 'bransje',
+        pakrevd: false,
+        representerer: OpplaringRepresenterer.BRANSJE_ID,
         seleksjonstype: Seleksjonstype.ENKELTVALG,
         alternativer: [
           {
@@ -74,7 +76,8 @@ const mockKodeverk: KodeverkResponse[] = [
         type: KodeverkAlternativType.VERDIGRUPPE,
         id: null,
         visningsnavn: 'Førerkort',
-        representerer: 'forerkort',
+        pakrevd: false,
+        representerer: OpplaringRepresenterer.FORERKORT,
         seleksjonstype: Seleksjonstype.FLERVALG,
         alternativer: [
           {
@@ -103,7 +106,7 @@ const mockKodeverk: KodeverkResponse[] = [
         type: KodeverkAlternativType.VERDIGRUPPE_SOK,
         id: null,
         visningsnavn: 'Sertifiseringer',
-        representerer: 'sertifiseringer',
+        representerer: OpplaringRepresenterer.SERTIFISERINGER,
         seleksjonstype: Seleksjonstype.FLERVALG,
         kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
       }
@@ -114,97 +117,90 @@ const mockKodeverk: KodeverkResponse[] = [
     tiltakskode: Tiltakskode.FAG_OG_YRKESOPPLAERING,
     alternativer: [
       {
-        type: KodeverkAlternativType.GRUPPE,
+        type: KodeverkAlternativType.UTDANNING_GRUPPE,
         id: null,
         visningsnavn: 'Utdanningsprogram',
-        alternativer: [
+        representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+        pakrevd: true,
+        utdanninger: [
           {
-            type: KodeverkAlternativType.GRUPPE,
             id: '1390a963-e9b2-4677-bb87-243f4638b7a1',
             visningsnavn: 'Bygg- og anleggsteknikk',
-            alternativer: [
-              {
-                type: KodeverkAlternativType.VERDIGRUPPE,
-                id: null,
-                visningsnavn: 'Lærefag',
-                representerer: 'larefag',
-                seleksjonstype: Seleksjonstype.FLERVALG,
-                alternativer: [
-                  {
-                    id: '4248ce0c-ddea-4eec-8eba-5c9c33d2af66',
-                    visningsnavn: 'Anleggsgartnerfaget',
-                    valgt: false
-                  },
-                  {
-                    id: '157ad180-20b7-48e9-8807-b0cfe002470f',
-                    visningsnavn: 'Snekkerfaget',
-                    valgt: false
-                  },
-                  {
-                    id: '291287d3-8cdd-4f95-863a-6c6bdee822eb',
-                    visningsnavn: 'Tømrerfaget',
-                    valgt: false
-                  }
-                ]
-              }
-            ]
+            larefag: {
+              id: null,
+              visningsnavn: 'Lærefag',
+              pakrevd: false,
+              representerer: OpplaringRepresenterer.LAREFAG,
+              seleksjonstype: Seleksjonstype.FLERVALG,
+              alternativer: [
+                {
+                  id: '4248ce0c-ddea-4eec-8eba-5c9c33d2af66',
+                  visningsnavn: 'Anleggsgartnerfaget',
+                  valgt: false
+                },
+                {
+                  id: '157ad180-20b7-48e9-8807-b0cfe002470f',
+                  visningsnavn: 'Snekkerfaget',
+                  valgt: false
+                },
+                {
+                  id: '291287d3-8cdd-4f95-863a-6c6bdee822eb',
+                  visningsnavn: 'Tømrerfaget',
+                  valgt: false
+                }
+              ]
+            }
           },
           {
-            type: KodeverkAlternativType.GRUPPE,
             id: 'f1bc4b14-56d6-4907-8fdf-48c982a4c759',
             visningsnavn: 'Elektro og datateknologi',
-            alternativer: [
-              {
-                type: KodeverkAlternativType.VERDIGRUPPE,
-                id: null,
-                visningsnavn: 'Lærefag',
-                representerer: 'larefag',
-                seleksjonstype: Seleksjonstype.FLERVALG,
-                alternativer: [
-                  {
-                    id: '12db8a0a-93cc-4aae-bd17-49ffe7ebd0a4',
-                    visningsnavn: 'Automatiseringsfaget',
-                    valgt: false
-                  },
-                  {
-                    id: 'cf20e956-2048-45d1-b26f-af7331ffb392',
-                    visningsnavn: 'Elektrikerfaget',
-                    valgt: false
-                  },
-                  {
-                    id: 'c347e158-08e8-495f-84ef-e837e7f615fe',
-                    visningsnavn: 'Heismontørfaget',
-                    valgt: false
-                  }
-                ]
-              }
-            ]
+            larefag: {
+              id: null,
+              visningsnavn: 'Lærefag',
+              pakrevd: false,
+              representerer: OpplaringRepresenterer.LAREFAG,
+              seleksjonstype: Seleksjonstype.FLERVALG,
+              alternativer: [
+                {
+                  id: '12db8a0a-93cc-4aae-bd17-49ffe7ebd0a4',
+                  visningsnavn: 'Automatiseringsfaget',
+                  valgt: false
+                },
+                {
+                  id: 'cf20e956-2048-45d1-b26f-af7331ffb392',
+                  visningsnavn: 'Elektrikerfaget',
+                  valgt: false
+                },
+                {
+                  id: 'c347e158-08e8-495f-84ef-e837e7f615fe',
+                  visningsnavn: 'Heismontørfaget',
+                  valgt: false
+                }
+              ]
+            }
           },
           {
-            type: KodeverkAlternativType.GRUPPE,
             id: 'a2b3c4d5-e6f7-4890-9abc-def012345678',
             visningsnavn: 'Helse- og oppvekstfag',
-            alternativer: [
-              {
-                type: KodeverkAlternativType.VERDIGRUPPE,
-                id: null,
-                visningsnavn: 'Lærefag',
-                representerer: 'larefag',
-                seleksjonstype: Seleksjonstype.FLERVALG,
-                alternativer: [
-                  {
-                    id: 'b3c4d5e6-f7a8-4901-9bcd-ef0123456789',
-                    visningsnavn: 'Helsefagarbeiderfaget',
-                    valgt: false
-                  },
-                  {
-                    id: 'c4d5e6f7-a8b9-4012-9cde-f01234567890',
-                    visningsnavn: 'Barne- og ungdomsarbeiderfaget',
-                    valgt: false
-                  }
-                ]
-              }
-            ]
+            larefag: {
+              id: null,
+              visningsnavn: 'Lærefag',
+              pakrevd: false,
+              representerer: OpplaringRepresenterer.LAREFAG,
+              seleksjonstype: Seleksjonstype.FLERVALG,
+              alternativer: [
+                {
+                  id: 'b3c4d5e6-f7a8-4901-9bcd-ef0123456789',
+                  visningsnavn: 'Helsefagarbeiderfaget',
+                  valgt: false
+                },
+                {
+                  id: 'c4d5e6f7-a8b9-4012-9cde-f01234567890',
+                  visningsnavn: 'Barne- og ungdomsarbeiderfaget',
+                  valgt: false
+                }
+              ]
+            }
           }
         ]
       }

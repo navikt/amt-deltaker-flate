@@ -6,6 +6,7 @@ import { KodeverkValg } from '../KodeverkValg'
 import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
+  OpplaringRepresenterer,
   KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
@@ -14,7 +15,8 @@ const bransjeVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Bransje',
-  representerer: 'bransje',
+  pakrevd: false,
+  representerer: OpplaringRepresenterer.BRANSJE_ID,
   seleksjonstype: Seleksjonstype.ENKELTVALG,
   alternativer: [
     { id: 'bransje-1', visningsnavn: 'Bygg og anlegg', valgt: false },
@@ -27,7 +29,8 @@ const forerkortVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Førerkort',
-  representerer: 'forerkort',
+  pakrevd: false,
+  representerer: OpplaringRepresenterer.FORERKORT,
   seleksjonstype: Seleksjonstype.FLERVALG,
   alternativer: [
     { id: 'fk-1', visningsnavn: 'B - Personbil', valgt: false },
@@ -204,72 +207,68 @@ describe('KodeverkValg', () => {
     })
   })
 
-  describe('Gruppe med nestede verdigrupper', () => {
+  describe('UtdanningGruppe med lærefag', () => {
     const gruppeKodeverk: KodeverkResponse = {
       tiltakskode: 'FAG_OG_YRKESOPPLAERING',
       sertifiseringValg: [],
       alternativer: [
         {
-          type: KodeverkAlternativType.GRUPPE,
+          type: KodeverkAlternativType.UTDANNING_GRUPPE,
           id: null,
           visningsnavn: 'Utdanningsprogram',
-          alternativer: [
+          representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+          pakrevd: true,
+          utdanninger: [
             {
-              type: KodeverkAlternativType.GRUPPE,
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
-              alternativer: [
-                {
-                  type: KodeverkAlternativType.VERDIGRUPPE,
-                  id: null,
-                  visningsnavn: 'Lærefag',
-                  representerer: 'larefag',
-                  seleksjonstype: Seleksjonstype.FLERVALG,
-                  alternativer: [
-                    { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: false },
-                    {
-                      id: 'fag-2',
-                      visningsnavn: 'Rørleggerfaget',
-                      valgt: false
-                    }
-                  ]
-                }
-              ]
+              larefag: {
+                id: null,
+                visningsnavn: 'Lærefag',
+                pakrevd: false,
+                representerer: OpplaringRepresenterer.LAREFAG,
+                seleksjonstype: Seleksjonstype.FLERVALG,
+                alternativer: [
+                  { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: false },
+                  {
+                    id: 'fag-2',
+                    visningsnavn: 'Rørleggerfaget',
+                    valgt: false
+                  }
+                ]
+              }
             },
             {
-              type: KodeverkAlternativType.GRUPPE,
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
-              alternativer: [
-                {
-                  type: KodeverkAlternativType.VERDIGRUPPE,
-                  id: null,
-                  visningsnavn: 'Lærefag',
-                  representerer: 'larefag',
-                  seleksjonstype: Seleksjonstype.FLERVALG,
-                  alternativer: [
-                    {
-                      id: 'fag-3',
-                      visningsnavn: 'Elektrikerfaget',
-                      valgt: false
-                    }
-                  ]
-                }
-              ]
+              larefag: {
+                id: null,
+                visningsnavn: 'Lærefag',
+                pakrevd: false,
+                representerer: OpplaringRepresenterer.LAREFAG,
+                seleksjonstype: Seleksjonstype.FLERVALG,
+                alternativer: [
+                  {
+                    id: 'fag-3',
+                    visningsnavn: 'Elektrikerfaget',
+                    valgt: false
+                  }
+                ]
+              }
             }
           ]
         }
       ]
     }
 
-    it('rendrer Gruppe som combobox med undergrupper', () => {
+    it('rendrer UtdanningGruppe som combobox', () => {
       renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
       expect(screen.getByLabelText('Utdanningsprogram')).toBeInTheDocument()
     })
 
-    it('viser verdigruppe etter valg av gruppe', async () => {
+    it('viser lærefag etter valg av utdanningsprogram', async () => {
       const user = userEvent.setup()
       renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
         defaultValues: { kodeverkValg: [] }
@@ -281,22 +280,18 @@ describe('KodeverkValg', () => {
         screen.getByRole('option', { name: 'Bygg- og anleggsteknikk' })
       )
 
-      // Gruppe med ett barn hoppes over, viser Lærefag direkte
       expect(screen.getByLabelText('Lærefag')).toBeInTheDocument()
     })
 
-    it('auto-åpner gruppe med valgte verdier', () => {
+    it('auto-åpner utdanningsprogram med valgte verdier', () => {
       const byggGruppe = gruppeKodeverk.alternativer[0]
-      if (byggGruppe.type !== KodeverkAlternativType.GRUPPE) {
-        throw new Error('Forventet GRUPPE')
+      if (byggGruppe.type !== KodeverkAlternativType.UTDANNING_GRUPPE) {
+        throw new Error('Forventet UTDANNING_GRUPPE')
       }
-      const byggUnderGruppe = byggGruppe.alternativer[0]
-      if (byggUnderGruppe.type !== KodeverkAlternativType.GRUPPE) {
-        throw new Error('Forventet GRUPPE')
-      }
-      const larefagVerdigruppe = byggUnderGruppe.alternativer[0]
-      if (larefagVerdigruppe.type !== KodeverkAlternativType.VERDIGRUPPE) {
-        throw new Error('Forventet VERDIGRUPPE')
+      const valgtUtdanning = byggGruppe.utdanninger[0]
+      const larefagVerdigruppe = valgtUtdanning.larefag
+      if (larefagVerdigruppe.representerer !== OpplaringRepresenterer.LAREFAG) {
+        throw new Error('Forventet LAREFAG')
       }
 
       const kodeverkMedValg: KodeverkResponse = {
@@ -304,24 +299,22 @@ describe('KodeverkValg', () => {
         alternativer: [
           {
             ...byggGruppe,
-            alternativer: [
+            utdanninger: [
               {
-                ...byggUnderGruppe,
-                alternativer: [
-                  {
-                    ...larefagVerdigruppe,
-                    alternativer: [
-                      { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: true },
-                      {
-                        id: 'fag-2',
-                        visningsnavn: 'Rørleggerfaget',
-                        valgt: false
-                      }
-                    ]
-                  }
-                ]
+                ...valgtUtdanning,
+                larefag: {
+                  ...larefagVerdigruppe,
+                  alternativer: [
+                    { id: 'fag-1', visningsnavn: 'Tømrerfaget', valgt: true },
+                    {
+                      id: 'fag-2',
+                      visningsnavn: 'Rørleggerfaget',
+                      valgt: false
+                    }
+                  ]
+                }
               },
-              byggGruppe.alternativer[1]
+              byggGruppe.utdanninger[1]
             ]
           }
         ]
@@ -331,7 +324,6 @@ describe('KodeverkValg', () => {
         defaultValues: { kodeverkValg: ['fag-1'] }
       })
 
-      // Gruppen med valgt verdi skal auto-åpnes
       expect(screen.getByLabelText('Lærefag')).toBeInTheDocument()
       expect(
         screen.getByRole('option', { name: 'Tømrerfaget', selected: true })
