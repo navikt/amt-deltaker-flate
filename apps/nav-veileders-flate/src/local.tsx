@@ -47,9 +47,9 @@ const renderAsReactRoot = () => {
       <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
         <AppContextProvider
           initialPersonident={
-            params.get('initial_person_ident') || '29418716256'
+            params.get('veileder_person_ident') || '29418716256'
           }
-          initialEnhetId={params.get('initial_enhet_id') || '0106'}
+          initialEnhetId={params.get('enhet_id') || '0106'}
         >
           <BrowserRouter>
             <QueryClientProvider client={queryClient}>
