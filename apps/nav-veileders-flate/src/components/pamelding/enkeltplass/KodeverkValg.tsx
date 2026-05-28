@@ -5,23 +5,18 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import {
   KodeverkAlternativType,
   type KodeverkContainer,
-  type KodeverkGruppe,
   KodeverkResponse,
   OpplaringRepresenterer,
   type KodeverkUtdanningGruppe,
   type KodeverkVerdigruppe,
   Seleksjonstype
 } from '../../../api/data/kodeverk.ts'
-import {
-  finnAlternativMedValgteVerdier,
-  getAlleVerdiIder
-} from '../../../utils/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
  *
- * Kodeverket er et hierarki: Gruppe → Verdigruppe → Verdi.
+ * Kodeverket er et hierarki av UtdanningGruppe/Verdigruppe med Verdi-noder.
  * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (flat string-array),
  * som auto-lagres via KladdLagring.
  */
@@ -59,72 +54,7 @@ const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
         )
         return null
       }
-    case KodeverkAlternativType.GRUPPE:
-      // Hopp over combobox hvis gruppen bare har ett barn — vis barnet direkte
-      if (alternativ.alternativer.length === 1) {
-        return <AlternativValg alternativ={alternativ.alternativer[0]} />
-      }
-      return <GruppeValg gruppe={alternativ} />
   }
-}
-
-/**
- * Viser en Gruppe som en combobox der brukeren velger ett alternativ.
- * Det valgte alternativet rendres rekursivt under comboboxen.
- *
- * Ved bytte av valgt alternativ fjernes forrige alternativs verdi-IDer
- * fra form-feltet `kodeverkValg` for å unngå at gamle valg henger igjen.
- */
-const GruppeValg = ({ gruppe }: { gruppe: KodeverkGruppe }) => {
-  const comboboxId = useId()
-  const { getValues, setValue } = useFormContext()
-
-  const [valgtId, setValgtId] = useState<string | null>(() =>
-    finnAlternativMedValgteVerdier(gruppe)
-  )
-
-  const options = gruppe.alternativer.map((a) => ({
-    value: a.id ?? a.visningsnavn,
-    label: a.visningsnavn
-  }))
-
-  const valgtAlternativ =
-    gruppe.alternativer.find((a) => (a.id ?? a.visningsnavn) === valgtId) ??
-    null
-
-  function handleValg(option: string, isSelected: boolean) {
-    // Fjern verdi-IDer som tilhørte det forrige valgte alternativet
-    if (valgtAlternativ) {
-      const gamleIder = getAlleVerdiIder([valgtAlternativ])
-      const gjeldende = getValues('kodeverkValg') as string[]
-      setValue(
-        'kodeverkValg',
-        gjeldende.filter((id) => !gamleIder.has(id)),
-        { shouldDirty: true }
-      )
-    }
-
-    setValgtId(isSelected ? option : null)
-  }
-
-  return (
-    <div className="flex flex-col gap-8">
-      <UNSAFE_Combobox
-        id={comboboxId}
-        label={gruppe.visningsnavn}
-        selectedOptions={options.filter((o) => o.value === valgtId)}
-        size="small"
-        options={options}
-        isMultiSelect={false}
-        onToggleSelected={handleValg}
-      />
-
-      {/* key={valgtId} sikrer at barnet remountes med fersk state ved bytte */}
-      {valgtAlternativ && (
-        <AlternativValg key={valgtId} alternativ={valgtAlternativ} />
-      )}
-    </div>
-  )
 }
 
 /**

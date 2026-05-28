@@ -9,7 +9,6 @@ export {
 } from 'deltaker-flate-common'
 
 export enum KodeverkAlternativType {
-  GRUPPE = 'Gruppe',
   UTDANNING_GRUPPE = 'UtdanningGruppe',
   VERDIGRUPPE = 'Verdigruppe',
   VERDIGRUPPE_SOK = 'VerdigruppeSok'
@@ -85,28 +84,7 @@ export type KodeverkUtdanningGruppe = z.infer<
   typeof kodeverkUtdanningGruppeSchema
 >
 
-export const kodeverkGruppeSchema = z.object({
-  type: z.literal(KodeverkAlternativType.GRUPPE),
-  id: z.uuid().nullable(),
-  visningsnavn: z.string(),
-  representerer: z.enum(OpplaringRepresenterer).nullable(),
-  pakrevd: z.boolean().default(false),
-  get alternativer() {
-    return z.array(
-      z.union([
-        kodeverkVerdigruppeSchema,
-        kodeverkVerdigruppeSokSchema,
-        kodeverkUtdanningGruppeSchema,
-        kodeverkGruppeSchema
-      ])
-    )
-  }
-})
-
-export type KodeverkGruppe = z.infer<typeof kodeverkGruppeSchema>
-
 export type KodeverkContainer =
-  | KodeverkGruppe
   | KodeverkUtdanningGruppe
   | KodeverkVerdigruppe
   | KodeverkVerdigruppeSok
@@ -115,7 +93,6 @@ export const kodeverkResponseSchema = z.object({
   tiltakskode: z.string(),
   alternativer: z.array(
     z.union([
-      kodeverkGruppeSchema,
       kodeverkUtdanningGruppeSchema,
       kodeverkVerdigruppeSchema,
       kodeverkVerdigruppeSokSchema
