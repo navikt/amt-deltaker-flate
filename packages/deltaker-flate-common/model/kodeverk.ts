@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { Tiltakskode } from './deltaker.ts'
 
 /**
  * Skjema for valgte sertifiseringer (Janzz-ID + visningsnavn).
@@ -17,6 +18,7 @@ export const sertifiseringValgSchema = z.array(
  * ikke hele hierarkiet av valg.
  */
 export const utflatetKodeverkSchema = z.object({
+  tiltakskode: z.enum(Tiltakskode),
   tittel: z.string().nullable(),
   valg: z.array(z.string()),
   valgteKodeverkIder: z.array(z.uuid()),

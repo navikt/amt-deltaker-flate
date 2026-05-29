@@ -10,6 +10,7 @@ import {
   KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
+import { Tiltakskode } from 'deltaker-flate-common'
 
 const bransjeVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
@@ -47,7 +48,7 @@ describe('KodeverkValg', () => {
 
   it('rendrer ikke når alternativer er tom', () => {
     const kodeverk: KodeverkResponse = {
-      tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
       alternativer: [],
       sertifiseringValg: []
     }
@@ -59,7 +60,7 @@ describe('KodeverkValg', () => {
 
   it('rendrer combobox for en Verdigruppe', () => {
     const kodeverk: KodeverkResponse = {
-      tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
       alternativer: [bransjeVerdigruppe],
       sertifiseringValg: []
     }
@@ -69,7 +70,7 @@ describe('KodeverkValg', () => {
 
   it('viser forhåndsvalgte verdier fra valgt: true', () => {
     const kodeverk: KodeverkResponse = {
-      tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
       alternativer: [
         {
           ...bransjeVerdigruppe,
@@ -92,7 +93,7 @@ describe('KodeverkValg', () => {
     it('beholder valg fra begge verdigrupper i form state', async () => {
       const user = userEvent.setup()
       const kodeverk: KodeverkResponse = {
-        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
         sertifiseringValg: []
       }
@@ -126,7 +127,7 @@ describe('KodeverkValg', () => {
     it('endring i én verdigruppe overskriver ikke den andre', async () => {
       const user = userEvent.setup()
       const kodeverk: KodeverkResponse = {
-        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
         sertifiseringValg: []
       }
@@ -171,7 +172,7 @@ describe('KodeverkValg', () => {
     it('enkeltvalg erstatter forrige valg i samme verdigruppe', async () => {
       const user = userEvent.setup()
       const kodeverk: KodeverkResponse = {
-        tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         alternativer: [bransjeVerdigruppe],
         sertifiseringValg: []
       }
@@ -209,7 +210,7 @@ describe('KodeverkValg', () => {
 
   describe('UtdanningGruppe med lærefag', () => {
     const gruppeKodeverk: KodeverkResponse = {
-      tiltakskode: 'FAG_OG_YRKESOPPLAERING',
+      tiltakskode: Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING,
       sertifiseringValg: [],
       alternativer: [
         {

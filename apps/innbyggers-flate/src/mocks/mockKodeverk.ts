@@ -1,7 +1,8 @@
-import { FlattKodeverk } from 'deltaker-flate-common'
+import { FlattKodeverk, Tiltakskode } from 'deltaker-flate-common'
 
 export const createMockFlatKodeverk = (): FlattKodeverk => {
   return {
+    tiltakskode: Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
     tittel: 'Butikk- og salgsarbeid',
     valg: ['B - Personbil', 'C - Lastebil'],
     valgteKodeverkIder: [

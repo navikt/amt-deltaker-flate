@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { sertifiseringValgSchema } from 'deltaker-flate-common'
+import { sertifiseringValgSchema, Tiltakskode } from 'deltaker-flate-common'
 
 // Re-eksporter det flate kodeverket fra fellespakken slik at eksisterende
 // imports fra denne fila fortsatt fungerer (FlattKodeverk, utflatetKodeverkSchema).
@@ -106,7 +106,7 @@ export type KodeverkContainer =
   | KodeverkVerdigruppeSok
 
 export const kodeverkResponseSchema = z.object({
-  tiltakskode: z.string(),
+  tiltakskode: z.enum(Tiltakskode),
   alternativer: z.array(
     z.union([
       kodeverkUtdanningGruppeSchema,

@@ -33,12 +33,14 @@ export const UtkastPage = () => {
   const erUtkastTilSoknad = kreverGodkjenningForPamelding(
     deltakerliste.pameldingstype
   )
+
   const arrangorNavn = deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
+
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn

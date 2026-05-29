@@ -42,6 +42,8 @@ describe('PameldingHeader - FOV heading', () => {
         deltakerliste={lagDeltakerliste()}
         vedtaksinformasjon={null}
         kodeverk={{
+          tiltakskode:
+            Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
           tittel: 'Norskopplæring B1',
           valg: [],
           valgteKodeverkIder: [],
@@ -99,6 +101,7 @@ describe('PameldingHeader - FOV heading', () => {
         })}
         vedtaksinformasjon={null}
         kodeverk={{
+          tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
           tittel: 'Bransje: Bygg',
           valg: ['Bygg'],
           valgteKodeverkIder: [],
@@ -135,6 +138,7 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
+            tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             tittel: 'Bransje',
             valg: ['IT'],
             valgteKodeverkIder: [],
@@ -152,6 +156,7 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
+            tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             tittel: null,
             valg: [],
             valgteKodeverkIder: [],
