@@ -36,6 +36,7 @@ describe('generateEnkeltplassPameldingRequest', () => {
   it('returnerer tomme lister når det flate kodeverket ikke har valgte verdier', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         tittel: 'Bransje',
         valg: [],
         valgteKodeverkIder: [],
@@ -49,6 +50,7 @@ describe('generateEnkeltplassPameldingRequest', () => {
   it('returnerer valgteKodeverkIder fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         tittel: 'Bransje, Lærefag',
         valg: ['Bygg', 'Tømrer', 'Rørlegger'],
         valgteKodeverkIder: [
@@ -70,6 +72,7 @@ describe('generateEnkeltplassPameldingRequest', () => {
   it('returnerer valgteSertifiseringer fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
       lagDeltaker({
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         tittel: null,
         valg: [],
         valgteKodeverkIder: [],
