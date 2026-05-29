@@ -24,7 +24,7 @@ export const deltakerlisteSchema = z.object({
   sluttdato: nullableDateSchema,
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
-  kodeverk: utflatetKodeverkSchema.nullable()
+  kodeverk: utflatetKodeverkSchema.nullable().optional()
 })
 
 export const deltakerSchema = z.object({
