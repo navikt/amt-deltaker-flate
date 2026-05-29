@@ -9,8 +9,11 @@ import {
   VerdigruppeSokKilde
 } from '../api/data/kodeverk'
 
-export const createMockFlatKodeverk = (): FlattKodeverk => {
+export const createMockFlatKodeverk = (
+  tiltakskode: Tiltakskode
+): FlattKodeverk => {
   return {
+    tiltakskode: tiltakskode,
     tittel: 'Butikk- og salgsarbeid',
     valg: ['B - Personbil', 'C - Lastebil'],
     valgteKodeverkIder: [

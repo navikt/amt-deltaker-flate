@@ -72,6 +72,7 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
   it('bruker kodeverk.tittel i snakkeboblen når tilgjengelig', () => {
     const deltaker = lagDeltaker({
+      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       tittel: 'Norskopplæring B1',
       valg: ['Muntlig'],
       valgteKodeverkIder: [],
@@ -101,6 +102,7 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
 
   it('faller tilbake til deltakerlisteNavn når kodeverk.tittel er null', () => {
     const deltaker = lagDeltaker({
+      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       tittel: null,
       valg: ['Muntlig'],
       valgteKodeverkIder: [],

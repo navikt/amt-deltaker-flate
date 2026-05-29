@@ -4,7 +4,6 @@ import {
   DeltakelseInnhold,
   UtkastHeader,
   hentGjennomforingNavnHosArrangorTekst,
-  hentTiltakNavnHosArrangorTekst,
   useDeferredFetch,
   VeilederSnakkeboble,
   formatDateFromString,
@@ -18,9 +17,11 @@ export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
 
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakNavnHosArrangorTekst = hentGjennomforingNavnHosArrangorTekst(
     deltakerliste.tiltakskode,
-    deltakerliste.arrangorNavn
+    deltakerliste.deltakerlisteNavn,
+    deltakerliste.arrangorNavn,
+    deltakerliste.kodeverk?.tittel
   )
 
   const { deltakerId } = useParams()
@@ -44,7 +45,7 @@ export const UtkastEnkeltplassPage = () => {
   return (
     <div className="flex flex-col items-start mb-8">
       <Heading level="1" size="xlarge">
-        {tiltakOgStedTekst}
+        {tiltakNavnHosArrangorTekst}
       </Heading>
       <Heading
         level="2"
