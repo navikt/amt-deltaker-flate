@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest'
 import {
   erGyldigProsent,
   isValidFloatInRange,
-  erGyldigDagerPerUke
+  erGyldigDagerPerUke,
+  dateToIsoString
 } from './utils'
 import { EMDASH, formatDateFromString } from 'deltaker-flate-common'
 
@@ -87,4 +88,15 @@ describe('formatDateFromString', () => {
     expect(formatDateFromString('aa')).toBe(EMDASH))
   it('Formates null date to —', () =>
     expect(formatDateFromString('aa')).toBe(EMDASH))
+})
+
+describe('dateToIsoString', () => {
+  it('returnerer ISO dato for gyldig Date', () =>
+    expect(dateToIsoString(new Date(2026, 4, 6))).toBe('2026-05-06'))
+
+  it('returnerer tom streng for null', () =>
+    expect(dateToIsoString(null)).toBe(''))
+
+  it('returnerer tom streng for ugyldig Date', () =>
+    expect(dateToIsoString(new Date('ugyldig-dato'))).toBe(''))
 })

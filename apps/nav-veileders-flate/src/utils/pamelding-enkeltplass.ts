@@ -7,7 +7,7 @@ import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
-import { formatDateToDtoStr } from './utils'
+import { dateToIsoString, formatDateToDtoStr } from './utils'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
@@ -44,24 +44,14 @@ export const formToEnkeltplassRequest = (
 export const generateEnkeltplassPameldingRequest = (
   deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const parsedStartdato = deltaker.startdato ? dayjs(deltaker.startdato) : null
-  const startdato = parsedStartdato?.isValid()
-    ? formatDateToDtoStr(parsedStartdato.toDate())
-    : ''
-
-  const parsedSluttdato = deltaker.sluttdato ? dayjs(deltaker.sluttdato) : null
-  const sluttdato = parsedSluttdato?.isValid()
-    ? formatDateToDtoStr(parsedSluttdato.toDate())
-    : ''
-
   return {
     beskrivelse:
       deltaker.deltakelsesinnhold?.innhold.find(
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
     prisinformasjon: deltaker.prisinformasjon || '',
-    startdato,
-    sluttdato,
+    startdato: dateToIsoString(deltaker.startdato),
+    sluttdato: dateToIsoString(deltaker.sluttdato),
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
     kodeverkValg: deltaker.deltakerliste.kodeverk?.valgteKodeverkIder,
