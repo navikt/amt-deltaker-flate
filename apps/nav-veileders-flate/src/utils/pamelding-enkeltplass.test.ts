@@ -27,6 +27,17 @@ const lagDeltaker = (
   }) as unknown as DeltakerResponse
 
 describe('generateEnkeltplassPameldingRequest', () => {
+  it('mapper startdato og sluttdato fra API-datoer til DTO-format', () => {
+    const request = generateEnkeltplassPameldingRequest({
+      ...lagDeltaker(),
+      startdato: new Date('2026-01-15T00:00:00.000Z'),
+      sluttdato: new Date('2026-03-01T00:00:00.000Z')
+    })
+
+    expect(request.startdato).toBe('2026-01-15')
+    expect(request.sluttdato).toBe('2026-03-01')
+  })
+
   it('returnerer undefined kodeverkValg og sertifiseringValg når deltaker mangler kodeverk', () => {
     const request = generateEnkeltplassPameldingRequest(lagDeltaker(null))
     expect(request.kodeverkValg).toBeUndefined()
