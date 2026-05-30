@@ -27,6 +27,30 @@ const lagDeltaker = (
   }) as unknown as DeltakerResponse
 
 describe('generateEnkeltplassPameldingRequest', () => {
+  it('beholder gyldige ISO-datoer fra backend i request', () => {
+    const request = generateEnkeltplassPameldingRequest({
+      ...lagDeltaker(),
+      startdato: new Date(2026, 4, 6),
+      sluttdato: new Date(2026, 4, 12)
+    })
+
+    expect(request.startdato).toBe('2026-05-06')
+    expect(request.sluttdato).toBe('2026-05-12')
+  })
+
+  it('setter tom streng for ugyldige datoer i stedet for "Invalid Date"', () => {
+    const request = generateEnkeltplassPameldingRequest({
+      ...lagDeltaker(),
+      startdato: new Date('ugyldig-dato'),
+      sluttdato: new Date('fortsatt-ugyldig-dato')
+    })
+
+    expect(request.startdato).toBe('')
+    expect(request.sluttdato).toBe('')
+    expect(request.startdato).not.toBe('Invalid Date')
+    expect(request.sluttdato).not.toBe('Invalid Date')
+  })
+
   it('returnerer undefined kodeverkValg og sertifiseringValg når deltaker mangler kodeverk', () => {
     const request = generateEnkeltplassPameldingRequest(lagDeltaker(null))
     expect(request.kodeverkValg).toBeUndefined()

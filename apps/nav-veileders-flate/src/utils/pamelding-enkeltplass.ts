@@ -44,12 +44,15 @@ export const formToEnkeltplassRequest = (
 export const generateEnkeltplassPameldingRequest = (
   deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const startdato = deltaker.startdato
-    ? dayjs(deltaker.startdato, DATE_FORMAT, true)?.toDate()
-    : null
-  const sluttdato = deltaker.sluttdato
-    ? dayjs(deltaker.sluttdato, DATE_FORMAT, true)?.toDate()
-    : null
+  const parsedStartdato = deltaker.startdato ? dayjs(deltaker.startdato) : null
+  const startdato = parsedStartdato?.isValid()
+    ? formatDateToDtoStr(parsedStartdato.toDate())
+    : ''
+
+  const parsedSluttdato = deltaker.sluttdato ? dayjs(deltaker.sluttdato) : null
+  const sluttdato = parsedSluttdato?.isValid()
+    ? formatDateToDtoStr(parsedSluttdato.toDate())
+    : ''
 
   return {
     beskrivelse:
@@ -57,8 +60,8 @@ export const generateEnkeltplassPameldingRequest = (
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
     prisinformasjon: deltaker.prisinformasjon || '',
-    startdato: startdato ? formatDateToDtoStr(startdato) : '',
-    sluttdato: sluttdato ? formatDateToDtoStr(sluttdato) : '',
+    startdato,
+    sluttdato,
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
     kodeverkValg: deltaker.deltakerliste.kodeverk?.valgteKodeverkIder,
