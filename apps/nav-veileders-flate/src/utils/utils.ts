@@ -14,6 +14,11 @@ export const formatDateToInputStr = (date: Date): string => {
   return dayjs(date).format('DD.MM.YYYY')
 }
 
+export const dateToIsoString = (date: Date | null): string => {
+  const parsedDate = date ? dayjs(date) : null
+  return parsedDate?.isValid() ? formatDateToDtoStr(parsedDate.toDate()) : ''
+}
+
 /**
  * Formaterer date til string: DD.MM.YYYY
  * @param date
