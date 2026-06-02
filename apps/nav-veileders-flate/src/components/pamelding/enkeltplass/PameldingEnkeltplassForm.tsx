@@ -78,7 +78,9 @@ const PameldingEnkeltplassFormInner = ({
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
-    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
+    resolver: zodResolver(
+      createPameldingEnkeltplassFormSchema(deltaker, kodeverk)
+    ),
     shouldFocusError: false
   })
 

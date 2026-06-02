@@ -63,6 +63,7 @@ export const kodeverkVerdigruppeSokSchema = z.object({
   type: z.literal(KodeverkAlternativType.VERDIGRUPPE_SOK),
   id: z.uuid().nullable(),
   visningsnavn: z.string(),
+  pakrevd: z.boolean().default(false),
   representerer: z.enum(OpplaringRepresenterer).nullable(),
   seleksjonstype: z.enum(Seleksjonstype),
   kilde: z.enum(VerdigruppeSokKilde)
@@ -72,19 +73,10 @@ export type KodeverkVerdigruppeSok = z.infer<
   typeof kodeverkVerdigruppeSokSchema
 >
 
-export const kodeverkVerdigruppeEmbeddedSchema = z.object({
-  id: z.uuid().nullable(),
-  visningsnavn: z.string(),
-  pakrevd: z.boolean().default(false),
-  representerer: z.enum(OpplaringRepresenterer),
-  seleksjonstype: z.enum(Seleksjonstype),
-  alternativer: z.array(kodeverkVerdiSchema)
-})
-
 export const kodeverkUtdanningValgSchema = z.object({
   id: z.uuid(),
   visningsnavn: z.string(),
-  larefag: kodeverkVerdigruppeEmbeddedSchema
+  larefag: kodeverkVerdigruppeBaseSchema
 })
 
 export const kodeverkUtdanningGruppeSchema = z.object({

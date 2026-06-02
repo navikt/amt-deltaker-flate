@@ -3,12 +3,18 @@ import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import {
+  KodeverkAlternativType,
+  KodeverkContainer,
+  KodeverkResponse,
+  KodeverkUtdanningGruppe,
+  KodeverkVerdigruppeBase
+} from '../api/data/kodeverk.ts'
+import { getValgteVerdier } from '../utils/kodeverk.ts'
+import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
 } from '../utils/varighet.tsx'
 import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
-import { getValgteVerdier } from '../utils/kodeverk.ts'
-import { KodeverkResponse } from '../api/data/kodeverk.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
@@ -23,10 +29,11 @@ const dateSchema = (feltnavn: string) =>
     }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
 
 export const createPameldingEnkeltplassFormSchema = (
-  pamelding: DeltakerResponse
+  pamelding: DeltakerResponse,
+  kodeverk?: KodeverkResponse
 ) =>
   z
-    .object({
+    .looseObject({
       tiltakskode: z.enum(Tiltakskode),
       innhold: z
         .string()
@@ -79,6 +86,14 @@ export const createPameldingEnkeltplassFormSchema = (
         path: ['sluttdato']
       }
     )
+    // superRefine bruker ctx (context object) for å pushe "feil" inn i validatoren for flere objekter
+    .superRefine((schema, ctx) => {
+      if (!kodeverk) {
+        return
+      }
+
+      validateKodeverkAlternativer(kodeverk.alternativer, schema, ctx)
+    })
 
 export type PameldingEnkeltplassFormValues = z.infer<
   ReturnType<typeof createPameldingEnkeltplassFormSchema>
@@ -103,4 +118,75 @@ export const generateFormDefaultValues = (
     kodeverkValg: getValgteVerdier(kodeverk?.alternativer ?? []),
     sertifiseringValg: kodeverk?.sertifiseringValg ?? []
   }
+}
+
+const validateKodeverkAlternativer = (
+  alternativer: KodeverkContainer[],
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  alternativer.forEach((alternativ) => {
+    if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
+      validateVerdigruppe(alternativ, schema, ctx)
+      return
+    }
+
+    if (alternativ.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+      validateUtdanningsgruppe(alternativ, schema, ctx)
+      return
+    }
+
+    // Søk sertifisering er ikke påkrevd.
+    if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
+      return
+    }
+  })
+}
+
+const validateVerdigruppe = (
+  alternativ: KodeverkVerdigruppeBase,
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  if (!alternativ.pakrevd) {
+    return
+  }
+
+  const valgtIder = schema.kodeverkValg.filter((id) =>
+    alternativ.alternativer.some((a) => a.id === id)
+  )
+
+  if (valgtIder.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: `${alternativ.visningsnavn} er påkrevd.`,
+      path: [`kodeverkValg_${alternativ.visningsnavn}`]
+    })
+  }
+}
+
+const validateUtdanningsgruppe = (
+  alternativ: KodeverkUtdanningGruppe,
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  if (!alternativ.pakrevd) {
+    return
+  }
+
+  const valgtIder = schema.kodeverkValg.filter((id) =>
+    alternativ.utdanninger.some((a) => a.id === id)
+  )
+
+  if (valgtIder.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: `${alternativ.visningsnavn} er påkrevd.`,
+      path: [`kodeverkValg_${alternativ.visningsnavn}`]
+    })
+  }
+
+  alternativ.utdanninger.forEach((utdanning) => {
+    validateVerdigruppe(utdanning.larefag, schema, ctx)
+  })
 }

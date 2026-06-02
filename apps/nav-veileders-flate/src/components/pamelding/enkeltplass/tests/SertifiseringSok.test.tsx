@@ -30,7 +30,8 @@ const sertifiseringAlternativ: KodeverkContainer = {
   visningsnavn: 'Sertifiseringer',
   representerer: OpplaringRepresenterer.SERTIFISERINGER,
   seleksjonstype: Seleksjonstype.FLERVALG,
-  kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
+  kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING,
+  pakrevd: false
 }
 
 describe('SertifiseringSok', () => {

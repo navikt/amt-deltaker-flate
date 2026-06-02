@@ -1,7 +1,7 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { logError } from 'deltaker-flate-common'
-import { useId, useState } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useState } from 'react'
+import { FieldValues, useFormContext, useWatch } from 'react-hook-form'
 import {
   KodeverkAlternativType,
   type KodeverkContainer,
@@ -12,6 +12,20 @@ import {
   KodeverkVerdigruppeBase
 } from '../../../api/data/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
+
+const getKodeverkErrorMessage = (
+  errors: FieldValues,
+  submitCount: number,
+  fieldName: string
+) => {
+  if (submitCount === 0) {
+    return undefined
+  }
+
+  const message = (errors[fieldName] as { message?: string } | undefined)
+    ?.message
+  return typeof message === 'string' ? message : undefined
+}
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
@@ -66,8 +80,15 @@ const UtdanningGruppeValg = ({
 }: {
   utdanningGruppe: KodeverkUtdanningGruppe
 }) => {
-  const comboboxId = useId()
-  const { getValues, setValue } = useFormContext()
+  const {
+    getValues,
+    setValue,
+    trigger,
+    formState: { errors, submitCount }
+  } = useFormContext()
+
+  const fieldName = `kodeverkValg_${utdanningGruppe.visningsnavn}`
+  const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
   const [valgtId, setValgtId] = useState<string | null>(() => {
     const medValg = utdanningGruppe.utdanninger.find((u) =>
@@ -98,16 +119,22 @@ const UtdanningGruppeValg = ({
     }
 
     setValgtId(isSelected ? option : null)
+
+    if (submitCount > 0) {
+      void trigger(fieldName)
+    }
   }
 
   return (
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
-        id={comboboxId}
-        label={utdanningGruppe.visningsnavn}
+        id={fieldName}
+        label={`${utdanningGruppe.visningsnavn} ${utdanningGruppe.pakrevd ? '' : '(valgfri)'}`}
         selectedOptions={options.filter((o) => o.value === valgtId)}
         size="small"
+        required={utdanningGruppe.pakrevd}
         options={options}
+        error={errorMessage}
         isMultiSelect={false}
         onToggleSelected={handleValg}
       />
@@ -132,8 +159,14 @@ const VerdigruppeValg = ({
 }: {
   verdigruppe: KodeverkVerdigruppeBase
 }) => {
-  const comboboxId = useId()
-  const { setValue } = useFormContext()
+  const {
+    setValue,
+    trigger,
+    formState: { errors, submitCount }
+  } = useFormContext()
+
+  const fieldName = `kodeverkValg_${verdigruppe.visningsnavn}`
+  const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
   // Les valgte IDer fra form-state (single source of truth)
   const kodeverkValg = (useWatch({ name: 'kodeverkValg' }) ?? []) as string[]
@@ -162,15 +195,21 @@ const VerdigruppeValg = ({
     setValue('kodeverkValg', [...andreValg, ...nyeEgneValg], {
       shouldDirty: true
     })
+
+    if (submitCount > 0) {
+      void trigger(fieldName)
+    }
   }
 
   return (
     <UNSAFE_Combobox
-      id={comboboxId}
-      label={verdigruppe.visningsnavn}
+      id={fieldName}
+      label={`${verdigruppe.visningsnavn} ${verdigruppe.pakrevd ? '' : '(valgfri)'}`}
       selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
       size="small"
+      error={errorMessage}
       options={options}
+      required={verdigruppe.pakrevd}
       isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
       onToggleSelected={handleValg}
     />
