@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
       proxy: isOfflineMode
         ? {
             '/amt-deltaker-bff': {
+              // Sender request via sim-nav, som legger på autentiseringstoken mm.
               target: 'http://localhost:9002',
               changeOrigin: true
             }
