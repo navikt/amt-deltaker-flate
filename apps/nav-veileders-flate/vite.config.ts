@@ -23,8 +23,11 @@ export default defineConfig(({ mode }) => {
         ? {
             '/amt-deltaker-bff': {
               // Sender request via sim-nav, som legger på autentiseringstoken mm.
-              target: 'http://localhost:9002',
-              changeOrigin: true
+              target: 'http://localhost:9100',
+              changeOrigin: true,
+              headers: {
+                'x-local-app-source': 'nav-veileders-flate'
+              }
             }
           }
         : undefined
