@@ -1,6 +1,6 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
 import { FaroErrorBoundary } from '@grafana/faro-react'
-import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
+import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,8 +11,7 @@ import { createRoot } from 'react-dom/client'
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
-  if (import.meta.env.MODE !== 'development') {
-    // TODO: only skip when running locally/offline
+  if (import.meta.env.MODE !== 'offline') {
     injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
       params: {
