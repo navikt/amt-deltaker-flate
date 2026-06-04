@@ -233,6 +233,7 @@ describe('KodeverkValg', () => {
             {
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
+              valgt: false,
               larefag: {
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
@@ -251,6 +252,7 @@ describe('KodeverkValg', () => {
             {
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
+              valgt: false,
               larefag: {
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
@@ -311,6 +313,7 @@ describe('KodeverkValg', () => {
             utdanninger: [
               {
                 ...valgtUtdanning,
+                valgt: true,
                 larefag: {
                   ...larefagVerdigruppe,
                   alternativer: [
@@ -332,6 +335,10 @@ describe('KodeverkValg', () => {
       renderWithProviders(<KodeverkValg kodeverk={kodeverkMedValg} />, {
         defaultValues: {
           kodeverkValg: [
+            {
+              representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+              valgteIder: ['bygg-id']
+            },
             {
               representerer: OpplaringRepresenterer.LAREFAG,
               valgteIder: ['fag-1']

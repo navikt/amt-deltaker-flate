@@ -67,7 +67,8 @@ export type KodeverkVerdigruppeSok = z.infer<
 export const kodeverkUtdanningValgSchema = z.object({
   id: z.uuid(),
   visningsnavn: z.string(),
-  larefag: kodeverkVerdigruppeBaseSchema
+  larefag: kodeverkVerdigruppeBaseSchema,
+  valgt: z.boolean()
 })
 
 export const kodeverkUtdanningGruppeSchema = z.object({

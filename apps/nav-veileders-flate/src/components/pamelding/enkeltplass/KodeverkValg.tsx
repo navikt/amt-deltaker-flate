@@ -83,12 +83,12 @@ const UtdanningGruppeValg = ({
   const fieldName = getKodeverkFieldName(utdanningGruppe.representerer)
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
-  const [valgtId, setValgtId] = useState<string | null>(() => {
-    const medValg = utdanningGruppe.utdanninger.find((u) =>
-      u.larefag.alternativer.some((v) => v.valgt)
-    )
-    return medValg?.id ?? null
-  })
+  const [valgtUtdanningId, setValgtUtdanningId] = useState<string | null>(
+    () => {
+      const medValg = utdanningGruppe.utdanninger.find((u) => u.valgt)
+      return medValg?.id ?? null
+    }
+  )
 
   const options: KodeverkOption[] = utdanningGruppe.utdanninger.map((u) => ({
     value: u.id,
@@ -96,7 +96,7 @@ const UtdanningGruppeValg = ({
   }))
 
   const valgtUtdanning =
-    utdanningGruppe.utdanninger.find((u) => u.id === valgtId) ?? null
+    utdanningGruppe.utdanninger.find((u) => u.id === valgtUtdanningId) ?? null
 
   function handleValg(optionId: string, isSelected: boolean) {
     const gjeldendeValg = getValues('kodeverkValg')
@@ -127,7 +127,7 @@ const UtdanningGruppeValg = ({
 
     setValue('kodeverkValg', nesteValg, { shouldDirty: true })
 
-    setValgtId(isSelected ? optionId : null)
+    setValgtUtdanningId(isSelected ? optionId : null)
 
     if (submitCount > 0) {
       void trigger(fieldName)
@@ -139,7 +139,7 @@ const UtdanningGruppeValg = ({
       <UNSAFE_Combobox
         id={fieldName}
         label={getLabel(utdanningGruppe.visningsnavn, utdanningGruppe.pakrevd)}
-        selectedOptions={options.filter((o) => o.value === valgtId)}
+        selectedOptions={options.filter((o) => o.value === valgtUtdanningId)}
         size="small"
         required={utdanningGruppe.pakrevd}
         options={options}

@@ -285,6 +285,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '1390a963-e9b2-4677-bb87-243f4638b7a1',
             visningsnavn: 'Bygg- og anleggsteknikk',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -432,6 +433,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: 'f1bc4b14-56d6-4907-8fdf-48c982a4c759',
             visningsnavn: 'Elektro og datateknologi',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -574,6 +576,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '9891aeef-1f72-49a1-9713-971952edfa09',
             visningsnavn: 'Frisør, blomster, interiør og eksponeringsdesign',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -611,6 +614,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '1626096d-f1ac-4c34-aa93-741503bc5584',
             visningsnavn: 'Håndverk, design og produktutvikling',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -833,6 +837,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: 'b1dabf02-b6f6-4052-8f13-88a83006ea98',
             visningsnavn: 'Helse- og oppvekstfag',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -900,6 +905,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '8265e7bc-e249-406b-bddc-37874cb08e4e',
             visningsnavn: 'Informasjonsteknologi og medieproduksjon',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -937,6 +943,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '6f525cfb-afa8-4e03-88f5-50185f8a7220',
             visningsnavn: 'Naturbruk',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -1004,6 +1011,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '1611a38f-b6d2-4761-844f-cd9ff9cc58b7',
             visningsnavn: 'Restaurant- og matfag',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -1071,6 +1079,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: '41d749f7-8969-44a6-a97d-8d45419ad002',
             visningsnavn: 'Salg, service og reiseliv',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -1103,6 +1112,7 @@ const mockKodeverk: KodeverkResponse[] = [
           {
             id: 'd782b53f-bed7-47ae-917d-d44c0c850499',
             visningsnavn: 'Teknologi- og industrifag',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,

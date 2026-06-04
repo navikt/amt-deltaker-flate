@@ -42,6 +42,7 @@ describe('getValgteVerdier', () => {
           {
             id: 'utdanning-1',
             visningsnavn: 'Bygg- og anleggsteknikk',
+            valgt: true,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -60,6 +61,7 @@ describe('getValgteVerdier', () => {
           {
             id: 'utdanning-2',
             visningsnavn: 'Elektro og datateknologi',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -69,7 +71,7 @@ describe('getValgteVerdier', () => {
                 {
                   id: 'larefag-3',
                   visningsnavn: 'Elektrikerfaget',
-                  valgt: true
+                  valgt: false
                 }
               ]
             }
@@ -77,6 +79,7 @@ describe('getValgteVerdier', () => {
           {
             id: 'utdanning-3',
             visningsnavn: 'Naturbruk',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: true,
@@ -98,11 +101,11 @@ describe('getValgteVerdier', () => {
     expect(getValgteVerdier(alternativer)).toEqual([
       {
         representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
-        valgteIder: ['utdanning-1', 'utdanning-2']
+        valgteIder: ['utdanning-1']
       },
       {
         representerer: OpplaringRepresenterer.LAREFAG,
-        valgteIder: ['larefag-1', 'larefag-3']
+        valgteIder: ['larefag-1']
       }
     ])
   })
@@ -126,9 +129,39 @@ describe('getValgteVerdier', () => {
           {
             id: 'utdanning-1',
             visningsnavn: 'Bygg- og anleggsteknikk',
+            valgt: false,
             larefag: {
               visningsnavn: 'Lærefag',
               pakrevd: false,
+              representerer: OpplaringRepresenterer.LAREFAG,
+              seleksjonstype: Seleksjonstype.FLERVALG,
+              alternativer: [
+                { id: 'larefag-1', visningsnavn: 'Tømrerfaget', valgt: false }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+
+    expect(getValgteVerdier(alternativer)).toEqual([])
+  })
+
+  it('returnerer tom liste når utdanningsgruppe ikke har valgte verdier', () => {
+    const alternativer: KodeverkContainer[] = [
+      {
+        type: KodeverkAlternativType.UTDANNING_GRUPPE,
+        visningsnavn: 'Utdanningsprogram',
+        representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+        pakrevd: true,
+        utdanninger: [
+          {
+            id: 'utdanning-1',
+            visningsnavn: 'Bygg- og anleggsteknikk',
+            valgt: false,
+            larefag: {
+              visningsnavn: 'Lærefag',
+              pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
               seleksjonstype: Seleksjonstype.FLERVALG,
               alternativer: [

@@ -7,26 +7,28 @@ import { OpplaringRepresenterer } from 'deltaker-flate-common'
 export const getValgteVerdier = (alternativer: KodeverkContainer[]) => {
   return alternativer.flatMap((a) => {
     if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
-      return [
-        {
-          representerer: a.representerer,
-          valgteIder: a.alternativer.filter((v) => v.valgt).map((v) => v.id)
-        }
-      ]
+      const valgteIder = a.alternativer.filter((v) => v.valgt).map((v) => v.id)
+
+      return valgteIder.length > 0
+        ? [
+            {
+              representerer: a.representerer,
+              valgteIder
+            }
+          ]
+        : []
     }
     if (a.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
-      const valgteUtdanninger = a.utdanninger
-        .filter((u) => u.larefag.alternativer.some((v) => v.valgt))
-        .map((u) => u.id)
+      const valgtUtdanning = a.utdanninger.filter((u) => u.valgt)
 
-      const valgteLarefag = a.utdanninger.flatMap((u) =>
+      const valgteLarefag = valgtUtdanning.flatMap((u) =>
         u.larefag.alternativer.filter((v) => v.valgt).map((v) => v.id)
       )
 
       return [
         {
           representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
-          valgteIder: valgteUtdanninger
+          valgteIder: valgtUtdanning.map((u) => u.id)
         },
         {
           representerer: OpplaringRepresenterer.LAREFAG,
