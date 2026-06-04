@@ -16,7 +16,7 @@ import duration from 'dayjs/plugin/duration'
 dayjs.extend(duration)
 
 const createKodeverk = (visningsnavn?: string | null) => ({
-  eleenter: visningsnavn
+  valgteKategoriseringer: visningsnavn
     ? [
         {
           representerer: OpplaringRepresenterer.KURSTYPE_ID,

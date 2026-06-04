@@ -24,7 +24,9 @@ export const createMockFlatKodeverk = (
   const kodeverk = createMockKodeverkResponse(tiltakskode)
 
   return {
-    eleenter: kodeverk.alternativer.flatMap(mapAlternativTilUtflatetElement),
+    valgteKategoriseringer: kodeverk.alternativer.flatMap(
+      mapAlternativTilUtflatetElement
+    ),
     valgteSertifiseringer: kodeverk.sertifiseringValg
   }
 }

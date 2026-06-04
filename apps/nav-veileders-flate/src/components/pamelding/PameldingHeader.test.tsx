@@ -45,7 +45,7 @@ describe('PameldingHeader - FOV heading', () => {
         }}
         deltakerliste={lagDeltakerliste({
           kodeverk: {
-            eleenter: [
+            valgteKategoriseringer: [
               {
                 representerer: OpplaringRepresenterer.KURSTYPE_ID,
                 valg: [{ id: 'kurs-1', visningsnavn: 'Norskopplæring' }]
@@ -104,7 +104,7 @@ describe('PameldingHeader - FOV heading', () => {
           deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
           arrangorNavn: 'Kurs AS',
           kodeverk: {
-            eleenter: [
+            valgteKategoriseringer: [
               {
                 representerer: OpplaringRepresenterer.BRANSJE_ID,
                 valg: [{ id: 'kurs-2', visningsnavn: 'Bransje: Bygg' }]
@@ -145,7 +145,7 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
-            eleenter: [
+            valgteKategoriseringer: [
               {
                 representerer: OpplaringRepresenterer.BRANSJE_ID,
                 valg: [{ id: 'bransje-3', visningsnavn: 'IT' }]
@@ -165,7 +165,7 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
-            eleenter: [],
+            valgteKategoriseringer: [],
             valgteSertifiseringer: []
           }}
           heading={<h3>Heading</h3>}

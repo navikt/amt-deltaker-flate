@@ -12,7 +12,7 @@ export const getKodeverkValgNavn = (
   kodeverk: FlattKodeverk | undefined | null,
   representerer: OpplaringRepresenterer
 ): string | undefined => {
-  return kodeverk?.eleenter.find(
+  return kodeverk?.valgteKategoriseringer.find(
     (element) => element.representerer === representerer
   )?.valg[0]?.visningsnavn
 }

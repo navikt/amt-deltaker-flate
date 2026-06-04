@@ -34,7 +34,7 @@ vi.mock('../../api/api-enkeltplass.ts', () => ({
 }))
 
 const createKodeverk = () => ({
-  eleenter: [
+  valgteKategoriseringer: [
     {
       representerer: OpplaringRepresenterer.BRANSJE_ID,
       valg: [{ id: 'old-id', visningsnavn: 'Bygg' }]

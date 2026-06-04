@@ -85,7 +85,7 @@ export const DeltakelseInnhold = ({
 
 const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
   const kodeverkTekst = getKodeverkTekst(kodeverk)
-  const kodeverkForListe = kodeverk?.eleenter.filter(
+  const kodeverkForListe = kodeverk?.valgteKategoriseringer.filter(
     (e) =>
       e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
       e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
@@ -109,7 +109,7 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
 }
 
 const getKodeverkTekst = (kodeverk: FlattKodeverk | null | undefined) => {
-  return kodeverk?.eleenter.filter(
+  return kodeverk?.valgteKategoriseringer.filter(
     (e) =>
       e.representerer === OpplaringRepresenterer.BRANSJE_ID ||
       e.representerer === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
@@ -139,4 +139,5 @@ const harInnhold = (
 
 const harKodeverk = (kodeverk: FlattKodeverk | null | undefined): boolean =>
   !!kodeverk &&
-  (kodeverk.eleenter.length > 0 || kodeverk.valgteSertifiseringer.length > 0)
+  (kodeverk.valgteKategoriseringer.length > 0 ||
+    kodeverk.valgteSertifiseringer.length > 0)

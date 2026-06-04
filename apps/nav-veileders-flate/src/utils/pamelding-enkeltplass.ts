@@ -54,10 +54,12 @@ export const generateEnkeltplassPameldingRequest = (
     sluttdato: dateToIsoString(deltaker.sluttdato),
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
-    kodeverkValg: deltaker.deltakerliste.kodeverk?.eleenter.map((kodeverk) => ({
-      representerer: kodeverk.representerer,
-      valgteIder: kodeverk.valg.map((v) => v.id)
-    })),
+    kodeverkValg: deltaker.deltakerliste.kodeverk?.valgteKategoriseringer.map(
+      (kodeverk) => ({
+        representerer: kodeverk.representerer,
+        valgteIder: kodeverk.valg.map((v) => v.id)
+      })
+    ),
     sertifiseringValg: deltaker.deltakerliste.kodeverk?.valgteSertifiseringer
   }
 }

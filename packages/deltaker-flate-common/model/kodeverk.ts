@@ -28,15 +28,15 @@ export const sertifiseringValgSchema = z.array(
  * ikke hele hierarkiet av valg.
  */
 export const utflatetKodeverkSchema = z.object({
-  eleenter: z.array(
+  valgteKategoriseringer: z.array(
     z.object({
       representerer: z.enum(OpplaringRepresenterer),
-      valg: z.array(
-        z.object({
-          id: z.string(),
-          visningsnavn: z.string()
-        })
-      ) // TODO den er ikke helt slik i backend
+      valg: z.record(z.string(), z.string()).transform((valgMap) =>
+        Object.entries(valgMap).map(([id, visningsnavn]) => ({
+          id,
+          visningsnavn
+        }))
+      )
     })
   ),
   valgteSertifiseringer: sertifiseringValgSchema

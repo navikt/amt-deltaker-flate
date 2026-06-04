@@ -2,7 +2,7 @@ import { FlattKodeverk, OpplaringRepresenterer } from 'deltaker-flate-common'
 
 export const createMockFlatKodeverk = (): FlattKodeverk => {
   return {
-    eleenter: [
+    valgteKategoriseringer: [
       {
         representerer: OpplaringRepresenterer.BRANSJE_ID,
         valg: [

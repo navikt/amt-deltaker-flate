@@ -8,14 +8,14 @@ import { DeltakerResponse } from '../api/data/deltaker'
 dayjs.extend(duration)
 
 const createKodeverk = (
-  eleenter: NonNullable<
+  valgteKategoriseringer: NonNullable<
     DeltakerResponse['deltakerliste']['kodeverk']
-  >['eleenter'] = [],
+  >['valgteKategoriseringer'] = [],
   valgteSertifiseringer: NonNullable<
     DeltakerResponse['deltakerliste']['kodeverk']
   >['valgteSertifiseringer'] = []
 ) => ({
-  eleenter,
+  valgteKategoriseringer,
   valgteSertifiseringer
 })
 
