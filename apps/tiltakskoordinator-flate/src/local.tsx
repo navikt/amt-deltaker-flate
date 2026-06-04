@@ -19,13 +19,25 @@ export async function enableMocking() {
   }
 }
 
+function getInitialDeltakerListeId() {
+  if (isPrEnv) return ''
+  const idMatch = location.pathname.match(
+    /gjennomforinger\/(.*)\/deltakerliste/
+  )
+  if (idMatch?.[1] != null) {
+    return idMatch[1]
+  } else {
+    return 'abs'
+  }
+}
+
 const renderAsReactRoot = () => {
   const container = document.getElementById('root')
   const root = createRoot(container!)
 
   root.render(
     <React.StrictMode>
-      <AppContextProvider initialDeltakerlisteId={isPrEnv ? '' : 'abs'}>
+      <AppContextProvider initialDeltakerlisteId={getInitialDeltakerListeId()}>
         <div className="m-auto max-w-480">
           <App />
         </div>

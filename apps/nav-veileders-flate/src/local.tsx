@@ -40,13 +40,14 @@ const renderAsReactRoot = () => {
 
   const container = document.getElementById('root')
   const root = createRoot(container!)
+  const params = new URLSearchParams(location.search)
 
   root.render(
     <React.StrictMode>
       <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
         <AppContextProvider
-          initialPersonident={'29418716256'}
-          initialEnhetId={'0106'}
+          initialPersonident={params.get('person_ident') || '29418716256'}
+          initialEnhetId={params.get('enhet_id') || '0106'}
         >
           <BrowserRouter>
             <QueryClientProvider client={queryClient}>
