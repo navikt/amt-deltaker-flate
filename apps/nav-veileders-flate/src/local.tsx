@@ -40,7 +40,7 @@ const renderAsReactRoot = () => {
 
   const container = document.getElementById('root')
   const root = createRoot(container!)
-  const params = new URLSearchParams(window.location.search)
+  const params = new URLSearchParams(location.search)
 
   root.render(
     <React.StrictMode>
