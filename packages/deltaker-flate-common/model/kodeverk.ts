@@ -42,14 +42,4 @@ export const utflatetKodeverkSchema = z.object({
   valgteSertifiseringer: sertifiseringValgSchema
 })
 
-/*
-export const utflatetKodeverkSchema = z.object({
-  tiltakskode: z.enum(Tiltakskode),
-  tittel: z.string().nullable(),
-  valg: z.array(z.string()),
-  valgteKodeverkIder: z.array(z.uuid()),
-  valgteSertifiseringer: sertifiseringValgSchema
-})
-*/
-
 export type FlattKodeverk = z.infer<typeof utflatetKodeverkSchema>
