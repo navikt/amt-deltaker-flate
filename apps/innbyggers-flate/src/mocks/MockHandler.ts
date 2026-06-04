@@ -61,7 +61,8 @@ export const createDeltaker = (
       erEnkeltplass: false,
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-      kodeverk: createMockFlatKodeverk()
+      kodeverk:
+        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk']
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',

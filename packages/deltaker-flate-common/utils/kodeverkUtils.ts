@@ -1,7 +1,7 @@
 import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
 
 /**
- * Henter første valgnavn for en gitt representør fra flatt kodeverk.
+ * Henter første valgnavn for en gitt representerer fra flatt kodeverk.
  * Brukes til å hente f.eks. kursnavn, bransje, osv.
  *
  * @param kodeverk Det flate kodeverket

@@ -236,7 +236,7 @@ const getKodeverkFieldName = (representerer: OpplaringRepresenterer) =>
   `kodeverkValg_${representerer}`
 
 const getLabel = (visningsnavn: string, pakrevd: boolean) =>
-  `${visningsnavn} ${pakrevd ? '' : '(valgfri)'}`
+  `${visningsnavn}${pakrevd ? '' : ' (valgfri)'}`
 
 const getValgteIderForRepresenterer = (
   kodeverkValg: KodeverkValgEntry[],

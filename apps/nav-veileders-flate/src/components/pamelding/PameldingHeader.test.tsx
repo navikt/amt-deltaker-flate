@@ -32,7 +32,7 @@ const lagDeltakerliste = (
   }) as unknown as Deltakerliste
 
 describe('PameldingHeader - FOV heading', () => {
-  it('bruker kodeverk.tittel i heading når FOV har kodeverk med tittel', () => {
+  it('bruker kurstype fra kodeverk i heading når FOV har kodeverk med tittel', () => {
     render(
       <PameldingHeader
         deltakerStatus={{

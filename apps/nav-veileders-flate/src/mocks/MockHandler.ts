@@ -114,7 +114,10 @@ export class MockHandler {
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        kodeverk: createMockFlatKodeverk(this.tiltakskode, erEnkeltplass)
+        kodeverk: createMockFlatKodeverk(
+          this.tiltakskode,
+          erEnkeltplass
+        ) as DeltakerResponse['deltakerliste']['kodeverk']
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -454,7 +457,10 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
       oppdatertPamelding.deltakerliste.kodeverk = erNyEnkeltplass
-        ? createMockFlatKodeverk(this.tiltakskode, erNyEnkeltplass)
+        ? (createMockFlatKodeverk(
+            this.tiltakskode,
+            erNyEnkeltplass
+          ) as DeltakerResponse['deltakerliste']['kodeverk'])
         : null
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)

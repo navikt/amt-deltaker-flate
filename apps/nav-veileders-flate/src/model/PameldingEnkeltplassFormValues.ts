@@ -193,10 +193,13 @@ const validateUtdanningsgruppe = (
       message: `${alternativ.visningsnavn} er påkrevd.`,
       path: [`kodeverkValg_${alternativ.representerer}`]
     })
-  } else {
-    // Sjekk om lærefag er valgt kun hvis vi har valgt utdanning
-    alternativ.utdanninger.forEach((utdanning) => {
-      validateVerdigruppe(utdanning.larefag, schema, ctx)
-    })
+  }
+
+  // Sjekk om lærefag er valgt kun for valgt utdanning
+  const valgtUtdanning = alternativ.utdanninger.find((u) =>
+    valgtIder.includes(u.id)
+  )
+  if (valgtUtdanning) {
+    validateVerdigruppe(valgtUtdanning.larefag, schema, ctx)
   }
 }

@@ -86,7 +86,7 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
-  it('bruker kodeverk.tittel i snakkeboblen når tilgjengelig', () => {
+  it('bruker kurstype fra kodeverk i snakkeboblen når tilgjengelig', () => {
     const deltaker = lagDeltaker(createKodeverk('Norskopplæring B1'))
 
     renderWithDeltaker(deltaker)

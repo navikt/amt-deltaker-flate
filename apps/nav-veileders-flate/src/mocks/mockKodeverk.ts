@@ -13,10 +13,17 @@ import {
   VerdigruppeSokKilde
 } from '../api/data/kodeverk'
 
+type FlattKodeverkWire = Omit<FlattKodeverk, 'valgteKategoriseringer'> & {
+  valgteKategoriseringer: Array<{
+    representerer: OpplaringRepresenterer
+    valg: Record<string, string>
+  }>
+}
+
 export const createMockFlatKodeverk = (
   tiltakskode: Tiltakskode,
   erEnkeltplass: boolean
-): FlattKodeverk | null => {
+): FlattKodeverkWire | null => {
   if (!erOpplaringstiltak(tiltakskode) || !erEnkeltplass) {
     return null
   }
@@ -31,14 +38,22 @@ export const createMockFlatKodeverk = (
   }
 }
 
+const mapTilValgMap = (
+  verdier: Array<{ id: string; visningsnavn: string; valgt: boolean }>
+) => {
+  return Object.fromEntries(
+    verdier
+      .filter((verdi) => verdi.valgt)
+      .map((verdi) => [verdi.id, verdi.visningsnavn])
+  )
+}
+
 const mapAlternativTilUtflatetElement = (alternativ: KodeverkContainer) => {
   if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
     return [
       {
         representerer: alternativ.representerer,
-        valg: alternativ.alternativer
-          .filter((verdi) => verdi.valgt)
-          .map((verdi) => ({ id: verdi.id, visningsnavn: verdi.visningsnavn }))
+        valg: mapTilValgMap(alternativ.alternativer)
       }
     ]
   }
@@ -48,21 +63,20 @@ const mapAlternativTilUtflatetElement = (alternativ: KodeverkContainer) => {
       .filter((utdanning) =>
         utdanning.larefag.alternativer.some((v) => v.valgt)
       )
-      .map((utdanning) => ({
-        id: utdanning.id,
-        visningsnavn: utdanning.visningsnavn
-      }))
+      .map((utdanning) => [utdanning.id, utdanning.visningsnavn] as const)
 
-    const valgteLarefag = alternativ.utdanninger.flatMap((utdanning) =>
-      utdanning.larefag.alternativer
-        .filter((verdi) => verdi.valgt)
-        .map((verdi) => ({ id: verdi.id, visningsnavn: verdi.visningsnavn }))
+    const valgteLarefag = Object.fromEntries(
+      alternativ.utdanninger.flatMap((utdanning) =>
+        utdanning.larefag.alternativer
+          .filter((verdi) => verdi.valgt)
+          .map((verdi) => [verdi.id, verdi.visningsnavn] as const)
+      )
     )
 
     return [
       {
         representerer: alternativ.representerer,
-        valg: valgteUtdanninger
+        valg: Object.fromEntries(valgteUtdanninger)
       },
       {
         representerer: OpplaringRepresenterer.LAREFAG,
