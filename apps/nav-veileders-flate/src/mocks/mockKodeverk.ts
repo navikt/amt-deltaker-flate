@@ -1,8 +1,12 @@
-import { Tiltakskode } from 'deltaker-flate-common'
+import {
+  erOpplaringstiltak,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import {
   FlattKodeverk,
   KodeverkAlternativType,
-  OpplaringRepresenterer,
+  KodeverkContainer,
   KodeverkResponse,
   KodeverkSertifiseringResponse,
   Seleksjonstype,
@@ -10,18 +14,62 @@ import {
 } from '../api/data/kodeverk'
 
 export const createMockFlatKodeverk = (
-  tiltakskode: Tiltakskode
-): FlattKodeverk => {
-  return {
-    tiltakskode: tiltakskode,
-    tittel: 'Butikk- og salgsarbeid',
-    valg: ['B - Personbil', 'C - Lastebil'],
-    valgteKodeverkIder: [
-      '14886bad-a495-420a-9bae-d33e2d88041a',
-      '79d1a970-e8f0-4ecd-8d5e-e7c8d5f3394c'
-    ],
-    valgteSertifiseringer: [{ id: 3, navn: 'Sertifisert zumba-instruktør' }]
+  tiltakskode: Tiltakskode,
+  erEnkeltplass: boolean
+): FlattKodeverk | null => {
+  if (!erOpplaringstiltak(tiltakskode) || !erEnkeltplass) {
+    return null
   }
+
+  const kodeverk = createMockKodeverkResponse(tiltakskode)
+
+  return {
+    eleenter: kodeverk.alternativer.flatMap(mapAlternativTilUtflatetElement),
+    valgteSertifiseringer: kodeverk.sertifiseringValg
+  }
+}
+
+const mapAlternativTilUtflatetElement = (alternativ: KodeverkContainer) => {
+  if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
+    return [
+      {
+        representerer: alternativ.representerer,
+        valg: alternativ.alternativer
+          .filter((verdi) => verdi.valgt)
+          .map((verdi) => ({ id: verdi.id, visningsnavn: verdi.visningsnavn }))
+      }
+    ]
+  }
+
+  if (alternativ.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+    const valgteUtdanninger = alternativ.utdanninger
+      .filter((utdanning) =>
+        utdanning.larefag.alternativer.some((v) => v.valgt)
+      )
+      .map((utdanning) => ({
+        id: utdanning.id,
+        visningsnavn: utdanning.visningsnavn
+      }))
+
+    const valgteLarefag = alternativ.utdanninger.flatMap((utdanning) =>
+      utdanning.larefag.alternativer
+        .filter((verdi) => verdi.valgt)
+        .map((verdi) => ({ id: verdi.id, visningsnavn: verdi.visningsnavn }))
+    )
+
+    return [
+      {
+        representerer: alternativ.representerer,
+        valg: valgteUtdanninger
+      },
+      {
+        representerer: OpplaringRepresenterer.LAREFAG,
+        valg: valgteLarefag
+      }
+    ]
+  }
+
+  return []
 }
 
 export const createMockKodeverkResponse = (
@@ -42,7 +90,6 @@ const mockKodeverk: KodeverkResponse[] = [
     alternativer: [
       {
         type: KodeverkAlternativType.VERDIGRUPPE,
-        id: null,
         visningsnavn: 'Bransje',
         pakrevd: true,
         representerer: OpplaringRepresenterer.BRANSJE_ID,
@@ -102,7 +149,6 @@ const mockKodeverk: KodeverkResponse[] = [
       },
       {
         type: KodeverkAlternativType.VERDIGRUPPE,
-        id: null,
         visningsnavn: 'Førerkort',
         pakrevd: false,
         representerer: OpplaringRepresenterer.FORERKORT,
@@ -202,7 +248,6 @@ const mockKodeverk: KodeverkResponse[] = [
       },
       {
         type: KodeverkAlternativType.VERDIGRUPPE_SOK,
-        id: null,
         pakrevd: false,
         visningsnavn: 'Sertifiseringer',
         representerer: OpplaringRepresenterer.SERTIFISERINGER,
@@ -217,7 +262,6 @@ const mockKodeverk: KodeverkResponse[] = [
     alternativer: [
       {
         type: KodeverkAlternativType.UTDANNING_GRUPPE,
-        id: null,
         visningsnavn: 'Utdanningsprogram',
         representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
         pakrevd: true,
@@ -226,7 +270,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '1390a963-e9b2-4677-bb87-243f4638b7a1',
             visningsnavn: 'Bygg- og anleggsteknikk',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -374,7 +417,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: 'f1bc4b14-56d6-4907-8fdf-48c982a4c759',
             visningsnavn: 'Elektro og datateknologi',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -517,7 +559,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '9891aeef-1f72-49a1-9713-971952edfa09',
             visningsnavn: 'Frisør, blomster, interiør og eksponeringsdesign',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -555,7 +596,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '1626096d-f1ac-4c34-aa93-741503bc5584',
             visningsnavn: 'Håndverk, design og produktutvikling',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -778,7 +818,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: 'b1dabf02-b6f6-4052-8f13-88a83006ea98',
             visningsnavn: 'Helse- og oppvekstfag',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -846,7 +885,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '8265e7bc-e249-406b-bddc-37874cb08e4e',
             visningsnavn: 'Informasjonsteknologi og medieproduksjon',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -884,7 +922,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '6f525cfb-afa8-4e03-88f5-50185f8a7220',
             visningsnavn: 'Naturbruk',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -952,7 +989,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '1611a38f-b6d2-4761-844f-cd9ff9cc58b7',
             visningsnavn: 'Restaurant- og matfag',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -1020,7 +1056,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: '41d749f7-8969-44a6-a97d-8d45419ad002',
             visningsnavn: 'Salg, service og reiseliv',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,
@@ -1053,7 +1088,6 @@ const mockKodeverk: KodeverkResponse[] = [
             id: 'd782b53f-bed7-47ae-917d-d44c0c850499',
             visningsnavn: 'Teknologi- og industrifag',
             larefag: {
-              id: null,
               visningsnavn: 'Lærefag',
               pakrevd: true,
               representerer: OpplaringRepresenterer.LAREFAG,

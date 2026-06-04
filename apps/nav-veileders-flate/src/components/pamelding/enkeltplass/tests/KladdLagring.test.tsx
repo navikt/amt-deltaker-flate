@@ -6,6 +6,7 @@ import { KladdLagring } from '../../KladdLagring'
 import { renderWithProviders } from './test-utils'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { EnkeltplassKladdRequest } from '../../../../api/data/kladd-request'
+import { OpplaringRepresenterer } from 'deltaker-flate-common'
 
 const formToKladdRequest = (
   data: PameldingEnkeltplassFormValues
@@ -101,14 +102,34 @@ describe('KladdLagring - auto-lagring', () => {
       kodeverkValg: []
     })
 
-    change('kodeverkValg', ['bransje-1', 'fk-1'])
+    change('kodeverkValg', [
+      {
+        representerer: OpplaringRepresenterer.BRANSJE_ID,
+        valgteIder: ['bransje-1']
+      },
+      {
+        representerer: OpplaringRepresenterer.FORERKORT,
+        valgteIder: ['fk-1']
+      }
+    ])
     await advanceDebounce()
 
     expect(oppdaterKladd).toHaveBeenCalledTimes(1)
     expect(oppdaterKladd).toHaveBeenCalledWith(
       '1',
       '0101',
-      expect.objectContaining({ kodeverkValg: ['bransje-1', 'fk-1'] })
+      expect.objectContaining({
+        kodeverkValg: [
+          {
+            representerer: OpplaringRepresenterer.BRANSJE_ID,
+            valgteIder: ['bransje-1']
+          },
+          {
+            representerer: OpplaringRepresenterer.FORERKORT,
+            valgteIder: ['fk-1']
+          }
+        ]
+      })
     )
   })
 

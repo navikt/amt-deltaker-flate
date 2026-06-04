@@ -1,5 +1,9 @@
 import dayjs from 'dayjs'
-import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
+import {
+  getDayjsFromString,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import {
@@ -54,7 +58,12 @@ export const createPameldingEnkeltplassFormSchema = (
           PRISINFO_MAX_TEGN,
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         ),
-      kodeverkValg: z.array(z.string()),
+      kodeverkValg: z.array(
+        z.object({
+          representerer: z.enum(OpplaringRepresenterer),
+          valgteIder: z.array(z.string())
+        })
+      ),
       sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
     })
     .refine(
@@ -152,15 +161,15 @@ const validateVerdigruppe = (
     return
   }
 
-  const valgtIder = schema.kodeverkValg.filter((id) =>
-    alternativ.alternativer.some((a) => a.id === id)
-  )
+  const valgtIder = schema.kodeverkValg
+    .filter((valg) => valg.representerer === alternativ.representerer)
+    .flatMap((valg) => valg.valgteIder)
 
   if (valgtIder.length === 0) {
     ctx.addIssue({
       code: 'custom',
       message: `${alternativ.visningsnavn} er påkrevd.`,
-      path: [`kodeverkValg_${alternativ.visningsnavn}`]
+      path: [`kodeverkValg_${alternativ.representerer}`]
     })
   }
 }
@@ -174,19 +183,20 @@ const validateUtdanningsgruppe = (
     return
   }
 
-  const valgtIder = schema.kodeverkValg.filter((id) =>
-    alternativ.utdanninger.some((a) => a.id === id)
-  )
+  const valgtIder = schema.kodeverkValg
+    .filter((valg) => valg.representerer === alternativ.representerer)
+    .flatMap((valg) => valg.valgteIder)
 
   if (valgtIder.length === 0) {
     ctx.addIssue({
       code: 'custom',
       message: `${alternativ.visningsnavn} er påkrevd.`,
-      path: [`kodeverkValg_${alternativ.visningsnavn}`]
+      path: [`kodeverkValg_${alternativ.representerer}`]
+    })
+  } else {
+    // Sjekk om lærefag er valgt kun hvis vi har valgt utdanning
+    alternativ.utdanninger.forEach((utdanning) => {
+      validateVerdigruppe(utdanning.larefag, schema, ctx)
     })
   }
-
-  alternativ.utdanninger.forEach((utdanning) => {
-    validateVerdigruppe(utdanning.larefag, schema, ctx)
-  })
 }

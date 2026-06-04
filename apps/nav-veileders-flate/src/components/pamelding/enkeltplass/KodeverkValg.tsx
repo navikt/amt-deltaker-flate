@@ -1,37 +1,30 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
-import { logError } from 'deltaker-flate-common'
+import { logError, OpplaringRepresenterer } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { FieldValues, useFormContext, useWatch } from 'react-hook-form'
+import { FieldValues, useFormContext } from 'react-hook-form'
 import {
   KodeverkAlternativType,
   type KodeverkContainer,
   KodeverkResponse,
-  OpplaringRepresenterer,
   type KodeverkUtdanningGruppe,
   Seleksjonstype,
   KodeverkVerdigruppeBase
 } from '../../../api/data/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
+import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues.ts'
 
-const getKodeverkErrorMessage = (
-  errors: FieldValues,
-  submitCount: number,
-  fieldName: string
-) => {
-  if (submitCount === 0) {
-    return undefined
-  }
+type KodeverkValgEntry = PameldingEnkeltplassFormValues['kodeverkValg'][number]
 
-  const message = (errors[fieldName] as { message?: string } | undefined)
-    ?.message
-  return typeof message === 'string' ? message : undefined
+type KodeverkOption = {
+  value: string
+  label: string
 }
 
 /**
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
  *
  * Kodeverket er et hierarki av UtdanningGruppe/Verdigruppe med Verdi-noder.
- * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (flat string-array),
+ * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (liste av representerer + valgteIder),
  * som auto-lagres via KladdLagring.
  */
 export const KodeverkValg = ({ kodeverk }: { kodeverk?: KodeverkResponse }) => {
@@ -39,9 +32,9 @@ export const KodeverkValg = ({ kodeverk }: { kodeverk?: KodeverkResponse }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      {kodeverk.alternativer.map((alternativ, index) => (
+      {kodeverk.alternativer.map((alternativ) => (
         <AlternativValg
-          key={alternativ.id ?? `alternativ-${index}`}
+          key={`alternativ-${alternativ.representerer}`}
           alternativ={alternativ}
         />
       ))}
@@ -85,9 +78,9 @@ const UtdanningGruppeValg = ({
     setValue,
     trigger,
     formState: { errors, submitCount }
-  } = useFormContext()
+  } = useFormContext<PameldingEnkeltplassFormValues>()
 
-  const fieldName = `kodeverkValg_${utdanningGruppe.visningsnavn}`
+  const fieldName = getKodeverkFieldName(utdanningGruppe.representerer)
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
   const [valgtId, setValgtId] = useState<string | null>(() => {
@@ -97,7 +90,7 @@ const UtdanningGruppeValg = ({
     return medValg?.id ?? null
   })
 
-  const options = utdanningGruppe.utdanninger.map((u) => ({
+  const options: KodeverkOption[] = utdanningGruppe.utdanninger.map((u) => ({
     value: u.id,
     label: u.visningsnavn
   }))
@@ -105,20 +98,36 @@ const UtdanningGruppeValg = ({
   const valgtUtdanning =
     utdanningGruppe.utdanninger.find((u) => u.id === valgtId) ?? null
 
-  function handleValg(option: string, isSelected: boolean) {
-    if (valgtUtdanning) {
+  function handleValg(optionId: string, isSelected: boolean) {
+    const gjeldendeValg = getValues('kodeverkValg')
+    let nesteValg = gjeldendeValg
+
+    if (valgtUtdanning && valgtUtdanning.id !== optionId) {
       const gamleIder = new Set(
         valgtUtdanning.larefag.alternativer.map((v) => v.id)
       )
-      const gjeldende = getValues('kodeverkValg') as string[]
-      setValue(
-        'kodeverkValg',
-        gjeldende.filter((id) => !gamleIder.has(id)),
-        { shouldDirty: true }
+
+      const valgteLarefag = getValgteIderForRepresenterer(
+        gjeldendeValg,
+        OpplaringRepresenterer.LAREFAG
+      ).filter((id) => !gamleIder.has(id))
+
+      nesteValg = upsertKodeverkValg(
+        gjeldendeValg,
+        OpplaringRepresenterer.LAREFAG,
+        valgteLarefag
       )
     }
 
-    setValgtId(isSelected ? option : null)
+    nesteValg = upsertKodeverkValg(
+      nesteValg,
+      utdanningGruppe.representerer,
+      isSelected ? [optionId] : []
+    )
+
+    setValue('kodeverkValg', nesteValg, { shouldDirty: true })
+
+    setValgtId(isSelected ? optionId : null)
 
     if (submitCount > 0) {
       void trigger(fieldName)
@@ -129,7 +138,7 @@ const UtdanningGruppeValg = ({
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
         id={fieldName}
-        label={`${utdanningGruppe.visningsnavn} ${utdanningGruppe.pakrevd ? '' : '(valgfri)'}`}
+        label={getLabel(utdanningGruppe.visningsnavn, utdanningGruppe.pakrevd)}
         selectedOptions={options.filter((o) => o.value === valgtId)}
         size="small"
         required={utdanningGruppe.pakrevd}
@@ -150,8 +159,8 @@ const UtdanningGruppeValg = ({
  * Viser en Verdigruppe som en combobox der brukeren velger verdier.
  * Enkeltvalg eller flervalg styres av `seleksjonstype`.
  *
- * Leser og skriver direkte til form-feltet `kodeverkValg` (flat string-array
- * delt mellom alle verdigrupper). For å unngå at én verdigruppe overskriver
+ * Leser og skriver direkte til form-feltet `kodeverkValg`.
+ * For å unngå at én verdigruppe overskriver
  * en annens valg, filtrerer vi ut egne verdi-IDer og merger med resten.
  */
 const VerdigruppeValg = ({
@@ -162,20 +171,22 @@ const VerdigruppeValg = ({
   const {
     setValue,
     trigger,
+    watch,
     formState: { errors, submitCount }
-  } = useFormContext()
+  } = useFormContext<PameldingEnkeltplassFormValues>()
 
-  const fieldName = `kodeverkValg_${verdigruppe.visningsnavn}`
+  const fieldName = getKodeverkFieldName(verdigruppe.representerer)
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
-  // Les valgte IDer fra form-state (single source of truth)
-  const kodeverkValg = (useWatch({ name: 'kodeverkValg' }) ?? []) as string[]
+  const kodeverkValg = watch('kodeverkValg')
 
-  // Alle verdi-IDer som tilhører denne verdigruppen
-  const egneIds = new Set(verdigruppe.alternativer.map((v) => v.id))
-  const valgteEgne = kodeverkValg.filter((id) => egneIds.has(id))
+  const egneIds = verdigruppe.alternativer.map((v) => v.id)
+  const valgteEgne = getValgteIderForRepresenterer(
+    kodeverkValg,
+    verdigruppe.representerer
+  ).filter((id) => egneIds.includes(id))
 
-  const options = verdigruppe.alternativer.map((v) => ({
+  const options: KodeverkOption[] = verdigruppe.alternativer.map((v) => ({
     value: v.id,
     label: v.visningsnavn
   }))
@@ -191,8 +202,13 @@ const VerdigruppeValg = ({
           : valgteEgne.filter((v) => v !== option)
 
     // Behold andre verdigruppers valg, erstatt kun egne
-    const andreValg = kodeverkValg.filter((id) => !egneIds.has(id))
-    setValue('kodeverkValg', [...andreValg, ...nyeEgneValg], {
+    const nesteKodeverkValg = upsertKodeverkValg(
+      kodeverkValg,
+      verdigruppe.representerer,
+      nyeEgneValg
+    )
+
+    setValue('kodeverkValg', nesteKodeverkValg, {
       shouldDirty: true
     })
 
@@ -204,7 +220,7 @@ const VerdigruppeValg = ({
   return (
     <UNSAFE_Combobox
       id={fieldName}
-      label={`${verdigruppe.visningsnavn} ${verdigruppe.pakrevd ? '' : '(valgfri)'}`}
+      label={getLabel(verdigruppe.visningsnavn, verdigruppe.pakrevd)}
       selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
       size="small"
       error={errorMessage}
@@ -214,4 +230,48 @@ const VerdigruppeValg = ({
       onToggleSelected={handleValg}
     />
   )
+}
+
+const getKodeverkFieldName = (representerer: OpplaringRepresenterer) =>
+  `kodeverkValg_${representerer}`
+
+const getLabel = (visningsnavn: string, pakrevd: boolean) =>
+  `${visningsnavn} ${pakrevd ? '' : '(valgfri)'}`
+
+const getValgteIderForRepresenterer = (
+  kodeverkValg: KodeverkValgEntry[],
+  representerer: OpplaringRepresenterer
+) =>
+  kodeverkValg
+    .filter((valg) => valg.representerer === representerer)
+    .flatMap((valg) => valg.valgteIder)
+
+const getKodeverkErrorMessage = (
+  errors: FieldValues,
+  submitCount: number,
+  fieldName: string
+) => {
+  if (submitCount === 0) {
+    return undefined
+  }
+
+  const message = (errors[fieldName] as { message?: string } | undefined)
+    ?.message
+  return typeof message === 'string' ? message : undefined
+}
+
+const upsertKodeverkValg = (
+  eksisterende: KodeverkValgEntry[],
+  representerer: OpplaringRepresenterer,
+  valgteIder: string[]
+): KodeverkValgEntry[] => {
+  const utenRepresenterer = eksisterende.filter(
+    (valg) => valg.representerer !== representerer
+  )
+
+  if (valgteIder.length === 0) {
+    return utenRepresenterer
+  }
+
+  return [...utenRepresenterer, { representerer, valgteIder }]
 }

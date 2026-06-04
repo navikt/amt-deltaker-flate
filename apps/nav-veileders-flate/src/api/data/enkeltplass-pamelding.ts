@@ -1,3 +1,4 @@
+import { OpplaringRepresenterer } from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const enkeltplassPameldingSchema = z.object({
@@ -6,7 +7,14 @@ export const enkeltplassPameldingSchema = z.object({
   startdato: z.string(),
   sluttdato: z.string(),
   arrangorUnderenhet: z.string(),
-  kodeverkValg: z.array(z.string()).optional(),
+  kodeverkValg: z
+    .array(
+      z.object({
+        representerer: z.enum(OpplaringRepresenterer),
+        valgteIder: z.array(z.string())
+      })
+    )
+    .optional(),
   sertifiseringValg: z
     .array(z.object({ id: z.number(), navn: z.string() }))
     .optional()

@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { UtkastDeltakerEnkeltplass } from './UtkastDeltakerEnkeltplass'
 import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
@@ -10,6 +14,18 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)
+
+const createKodeverk = (visningsnavn?: string | null) => ({
+  eleenter: visningsnavn
+    ? [
+        {
+          representerer: OpplaringRepresenterer.KURSTYPE_ID,
+          valg: [{ id: 'kurs-1', visningsnavn }]
+        }
+      ]
+    : [],
+  valgteSertifiseringer: []
+})
 
 const lagDeltaker = (
   kodeverk: DeltakerResponse['deltakerliste']['kodeverk'] = null
@@ -71,13 +87,7 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
 
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
   it('bruker kodeverk.tittel i snakkeboblen når tilgjengelig', () => {
-    const deltaker = lagDeltaker({
-      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-      tittel: 'Norskopplæring B1',
-      valg: ['Muntlig'],
-      valgteKodeverkIder: [],
-      valgteSertifiseringer: []
-    })
+    const deltaker = lagDeltaker(createKodeverk('Norskopplæring B1'))
 
     renderWithDeltaker(deltaker)
 
@@ -101,13 +111,7 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
   })
 
   it('faller tilbake til deltakerlisteNavn når kodeverk.tittel er null', () => {
-    const deltaker = lagDeltaker({
-      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-      tittel: null,
-      valg: ['Muntlig'],
-      valgteKodeverkIder: [],
-      valgteSertifiseringer: []
-    })
+    const deltaker = lagDeltaker(createKodeverk(null))
 
     renderWithDeltaker(deltaker)
 

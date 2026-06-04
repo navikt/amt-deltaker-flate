@@ -1,5 +1,9 @@
 import { z } from 'zod'
-import { sertifiseringValgSchema, Tiltakskode } from 'deltaker-flate-common'
+import {
+  OpplaringRepresenterer,
+  sertifiseringValgSchema,
+  Tiltakskode
+} from 'deltaker-flate-common'
 
 // Re-eksporter det flate kodeverket fra fellespakken slik at eksisterende
 // imports fra denne fila fortsatt fungerer (FlattKodeverk, utflatetKodeverkSchema).
@@ -23,17 +27,6 @@ export enum VerdigruppeSokKilde {
   JANZZ_SERTIFISERING = 'JANZZ_SERTIFISERING'
 }
 
-export enum OpplaringRepresenterer {
-  KURSTYPE_ID = 'KURSTYPE_ID',
-  BRANSJE_ID = 'BRANSJE_ID',
-  SERTIFISERINGER = 'SERTIFISERINGER',
-  FORERKORT = 'FORERKORT',
-  INNHOLDSELEMENTER = 'INNHOLDSELEMENTER',
-  NORSKPROVE = 'NORSKPROVE',
-  UTDANNINGSPROGRAM_ID = 'UTDANNINGSPROGRAM_ID',
-  LAREFAG = 'LAREFAG'
-}
-
 export const kodeverkVerdiSchema = z.object({
   id: z.uuid(),
   visningsnavn: z.string(),
@@ -41,7 +34,6 @@ export const kodeverkVerdiSchema = z.object({
 })
 
 const kodeverkVerdigruppeBaseSchema = z.object({
-  id: z.uuid().nullable(),
   visningsnavn: z.string(),
   pakrevd: z.boolean().default(false),
   representerer: z.enum(OpplaringRepresenterer),
@@ -61,7 +53,6 @@ export type KodeverkVerdigruppe = z.infer<typeof kodeverkVerdigruppeSchema>
 
 export const kodeverkVerdigruppeSokSchema = z.object({
   type: z.literal(KodeverkAlternativType.VERDIGRUPPE_SOK),
-  id: z.uuid().nullable(),
   visningsnavn: z.string(),
   pakrevd: z.boolean().default(false),
   representerer: z.enum(OpplaringRepresenterer).nullable(),
@@ -81,7 +72,6 @@ export const kodeverkUtdanningValgSchema = z.object({
 
 export const kodeverkUtdanningGruppeSchema = z.object({
   type: z.literal(KodeverkAlternativType.UTDANNING_GRUPPE),
-  id: z.uuid().nullable(),
   visningsnavn: z.string(),
   representerer: z.enum(OpplaringRepresenterer),
   pakrevd: z.boolean().default(false),

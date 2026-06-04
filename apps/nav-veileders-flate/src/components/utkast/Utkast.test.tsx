@@ -3,17 +3,17 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { describe, expect, it, vi } from 'vitest'
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { Utkast } from './Utkast'
 import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 import { PameldingFormContextProvider } from '../pamelding/PameldingFormContext'
 import { AppContext } from '../../AppContext'
-import {
-  KodeverkAlternativType,
-  OpplaringRepresenterer,
-  Seleksjonstype
-} from '../../api/data/kodeverk'
+import { KodeverkAlternativType, Seleksjonstype } from '../../api/data/kodeverk'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -32,6 +32,16 @@ vi.mock('../../api/api-enkeltplass.ts', () => ({
   sokSertifiseringer: vi.fn().mockResolvedValue([]),
   opprettEnkeltplassKladd: vi.fn().mockResolvedValue({})
 }))
+
+const createKodeverk = () => ({
+  eleenter: [
+    {
+      representerer: OpplaringRepresenterer.BRANSJE_ID,
+      valg: [{ id: 'old-id', visningsnavn: 'Bygg' }]
+    }
+  ],
+  valgteSertifiseringer: []
+})
 
 const createDeltaker = (): DeltakerResponse =>
   ({
@@ -53,12 +63,7 @@ const createDeltaker = (): DeltakerResponse =>
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
       pameldingstype: 'SOKNADSBASERT',
-      kodeverk: {
-        tittel: 'Bransje',
-        valg: ['Bygg'],
-        valgteKodeverkIder: ['old-id'],
-        valgteSertifiseringer: []
-      }
+      kodeverk: createKodeverk()
     },
     status: {
       id: '1',
@@ -109,6 +114,8 @@ const renderUtkast = (deltaker: DeltakerResponse, queryClient: QueryClient) => {
 }
 
 describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
+  const bransjeLabel = /^Bransje\b/i
+
   it('henter fersk kodeverk fra backend når bruker klikker Endre utkast', async () => {
     const user = userEvent.setup()
     const queryClient = new QueryClient({
@@ -171,7 +178,7 @@ describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
 
     // Verifiser at skjemaet rendres med fersk data
     await waitFor(() => {
-      expect(screen.getByLabelText('Bransje')).toBeInTheDocument()
+      expect(screen.getByLabelText(bransjeLabel)).toBeInTheDocument()
     })
 
     // Ny verdi fra backend skal være forhåndsvalgt

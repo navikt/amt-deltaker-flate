@@ -4,28 +4,27 @@ import {
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
+  getKodeverkValgNavn,
   getTiltakskodeDisplayText,
   hentGjennomforingNavnHosArrangorTekst,
+  OpplaringRepresenterer,
   Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/deltaker.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
-import { FlattKodeverk } from 'deltaker-flate-common'
 
 interface Props {
   deltakerStatus: DeltakerStatus
   deltakerliste: Deltakerliste
   vedtaksinformasjon: Vedtaksinformasjon | null
-  kodeverk?: FlattKodeverk | null
 }
 
 export const PameldingHeader = ({
   deltakerStatus,
   deltakerliste,
-  vedtaksinformasjon,
-  kodeverk
+  vedtaksinformasjon
 }: Props) => {
   let statusTekst = undefined
   switch (deltakerStatus.type) {
@@ -49,7 +48,10 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    kodeverk?.tittel
+    getKodeverkValgNavn(
+      deltakerliste.kodeverk,
+      OpplaringRepresenterer.KURSTYPE_ID
+    )
   )
 
   return (

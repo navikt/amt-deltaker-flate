@@ -86,6 +86,7 @@ export class MockHandler {
       deltakelsesprosent: 100
     }
     const arrangor = mockArrangorenheter[0].underenheter[0]
+    const erEnkeltplass = true
 
     return {
       deltakerId: uuidv4(),
@@ -109,11 +110,11 @@ export class MockHandler {
           innhold: innhold,
           ledetekst: ledetekst
         },
-        erEnkeltplass: true, // Endre her for enkeltplass
+        erEnkeltplass,
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        kodeverk: createMockFlatKodeverk(this.tiltakskode)
+        kodeverk: createMockFlatKodeverk(this.tiltakskode, erEnkeltplass)
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -453,7 +454,7 @@ export class MockHandler {
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
       oppdatertPamelding.deltakerliste.kodeverk = erNyEnkeltplass
-        ? createMockFlatKodeverk(this.tiltakskode)
+        ? createMockFlatKodeverk(this.tiltakskode, erNyEnkeltplass)
         : null
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)
