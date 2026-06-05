@@ -45,6 +45,7 @@ const _FormErrorSummary = <T extends FieldValues>({
   schemaFields
 }: _FormErrorSummaryProps<T>) => {
   const {
+    setFocus,
     formState: { errors, submitCount }
   } = useFormContext<T>()
 
@@ -59,17 +60,24 @@ const _FormErrorSummary = <T extends FieldValues>({
     return null
   }
 
-  const kodeverkErrors = Object.entries(errors).filter(([key]) =>
-    key.startsWith('kodeverkValg')
+  const kodeverkErrors = Object.entries(errors).filter(
+    ([key, error]) => key.startsWith('kodeverkValg_') && error?.message
   )
-  // TODO linker funker ikke, gå til bake til button :(
+
   return (
     <div ref={ref} tabIndex={-1} className="mb-8">
       <ErrorSummary heading="For å gå videre må du rette opp følgende:">
         {kodeverkErrors &&
           kodeverkErrors.length > 0 &&
           kodeverkErrors.map(([key, error]) => (
-            <ErrorSummary.Item key={key} href={`#${key}`}>
+            <ErrorSummary.Item
+              key={key}
+              as="button"
+              type="button"
+              onClick={() => {
+                document.getElementById(key)?.focus()
+              }}
+            >
               {error?.message as string}
             </ErrorSummary.Item>
           ))}
@@ -78,7 +86,12 @@ const _FormErrorSummary = <T extends FieldValues>({
           const error = errors[fieldName]
           return (
             error && (
-              <ErrorSummary.Item key={fieldName} href={`#${fieldName}`}>
+              <ErrorSummary.Item
+                key={fieldName}
+                as="button"
+                type="button"
+                onClick={() => setFocus(fieldName)}
+              >
                 {error.message as string}
               </ErrorSummary.Item>
             )
