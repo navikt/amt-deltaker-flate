@@ -1,7 +1,7 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { logError, OpplaringRepresenterer } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { FieldValues, useFormContext } from 'react-hook-form'
+import { FieldValues, Path, useFormContext } from 'react-hook-form'
 import {
   KodeverkAlternativType,
   type KodeverkContainer,
@@ -74,6 +74,7 @@ const UtdanningGruppeValg = ({
   utdanningGruppe: KodeverkUtdanningGruppe
 }) => {
   const {
+    register,
     getValues,
     setValue,
     trigger,
@@ -81,6 +82,9 @@ const UtdanningGruppeValg = ({
   } = useFormContext<PameldingEnkeltplassFormValues>()
 
   const fieldName = getKodeverkFieldName(utdanningGruppe.representerer)
+  const { ref: registerRef, name: registeredFieldName } = register(
+    fieldName as unknown as Path<PameldingEnkeltplassFormValues>
+  )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
   const [valgtUtdanningId, setValgtUtdanningId] = useState<string | null>(
@@ -138,6 +142,8 @@ const UtdanningGruppeValg = ({
     <div className="flex flex-col gap-8">
       <UNSAFE_Combobox
         id={fieldName}
+        name={registeredFieldName}
+        ref={registerRef}
         label={getLabel(utdanningGruppe.visningsnavn, utdanningGruppe.pakrevd)}
         selectedOptions={options.filter((o) => o.value === valgtUtdanningId)}
         size="small"
@@ -169,6 +175,7 @@ const VerdigruppeValg = ({
   verdigruppe: KodeverkVerdigruppeBase
 }) => {
   const {
+    register,
     setValue,
     trigger,
     watch,
@@ -176,6 +183,9 @@ const VerdigruppeValg = ({
   } = useFormContext<PameldingEnkeltplassFormValues>()
 
   const fieldName = getKodeverkFieldName(verdigruppe.representerer)
+  const { ref: registerRef, name: registeredFieldName } = register(
+    fieldName as unknown as Path<PameldingEnkeltplassFormValues>
+  )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
   const kodeverkValg = watch('kodeverkValg')
@@ -220,6 +230,8 @@ const VerdigruppeValg = ({
   return (
     <UNSAFE_Combobox
       id={fieldName}
+      name={registeredFieldName}
+      ref={registerRef}
       label={getLabel(verdigruppe.visningsnavn, verdigruppe.pakrevd)}
       selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
       size="small"
