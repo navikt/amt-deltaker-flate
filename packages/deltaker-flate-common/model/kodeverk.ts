@@ -31,7 +31,7 @@ export const utflatetKodeverkSchema = z.object({
   valgteKategoriseringer: z.array(
     z.object({
       representerer: z.enum(OpplaringRepresenterer),
-      valg: z.record(z.string(), z.string()).transform((valgMap) =>
+      valg: z.record(z.uuid(), z.string()).transform((valgMap) =>
         Object.entries(valgMap).map(([id, visningsnavn]) => ({
           id,
           visningsnavn

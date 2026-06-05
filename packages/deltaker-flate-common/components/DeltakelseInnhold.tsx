@@ -88,7 +88,8 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
   const kodeverkForListe = kodeverk?.valgteKategoriseringer.filter(
     (e) =>
       e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
-      e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
+      e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
+      e.valg.length > 0
   )
 
   return (
@@ -102,6 +103,9 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
               <List.Item key={valg.id}>{valg.visningsnavn}</List.Item>
             ))
           )}
+          {kodeverk.valgteSertifiseringer.map((s) => (
+            <List.Item key={s.id}>{s.navn}</List.Item>
+          ))}
         </List>
       )}
     </>
