@@ -85,25 +85,28 @@ export const DeltakelseInnhold = ({
 
 const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
   const kodeverkTekst = getKodeverkTekst(kodeverk)
-  const kodeverkForListe = kodeverk?.valgteKategoriseringer.filter(
+  const kodeverkForListe = (kodeverk?.valgteKategoriseringer ?? []).filter(
     (e) =>
       e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
       e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
       e.valg.length > 0
   )
+  const valgteSertifiseringer = kodeverk?.valgteSertifiseringer ?? []
+  const visListe =
+    kodeverkForListe.length > 0 || valgteSertifiseringer.length > 0
 
   return (
     <>
       {kodeverkTekst && <BodyLong size="small">{kodeverkTekst}</BodyLong>}
 
-      {kodeverk && kodeverkForListe && kodeverkForListe.length > 0 && (
+      {visListe && (
         <List as="ul" size="small">
           {kodeverkForListe.map((e) =>
             e.valg.map((valg) => (
               <List.Item key={valg.id}>{valg.visningsnavn}</List.Item>
             ))
           )}
-          {kodeverk.valgteSertifiseringer.map((s) => (
+          {valgteSertifiseringer.map((s) => (
             <List.Item key={s.id}>{s.navn}</List.Item>
           ))}
         </List>
