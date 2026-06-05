@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import {
+  DeltakerlisteStatus,
   DeltakerStatusType,
   EndreDeltakelseType,
   harBakgrunnsinfo,
@@ -192,7 +193,11 @@ export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
   if (skalViseEndreAvslutning(pamelding) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
   }
-  if (ikkeAktuell(pamelding) && !deltakelseErLaast) {
+  if (
+    ikkeAktuell(pamelding) &&
+    !deltakelseErLaast &&
+    pamelding.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES
+  ) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }
 
