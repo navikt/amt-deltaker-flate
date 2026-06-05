@@ -62,7 +62,7 @@ const _FormErrorSummary = <T extends FieldValues>({
   const kodeverkErrors = Object.entries(errors).filter(([key]) =>
     key.startsWith('kodeverkValg')
   )
-
+  // TODO linker funker ikke, gå til bake til button :(
   return (
     <div ref={ref} tabIndex={-1} className="mb-8">
       <ErrorSummary heading="For å gå videre må du rette opp følgende:">

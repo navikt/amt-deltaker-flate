@@ -16,7 +16,7 @@ const formToKladdRequest = (
   arrangorUnderenhet: data.arrangorUnderenhet,
   startdato: data.startdato,
   sluttdato: data.sluttdato,
-  kodeverkValg: data.kodeverkValg,
+  kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
   sertifiseringValg: data.sertifiseringValg
 })
 
@@ -119,16 +119,7 @@ describe('KladdLagring - auto-lagring', () => {
       '1',
       '0101',
       expect.objectContaining({
-        kodeverkValg: [
-          {
-            representerer: OpplaringRepresenterer.BRANSJE_ID,
-            valgteIder: ['bransje-1']
-          },
-          {
-            representerer: OpplaringRepresenterer.FORERKORT,
-            valgteIder: ['fk-1']
-          }
-        ]
+        kodeverkValg: ['bransje-1', 'fk-1']
       })
     )
   })
