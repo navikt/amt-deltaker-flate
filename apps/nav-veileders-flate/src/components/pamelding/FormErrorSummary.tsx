@@ -72,10 +72,11 @@ const _FormErrorSummary = <T extends FieldValues>({
           kodeverkErrors.map(([key, error]) => (
             <ErrorSummary.Item
               key={key}
-              as="button"
-              type="button"
-              onClick={() => {
-                document.getElementById(key)?.focus()
+              as="a"
+              href={`#${key}`}
+              onClick={(event) => {
+                event.preventDefault()
+                focusElementById(key)
               }}
             >
               {error?.message as string}
@@ -100,4 +101,29 @@ const _FormErrorSummary = <T extends FieldValues>({
       </ErrorSummary>
     </div>
   )
+}
+
+const focusElementById = (id: string) => {
+  const element = document.getElementById(id)
+
+  if (!element) {
+    return
+  }
+
+  const shadowFocusTarget =
+    element.shadowRoot?.querySelector<HTMLElement>('input')
+
+  if (shadowFocusTarget) {
+    shadowFocusTarget.focus()
+    return
+  }
+
+  const lightDomFocusTarget = element.querySelector<HTMLElement>('input')
+
+  if (lightDomFocusTarget) {
+    lightDomFocusTarget.focus()
+    return
+  }
+
+  element.focus()
 }
