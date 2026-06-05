@@ -89,9 +89,12 @@ const _FormErrorSummary = <T extends FieldValues>({
             error && (
               <ErrorSummary.Item
                 key={fieldName}
-                as="button"
-                type="button"
-                onClick={() => setFocus(fieldName)}
+                as="a"
+                href={`#${fieldName}`}
+                onClick={(event) => {
+                  event.preventDefault()
+                  setFocus(fieldName)
+                }}
               >
                 {error.message as string}
               </ErrorSummary.Item>
