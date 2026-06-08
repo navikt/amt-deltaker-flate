@@ -89,6 +89,7 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
     (e) =>
       e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
       e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
+      e.representerer !== OpplaringRepresenterer.KURSTYPE_ID &&
       e.valg.length > 0
   )
   const valgteSertifiseringer = kodeverk?.valgteSertifiseringer ?? []
