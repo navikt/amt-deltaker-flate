@@ -96,15 +96,7 @@ export const erLaastMenNyligAvsluttet = (
   return !dayjs(nyesteDato).isBefore(toMndSiden)
 }
 
-const erDeltakelseLaast = (
-  pamelding: DeltakerResponse,
-  laastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
-): boolean => {
-  // Låst men nylig avsluttet – begrenset redigering er tillatt
-  if (laastMenNyligAvsluttet) {
-    return false
-  }
-
+const erDeltakelseLaast = (pamelding: DeltakerResponse): boolean => {
   if (!pamelding.kanEndres) {
     return true
   }
@@ -143,10 +135,7 @@ export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
   const valg: EndreDeltakelseType[] = []
   const sluttdato = pamelding.sluttdato
   const deltakelseErLaastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
-  const deltakelseErLaast = erDeltakelseLaast(
-    pamelding,
-    deltakelseErLaastMenNyligAvsluttet
-  )
+  const deltakelseErLaast = erDeltakelseLaast(pamelding)
 
   // Låst men nylig avsluttet – kun ENDRE_AVSLUTNING er tillatt
   if (deltakelseErLaastMenNyligAvsluttet) {
