@@ -13,7 +13,10 @@ import {
   KodeverkUtdanningGruppe,
   KodeverkVerdigruppeBase
 } from '../api/data/kodeverk.ts'
-import { getValgteVerdier } from '../utils/kodeverk.ts'
+import {
+  getValgteSertifiseringer,
+  getValgteVerdier
+} from '../utils/kodeverk.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
@@ -109,8 +112,7 @@ export type PameldingEnkeltplassFormValues = z.infer<
 >
 
 export const generateFormDefaultValues = (
-  deltaker: DeltakerResponse,
-  kodeverk?: KodeverkResponse
+  deltaker: DeltakerResponse
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
@@ -124,8 +126,8 @@ export const generateFormDefaultValues = (
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
     prisinformasjon: deltaker.prisinformasjon ?? '',
-    kodeverkValg: getValgteVerdier(kodeverk?.alternativer ?? []),
-    sertifiseringValg: kodeverk?.sertifiseringValg ?? []
+    kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
+    sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
   }
 }
 

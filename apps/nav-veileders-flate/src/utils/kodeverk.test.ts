@@ -5,7 +5,7 @@ import {
   Seleksjonstype,
   type KodeverkContainer
 } from '../api/data/kodeverk'
-import { getValgteVerdier } from './kodeverk'
+import { getValgteVerdier2 as getValgteVerdier } from './kodeverk'
 
 describe('getValgteVerdier', () => {
   it('henter valgte id-er fra en verdigruppe', () => {

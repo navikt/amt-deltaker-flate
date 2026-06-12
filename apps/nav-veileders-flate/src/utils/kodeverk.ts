@@ -1,10 +1,32 @@
 import { KodeverkAlternativType, KodeverkContainer } from '../api/data/kodeverk'
-import { OpplaringRepresenterer } from 'deltaker-flate-common'
+import { FlattKodeverk, OpplaringRepresenterer } from 'deltaker-flate-common'
+
+export const getValgteVerdier = (kodeverkValg: FlattKodeverk | null) => {
+  return (
+    kodeverkValg?.valgteKategoriseringer
+      .filter((e) => e.valg.length > 0)
+      .map((e) => ({
+        representerer: e.representerer,
+        valgteIder: e.valg.map((v) => v.id)
+      })) ?? []
+  )
+}
+
+export const getValgteSertifiseringer = (
+  kodeverkValg: FlattKodeverk | null
+) => {
+  return (
+    kodeverkValg?.valgteSertifiseringer.map((e) => ({
+      id: e.id,
+      navn: e.navn
+    })) ?? []
+  )
+}
 
 /**
  * Henter alle valgte verdi-IDer fra kodeverket.
  */
-export const getValgteVerdier = (alternativer: KodeverkContainer[]) => {
+export const getValgteVerdier2 = (alternativer: KodeverkContainer[]) => {
   return alternativer.flatMap((a) => {
     if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
       const valgteIder = a.alternativer.filter((v) => v.valgt).map((v) => v.id)
