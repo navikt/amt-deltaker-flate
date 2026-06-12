@@ -146,7 +146,7 @@ export class MockHandler {
         sistEndretAvEnhet: 'Nav Fredrikstad'
       },
       adresseDelesMedArrangor: delesAdresseMedArrangor(this.tiltakskode),
-      kanEndres: true,
+      kanEndres: false,
       digitalBruker: true,
       harAdresse: true,
       maxVarighet: dayjs.duration(1, 'month').asMilliseconds(),

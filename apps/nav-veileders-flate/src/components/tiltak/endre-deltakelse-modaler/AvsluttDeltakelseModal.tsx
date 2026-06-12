@@ -180,6 +180,8 @@ export const AvsluttDeltakelseModal = ({
       setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
+    // eslint-disable-next-line no-console
+    console.log('sluttdato', sluttdato.sluttdato)
     if (
       !pamelding.kanEndres &&
       skalViseSluttDato &&
@@ -187,7 +189,7 @@ export const AvsluttDeltakelseModal = ({
       dayjs(sluttdato.sluttdato).isSameOrAfter(dayjs(), 'day')
     ) {
       // Hvis deltaker ikke kan endres, betyr det at det finnes en annen deltakelse på samme tiltak med akitv status.
-      // Derfor kan man ikke sete sluttdato i fremtiden da de ville gått tilbake til aktiv status.
+      // Derfor kan man ikke sette sluttdato i fremtiden da denne ville gått tilbake til aktiv status.
       sluttdato.setError(
         'Sluttdato kan bare være tilbake i tid da deltakeren allerede har en aktiv deltakelse.'
       )
