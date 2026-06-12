@@ -180,8 +180,6 @@ export const AvsluttDeltakelseModal = ({
       setHarDeltattError('Du må svare før du kan fortsette.')
     }
 
-    // eslint-disable-next-line no-console
-    console.log('sluttdato', sluttdato.sluttdato)
     if (
       !pamelding.kanEndres &&
       skalViseSluttDato &&
