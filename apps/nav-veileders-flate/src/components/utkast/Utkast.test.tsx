@@ -37,7 +37,7 @@ const createKodeverk = () => ({
   valgteKategoriseringer: [
     {
       representerer: OpplaringRepresenterer.BRANSJE_ID,
-      valg: [{ id: 'old-id', visningsnavn: 'Bygg' }]
+      valg: [{ id: 'new-id', visningsnavn: 'Ny Bransje' }]
     }
   ],
   valgteSertifiseringer: []

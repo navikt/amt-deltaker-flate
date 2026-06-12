@@ -1,6 +1,5 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { logError, OpplaringRepresenterer } from 'deltaker-flate-common'
-import { useState } from 'react'
 import { FieldValues, Path, useFormContext } from 'react-hook-form'
 import {
   KodeverkAlternativType,
@@ -75,8 +74,8 @@ const UtdanningGruppeValg = ({
 }) => {
   const {
     register,
-    getValues,
     setValue,
+    watch,
     trigger,
     formState: { errors, submitCount }
   } = useFormContext<PameldingEnkeltplassFormValues>()
@@ -86,13 +85,13 @@ const UtdanningGruppeValg = ({
     fieldName as unknown as Path<PameldingEnkeltplassFormValues>
   )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
+  const kodeverkValg = watch('kodeverkValg') ?? []
 
-  const [valgtUtdanningId, setValgtUtdanningId] = useState<string | null>(
-    () => {
-      const medValg = utdanningGruppe.utdanninger.find((u) => u.valgt)
-      return medValg?.id ?? null
-    }
-  )
+  const valgtUtdanningId =
+    getValgteIderForRepresenterer(
+      kodeverkValg,
+      utdanningGruppe.representerer
+    )[0] ?? null
 
   const options: KodeverkOption[] = utdanningGruppe.utdanninger.map((u) => ({
     value: u.id,
@@ -103,8 +102,7 @@ const UtdanningGruppeValg = ({
     utdanningGruppe.utdanninger.find((u) => u.id === valgtUtdanningId) ?? null
 
   function handleValg(optionId: string, isSelected: boolean) {
-    const gjeldendeValg = getValues('kodeverkValg')
-    let nesteValg = gjeldendeValg
+    let nesteValg = kodeverkValg
 
     if (valgtUtdanning && valgtUtdanning.id !== optionId) {
       const gamleIder = new Set(
@@ -112,12 +110,12 @@ const UtdanningGruppeValg = ({
       )
 
       const valgteLarefag = getValgteIderForRepresenterer(
-        gjeldendeValg,
+        nesteValg,
         OpplaringRepresenterer.LAREFAG
       ).filter((id) => !gamleIder.has(id))
 
       nesteValg = upsertKodeverkValg(
-        gjeldendeValg,
+        nesteValg,
         OpplaringRepresenterer.LAREFAG,
         valgteLarefag
       )
@@ -130,8 +128,6 @@ const UtdanningGruppeValg = ({
     )
 
     setValue('kodeverkValg', nesteValg, { shouldDirty: true })
-
-    setValgtUtdanningId(isSelected ? optionId : null)
 
     if (submitCount > 0) {
       void trigger(fieldName)
@@ -188,7 +184,7 @@ const VerdigruppeValg = ({
   )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
-  const kodeverkValg = watch('kodeverkValg')
+  const kodeverkValg = watch('kodeverkValg') ?? []
 
   const egneIds = verdigruppe.alternativer.map((v) => v.id)
   const valgteEgne = getValgteIderForRepresenterer(
