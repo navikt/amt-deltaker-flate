@@ -7,10 +7,10 @@ import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
   KodeverkContainer,
-  OpplaringRepresenterer,
   Seleksjonstype,
   VerdigruppeSokKilde
 } from '../../../../api/data/kodeverk'
+import { OpplaringRepresenterer } from 'deltaker-flate-common'
 
 const sokSertifiseringerMock = vi.fn()
 
@@ -26,14 +26,16 @@ vi.mock('../../../../hooks/useDebounce.ts', () => ({
 
 const sertifiseringAlternativ: KodeverkContainer = {
   type: KodeverkAlternativType.VERDIGRUPPE_SOK,
-  id: null,
   visningsnavn: 'Sertifiseringer',
   representerer: OpplaringRepresenterer.SERTIFISERINGER,
   seleksjonstype: Seleksjonstype.FLERVALG,
-  kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING
+  kilde: VerdigruppeSokKilde.JANZZ_SERTIFISERING,
+  pakrevd: false
 }
 
 describe('SertifiseringSok', () => {
+  const sertifiseringLabel = /^Sertifiseringer\b/i
+
   beforeEach(() => {
     sokSertifiseringerMock.mockReset()
   })
@@ -44,7 +46,7 @@ describe('SertifiseringSok', () => {
       renderWithProviders(
         <SertifiseringSok alternativ={sertifiseringAlternativ} />
       )
-      expect(screen.getByLabelText('Sertifiseringer')).toBeInTheDocument()
+      expect(screen.getByLabelText(sertifiseringLabel)).toBeInTheDocument()
     })
 
     it('viser forhåndsvalgte sertifiseringer som chips', () => {
@@ -89,7 +91,7 @@ describe('SertifiseringSok', () => {
         <SertifiseringSok alternativ={sertifiseringAlternativ} />
       )
 
-      await user.type(screen.getByLabelText('Sertifiseringer'), 'datakort')
+      await user.type(screen.getByLabelText(sertifiseringLabel), 'datakort')
 
       await waitFor(() => {
         expect(sokSertifiseringerMock).toHaveBeenCalledWith('datakort', '0101')
@@ -112,7 +114,7 @@ describe('SertifiseringSok', () => {
         }
       )
 
-      await user.type(screen.getByLabelText('Sertifiseringer'), 'datakort')
+      await user.type(screen.getByLabelText(sertifiseringLabel), 'datakort')
       const treff = await screen.findByRole('option', {
         name: 'Datakortet del 1'
       })
@@ -142,7 +144,7 @@ describe('SertifiseringSok', () => {
       )
 
       // Søk for å få fram option-en, deretter klikk for å avvelge
-      await user.type(screen.getByLabelText('Sertifiseringer'), 'datakort')
+      await user.type(screen.getByLabelText(sertifiseringLabel), 'datakort')
       const valgt = await screen.findByRole('option', {
         name: 'Datakortet del 1',
         selected: true

@@ -55,8 +55,8 @@ export function SertifiseringSok({
         name="sertifiseringValg"
         render={({ field }) => (
           <UNSAFE_Combobox
-            id="verdigruppeSok"
-            label={alternativ.visningsnavn}
+            id="sertifiseringValg"
+            label={`${alternativ.visningsnavn}${alternativ.pakrevd ? '' : ' (valgfri)'}`}
             isMultiSelect
             selectedOptions={(field.value ?? []).map((v) => ({
               value: v.id.toString(),
@@ -64,6 +64,7 @@ export function SertifiseringSok({
             }))}
             ref={field.ref}
             size="small"
+            required={alternativ.pakrevd}
             onChange={setSoketekst}
             filteredOptions={sertifiseringerOptions}
             options={sertifiseringerOptions}

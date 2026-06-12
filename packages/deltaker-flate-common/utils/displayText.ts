@@ -81,13 +81,13 @@ export const hentGjennomforingNavnHosArrangorTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverkTittel?: string | null
+  kursType?: string | null
 ) => {
   if (
     tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
-    kodeverkTittel
+    kursType
   ) {
-    return `${kodeverkTittel} hos ${arrangorNavn}`
+    return `${kursType} hos ${arrangorNavn}`
   }
 
   return hentTiltakEllerGjennomforingNavnHosArrangorTekst(

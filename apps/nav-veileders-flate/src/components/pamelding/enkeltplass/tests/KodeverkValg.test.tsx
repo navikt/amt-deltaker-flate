@@ -6,11 +6,15 @@ import { KodeverkValg } from '../KodeverkValg'
 import { renderWithProviders } from './test-utils'
 import {
   KodeverkAlternativType,
-  OpplaringRepresenterer,
   KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
-import { Tiltakskode } from 'deltaker-flate-common'
+import { Tiltakskode, OpplaringRepresenterer } from 'deltaker-flate-common'
+
+const bransjeLabel = /^Bransje\b/i
+const forerkortLabel = /^Førerkort\b/i
+const utdanningsprogramLabel = /^Utdanningsprogram\b/i
+const larefagLabel = /^Lærefag\b/i
 
 const bransjeVerdigruppe = {
   type: KodeverkAlternativType.VERDIGRUPPE as const,
@@ -65,7 +69,7 @@ describe('KodeverkValg', () => {
       sertifiseringValg: []
     }
     renderWithProviders(<KodeverkValg kodeverk={kodeverk} />)
-    expect(screen.getByLabelText('Bransje')).toBeInTheDocument()
+    expect(screen.getByLabelText(bransjeLabel)).toBeInTheDocument()
   })
 
   it('viser forhåndsvalgte verdier fra valgt: true', () => {
@@ -82,7 +86,14 @@ describe('KodeverkValg', () => {
       sertifiseringValg: []
     }
     renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
-      defaultValues: { kodeverkValg: ['bransje-1'] }
+      defaultValues: {
+        kodeverkValg: [
+          {
+            representerer: OpplaringRepresenterer.BRANSJE_ID,
+            valgteIder: ['bransje-1']
+          }
+        ]
+      }
     })
     expect(
       screen.getByRole('option', { name: 'Bygg og anlegg', selected: true })
@@ -102,13 +113,13 @@ describe('KodeverkValg', () => {
       })
 
       // Velg i Bransje
-      const bransjeInput = screen.getByLabelText('Bransje')
+      const bransjeInput = screen.getByLabelText(bransjeLabel)
       await user.click(bransjeInput)
       const byggOption = screen.getByRole('option', { name: 'Bygg og anlegg' })
       await user.click(byggOption)
 
       // Velg i Førerkort
-      const forerkortInput = screen.getByLabelText('Førerkort')
+      const forerkortInput = screen.getByLabelText(forerkortLabel)
       await user.click(forerkortInput)
       const personbilOption = screen.getByRole('option', {
         name: 'B - Personbil'
@@ -137,12 +148,12 @@ describe('KodeverkValg', () => {
       })
 
       // Velg i Bransje
-      const bransjeInput = screen.getByLabelText('Bransje')
+      const bransjeInput = screen.getByLabelText(bransjeLabel)
       await user.click(bransjeInput)
       await user.click(screen.getByRole('option', { name: 'Bygg og anlegg' }))
 
       // Velg i Førerkort
-      const forerkortInput = screen.getByLabelText('Førerkort')
+      const forerkortInput = screen.getByLabelText(forerkortLabel)
       await user.click(forerkortInput)
       await user.click(screen.getByRole('option', { name: 'B - Personbil' }))
 
@@ -181,7 +192,7 @@ describe('KodeverkValg', () => {
         defaultValues: { kodeverkValg: [] }
       })
 
-      const bransjeInput = screen.getByLabelText('Bransje')
+      const bransjeInput = screen.getByLabelText(bransjeLabel)
 
       // Velg Bygg og anlegg
       await user.click(bransjeInput)
@@ -215,7 +226,6 @@ describe('KodeverkValg', () => {
       alternativer: [
         {
           type: KodeverkAlternativType.UTDANNING_GRUPPE,
-          id: null,
           visningsnavn: 'Utdanningsprogram',
           representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
           pakrevd: true,
@@ -223,8 +233,8 @@ describe('KodeverkValg', () => {
             {
               id: 'bygg-id',
               visningsnavn: 'Bygg- og anleggsteknikk',
+              valgt: false,
               larefag: {
-                id: null,
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
                 representerer: OpplaringRepresenterer.LAREFAG,
@@ -242,8 +252,8 @@ describe('KodeverkValg', () => {
             {
               id: 'elektro-id',
               visningsnavn: 'Elektro og datateknologi',
+              valgt: false,
               larefag: {
-                id: null,
                 visningsnavn: 'Lærefag',
                 pakrevd: false,
                 representerer: OpplaringRepresenterer.LAREFAG,
@@ -266,7 +276,7 @@ describe('KodeverkValg', () => {
       renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
         defaultValues: { kodeverkValg: [] }
       })
-      expect(screen.getByLabelText('Utdanningsprogram')).toBeInTheDocument()
+      expect(screen.getByLabelText(utdanningsprogramLabel)).toBeInTheDocument()
     })
 
     it('viser lærefag etter valg av utdanningsprogram', async () => {
@@ -275,13 +285,13 @@ describe('KodeverkValg', () => {
         defaultValues: { kodeverkValg: [] }
       })
 
-      const gruppeInput = screen.getByLabelText('Utdanningsprogram')
+      const gruppeInput = screen.getByLabelText(utdanningsprogramLabel)
       await user.click(gruppeInput)
       await user.click(
         screen.getByRole('option', { name: 'Bygg- og anleggsteknikk' })
       )
 
-      expect(screen.getByLabelText('Lærefag')).toBeInTheDocument()
+      expect(screen.getByLabelText(larefagLabel)).toBeInTheDocument()
     })
 
     it('auto-åpner utdanningsprogram med valgte verdier', () => {
@@ -303,6 +313,7 @@ describe('KodeverkValg', () => {
             utdanninger: [
               {
                 ...valgtUtdanning,
+                valgt: true,
                 larefag: {
                   ...larefagVerdigruppe,
                   alternativer: [
@@ -322,10 +333,21 @@ describe('KodeverkValg', () => {
       }
 
       renderWithProviders(<KodeverkValg kodeverk={kodeverkMedValg} />, {
-        defaultValues: { kodeverkValg: ['fag-1'] }
+        defaultValues: {
+          kodeverkValg: [
+            {
+              representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+              valgteIder: ['bygg-id']
+            },
+            {
+              representerer: OpplaringRepresenterer.LAREFAG,
+              valgteIder: ['fag-1']
+            }
+          ]
+        }
       })
 
-      expect(screen.getByLabelText('Lærefag')).toBeInTheDocument()
+      expect(screen.getByLabelText(larefagLabel)).toBeInTheDocument()
       expect(
         screen.getByRole('option', { name: 'Tømrerfaget', selected: true })
       ).toBeInTheDocument()

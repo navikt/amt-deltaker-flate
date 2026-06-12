@@ -74,11 +74,13 @@ const PameldingEnkeltplassFormInner = ({
     if (focusOnOpen && formRef?.current) formRef.current.focus()
   }, [focusOnOpen])
 
-  const defaultValues = generateFormDefaultValues(deltaker, kodeverk)
+  const defaultValues = generateFormDefaultValues(deltaker)
 
   const methods = useForm<PameldingEnkeltplassFormValues>({
     defaultValues,
-    resolver: zodResolver(createPameldingEnkeltplassFormSchema(deltaker)),
+    resolver: zodResolver(
+      createPameldingEnkeltplassFormSchema(deltaker, kodeverk)
+    ),
     shouldFocusError: false
   })
 

@@ -1,5 +1,15 @@
 import { z } from 'zod'
-import { Tiltakskode } from './deltaker.ts'
+
+export enum OpplaringRepresenterer {
+  KURSTYPE_ID = 'KURSTYPE_ID',
+  BRANSJE_ID = 'BRANSJE_ID',
+  SERTIFISERINGER = 'SERTIFISERINGER',
+  FORERKORT = 'FORERKORT',
+  INNHOLDSELEMENTER = 'INNHOLDSELEMENTER',
+  NORSKPROVE = 'NORSKPROVE',
+  UTDANNINGSPROGRAM_ID = 'UTDANNINGSPROGRAM_ID',
+  LAREFAG = 'LAREFAG'
+}
 
 /**
  * Skjema for valgte sertifiseringer (Janzz-ID + visningsnavn).
@@ -18,10 +28,17 @@ export const sertifiseringValgSchema = z.array(
  * ikke hele hierarkiet av valg.
  */
 export const utflatetKodeverkSchema = z.object({
-  tiltakskode: z.enum(Tiltakskode),
-  tittel: z.string().nullable(),
-  valg: z.array(z.string()),
-  valgteKodeverkIder: z.array(z.uuid()),
+  valgteKategoriseringer: z.array(
+    z.object({
+      representerer: z.enum(OpplaringRepresenterer),
+      valg: z.record(z.uuid(), z.string()).transform((valgMap) =>
+        Object.entries(valgMap).map(([id, visningsnavn]) => ({
+          id,
+          visningsnavn
+        }))
+      )
+    })
+  ),
   valgteSertifiseringer: sertifiseringValgSchema
 })
 

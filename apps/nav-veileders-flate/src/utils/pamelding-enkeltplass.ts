@@ -25,7 +25,7 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     startdato,
     sluttdato,
     arrangorUnderenhet: data.arrangorUnderenhet,
-    kodeverkValg: data.kodeverkValg,
+    kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
     sertifiseringValg: data.sertifiseringValg
   }
 }
@@ -54,7 +54,10 @@ export const generateEnkeltplassPameldingRequest = (
     sluttdato: dateToIsoString(deltaker.sluttdato),
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
-    kodeverkValg: deltaker.deltakerliste.kodeverk?.valgteKodeverkIder,
+    kodeverkValg:
+      deltaker.deltakerliste.kodeverk?.valgteKategoriseringer.flatMap(
+        (kodeverk) => kodeverk.valg.map((v) => v.id)
+      ),
     sertifiseringValg: deltaker.deltakerliste.kodeverk?.valgteSertifiseringer
   }
 }

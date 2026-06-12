@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { DeltakelseInnhold, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakelseInnhold,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/deltaker'
 import { PameldingHeader } from './PameldingHeader.tsx'
@@ -28,7 +32,7 @@ const lagDeltakerliste = (
   }) as unknown as Deltakerliste
 
 describe('PameldingHeader - FOV heading', () => {
-  it('bruker kodeverk.tittel i heading når FOV har kodeverk med tittel', () => {
+  it('bruker kurstype fra kodeverk i heading når FOV har kodeverk med tittel', () => {
     render(
       <PameldingHeader
         deltakerStatus={{
@@ -39,22 +43,24 @@ describe('PameldingHeader - FOV heading', () => {
           gyldigTil: null,
           opprettet: new Date()
         }}
-        deltakerliste={lagDeltakerliste()}
+        deltakerliste={lagDeltakerliste({
+          kodeverk: {
+            valgteKategoriseringer: [
+              {
+                representerer: OpplaringRepresenterer.KURSTYPE_ID,
+                valg: [{ id: 'kurs-1', visningsnavn: 'Norskopplæring' }]
+              }
+            ],
+            valgteSertifiseringer: []
+          }
+        })}
         vedtaksinformasjon={null}
-        kodeverk={{
-          tiltakskode:
-            Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-          tittel: 'Norskopplæring B1',
-          valg: [],
-          valgteKodeverkIder: [],
-          valgteSertifiseringer: []
-        }}
       />
     )
 
     expect(
       screen.getByRole('heading', {
-        name: 'Norskopplæring B1 hos A & A Eiendom Ans'
+        name: 'Norskopplæring hos A & A Eiendom Ans'
       })
     ).toBeInTheDocument()
   })
@@ -72,7 +78,6 @@ describe('PameldingHeader - FOV heading', () => {
         }}
         deltakerliste={lagDeltakerliste()}
         vedtaksinformasjon={null}
-        kodeverk={null}
       />
     )
 
@@ -97,16 +102,18 @@ describe('PameldingHeader - FOV heading', () => {
         deltakerliste={lagDeltakerliste({
           tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
           deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
-          arrangorNavn: 'Kurs AS'
+          arrangorNavn: 'Kurs AS',
+          kodeverk: {
+            valgteKategoriseringer: [
+              {
+                representerer: OpplaringRepresenterer.BRANSJE_ID,
+                valg: [{ id: 'kurs-2', visningsnavn: 'Bransje: Bygg' }]
+              }
+            ],
+            valgteSertifiseringer: []
+          }
         })}
         vedtaksinformasjon={null}
-        kodeverk={{
-          tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-          tittel: 'Bransje: Bygg',
-          valg: ['Bygg'],
-          valgteKodeverkIder: [],
-          valgteSertifiseringer: []
-        }}
       />
     )
 
@@ -138,10 +145,12 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
-            tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-            tittel: 'Bransje',
-            valg: ['IT'],
-            valgteKodeverkIder: [],
+            valgteKategoriseringer: [
+              {
+                representerer: OpplaringRepresenterer.BRANSJE_ID,
+                valg: [{ id: 'bransje-3', visningsnavn: 'IT' }]
+              }
+            ],
             valgteSertifiseringer: []
           }}
           heading={<h3>Heading</h3>}
@@ -156,10 +165,7 @@ describe('DeltakelseInnhold', () => {
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
           kodeverk={{
-            tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-            tittel: null,
-            valg: [],
-            valgteKodeverkIder: [],
+            valgteKategoriseringer: [],
             valgteSertifiseringer: []
           }}
           heading={<h3>Heading</h3>}

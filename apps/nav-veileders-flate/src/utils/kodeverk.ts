@@ -1,20 +1,23 @@
-import { KodeverkAlternativType, KodeverkContainer } from '../api/data/kodeverk'
+import { FlattKodeverk } from 'deltaker-flate-common'
 
-/**
- * Henter alle valgte verdi-IDer fra kodeverket.
- */
-export const getValgteVerdier = (
-  alternativer: KodeverkContainer[]
-): string[] => {
-  return alternativer.flatMap((a) => {
-    if (a.type === KodeverkAlternativType.VERDIGRUPPE) {
-      return a.alternativer.filter((v) => v.valgt).map((v) => v.id)
-    }
-    if (a.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
-      return a.utdanninger.flatMap((u) =>
-        u.larefag.alternativer.filter((v) => v.valgt).map((v) => v.id)
-      )
-    }
-    return []
-  })
+export const getValgteVerdier = (kodeverkValg: FlattKodeverk | null) => {
+  return (
+    kodeverkValg?.valgteKategoriseringer
+      .filter((e) => e.valg.length > 0)
+      .map((e) => ({
+        representerer: e.representerer,
+        valgteIder: e.valg.map((v) => v.id)
+      })) ?? []
+  )
+}
+
+export const getValgteSertifiseringer = (
+  kodeverkValg: FlattKodeverk | null
+) => {
+  return (
+    kodeverkValg?.valgteSertifiseringer.map((e) => ({
+      id: e.id,
+      navn: e.navn
+    })) ?? []
+  )
 }

@@ -1,14 +1,27 @@
 import dayjs from 'dayjs'
-import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
+import {
+  getDayjsFromString,
+  OpplaringRepresenterer,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
+import {
+  KodeverkAlternativType,
+  KodeverkContainer,
+  KodeverkResponse,
+  KodeverkUtdanningGruppe,
+  KodeverkVerdigruppeBase
+} from '../api/data/kodeverk.ts'
+import {
+  getValgteSertifiseringer,
+  getValgteVerdier
+} from '../utils/kodeverk.ts'
 import {
   getMaxVarighetDato,
   VARGIHET_VALG_FEILMELDING
 } from '../utils/varighet.tsx'
 import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
-import { getValgteVerdier } from '../utils/kodeverk.ts'
-import { KodeverkResponse } from '../api/data/kodeverk.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
@@ -23,10 +36,11 @@ const dateSchema = (feltnavn: string) =>
     }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
 
 export const createPameldingEnkeltplassFormSchema = (
-  pamelding: DeltakerResponse
+  pamelding: DeltakerResponse,
+  kodeverk?: KodeverkResponse
 ) =>
   z
-    .object({
+    .looseObject({
       tiltakskode: z.enum(Tiltakskode),
       innhold: z
         .string()
@@ -47,7 +61,12 @@ export const createPameldingEnkeltplassFormSchema = (
           PRISINFO_MAX_TEGN,
           `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
         ),
-      kodeverkValg: z.array(z.string()),
+      kodeverkValg: z.array(
+        z.object({
+          representerer: z.enum(OpplaringRepresenterer),
+          valgteIder: z.array(z.string())
+        })
+      ),
       sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
     })
     .refine(
@@ -79,14 +98,21 @@ export const createPameldingEnkeltplassFormSchema = (
         path: ['sluttdato']
       }
     )
+    // superRefine bruker ctx (context object) for å pushe "feil" inn i validatoren for flere objekter
+    .superRefine((schema, ctx) => {
+      if (!kodeverk) {
+        return
+      }
+
+      validateKodeverkAlternativer(kodeverk.alternativer, schema, ctx)
+    })
 
 export type PameldingEnkeltplassFormValues = z.infer<
   ReturnType<typeof createPameldingEnkeltplassFormSchema>
 >
 
 export const generateFormDefaultValues = (
-  deltaker: DeltakerResponse,
-  kodeverk?: KodeverkResponse
+  deltaker: DeltakerResponse
 ): PameldingEnkeltplassFormValues => {
   return {
     tiltakskode: deltaker.deltakerliste.tiltakskode,
@@ -100,7 +126,82 @@ export const generateFormDefaultValues = (
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
     prisinformasjon: deltaker.prisinformasjon ?? '',
-    kodeverkValg: getValgteVerdier(kodeverk?.alternativer ?? []),
-    sertifiseringValg: kodeverk?.sertifiseringValg ?? []
+    kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
+    sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
+  }
+}
+
+const validateKodeverkAlternativer = (
+  alternativer: KodeverkContainer[],
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  alternativer.forEach((alternativ) => {
+    if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE) {
+      validateVerdigruppe(alternativ, schema, ctx)
+      return
+    }
+
+    if (alternativ.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+      validateUtdanningsgruppe(alternativ, schema, ctx)
+      return
+    }
+
+    // Søk sertifisering er ikke påkrevd.
+    if (alternativ.type === KodeverkAlternativType.VERDIGRUPPE_SOK) {
+      return
+    }
+  })
+}
+
+const validateVerdigruppe = (
+  alternativ: KodeverkVerdigruppeBase,
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  if (!alternativ.pakrevd) {
+    return
+  }
+
+  const valgtIder = schema.kodeverkValg
+    .filter((valg) => valg.representerer === alternativ.representerer)
+    .flatMap((valg) => valg.valgteIder)
+
+  if (valgtIder.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: `${alternativ.visningsnavn} er påkrevd.`,
+      path: [`kodeverkValg_${alternativ.representerer}`]
+    })
+  }
+}
+
+const validateUtdanningsgruppe = (
+  alternativ: KodeverkUtdanningGruppe,
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  if (!alternativ.pakrevd) {
+    return
+  }
+
+  const valgtIder = schema.kodeverkValg
+    .filter((valg) => valg.representerer === alternativ.representerer)
+    .flatMap((valg) => valg.valgteIder)
+
+  if (valgtIder.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: `${alternativ.visningsnavn} er påkrevd.`,
+      path: [`kodeverkValg_${alternativ.representerer}`]
+    })
+  }
+
+  // Sjekk om lærefag er valgt kun for valgt utdanning
+  const valgtUtdanning = alternativ.utdanninger.find((u) =>
+    valgtIder.includes(u.id)
+  )
+  if (valgtUtdanning) {
+    validateVerdigruppe(valgtUtdanning.larefag, schema, ctx)
   }
 }

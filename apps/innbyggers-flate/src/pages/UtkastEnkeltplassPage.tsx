@@ -7,7 +7,9 @@ import {
   useDeferredFetch,
   VeilederSnakkeboble,
   formatDateFromString,
-  PrisOgBetaling
+  PrisOgBetaling,
+  OpplaringRepresenterer,
+  getKodeverkValgNavn
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -21,7 +23,10 @@ export const UtkastEnkeltplassPage = () => {
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    deltakerliste.kodeverk?.tittel
+    getKodeverkValgNavn(
+      deltakerliste.kodeverk,
+      OpplaringRepresenterer.KURSTYPE_ID
+    )
   )
 
   const { deltakerId } = useParams()
@@ -64,12 +69,7 @@ export const UtkastEnkeltplassPage = () => {
         arrangorNavn={deltakerliste.arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentGjennomforingNavnHosArrangorTekst(
-          deltakerliste.tiltakskode,
-          deltakerliste.deltakerlisteNavn,
-          deltakerliste.arrangorNavn,
-          deltakerliste.kodeverk?.tittel
-        )}
+        tiltaksnavnHosArrangor={tiltakNavnHosArrangorTekst}
       />
 
       <BodyLong size="small" className="mt-8 whitespace-pre-wrap">

@@ -97,11 +97,7 @@ export const UtkastPage = () => {
         arrangorNavn={arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-          deltakerliste.tiltakskode,
-          deltakerliste.deltakerlisteNavn,
-          arrangorNavn
-        )}
+        tiltaksnavnHosArrangor={navnHosArrangorTekst}
       />
 
       <OmKurset
@@ -155,7 +151,7 @@ export const UtkastPage = () => {
 
       <DetteDelesMedArrangor
         kanDeleDeltakerMedArrangor={kanDeleDeltakerMedArrangor}
-        arrangorNavn={navnHosArrangorTekst}
+        arrangorNavn={arrangorNavn}
         skalViseAdresse={deltaker.adresseDelesMedArrangor}
         visInnholdOgBakgrunnsinfo={visInnholdOgBakgrunnsinfo}
       />

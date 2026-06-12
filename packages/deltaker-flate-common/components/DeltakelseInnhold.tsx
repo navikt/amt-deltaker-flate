@@ -2,7 +2,7 @@ import { BodyLong, List } from '@navikt/ds-react'
 import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 import { erOpplaringstiltak } from '../utils/utils'
-import { FlattKodeverk } from '../model/kodeverk'
+import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
@@ -19,7 +19,7 @@ export const DeltakelseInnhold = ({
   heading
 }: Props) => {
   if (!harInnhold(deltakelsesinnhold)) {
-    if (!harKodeverk(kodeverk, tiltakskode)) {
+    if (!harKodeverk(kodeverk)) {
       return null
     }
 
@@ -27,7 +27,7 @@ export const DeltakelseInnhold = ({
       <div className="flex flex-col gap-2">
         {heading ?? null}
 
-        {renderKodeverk(kodeverk, tiltakskode)}
+        {renderKodeverk(kodeverk)}
       </div>
     )
   }
@@ -42,7 +42,7 @@ export const DeltakelseInnhold = ({
     deltakelsesinnhold
   )
 
-  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk, tiltakskode)) {
+  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk)) {
     return null
   }
 
@@ -64,7 +64,7 @@ export const DeltakelseInnhold = ({
         </BodyLong>
       )}
 
-      {renderKodeverk(kodeverk, tiltakskode)}
+      {renderKodeverk(kodeverk)}
 
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small">
@@ -83,20 +83,32 @@ export const DeltakelseInnhold = ({
   )
 }
 
-const renderKodeverk = (
-  kodeverk: FlattKodeverk | null | undefined,
-  tiltakskode: Tiltakskode
-) => {
-  const kodeverkTekst = getKodeverkTekst(kodeverk, tiltakskode)
+const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
+  const kodeverkTekst = getKodeverkTekst(kodeverk)
+  const kodeverkForListe = (kodeverk?.valgteKategoriseringer ?? []).filter(
+    (e) =>
+      e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
+      e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
+      e.representerer !== OpplaringRepresenterer.KURSTYPE_ID &&
+      e.valg.length > 0
+  )
+  const valgteSertifiseringer = kodeverk?.valgteSertifiseringer ?? []
+  const visListe =
+    kodeverkForListe.length > 0 || valgteSertifiseringer.length > 0
 
   return (
     <>
       {kodeverkTekst && <BodyLong size="small">{kodeverkTekst}</BodyLong>}
 
-      {kodeverk && kodeverk.valg.length > 0 && (
+      {visListe && (
         <List as="ul" size="small">
-          {kodeverk.valg.map((valg) => (
-            <List.Item key={valg}>{valg}</List.Item>
+          {kodeverkForListe.map((e) =>
+            e.valg.map((valg) => (
+              <List.Item key={valg.id}>{valg.visningsnavn}</List.Item>
+            ))
+          )}
+          {valgteSertifiseringer.map((s) => (
+            <List.Item key={s.id}>{s.navn}</List.Item>
           ))}
         </List>
       )}
@@ -104,14 +116,12 @@ const renderKodeverk = (
   )
 }
 
-const getKodeverkTekst = (
-  kodeverk: FlattKodeverk | null | undefined,
-  tiltakskode: Tiltakskode
-) => {
-  return tiltakskode ===
-    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
-    ? null
-    : kodeverk?.tittel
+const getKodeverkTekst = (kodeverk: FlattKodeverk | null | undefined) => {
+  return kodeverk?.valgteKategoriseringer.filter(
+    (e) =>
+      e.representerer === OpplaringRepresenterer.BRANSJE_ID ||
+      e.representerer === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
+  )[0]?.valg[0]?.visningsnavn
 }
 
 const getAnnetFeltForInnhold = (
@@ -135,9 +145,7 @@ const harInnhold = (
   )
 }
 
-const harKodeverk = (
-  kodeverk: FlattKodeverk | null | undefined,
-  tiltakskode: Tiltakskode
-): boolean =>
+const harKodeverk = (kodeverk: FlattKodeverk | null | undefined): boolean =>
   !!kodeverk &&
-  (kodeverk.valg.length > 0 || !!getKodeverkTekst(kodeverk, tiltakskode))
+  (kodeverk.valgteKategoriseringer.length > 0 ||
+    kodeverk.valgteSertifiseringer.length > 0)

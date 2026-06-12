@@ -1,11 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { Tiltakskode } from 'deltaker-flate-common'
+import { OpplaringRepresenterer, Tiltakskode } from 'deltaker-flate-common'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { generateEnkeltplassPameldingRequest } from './pamelding-enkeltplass'
 import { DeltakerResponse } from '../api/data/deltaker'
 
 dayjs.extend(duration)
+
+const createKodeverk = (
+  valgteKategoriseringer: NonNullable<
+    DeltakerResponse['deltakerliste']['kodeverk']
+  >['valgteKategoriseringer'] = [],
+  valgteSertifiseringer: NonNullable<
+    DeltakerResponse['deltakerliste']['kodeverk']
+  >['valgteSertifiseringer'] = []
+) => ({
+  valgteKategoriseringer,
+  valgteSertifiseringer
+})
 
 const lagDeltaker = (
   kodeverk: DeltakerResponse['deltakerliste']['kodeverk'] = null
@@ -59,31 +71,43 @@ describe('generateEnkeltplassPameldingRequest', () => {
 
   it('returnerer tomme lister når det flate kodeverket ikke har valgte verdier', () => {
     const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker({
-        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-        tittel: 'Bransje',
-        valg: [],
-        valgteKodeverkIder: [],
-        valgteSertifiseringer: []
-      })
+      lagDeltaker(createKodeverk())
     )
     expect(request.kodeverkValg).toEqual([])
     expect(request.sertifiseringValg).toEqual([])
   })
 
-  it('returnerer valgteKodeverkIder fra det flate kodeverket', () => {
+  it('returnerer valgte kodeverk per representerer fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker({
-        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-        tittel: 'Bransje, Lærefag',
-        valg: ['Bygg', 'Tømrer', 'Rørlegger'],
-        valgteKodeverkIder: [
-          '11111111-1111-1111-1111-111111111111',
-          '22222222-2222-2222-2222-222222222222',
-          '33333333-3333-3333-3333-333333333333'
-        ],
-        valgteSertifiseringer: []
-      })
+      lagDeltaker(
+        createKodeverk(
+          [
+            {
+              representerer: OpplaringRepresenterer.BRANSJE_ID,
+              valg: [
+                {
+                  id: '11111111-1111-1111-1111-111111111111',
+                  visningsnavn: 'Bygg'
+                }
+              ]
+            },
+            {
+              representerer: OpplaringRepresenterer.LAREFAG,
+              valg: [
+                {
+                  id: '22222222-2222-2222-2222-222222222222',
+                  visningsnavn: 'Tømrer'
+                },
+                {
+                  id: '33333333-3333-3333-3333-333333333333',
+                  visningsnavn: 'Rørlegger'
+                }
+              ]
+            }
+          ],
+          []
+        )
+      )
     )
 
     expect(request.kodeverkValg).toEqual([
@@ -95,16 +119,15 @@ describe('generateEnkeltplassPameldingRequest', () => {
 
   it('returnerer valgteSertifiseringer fra det flate kodeverket', () => {
     const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker({
-        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-        tittel: null,
-        valg: [],
-        valgteKodeverkIder: [],
-        valgteSertifiseringer: [
-          { id: 90999, navn: 'Datakortet del 1' },
-          { id: 2, navn: 'Sertifisert zumba-instruktør' }
-        ]
-      })
+      lagDeltaker(
+        createKodeverk(
+          [],
+          [
+            { id: 90999, navn: 'Datakortet del 1' },
+            { id: 2, navn: 'Sertifisert zumba-instruktør' }
+          ]
+        )
+      )
     )
 
     expect(request.sertifiseringValg).toEqual([

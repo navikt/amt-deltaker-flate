@@ -14,7 +14,6 @@ export const RedigerPameldingPage = () => {
         deltakerStatus={deltaker.status}
         deltakerliste={deltaker.deltakerliste}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
-        kodeverk={deltaker.deltakerliste.kodeverk}
       />
 
       <div className="mt-4 md:p-8 p-4 bg-(--ax-bg-default)">
