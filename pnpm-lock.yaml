@@ -100,11 +100,6 @@ catalogs:
       specifier: ^4.3.6
       version: 4.3.6
 
-overrides:
-  undici@>=7.0.0 <7.24.0: '>=7.24.0'
-  picomatch@<4.0.4: '>=4.0.4'
-  yaml@>=2.0.0 <2.8.3: '>=2.8.3'
-
 importers:
 
   .:
@@ -1937,7 +1932,7 @@ packages:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
-      picomatch: '>=4.0.4'
+      picomatch: ^3 || ^4
     peerDependenciesMeta:
       picomatch:
         optional: true
@@ -2926,7 +2921,7 @@ packages:
       sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
-      yaml: '>=2.8.3'
+      yaml: ^2.4.2
     peerDependenciesMeta:
       '@types/node':
         optional: true

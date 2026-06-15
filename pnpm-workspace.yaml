@@ -3,9 +3,11 @@ packages:
   - shared-config/*
   - packages/*
 
-onlyBuiltDependencies:
-  - esbuild
-  - msw
+allowBuilds:
+  '@swc/core': false
+  esbuild: true
+  msw: true
+  protobufjs: false
 
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
