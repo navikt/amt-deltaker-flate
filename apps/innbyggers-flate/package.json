@@ -26,7 +26,7 @@
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
-    "@navikt/nav-dekoratoren-moduler": "^3.7.1",
+    "@navikt/nav-dekoratoren-moduler": "^4.2.1",
     "dayjs": "catalog:",
     "deltaker-flate-common": "workspace:*",
     "react": "catalog:",
