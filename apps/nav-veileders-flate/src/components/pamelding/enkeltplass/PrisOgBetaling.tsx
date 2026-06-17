@@ -108,7 +108,7 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
   const rootErrors = errors as Record<string, { message?: string } | undefined>
-
+  // TODO onchange gjør så vi ikke får endret feil fortløpende
   return (
     <>
       <InlineMessage status="info" size="small">
@@ -172,6 +172,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
   const selectedTypes = hentTilskuddstyper(prisinformasjon)
   const currentTilleggsopplysninger = hentTilleggstekst(prisinformasjon)
 
+  // TODO skrive om Tilskudd
   return (
     <>
       <div>
