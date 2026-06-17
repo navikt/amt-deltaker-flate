@@ -117,7 +117,8 @@ export class MockHandler {
         kodeverk: createMockFlatKodeverk(
           this.tiltakskode,
           erEnkeltplass
-        ) as DeltakerResponse['deltakerliste']['kodeverk']
+        ) as DeltakerResponse['deltakerliste']['kodeverk'],
+        prisinformasjon: null
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -159,7 +160,7 @@ export class MockHandler {
         nesteDeltakelsesmengde: null
       },
       erManueltDeltMedArrangor: true,
-      prisinformasjon: 'Koster penger'
+      prisinformasjon: null
     }
   }
 

@@ -64,7 +64,7 @@ export function SertifiseringSok({
             }))}
             ref={field.ref}
             size="small"
-            required={alternativ.pakrevd}
+            aria-required={alternativ.pakrevd}
             onChange={setSoketekst}
             filteredOptions={sertifiseringerOptions}
             options={sertifiseringerOptions}

@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
 import {
   getDayjsFromString,
+  IngenKostnaderAarsak,
   OpplaringRepresenterer,
+  PrisinformasjonType,
+  Tilskuddstype,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -35,6 +38,32 @@ const dateSchema = (feltnavn: string) =>
       return dayjs(date, DATE_FORMAT, true).isValid()
     }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
 
+const formPrisinformasjonSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal(PrisinformasjonType.Anskaffelse),
+    pris: z.number().int().nullish()
+  }),
+  z.object({
+    type: z.literal(PrisinformasjonType.Tilskudd),
+    tilskudd: z
+      .object({
+        [Tilskuddstype.SKOLEPENGER]: z.number().int().nullish(),
+        [Tilskuddstype.STUDIEREISE]: z.number().int().nullish(),
+        [Tilskuddstype.EKSAMENSGEBYR]: z.number().int().nullish(),
+        [Tilskuddstype.SEMESTERAVGIFT]: z.number().int().nullish(),
+        [Tilskuddstype.INTEGRERT_BOTILBUD]: z.number().int().nullish()
+      })
+      .partial()
+      .nullish(),
+    tilleggsopplysninger: z.string().nullish()
+  }),
+  z.object({
+    type: z.literal(PrisinformasjonType.IngenKostnader),
+    aarsak: z.enum(IngenKostnaderAarsak).nullish(),
+    tilleggsopplysninger: z.string().nullish()
+  })
+])
+
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse,
   kodeverk?: KodeverkResponse
@@ -54,13 +83,8 @@ export const createPameldingEnkeltplassFormSchema = (
         .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
       startdato: dateSchema('Startdato'),
       sluttdato: dateSchema('Sluttdato'),
-      prisinformasjon: z
-        .string()
-        .min(1, 'Prisinformasjon er påkrevd.')
-        .max(
-          PRISINFO_MAX_TEGN,
-          `Prisinformasjon kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
-        ),
+      pristype: z.enum(PrisinformasjonType).nullable(),
+      prisinformasjon: formPrisinformasjonSchema.nullable(),
       kodeverkValg: z.array(
         z.object({
           representerer: z.enum(OpplaringRepresenterer),
@@ -68,6 +92,10 @@ export const createPameldingEnkeltplassFormSchema = (
         })
       ),
       sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
+    })
+    .refine((schema) => schema.pristype !== null, {
+      message: 'Du må velge et alternativ for Navs kostnader.',
+      path: ['pristype']
     })
     .refine(
       (schema) => {
@@ -106,6 +134,9 @@ export const createPameldingEnkeltplassFormSchema = (
 
       validateKodeverkAlternativer(kodeverk.alternativer, schema, ctx)
     })
+    .superRefine((schema, ctx) => {
+      validatePrisinformasjon(schema, ctx)
+    })
 
 export type PameldingEnkeltplassFormValues = z.infer<
   ReturnType<typeof createPameldingEnkeltplassFormSchema>
@@ -125,7 +156,8 @@ export const generateFormDefaultValues = (
     sluttdato: deltaker.sluttdato
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
-    prisinformasjon: deltaker.prisinformasjon ?? '',
+    pristype: null, // TODO hent fra deltaker
+    prisinformasjon: null, // TODO hent fra deltaker
     kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
     sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
   }
@@ -203,5 +235,154 @@ const validateUtdanningsgruppe = (
   )
   if (valgtUtdanning) {
     validateVerdigruppe(valgtUtdanning.larefag, schema, ctx)
+  }
+}
+
+const addPrisinformasjonIssue = (
+  ctx: z.RefinementCtx,
+  id: string,
+  message: string
+) => {
+  ctx.addIssue({
+    code: 'custom',
+    message,
+    path: [`prisinformasjon_${id}`]
+  })
+}
+
+const validatePrisinformasjon = (
+  schema: PameldingEnkeltplassFormValues,
+  ctx: z.RefinementCtx
+) => {
+  if (!schema.pristype) {
+    return
+  }
+
+  if (!schema.prisinformasjon) {
+    if (schema.pristype === PrisinformasjonType.Anskaffelse) {
+      addPrisinformasjonIssue(
+        ctx,
+        'anskaffelse-totalbelop',
+        'Du må fylle ut totalbeløp for anskaffelsen.'
+      )
+    }
+
+    if (schema.pristype === PrisinformasjonType.Tilskudd) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilskuddstype-checkbox',
+        'Du må velge minst ett tilskudd.'
+      )
+    }
+
+    if (schema.pristype === PrisinformasjonType.IngenKostnader) {
+      addPrisinformasjonIssue(
+        ctx,
+        'ingen-kostnader-aarsak',
+        'Du må velge årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav.'
+      )
+    }
+
+    return
+  }
+
+  if (schema.pristype === PrisinformasjonType.Anskaffelse) {
+    if (
+      schema.prisinformasjon.type !== PrisinformasjonType.Anskaffelse ||
+      schema.prisinformasjon.pris === undefined ||
+      schema.prisinformasjon.pris === null
+    ) {
+      addPrisinformasjonIssue(
+        ctx,
+        'anskaffelse-totalbelop',
+        'Du må fylle ut totalbeløp for anskaffelsen.'
+      )
+    }
+
+    return
+  }
+
+  if (schema.pristype === PrisinformasjonType.Tilskudd) {
+    if (schema.prisinformasjon.type !== PrisinformasjonType.Tilskudd) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilskuddstype-checkbox',
+        'Du må velge minst ett tilskudd.'
+      )
+      return
+    }
+
+    const tilskudd = schema.prisinformasjon.tilskudd ?? {}
+    const selectedTypes = Object.entries(tilskudd)
+
+    if (selectedTypes.length === 0) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilskuddstype-checkbox',
+        'Du må velge minst ett tilskudd.'
+      )
+      return
+    }
+
+    selectedTypes.forEach(([tilskuddstype, belop]) => {
+      if (belop === undefined || belop === null || belop <= 0) {
+        const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
+        addPrisinformasjonIssue(
+          ctx,
+          `pris-${tilskuddstype}`,
+          `Du må fylle ut estimert totalbeløp for ${navn}.`
+        )
+      }
+    })
+
+    if (
+      (schema.prisinformasjon.tilleggsopplysninger?.length ?? 0) >
+      PRISINFO_MAX_TEGN
+    ) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilleggsopplysninger-tilskudd',
+        `Tilleggsopplysninger kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
+      )
+    }
+
+    return
+  }
+
+  if (schema.pristype === PrisinformasjonType.IngenKostnader) {
+    if (
+      schema.prisinformasjon.type !== PrisinformasjonType.IngenKostnader ||
+      !schema.prisinformasjon.aarsak
+    ) {
+      addPrisinformasjonIssue(
+        ctx,
+        'ingen-kostnader-aarsak',
+        'Du må velge årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav.'
+      )
+      return
+    }
+
+    const tilleggsopplysninger =
+      schema.prisinformasjon.tilleggsopplysninger ?? ''
+
+    if (
+      schema.prisinformasjon.aarsak ===
+        IngenKostnaderAarsak.OPPLAERINGEN_ER_EGENFINANSIERT &&
+      tilleggsopplysninger.trim().length === 0
+    ) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilleggsopplysninger-ingen-kostnader',
+        'Du må fylle ut tilleggsopplysninger når bruker dekker opplæringen selv.'
+      )
+    }
+
+    if (tilleggsopplysninger.length > PRISINFO_MAX_TEGN) {
+      addPrisinformasjonIssue(
+        ctx,
+        'tilleggsopplysninger-ingen-kostnader',
+        `Tilleggsopplysninger kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
+      )
+    }
   }
 }

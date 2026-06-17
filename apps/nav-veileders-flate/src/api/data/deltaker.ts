@@ -8,6 +8,7 @@ import {
   Oppstartstype,
   pameldingStatusSchema,
   Pameldingstype,
+  prisinformasjonSchema,
   Tiltakskode,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
@@ -45,7 +46,8 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
-  kodeverk: utflatetKodeverkSchema.nullable()
+  kodeverk: utflatetKodeverkSchema.nullable(),
+  prisinformasjon: prisinformasjonSchema.nullable()
 })
 
 export const deltakerSchema = z.object({
@@ -73,7 +75,7 @@ export const deltakerSchema = z.object({
   erUnderOppfolging: z.boolean(),
   deltakelsesmengder: deltakelsesmengderSchema,
   erManueltDeltMedArrangor: z.boolean(),
-  prisinformasjon: z.string().nullable()
+  prisinformasjon: z.string().nullish()
 })
 
 export type Deltakerliste = z.infer<typeof deltakerlisteSchema>

@@ -9,7 +9,7 @@ const enkeltplassFields: Path<PameldingEnkeltplassFormValues>[] = [
   'startdato',
   'sluttdato',
   'arrangorUnderenhet',
-  'prisinformasjon'
+  'pristype'
 ]
 
 const standardFields: Path<PameldingFormValues>[] = [
@@ -41,6 +41,24 @@ interface _FormErrorSummaryProps<T extends FieldValues> {
   schemaFields: Path<T>[]
 }
 
+const focusFieldById = (fieldId: string) => {
+  const element = document.getElementById(fieldId)
+
+  if (!element) {
+    return false
+  }
+
+  const firstFocusableChild = element.querySelector<HTMLElement>(
+    'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+  )
+
+  const focusTarget = firstFocusableChild ?? element
+  focusTarget.focus()
+  focusTarget.scrollIntoView({ block: 'center' })
+
+  return true
+}
+
 const _FormErrorSummary = <T extends FieldValues>({
   schemaFields
 }: _FormErrorSummaryProps<T>) => {
@@ -63,6 +81,9 @@ const _FormErrorSummary = <T extends FieldValues>({
   const kodeverkErrors = Object.entries(errors).filter(
     ([key, error]) => key.startsWith('kodeverkValg_') && error?.message
   )
+  const prisinformasjonErrors = Object.entries(errors).filter(
+    ([key, error]) => key.startsWith('prisinformasjon_') && error?.message
+  )
 
   return (
     <div ref={ref} tabIndex={-1} className="mb-8">
@@ -76,7 +97,9 @@ const _FormErrorSummary = <T extends FieldValues>({
               href={`#${key}`}
               onClick={(event) => {
                 event.preventDefault()
-                setFocus(key as Path<T>)
+                if (!focusFieldById(key)) {
+                  setFocus(key as Path<T>)
+                }
               }}
             >
               {error?.message as string}
@@ -93,7 +116,9 @@ const _FormErrorSummary = <T extends FieldValues>({
                 href={`#${fieldName}`}
                 onClick={(event) => {
                   event.preventDefault()
-                  setFocus(fieldName)
+                  if (!focusFieldById(fieldName)) {
+                    setFocus(fieldName)
+                  }
                 }}
               >
                 {error.message as string}
@@ -101,6 +126,26 @@ const _FormErrorSummary = <T extends FieldValues>({
             )
           )
         })}
+
+        {prisinformasjonErrors &&
+          prisinformasjonErrors.length > 0 &&
+          prisinformasjonErrors.map(([key, error]) => {
+            const fieldId = key.replace('prisinformasjon_', '')
+
+            return (
+              <ErrorSummary.Item
+                key={key}
+                as="a"
+                href={`#${fieldId}`}
+                onClick={(event) => {
+                  event.preventDefault()
+                  focusFieldById(fieldId)
+                }}
+              >
+                {error?.message as string}
+              </ErrorSummary.Item>
+            )
+          })}
       </ErrorSummary>
     </div>
   )
