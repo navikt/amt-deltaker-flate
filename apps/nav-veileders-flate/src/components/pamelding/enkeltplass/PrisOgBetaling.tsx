@@ -105,10 +105,10 @@ export const PrisOgBetaling = () => {
 const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
   const {
     control,
-    formState: { errors }
+    formState: { errors },
+    clearErrors
   } = useFormContext<PameldingEnkeltplassFormValues>()
-  const rootErrors = errors as Record<string, { message?: string } | undefined>
-  // TODO onchange gjør så vi ikke får endret feil fortløpende
+
   return (
     <>
       <InlineMessage status="info" size="small">
@@ -131,15 +131,16 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
                 ? (value.pris ?? undefined)
                 : undefined
             }
-            onChange={(newValue) =>
+            onChange={(newValue) => {
               onChange({
                 type: PrisinformasjonType.Anskaffelse,
                 pris: newValue
               })
-            }
-            error={
-              rootErrors['prisinformasjon_anskaffelse-totalbelop']?.message
-            }
+              if (newValue && newValue > 0) {
+                clearErrors('prisinformasjon_anskaffelse-totalbelop')
+              }
+            }}
+            error={errors['prisinformasjon_anskaffelse-totalbelop']?.message}
             disabled={disabled}
             required
             id="anskaffelse-totalbelop"
@@ -157,13 +158,11 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
   const {
     clearErrors,
     setValue,
-    trigger,
     watch,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
-  const rootErrors = errors as Record<string, { message?: string } | undefined>
   const prisinformasjon = watch('prisinformasjon')
-  const tilleggsopplysninger = hentTilleggstekst(prisinformasjon)
+  const tilleggsopplysninger = getTilleggstekst(prisinformasjon)
 
   const estimertTotalsum = hentEstimertTotalsum(prisinformasjon)
   const valgteTilskudd = erTilskudd(prisinformasjon)
@@ -192,22 +191,21 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         disabled={disabled}
         size="small"
         id="tilskuddstype-checkbox"
-        error={rootErrors['prisinformasjon_tilskuddstype-checkbox']?.message}
+        error={errors['prisinformasjon_tilskuddstype-checkbox']?.message}
         onChange={(nyeValgteTilskudd: Tilskuddstype[]) => {
-          setValue(
-            'prisinformasjon',
-            {
-              type: PrisinformasjonType.Tilskudd,
-              tilskudd: nyeValgteTilskudd.map((tilskudd) => ({
-                tilskudd,
-                belop:
-                  valgteTilskudd.find((t) => t.tilskudd === tilskudd)?.belop ??
-                  0
-              })),
-              tilleggsopplysninger
-            },
-            { shouldValidate: true, shouldDirty: true, shouldTouch: true }
-          )
+          setValue('prisinformasjon', {
+            type: PrisinformasjonType.Tilskudd,
+            tilskudd: nyeValgteTilskudd.map((tilskudd) => ({
+              tilskudd,
+              belop:
+                valgteTilskudd.find((t) => t.tilskudd === tilskudd)?.belop ?? 0
+            })),
+            tilleggsopplysninger
+          })
+
+          if (nyeValgteTilskudd.length > 0) {
+            clearErrors('prisinformasjon_tilskuddstype-checkbox')
+          }
         }}
         value={valgteTilskudd.map((t) => t.tilskudd)}
       >
@@ -227,40 +225,21 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
                     ?.belop
                 }
                 onChange={(nyttBelop) => {
-                  setValue(
-                    'prisinformasjon',
-                    {
-                      type: PrisinformasjonType.Tilskudd,
-                      tilskudd: valgteTilskudd.map((t) =>
-                        t.tilskudd === tilskuddstype
-                          ? { ...t, belop: nyttBelop ?? 0 }
-                          : t
-                      ),
-                      tilleggsopplysninger: tilleggsopplysninger ?? null
-                    },
-                    {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                      shouldTouch: true
-                    }
-                  )
+                  setValue('prisinformasjon', {
+                    type: PrisinformasjonType.Tilskudd,
+                    tilskudd: valgteTilskudd.map((t) =>
+                      t.tilskudd === tilskuddstype
+                        ? { ...t, belop: nyttBelop ?? 0 }
+                        : t
+                    ),
+                    tilleggsopplysninger: tilleggsopplysninger ?? null
+                  })
 
-                  if (
-                    nyttBelop !== undefined &&
-                    nyttBelop !== null &&
-                    nyttBelop > 0
-                  ) {
-                    clearErrors(
-                      `prisinformasjon_pris-${tilskuddstype}` as keyof PameldingEnkeltplassFormValues
-                    )
+                  if (nyttBelop && nyttBelop > 0) {
+                    clearErrors(`prisinformasjon_pris-${tilskuddstype}`)
                   }
                 }}
-                onBlur={() => {
-                  void trigger('prisinformasjon')
-                }}
-                error={
-                  rootErrors[`prisinformasjon_pris-${tilskuddstype}`]?.message
-                }
+                error={errors[`prisinformasjon_pris-${tilskuddstype}`]?.message}
                 disabled={disabled}
                 required
                 className="[&>input]:w-32"
@@ -294,10 +273,10 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
 const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
   const {
     control,
+    clearErrors,
     watch,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
-  const rootErrors = errors as Record<string, { message?: string } | undefined>
   const prisinformasjon = watch('prisinformasjon')
   const valgtAarsak = hentValgtAarsak(prisinformasjon)
   const visEgenfinansiering =
@@ -316,18 +295,19 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
               id="ingen-kostnader-aarsak"
               legend="Årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav"
               disabled={disabled}
-              error={
-                rootErrors['prisinformasjon_ingen-kostnader-aarsak']?.message
-              }
+              error={errors['prisinformasjon_ingen-kostnader-aarsak']?.message}
               value={valgtAarsak}
-              onChange={(nextValue: IngenKostnaderAarsak) =>
+              onChange={(nextValue: IngenKostnaderAarsak) => {
                 onChange(
                   getOppdatertIngenKostnader(
                     nextValue,
                     erIngenKostnader(value) ? value.tilleggsopplysninger : null
                   )
                 )
-              }
+                if (nextValue) {
+                  clearErrors('prisinformasjon_ingen-kostnader-aarsak')
+                }
+              }}
             >
               <Radio value={IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI}>
                 Opplæringen er kostnadsfri
@@ -382,9 +362,9 @@ const Tilleggsopplysninger = ({
   const {
     watch,
     setValue,
+    clearErrors,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
-  const rootErrors = errors as Record<string, { message?: string } | undefined>
   const prisinformasjon = watch('prisinformasjon')
   const tilleggsopplysninger =
     prisinformasjon?.type === type
@@ -402,7 +382,7 @@ const Tilleggsopplysninger = ({
       description="For eksempel om brukeren skal dekke deler av kostnadene selv"
       size="small"
       aria-required={required}
-      error={rootErrors[`prisinformasjon_${textAreaId}`]?.message}
+      error={errors[`prisinformasjon_${textAreaId}`]?.message}
       disabled={disabled}
       maxLength={PRISINFO_MAX_TEGN}
       value={tilleggsopplysninger}
@@ -425,6 +405,10 @@ const Tilleggsopplysninger = ({
             : IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
           tilleggsopplysninger: e.target.value
         })
+
+        if (e.target.value) {
+          clearErrors(`prisinformasjon_${textAreaId}`)
+        }
       }}
     />
   )
@@ -464,7 +448,7 @@ const erTilskudd = (prisinformasjon: FormPrisinformasjon) =>
 const erIngenKostnader = (prisinformasjon: FormPrisinformasjon) =>
   prisinformasjon?.type === PrisinformasjonType.IngenKostnader
 
-const hentTilleggstekst = (prisinformasjon: FormPrisinformasjon) =>
+const getTilleggstekst = (prisinformasjon: FormPrisinformasjon) =>
   erTilskudd(prisinformasjon) || erIngenKostnader(prisinformasjon)
     ? (prisinformasjon.tilleggsopplysninger ?? null)
     : null

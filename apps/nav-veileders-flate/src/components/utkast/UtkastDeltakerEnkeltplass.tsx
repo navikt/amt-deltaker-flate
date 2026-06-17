@@ -48,7 +48,7 @@ export const UtkastDeltakerEnkeltplass = () => {
       />
 
       <PrisOgBetaling
-        prisinformasjon={deltaker.prisinformasjon}
+        prisinformasjon={deltaker.deltakerliste.prisinformasjon}
         headinglevel="3"
       />
     </div>

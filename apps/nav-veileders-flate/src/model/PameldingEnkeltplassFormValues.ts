@@ -152,8 +152,8 @@ export const generateFormDefaultValues = (
     sluttdato: deltaker.sluttdato
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
-    pristype: null, // TODO hent fra deltaker
-    prisinformasjon: null, // TODO hent fra deltaker
+    pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
+    prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null,
     kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
     sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
   }
@@ -282,12 +282,8 @@ const validatePrisinformasjon = (
     return
   }
 
-  if (schema.pristype === PrisinformasjonType.Anskaffelse) {
-    if (
-      schema.prisinformasjon.type !== PrisinformasjonType.Anskaffelse ||
-      schema.prisinformasjon.pris === undefined ||
-      schema.prisinformasjon.pris === null
-    ) {
+  if (schema.prisinformasjon.type === PrisinformasjonType.Anskaffelse) {
+    if (!schema.prisinformasjon.pris || schema.prisinformasjon.pris <= 0) {
       addPrisinformasjonIssue(
         ctx,
         'anskaffelse-totalbelop',
@@ -298,16 +294,7 @@ const validatePrisinformasjon = (
     return
   }
 
-  if (schema.pristype === PrisinformasjonType.Tilskudd) {
-    if (schema.prisinformasjon.type !== PrisinformasjonType.Tilskudd) {
-      addPrisinformasjonIssue(
-        ctx,
-        'tilskuddstype-checkbox',
-        'Du må velge minst ett tilskudd.'
-      )
-      return
-    }
-
+  if (schema.prisinformasjon.type === PrisinformasjonType.Tilskudd) {
     const tilskudd = schema.prisinformasjon.tilskudd ?? []
 
     if (tilskudd.length === 0) {
@@ -320,7 +307,7 @@ const validatePrisinformasjon = (
     }
 
     tilskudd.forEach(({ tilskudd: tilskuddstype, belop }) => {
-      if (belop === undefined || belop === null || belop <= 0) {
+      if (!(belop > 0)) {
         const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
         addPrisinformasjonIssue(
           ctx,
@@ -344,11 +331,8 @@ const validatePrisinformasjon = (
     return
   }
 
-  if (schema.pristype === PrisinformasjonType.IngenKostnader) {
-    if (
-      schema.prisinformasjon.type !== PrisinformasjonType.IngenKostnader ||
-      !schema.prisinformasjon.aarsak
-    ) {
+  if (schema.prisinformasjon.type === PrisinformasjonType.IngenKostnader) {
+    if (!schema.prisinformasjon.aarsak) {
       addPrisinformasjonIssue(
         ctx,
         'ingen-kostnader-aarsak',

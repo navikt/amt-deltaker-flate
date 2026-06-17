@@ -1,13 +1,21 @@
 import dayjs from 'dayjs'
-import { Prisinformasjon, PrisinformasjonType } from 'deltaker-flate-common'
+import {
+  INNHOLD_TYPE_ANNET,
+  Prisinformasjon,
+  PrisinformasjonType,
+  Tilskuddstype
+} from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
-import { formatDateToDtoStr } from './utils'
-import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
+import { dateToIsoString, formatDateToDtoStr } from './utils'
+import {
+  EnkeltplassKladdRequest,
+  PrisinformasjonKladd
+} from '../api/data/kladd-request'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
@@ -23,37 +31,18 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     beskrivelse: data.innhold,
     startdato,
     sluttdato,
-    prisinformasjon: data.prisinformasjon
-      ? (formatPrisinformasjonForKladd(
-          data.prisinformasjon
-        ) as unknown as Prisinformasjon)
-      : null,
+    prisinformasjon: formatPrisinformasjonTilRequest(data.prisinformasjon),
     arrangorUnderenhet: data.arrangorUnderenhet,
     kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
     sertifiseringValg: data.sertifiseringValg
   }
 }
 
-export const formToEnkeltplassKladdRequest = (
-  data: PameldingEnkeltplassFormValues
-): EnkeltplassKladdRequest => {
-  return formToEnkeltplassData(data)
-}
-
-const formatPrisinformasjonForApi = (
-  prisinformasjon: PameldingEnkeltplassFormValues['prisinformasjon']
-): Prisinformasjon => {
-  if (!prisinformasjon) {
-    throw new Error('Prisinformasjon er påkrevd')
-  }
-
-  // The form prisinformasjon matches the Prisinformasjon type structure
-  return prisinformasjon as unknown as Prisinformasjon
-}
-
-const formatPrisinformasjonForKladd = (
-  prisinformasjon: PameldingEnkeltplassFormValues['prisinformasjon']
-): unknown => {
+const formatPrisinformasjonTilRequest = (
+  prisinformasjon:
+    | Prisinformasjon
+    | PameldingEnkeltplassFormValues['prisinformasjon']
+): PrisinformasjonKladd | null => {
   if (!prisinformasjon) {
     return null
   }
@@ -66,12 +55,14 @@ const formatPrisinformasjonForKladd = (
   }
 
   if (prisinformasjon.type === PrisinformasjonType.Tilskudd) {
-    // Return record format - schema will transform to array
+    const tilskudd: Partial<Record<Tilskuddstype, number>> = {}
+    prisinformasjon.tilskudd.forEach((tilskuddValg) => {
+      tilskudd[tilskuddValg.tilskudd] = tilskuddValg.belop
+    })
+
     return {
       type: PrisinformasjonType.Tilskudd,
-      tilskudd: Object.fromEntries(
-        prisinformasjon.tilskudd.map((t) => [t.tilskudd, t.belop])
-      ),
+      tilskudd,
       tilleggsopplysninger: prisinformasjon.tilleggsopplysninger
     }
   }
@@ -84,16 +75,26 @@ const formatPrisinformasjonForKladd = (
     }
   }
 
-  return undefined
+  return null
 }
 
-export const getPrisInformasjon = formatPrisinformasjonForKladd
+export const formToEnkeltplassKladdRequest = (
+  data: PameldingEnkeltplassFormValues
+): EnkeltplassKladdRequest => {
+  return formToEnkeltplassData(data)
+}
 
 export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassPameldingRequest => {
   const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
-  const prisinformasjon = formatPrisinformasjonForApi(data.prisinformasjon)
+  const prisinformasjon = formatPrisinformasjonTilRequest(data.prisinformasjon)
+
+  if (!prisinformasjon) {
+    throw new Error(
+      'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
+    )
+  }
 
   return {
     ...rest,
@@ -104,12 +105,33 @@ export const formToEnkeltplassRequest = (
 }
 
 export const generateEnkeltplassPameldingRequest = (
-  _deltaker: DeltakerResponse
+  deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  void _deltaker // unused parameter - this function should not be used
-  throw new Error(
-    'generateEnkeltplassPameldingRequest should not be used. Use form data with formToEnkeltplassRequest instead.'
+  const prisinformasjon = formatPrisinformasjonTilRequest(
+    deltaker.deltakerliste.prisinformasjon
   )
+
+  if (!prisinformasjon) {
+    throw new Error(
+      'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
+    )
+  }
+  return {
+    beskrivelse:
+      deltaker.deltakelsesinnhold?.innhold.find(
+        (i) => i.innholdskode === INNHOLD_TYPE_ANNET
+      )?.beskrivelse || '',
+    prisinformasjon,
+    startdato: dateToIsoString(deltaker.startdato),
+    sluttdato: dateToIsoString(deltaker.sluttdato),
+    arrangorUnderenhet:
+      deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
+    kodeverkValg:
+      deltaker.deltakerliste.kodeverk?.valgteKategoriseringer.flatMap(
+        (kodeverk) => kodeverk.valg.map((v) => v.id)
+      ),
+    sertifiseringValg: deltaker.deltakerliste.kodeverk?.valgteSertifiseringer
+  }
 }
 
 /**

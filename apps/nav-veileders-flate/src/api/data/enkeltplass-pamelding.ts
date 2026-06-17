@@ -1,9 +1,9 @@
-import { prisinformasjonSchema } from 'deltaker-flate-common'
 import { z } from 'zod'
+import { prisinformasjonRequestSchema } from './kladd-request'
 
 export const enkeltplassPameldingSchema = z.object({
   beskrivelse: z.string(),
-  prisinformasjon: prisinformasjonSchema,
+  prisinformasjon: prisinformasjonRequestSchema,
   startdato: z.string(),
   sluttdato: z.string(),
   arrangorUnderenhet: z.string(),

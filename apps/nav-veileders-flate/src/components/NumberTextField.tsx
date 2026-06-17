@@ -14,7 +14,6 @@ export interface NumberTextFieldProps {
   error?: boolean | string
   required?: boolean
   onChange: (newValue: number | undefined) => void
-  onBlur?: () => void
 }
 
 const NumberTextFieldComponent = (
@@ -30,8 +29,7 @@ const NumberTextFieldComponent = (
     value,
     error,
     required,
-    onChange,
-    onBlur
+    onChange
   }: NumberTextFieldProps,
   ref: Ref<HTMLInputElement>
 ) => {
@@ -52,7 +50,6 @@ const NumberTextFieldComponent = (
         else if (target.value === '') onChange(undefined)
         else onChange(value)
       }}
-      onBlur={onBlur}
       error={error}
       aria-required={required}
       id={id}
