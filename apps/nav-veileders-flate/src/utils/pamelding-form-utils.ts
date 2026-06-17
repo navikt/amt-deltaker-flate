@@ -19,7 +19,8 @@ export const generateInnholdForRequest = (
   if (
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    pamelding.deltakerliste.tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE ||
+    pamelding.deltakerliste.tiltakskode ===
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER ||
     erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
   ) {
     return innholdsTekst

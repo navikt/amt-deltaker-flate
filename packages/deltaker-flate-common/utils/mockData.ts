@@ -557,7 +557,7 @@ export const getLedetekst = (tiltakskode: Tiltakskode) => {
       return 'Du får tett oppfølging og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.'
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid er et tilbud for deg som får uføretrygd. Du jobber i en skjermet bedrift med arbeidsoppgaver som er tilpasset deg.'
-    case Tiltakskode.TILPASSET_JOBBSTOTTE:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER:
       return 'Du får støtte og oppfølging av en veileder for å skaffe eller beholde en tilrettelagt jobb.'
     case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
     case Tiltakskode.JOBBKLUBB:
@@ -732,7 +732,7 @@ export const getInnholdForTiltakskode = (
     case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
     case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-    case Tiltakskode.TILPASSET_JOBBSTOTTE:
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER:
     case Tiltakskode.HOYERE_UTDANNING:
     case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
     case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
