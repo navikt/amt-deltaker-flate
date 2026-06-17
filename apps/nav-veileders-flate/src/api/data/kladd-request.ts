@@ -1,4 +1,9 @@
-import { Tiltakskode } from 'deltaker-flate-common'
+import {
+  IngenKostnaderAarsak,
+  PrisinformasjonType,
+  Tilskuddstype,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 import { innholdDtoSchema } from './send-pamelding.ts'
 
@@ -24,9 +29,40 @@ export const kladdSchema = z.object({
   dagerPerUke: z.number().optional()
 })
 
+// Enkeltplass
+export const anskaffelseSchema = z.object({
+  type: z.literal(PrisinformasjonType.Anskaffelse),
+  pris: z.number().int()
+})
+
+export const tilskuddSchema = z.object({
+  type: z.literal(PrisinformasjonType.Tilskudd),
+  tilskudd: z
+    .record(z.enum(Tilskuddstype), z.number().int())
+    .transform((tilskuddMap) =>
+      Object.entries(tilskuddMap).map(([tilskudd, belop]) => ({
+        tilskudd: tilskudd as Tilskuddstype,
+        belop
+      }))
+    ),
+  tilleggsopplysninger: z.string().nullish()
+})
+
+export const ingenKostnaderSchema = z.object({
+  type: z.literal(PrisinformasjonType.IngenKostnader),
+  aarsak: z.enum(IngenKostnaderAarsak),
+  tilleggsopplysninger: z.string().nullish()
+})
+
+export const prisinformasjonKladdSchema = z.discriminatedUnion('type', [
+  anskaffelseSchema,
+  tilskuddSchema,
+  ingenKostnaderSchema
+])
+
 export const enkeltplassKladdSchema = z.object({
   beskrivelse: z.string().optional(),
-  prisinformasjon: z.string().optional(),
+  prisinformasjon: prisinformasjonKladdSchema.nullable(),
   startdato: z.string().optional(),
   sluttdato: z.string().optional(),
   arrangorUnderenhet: z.string().optional(),
@@ -38,3 +74,4 @@ export const enkeltplassKladdSchema = z.object({
 
 export type KladdRequest = z.infer<typeof kladdSchema>
 export type EnkeltplassKladdRequest = z.infer<typeof enkeltplassKladdSchema>
+export type PrisinformasjonKladd = z.infer<typeof prisinformasjonKladdSchema>

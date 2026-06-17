@@ -1,61 +1,49 @@
 import { describe, expect, it } from 'vitest'
-import { OpplaringRepresenterer, Tiltakskode } from 'deltaker-flate-common'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-import { generateEnkeltplassPameldingRequest } from './pamelding-enkeltplass'
-import { DeltakerResponse } from '../api/data/deltaker'
+import {
+  OpplaringRepresenterer,
+  PrisinformasjonType,
+  Tiltakskode,
+  Tilskuddstype
+} from 'deltaker-flate-common'
+import { PameldingEnkeltplassFormValues } from '../model/PameldingEnkeltplassFormValues'
+import {
+  formToEnkeltplassKladdRequest,
+  formToEnkeltplassRequest
+} from './pamelding-enkeltplass'
 
-dayjs.extend(duration)
-
-const createKodeverk = (
-  valgteKategoriseringer: NonNullable<
-    DeltakerResponse['deltakerliste']['kodeverk']
-  >['valgteKategoriseringer'] = [],
-  valgteSertifiseringer: NonNullable<
-    DeltakerResponse['deltakerliste']['kodeverk']
-  >['valgteSertifiseringer'] = []
-) => ({
-  valgteKategoriseringer,
-  valgteSertifiseringer
+const lagFormData = (
+  overrides: Partial<PameldingEnkeltplassFormValues> = {}
+): PameldingEnkeltplassFormValues => ({
+  tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+  innhold: 'Testinnhold',
+  arrangorUnderenhet: '123',
+  startdato: '06.05.2026',
+  sluttdato: '12.05.2026',
+  pristype: PrisinformasjonType.Anskaffelse,
+  prisinformasjon: {
+    type: PrisinformasjonType.Anskaffelse,
+    pris: 1000
+  },
+  kodeverkValg: [],
+  sertifiseringValg: [],
+  ...overrides
 })
 
-const lagDeltaker = (
-  kodeverk: DeltakerResponse['deltakerliste']['kodeverk'] = null
-): DeltakerResponse =>
-  ({
-    deltakerId: '1',
-    deltakerliste: {
-      deltakerlisteId: '1',
-      deltakerlisteNavn: 'Test',
-      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-      arrangor: { navn: 'Test', organisasjonsnummer: '123' },
-      erEnkeltplass: true,
-      kodeverk
-    },
-    startdato: null,
-    sluttdato: null,
-    deltakelsesinnhold: { innhold: [] },
-    prisinformasjon: ''
-  }) as unknown as DeltakerResponse
-
-describe('generateEnkeltplassPameldingRequest', () => {
-  it('beholder gyldige ISO-datoer fra backend i request', () => {
-    const request = generateEnkeltplassPameldingRequest({
-      ...lagDeltaker(),
-      startdato: new Date(2026, 4, 6),
-      sluttdato: new Date(2026, 4, 12)
-    })
+describe('formToEnkeltplassRequest', () => {
+  it('konverterer gyldige datoer til ISO-format i request', () => {
+    const request = formToEnkeltplassRequest(lagFormData())
 
     expect(request.startdato).toBe('2026-05-06')
     expect(request.sluttdato).toBe('2026-05-12')
   })
 
   it('setter tom streng for ugyldige datoer i stedet for "Invalid Date"', () => {
-    const request = generateEnkeltplassPameldingRequest({
-      ...lagDeltaker(),
-      startdato: new Date('ugyldig-dato'),
-      sluttdato: new Date('fortsatt-ugyldig-dato')
-    })
+    const request = formToEnkeltplassRequest(
+      lagFormData({
+        startdato: 'ugyldig-dato',
+        sluttdato: 'fortsatt-ugyldig-dato'
+      })
+    )
 
     expect(request.startdato).toBe('')
     expect(request.sluttdato).toBe('')
@@ -63,51 +51,32 @@ describe('generateEnkeltplassPameldingRequest', () => {
     expect(request.sluttdato).not.toBe('Invalid Date')
   })
 
-  it('returnerer undefined kodeverkValg og sertifiseringValg når deltaker mangler kodeverk', () => {
-    const request = generateEnkeltplassPameldingRequest(lagDeltaker(null))
-    expect(request.kodeverkValg).toBeUndefined()
-    expect(request.sertifiseringValg).toBeUndefined()
-  })
-
-  it('returnerer tomme lister når det flate kodeverket ikke har valgte verdier', () => {
-    const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker(createKodeverk())
+  it('returnerer tomme lister når kodeverk og sertifiseringer ikke har valgte verdier', () => {
+    const request = formToEnkeltplassRequest(
+      lagFormData({ kodeverkValg: [], sertifiseringValg: [] })
     )
+
     expect(request.kodeverkValg).toEqual([])
     expect(request.sertifiseringValg).toEqual([])
   })
 
-  it('returnerer valgte kodeverk per representerer fra det flate kodeverket', () => {
-    const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker(
-        createKodeverk(
-          [
-            {
-              representerer: OpplaringRepresenterer.BRANSJE_ID,
-              valg: [
-                {
-                  id: '11111111-1111-1111-1111-111111111111',
-                  visningsnavn: 'Bygg'
-                }
-              ]
-            },
-            {
-              representerer: OpplaringRepresenterer.LAREFAG,
-              valg: [
-                {
-                  id: '22222222-2222-2222-2222-222222222222',
-                  visningsnavn: 'Tømrer'
-                },
-                {
-                  id: '33333333-3333-3333-3333-333333333333',
-                  visningsnavn: 'Rørlegger'
-                }
-              ]
-            }
-          ],
-          []
-        )
-      )
+  it('flater ut valgte kodeverkverdier', () => {
+    const request = formToEnkeltplassRequest(
+      lagFormData({
+        kodeverkValg: [
+          {
+            representerer: OpplaringRepresenterer.BRANSJE_ID,
+            valgteIder: ['11111111-1111-1111-1111-111111111111']
+          },
+          {
+            representerer: OpplaringRepresenterer.LAREFAG,
+            valgteIder: [
+              '22222222-2222-2222-2222-222222222222',
+              '33333333-3333-3333-3333-333333333333'
+            ]
+          }
+        ]
+      })
     )
 
     expect(request.kodeverkValg).toEqual([
@@ -117,22 +86,46 @@ describe('generateEnkeltplassPameldingRequest', () => {
     ])
   })
 
-  it('returnerer valgteSertifiseringer fra det flate kodeverket', () => {
-    const request = generateEnkeltplassPameldingRequest(
-      lagDeltaker(
-        createKodeverk(
-          [],
-          [
-            { id: 90999, navn: 'Datakortet del 1' },
-            { id: 2, navn: 'Sertifisert zumba-instruktør' }
-          ]
-        )
-      )
+  it('sender med valgte sertifiseringer', () => {
+    const request = formToEnkeltplassRequest(
+      lagFormData({
+        sertifiseringValg: [
+          { id: 90999, navn: 'Datakortet del 1' },
+          { id: 2, navn: 'Sertifisert zumba-instruktør' }
+        ]
+      })
     )
 
     expect(request.sertifiseringValg).toEqual([
       { id: 90999, navn: 'Datakortet del 1' },
       { id: 2, navn: 'Sertifisert zumba-instruktør' }
     ])
+  })
+})
+
+describe('formToEnkeltplassKladdRequest', () => {
+  it('konverterer tilskudd-array til record-format for kladd', () => {
+    const request = formToEnkeltplassKladdRequest(
+      lagFormData({
+        pristype: PrisinformasjonType.Tilskudd,
+        prisinformasjon: {
+          type: PrisinformasjonType.Tilskudd,
+          tilskudd: [
+            { tilskudd: Tilskuddstype.SKOLEPENGER, belop: 1000 },
+            { tilskudd: Tilskuddstype.SEMESTERAVGIFT, belop: 2000 }
+          ],
+          tilleggsopplysninger: 'Test'
+        }
+      })
+    )
+
+    expect(request.prisinformasjon).toEqual({
+      type: PrisinformasjonType.Tilskudd,
+      tilskudd: {
+        SKOLEPENGER: 1000,
+        SEMESTERAVGIFT: 2000
+      },
+      tilleggsopplysninger: 'Test'
+    })
   })
 })

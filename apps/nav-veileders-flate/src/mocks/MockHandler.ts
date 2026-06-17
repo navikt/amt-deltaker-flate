@@ -347,6 +347,10 @@ export class MockHandler {
   sendInnPameldingEnkeltplass(request: EnkeltplassPameldingRequest) {
     this.pamelding = {
       ...this.pamelding,
+      deltakerliste: {
+        ...this.pamelding?.deltakerliste,
+        prisinformasjon: request.prisinformasjon
+      },
       deltakelsesinnhold: {
         ...this.pamelding?.deltakelsesinnhold,
         innhold: request.beskrivelse

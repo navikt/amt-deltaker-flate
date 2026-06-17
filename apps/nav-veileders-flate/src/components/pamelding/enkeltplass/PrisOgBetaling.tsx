@@ -163,16 +163,13 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
   } = useFormContext<PameldingEnkeltplassFormValues>()
   const rootErrors = errors as Record<string, { message?: string } | undefined>
   const prisinformasjon = watch('prisinformasjon')
-  const estimertTotalsum = hentEstimertTotalsum(prisinformasjon)
-  const currentTilskudd: Partial<Record<Tilskuddstype, number>> = erTilskudd(
-    prisinformasjon
-  )
-    ? normaliserTilskuddBelop(prisinformasjon.tilskudd ?? {})
-    : {}
-  const selectedTypes = hentTilskuddstyper(prisinformasjon)
-  const currentTilleggsopplysninger = hentTilleggstekst(prisinformasjon)
+  const tilleggsopplysninger = hentTilleggstekst(prisinformasjon)
 
-  // TODO skrive om Tilskudd
+  const estimertTotalsum = hentEstimertTotalsum(prisinformasjon)
+  const valgteTilskudd = erTilskudd(prisinformasjon)
+    ? prisinformasjon.tilskudd
+    : []
+
   return (
     <>
       <div>
@@ -196,18 +193,23 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         size="small"
         id="tilskuddstype-checkbox"
         error={rootErrors['prisinformasjon_tilskuddstype-checkbox']?.message}
-        onChange={(nextSelected: Tilskuddstype[]) => {
+        onChange={(nyeValgteTilskudd: Tilskuddstype[]) => {
           setValue(
             'prisinformasjon',
-            getOppdatertTilskudd(
-              currentTilskudd,
-              nextSelected,
-              currentTilleggsopplysninger
-            ),
+            {
+              type: PrisinformasjonType.Tilskudd,
+              tilskudd: nyeValgteTilskudd.map((tilskudd) => ({
+                tilskudd,
+                belop:
+                  valgteTilskudd.find((t) => t.tilskudd === tilskudd)?.belop ??
+                  0
+              })),
+              tilleggsopplysninger
+            },
             { shouldValidate: true, shouldDirty: true, shouldTouch: true }
           )
         }}
-        value={selectedTypes}
+        value={valgteTilskudd.map((t) => t.tilskudd)}
       >
         {Object.values(Tilskuddstype).map((tilskuddstype) => (
           <div key={tilskuddstype}>
@@ -215,21 +217,27 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
               {TILSKUDDSTYPE_LABELS[tilskuddstype]}
             </Checkbox>
 
-            {selectedTypes.includes(tilskuddstype) && (
+            {valgteTilskudd.map((t) => t.tilskudd).includes(tilskuddstype) && (
               <NumberTextField
                 id={`pris-${tilskuddstype}`}
                 label="Estimert totalbeløp"
                 inlineLabel
-                value={currentTilskudd[tilskuddstype]}
-                onChange={(newValue) => {
+                value={
+                  valgteTilskudd.find((t) => t.tilskudd === tilskuddstype)
+                    ?.belop
+                }
+                onChange={(nyttBelop) => {
                   setValue(
                     'prisinformasjon',
-                    getOppdatertTilskuddMedBelop(
-                      currentTilskudd,
-                      tilskuddstype,
-                      newValue,
-                      currentTilleggsopplysninger
-                    ),
+                    {
+                      type: PrisinformasjonType.Tilskudd,
+                      tilskudd: valgteTilskudd.map((t) =>
+                        t.tilskudd === tilskuddstype
+                          ? { ...t, belop: nyttBelop ?? 0 }
+                          : t
+                      ),
+                      tilleggsopplysninger: tilleggsopplysninger ?? null
+                    },
                     {
                       shouldValidate: true,
                       shouldDirty: true,
@@ -238,9 +246,9 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
                   )
 
                   if (
-                    newValue !== undefined &&
-                    newValue !== null &&
-                    newValue > 0
+                    nyttBelop !== undefined &&
+                    nyttBelop !== null &&
+                    nyttBelop > 0
                   ) {
                     clearErrors(
                       `prisinformasjon_pris-${tilskuddstype}` as keyof PameldingEnkeltplassFormValues
@@ -404,7 +412,7 @@ const Tilleggsopplysninger = ({
             type: PrisinformasjonType.Tilskudd,
             tilskudd: erTilskudd(prisinformasjon)
               ? prisinformasjon.tilskudd
-              : {},
+              : [],
             tilleggsopplysninger: e.target.value
           })
           return
@@ -461,55 +469,19 @@ const hentTilleggstekst = (prisinformasjon: FormPrisinformasjon) =>
     ? (prisinformasjon.tilleggsopplysninger ?? null)
     : null
 
-const hentTilskuddstyper = (prisinformasjon: FormPrisinformasjon) =>
-  erTilskudd(prisinformasjon)
-    ? (Object.keys(prisinformasjon.tilskudd ?? {}) as Tilskuddstype[])
-    : []
-
 const hentEstimertTotalsum = (prisinformasjon: FormPrisinformasjon) => {
   if (!erTilskudd(prisinformasjon)) {
     return 0
   }
 
-  return Object.values(prisinformasjon.tilskudd ?? {}).reduce<number>(
-    (sum, pris) => sum + (pris ?? 0),
+  return (prisinformasjon.tilskudd ?? []).reduce<number>(
+    (sum, item) => sum + (item.belop ?? 0),
     0
   )
 }
 
 const hentValgtAarsak = (prisinformasjon: FormPrisinformasjon) =>
   erIngenKostnader(prisinformasjon) ? prisinformasjon.aarsak : null
-
-type TilskuddPrisinformasjon = Extract<
-  NonNullable<FormPrisinformasjon>,
-  { type: PrisinformasjonType.Tilskudd }
->
-
-const getOppdatertTilskudd = (
-  currentTilskudd: Partial<Record<Tilskuddstype, number>>,
-  selectedTypes: Tilskuddstype[],
-  currentTilleggsopplysninger: string | null
-): TilskuddPrisinformasjon => ({
-  type: PrisinformasjonType.Tilskudd,
-  tilskudd: Object.fromEntries(
-    selectedTypes.map((type) => [type, currentTilskudd[type] ?? 0])
-  ) as Record<Tilskuddstype, number>,
-  tilleggsopplysninger: currentTilleggsopplysninger
-})
-
-const getOppdatertTilskuddMedBelop = (
-  currentTilskudd: Partial<Record<Tilskuddstype, number>>,
-  tilskuddstype: Tilskuddstype,
-  newValue: number | undefined,
-  currentTilleggsopplysninger: string | null | undefined
-): TilskuddPrisinformasjon => ({
-  type: PrisinformasjonType.Tilskudd,
-  tilskudd: {
-    ...currentTilskudd,
-    [tilskuddstype]: newValue
-  },
-  tilleggsopplysninger: currentTilleggsopplysninger ?? null
-})
 
 const getOppdatertIngenKostnader = (
   nextValue: IngenKostnaderAarsak,
@@ -519,11 +491,3 @@ const getOppdatertIngenKostnader = (
   aarsak: nextValue,
   tilleggsopplysninger: currentTilleggsopplysninger ?? null
 })
-
-const normaliserTilskuddBelop = (
-  tilskudd: Partial<Record<Tilskuddstype, number | null | undefined>>
-): Partial<Record<Tilskuddstype, number>> => {
-  return Object.fromEntries(
-    Object.entries(tilskudd).map(([type, belop]) => [type, belop ?? 0])
-  ) as Partial<Record<Tilskuddstype, number>>
-}

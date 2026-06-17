@@ -41,25 +41,21 @@ const dateSchema = (feltnavn: string) =>
 const formPrisinformasjonSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal(PrisinformasjonType.Anskaffelse),
-    pris: z.number().int().nullish()
+    pris: z.number().int()
   }),
   z.object({
     type: z.literal(PrisinformasjonType.Tilskudd),
-    tilskudd: z
-      .object({
-        [Tilskuddstype.SKOLEPENGER]: z.number().int().nullish(),
-        [Tilskuddstype.STUDIEREISE]: z.number().int().nullish(),
-        [Tilskuddstype.EKSAMENSGEBYR]: z.number().int().nullish(),
-        [Tilskuddstype.SEMESTERAVGIFT]: z.number().int().nullish(),
-        [Tilskuddstype.INTEGRERT_BOTILBUD]: z.number().int().nullish()
+    tilskudd: z.array(
+      z.object({
+        tilskudd: z.enum(Tilskuddstype),
+        belop: z.number().int()
       })
-      .partial()
-      .nullish(),
+    ),
     tilleggsopplysninger: z.string().nullish()
   }),
   z.object({
     type: z.literal(PrisinformasjonType.IngenKostnader),
-    aarsak: z.enum(IngenKostnaderAarsak).nullish(),
+    aarsak: z.enum(IngenKostnaderAarsak),
     tilleggsopplysninger: z.string().nullish()
   })
 ])
@@ -312,10 +308,9 @@ const validatePrisinformasjon = (
       return
     }
 
-    const tilskudd = schema.prisinformasjon.tilskudd ?? {}
-    const selectedTypes = Object.entries(tilskudd)
+    const tilskudd = schema.prisinformasjon.tilskudd ?? []
 
-    if (selectedTypes.length === 0) {
+    if (tilskudd.length === 0) {
       addPrisinformasjonIssue(
         ctx,
         'tilskuddstype-checkbox',
@@ -324,7 +319,7 @@ const validatePrisinformasjon = (
       return
     }
 
-    selectedTypes.forEach(([tilskuddstype, belop]) => {
+    tilskudd.forEach(({ tilskudd: tilskuddstype, belop }) => {
       if (belop === undefined || belop === null || belop <= 0) {
         const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
         addPrisinformasjonIssue(

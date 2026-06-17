@@ -46,7 +46,7 @@ const FormWrapper = ({
       tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
       innhold: '',
       arrangorUnderenhet: '',
-      prisinformasjon: '',
+      prisinformasjon: null,
       kodeverkValg: [],
       ...defaultValues
     }
