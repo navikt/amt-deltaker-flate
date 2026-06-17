@@ -83,7 +83,7 @@ export const EndreOppstartsdatoModal = ({
 
   const skalVelgeVarighet =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-    tiltakskode !== Tiltakskode.TILPASSET_JOBBSTOTTE
+    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER
 
   const [startdato, setStartdato] = useState<Date | undefined>(
     defaultDatoer.startdato

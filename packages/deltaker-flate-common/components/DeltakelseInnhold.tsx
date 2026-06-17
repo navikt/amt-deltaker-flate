@@ -34,7 +34,7 @@ export const DeltakelseInnhold = ({
 
   const harInnholdsTekst =
     tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE ||
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER ||
     erOpplaringstiltak(tiltakskode)
 
   const annetFelt: Innhold | undefined = getAnnetFeltForInnhold(

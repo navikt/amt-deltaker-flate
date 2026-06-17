@@ -63,7 +63,8 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) &&
     (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode) ||
       deltaker.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB ||
-      deltaker.deltakerliste.tiltakskode === Tiltakskode.TILPASSET_JOBBSTOTTE)
+      deltaker.deltakerliste.tiltakskode ===
+        Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER)
 
   return (
     <form
