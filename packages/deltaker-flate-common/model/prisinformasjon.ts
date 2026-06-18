@@ -27,7 +27,7 @@ export const anskaffelseSchema = z.object({
 export const tilskuddSchema = z.object({
   type: z.literal(PrisinformasjonType.Tilskudd),
   tilskudd: z
-    .record(z.enum(Tilskuddstype), z.number().int())
+    .partialRecord(z.enum(Tilskuddstype), z.number().int())
     .transform((tilskuddMap) =>
       Object.entries(tilskuddMap).map(([tilskudd, belop]) => ({
         tilskudd: tilskudd as Tilskuddstype,
