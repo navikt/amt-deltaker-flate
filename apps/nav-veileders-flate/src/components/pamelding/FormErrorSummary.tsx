@@ -117,7 +117,7 @@ const _FormErrorSummary = <T extends FieldValues>({
                 onClick={(event) => {
                   event.preventDefault()
                   if (!focusFieldById(fieldName)) {
-                    setFocus(fieldName)
+                    setFocus(fieldName as Path<T>)
                   }
                 }}
               >
@@ -139,7 +139,9 @@ const _FormErrorSummary = <T extends FieldValues>({
                 href={`#${fieldId}`}
                 onClick={(event) => {
                   event.preventDefault()
-                  focusFieldById(fieldId)
+                  if (!focusFieldById(fieldId)) {
+                    setFocus(fieldId as Path<T>)
+                  }
                 }}
               >
                 {error?.message as string}
