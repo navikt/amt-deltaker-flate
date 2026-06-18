@@ -60,6 +60,9 @@ const formPrisinformasjonSchema = z.discriminatedUnion('type', [
   })
 ])
 
+export type FormPrisinformasjon =
+  PameldingEnkeltplassFormValues['prisinformasjon']
+
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse,
   kodeverk?: KodeverkResponse

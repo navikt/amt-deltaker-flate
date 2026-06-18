@@ -23,14 +23,14 @@ import {
   NAVET_TILGJENGELIG_SKOLEPLASS_URL
 } from '../../../constants'
 import {
+  FormPrisinformasjon,
   PameldingEnkeltplassFormValues,
   PRISINFO_MAX_TEGN
 } from '../../../model/PameldingEnkeltplassFormValues'
 import { NumberTextField } from '../../NumberTextField'
 import { usePameldingFormContext } from '../PameldingFormContext'
-
-const NOK_FORMATTER = new Intl.NumberFormat('nb-NO')
-type FormPrisinformasjon = PameldingEnkeltplassFormValues['prisinformasjon']
+import { beregnEstimertTotalsum, NOK_FORMATTER } from '../../../utils/utils'
+import { getPrisInformasjonTekst } from '../../../utils/displayText'
 
 export const PrisOgBetaling = () => {
   const { disabled } = usePameldingFormContext()
@@ -164,7 +164,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
   const prisinformasjon = watch('prisinformasjon')
   const tilleggsopplysninger = getTilleggstekst(prisinformasjon)
 
-  const estimertTotalsum = hentEstimertTotalsum(prisinformasjon)
+  const estimertTotalsum = beregnEstimertTotalsum(prisinformasjon)
   const valgteTilskudd = erTilskudd(prisinformasjon)
     ? prisinformasjon.tilskudd
     : []
@@ -212,7 +212,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         {Object.values(Tilskuddstype).map((tilskuddstype) => (
           <div key={tilskuddstype}>
             <Checkbox value={tilskuddstype}>
-              {TILSKUDDSTYPE_LABELS[tilskuddstype]}
+              {getPrisInformasjonTekst(tilskuddstype)}
             </Checkbox>
 
             {valgteTilskudd.map((t) => t.tilskudd).includes(tilskuddstype) && (
@@ -433,15 +433,6 @@ const PrisInfoCard = () => {
   )
 }
 
-const TILSKUDDSTYPE_LABELS: Record<Tilskuddstype, string> = {
-  [Tilskuddstype.SKOLEPENGER]: 'Skolepenger / Kursavgift',
-  [Tilskuddstype.STUDIEREISE]:
-    'Studiereiser som er nødvendig for at deltakeren skal kunne ta eksamen',
-  [Tilskuddstype.EKSAMENSGEBYR]: 'Eksamensgebyr',
-  [Tilskuddstype.SEMESTERAVGIFT]: 'Semesteravgift',
-  [Tilskuddstype.INTEGRERT_BOTILBUD]: 'Nødvendige integrerte botilbud'
-}
-
 const erTilskudd = (prisinformasjon: FormPrisinformasjon) =>
   prisinformasjon?.type === PrisinformasjonType.Tilskudd
 
@@ -452,17 +443,6 @@ const getTilleggstekst = (prisinformasjon: FormPrisinformasjon) =>
   erTilskudd(prisinformasjon) || erIngenKostnader(prisinformasjon)
     ? (prisinformasjon.tilleggsopplysninger ?? null)
     : null
-
-const hentEstimertTotalsum = (prisinformasjon: FormPrisinformasjon) => {
-  if (!erTilskudd(prisinformasjon)) {
-    return 0
-  }
-
-  return (prisinformasjon.tilskudd ?? []).reduce<number>(
-    (sum, item) => sum + (item.belop ?? 0),
-    0
-  )
-}
 
 const hentValgtAarsak = (prisinformasjon: FormPrisinformasjon) =>
   erIngenKostnader(prisinformasjon) ? prisinformasjon.aarsak : null
