@@ -3,8 +3,8 @@ import {
   getDayjsFromString,
   IngenKostnaderAarsak,
   OpplaringRepresenterer,
+  prisinformasjonSchema,
   PrisinformasjonType,
-  Tilskuddstype,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -28,6 +28,7 @@ import { getInnholdAnnetBeskrivelse } from './PameldingFormValues.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const PRISINFO_MAX_TEGN = 600
+export const PRISINFO_MAX_BELOP = 10_000_000
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
 const dateSchema = (feltnavn: string) =>
@@ -37,31 +38,6 @@ const dateSchema = (feltnavn: string) =>
     .refine((date) => {
       return dayjs(date, DATE_FORMAT, true).isValid()
     }, 'Ugyldig datoformat: Bruk dd.mm.åååå')
-
-const formPrisinformasjonSchema = z.discriminatedUnion('type', [
-  z.object({
-    type: z.literal(PrisinformasjonType.Anskaffelse),
-    pris: z.int()
-  }),
-  z.object({
-    type: z.literal(PrisinformasjonType.Tilskudd),
-    tilskudd: z.array(
-      z.object({
-        tilskudd: z.enum(Tilskuddstype),
-        belop: z.int()
-      })
-    ),
-    tilleggsopplysninger: z.string().nullish()
-  }),
-  z.object({
-    type: z.literal(PrisinformasjonType.IngenKostnader),
-    aarsak: z.enum(IngenKostnaderAarsak),
-    tilleggsopplysninger: z.string().nullish()
-  })
-])
-
-export type FormPrisinformasjon =
-  PameldingEnkeltplassFormValues['prisinformasjon']
 
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse,
@@ -83,7 +59,7 @@ export const createPameldingEnkeltplassFormSchema = (
       startdato: dateSchema('Startdato'),
       sluttdato: dateSchema('Sluttdato'),
       pristype: z.enum(PrisinformasjonType).nullable(),
-      prisinformasjon: formPrisinformasjonSchema.nullable(),
+      prisinformasjon: prisinformasjonSchema.nullable(),
       kodeverkValg: z.array(
         z.object({
           representerer: z.enum(OpplaringRepresenterer),
@@ -292,6 +268,12 @@ const validatePrisinformasjon = (
         'anskaffelse-totalbelop',
         'Du må fylle ut totalbeløp for anskaffelsen.'
       )
+    } else if (schema.prisinformasjon.pris > PRISINFO_MAX_BELOP) {
+      addPrisinformasjonIssue(
+        ctx,
+        'anskaffelse-totalbelop',
+        `Totalbeløp for anskaffelsen kan ikke være mer enn ${PRISINFO_MAX_BELOP.toLocaleString('nb-NO')} kroner.`
+      )
     }
 
     return
@@ -309,13 +291,20 @@ const validatePrisinformasjon = (
       return
     }
 
-    tilskudd.forEach(({ tilskudd: tilskuddstype, belop }) => {
+    tilskudd.forEach(({ type: tilskuddstype, pris: belop }) => {
       if (!(belop > 0)) {
         const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
         addPrisinformasjonIssue(
           ctx,
           `pris-${tilskuddstype}`,
           `Du må fylle ut estimert totalbeløp for ${navn}.`
+        )
+      } else if (belop > PRISINFO_MAX_BELOP) {
+        const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
+        addPrisinformasjonIssue(
+          ctx,
+          `pris-${tilskuddstype}`,
+          `Pris for ${navn} kan ikke være mer enn ${PRISINFO_MAX_BELOP.toLocaleString('nb-NO')} kroner.`
         )
       }
     })

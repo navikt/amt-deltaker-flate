@@ -111,8 +111,8 @@ describe('formToEnkeltplassKladdRequest', () => {
         prisinformasjon: {
           type: PrisinformasjonType.Tilskudd,
           tilskudd: [
-            { tilskudd: Tilskuddstype.SKOLEPENGER, belop: 1000 },
-            { tilskudd: Tilskuddstype.SEMESTERAVGIFT, belop: 2000 }
+            { type: Tilskuddstype.SKOLEPENGER, pris: 1000 },
+            { type: Tilskuddstype.SEMESTERAVGIFT, pris: 2000 }
           ],
           tilleggsopplysninger: 'Test'
         }
@@ -121,10 +121,16 @@ describe('formToEnkeltplassKladdRequest', () => {
 
     expect(request.prisinformasjon).toEqual({
       type: PrisinformasjonType.Tilskudd,
-      tilskudd: {
-        SKOLEPENGER: 1000,
-        SEMESTERAVGIFT: 2000
-      },
+      tilskudd: [
+        {
+          type: Tilskuddstype.SKOLEPENGER,
+          pris: 1000
+        },
+        {
+          type: Tilskuddstype.SEMESTERAVGIFT,
+          pris: 2000
+        }
+      ],
       tilleggsopplysninger: 'Test'
     })
   })

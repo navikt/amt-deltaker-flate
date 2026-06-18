@@ -47,9 +47,9 @@ export const PrisOgBetaling = ({
             </BodyLong>
             <List className="mt-4" size="small">
               {prisinformasjon.tilskudd.map((tilskudd) => (
-                <List.Item key={tilskudd.tilskudd}>
-                  {getPrisInformasjonTekst(tilskudd.tilskudd)}:{' '}
-                  {NOK_FORMATTER.format(tilskudd.belop)} kroner
+                <List.Item key={tilskudd.type}>
+                  {getPrisInformasjonTekst(tilskudd.type)}:{' '}
+                  {NOK_FORMATTER.format(tilskudd.pris)} kroner
                 </List.Item>
               ))}
             </List>

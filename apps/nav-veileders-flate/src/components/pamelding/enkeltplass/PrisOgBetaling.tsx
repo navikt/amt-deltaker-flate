@@ -16,6 +16,7 @@ import {
   getPrisInformasjonTekst,
   IngenKostnaderAarsak,
   NOK_FORMATTER,
+  Prisinformasjon,
   PrisinformasjonType,
   Tilskuddstype
 } from 'deltaker-flate-common'
@@ -26,7 +27,6 @@ import {
   NAVET_TILGJENGELIG_SKOLEPLASS_URL
 } from '../../../constants'
 import {
-  FormPrisinformasjon,
   PameldingEnkeltplassFormValues,
   PRISINFO_MAX_TEGN
 } from '../../../model/PameldingEnkeltplassFormValues'
@@ -196,10 +196,10 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         onChange={(nyeValgteTilskudd: Tilskuddstype[]) => {
           setValue('prisinformasjon', {
             type: PrisinformasjonType.Tilskudd,
-            tilskudd: nyeValgteTilskudd.map((tilskudd) => ({
-              tilskudd,
-              belop:
-                valgteTilskudd.find((t) => t.tilskudd === tilskudd)?.belop ?? 0
+            tilskudd: nyeValgteTilskudd.map((tilskuddstype) => ({
+              type: tilskuddstype,
+              pris:
+                valgteTilskudd.find((t) => t.type === tilskuddstype)?.pris ?? 0
             })),
             tilleggsopplysninger
           })
@@ -208,7 +208,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
             clearErrors('prisinformasjon_tilskuddstype-checkbox')
           }
         }}
-        value={valgteTilskudd.map((t) => t.tilskudd)}
+        value={valgteTilskudd.map((t) => t.type)}
       >
         {Object.values(Tilskuddstype).map((tilskuddstype) => (
           <div key={tilskuddstype}>
@@ -216,21 +216,20 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
               {getPrisInformasjonTekst(tilskuddstype)}
             </Checkbox>
 
-            {valgteTilskudd.map((t) => t.tilskudd).includes(tilskuddstype) && (
+            {valgteTilskudd.map((t) => t.type).includes(tilskuddstype) && (
               <NumberTextField
                 id={`pris-${tilskuddstype}`}
                 label="Estimert totalbeløp"
                 inlineLabel
                 value={
-                  valgteTilskudd.find((t) => t.tilskudd === tilskuddstype)
-                    ?.belop
+                  valgteTilskudd.find((t) => t.type === tilskuddstype)?.pris
                 }
                 onChange={(nyttBelop) => {
                   setValue('prisinformasjon', {
                     type: PrisinformasjonType.Tilskudd,
                     tilskudd: valgteTilskudd.map((t) =>
-                      t.tilskudd === tilskuddstype
-                        ? { ...t, belop: nyttBelop ?? 0 }
+                      t.type === tilskuddstype
+                        ? { ...t, pris: nyttBelop ?? 0 }
                         : t
                     ),
                     tilleggsopplysninger: tilleggsopplysninger ?? null
@@ -434,18 +433,18 @@ const PrisInfoCard = () => {
   )
 }
 
-const erTilskudd = (prisinformasjon: FormPrisinformasjon) =>
+const erTilskudd = (prisinformasjon: Prisinformasjon | null) =>
   prisinformasjon?.type === PrisinformasjonType.Tilskudd
 
-const erIngenKostnader = (prisinformasjon: FormPrisinformasjon) =>
+const erIngenKostnader = (prisinformasjon: Prisinformasjon | null) =>
   prisinformasjon?.type === PrisinformasjonType.IngenKostnader
 
-const getTilleggstekst = (prisinformasjon: FormPrisinformasjon) =>
+const getTilleggstekst = (prisinformasjon: Prisinformasjon | null) =>
   erTilskudd(prisinformasjon) || erIngenKostnader(prisinformasjon)
     ? (prisinformasjon.tilleggsopplysninger ?? null)
     : null
 
-const hentValgtAarsak = (prisinformasjon: FormPrisinformasjon) =>
+const hentValgtAarsak = (prisinformasjon: Prisinformasjon | null) =>
   erIngenKostnader(prisinformasjon) ? prisinformasjon.aarsak : null
 
 const getOppdatertIngenKostnader = (

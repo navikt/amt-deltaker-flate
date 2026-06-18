@@ -2,20 +2,16 @@ import dayjs from 'dayjs'
 import {
   INNHOLD_TYPE_ANNET,
   Prisinformasjon,
-  PrisinformasjonType,
-  Tilskuddstype
+  PrisinformasjonType
 } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
 import {
   DATE_FORMAT,
   PameldingEnkeltplassFormValues
 } from '../model/PameldingEnkeltplassFormValues'
 import { dateToIsoString, formatDateToDtoStr } from './utils'
-import {
-  EnkeltplassKladdRequest,
-  PrisinformasjonKladd
-} from '../api/data/kladd-request'
 
 const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   const startdatoParsed = dayjs(data.startdato, DATE_FORMAT, true)
@@ -42,7 +38,7 @@ const formatPrisinformasjonTilRequest = (
   prisinformasjon:
     | Prisinformasjon
     | PameldingEnkeltplassFormValues['prisinformasjon']
-): PrisinformasjonKladd | null => {
+): Prisinformasjon | null => {
   if (!prisinformasjon) {
     return null
   }
@@ -55,14 +51,9 @@ const formatPrisinformasjonTilRequest = (
   }
 
   if (prisinformasjon.type === PrisinformasjonType.Tilskudd) {
-    const tilskudd: Partial<Record<Tilskuddstype, number>> = {}
-    prisinformasjon.tilskudd.forEach((tilskuddValg) => {
-      tilskudd[tilskuddValg.tilskudd] = tilskuddValg.belop
-    })
-
     return {
       type: PrisinformasjonType.Tilskudd,
-      tilskudd,
+      tilskudd: prisinformasjon.tilskudd,
       tilleggsopplysninger: prisinformasjon.tilleggsopplysninger
     }
   }

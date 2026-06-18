@@ -1,11 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import {
+  beregnEstimertTotalsum,
   fjernUgyldigeTegn,
   getDayjsFromString,
   haveSameContents,
+  NOK_FORMATTER,
   visDeltakelsesmengde
 } from './utils'
 import { Tiltakskode } from '../model/deltaker'
+import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
 
 describe('getDayjsFromString', () => {
   it('returnerer undefined for undefined', () => {
@@ -130,5 +133,45 @@ describe('visDeltakelsesmengde', () => {
     )
   )('returnerer false for %s', (kode) => {
     expect(visDeltakelsesmengde(kode)).toBe(false)
+  })
+})
+
+describe('beregnEstimertTotalsum', () => {
+  it('returnerer 0 når prisinformasjon er null', () => {
+    expect(beregnEstimertTotalsum(null)).toBe(0)
+  })
+
+  it('returnerer 0 når prisinformasjon ikke er tilskudd', () => {
+    expect(
+      beregnEstimertTotalsum({
+        type: PrisinformasjonType.Anskaffelse,
+        pris: 1000
+      })
+    ).toBe(0)
+  })
+
+  it('summerer beløp for tilskudd', () => {
+    expect(
+      beregnEstimertTotalsum({
+        type: PrisinformasjonType.Tilskudd,
+        tilskudd: [
+          { type: Tilskuddstype.SKOLEPENGER, pris: 1000 },
+          { type: Tilskuddstype.SEMESTERAVGIFT, pris: 2500 }
+        ],
+        tilleggsopplysninger: null
+      })
+    ).toBe(3500)
+  })
+})
+
+describe('NOK_FORMATTER', () => {
+  it('formatterer heltall med norsk tusenskille', () => {
+    const formatert = NOK_FORMATTER.format(1234567).replace(/\s/g, ' ')
+    expect(formatert).toBe('1 234 567')
+  })
+
+  it('formatterer desimaltall med norsk komma', () => {
+    const formatert = NOK_FORMATTER.format(1234.5).replace(/\s/g, ' ')
+    expect(formatert).toBe('1 234,5')
   })
 })

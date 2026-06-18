@@ -154,7 +154,7 @@ export const beregnEstimertTotalsum = (
 
   let sum = 0
   for (const item of prisinformasjon.tilskudd) {
-    sum += item.belop ?? 0
+    sum += item.pris ?? 0
   }
 
   return sum
