@@ -18,7 +18,8 @@ import {
   NOK_FORMATTER,
   Prisinformasjon,
   PrisinformasjonType,
-  Tilskuddstype
+  Tilskuddstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { Controller, useFormContext } from 'react-hook-form'
 import {
@@ -31,9 +32,12 @@ import {
   PRISINFO_MAX_TEGN
 } from '../../../model/PameldingEnkeltplassFormValues'
 import { NumberTextField } from '../../NumberTextField'
+import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import { usePameldingFormContext } from '../PameldingFormContext'
 
 export const PrisOgBetaling = () => {
+  const { deltaker } = useDeltakerContext()
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
   const { disabled } = usePameldingFormContext()
   const {
     control,
@@ -76,18 +80,24 @@ export const PrisOgBetaling = () => {
               setValue('prisinformasjon', null)
             }}
           >
-            <Radio
-              value={PrisinformasjonType.Anskaffelse}
-              description="Nav har avtalt å betale leverandøren direkte"
-            >
-              Anskaffelse er gjort
-            </Radio>
-            <Radio
-              value={PrisinformasjonType.Tilskudd}
-              description="Utbetales basert på dokumenterte utgifter"
-            >
-              Tilskudd til en tilgjengelig studie- eller skoleplass
-            </Radio>
+            {tiltakskode !== Tiltakskode.HOYERE_UTDANNING && (
+              <Radio
+                value={PrisinformasjonType.Anskaffelse}
+                description="Nav har avtalt å betale leverandøren direkte"
+              >
+                Anskaffelse er gjort
+              </Radio>
+            )}
+
+            {tiltakskode !== Tiltakskode.ARBEIDSMARKEDSOPPLAERING && (
+              <Radio
+                value={PrisinformasjonType.Tilskudd}
+                description="Utbetales basert på dokumenterte utgifter"
+              >
+                Tilskudd til en tilgjengelig studie- eller skoleplass
+              </Radio>
+            )}
+
             <Radio
               value={PrisinformasjonType.IngenKostnader}
               description="Ikke aktuelt med betaling eller refusjon fra Nav"
@@ -290,7 +300,7 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
       <Controller
         name="prisinformasjon"
         control={control}
-        render={({ field: { value, onChange, ref } }) => {
+        render={({ field: { onChange, ref } }) => {
           return (
             <RadioGroup
               ref={ref}
@@ -301,15 +311,13 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
               error={errors['prisinformasjon_ingen-kostnader-aarsak']?.message}
               value={valgtAarsak}
               onChange={(nextValue: IngenKostnaderAarsak) => {
-                onChange(
-                  getOppdatertIngenKostnader(
-                    nextValue,
-                    erIngenKostnader(value) ? value.tilleggsopplysninger : null
-                  )
-                )
-                if (nextValue) {
-                  clearErrors('prisinformasjon_ingen-kostnader-aarsak')
-                }
+                onChange({
+                  type: PrisinformasjonType.IngenKostnader,
+                  aarsak: nextValue,
+                  tilleggsopplysninger: null
+                })
+
+                clearErrors('prisinformasjon_ingen-kostnader-aarsak')
               }}
             >
               <Radio value={IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI}>
@@ -449,12 +457,3 @@ const getTilleggstekst = (prisinformasjon: Prisinformasjon | null) =>
 
 const hentValgtAarsak = (prisinformasjon: Prisinformasjon | null) =>
   erIngenKostnader(prisinformasjon) ? prisinformasjon.aarsak : null
-
-const getOppdatertIngenKostnader = (
-  nextValue: IngenKostnaderAarsak,
-  currentTilleggsopplysninger: string | null | undefined
-) => ({
-  type: PrisinformasjonType.IngenKostnader,
-  aarsak: nextValue,
-  tilleggsopplysninger: currentTilleggsopplysninger ?? null
-})
