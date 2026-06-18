@@ -19,6 +19,7 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
+import { OpplaringRepresenterer } from '../model/kodeverk.ts'
 import { Tilskuddstype } from '../model/prisinformasjon'
 import { formatDateWithMonthName } from './utils.ts'
 
@@ -170,6 +171,25 @@ export const getOppstartstypeDisplayText = (type: Oppstartstype): string => {
       return 'Felles oppstart'
     case Oppstartstype.ENKELTPLASS:
       return 'Enkeltplass'
+  }
+}
+
+export const getKodeverkRepresentererTekst = (type: OpplaringRepresenterer) => {
+  switch (type) {
+    case OpplaringRepresenterer.KURSTYPE_ID:
+      return 'Kurstype'
+    case OpplaringRepresenterer.BRANSJE_ID:
+      return 'Bransje'
+    case OpplaringRepresenterer.SERTIFISERINGER:
+      return 'Sertifiseringer'
+    case OpplaringRepresenterer.FORERKORT:
+      return 'Førerkort'
+    case OpplaringRepresenterer.UTDANNINGSPROGRAM_ID:
+      return 'Utdanningsprogram'
+    case OpplaringRepresenterer.LAREFAG:
+      return 'Lærefag'
+    default:
+      return ''
   }
 }
 

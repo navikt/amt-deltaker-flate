@@ -204,6 +204,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         disabled={disabled}
         size="small"
         id="tilskuddstype-checkbox"
+        value={valgteTilskudd.map((t) => t.type)}
         error={errors['prisinformasjon_tilskuddstype-checkbox']?.message}
         onChange={(nyeValgteTilskudd: Tilskuddstype[]) => {
           setValue('prisinformasjon', {
@@ -220,7 +221,6 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
             clearErrors('prisinformasjon_tilskuddstype-checkbox')
           }
         }}
-        value={valgteTilskudd.map((t) => t.type)}
       >
         {Object.values(Tilskuddstype).map((tilskuddstype) => (
           <div key={tilskuddstype}>

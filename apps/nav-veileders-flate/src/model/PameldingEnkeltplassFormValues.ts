@@ -132,7 +132,7 @@ export const generateFormDefaultValues = (
       ? dayjs(deltaker.sluttdato).format(DATE_FORMAT)
       : '',
     pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
-    prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null,
+    prisinformasjon: deltaker.deltakerliste.prisinformasjon,
     kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
     sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
   }
