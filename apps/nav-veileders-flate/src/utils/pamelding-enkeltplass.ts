@@ -1,9 +1,5 @@
 import dayjs from 'dayjs'
-import {
-  INNHOLD_TYPE_ANNET,
-  Prisinformasjon,
-  PrisinformasjonType
-} from 'deltaker-flate-common'
+import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
 import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
@@ -27,46 +23,11 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     beskrivelse: data.innhold,
     startdato,
     sluttdato,
-    prisinformasjon: formatPrisinformasjonTilRequest(data.prisinformasjon),
+    prisinformasjon: data.prisinformasjon,
     arrangorUnderenhet: data.arrangorUnderenhet,
     kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
     sertifiseringValg: data.sertifiseringValg
   }
-}
-
-const formatPrisinformasjonTilRequest = (
-  prisinformasjon:
-    | Prisinformasjon
-    | PameldingEnkeltplassFormValues['prisinformasjon']
-): Prisinformasjon | null => {
-  if (!prisinformasjon) {
-    return null
-  }
-
-  if (prisinformasjon.type === PrisinformasjonType.Anskaffelse) {
-    return {
-      type: PrisinformasjonType.Anskaffelse,
-      pris: prisinformasjon.pris
-    }
-  }
-
-  if (prisinformasjon.type === PrisinformasjonType.Tilskudd) {
-    return {
-      type: PrisinformasjonType.Tilskudd,
-      tilskudd: prisinformasjon.tilskudd,
-      tilleggsopplysninger: prisinformasjon.tilleggsopplysninger
-    }
-  }
-
-  if (prisinformasjon.type === PrisinformasjonType.IngenKostnader) {
-    return {
-      type: PrisinformasjonType.IngenKostnader,
-      aarsak: prisinformasjon.aarsak,
-      tilleggsopplysninger: prisinformasjon.tilleggsopplysninger
-    }
-  }
-
-  return null
 }
 
 export const formToEnkeltplassKladdRequest = (
@@ -79,14 +40,7 @@ export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassPameldingRequest => {
   const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
-  const prisinformasjon = formatPrisinformasjonTilRequest(data.prisinformasjon)
-
-  // TODO kan iv forhindre dette? formet validerer så det blir riktig
-  if (!prisinformasjon) {
-    throw new Error(
-      'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
-    )
-  }
+  const prisinformasjon = data.prisinformasjon!
 
   return {
     ...rest,
@@ -99,22 +53,12 @@ export const formToEnkeltplassRequest = (
 export const generateEnkeltplassPameldingRequest = (
   deltaker: DeltakerResponse
 ): EnkeltplassPameldingRequest => {
-  const prisinformasjon = formatPrisinformasjonTilRequest(
-    deltaker.deltakerliste.prisinformasjon
-  )
-
-  if (!prisinformasjon) {
-    // TODO kan iv forhindre dette? formet validerer så det blir riktig
-    throw new Error(
-      'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
-    )
-  }
   return {
     beskrivelse:
       deltaker.deltakelsesinnhold?.innhold.find(
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
-    prisinformasjon,
+    prisinformasjon: deltaker.deltakerliste.prisinformasjon!,
     startdato: dateToIsoString(deltaker.startdato),
     sluttdato: dateToIsoString(deltaker.sluttdato),
     arrangorUnderenhet:
