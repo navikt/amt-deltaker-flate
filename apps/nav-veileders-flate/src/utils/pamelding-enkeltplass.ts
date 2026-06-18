@@ -90,6 +90,7 @@ export const formToEnkeltplassRequest = (
   const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
   const prisinformasjon = formatPrisinformasjonTilRequest(data.prisinformasjon)
 
+  // TODO kan iv forhindre dette? formet validerer så det blir riktig
   if (!prisinformasjon) {
     throw new Error(
       'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
@@ -112,6 +113,7 @@ export const generateEnkeltplassPameldingRequest = (
   )
 
   if (!prisinformasjon) {
+    // TODO kan iv forhindre dette? formet validerer så det blir riktig
     throw new Error(
       'Prisinformasjon er påkrevd for EnkeltplassPameldingRequest'
     )

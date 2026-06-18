@@ -8,9 +8,9 @@ export enum PrisinformasjonType {
 
 export enum Tilskuddstype {
   SKOLEPENGER = 'SKOLEPENGER',
-  STUDIEREISE = 'STUDIEREISE',
-  EKSAMENSGEBYR = 'EKSAMENSGEBYR',
   SEMESTERAVGIFT = 'SEMESTERAVGIFT',
+  EKSAMENSGEBYR = 'EKSAMENSGEBYR',
+  STUDIEREISE = 'STUDIEREISE',
   INTEGRERT_BOTILBUD = 'INTEGRERT_BOTILBUD'
 }
 
@@ -21,13 +21,13 @@ export enum IngenKostnaderAarsak {
 
 export const anskaffelseSchema = z.object({
   type: z.literal(PrisinformasjonType.Anskaffelse),
-  pris: z.number().int()
+  pris: z.int()
 })
 
 export const tilskuddSchema = z.object({
   type: z.literal(PrisinformasjonType.Tilskudd),
   tilskudd: z
-    .partialRecord(z.enum(Tilskuddstype), z.number().int())
+    .partialRecord(z.enum(Tilskuddstype), z.int())
     .transform((tilskuddMap) =>
       Object.entries(tilskuddMap).map(([tilskudd, belop]) => ({
         tilskudd: tilskudd as Tilskuddstype,

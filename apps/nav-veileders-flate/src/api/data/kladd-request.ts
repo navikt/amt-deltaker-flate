@@ -32,12 +32,12 @@ export const kladdSchema = z.object({
 // Enkeltplass
 const anskaffelseSchema = z.object({
   type: z.literal(PrisinformasjonType.Anskaffelse),
-  pris: z.number().int()
+  pris: z.int()
 })
 
 const tilskuddSchema = z.object({
   type: z.literal(PrisinformasjonType.Tilskudd),
-  tilskudd: z.partialRecord(z.enum(Tilskuddstype), z.number().int()),
+  tilskudd: z.partialRecord(z.enum(Tilskuddstype), z.int()),
   tilleggsopplysninger: z.string().nullish()
 })
 

@@ -62,7 +62,6 @@ const lagDeltaker = (
     startdato: '2025-04-10',
     sluttdato: '2025-10-09',
     deltakelsesinnhold: { ledetekst: null, innhold: [] },
-    prisinformasjon: '',
     vedtaksinformasjon: null,
     kanEndres: true,
     digitalBruker: true,

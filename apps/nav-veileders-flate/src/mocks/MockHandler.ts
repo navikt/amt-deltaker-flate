@@ -349,7 +349,7 @@ export class MockHandler {
       ...this.pamelding,
       deltakerliste: {
         ...this.pamelding?.deltakerliste,
-        prisinformasjon: null
+        prisinformasjon: null // TODO fiks her når data er fikset
       },
       deltakelsesinnhold: {
         ...this.pamelding?.deltakelsesinnhold,

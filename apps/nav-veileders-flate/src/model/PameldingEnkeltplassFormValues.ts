@@ -41,14 +41,14 @@ const dateSchema = (feltnavn: string) =>
 const formPrisinformasjonSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal(PrisinformasjonType.Anskaffelse),
-    pris: z.number().int()
+    pris: z.int()
   }),
   z.object({
     type: z.literal(PrisinformasjonType.Tilskudd),
     tilskudd: z.array(
       z.object({
         tilskudd: z.enum(Tilskuddstype),
-        belop: z.number().int()
+        belop: z.int()
       })
     ),
     tilleggsopplysninger: z.string().nullish()

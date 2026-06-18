@@ -22,7 +22,7 @@ import {
 import { Controller, useFormContext } from 'react-hook-form'
 import {
   NAVET_ANSKAFFELSE_URL,
-  NAVET_EGENFINANSIERING,
+  NAVET_EGENFINANSIERING_URL,
   NAVET_TILGJENGELIG_SKOLEPLASS_URL
 } from '../../../constants'
 import {
@@ -327,8 +327,8 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
         <>
           <InlineMessage status="info" size="small">
             Husk å først inngå en skriftlig avtale med bruker om
-            egenfinansering.
-            <Link href={NAVET_EGENFINANSIERING}>
+            egenfinansiering.
+            <Link href={NAVET_EGENFINANSIERING_URL}>
               Les mer på Navet om del- og egenfinansiering.
             </Link>
           </InlineMessage>

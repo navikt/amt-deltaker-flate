@@ -24,7 +24,6 @@ export const PrisOgBetaling = ({
     return null
   }
 
-  // TODO vis ut prisinformasjonen
   const renderPrisinformasjon = () => {
     switch (prisinformasjon.type) {
       case PrisinformasjonType.Anskaffelse:
@@ -46,7 +45,7 @@ export const PrisOgBetaling = ({
             <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
               Du kan få tilskudd til å dekke disse utgiftene:
             </BodyLong>
-            <List className="mt-4">
+            <List className="mt-4" size="small">
               {prisinformasjon.tilskudd.map((tilskudd) => (
                 <List.Item key={tilskudd.tilskudd}>
                   {getPrisInformasjonTekst(tilskudd.tilskudd)}:{' '}
