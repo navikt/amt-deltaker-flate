@@ -12,7 +12,10 @@ import {
   Textarea
 } from '@navikt/ds-react'
 import {
+  beregnEstimertTotalsum,
+  getPrisInformasjonTekst,
   IngenKostnaderAarsak,
+  NOK_FORMATTER,
   PrisinformasjonType,
   Tilskuddstype
 } from 'deltaker-flate-common'
@@ -29,8 +32,6 @@ import {
 } from '../../../model/PameldingEnkeltplassFormValues'
 import { NumberTextField } from '../../NumberTextField'
 import { usePameldingFormContext } from '../PameldingFormContext'
-import { beregnEstimertTotalsum, NOK_FORMATTER } from '../../../utils/utils'
-import { getPrisInformasjonTekst } from '../../../utils/displayText'
 
 export const PrisOgBetaling = () => {
   const { disabled } = usePameldingFormContext()

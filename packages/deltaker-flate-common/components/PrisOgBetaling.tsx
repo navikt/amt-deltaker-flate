@@ -4,11 +4,8 @@ import {
   Prisinformasjon,
   PrisinformasjonType
 } from '../model/prisinformasjon'
-import {
-  beregnEstimertTotalsum,
-  NOK_FORMATTER
-} from '../../../apps/nav-veileders-flate/src/utils/utils'
-import { getPrisInformasjonTekst } from '../../../apps/nav-veileders-flate/src/utils/displayText'
+import { getPrisInformasjonTekst } from '../utils/displayText'
+import { beregnEstimertTotalsum, NOK_FORMATTER } from '../utils/utils'
 
 interface Props {
   prisinformasjon?: Prisinformasjon | null

@@ -1,4 +1,3 @@
-import { Tilskuddstype } from '../../../../packages/deltaker-flate-common/model/prisinformasjon.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 
 const hvisForslagTekst =
@@ -27,19 +26,4 @@ export const getEndrePameldingTekst = (deltaker: DeltakerResponse) => {
   return deltaker.digitalBruker
     ? 'Bruker får beskjed på nav.no og kan se innholdet i begrunnelsen.'
     : 'Endringen sendes til bruker på papir. Flere endringer innenfor en halvtime sendes samlet.'
-}
-
-export const getPrisInformasjonTekst = (tilskuddstype: Tilskuddstype) => {
-  switch (tilskuddstype) {
-    case Tilskuddstype.SKOLEPENGER:
-      return 'Skolepenger / Kursavgift'
-    case Tilskuddstype.STUDIEREISE:
-      return 'Studiereiser som er nødvendig for at deltakeren skal kunne ta eksamen'
-    case Tilskuddstype.EKSAMENSGEBYR:
-      return 'Eksamensgebyr'
-    case Tilskuddstype.SEMESTERAVGIFT:
-      return 'Semesteravgift'
-    case Tilskuddstype.INTEGRERT_BOTILBUD:
-      return 'Nødvendige integrerte botilbud'
-  }
 }

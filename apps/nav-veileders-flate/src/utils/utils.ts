@@ -1,10 +1,5 @@
 import dayjs from 'dayjs'
-import {
-  EMDASH,
-  Prisinformasjon,
-  PrisinformasjonType
-} from 'deltaker-flate-common'
-import { FormPrisinformasjon } from '../model/PameldingEnkeltplassFormValues'
+import { EMDASH } from 'deltaker-flate-common'
 
 /**
  * Formaterer date til string: YYYY-MM-DD. Format slik backend vil ha.
@@ -61,23 +56,4 @@ export const erGyldigProsent = (value: string) => {
 
 export const erGyldigDagerPerUke = (value: string) => {
   return isValidFloatInRange(value, 0, 7)
-}
-
-export const NOK_FORMATTER = new Intl.NumberFormat('nb-NO')
-
-export const beregnEstimertTotalsum = (
-  prisinformasjon: FormPrisinformasjon | Prisinformasjon
-) => {
-  if (
-    !prisinformasjon ||
-    prisinformasjon.type !== PrisinformasjonType.Tilskudd
-  ) {
-    return 0
-  }
-
-  let sum = 0
-  for (const item of prisinformasjon.tilskudd) {
-    sum += item.belop ?? 0
-  }
-  return sum
 }

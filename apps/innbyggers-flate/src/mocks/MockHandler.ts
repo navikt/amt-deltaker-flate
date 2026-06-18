@@ -62,7 +62,8 @@ export const createDeltaker = (
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
       kodeverk:
-        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk']
+        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk'],
+      prisinformasjon: null
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -97,8 +98,7 @@ export const createDeltaker = (
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
-    erManueltDeltMedArrangor: true,
-    prisinformasjon: 'Koster penger'
+    erManueltDeltMedArrangor: true
   }
 }
 

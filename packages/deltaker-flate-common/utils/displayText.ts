@@ -19,6 +19,7 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
+import { Tilskuddstype } from '../model/prisinformasjon'
 import { formatDateWithMonthName } from './utils.ts'
 
 export const deltakerprosentText = (
@@ -169,6 +170,21 @@ export const getOppstartstypeDisplayText = (type: Oppstartstype): string => {
       return 'Felles oppstart'
     case Oppstartstype.ENKELTPLASS:
       return 'Enkeltplass'
+  }
+}
+
+export const getPrisInformasjonTekst = (tilskuddstype: Tilskuddstype) => {
+  switch (tilskuddstype) {
+    case Tilskuddstype.SKOLEPENGER:
+      return 'Skolepenger / Kursavgift'
+    case Tilskuddstype.STUDIEREISE:
+      return 'Studiereiser som er nødvendig for at deltakeren skal kunne ta eksamen'
+    case Tilskuddstype.EKSAMENSGEBYR:
+      return 'Eksamensgebyr'
+    case Tilskuddstype.SEMESTERAVGIFT:
+      return 'Semesteravgift'
+    case Tilskuddstype.INTEGRERT_BOTILBUD:
+      return 'Nødvendige integrerte botilbud'
   }
 }
 
