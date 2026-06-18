@@ -133,13 +133,15 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
                 : undefined
             }
             onChange={(newValue) => {
+              if (!newValue) {
+                onChange(0)
+                return
+              }
               onChange({
                 type: PrisinformasjonType.Anskaffelse,
                 pris: newValue
               })
-              if (newValue && newValue > 0) {
-                clearErrors('prisinformasjon_anskaffelse-totalbelop')
-              }
+              clearErrors('prisinformasjon_anskaffelse-totalbelop')
             }}
             error={errors['prisinformasjon_anskaffelse-totalbelop']?.message}
             disabled={disabled}
@@ -219,7 +221,8 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
             {valgteTilskudd.map((t) => t.type).includes(tilskuddstype) && (
               <NumberTextField
                 id={`pris-${tilskuddstype}`}
-                label="Estimert totalbeløp"
+                aria_label={`Estimert totalbeløp for ${getPrisInformasjonTekst(tilskuddstype)}:`}
+                label={'Estimert totalbeløp'}
                 inlineLabel
                 value={
                   valgteTilskudd.find((t) => t.type === tilskuddstype)?.pris
@@ -406,7 +409,7 @@ const Tilleggsopplysninger = ({
           tilleggsopplysninger: e.target.value
         })
 
-        if (e.target.value) {
+        if (e.target.value.trim().length > 0) {
           clearErrors(`prisinformasjon_${textAreaId}`)
         }
       }}

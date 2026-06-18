@@ -7,6 +7,7 @@ export interface NumberTextFieldProps {
   containerClassName?: string
   labelClassName?: string
   label: string
+  aria_label?: string
   description?: string
   inlineLabel?: boolean
   disabled: boolean
@@ -23,6 +24,7 @@ const NumberTextFieldComponent = (
     containerClassName,
     labelClassName,
     label,
+    aria_label,
     description,
     inlineLabel,
     disabled,
@@ -36,8 +38,8 @@ const NumberTextFieldComponent = (
   const textField = (
     <TextField
       ref={ref}
-      label={label}
-      hideLabel={inlineLabel}
+      label={inlineLabel ? '' : label}
+      aria-label={aria_label ?? (inlineLabel ? '' : label)}
       description={description}
       size="small"
       disabled={disabled}

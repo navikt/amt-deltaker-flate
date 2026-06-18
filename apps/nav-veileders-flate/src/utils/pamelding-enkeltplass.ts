@@ -1,5 +1,10 @@
 import dayjs from 'dayjs'
-import { INNHOLD_TYPE_ANNET } from 'deltaker-flate-common'
+import {
+  IngenKostnaderAarsak,
+  INNHOLD_TYPE_ANNET,
+  Prisinformasjon,
+  PrisinformasjonType
+} from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding'
 import { EnkeltplassKladdRequest } from '../api/data/kladd-request'
@@ -30,6 +35,13 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
   }
 }
 
+// Denne vil i teorien aldri bli brukt, da skjemaet validerer at vi har valgt Prisinformasjon
+// og generateEnkeltplassPameldingRequest blir kalt fra utkast, og den vil også ha Prisinformasjon.
+const defaultPrisInformasjon: Prisinformasjon = {
+  type: PrisinformasjonType.IngenKostnader,
+  aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI
+}
+
 export const formToEnkeltplassKladdRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassKladdRequest => {
@@ -39,14 +51,14 @@ export const formToEnkeltplassKladdRequest = (
 export const formToEnkeltplassRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassPameldingRequest => {
-  const { startdato, sluttdato, ...rest } = formToEnkeltplassData(data)
-  const prisinformasjon = data.prisinformasjon!
+  const { startdato, sluttdato, prisinformasjon, ...rest } =
+    formToEnkeltplassData(data)
 
   return {
     ...rest,
     startdato: startdato ?? '',
     sluttdato: sluttdato ?? '',
-    prisinformasjon
+    prisinformasjon: prisinformasjon ?? defaultPrisInformasjon
   }
 }
 
@@ -58,7 +70,8 @@ export const generateEnkeltplassPameldingRequest = (
       deltaker.deltakelsesinnhold?.innhold.find(
         (i) => i.innholdskode === INNHOLD_TYPE_ANNET
       )?.beskrivelse || '',
-    prisinformasjon: deltaker.deltakerliste.prisinformasjon!,
+    prisinformasjon:
+      deltaker.deltakerliste.prisinformasjon ?? defaultPrisInformasjon,
     startdato: dateToIsoString(deltaker.startdato),
     sluttdato: dateToIsoString(deltaker.sluttdato),
     arrangorUnderenhet:
