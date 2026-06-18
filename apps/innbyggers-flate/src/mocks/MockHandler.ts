@@ -9,6 +9,7 @@ import {
   HistorikkType,
   Oppstartstype,
   Pameldingstype,
+  PrisinformasjonType,
   Tiltakskode,
   createHistorikk,
   getInnholdForTiltakskode,
@@ -235,9 +236,14 @@ export class MockHandler {
         deltaker.deltakerliste.oppmoteSted = null
         deltaker.startdato = dayjs().subtract(1, 'day').toString()
         deltaker.sluttdato = dayjs().add(1, 'day').toString()
+        deltaker.deltakerliste.prisinformasjon = {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 10000
+        }
       } else {
         deltaker.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
+        deltaker.deltakerliste.prisinformasjon = null
         deltaker.startdato = this.getStartdato(deltaker.status.type)
         deltaker.sluttdato = this.getSluttdato(deltaker.status.type)
       }
