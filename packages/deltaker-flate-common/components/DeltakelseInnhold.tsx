@@ -143,7 +143,7 @@ const getKodeverkTekst = (kodeverk: FlattKodeverk | null | undefined) => {
       )
     : []
 
-  if (kategorier.length === 0) return null
+  if (kategorier.length === 0 || kategorier[0].valg.length === 0) return null
   const kategori = kategorier[0]
 
   return `${getKodeverkRepresentererTekst(kategori.representerer)}: ${kategori.valg.map((v) => v.visningsnavn).join(', ')}`
