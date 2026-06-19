@@ -47,7 +47,7 @@ export const deltakerlisteSchema = z.object({
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
   kodeverk: utflatetKodeverkSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullable()
+  prisinformasjon: prisinformasjonSchema.nullish()
 })
 
 export const deltakerSchema = z.object({
