@@ -1,4 +1,4 @@
-import { Tiltakskode } from 'deltaker-flate-common'
+import { prisinformasjonSchema, Tiltakskode } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { innholdDtoSchema } from './send-pamelding.ts'
 
@@ -26,7 +26,7 @@ export const kladdSchema = z.object({
 
 export const enkeltplassKladdSchema = z.object({
   beskrivelse: z.string().optional(),
-  prisinformasjon: z.string().optional(),
+  prisinformasjon: prisinformasjonSchema.nullable(),
   startdato: z.string().optional(),
   sluttdato: z.string().optional(),
   arrangorUnderenhet: z.string().optional(),

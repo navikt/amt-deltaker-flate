@@ -7,6 +7,7 @@ import {
   Pameldingstype,
   Tiltakskode
 } from '../model/deltaker'
+import { Prisinformasjon, PrisinformasjonType } from '../model/prisinformasjon'
 import { EMDASH } from './constants'
 
 dayjs.locale(nb)
@@ -137,6 +138,26 @@ export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
 
 export const logError = (message: string, ...args: unknown[]) => {
   console.error(`AMT_LOGS: ${message}`, args)
+}
+
+export const NOK_FORMATTER = new Intl.NumberFormat('nb-NO')
+
+export const beregnEstimertTotalsum = (
+  prisinformasjon: Prisinformasjon | null | undefined
+) => {
+  if (
+    !prisinformasjon ||
+    prisinformasjon.type !== PrisinformasjonType.Tilskudd
+  ) {
+    return 0
+  }
+
+  let sum = 0
+  for (const item of prisinformasjon.tilskudd) {
+    sum += item.pris ?? 0
+  }
+
+  return sum
 }
 
 export const haveSameContents = (list1: unknown[], list2: unknown[]) =>

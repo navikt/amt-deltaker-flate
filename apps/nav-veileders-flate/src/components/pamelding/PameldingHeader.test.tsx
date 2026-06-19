@@ -156,7 +156,7 @@ describe('DeltakelseInnhold', () => {
           heading={<h3>Heading</h3>}
         />
       )
-      expect(screen.getByText('IT')).toBeInTheDocument()
+      expect(screen.getByText('Bransje: IT')).toBeInTheDocument()
     })
 
     it('returnerer null når kodeverk har tom valg og null tittel', () => {

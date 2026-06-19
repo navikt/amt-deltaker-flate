@@ -9,6 +9,7 @@ import {
   HistorikkType,
   Oppstartstype,
   Pameldingstype,
+  PrisinformasjonType,
   Tiltakskode,
   createHistorikk,
   getInnholdForTiltakskode,
@@ -62,7 +63,8 @@ export const createDeltaker = (
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
       kodeverk:
-        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk']
+        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk'],
+      prisinformasjon: null
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -97,8 +99,7 @@ export const createDeltaker = (
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
-    erManueltDeltMedArrangor: true,
-    prisinformasjon: 'Koster penger'
+    erManueltDeltMedArrangor: true
   }
 }
 
@@ -235,9 +236,14 @@ export class MockHandler {
         deltaker.deltakerliste.oppmoteSted = null
         deltaker.startdato = dayjs().subtract(1, 'day').toString()
         deltaker.sluttdato = dayjs().add(1, 'day').toString()
+        deltaker.deltakerliste.prisinformasjon = {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 10000
+        }
       } else {
         deltaker.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
+        deltaker.deltakerliste.prisinformasjon = null
         deltaker.startdato = this.getStartdato(deltaker.status.type)
         deltaker.sluttdato = this.getSluttdato(deltaker.status.type)
       }

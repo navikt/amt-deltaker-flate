@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import { prisinformasjonSchema } from 'deltaker-flate-common'
 
 export const enkeltplassPameldingSchema = z.object({
   beskrivelse: z.string(),
-  prisinformasjon: z.string(),
+  prisinformasjon: prisinformasjonSchema,
   startdato: z.string(),
   sluttdato: z.string(),
   arrangorUnderenhet: z.string(),

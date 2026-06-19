@@ -22,6 +22,7 @@ import {
   lagHistorikkFellesOppstart,
   Oppstartstype,
   Pameldingstype,
+  PrisinformasjonType,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
@@ -117,7 +118,8 @@ export class MockHandler {
         kodeverk: createMockFlatKodeverk(
           this.tiltakskode,
           erEnkeltplass
-        ) as DeltakerResponse['deltakerliste']['kodeverk']
+        ) as DeltakerResponse['deltakerliste']['kodeverk'],
+        prisinformasjon: null
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -158,8 +160,7 @@ export class MockHandler {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
       },
-      erManueltDeltMedArrangor: true,
-      prisinformasjon: 'Koster penger'
+      erManueltDeltMedArrangor: true
     }
   }
 
@@ -346,6 +347,10 @@ export class MockHandler {
   sendInnPameldingEnkeltplass(request: EnkeltplassPameldingRequest) {
     this.pamelding = {
       ...this.pamelding,
+      deltakerliste: {
+        ...this.pamelding?.deltakerliste,
+        prisinformasjon: request.prisinformasjon
+      },
       deltakelsesinnhold: {
         ...this.pamelding?.deltakelsesinnhold,
         innhold: request.beskrivelse
@@ -499,12 +504,18 @@ export class MockHandler {
         oppdatertPamelding.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
+        oppdatertPamelding.deltakerliste.prisinformasjon = null
       } else if (erNyEnkeltplass) {
         oppdatertPamelding.deltakerliste.erEnkeltplass = true
         oppdatertPamelding.importertFraArena = null
+        oppdatertPamelding.deltakerliste.prisinformasjon = {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 100000
+        }
       } else {
         oppdatertPamelding.importertFraArena = null
         oppdatertPamelding.deltakerliste.erEnkeltplass = false
+        oppdatertPamelding.deltakerliste.prisinformasjon = null
       }
 
       this.pamelding = oppdatertPamelding
@@ -528,14 +539,16 @@ export class MockHandler {
       oppdatertPamelding.deltakerliste.erEnkeltplass = erEnkeltplass
       if (erEnkeltplass) {
         oppdatertPamelding.deltakerliste.oppmoteSted = null
-        oppdatertPamelding.prisinformasjon = 'Koster penger'
         oppdatertPamelding.startdato = dayjs().subtract(1, 'day').toDate()
         oppdatertPamelding.sluttdato = dayjs().add(1, 'day').toDate()
         oppdatertPamelding.bakgrunnsinformasjon = null
+        oppdatertPamelding.deltakerliste.prisinformasjon = {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 100000
+        }
       } else {
         oppdatertPamelding.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
-        oppdatertPamelding.prisinformasjon = null
         oppdatertPamelding.startdato = this.getStartdato(
           oppdatertPamelding.status.type
         )
@@ -543,6 +556,7 @@ export class MockHandler {
           oppdatertPamelding.status.type
         )
         oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
+        oppdatertPamelding.deltakerliste.prisinformasjon = null
       }
     }
 

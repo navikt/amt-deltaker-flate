@@ -1,10 +1,15 @@
-import { TextField } from '@navikt/ds-react'
+import { Label, TextField } from '@navikt/ds-react'
 import { Ref, forwardRef } from 'react'
 
 export interface NumberTextFieldProps {
   id: string
   className?: string
+  containerClassName?: string
+  labelClassName?: string
   label: string
+  aria_label?: string
+  description?: string
+  inlineLabel?: boolean
   disabled: boolean
   value?: number
   error?: boolean | string
@@ -16,7 +21,12 @@ const NumberTextFieldComponent = (
   {
     id,
     className,
+    containerClassName,
+    labelClassName,
     label,
+    aria_label,
+    description,
+    inlineLabel,
     disabled,
     value,
     error,
@@ -25,10 +35,12 @@ const NumberTextFieldComponent = (
   }: NumberTextFieldProps,
   ref: Ref<HTMLInputElement>
 ) => {
-  return (
+  const textField = (
     <TextField
       ref={ref}
-      label={label}
+      label={inlineLabel ? '' : label}
+      aria-label={aria_label ?? (inlineLabel ? '' : label)}
+      description={description}
       size="small"
       disabled={disabled}
       inputMode="numeric"
@@ -46,6 +58,19 @@ const NumberTextFieldComponent = (
       className={className ?? ''}
     />
   )
+
+  if (inlineLabel) {
+    return (
+      <div className={`flex items-center gap-3 ${containerClassName ?? ''}`}>
+        <Label htmlFor={id} size="small" className={labelClassName ?? 'mb-0'}>
+          {label}
+        </Label>
+        {textField}
+      </div>
+    )
+  }
+
+  return <div className={containerClassName ?? ''}>{textField}</div>
 }
 
 export const NumberTextField = forwardRef<

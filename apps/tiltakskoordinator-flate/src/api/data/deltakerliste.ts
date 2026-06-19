@@ -90,12 +90,12 @@ export const tiltaksKoordinatorDeltakerlisteRequestSchema = z.object({
 
 export const deltakerStatusCountsSchema = z.partialRecord(
   deltakerStatusTypeSchema,
-  z.number().int().nonnegative()
+  z.int().nonnegative()
 )
 
 export const deltakerHandlingCountsSchema = z.partialRecord(
   handlingFilterValgSchema,
-  z.number().int().nonnegative()
+  z.int().nonnegative()
 )
 
 export const deltakerFilterCountsSchema = z.object({

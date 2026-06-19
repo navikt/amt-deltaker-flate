@@ -143,7 +143,7 @@ const UtdanningGruppeValg = ({
         label={getLabel(utdanningGruppe.visningsnavn, utdanningGruppe.pakrevd)}
         selectedOptions={options.filter((o) => o.value === valgtUtdanningId)}
         size="small"
-        required={utdanningGruppe.pakrevd}
+        aria-required={utdanningGruppe.pakrevd}
         options={options}
         error={errorMessage}
         isMultiSelect={false}
@@ -233,7 +233,7 @@ const VerdigruppeValg = ({
       size="small"
       error={errorMessage}
       options={options}
-      required={verdigruppe.pakrevd}
+      aria-required={verdigruppe.pakrevd}
       isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
       onToggleSelected={handleValg}
     />

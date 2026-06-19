@@ -7,18 +7,11 @@ import { renderWithProviders } from './test-utils'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { EnkeltplassKladdRequest } from '../../../../api/data/kladd-request'
 import { OpplaringRepresenterer } from 'deltaker-flate-common'
+import { formToEnkeltplassKladdRequest } from '../../../../utils/pamelding-enkeltplass'
 
 const formToKladdRequest = (
   data: PameldingEnkeltplassFormValues
-): EnkeltplassKladdRequest => ({
-  beskrivelse: data.innhold,
-  prisinformasjon: data.prisinformasjon,
-  arrangorUnderenhet: data.arrangorUnderenhet,
-  startdato: data.startdato,
-  sluttdato: data.sluttdato,
-  kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
-  sertifiseringValg: data.sertifiseringValg
-})
+): EnkeltplassKladdRequest => formToEnkeltplassKladdRequest(data)
 
 const FormChanger = ({
   onReady

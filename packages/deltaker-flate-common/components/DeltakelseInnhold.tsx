@@ -1,8 +1,9 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
-import { INNHOLD_TYPE_ANNET } from '../utils/constants'
-import { erOpplaringstiltak } from '../utils/utils'
 import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
+import { INNHOLD_TYPE_ANNET } from '../utils/constants'
+import { getKodeverkRepresentererTekst } from '../utils/displayText'
+import { erOpplaringstiltak } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
@@ -96,9 +97,26 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
   const visListe =
     kodeverkForListe.length > 0 || valgteSertifiseringer.length > 0
 
+  const harForerkortEllerSertifisering =
+    kodeverkForListe.some(
+      (e) => e.representerer === OpplaringRepresenterer.FORERKORT
+    ) || valgteSertifiseringer.length > 0
+  const harLærefag = kodeverkForListe.some(
+    (e) => e.representerer === OpplaringRepresenterer.LAREFAG
+  )
+  const listeprefix = harForerkortEllerSertifisering
+    ? 'Førerkort og sertifisering:'
+    : harLærefag
+      ? 'Lærefag:'
+      : null
+
   return (
     <>
       {kodeverkTekst && <BodyLong size="small">{kodeverkTekst}</BodyLong>}
+
+      {visListe && listeprefix && (
+        <BodyLong size="small">{listeprefix}</BodyLong>
+      )}
 
       {visListe && (
         <List as="ul" size="small">
@@ -117,11 +135,18 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
 }
 
 const getKodeverkTekst = (kodeverk: FlattKodeverk | null | undefined) => {
-  return kodeverk?.valgteKategoriseringer.filter(
-    (e) =>
-      e.representerer === OpplaringRepresenterer.BRANSJE_ID ||
-      e.representerer === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
-  )[0]?.valg[0]?.visningsnavn
+  const kategorier = kodeverk
+    ? kodeverk.valgteKategoriseringer.filter(
+        (e) =>
+          e.representerer === OpplaringRepresenterer.BRANSJE_ID ||
+          e.representerer === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
+      )
+    : []
+
+  if (kategorier.length === 0 || kategorier[0].valg.length === 0) return null
+  const kategori = kategorier[0]
+
+  return `${getKodeverkRepresentererTekst(kategori.representerer)}: ${kategori.valg.map((v) => v.visningsnavn).join(', ')}`
 }
 
 const getAnnetFeltForInnhold = (
@@ -136,16 +161,22 @@ const getAnnetFeltForInnhold = (
   )
 }
 
-const harInnhold = (
+function harInnhold(
   deltakelsesinnhold: Deltakelsesinnhold | null
-): deltakelsesinnhold is Deltakelsesinnhold => {
+): deltakelsesinnhold is Deltakelsesinnhold {
   return (
     !!deltakelsesinnhold &&
     (deltakelsesinnhold.innhold.length > 0 || !!deltakelsesinnhold.ledetekst)
   )
 }
 
-const harKodeverk = (kodeverk: FlattKodeverk | null | undefined): boolean =>
-  !!kodeverk &&
-  (kodeverk.valgteKategoriseringer.length > 0 ||
-    kodeverk.valgteSertifiseringer.length > 0)
+function harKodeverk(kodeverk: FlattKodeverk | null | undefined): boolean {
+  if (!kodeverk) {
+    return false
+  }
+
+  return (
+    kodeverk.valgteKategoriseringer.length > 0 ||
+    kodeverk.valgteSertifiseringer.length > 0
+  )
+}
