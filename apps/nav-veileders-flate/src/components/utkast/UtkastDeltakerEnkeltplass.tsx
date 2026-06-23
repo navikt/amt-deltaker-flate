@@ -2,9 +2,7 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   formatDate,
-  getKodeverkValgNavn,
   hentGjennomforingNavnHosArrangorTekst,
-  OpplaringRepresenterer,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
@@ -25,10 +23,7 @@ export const UtkastDeltakerEnkeltplass = () => {
           tiltakskode,
           deltaker.deltakerliste.deltakerlisteNavn,
           deltaker.deltakerliste.arrangorNavn,
-          getKodeverkValgNavn(
-            deltaker.deltakerliste.kodeverk,
-            OpplaringRepresenterer.KURSTYPE_ID
-          )
+          deltaker.deltakerliste.kodeverk
         )}
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">

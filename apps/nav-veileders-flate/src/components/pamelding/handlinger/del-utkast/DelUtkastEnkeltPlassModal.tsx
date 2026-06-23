@@ -30,10 +30,15 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { deltakerliste } = deltaker
 
   const { doRedirect } = useModiaLink()
+  const tiltakHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+    deltakerliste.tiltakskode,
+    deltakerliste.arrangorNavn,
+    deltakerliste.kodeverk
+  )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
-      body: `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}.`
+      body: `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${tiltakHosArrangorTekst}.`
     })
   }
 
@@ -62,7 +67,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
         </BodyLong>
 
         <BodyLong weight="semibold" className="mt-4" size="small">
-          {`${deltakerNavn} meldes på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
+          {`${deltakerNavn} meldes på ${tiltakHosArrangorTekst}`}
         </BodyLong>
 
         {error && (

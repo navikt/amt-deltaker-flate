@@ -13,7 +13,8 @@ export const DeltakerPage = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.arrangorNavn
+    deltaker.deltakerliste.arrangorNavn,
+    deltaker.deltakerliste.kodeverk
   )
 
   return (

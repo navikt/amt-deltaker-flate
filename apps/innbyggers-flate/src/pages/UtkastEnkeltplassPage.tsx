@@ -2,14 +2,12 @@ import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakelseInnhold,
+  PrisOgBetaling,
   UtkastHeader,
-  hentGjennomforingNavnHosArrangorTekst,
-  useDeferredFetch,
   VeilederSnakkeboble,
   formatDateFromString,
-  PrisOgBetaling,
-  OpplaringRepresenterer,
-  getKodeverkValgNavn
+  hentGjennomforingNavnHosArrangorTekst,
+  useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -23,10 +21,7 @@ export const UtkastEnkeltplassPage = () => {
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    getKodeverkValgNavn(
-      deltakerliste.kodeverk,
-      OpplaringRepresenterer.KURSTYPE_ID
-    )
+    deltakerliste.kodeverk
   )
 
   const { deltakerId } = useParams()
