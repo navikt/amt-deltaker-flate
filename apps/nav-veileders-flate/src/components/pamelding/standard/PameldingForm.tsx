@@ -64,7 +64,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode) ||
       deltaker.deltakerliste.tiltakskode === Tiltakskode.JOBBKLUBB ||
       deltaker.deltakerliste.tiltakskode ===
-        Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER)
+        Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
 
   return (
     <form
