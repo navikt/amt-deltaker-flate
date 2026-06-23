@@ -27,6 +27,11 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
   const { deltaker } = useDeltakerContext()
   const { getValues } = useFormContext<PameldingFormValues>()
 
+  const tiltakHosArrangor = hentTiltakNavnHosArrangorTekst(
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.arrangorNavn,
+    null
+  )
   const deltakerNavn = getDeltakerNavn(deltaker)
   const meldPaDirekte = skalMeldePaaDirekte(
     deltaker.deltakerliste.pameldingstype
@@ -37,8 +42,8 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
       body: meldPaDirekte
-        ? `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
-        : `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
+        ? `Påmeldingen er gjort klart. Når brukeren godtar, blir de meldt på ${tiltakHosArrangor}.`
+        : `Søknaden er gjort klart. Når brukeren godtar, blir de søkt inn på ${tiltakHosArrangor}.`
     })
   }
 
@@ -71,7 +76,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
         </BodyLong>
 
         <BodyLong weight="semibold" size="small">
-          {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}`}
+          {`${deltakerNavn} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${tiltakHosArrangor}`}
         </BodyLong>
 
         {error && (

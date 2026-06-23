@@ -4,10 +4,8 @@ import {
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
-  getKodeverkValgNavn,
   getTiltakskodeDisplayText,
   hentGjennomforingNavnHosArrangorTekst,
-  OpplaringRepresenterer,
   Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
@@ -48,10 +46,7 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    getKodeverkValgNavn(
-      deltakerliste.kodeverk,
-      OpplaringRepresenterer.KURSTYPE_ID
-    )
+    deltakerliste.kodeverk
   )
 
   return (

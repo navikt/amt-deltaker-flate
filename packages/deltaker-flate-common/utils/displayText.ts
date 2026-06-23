@@ -19,9 +19,28 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
-import { OpplaringRepresenterer } from '../model/kodeverk.ts'
+import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk.ts'
 import { Tilskuddstype } from '../model/prisinformasjon'
+import { getKodeverkValgNavn } from './kodeverkUtils.ts'
 import { formatDateWithMonthName } from './utils.ts'
+
+const getKurstypeText = (
+  tiltakskode: Tiltakskode,
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
+) => {
+  const kurstype = getKodeverkValgNavn(
+    kodeverk,
+    OpplaringRepresenterer.KURSTYPE_ID
+  )
+  if (
+    tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
+    kurstype
+  ) {
+    return `${kurstype} hos ${arrangorNavn}`
+  }
+  return null
+}
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -76,27 +95,31 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
 
 export const hentTiltakNavnHosArrangorTekst = (
   tiltakskode: Tiltakskode,
-  arrangorNavn: string
-) => `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
+) => {
+  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+
+  return kurstype
+    ? kurstype
+    : `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+}
 
 export const hentGjennomforingNavnHosArrangorTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kursType?: string | null
+  kodeverk?: FlattKodeverk | null
 ) => {
-  if (
-    tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
-    kursType
-  ) {
-    return `${kursType} hos ${arrangorNavn}`
-  }
+  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
 
-  return hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-    tiltakskode,
-    deltakerlisteNavn,
-    arrangorNavn
-  )
+  return kurstype
+    ? kurstype
+    : hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+        tiltakskode,
+        deltakerlisteNavn,
+        arrangorNavn
+      )
 }
 
 export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (

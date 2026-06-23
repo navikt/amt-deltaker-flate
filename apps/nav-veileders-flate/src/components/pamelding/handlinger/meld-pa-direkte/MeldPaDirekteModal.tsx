@@ -51,10 +51,15 @@ export const MeldPaDirekteModal = ({
 
   const { doRedirect } = useModiaLink()
 
+  const tiltakHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.arrangorNavn,
+    null
+  )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
-      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
+      body: `Påmeldt ${tiltakHosArrangorTekst}.`
     })
   }
 
@@ -101,7 +106,7 @@ export const MeldPaDirekteModal = ({
           {getInfoText(meldPaDirekte, deltaker.digitalBruker)}
         </BodyLong>
         <BodyShort weight="semibold">
-          {`${getDeltakerNavn(deltaker)} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}`}
+          {`${getDeltakerNavn(deltaker)} ${meldPaDirekte ? 'meldes' : 'søkes inn'} på ${tiltakHosArrangorTekst}`}
         </BodyShort>
 
         {error && (

@@ -33,7 +33,8 @@ export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.arrangorNavn
+    deltaker.deltakerliste.arrangorNavn,
+    deltaker.deltakerliste.kodeverk
   )
 
   const skalViseDato =

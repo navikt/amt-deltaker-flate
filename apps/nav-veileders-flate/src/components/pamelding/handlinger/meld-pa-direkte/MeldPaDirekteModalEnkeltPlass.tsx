@@ -38,10 +38,15 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
   const { doRedirect } = useModiaLink()
+  const tiltakHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+    deltakerliste.tiltakskode,
+    deltakerliste.arrangorNavn,
+    deltakerliste.kodeverk
+  )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
-      body: `Påmeldt ${hentTiltakNavnHosArrangorTekst(deltaker.deltakerliste.tiltakskode, deltaker.deltakerliste.arrangorNavn)}.`
+      body: `Påmeldt ${tiltakHosArrangorTekst}.`
     })
   }
 
@@ -81,7 +86,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
         </ConfirmInfoCard>
 
         <BodyLong weight="semibold" className="mt-4">
-          {`${deltakerNavn} meldes på ${hentTiltakNavnHosArrangorTekst(deltakerliste.tiltakskode, deltakerliste.arrangorNavn)}`}
+          {`${deltakerNavn} meldes på ${tiltakHosArrangorTekst}`}
         </BodyLong>
 
         {error && (
