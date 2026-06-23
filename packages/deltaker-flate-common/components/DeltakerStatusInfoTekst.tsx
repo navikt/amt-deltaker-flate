@@ -111,8 +111,10 @@ const getEnkeltplassInfoTekst = (statusType: DeltakerStatusType) => {
       return 'Du er søkt inn og Nav vurderer søknaden din. Du vil få beskjed om resultatet.'
     case DeltakerStatusType.VENTER_PA_OPPSTART:
       return 'Nav mener at denne opplæringen vil gi deg bedre muligheter til å komme i arbeid. Opplæringen kan ha egne opptakskrav. I så fall er det opplæringsstedet som avgjør om du får plass.'
+    case DeltakerStatusType.DELTAR:
+      return 'Nav mener at denne opplæringen vil gi deg bedre muligheter til å komme i arbeid.'
     case DeltakerStatusType.IKKE_AKTUELL:
-      return 'Opplæringen ble ikke aktuelt.'
+      return 'Opplæringen ble ikke aktuell.'
     case DeltakerStatusType.FULLFORT:
       return 'Du deltok på opplæringen.'
     default:
