@@ -18,7 +18,7 @@ catalog:
   '@navikt/ds-css': ^8.12.1
   '@navikt/ds-react': ^8.12.1
   '@navikt/ds-tailwind': ^8.12.1
-  '@playwright/test': ^1.60.0
+  '@playwright/test': ^1.61.0
   '@tailwindcss/vite': ^4.3.1
   '@tanstack/react-query': ^5.101.0
   '@testing-library/jest-dom': ^6.9.1
@@ -32,7 +32,7 @@ catalog:
   dayjs: ^1.11.21
   jsdom: ^29.1.1
   msw: ^2.14.6
-  playwright: ^1.60.0
+  playwright: ^1.61.0
   react: ^19.2.7
   react-dom: ^19.2.7
   react-router-dom: ^7.17.0
@@ -40,7 +40,7 @@ catalog:
   typescript: ^6.0.3
   uuid: ^14.0.0
   vite: ^8.0.16
-  vitest: ^4.1.8
+  vitest: ^4.1.9
   zod: ^4.4.3
 
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
