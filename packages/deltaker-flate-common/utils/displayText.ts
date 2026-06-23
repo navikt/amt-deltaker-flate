@@ -72,8 +72,8 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
       return 'Jobbsøkerkurs'
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid'
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER:
-      return 'Varig tilrettelagt arbeid'
+    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
+      return 'Tilrettelagt arbeid med oppfølging' //Dette er ikke den faktiske
     case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring (enkeltplass)'
     case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
@@ -127,19 +127,23 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
-  return [
-    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplasss uten rammeavtale
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-    Tiltakskode.STUDIESPESIALISERING,
-    Tiltakskode.FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
-    Tiltakskode.HOYERE_UTDANNING
-  ].includes(tiltakskode)
-    ? `${deltakerlisteNavn} hos ${arrangorNavn}`
-    : hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
+  if (
+    [
+      // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplasss uten rammeavtale
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+      Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+      Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+      Tiltakskode.STUDIESPESIALISERING,
+      Tiltakskode.FAG_OG_YRKESOPPLAERING,
+      Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+      Tiltakskode.HOYERE_UTDANNING
+    ].includes(tiltakskode)
+  )
+    return `${deltakerlisteNavn} hos ${arrangorNavn}`
+  else if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+    return `Tilrettelagt arbeid i ordinær virksomhet hos ${arrangorNavn}` //Den faktiske tiltaksteksten
+  else return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
 export const getDeltakerStatusDisplayText = (

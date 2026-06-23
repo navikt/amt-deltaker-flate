@@ -934,7 +934,7 @@ const mockArrangorenheter = [
 const delesAdresseMedArrangor = (tiltakskode: Tiltakskode) => {
   return (
     tiltakskode !== Tiltakskode.JOBBKLUBB &&
-    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER &&
+    tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER &&
     tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
     !erOpplaringstiltak(tiltakskode)
   )

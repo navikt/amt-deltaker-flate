@@ -70,7 +70,7 @@ export const EndreInnholdModal = ({
   const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode)
   const visCheckbokser =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER &&
+    tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER &&
     !erOpplaringsTiltak
 
   const validertRequest = () => {
@@ -115,7 +115,7 @@ export const EndreInnholdModal = ({
       ) {
         throw new Error(
           tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-            tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER
+            tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
             ? getFeilmeldingIngenEndringTekst(false)
             : getFeilmeldingIngenEndring(false)
         )

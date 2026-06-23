@@ -20,7 +20,7 @@ export const generateInnholdForRequest = (
     pamelding.deltakerliste.tiltakskode ===
       Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
     pamelding.deltakerliste.tiltakskode ===
-      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER ||
+      Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER ||
     erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
   ) {
     return innholdsTekst

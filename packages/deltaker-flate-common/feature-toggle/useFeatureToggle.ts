@@ -21,9 +21,7 @@ const alltidMasterForTiltakskoder = [
   Tiltakskode.FAG_OG_YRKESOPPLAERING
   // Denne eksisterer fra før i Arena Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
 ]
-const nyeTiltakskoder: unknown[] = [
-  Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER
-]
+const nyeTiltakskoder: unknown[] = [Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER]
 
 export const useFeatureToggle = (baseUrl: string) => {
   const [toggles, setToggles] = useState<FeatureToggles>()

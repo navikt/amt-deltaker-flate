@@ -53,7 +53,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
     pamelding.deltakelsesinnhold?.ledetekst ||
     skalViseInnholdSjekkbokser ||
     tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER
+    tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
 
   if (!pamelding.deltakelsesinnhold || !skalViseInnhold) {
     return null
@@ -62,7 +62,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const innholdsTekstlabel =
     tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
       ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
-      : tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER
+      : tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
         ? 'Her kan du beskrive hvor personen skal jobbe eller hva tiltaket skal inneholde (valgfritt)'
         : null
 
@@ -80,7 +80,7 @@ export const Innhold = ({ pamelding, isDisabled }: Props) => {
       </section>
 
       {(tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-        tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_ORDINAER) && (
+        tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER) && (
         <section className="mt-4">
           <Textarea
             label={innholdsTekstlabel}
