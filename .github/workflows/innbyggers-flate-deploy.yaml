@@ -103,7 +103,7 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build
         run: pnpm build:demo --filter=innbyggers-flate
-      - uses: nais/deploy/actions/cdn-upload/v2@a7f8690f9b367fcbf5348a0a1e21d44f1aae50eb # master
+      - uses: nais/deploy/actions/cdn-upload/v2@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # master
         with:
           team: amt
           source: apps/innbyggers-flate/build
