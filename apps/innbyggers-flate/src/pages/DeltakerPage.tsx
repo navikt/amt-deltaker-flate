@@ -36,7 +36,8 @@ export const DeltakerPage = () => {
 
   const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.arrangorNavn
+    deltaker.deltakerliste.arrangorNavn,
+    deltaker.deltakerliste.kodeverk
   )
   const skalViseDato =
     deltaker.startdato &&
