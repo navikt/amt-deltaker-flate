@@ -52,7 +52,7 @@ cd amt-deltaker-flate
 pnpm build
 ```
 
-### Kjør appper lokalt
+### Kjør apper lokalt
 
 ```
 cd amt-deltaker-flate
