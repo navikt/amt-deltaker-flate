@@ -73,7 +73,7 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
     case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
       return 'Varig tilrettelagt arbeid'
     case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
-      return 'Tilrettelagt arbeid med oppfølging' //Dette er ikke den faktiske
+      return 'Tilrettelagt arbeid i ordinær virksomhet'
     case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
       return 'Arbeidsmarkedsopplæring (enkeltplass)'
     case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
@@ -99,7 +99,8 @@ export const hentTiltakNavnHosArrangorTekst = (
   kodeverk?: FlattKodeverk | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-
+  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
   return kurstype
     ? kurstype
     : `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
@@ -112,7 +113,8 @@ export const hentGjennomforingNavnHosArrangorTekst = (
   kodeverk?: FlattKodeverk | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-
+  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
   return kurstype
     ? kurstype
     : hentTiltakEllerGjennomforingNavnHosArrangorTekst(
@@ -141,8 +143,6 @@ export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
     ].includes(tiltakskode)
   )
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
-  else if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid i ordinær virksomhet hos ${arrangorNavn}` //Den faktiske tiltaksteksten
   else return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
