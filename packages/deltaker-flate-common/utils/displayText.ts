@@ -51,11 +51,7 @@ export const deltakerprosentText = (
     : ''
   return `${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`
 }
-/*
-  Brukes til å bestemme teksten som skal vises i ingressen på deltakeren i
-  * Påmeldingsskjema
-  Og overskrift for enkeltplass
- */
+
 export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   switch (type) {
     case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
