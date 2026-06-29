@@ -99,8 +99,6 @@ export const hentTiltakNavnHosArrangorTekst = (
   kodeverk?: FlattKodeverk | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
   return kurstype
     ? kurstype
     : `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
@@ -113,8 +111,6 @@ export const hentGjennomforingNavnHosArrangorTekst = (
   kodeverk?: FlattKodeverk | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
   return kurstype
     ? kurstype
     : hentTiltakEllerGjennomforingNavnHosArrangorTekst(
