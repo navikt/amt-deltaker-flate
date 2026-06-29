@@ -46,11 +46,17 @@ const skalViseEndreSluttarsakKnapp = (deltaker: DeltakerResponse) =>
   deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
 
 const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
-  harDeltakelsesmengde(
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.erEnkeltplass
-  ) &&
-  (venterDeltarEllerAvsluttet(deltaker) || erEnkeltplassSoktInn(deltaker))
+  harDeltakelsesmengde(deltaker.deltakerliste) &&
+  (venterDeltarEllerAvsluttet(deltaker) ||
+    // For enkeltplasser skal knappen "vises når deltakelsen er forbi statusen 'utkast'"
+    (deltaker.deltakerliste.erEnkeltplass &&
+      [
+        DeltakerStatusType.VENTER_PA_OPPSTART,
+        DeltakerStatusType.DELTAR,
+        DeltakerStatusType.SOKT_INN,
+        DeltakerStatusType.VURDERES,
+        DeltakerStatusType.VENTELISTE
+      ].includes(deltaker.status.type)))
 
 const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>
   erEnkeltPlass(deltaker) &&

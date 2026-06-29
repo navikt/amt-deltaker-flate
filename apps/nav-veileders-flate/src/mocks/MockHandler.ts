@@ -47,8 +47,8 @@ import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.t
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import {
-  lagOpplaringKategoriseringResponse,
   lagOpplaringKategoriseringDeltaljertRespons,
+  lagOpplaringKategoriseringResponse,
   mockSertifiseringer
 } from './mockKodeverk.ts'
 

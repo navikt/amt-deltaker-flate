@@ -17,11 +17,13 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   deltakelseVedImport: importertFraArena
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
 }
 
 export const HistorikkImportertFraArena = ({
   deltakelseVedImport,
-  tiltakskode
+  tiltakskode,
+  erEnkeltplass
 }: Props) => {
   const datoText = `${formatDate(deltakelseVedImport.startdato)} ${
     deltakelseVedImport.sluttdato
@@ -49,12 +51,13 @@ export const HistorikkImportertFraArena = ({
         <BodyLong size="small">{`Dato: ${datoText}`}</BodyLong>
       )}
 
-      {harDeltakelsesmengde(tiltakskode, false) && ( // TODO må sende innn enkeltplass
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
         <>
           <BodyLong size="small">
             {`Deltakelsesmengde: ${deltakerprosentText(
               deltakelseVedImport.deltakelsesprosent,
-              deltakelseVedImport.dagerPerUke
+              deltakelseVedImport.dagerPerUke,
+              erEnkeltplass
             )}`}
           </BodyLong>
         </>

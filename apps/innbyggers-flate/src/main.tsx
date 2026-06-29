@@ -19,7 +19,6 @@ const AppWithErrorBoundary = withFaroErrorBoundary(
 )
 
 const renderApp = () => {
-  // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
   if (import.meta.env.MODE !== 'offline') {
     injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
@@ -67,4 +66,16 @@ if (import.meta.env.VITE_FARO_URL) {
   })
 }
 
-enableMocking().then(renderApp)
+declare const window: {
+  __appInitialized?: boolean
+} & Window
+
+if (import.meta.env.MODE === 'offline') {
+  const browserWindow = window
+  if (!browserWindow.__appInitialized) {
+    browserWindow.__appInitialized = true
+    renderApp()
+  }
+} else {
+  enableMocking().then(renderApp)
+}

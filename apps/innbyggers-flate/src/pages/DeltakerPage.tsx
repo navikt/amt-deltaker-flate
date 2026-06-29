@@ -8,19 +8,19 @@ import {
   DeltakerStatusType,
   DialogLenke,
   EMDASH,
+  formatDateFromString,
+  getDateFromString,
+  getDeltakerStatusAarsakText,
+  harDeltakelsesmengde,
+  hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
+  kreverGodkjenningForPamelding,
   OmKurset,
   Oppmotested,
   PrisOgBetaling,
   SeEndringer,
-  VedtakOgKlage,
-  formatDateFromString,
-  getDateFromString,
-  getDeltakerStatusAarsakText,
-  hentTiltakHosArrangorTittel,
-  kanDeleDeltakerMedArrangorForVurdering,
-  kreverGodkjenningForPamelding,
-  harDeltakelsesmengde
+  VedtakOgKlage
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -46,12 +46,13 @@ export const DeltakerPage = () => {
     deltaker.status.type !== DeltakerStatusType.AVBRUTT_UTKAST &&
     deltaker.status.type !== DeltakerStatusType.VENTELISTE
 
+  const erEnkeltplass = deltaker.deltakerliste.erEnkeltplass
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
       deltaker.deltakerliste.tiltakskode,
-      deltaker.deltakerliste.erEnkeltplass
+      erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
       deltaker.status.type === DeltakerStatusType.VURDERES)
@@ -114,7 +115,7 @@ export const DeltakerPage = () => {
         oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
-        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        erEnkeltplass={erEnkeltplass}
       />
 
       {visDeltMedArrangor && (
@@ -139,7 +140,7 @@ export const DeltakerPage = () => {
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
-        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        erEnkeltplass={erEnkeltplass}
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         headingLevel={2}
@@ -179,16 +180,14 @@ export const DeltakerPage = () => {
         className="mt-8"
       />
 
-      {harDeltakelsesmengde(
-        deltaker.deltakerliste.tiltakskode,
-        deltaker.deltakerliste.erEnkeltplass
-      ) && (
+      {harDeltakelsesmengde(deltaker.deltakerliste) && (
         <DeltakelsesmengdeInfo
           deltakelsesprosent={deltaker.deltakelsesprosent}
           dagerPerUke={deltaker.dagerPerUke}
           nesteDeltakelsesmengde={
             deltaker.deltakelsesmengder.nesteDeltakelsesmengde
           }
+          erEnkeltplass={erEnkeltplass}
         />
       )}
 
@@ -201,6 +200,7 @@ export const DeltakerPage = () => {
         onModalClose={() => {
           setSearchParams()
         }}
+        erEnkeltplass={erEnkeltplass}
       />
 
       <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
@@ -221,7 +221,7 @@ export const DeltakerPage = () => {
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
-        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        erEnkeltplass={erEnkeltplass}
         className="mt-8"
       />
     </div>

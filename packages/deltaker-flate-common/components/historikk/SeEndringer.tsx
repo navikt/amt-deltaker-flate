@@ -1,5 +1,5 @@
 import { Alert, Button } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   DeferredFetchState,
   useDeferredFetch
@@ -7,11 +7,11 @@ import {
 import { Tiltakskode } from '../../model/deltaker'
 import { DeltakerHistorikkListe } from '../../model/deltakerHistorikk'
 import { HistorikkModal } from './HistorikkModal'
-import { useRef } from 'react'
 
 interface Props {
   deltakerId: string
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
   open?: boolean
   className?: string
   fetchHistorikk: (deltakerId: string) => Promise<DeltakerHistorikkListe>
@@ -21,6 +21,7 @@ interface Props {
 export const SeEndringer = ({
   deltakerId,
   tiltakskode,
+  erEnkeltplass,
   open,
   className,
   fetchHistorikk,
@@ -69,6 +70,7 @@ export const SeEndringer = ({
       <HistorikkModal
         historikk={historikk}
         tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
         open={historikkModalOpen}
         loading={state === DeferredFetchState.LOADING}
         onClose={() => {

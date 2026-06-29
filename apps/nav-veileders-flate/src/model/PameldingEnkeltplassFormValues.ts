@@ -22,6 +22,9 @@ import {
 import { validatePrisinformasjon } from './PrisinformasjonFormValues.ts'
 
 export const DATE_FORMAT = 'DD.MM.YYYY'
+export const MIN_DAGER_PER_UKE = 1
+export const MAX_DAGER_PER_UKE = 7
+export const dagerPerUkeFeilmelding = `Antall dager i uka må være et helt tall fra ${MIN_DAGER_PER_UKE} til ${MAX_DAGER_PER_UKE}.`
 
 const dateSchema = (feltnavn: string) =>
   z
@@ -47,7 +50,20 @@ export const createPameldingEnkeltplassFormSchema = (
       pristype: z.enum(PrisinformasjonType).nullable(),
       prisinformasjon: prisinformasjonSchema.nullable(),
       kategoriseringValg: kategoriseringValgSchema,
-      sertifiseringValg: sertifiseringValgSchema
+      sertifiseringValg: sertifiseringValgSchema,
+      dagerPerUke: z
+        .number({
+          error: () => dagerPerUkeFeilmelding
+        })
+        .nullable()
+        .refine(
+          (value) =>
+            value === null ||
+            (Number.isInteger(value) &&
+              value >= MIN_DAGER_PER_UKE &&
+              value <= MAX_DAGER_PER_UKE),
+          { message: dagerPerUkeFeilmelding }
+        )
     })
     .refine((schema) => schema.pristype !== null, {
       message: 'Du må velge et alternativ for Navs kostnader.',
@@ -113,6 +129,7 @@ export const generateFormDefaultValues = (
       : '',
     pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
     prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null,
+    dagerPerUke: deltaker.dagerPerUke,
     ...generateKodeverkDefaultValues(deltaker)
   }
 }

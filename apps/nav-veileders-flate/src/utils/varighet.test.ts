@@ -2,9 +2,9 @@ import dayjs from 'dayjs'
 import {
   DeltakerlisteStatus,
   DeltakerStatusType,
-  Tiltakskode,
   Oppstartstype,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'

@@ -4,10 +4,6 @@ import {
   ConfirmInfoCard,
   DeferredFetchState,
   DeltakelseInnhold,
-  OmKurset,
-  Oppmotested,
-  UtkastHeader,
-  VeilederSnakkeboble,
   deltakerprosentText,
   harBakgrunnsinfo,
   harDeltakelsesmengde,
@@ -16,7 +12,11 @@ import {
   hentTiltakHosArrangorTittel,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
-  useDeferredFetch
+  OmKurset,
+  Oppmotested,
+  useDeferredFetch,
+  UtkastHeader,
+  VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -135,10 +135,7 @@ export const UtkastPage = () => {
         />
       )}
 
-      {harDeltakelsesmengde(
-        deltakerliste.tiltakskode,
-        deltakerliste.erEnkeltplass
-      ) && (
+      {harDeltakelsesmengde(deltakerliste) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde
@@ -146,7 +143,8 @@ export const UtkastPage = () => {
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(
               deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke
+              deltaker.dagerPerUke,
+              deltakerliste.erEnkeltplass
             )}
           </BodyLong>
         </>
