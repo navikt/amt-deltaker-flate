@@ -6,7 +6,7 @@ import { deltakerprosentText } from '../../utils/displayText'
 import {
   formatDate,
   formatDateWithMonthName,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { HistorikkElement } from './HistorikkElement'
@@ -59,7 +59,7 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
         </>
       )}
 
-      {visDeltakelsesmengde(tiltakskode) && (
+      {harDeltakelsesmengde(tiltakskode, false) && ( // TODO må sende innn enkeltplass
         <>
           <BodyLong size="small" weight="semibold" className="mt-2">
             Deltakelsesmengde

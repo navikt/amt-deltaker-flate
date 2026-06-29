@@ -2,7 +2,7 @@ import {
   erOpplaringstiltak,
   INNHOLD_TYPE_ANNET,
   Tiltakskode,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { KladdRequest } from '../api/data/kladd-request.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
@@ -11,17 +11,17 @@ import { PameldingFormValues } from '../model/PameldingFormValues.ts'
 import { DeltakelsesprosentValg } from './utils.ts'
 
 export const generateInnholdForRequest = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   valgteInnhold: string[],
   innholdAnnetBeskrivelse?: string | null,
   innholdsTekst?: string | null
 ): InnholdDto[] => {
   if (
-    pamelding.deltakerliste.tiltakskode ===
+    deltaker.deltakerliste.tiltakskode ===
       Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    pamelding.deltakerliste.tiltakskode ===
+    deltaker.deltakerliste.tiltakskode ===
       Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER ||
-    erOpplaringstiltak(pamelding.deltakerliste.tiltakskode)
+    erOpplaringstiltak(deltaker.deltakerliste.tiltakskode)
   ) {
     return innholdsTekst
       ? [
@@ -33,7 +33,7 @@ export const generateInnholdForRequest = (
       : []
   }
 
-  return pamelding.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
+  return deltaker.deltakerliste.tilgjengeligInnhold.innhold.flatMap((i) => {
     const erInnholdValgt = valgteInnhold.find(
       (valgtInnhold) => i.innholdskode === valgtInnhold
     )
@@ -52,21 +52,23 @@ export const generateInnholdForRequest = (
 }
 
 const getDeltakerProsent = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   data: PameldingFormValues
 ) => {
-  const harDeltakelsesmengde = visDeltakelsesmengde(
-    pamelding.deltakerliste.tiltakskode
-  )
   const deltakelsesprosen =
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
       ? 100
       : data.deltakelsesprosent
-  return harDeltakelsesmengde ? deltakelsesprosen : undefined
+  return harDeltakelsesmengde(
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.erEnkeltplass
+  )
+    ? deltakelsesprosen
+    : undefined
 }
 
 export const generatePameldingRequestFromForm = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   data: PameldingFormValues | undefined
 ): PameldingRequest => {
   if (!data) {
@@ -74,12 +76,12 @@ export const generatePameldingRequestFromForm = (
   }
 
   return {
-    deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
+    deltakerlisteId: deltaker.deltakerliste.deltakerlisteId,
     dagerPerUke: data.dagerPerUke,
-    deltakelsesprosent: getDeltakerProsent(pamelding, data),
+    deltakelsesprosent: getDeltakerProsent(deltaker, data),
     bakgrunnsinformasjon: data.bakgrunnsinformasjon,
     innhold: generateInnholdForRequest(
-      pamelding,
+      deltaker,
       data.valgteInnhold,
       data.innholdAnnetBeskrivelse,
       data.innholdsTekst
@@ -88,12 +90,12 @@ export const generatePameldingRequestFromForm = (
 }
 
 export const formToKladdRequest = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   data: PameldingFormValues
 ): KladdRequest => {
   return {
     innhold: generateInnholdForRequest(
-      pamelding,
+      deltaker,
       data.valgteInnhold,
       data.innholdAnnetBeskrivelse,
       data.innholdsTekst
@@ -105,15 +107,15 @@ export const formToKladdRequest = (
 }
 
 export const generatePameldingRequest = (
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
 ): PameldingRequest => {
   return {
-    deltakerlisteId: pamelding.deltakerliste.deltakerlisteId,
-    dagerPerUke: pamelding.dagerPerUke || undefined,
-    deltakelsesprosent: pamelding.deltakelsesprosent || undefined,
-    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon || undefined,
+    deltakerlisteId: deltaker.deltakerliste.deltakerlisteId,
+    dagerPerUke: deltaker.dagerPerUke || undefined,
+    deltakelsesprosent: deltaker.deltakelsesprosent || undefined,
+    bakgrunnsinformasjon: deltaker.bakgrunnsinformasjon || undefined,
     innhold:
-      pamelding.deltakelsesinnhold?.innhold
+      deltaker.deltakelsesinnhold?.innhold
         .filter((i) => i.valgt)
         .map((i) => ({
           innholdskode: i.innholdskode,

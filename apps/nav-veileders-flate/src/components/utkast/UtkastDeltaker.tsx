@@ -9,7 +9,7 @@ import {
   VeilederSnakkeboble,
   deltakerprosentText,
   harBakgrunnsinfo,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
@@ -50,7 +50,10 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      {visDeltakelsesmengde(tiltakskode) && (
+      {harDeltakelsesmengde(
+        tiltakskode,
+        deltaker.deltakerliste.erEnkeltplass
+      ) && (
         <div>
           <Heading level="3" size="small">
             Deltakelsesmengde

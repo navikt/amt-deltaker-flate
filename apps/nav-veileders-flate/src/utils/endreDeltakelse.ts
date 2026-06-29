@@ -4,63 +4,77 @@ import {
   DeltakerStatusType,
   EndreDeltakelseType,
   harBakgrunnsinfo,
+  harDeltakelsesmengde,
   harInnhold,
-  harLopendeOppstart,
-  Tiltakskode
+  harLopendeOppstart
 } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 import {
   deltakerHarAvsluttendeStatus,
   deltakerHarSluttetEllerFullfort,
-  deltakerVenterPaOppstartEllerDeltar
+  deltakerVenterPaOppstartEllerDeltar,
+  erEnkeltplassSoktInn
 } from './statusutils'
 
-const ikkeAktuell = (pamelding: DeltakerResponse) =>
-  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
+const ikkeAktuell = (deltaker: DeltakerResponse) =>
+  deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const harSluttetEllerFullfort = (pamelding: DeltakerResponse) =>
-  deltakerHarSluttetEllerFullfort(pamelding.status.type)
+const harSluttetEllerFullfort = (deltaker: DeltakerResponse) =>
+  deltakerHarSluttetEllerFullfort(deltaker.status.type)
 
-const venterDeltarEllerAvsluttet = (pamelding: DeltakerResponse) =>
-  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  deltakerHarAvsluttendeStatus(pamelding.status.type)
+const venterDeltarEllerAvsluttet = (deltaker: DeltakerResponse) =>
+  deltakerVenterPaOppstartEllerDeltar(deltaker.status.type) ||
+  deltakerHarAvsluttendeStatus(deltaker.status.type)
 
 const skalViseForlengKnapp = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   sluttdato: Date | null
 ) =>
   sluttdato &&
-  (pamelding.status.type === DeltakerStatusType.DELTAR ||
-    harSluttetEllerFullfort(pamelding))
+  (deltaker.status.type === DeltakerStatusType.DELTAR ||
+    harSluttetEllerFullfort(deltaker))
 
-const skalViseEndreInnholdKnapp = (pamelding: DeltakerResponse) =>
-  harInnhold(pamelding.deltakerliste.tiltakskode)
+const skalViseEndreInnholdKnapp = (deltaker: DeltakerResponse) =>
+  harInnhold(deltaker.deltakerliste.tiltakskode)
 
-const skalViseEndreBakgrunnsinfoKnapp = (pamelding: DeltakerResponse) =>
-  venterDeltarEllerAvsluttet(pamelding) &&
-  harBakgrunnsinfo(pamelding.deltakerliste.tiltakskode)
+const skalViseEndreBakgrunnsinfoKnapp = (deltaker: DeltakerResponse) =>
+  venterDeltarEllerAvsluttet(deltaker) &&
+  harBakgrunnsinfo(deltaker.deltakerliste.tiltakskode)
 
-const skalViseEndreSluttarsakKnapp = (pamelding: DeltakerResponse) =>
-  pamelding.status.type === DeltakerStatusType.IKKE_AKTUELL
+const skalViseEndreSluttarsakKnapp = (deltaker: DeltakerResponse) =>
+  deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
 
-const skalViseEndreDeltakelsesmengde = (pamelding: DeltakerResponse) =>
-  (pamelding.deltakerliste.tiltakskode ===
-    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    pamelding.deltakerliste.tiltakskode ===
-      Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) &&
-  venterDeltarEllerAvsluttet(pamelding)
+const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
+  harDeltakelsesmengde(
+    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.erEnkeltplass
+  ) &&
+  (venterDeltarEllerAvsluttet(deltaker) || erEnkeltplassSoktInn(deltaker))
 
-export const kanEndreOppstartsdato = (pamelding: DeltakerResponse) =>
-  deltakerVenterPaOppstartEllerDeltar(pamelding.status.type) ||
-  harSluttetEllerFullfort(pamelding)
+const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>
+  deltaker.deltakerliste.erEnkeltplass &&
+  deltaker.status.type in
+    [
+      DeltakerStatusType.SOKT_INN,
+      DeltakerStatusType.VENTER_PA_OPPSTART,
+      DeltakerStatusType.DELTAR,
+      DeltakerStatusType.FULLFORT,
+      DeltakerStatusType.AVBRUTT,
+      DeltakerStatusType.IKKE_AKTUELL
+    ]
 
-const skalViseFjernOppstartsdato = (pamelding: DeltakerResponse) =>
-  harLopendeOppstart(pamelding.deltakerliste.oppstartstype) &&
-  pamelding.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
-  pamelding.startdato
+export const kanEndreOppstartsdato = (deltaker: DeltakerResponse) =>
+  deltakerVenterPaOppstartEllerDeltar(deltaker.status.type) ||
+  harSluttetEllerFullfort(deltaker) ||
+  erEnkeltplassSoktInn(deltaker)
 
-const skalViseEndreAvslutning = (pamelding: DeltakerResponse) =>
-  deltakerHarSluttetEllerFullfort(pamelding.status.type)
+const skalViseFjernOppstartsdato = (deltaker: DeltakerResponse) =>
+  harLopendeOppstart(deltaker.deltakerliste.oppstartstype) &&
+  deltaker.status.type === DeltakerStatusType.VENTER_PA_OPPSTART &&
+  deltaker.startdato
+
+const skalViseEndreAvslutning = (deltaker: DeltakerResponse) =>
+  deltakerHarSluttetEllerFullfort(deltaker.status.type)
 
 const STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING = [
   DeltakerStatusType.HAR_SLUTTET,
@@ -74,18 +88,18 @@ const STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING = [
  * (ENDRE_AVSLUTNING) til en annen avsluttende status.
  */
 export const erLaastMenNyligAvsluttet = (
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
 ): boolean => {
-  if (pamelding.kanEndres) return false
+  if (deltaker.kanEndres) return false
 
   if (
-    !STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING.includes(pamelding.status.type)
+    !STATUSER_SOM_TILLATER_BEGRENSET_REDIGERING.includes(deltaker.status.type)
   ) {
     return false
   }
 
-  const sluttdato = pamelding.sluttdato
-  const statusGyldigFra = pamelding.status.gyldigFra
+  const sluttdato = deltaker.sluttdato
+  const statusGyldigFra = deltaker.status.gyldigFra
   const nyesteDato = getNyesteDato([sluttdato, statusGyldigFra])
 
   if (!nyesteDato) return false
@@ -97,24 +111,24 @@ export const erLaastMenNyligAvsluttet = (
 }
 
 const erDeltakelseLaast = (
-  pamelding: DeltakerResponse,
-  laastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
+  deltaker: DeltakerResponse,
+  laastMenNyligAvsluttet = erLaastMenNyligAvsluttet(deltaker)
 ): boolean => {
   // Låst men nylig avsluttet – begrenset redigering er tillatt
   if (laastMenNyligAvsluttet) {
     return false
   }
 
-  if (!pamelding.kanEndres) {
+  if (!deltaker.kanEndres) {
     return true
   }
 
-  if (!deltakerHarAvsluttendeStatus(pamelding.status.type)) {
+  if (!deltakerHarAvsluttendeStatus(deltaker.status.type)) {
     return false
   }
 
-  const sluttdato = pamelding.sluttdato
-  const statusGyldigFra = pamelding.status.gyldigFra
+  const sluttdato = deltaker.sluttdato
+  const statusGyldigFra = deltaker.status.gyldigFra
   const nyesteDato = getNyesteDato([sluttdato, statusGyldigFra])
 
   if (!nyesteDato) {
@@ -139,24 +153,24 @@ const getNyesteDato = (datoer: (Date | null)[]) => {
   )
 }
 
-export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
+export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   const valg: EndreDeltakelseType[] = []
-  const sluttdato = pamelding.sluttdato
-  const deltakelseErLaastMenNyligAvsluttet = erLaastMenNyligAvsluttet(pamelding)
+  const sluttdato = deltaker.sluttdato
+  const deltakelseErLaastMenNyligAvsluttet = erLaastMenNyligAvsluttet(deltaker)
   const deltakelseErLaast = erDeltakelseLaast(
-    pamelding,
+    deltaker,
     deltakelseErLaastMenNyligAvsluttet
   )
 
   // Låst men nylig avsluttet – kun ENDRE_AVSLUTNING er tillatt
   if (deltakelseErLaastMenNyligAvsluttet) {
-    if (skalViseEndreAvslutning(pamelding)) {
+    if (skalViseEndreAvslutning(deltaker)) {
       valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
     }
     return valg
   }
 
-  if (kanEndreOppstartsdato(pamelding) && !deltakelseErLaast) {
+  if (kanEndreOppstartsdato(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_OPPSTARTSDATO)
   }
   if (
@@ -165,38 +179,41 @@ export const getEndreDeltakelsesValg = (pamelding: DeltakerResponse) => {
       DeltakerStatusType.SOKT_INN,
       DeltakerStatusType.VURDERES,
       DeltakerStatusType.VENTELISTE
-    ].includes(pamelding.status.type)
+    ].includes(deltaker.status.type)
   ) {
     valg.push(EndreDeltakelseType.IKKE_AKTUELL)
   }
-  if (skalViseForlengKnapp(pamelding, sluttdato) && !deltakelseErLaast) {
+  if (skalViseForlengKnapp(deltaker, sluttdato) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FORLENG_DELTAKELSE)
   }
-  if (skalViseEndreInnholdKnapp(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndreInnholdKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
   }
-  if (skalViseEndreBakgrunnsinfoKnapp(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndreBakgrunnsinfoKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)
   }
-  if (pamelding.status.type === DeltakerStatusType.DELTAR) {
+  if (deltaker.status.type === DeltakerStatusType.DELTAR) {
     valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
-  if (skalViseEndreDeltakelsesmengde(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndreDeltakelsesmengde(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE)
   }
-  if (skalViseFjernOppstartsdato(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndrePrisOgBetaling(deltaker) && !deltakelseErLaast) {
+    // TODO valg.push(....ENDRE_PRIS_OG_BETALING)
+  }
+  if (skalViseFjernOppstartsdato(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
   }
-  if (skalViseEndreSluttarsakKnapp(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndreSluttarsakKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)
   }
-  if (skalViseEndreAvslutning(pamelding) && !deltakelseErLaast) {
+  if (skalViseEndreAvslutning(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_AVSLUTNING)
   }
   if (
-    ikkeAktuell(pamelding) &&
+    ikkeAktuell(deltaker) &&
     !deltakelseErLaast &&
-    pamelding.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES
+    deltaker.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES
   ) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }

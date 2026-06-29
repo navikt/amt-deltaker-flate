@@ -10,7 +10,7 @@ import {
 import {
   formatDate,
   formatDateWithMonthName,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from '../../utils/utils'
 import { HistorikkElement } from './HistorikkElement'
 
@@ -49,7 +49,7 @@ export const HistorikkImportertFraArena = ({
         <BodyLong size="small">{`Dato: ${datoText}`}</BodyLong>
       )}
 
-      {visDeltakelsesmengde(tiltakskode) && (
+      {harDeltakelsesmengde(tiltakskode, false) && ( // TODO må sende innn enkeltplass
         <>
           <BodyLong size="small">
             {`Deltakelsesmengde: ${deltakerprosentText(

@@ -5,7 +5,7 @@ import {
   getDayjsFromString,
   haveSameContents,
   NOK_FORMATTER,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from './utils'
 import { Tiltakskode } from '../model/deltaker'
 import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
@@ -117,12 +117,19 @@ describe('haveSameContents', () => {
     expect(haveSameContents([1], ['a'])).toBeFalsy())
 })
 
-describe('visDeltakelsesmengde', () => {
+describe('harDeltakelsesmengde', () => {
   it.each([
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-  ])('returnerer true for %s', (kode) => {
-    expect(visDeltakelsesmengde(kode)).toBe(true)
+  ])('returnerer true for %s med erEnkeltplass=false', (kode) => {
+    expect(harDeltakelsesmengde(kode, false)).toBe(true)
+  })
+
+  it.each([
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+  ])('returnerer true for %s med erEnkeltplass=true', (kode) => {
+    expect(harDeltakelsesmengde(kode, true)).toBe(true)
   })
 
   it.each(
@@ -131,9 +138,45 @@ describe('visDeltakelsesmengde', () => {
         kode !== Tiltakskode.ARBEIDSFORBEREDENDE_TRENING &&
         kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     )
-  )('returnerer false for %s', (kode) => {
-    expect(visDeltakelsesmengde(kode)).toBe(false)
+  )('returnerer false for %s med erEnkeltplass=false', (kode) => {
+    expect(harDeltakelsesmengde(kode, false)).toBe(false)
   })
+
+  it.each([
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+  ])(
+    'returnerer true for opplæringstiltak %s med erEnkeltplass=true',
+    (kode) => {
+      expect(harDeltakelsesmengde(kode, true)).toBe(true)
+    }
+  )
+
+  it.each([
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING
+  ])(
+    'returnerer false for opplæringstiltak %s med erEnkeltplass=false',
+    (kode) => {
+      expect(harDeltakelsesmengde(kode, false)).toBe(false)
+    }
+  )
 })
 
 describe('beregnEstimertTotalsum', () => {
