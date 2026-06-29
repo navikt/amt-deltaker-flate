@@ -9,13 +9,13 @@ import {
   VeilederSnakkeboble,
   deltakerprosentText,
   harBakgrunnsinfo,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const { tiltakskode, erEnkeltplass } = deltaker.deltakerliste
 
   return (
     <div className="flex flex-col gap-8">
@@ -50,7 +50,7 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      {visDeltakelsesmengde(tiltakskode) && (
+      {harDeltakelsesmengde(tiltakskode, erEnkeltplass) && (
         <div>
           <Heading level="3" size="small">
             Deltakelsesmengde

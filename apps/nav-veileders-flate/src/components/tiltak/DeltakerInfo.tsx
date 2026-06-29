@@ -18,7 +18,7 @@ import {
   getDeltakerStatusAarsakText,
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
@@ -153,7 +153,10 @@ export const DeltakerInfo = ({ className }: Props) => {
         className="mt-8"
       />
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
+      {harDeltakelsesmengde(
+        deltaker.deltakerliste.tiltakskode,
+        deltaker.deltakerliste.erEnkeltplass
+      ) && (
         <DeltakelsesmengdeInfo
           deltakelsesprosent={deltaker.deltakelsesprosent}
           dagerPerUke={deltaker.dagerPerUke}

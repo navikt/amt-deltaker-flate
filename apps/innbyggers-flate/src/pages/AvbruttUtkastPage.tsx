@@ -5,7 +5,7 @@ import {
   UtkastHeader,
   deltakerprosentText,
   hentTiltakNavnHosArrangorTekst,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 
@@ -50,7 +50,10 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
+      {harDeltakelsesmengde(
+        deltaker.deltakerliste.tiltakskode,
+        deltaker.deltakerliste.erEnkeltplass
+      ) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde

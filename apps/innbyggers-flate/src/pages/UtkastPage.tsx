@@ -16,7 +16,7 @@ import {
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   useDeferredFetch,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -135,7 +135,10 @@ export const UtkastPage = () => {
         />
       )}
 
-      {visDeltakelsesmengde(deltakerliste.tiltakskode) && (
+      {harDeltakelsesmengde(
+        deltakerliste.tiltakskode,
+        deltakerliste.erEnkeltplass
+      ) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde

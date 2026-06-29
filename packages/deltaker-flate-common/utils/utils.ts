@@ -129,10 +129,14 @@ export const formatDateFromString = (
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }
 
-export const visDeltakelsesmengde = (tiltakskode: Tiltakskode) => {
+export const harDeltakelsesmengde = (
+  tiltakskode: Tiltakskode,
+  erEnkeltplass: boolean
+) => {
   return (
     tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    (erOpplaringstiltak(tiltakskode) && erEnkeltplass)
   )
 }
 

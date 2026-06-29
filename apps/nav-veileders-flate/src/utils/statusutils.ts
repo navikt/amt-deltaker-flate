@@ -1,4 +1,5 @@
 import { DeltakerStatusType } from 'deltaker-flate-common'
+import { DeltakerResponse } from '../api/data/deltaker'
 
 export const deltakerVenterPaOppstartEllerDeltar = (
   statustype: DeltakerStatusType
@@ -6,6 +7,13 @@ export const deltakerVenterPaOppstartEllerDeltar = (
   return (
     statustype === DeltakerStatusType.VENTER_PA_OPPSTART ||
     statustype === DeltakerStatusType.DELTAR
+  )
+}
+
+export const erEnkeltplassSoktInn = (deltaker: DeltakerResponse): boolean => {
+  return (
+    deltaker.deltakerliste.erEnkeltplass &&
+    deltaker.status.type === DeltakerStatusType.SOKT_INN
   )
 }
 

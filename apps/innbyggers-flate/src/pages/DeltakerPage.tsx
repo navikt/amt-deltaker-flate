@@ -20,7 +20,7 @@ import {
   hentTiltakNavnHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
-  visDeltakelsesmengde
+  harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -177,7 +177,10 @@ export const DeltakerPage = () => {
         className="mt-8"
       />
 
-      {visDeltakelsesmengde(deltaker.deltakerliste.tiltakskode) && (
+      {harDeltakelsesmengde(
+        deltaker.deltakerliste.tiltakskode,
+        deltaker.deltakerliste.erEnkeltplass
+      ) && (
         <DeltakelsesmengdeInfo
           deltakelsesprosent={deltaker.deltakelsesprosent}
           dagerPerUke={deltaker.dagerPerUke}
