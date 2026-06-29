@@ -55,7 +55,7 @@ const getDeltakerProsent = (
   deltaker: DeltakerResponse,
   data: PameldingFormValues
 ) => {
-  const deltakelsesprosen =
+  const deltakelsesprosent =
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
       ? 100
       : data.deltakelsesprosent
@@ -63,7 +63,7 @@ const getDeltakerProsent = (
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.erEnkeltplass
   )
-    ? deltakelsesprosen
+    ? deltakelsesprosent
     : undefined
 }
 
