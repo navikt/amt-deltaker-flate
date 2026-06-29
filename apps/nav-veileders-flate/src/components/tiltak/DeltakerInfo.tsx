@@ -8,16 +8,16 @@ import {
   DeltakerStatusType,
   DialogLenke,
   EMDASH,
+  formatDate,
+  getDeltakerStatusAarsakText,
+  hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   OmKurset,
   Oppmotested,
   PrisOgBetaling,
   SeEndringer,
   VedtakOgKlage,
-  formatDate,
-  getDeltakerStatusAarsakText,
-  hentTiltakHosArrangorTittel,
-  kanDeleDeltakerMedArrangorForVurdering,
   harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
@@ -160,6 +160,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         <DeltakelsesmengdeInfo
           deltakelsesprosent={deltaker.deltakelsesprosent}
           dagerPerUke={deltaker.dagerPerUke}
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
           nesteDeltakelsesmengde={
             deltaker.deltakelsesmengder.nesteDeltakelsesmengde
           }
@@ -169,6 +170,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <SeEndringer
         className="mt-8"
         tiltakskode={deltaker.deltakerliste.tiltakskode}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
       />

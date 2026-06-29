@@ -31,7 +31,8 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     prisinformasjon: data.prisinformasjon,
     arrangorUnderenhet: data.arrangorUnderenhet,
     kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
-    sertifiseringValg: data.sertifiseringValg
+    sertifiseringValg: data.sertifiseringValg,
+    dagerPerUke: data.dagerPerUke
   }
 }
 

@@ -54,7 +54,9 @@ export const HistorikkImportertFraArena = ({
           <BodyLong size="small">
             {`Deltakelsesmengde: ${deltakerprosentText(
               deltakelseVedImport.deltakelsesprosent,
-              deltakelseVedImport.dagerPerUke
+              deltakelseVedImport.dagerPerUke,
+              // TODO: trenger vi støtte for enkeltplasser her?
+              false
             )}`}
           </BodyLong>
         </>

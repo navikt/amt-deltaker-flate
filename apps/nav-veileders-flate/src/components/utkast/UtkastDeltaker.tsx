@@ -58,7 +58,8 @@ export const UtkastDeltaker = () => {
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(
               deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke
+              deltaker.dagerPerUke,
+              erEnkeltplass
             )}
           </BodyLong>
         </div>

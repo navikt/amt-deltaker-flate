@@ -19,6 +19,7 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   deltakerEndring: DeltakerEndring
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
 }
 
 const mapEndringsType = (endringType: EndringType) => {
@@ -200,12 +201,16 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
   }
 }
 
-export const HistorikkEndring = ({ deltakerEndring, tiltakskode }: Props) => {
+export const HistorikkEndring = ({
+  deltakerEndring,
+  tiltakskode,
+  erEnkeltplass
+}: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
 
   return (
     <HistorikkElement
-      tittel={getEndringsTittel(deltakerEndring.endring)}
+      tittel={getEndringsTittel(deltakerEndring.endring, erEnkeltplass)}
       icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
       forslag={deltakerEndring.forslag}
     >
