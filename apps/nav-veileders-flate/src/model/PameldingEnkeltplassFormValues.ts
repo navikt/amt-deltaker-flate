@@ -344,7 +344,7 @@ const validatePrisinformasjon = (
       addPrisinformasjonIssue(
         ctx,
         'tilleggsopplysninger-ingen-kostnader',
-        'Du må fylle ut tilleggsopplysninger når bruker dekker opplæringen selv.'
+        'Du må fylle ut tilleggsopplysninger om egenfinansieringen.'
       )
     }
 

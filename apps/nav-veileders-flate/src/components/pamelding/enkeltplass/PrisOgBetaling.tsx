@@ -276,6 +276,8 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
       <Tilleggsopplysninger
         disabled={disabled}
         type={PrisinformasjonType.Tilskudd}
+        label="Tilleggsopplysninger om kostnader (valgfritt)"
+        description="For eksempel om brukeren skal dekke deler av kostnadene selv"
       />
 
       <PrisInfoCard />
@@ -347,6 +349,7 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
             disabled={disabled}
             required
             type={PrisinformasjonType.IngenKostnader}
+            label="Tilleggsopplysninger om egenfinansieringen"
           />
         </>
       )}
@@ -364,11 +367,15 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
 const Tilleggsopplysninger = ({
   disabled,
   required = false,
-  type
+  type,
+  label,
+  description
 }: {
   disabled: boolean
   required?: boolean
   type: PrisinformasjonType.Tilskudd | PrisinformasjonType.IngenKostnader
+  label: string
+  description?: string
 }) => {
   const {
     watch,
@@ -389,8 +396,8 @@ const Tilleggsopplysninger = ({
   return (
     <Textarea
       id={textAreaId}
-      label={`Tilleggsopplysninger om kostnader${required ? '' : ' (valgfritt)'}`}
-      description="For eksempel om brukeren skal dekke deler av kostnadene selv"
+      label={label}
+      description={description}
       size="small"
       aria-required={required}
       error={errors[`prisinformasjon_${textAreaId}`]?.message}
