@@ -11,8 +11,8 @@ import {
   deltakerprosentText,
   harBakgrunnsinfo,
   harInnhold,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
-  hentTiltakNavnHosArrangorTekst,
+  hentDeltakerlisteHosArrangorTekst,
+  hentTiltakTittelHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   useDeferredFetch,
@@ -35,13 +35,13 @@ export const UtkastPage = () => {
   )
 
   const arrangorNavn = deltakerliste.arrangorNavn
-  const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+  const navnHosArrangorTekst = hentDeltakerlisteHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
 
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn
   )

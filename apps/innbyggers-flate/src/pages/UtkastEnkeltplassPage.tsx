@@ -6,7 +6,7 @@ import {
   UtkastHeader,
   VeilederSnakkeboble,
   formatDateFromString,
-  hentGjennomforingNavnHosArrangorTekst,
+  hentEnkeltplassHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
@@ -17,7 +17,7 @@ export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
 
-  const tiltakNavnHosArrangorTekst = hentGjennomforingNavnHosArrangorTekst(
+  const tiltakNavnHosArrangorTekst = hentEnkeltplassHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,

@@ -213,7 +213,8 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   if (
     ikkeAktuell(deltaker) &&
     !deltakelseErLaast &&
-    deltaker.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES
+    (deltaker.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES ||
+      deltaker.deltakerliste.erEnkeltplass)
   ) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }

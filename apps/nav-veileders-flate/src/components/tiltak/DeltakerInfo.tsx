@@ -16,7 +16,7 @@ import {
   VedtakOgKlage,
   formatDate,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakTittelHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
   harDeltakelsesmengde
 } from 'deltaker-flate-common'
@@ -31,7 +31,7 @@ interface Props {
 
 export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.kodeverk

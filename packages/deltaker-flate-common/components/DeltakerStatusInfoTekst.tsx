@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import {
   DeltakerStatusType,
   formatDateWithMonthName,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  hentTiltakHosArrangorTekst,
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -55,7 +55,7 @@ export const DeltakerStatusInfoTekst = ({
         {getInfoTekst(
           pameldingstype === Pameldingstype.TRENGER_GODKJENNING,
           statusType,
-          hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+          hentTiltakHosArrangorTekst(
             tiltakskode,
             deltakerlisteNavn,
             arrangorNavn

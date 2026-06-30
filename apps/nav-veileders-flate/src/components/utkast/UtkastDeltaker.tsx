@@ -3,7 +3,7 @@ import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
   DeltakerStatusType,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
+  hentDeltakerlisteHosArrangorTekst,
   OmKurset,
   Oppmotested,
   VeilederSnakkeboble,
@@ -24,7 +24,7 @@ export const UtkastDeltaker = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+        tiltaksnavnHosArrangor={hentDeltakerlisteHosArrangorTekst(
           tiltakskode,
           deltaker.deltakerliste.deltakerlisteNavn,
           deltaker.deltakerliste.arrangorNavn

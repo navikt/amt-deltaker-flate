@@ -17,7 +17,7 @@ import {
   formatDateFromString,
   getDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakTittelHosArrangorTekst,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   harDeltakelsesmengde
@@ -34,7 +34,7 @@ export const DeltakerPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''
 
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.kodeverk

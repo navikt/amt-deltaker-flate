@@ -4,14 +4,14 @@ import {
   EMDASH,
   UtkastHeader,
   deltakerprosentText,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakTittelHosArrangorTekst,
   harDeltakelsesmengde
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )

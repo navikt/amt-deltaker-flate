@@ -2,7 +2,7 @@ import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   ConfirmInfoCard,
   DeferredFetchState,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakTittelHosArrangorTekst,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -38,7 +38,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakHosArrangorTekst = hentTiltakTittelHosArrangorTekst(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn,
     deltakerliste.kodeverk
