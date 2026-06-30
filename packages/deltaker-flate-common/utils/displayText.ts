@@ -93,7 +93,7 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   }
 }
 
-export const hentKladdTittelHosArrangorTekst = (
+export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string
@@ -101,10 +101,10 @@ export const hentKladdTittelHosArrangorTekst = (
   if (skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
-  return hentTiltakTittelHosArrangorTekst(tiltakskode, arrangorNavn)
+  return hentTiltakHosArrangorTittel(tiltakskode, arrangorNavn)
 }
 
-export const hentTiltakTittelHosArrangorTekst = (
+export const hentTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string,
   kodeverk?: FlattKodeverk | null

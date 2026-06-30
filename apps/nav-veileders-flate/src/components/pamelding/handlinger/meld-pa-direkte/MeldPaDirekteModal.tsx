@@ -8,7 +8,7 @@ import {
 import {
   ConfirmInfoCard,
   DeferredFetchState,
-  hentTiltakTittelHosArrangorTekst,
+  hentTiltakHosArrangorTittel,
   skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -51,7 +51,7 @@ export const MeldPaDirekteModal = ({
 
   const { doRedirect } = useModiaLink()
 
-  const tiltakHosArrangorTekst = hentTiltakTittelHosArrangorTekst(
+  const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
     null

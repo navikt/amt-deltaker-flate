@@ -1,7 +1,7 @@
 import {
   DeltakerStatusType,
   FeilregistrertInfo,
-  hentTiltakTittelHosArrangorTekst
+  hentTiltakHosArrangorTittel
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'
@@ -12,7 +12,7 @@ import { UtkastEnkeltplassPage } from '../pages/UtkastEnkeltplassPage.tsx'
 
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn
   )

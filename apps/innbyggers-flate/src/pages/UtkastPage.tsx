@@ -13,7 +13,7 @@ import {
   harDeltakelsesmengde,
   harInnhold,
   hentTiltakHosArrangorIngressTekst,
-  hentTiltakTittelHosArrangorTekst,
+  hentTiltakHosArrangorTittel,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   useDeferredFetch
@@ -41,7 +41,7 @@ export const UtkastPage = () => {
     arrangorNavn
   )
 
-  const tiltakOgStedTekst = hentTiltakTittelHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn
   )
