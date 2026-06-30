@@ -100,7 +100,11 @@ export const hentKladdTiltakHosArrangorTittel = (
   kodeverk?: FlattKodeverk | null,
   erKladd?: boolean
 ) => {
-  if (!kodeverk && skalBrukeDeltakerlisteNavn(tiltakskode))
+  const kurstype = getKodeverkValgNavn(
+    kodeverk,
+    OpplaringRepresenterer.KURSTYPE_ID
+  )
+  if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
   return hentTiltakHosArrangorTittel(
