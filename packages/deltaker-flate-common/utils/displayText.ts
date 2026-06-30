@@ -97,12 +97,17 @@ export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
+  kodeverk?: FlattKodeverk | null,
+  erKladd?: boolean
 ) => {
   if (skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
-  return hentTiltakHosArrangorTittel(tiltakskode, arrangorNavn, kodeverk)
+  return hentTiltakHosArrangorTittel(
+    tiltakskode,
+    arrangorNavn,
+    erKladd ? null : kodeverk
+  )
 }
 
 export const hentTiltakHosArrangorTittel = (
