@@ -2,14 +2,14 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
+  deltakerprosentText,
   DeltakerStatusType,
-  hentDeltakerlisteHosArrangorTekst,
+  harBakgrunnsinfo,
+  harDeltakelsesmengde,
+  hentTiltakHosArrangorIngressTekst,
   OmKurset,
   Oppmotested,
-  VeilederSnakkeboble,
-  deltakerprosentText,
-  harBakgrunnsinfo,
-  harDeltakelsesmengde
+  VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
@@ -24,7 +24,7 @@ export const UtkastDeltaker = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentDeltakerlisteHosArrangorTekst(
+        tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
           tiltakskode,
           deltaker.deltakerliste.deltakerlisteNavn,
           deltaker.deltakerliste.arrangorNavn

@@ -93,30 +93,15 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   }
 }
 
-export const hentEnkeltplassHosArrangorTekst = (
-  tiltakskode: Tiltakskode,
-  deltakerlisteNavn: string,
-  arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
-) => {
-  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-  return kurstype
-    ? kurstype
-    : hentDeltakerlisteHosArrangorTekst(
-        tiltakskode,
-        deltakerlisteNavn,
-        arrangorNavn
-      )
-}
-
-export const hentDeltakerlisteHosArrangorTekst = (
+export const hentKladdTittelHosArrangorTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string
 ) => {
   if (skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
-  else return hentTiltakTittelHosArrangorTekst(tiltakskode, arrangorNavn)
+
+  return hentTiltakTittelHosArrangorTekst(tiltakskode, arrangorNavn)
 }
 
 export const hentTiltakTittelHosArrangorTekst = (
@@ -125,19 +110,23 @@ export const hentTiltakTittelHosArrangorTekst = (
   kodeverk?: FlattKodeverk | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+
+  if (kurstype) return kurstype
   if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
     return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
 
-  return kurstype
-    ? kurstype
-    : `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+  return `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
 }
 
-export const hentTiltakHosArrangorTekst = (
+export const hentTiltakHosArrangorIngressTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
-  arrangorNavn: string
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
 ) => {
+  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+
+  if (kurstype) return kurstype
   if (skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
