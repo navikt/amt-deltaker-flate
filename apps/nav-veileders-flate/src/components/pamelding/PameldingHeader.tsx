@@ -45,7 +45,8 @@ export const PameldingHeader = ({
   const tiltakNavnHosArrangor = hentKladdTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
-    deltakerliste.arrangorNavn
+    deltakerliste.arrangorNavn,
+    deltakerliste.kodeverk
   )
 
   return (

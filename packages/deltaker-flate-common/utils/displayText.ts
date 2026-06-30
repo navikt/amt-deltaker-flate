@@ -96,12 +96,13 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
 export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
-  arrangorNavn: string
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
 ) => {
   if (skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
-  return hentTiltakHosArrangorTittel(tiltakskode, arrangorNavn)
+  return hentTiltakHosArrangorTittel(tiltakskode, arrangorNavn, kodeverk)
 }
 
 export const hentTiltakHosArrangorTittel = (
@@ -135,7 +136,7 @@ export const hentTiltakHosArrangorIngressTekst = (
 
 const skalBrukeDeltakerlisteNavn = (tiltakskode: Tiltakskode) =>
   [
-    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplasss uten rammeavtale
+    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplass uten rammeavtale
     Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
     Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
