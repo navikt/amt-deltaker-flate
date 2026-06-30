@@ -1,5 +1,5 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
-import { FaroErrorBoundary } from '@grafana/faro-react'
+import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
@@ -8,6 +8,15 @@ import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
+
+const AppWithErrorBoundary = withFaroErrorBoundary(
+  () => (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  ),
+  { fallback: <ErrorFallback /> }
+)
 
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
@@ -26,11 +35,7 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <FaroErrorBoundary fallback={<ErrorFallback />}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </FaroErrorBoundary>
+      <AppWithErrorBoundary />
     </React.StrictMode>
   )
 }

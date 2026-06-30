@@ -1,14 +1,20 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
-import { FaroErrorBoundary } from '@grafana/faro-react'
+import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import type { ReactNode } from 'react'
 import appCss from './app.css?inline'
 import { AppContextProvider } from './AppContext.tsx'
 import { APPLICATION_WEB_COMPONENT_NAME } from './constants.ts'
 import { AppRoutes } from './Routes.tsx'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './queryClient.ts'
+
+const FaroBoundary = withFaroErrorBoundary(
+  ({ children }: { children: ReactNode }) => <>{children}</>,
+  { fallback: <ErrorFallback /> }
+)
 
 if (import.meta.env.VITE_FARO_URL) {
   initializeFaro({
@@ -60,7 +66,7 @@ export class Deltaker extends HTMLElement {
 
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
-      <FaroErrorBoundary fallback={<ErrorFallback />}>
+      <FaroBoundary>
         <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
           <AppContextProvider
             initialPersonident={initialPersonident}
@@ -73,7 +79,7 @@ export class Deltaker extends HTMLElement {
             </BrowserRouter>
           </AppContextProvider>
         </div>
-      </FaroErrorBoundary>
+      </FaroBoundary>
     )
   }
 
