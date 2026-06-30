@@ -32,6 +32,39 @@ const lagDeltakerliste = (
   }) as unknown as Deltakerliste
 
 describe('PameldingHeader - FOV heading', () => {
+  it('bruker kurstype fra kodeverk i heading når FOV har kodeverk med tittel', () => {
+    render(
+      <PameldingHeader
+        deltakerStatus={{
+          id: '1',
+          type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
+          aarsak: null,
+          gyldigFra: new Date(),
+          gyldigTil: null,
+          opprettet: new Date()
+        }}
+        deltakerliste={lagDeltakerliste({
+          kodeverk: {
+            valgteKategoriseringer: [
+              {
+                representerer: OpplaringRepresenterer.KURSTYPE_ID,
+                valg: [{ id: 'kurs-1', visningsnavn: 'Norskopplæring' }]
+              }
+            ],
+            valgteSertifiseringer: []
+          }
+        })}
+        vedtaksinformasjon={null}
+      />
+    )
+
+    expect(
+      screen.getByRole('heading', {
+        name: 'Norskopplæring hos A & A Eiendom Ans'
+      })
+    ).toBeInTheDocument()
+  })
+
   it('faller tilbake til standard tiltaksnavn når kodeverk mangler tittel', () => {
     render(
       <PameldingHeader
