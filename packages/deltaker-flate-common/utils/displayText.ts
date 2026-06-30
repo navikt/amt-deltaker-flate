@@ -97,8 +97,8 @@ export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null,
-  erKladd?: boolean
+  kodeverk: FlattKodeverk | null,
+  erKladd: boolean
 ) => {
   const kurstype = getKodeverkValgNavn(
     kodeverk,
@@ -107,6 +107,8 @@ export const hentKladdTiltakHosArrangorTittel = (
   if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
+  console.warn('kurstype: ', kurstype)
+  console.warn('erKladd: ', erKladd)
   return hentTiltakHosArrangorTittel(
     tiltakskode,
     arrangorNavn,
@@ -121,6 +123,7 @@ export const hentTiltakHosArrangorTittel = (
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
 
+  console.warn('kurstype 2: ', kurstype)
   if (kurstype) return kurstype
   if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
     return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
