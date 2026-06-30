@@ -9,6 +9,7 @@ import {
 } from './deltaker'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
+import { opplaringKategoriseringSchema } from './kodeverk.ts'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -170,6 +171,7 @@ export const soktInnSchema = z.object({
   innsoktAv: z.string(),
   innsoktAvEnhet: z.string(),
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
+  opplaringKategorisering: opplaringKategoriseringSchema.nullable(),
   utkastDelt: nullableDateSchema,
   utkastGodkjentAvNav: z.boolean()
 })
@@ -250,7 +252,7 @@ export type DeltakerEndringFraArrangor = z.infer<
   typeof endringFraArrangorSchema
 >
 export type Vedtak = z.infer<typeof vedtakSchema>
-export type InnsokPaaFellesOppstart = z.infer<typeof soktInnSchema>
+export type Innsok = z.infer<typeof soktInnSchema>
 export type importertFraArena = z.infer<typeof importertFraArenaSchema>
 export type DeltakerHistorikk = z.infer<typeof deltakerHistorikkSchema>
 export type DeltakerHistorikkListe = z.infer<

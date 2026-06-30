@@ -8,8 +8,8 @@ import {
 // Re-eksporter det flate kodeverket fra fellespakken slik at eksisterende
 // imports fra denne fila fortsatt fungerer (FlattKodeverk, utflatetKodeverkSchema).
 export {
-  utflatetKodeverkSchema,
-  type FlattKodeverk
+  opplaringKategoriseringSchema,
+  type OpplaringKategorisering
 } from 'deltaker-flate-common'
 
 export enum KodeverkAlternativType {

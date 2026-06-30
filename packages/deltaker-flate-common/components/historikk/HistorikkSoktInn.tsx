@@ -1,13 +1,13 @@
 import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
-import { InnsokPaaFellesOppstart } from '../../model/deltakerHistorikk.ts'
+import { Innsok } from '../../model/deltakerHistorikk.ts'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
 
 interface Props {
-  soktInnHistorikk: InnsokPaaFellesOppstart
+  soktInnHistorikk: Innsok
   tiltakskode: Tiltakskode
 }
 
@@ -17,6 +17,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
     innsoktAv,
     innsoktAvEnhet,
     deltakelsesinnholdVedInnsok,
+    opplaringKategorisering,
     utkastDelt,
     utkastGodkjentAvNav
   } = soktInnHistorikk
@@ -36,8 +37,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
             Dette er innholdet
           </BodyLong>
         }
-        // TODO kodeverk
-        // listClassName="-mt-3 -mb-1" TODO sjekk ut
+        kodeverk={opplaringKategorisering}
       />
 
       <Detail className="mt-1" textColor="subtle">

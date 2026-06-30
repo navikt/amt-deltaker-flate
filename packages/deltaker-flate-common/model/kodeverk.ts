@@ -27,7 +27,7 @@ export const sertifiseringValgSchema = z.array(
  * Inneholder kun ferdig selekterte verdier som skal vises eller persisteres,
  * ikke hele hierarkiet av valg.
  */
-export const utflatetKodeverkSchema = z.object({
+export const opplaringKategoriseringSchema = z.object({
   valgteKategoriseringer: z.array(
     z.object({
       representerer: z.enum(OpplaringRepresenterer),
@@ -42,4 +42,6 @@ export const utflatetKodeverkSchema = z.object({
   valgteSertifiseringer: sertifiseringValgSchema
 })
 
-export type FlattKodeverk = z.infer<typeof utflatetKodeverkSchema>
+export type OpplaringKategorisering = z.infer<
+  typeof opplaringKategoriseringSchema
+>
