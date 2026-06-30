@@ -100,7 +100,7 @@ export const hentKladdTiltakHosArrangorTittel = (
   kodeverk?: FlattKodeverk | null,
   erKladd?: boolean
 ) => {
-  if (skalBrukeDeltakerlisteNavn(tiltakskode))
+  if (!kodeverk && skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
   return hentTiltakHosArrangorTittel(
