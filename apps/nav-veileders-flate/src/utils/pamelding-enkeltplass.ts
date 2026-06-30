@@ -85,8 +85,8 @@ export const generateEnkeltplassPameldingRequest = (
 }
 
 /**
- * Sjekker om pameldingen er en enkeltplass uten rammeavtale
+ * Sjekker om pameldingen/deltakeren er en enkeltplass uten rammeavtale
  */
-export const erEnkeltPlass = (pamelding: DeltakerResponse) => {
-  return pamelding.deltakerliste.erEnkeltplass
+export const erEnkeltPlass = (deltaker: DeltakerResponse) => {
+  return deltaker.deltakerliste.erEnkeltplass
 }
