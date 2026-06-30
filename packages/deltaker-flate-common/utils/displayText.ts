@@ -93,58 +93,68 @@ export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
   }
 }
 
-export const hentTiltakNavnHosArrangorTekst = (
-  tiltakskode: Tiltakskode,
-  arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
-) => {
-  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
-  return kurstype
-    ? kurstype
-    : `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
-}
-
-export const hentGjennomforingNavnHosArrangorTekst = (
+export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
+  kodeverk: FlattKodeverk | null,
+  erKladd: boolean
 ) => {
-  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
-  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
-  return kurstype
-    ? kurstype
-    : hentTiltakEllerGjennomforingNavnHosArrangorTekst(
-        tiltakskode,
-        deltakerlisteNavn,
-        arrangorNavn
-      )
-}
-
-export const hentTiltakEllerGjennomforingNavnHosArrangorTekst = (
-  tiltakskode: Tiltakskode,
-  deltakerlisteNavn: string,
-  arrangorNavn: string
-) => {
-  if (
-    [
-      // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplasss uten rammeavtale
-      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-      Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-      Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-      Tiltakskode.STUDIESPESIALISERING,
-      Tiltakskode.FAG_OG_YRKESOPPLAERING,
-      Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
-      Tiltakskode.HOYERE_UTDANNING
-    ].includes(tiltakskode)
+  const kurstype = getKodeverkValgNavn(
+    kodeverk,
+    OpplaringRepresenterer.KURSTYPE_ID
   )
+  if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
-  else return hentTiltakNavnHosArrangorTekst(tiltakskode, arrangorNavn)
+
+  return hentTiltakHosArrangorTittel(
+    tiltakskode,
+    arrangorNavn,
+    erKladd ? null : kodeverk
+  )
 }
+
+export const hentTiltakHosArrangorTittel = (
+  tiltakskode: Tiltakskode,
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
+) => {
+  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+
+  if (kurstype) return kurstype
+  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
+
+  return `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+}
+
+export const hentTiltakHosArrangorIngressTekst = (
+  tiltakskode: Tiltakskode,
+  deltakerlisteNavn: string,
+  arrangorNavn: string,
+  kodeverk?: FlattKodeverk | null
+) => {
+  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+
+  if (kurstype) return kurstype
+  if (skalBrukeDeltakerlisteNavn(tiltakskode))
+    return `${deltakerlisteNavn} hos ${arrangorNavn}`
+
+  return `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+}
+
+const skalBrukeDeltakerlisteNavn = (tiltakskode: Tiltakskode) =>
+  [
+    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplass uten rammeavtale
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.HOYERE_UTDANNING
+  ].includes(tiltakskode)
 
 export const getDeltakerStatusDisplayText = (
   type: DeltakerStatusType

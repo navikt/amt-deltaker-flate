@@ -10,13 +10,13 @@ import {
   VeilederSnakkeboble,
   deltakerprosentText,
   harBakgrunnsinfo,
+  harDeltakelsesmengde,
   harInnhold,
-  hentTiltakEllerGjennomforingNavnHosArrangorTekst,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakHosArrangorIngressTekst,
+  hentTiltakHosArrangorTittel,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
-  useDeferredFetch,
-  harDeltakelsesmengde
+  useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -35,13 +35,13 @@ export const UtkastPage = () => {
   )
 
   const arrangorNavn = deltakerliste.arrangorNavn
-  const navnHosArrangorTekst = hentTiltakEllerGjennomforingNavnHosArrangorTekst(
+  const navnHosArrangorTekst = hentTiltakHosArrangorIngressTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
 
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn
   )

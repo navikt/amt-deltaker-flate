@@ -6,7 +6,8 @@ import {
   UtkastHeader,
   VeilederSnakkeboble,
   formatDateFromString,
-  hentGjennomforingNavnHosArrangorTekst,
+  hentTiltakHosArrangorIngressTekst,
+  hentTiltakHosArrangorTittel,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
@@ -17,7 +18,12 @@ export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
 
-  const tiltakNavnHosArrangorTekst = hentGjennomforingNavnHosArrangorTekst(
+  const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
+    deltakerliste.tiltakskode,
+    deltakerliste.arrangorNavn,
+    deltakerliste.kodeverk
+  )
+  const ingressTekst = hentTiltakHosArrangorIngressTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
@@ -64,7 +70,7 @@ export const UtkastEnkeltplassPage = () => {
         arrangorNavn={deltakerliste.arrangorNavn}
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={tiltakNavnHosArrangorTekst}
+        tiltaksnavnHosArrangor={ingressTekst}
       />
 
       <BodyLong size="small" className="mt-8 whitespace-pre-wrap">

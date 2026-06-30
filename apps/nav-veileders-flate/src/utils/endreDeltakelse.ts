@@ -15,6 +15,7 @@ import {
   deltakerVenterPaOppstartEllerDeltar,
   erEnkeltplassSoktInn
 } from './statusutils'
+import { erEnkeltPlass } from './pamelding-enkeltplass'
 
 const ikkeAktuell = (deltaker: DeltakerResponse) =>
   deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
@@ -213,7 +214,8 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   if (
     ikkeAktuell(deltaker) &&
     !deltakelseErLaast &&
-    deltaker.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES
+    deltaker.deltakerliste.status === DeltakerlisteStatus.GJENNOMFORES &&
+    !erEnkeltPlass(deltaker)
   ) {
     valg.push(EndreDeltakelseType.REAKTIVER_DELTAKELSE)
   }

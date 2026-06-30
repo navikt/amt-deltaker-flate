@@ -2,7 +2,7 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   formatDate,
-  hentGjennomforingNavnHosArrangorTekst,
+  hentTiltakHosArrangorIngressTekst,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
@@ -19,7 +19,7 @@ export const UtkastDeltakerEnkeltplass = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentGjennomforingNavnHosArrangorTekst(
+        tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
           tiltakskode,
           deltaker.deltakerliste.deltakerlisteNavn,
           deltaker.deltakerliste.arrangorNavn,

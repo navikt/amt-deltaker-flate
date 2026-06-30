@@ -1,7 +1,7 @@
 import {
   DeltakerStatusType,
   FeilregistrertInfo,
-  hentTiltakNavnHosArrangorTekst
+  hentTiltakHosArrangorTittel
 } from 'deltaker-flate-common'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { DeltakerInfo } from '../components/tiltak/DeltakerInfo.tsx'
@@ -11,7 +11,7 @@ import { DIALOG_URL } from '../utils/environment-utils.ts'
 
 export const DeltakerPage = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.kodeverk

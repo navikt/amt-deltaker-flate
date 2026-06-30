@@ -1,7 +1,7 @@
 import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  hentTiltakNavnHosArrangorTekst,
+  hentTiltakHosArrangorTittel,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
@@ -30,7 +30,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { deltakerliste } = deltaker
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst = hentTiltakNavnHosArrangorTekst(
+  const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn,
     deltakerliste.kodeverk
