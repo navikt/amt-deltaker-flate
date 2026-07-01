@@ -25,7 +25,7 @@ import {
 } from '../model/forslag'
 
 import { INNHOLD_TYPE_ANNET } from './constants'
-import { createMockOpplaringKategorisering } from './mockKodeverk.ts'
+import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
 
@@ -541,7 +541,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       utkastDelt: dayjs().subtract(3, 'day').toDate(),
       utkastGodkjentAvNav: false,
       deltakelsesinnholdVedInnsok: null,
-      opplaringKategorisering: createMockOpplaringKategorisering()
+      opplaringKategorisering: lagOpplaringKategoriseringMockRespons()
     }
   ]
 }

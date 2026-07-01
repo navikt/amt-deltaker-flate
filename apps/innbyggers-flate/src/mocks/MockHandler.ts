@@ -21,7 +21,7 @@ import {
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { createMockOpplaringKategorisering } from './mockKodeverk.ts'
+import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -62,7 +62,7 @@ export const createDeltaker = (
       erEnkeltplass: false,
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-      opplaringKategoriseringValg: createMockOpplaringKategorisering(),
+      opplaringKategoriseringValg: lagOpplaringKategoriseringMockRespons(),
       prisinformasjon: null
     },
     status: {

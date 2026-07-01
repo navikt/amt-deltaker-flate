@@ -16,14 +16,29 @@ import { Tiltakskode } from '../model/deltaker'
  * Konverterer en KodeverkResponse til det flate OpplaringKategorisering-formatet
  * ved å plukke ut alle elementer med valgt: true.
  */
+export const lagOpplaringKategoriseringMockRespons =
+  (): OpplaringKategorisering =>
+    toOpplaringKategorisering(
+      lagOpplaringKategoriseringForTiltak(Tiltakskode.ARBEIDSMARKEDSOPPLAERING)
+    )
+
 export const toOpplaringKategorisering = (
   response: KodeverkResponse
 ): OpplaringKategorisering => ({
-  valgteKategoriseringer: response.alternativer.flatMap(flattenContainer),
+  valgteKategoriseringer: response.alternativer.flatMap(utflatContainer),
   valgteSertifiseringer: response.sertifiseringValg
 })
 
-const flattenContainer = (container: KodeverkContainer) => {
+export const lagOpplaringKategoriseringForTiltak = (
+  tiltakskode: Tiltakskode
+): KodeverkResponse =>
+  mockKodeverkData.find((k) => k.tiltakskode === tiltakskode) ?? {
+    tiltakskode,
+    alternativer: [],
+    sertifiseringValg: []
+  }
+
+const utflatContainer = (container: KodeverkContainer) => {
   if (container.type === KodeverkAlternativType.VERDIGRUPPE) {
     const valgte = container.alternativer
       .filter((a) => a.valgt)
@@ -50,20 +65,6 @@ const flattenContainer = (container: KodeverkContainer) => {
 
   return []
 }
-
-export const createMockOpplaringKategorisering = (): OpplaringKategorisering =>
-  toOpplaringKategorisering(
-    getMockKodeverkResponse(Tiltakskode.ARBEIDSMARKEDSOPPLAERING)
-  )
-
-export const getMockKodeverkResponse = (
-  tiltakskode: Tiltakskode
-): KodeverkResponse =>
-  mockKodeverkData.find((k) => k.tiltakskode === tiltakskode) ?? {
-    tiltakskode,
-    alternativer: [],
-    sertifiseringValg: []
-  }
 
 export const mockKodeverkData: KodeverkResponse[] = [
   {

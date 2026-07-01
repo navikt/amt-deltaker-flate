@@ -1,1 +1,1 @@
-export { createMockOpplaringKategorisering } from 'deltaker-flate-common'
+export { lagOpplaringKategoriseringMockRespons } from 'deltaker-flate-common'

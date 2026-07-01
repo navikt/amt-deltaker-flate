@@ -1,6 +1,6 @@
 import {
   erOpplaringstiltak,
-  getMockKodeverkResponse,
+  lagOpplaringKategoriseringForTiltak,
   mockSertifiseringer,
   type OpplaringKategorisering,
   Tiltakskode,
@@ -9,7 +9,7 @@ import {
 
 export {
   mockSertifiseringer,
-  getMockKodeverkResponse as createMockKodeverkResponse,
+  lagOpplaringKategoriseringForTiltak as createMockKodeverkResponse,
   toOpplaringKategorisering
 }
 
@@ -20,5 +20,7 @@ export const createMockFlatKodeverk = (
   if (!erOpplaringstiltak(tiltakskode) || !erEnkeltplass) {
     return null
   }
-  return toOpplaringKategorisering(getMockKodeverkResponse(tiltakskode))
+  return toOpplaringKategorisering(
+    lagOpplaringKategoriseringForTiltak(tiltakskode)
+  )
 }
