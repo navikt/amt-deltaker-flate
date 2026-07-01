@@ -21,7 +21,7 @@ import {
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
+import { lagOpplaringKategoriseringMockRespons } from 'deltaker-flate-common'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
