@@ -109,8 +109,8 @@ export const IkkeAktuellModal = ({
   )
 }
 
-const harDeltattFemtenDagerEllerMer = (pamelding: DeltakerResponse) => {
-  const statusdato = pamelding.status.gyldigFra
+const harDeltattFemtenDagerEllerMer = (deltaker: DeltakerResponse) => {
+  const statusdato = deltaker.status.gyldigFra
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
 }
