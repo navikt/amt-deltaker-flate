@@ -43,8 +43,8 @@ import {
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import {
-  createMockFlatKodeverk,
-  createMockKodeverkResponse,
+  lagOpplaringKategoriseringResponse,
+  lagOpplaringKategoriseringDeltaljertRespons,
   mockSertifiseringer
 } from './mockKodeverk.ts'
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
@@ -115,7 +115,7 @@ export class MockHandler {
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        opplaringKategoriseringValg: createMockFlatKodeverk(
+        opplaringKategoriseringValg: lagOpplaringKategoriseringResponse(
           this.tiltakskode,
           erEnkeltplass
         ),
@@ -212,7 +212,7 @@ export class MockHandler {
   }
 
   getKodeverk(): KodeverkResponse {
-    return createMockKodeverkResponse(this.tiltakskode)
+    return lagOpplaringKategoriseringDeltaljertRespons(this.tiltakskode)
   }
 
   getForslag(): Forslag[] {
@@ -463,7 +463,10 @@ export class MockHandler {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
       oppdatertPamelding.deltakerliste.opplaringKategoriseringValg =
         erNyEnkeltplass
-          ? createMockFlatKodeverk(this.tiltakskode, erNyEnkeltplass)
+          ? lagOpplaringKategoriseringResponse(
+              this.tiltakskode,
+              erNyEnkeltplass
+            )
           : null
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)

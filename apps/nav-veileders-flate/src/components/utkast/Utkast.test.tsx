@@ -13,7 +13,7 @@ import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 import { PameldingFormContextProvider } from '../pamelding/PameldingFormContext'
 import { AppContext } from '../../AppContext'
-import { KodeverkAlternativType, Seleksjonstype } from 'deltaker-flate-common'
+import { KodeverkAlternativType, Seleksjonstype } from '../../api/data/kodeverk'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'

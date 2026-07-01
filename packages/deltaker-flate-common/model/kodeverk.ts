@@ -44,4 +44,3 @@ export const opplaringKategoriseringSchema = z.object({
 export type OpplaringKategorisering = z.infer<
   typeof opplaringKategoriseringSchema
 >
-export type ValgtKategoriseringElement = z.infer<typeof valgtElementSchema>
