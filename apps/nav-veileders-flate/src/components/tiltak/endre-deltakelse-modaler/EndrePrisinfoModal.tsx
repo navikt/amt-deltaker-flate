@@ -67,7 +67,7 @@ export const EndrePrisinfoModal = ({
 
     const endring: EndrePrisinfoRequest = {
       prisinformasjon: formData.prisinformasjon,
-      begrunnelse: begrunnelse.begrunnelse || null
+      begrunnelse: begrunnelse.begrunnelse
     }
 
     return {
