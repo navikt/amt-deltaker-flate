@@ -4,6 +4,7 @@ import {
   EndreDeltakelseType,
   useBegrunnelse
 } from 'deltaker-flate-common'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { endrePrisinfo } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
@@ -39,32 +40,33 @@ export const EndrePrisinfoModal = ({
   const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
 
   const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
-  const formSchema = createPrisinformasjonFormSchema()
   const formMethods = useForm<PrisinformasjonFormValues>({
     defaultValues,
+    resolver: zodResolver(createPrisinformasjonFormSchema()),
     shouldFocusError: false
   })
 
-  const validertRequest = () => {
+  const validertRequest = async () => {
     validerDeltakerKanEndres(deltaker)
 
-    const parsed = formSchema.safeParse(formMethods.getValues())
+    let formData: PrisinformasjonFormValues | undefined
+    await formMethods.handleSubmit(
+      (data) => {
+        formData = data
+      },
+      () => undefined
+    )()
 
-    if (!parsed.success) {
-      visValideringsfeil(formMethods, parsed.error.issues)
+    if (!formData || !begrunnelse.valider()) {
       return null
     }
 
-    if (!begrunnelse.valider()) {
-      return null
-    }
-
-    if (harIngenPrisinfoEndring(parsed.data, defaultValues)) {
+    if (harIngenPrisinfoEndring(formData, defaultValues)) {
       throw new Error(getFeilmeldingIngenEndring(false))
     }
 
     const endring: EndrePrisinfoRequest = {
-      prisinformasjon: parsed.data.prisinformasjon,
+      prisinformasjon: formData.prisinformasjon,
       begrunnelse: begrunnelse.begrunnelse || null
     }
 
@@ -100,22 +102,6 @@ export const EndrePrisinfoModal = ({
       />
     </Endringsmodal>
   )
-}
-
-const visValideringsfeil = (
-  formMethods: ReturnType<typeof useForm<PrisinformasjonFormValues>>,
-  issues: { path: PropertyKey[]; message: string }[]
-) => {
-  formMethods.clearErrors()
-  issues.forEach((issue) => {
-    const path = issue.path[0]
-    if (typeof path === 'string') {
-      formMethods.setError(path as never, {
-        type: 'manual',
-        message: issue.message
-      })
-    }
-  })
 }
 
 const harIngenPrisinfoEndring = (

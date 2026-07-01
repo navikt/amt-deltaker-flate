@@ -27,7 +27,10 @@ interface Props<T extends EndringRequest> {
   onClose: () => void
   onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
-  validertRequest: () => EndringsmodalRequest<T> | null
+  validertRequest: () =>
+    | EndringsmodalRequest<T>
+    | null
+    | Promise<EndringsmodalRequest<T> | null>
   forslag: Forslag | null
   children: ReactNode
 }
@@ -70,7 +73,10 @@ export function Endringsmodal<T extends EndringRequest>({
 interface EndrinsmodalBodyProps<T extends EndringRequest> {
   onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
-  validertRequest: () => EndringsmodalRequest<T> | null
+  validertRequest: () =>
+    | EndringsmodalRequest<T>
+    | null
+    | Promise<EndringsmodalRequest<T> | null>
   forslag: Forslag | null
   deltaker: DeltakerResponse
   endringstype: EndreDeltakelseType
@@ -89,9 +95,9 @@ function EndringsmodalBody<T extends EndringRequest>({
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
   const [valideringsError, setValideringsError] = useState<string>()
 
-  const sendEndring = () => {
+  const sendEndring = async () => {
     try {
-      const request = validertRequest()
+      const request = await validertRequest()
       if (request) {
         doFetch(request.deltakerId, request.enhetId, request.body).then(
           (data) => onSend(data)

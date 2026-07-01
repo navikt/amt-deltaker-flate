@@ -147,10 +147,11 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
                 : undefined
             }
             onChange={(newValue) => {
-              if (!newValue) {
-                onChange(0)
+              if (newValue == null) {
+                onChange(null)
                 return
               }
+
               onChange({
                 type: PrisinformasjonType.Anskaffelse,
                 pris: newValue

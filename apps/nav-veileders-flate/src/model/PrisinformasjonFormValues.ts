@@ -9,6 +9,33 @@ import { DeltakerResponse } from '../api/data/deltaker.ts'
 export const PRISINFO_MAX_TEGN = 600
 const PRISINFO_MAX_BELOP = 10_000_000
 
+export const createPrisinformasjonFormSchema = () =>
+  z
+    .object({
+      pristype: z.enum(PrisinformasjonType).nullable(),
+      prisinformasjon: prisinformasjonSchema.nullable()
+    })
+    .refine((schema) => schema.pristype !== null, {
+      message: 'Du må velge et alternativ for Navs kostnader.',
+      path: ['pristype']
+    })
+    .superRefine((schema, ctx) => {
+      validatePrisinformasjon(schema, ctx)
+    })
+
+export type PrisinformasjonFormValues = z.infer<
+  ReturnType<typeof createPrisinformasjonFormSchema>
+>
+
+export const generatePrisinformasjonDefaultValues = (
+  deltaker: DeltakerResponse
+): PrisinformasjonFormValues => {
+  return {
+    pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
+    prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null
+  }
+}
+
 const addPrisinformasjonIssue = (
   ctx: z.RefinementCtx,
   id: string,
@@ -154,32 +181,5 @@ export const validatePrisinformasjon = (
         `Tilleggsopplysninger kan ikke ha mer enn ${PRISINFO_MAX_TEGN} tegn.`
       )
     }
-  }
-}
-
-export const createPrisinformasjonFormSchema = () =>
-  z
-    .object({
-      pristype: z.enum(PrisinformasjonType).nullable(),
-      prisinformasjon: prisinformasjonSchema.nullable()
-    })
-    .refine((schema) => schema.pristype !== null, {
-      message: 'Du må velge et alternativ for Navs kostnader.',
-      path: ['pristype']
-    })
-    .superRefine((schema, ctx) => {
-      validatePrisinformasjon(schema, ctx)
-    })
-
-export type PrisinformasjonFormValues = z.infer<
-  ReturnType<typeof createPrisinformasjonFormSchema>
->
-
-export const generatePrisinformasjonDefaultValues = (
-  deltaker: DeltakerResponse
-): PrisinformasjonFormValues => {
-  return {
-    pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
-    prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null
   }
 }
