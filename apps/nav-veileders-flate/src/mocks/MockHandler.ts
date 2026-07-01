@@ -34,6 +34,7 @@ import {
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
+  EndrePrisinfoRequest,
   EndreSluttarsakRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
@@ -639,6 +640,18 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelsePrisinfo(request: EndrePrisinfoRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.prisinformasjon = request.prisinformasjon
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

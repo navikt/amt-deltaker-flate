@@ -13,6 +13,7 @@ import {
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
+  EndrePrisinfoRequest,
   EndreSluttarsakRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
@@ -374,6 +375,31 @@ export const endreAvslutning = (
     .then(parsePamelding)
 }
 
+export const endrePrisinfo = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndrePrisinfoRequest
+): Promise<DeltakerResponse> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/endre-prisinfo`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Kunne ikke endre prisinfo for deltakeren.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
 export const endreDeltakelseBakgrunnsinfo = (
   deltakerId: string,
   enhetId: string,
@@ -391,7 +417,7 @@ export const endreDeltakelseBakgrunnsinfo = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        const message = 'Kunne ikke endre bakgrunnsinfo..'
+        const message = 'Kunne ikke endre bakgrunnsinfo.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

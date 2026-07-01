@@ -169,6 +169,8 @@ function endringstekst(endringstype: EndreDeltakelseType) {
       return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return 'Endre innhold'
+    case EndreDeltakelseType.ENDRE_PRISINFO:
+      return 'Endre pris og betalingsbetingelser'
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return 'Endre bakgrunnsinfo'
     case EndreDeltakelseType.ENDRE_SLUTTDATO:

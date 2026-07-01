@@ -75,7 +75,7 @@ export const EndreDeltakelseKnapp = () => {
           Endre deltakelse
         </Button>
 
-        <Dropdown.Menu>
+        <Dropdown.Menu className="whitespace-nowrap w-fit">
           <Dropdown.Menu.List>
             {getEndreDeltakelsesValg(deltaker).map((valgType) => (
               <Dropdown.Menu.List.Item

@@ -27,10 +27,8 @@ import {
   NAVET_EGENFINANSIERING_URL,
   NAVET_TILGJENGELIG_SKOLEPLASS_URL
 } from '../../../constants'
-import {
-  PameldingEnkeltplassFormValues,
-  PRISINFO_MAX_TEGN
-} from '../../../model/PameldingEnkeltplassFormValues'
+import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
+import { PRISINFO_MAX_TEGN } from '../../../model/PrisinformasjonFormValues'
 import { NumberTextField } from '../../NumberTextField'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import { usePameldingFormContext } from '../PameldingFormContext'

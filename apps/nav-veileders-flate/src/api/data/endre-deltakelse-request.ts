@@ -1,5 +1,8 @@
+import {
+  DeltakerStatusAarsakType,
+  prisinformasjonSchema
+} from 'deltaker-flate-common'
 import { z } from 'zod'
-import { DeltakerStatusAarsakType } from 'deltaker-flate-common'
 import { innholdDtoSchema } from './send-pamelding.ts'
 
 export const aarsakSchema = z.object({
@@ -67,6 +70,12 @@ export const endreSluttarsakSchema = z.object({
 })
 export type EndreSluttarsakRequest = z.infer<typeof endreSluttarsakSchema>
 
+export const endrePrisinfoSchema = z.object({
+  prisinformasjon: prisinformasjonSchema.nullable(),
+  begrunnelse: z.string().nullable()
+})
+export type EndrePrisinfoRequest = z.infer<typeof endrePrisinfoSchema>
+
 export const endreInnholdSchema = z.object({
   innhold: z.array(innholdDtoSchema)
 })
@@ -108,3 +117,4 @@ export type EndringRequest =
   | ReaktiverDeltakelseRequest
   | EndreAvslutningRequest
   | FjernOppstartsdatoRequest
+  | EndrePrisinfoRequest
