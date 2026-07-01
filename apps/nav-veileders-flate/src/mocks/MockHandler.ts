@@ -120,7 +120,18 @@ export class MockHandler {
           this.tiltakskode,
           erEnkeltplass
         ),
-        prisinformasjon: null
+        prisinformasjon: null,
+        harDeltakelsesmengde: [
+          Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+          Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          // Enkeltplasser
+          Tiltakskode.HOYERE_UTDANNING,
+          Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+          Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+          Tiltakskode.STUDIESPESIALISERING,
+          Tiltakskode.FAG_OG_YRKESOPPLAERING,
+          Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
+        ].includes(this.tiltakskode)
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

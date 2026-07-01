@@ -18,6 +18,7 @@ import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.t
 interface Props {
   historikk: DeltakerHistorikkListe | null
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
   open: boolean
   loading: boolean
   onClose: () => void
@@ -25,12 +26,17 @@ interface Props {
 
 const getHistorikkItem = (
   historikk: DeltakerHistorikk,
-  tiltakskode: Tiltakskode
+  tiltakskode: Tiltakskode,
+  erEnkeltplass: boolean
 ) => {
   switch (historikk.type) {
     case HistorikkType.Vedtak:
       return (
-        <HistorikkVedtak endringsVedtak={historikk} tiltakskode={tiltakskode} />
+        <HistorikkVedtak
+          endringsVedtak={historikk}
+          tiltakskode={tiltakskode}
+          erEnkeltplass={erEnkeltplass}
+        />
       )
     case HistorikkType.InnsokPaaFellesOppstart:
       return (
@@ -44,6 +50,7 @@ const getHistorikkItem = (
         <HistorikkEndring
           deltakerEndring={historikk}
           tiltakskode={tiltakskode}
+          erEnkeltplass={erEnkeltplass}
         />
       )
     case HistorikkType.Forslag:
@@ -73,6 +80,7 @@ export const HistorikkModal = ({
   loading,
   historikk,
   tiltakskode,
+  erEnkeltplass,
   onClose
 }: Props) => {
   return (
@@ -89,7 +97,7 @@ export const HistorikkModal = ({
           historikk &&
           historikk.map((i, index) => (
             <div key={`${i.type}${index}`} className="mb-6 last:mb-0">
-              {getHistorikkItem(i, tiltakskode)}
+              {getHistorikkItem(i, tiltakskode, erEnkeltplass)}
             </div>
           ))}
         {!loading && (!historikk || historikk.length < 0) && (

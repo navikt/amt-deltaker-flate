@@ -2,9 +2,9 @@ import dayjs from 'dayjs'
 import {
   DeltakerlisteStatus,
   DeltakerStatusType,
-  Tiltakskode,
   Oppstartstype,
-  Pameldingstype
+  Pameldingstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
@@ -52,7 +52,8 @@ const pamelding: DeltakerResponse = {
     erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
     opplaringKategoriseringValg: null,
-    prisinformasjon: null
+    prisinformasjon: null,
+    harDeltakelsesmengde: false
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

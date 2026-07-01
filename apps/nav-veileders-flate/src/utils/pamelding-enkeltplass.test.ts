@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   OpplaringRepresenterer,
   PrisinformasjonType,
-  Tiltakskode,
-  Tilskuddstype
+  Tilskuddstype,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { PameldingEnkeltplassFormValues } from '../model/PameldingEnkeltplassFormValues'
 import {
@@ -26,6 +26,7 @@ const lagFormData = (
   },
   kodeverkValg: [],
   sertifiseringValg: [],
+  dagerPerUke: null,
   ...overrides
 })
 

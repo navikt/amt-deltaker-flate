@@ -135,7 +135,9 @@ const detaljer = (endring: ForslagEndring) => {
             Ny deltakelsesmengde:{' '}
             {deltakerprosentText(
               endring.deltakelsesprosent,
-              endring.dagerPerUke
+              endring.dagerPerUke,
+              // TODO: dette er forslag fra arrangør? Relevant for enkeltplasser?
+              false
             )}
           </BodyShort>
           {endring.gyldigFra && (

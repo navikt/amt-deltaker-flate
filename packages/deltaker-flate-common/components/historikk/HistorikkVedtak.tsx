@@ -14,9 +14,14 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   endringsVedtak: Vedtak
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
 }
 
-export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
+export const HistorikkVedtak = ({
+  endringsVedtak,
+  tiltakskode,
+  erEnkeltplass
+}: Props) => {
   const {
     fattet,
     fattetAvNav,
@@ -65,7 +70,11 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
             Deltakelsesmengde
           </BodyLong>
           <BodyLong size="small">
-            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+            {deltakerprosentText(
+              deltakelsesprosent,
+              dagerPerUke,
+              erEnkeltplass
+            )}
           </BodyLong>
         </>
       )}

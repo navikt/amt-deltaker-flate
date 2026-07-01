@@ -64,6 +64,8 @@ export const EndreDeltakelsesmengdeModal = ({
   const begrunnelse = useBegrunnelse(erBegrunnelseValgfri)
   const { enhetId } = useAppContext()
 
+  const erEnkeltplass = deltaker.deltakerliste.erEnkeltplass
+
   const validertRequest = () => {
     if (!deltakelsesprosent) {
       return null
@@ -106,12 +108,19 @@ export const EndreDeltakelsesmengdeModal = ({
 
     validerDeltakerKanEndres(deltaker)
 
+    const dagerPerUkeJustert = () => {
+      if (erEnkeltplass) {
+        return dagerPerUke ?? undefined
+      }
+      if (dagerPerUke != null && deltakelsesprosent !== 100) {
+        return dagerPerUke
+      }
+      return undefined
+    }
+
     const body: EndreDeltakelsesmengdeRequest = {
-      deltakelsesprosent: deltakelsesprosent,
-      dagerPerUke:
-        dagerPerUke != null && deltakelsesprosent !== 100
-          ? dagerPerUke
-          : undefined,
+      deltakelsesprosent: erEnkeltplass ? undefined : deltakelsesprosent,
+      dagerPerUke: dagerPerUkeJustert(),
       gyldigFra: formatDateToDtoStr(gyldigFra),
       begrunnelse: begrunnelse.begrunnelse ?? null,
       forslagId: forslag?.id ?? null
@@ -144,6 +153,8 @@ export const EndreDeltakelsesmengdeModal = ({
     return true
   }
 
+  const visDagerIUka =
+    erEnkeltplass || (deltakelsesprosent != null && deltakelsesprosent != 100)
   return (
     <Endringsmodal
       open={open}
@@ -155,22 +166,33 @@ export const EndreDeltakelsesmengdeModal = ({
       validertRequest={validertRequest}
       forslag={forslag}
     >
-      <NumberTextField
-        label="Hva er ny deltakelsesprosent?"
-        disabled={!deltaker.erUnderOppfolging}
-        value={deltakelsesprosent || undefined}
-        onChange={(e) => {
-          setDeltakelsesprosent(e || null)
-          handleProsentEndret(e)
-        }}
-        error={deltakelsesprosentError}
-        required
-        id="deltakelsesprosent"
-        className="[&>input]:w-16 mt-4"
-      />
-      {deltakelsesprosent && deltakelsesprosent != 100 && (
+      {!erEnkeltplass && (
         <NumberTextField
-          label="Hvor mange dager i uka? (valgfritt)"
+          label="Hva er ny deltakelsesprosent?"
+          disabled={!deltaker.erUnderOppfolging}
+          value={deltakelsesprosent || undefined}
+          onChange={(e) => {
+            setDeltakelsesprosent(e || null)
+            handleProsentEndret(e)
+          }}
+          error={deltakelsesprosentError}
+          required
+          id="deltakelsesprosent"
+          className="[&>input]:w-16 mt-4"
+        />
+      )}
+      {visDagerIUka && (
+        <NumberTextField
+          label={
+            erEnkeltplass
+              ? 'Antall dager i uka som personen deltar (valgfritt)'
+              : 'Hvor mange dager i uka? (valgfritt)'
+          }
+          description={
+            erEnkeltplass
+              ? 'Fyll ut hvis personen skal søke om tiltakspenger eller tilleggsstønader'
+              : undefined
+          }
           disabled={!deltaker.erUnderOppfolging}
           value={dagerPerUke || undefined}
           onChange={(e) => {

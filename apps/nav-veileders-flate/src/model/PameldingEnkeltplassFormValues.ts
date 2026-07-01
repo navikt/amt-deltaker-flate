@@ -28,6 +28,8 @@ import { validatePrisinformasjon } from './PrisinformasjonFormValues.ts'
 
 export const INNHOLD_MAX_TEGN = 250
 export const DATE_FORMAT = 'DD.MM.YYYY'
+export const dagerPerUkeFeilmelding =
+  'Antall dager i uka må være et helt tall fra 1 til 7.'
 
 const dateSchema = (feltnavn: string) =>
   z
@@ -64,7 +66,20 @@ export const createPameldingEnkeltplassFormSchema = (
           valgteIder: z.array(z.string())
         })
       ),
-      sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
+      sertifiseringValg: z.array(
+        z.object({ id: z.number(), navn: z.string() })
+      ),
+      dagerPerUke: z
+        .number({
+          error: () => dagerPerUkeFeilmelding
+        })
+        .nullable()
+        .refine(
+          (value) =>
+            value === null ||
+            (Number.isInteger(value) && value >= 1 && value <= 7),
+          { message: dagerPerUkeFeilmelding }
+        )
     })
     .refine((schema) => schema.pristype !== null, {
       message: 'Du må velge et alternativ for Navs kostnader.',
@@ -136,7 +151,8 @@ export const generateFormDefaultValues = (
     ),
     sertifiseringValg: getValgteSertifiseringer(
       deltaker.deltakerliste.opplaringKategoriseringValg
-    )
+    ),
+    dagerPerUke: deltaker.dagerPerUke
   }
 }
 

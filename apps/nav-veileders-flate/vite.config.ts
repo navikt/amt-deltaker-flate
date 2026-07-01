@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    css: {
+      devSourcemap: true
+    },
     test: {
       globals: true,
       environment: 'jsdom',
@@ -34,7 +37,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'build',
-      sourcemap: true
+      sourcemap: isOfflineMode ? 'inline' : true
     }
   }
 })
