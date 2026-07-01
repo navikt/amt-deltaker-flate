@@ -16,6 +16,6 @@ export const getKodeverkValgNavn = (
   representerer: OpplaringRepresenterer
 ): string | undefined => {
   return kodeverk?.valgteKategoriseringer.find(
-    (element) => element.representerer === representerer
-  )?.valg[0]?.visningsnavn
+    (element) => element.type === representerer
+  )?.valgteElementer[0]?.visningsnavn
 }

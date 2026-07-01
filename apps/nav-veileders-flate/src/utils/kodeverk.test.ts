@@ -10,8 +10,8 @@ describe('getValgteVerdier', () => {
     const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
-          representerer: OpplaringRepresenterer.BRANSJE_ID,
-          valg: [
+          type: OpplaringRepresenterer.BRANSJE_ID,
+          valgteElementer: [
             { id: 'bransje-1', visningsnavn: 'Bygg' },
             { id: 'bransje-2', visningsnavn: 'Helse' }
           ]
@@ -32,12 +32,14 @@ describe('getValgteVerdier', () => {
     const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
-          representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
-          valg: [{ id: 'utdanning-1', visningsnavn: 'Bygg- og anleggsteknikk' }]
+          type: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+          valgteElementer: [
+            { id: 'utdanning-1', visningsnavn: 'Bygg- og anleggsteknikk' }
+          ]
         },
         {
-          representerer: OpplaringRepresenterer.LAREFAG,
-          valg: [
+          type: OpplaringRepresenterer.LAREFAG,
+          valgteElementer: [
             { id: 'larefag-1', visningsnavn: 'Tømrerfaget' },
             { id: 'larefag-2', visningsnavn: 'Rørleggerfaget' }
           ]
@@ -62,12 +64,12 @@ describe('getValgteVerdier', () => {
     const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
-          representerer: OpplaringRepresenterer.FORERKORT,
-          valg: []
+          type: OpplaringRepresenterer.FORERKORT,
+          valgteElementer: []
         },
         {
-          representerer: OpplaringRepresenterer.LAREFAG,
-          valg: []
+          type: OpplaringRepresenterer.LAREFAG,
+          valgteElementer: []
         }
       ],
       valgteSertifiseringer: []

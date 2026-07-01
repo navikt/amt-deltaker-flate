@@ -5,10 +5,10 @@ export const getValgteVerdier = (
 ) => {
   return (
     kodeverkValg?.valgteKategoriseringer
-      .filter((e) => e.valg.length > 0)
+      .filter((e) => e.valgteElementer.length > 0)
       .map((e) => ({
-        representerer: e.representerer,
-        valgteIder: e.valg.map((v) => v.id)
+        representerer: e.type,
+        valgteIder: e.valgteElementer.map((v) => v.id)
       })) ?? []
   )
 }

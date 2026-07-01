@@ -133,8 +133,12 @@ export const generateFormDefaultValues = (
       : '',
     pristype: deltaker.deltakerliste.prisinformasjon?.type ?? null,
     prisinformasjon: deltaker.deltakerliste.prisinformasjon ?? null,
-    kodeverkValg: getValgteVerdier(deltaker.deltakerliste.kodeverk),
-    sertifiseringValg: getValgteSertifiseringer(deltaker.deltakerliste.kodeverk)
+    kodeverkValg: getValgteVerdier(
+      deltaker.deltakerliste.opplaringKategoriseringValg
+    ),
+    sertifiseringValg: getValgteSertifiseringer(
+      deltaker.deltakerliste.opplaringKategoriseringValg
+    )
   }
 }
 

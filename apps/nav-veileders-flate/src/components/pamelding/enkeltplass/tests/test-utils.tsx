@@ -26,7 +26,7 @@ export const createDeltaker = (
       arrangor,
       erEnkeltplass: true,
       sluttdato: dayjs('2030-02-20').toDate(),
-      kodeverk: null
+      opplaringKategoriseringValg: null
     },
     startdato: null,
     sluttdato: null,

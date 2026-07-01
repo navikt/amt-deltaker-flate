@@ -46,7 +46,7 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    deltakerliste.kodeverk,
+    deltakerliste.opplaringKategoriseringValg,
     erKladd
   )
 

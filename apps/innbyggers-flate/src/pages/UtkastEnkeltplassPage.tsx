@@ -21,13 +21,13 @@ export const UtkastEnkeltplassPage = () => {
   const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn,
-    deltakerliste.kodeverk
+    deltakerliste.opplaringKategoriseringValg
   )
   const ingressTekst = hentTiltakHosArrangorIngressTekst(
     deltakerliste.tiltakskode,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
-    deltakerliste.kodeverk
+    deltakerliste.opplaringKategoriseringValg
   )
 
   const { deltakerId } = useParams()
@@ -81,7 +81,7 @@ export const UtkastEnkeltplassPage = () => {
       <DeltakelseInnhold
         tiltakskode={deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
-        kodeverk={deltaker.deltakerliste.kodeverk}
+        kodeverk={deltaker.deltakerliste.opplaringKategoriseringValg}
         heading={
           <Heading level="3" size="medium" className="mt-8">
             Dette er innholdet

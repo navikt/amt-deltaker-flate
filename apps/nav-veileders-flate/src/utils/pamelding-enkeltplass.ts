@@ -77,10 +77,11 @@ export const generateEnkeltplassPameldingRequest = (
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer || '',
     kodeverkValg:
-      deltaker.deltakerliste.kodeverk?.valgteKategoriseringer.flatMap(
-        (kodeverk) => kodeverk.valg.map((v) => v.id)
+      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteKategoriseringer.flatMap(
+        (kodeverk) => kodeverk.valgteElementer.map((v) => v.id)
       ),
-    sertifiseringValg: deltaker.deltakerliste.kodeverk?.valgteSertifiseringer
+    sertifiseringValg:
+      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteSertifiseringer
   }
 }
 

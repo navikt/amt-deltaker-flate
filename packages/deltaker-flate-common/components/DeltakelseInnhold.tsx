@@ -91,21 +91,20 @@ const Kodeverk = (kodeverk: OpplaringKategorisering | null | undefined) => {
   const kodeverkTekst = getKodeverkTekst(kodeverk)
   const kodeverkForListe = (kodeverk?.valgteKategoriseringer ?? []).filter(
     (e) =>
-      e.representerer !== OpplaringRepresenterer.BRANSJE_ID &&
-      e.representerer !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
-      e.representerer !== OpplaringRepresenterer.KURSTYPE_ID &&
-      e.valg.length > 0
+      e.type !== OpplaringRepresenterer.BRANSJE_ID &&
+      e.type !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
+      e.type !== OpplaringRepresenterer.KURSTYPE_ID &&
+      e.type.length > 0
   )
   const valgteSertifiseringer = kodeverk?.valgteSertifiseringer ?? []
   const visListe =
     kodeverkForListe.length > 0 || valgteSertifiseringer.length > 0
 
   const harForerkortEllerSertifisering =
-    kodeverkForListe.some(
-      (e) => e.representerer === OpplaringRepresenterer.FORERKORT
-    ) || valgteSertifiseringer.length > 0
+    kodeverkForListe.some((e) => e.type === OpplaringRepresenterer.FORERKORT) ||
+    valgteSertifiseringer.length > 0
   const harLærefag = kodeverkForListe.some(
-    (e) => e.representerer === OpplaringRepresenterer.LAREFAG
+    (e) => e.type === OpplaringRepresenterer.LAREFAG
   )
   const listeprefix = harForerkortEllerSertifisering
     ? 'Førerkort og sertifisering:'
@@ -124,7 +123,7 @@ const Kodeverk = (kodeverk: OpplaringKategorisering | null | undefined) => {
       {visListe && (
         <List as="ul" size="small">
           {kodeverkForListe.map((e) =>
-            e.valg.map((valg) => (
+            e.valgteElementer.map((valg) => (
               <List.Item key={valg.id}>{valg.visningsnavn}</List.Item>
             ))
           )}
@@ -143,15 +142,16 @@ const getKodeverkTekst = (
   const kategorier = kodeverk
     ? kodeverk.valgteKategoriseringer.filter(
         (e) =>
-          e.representerer === OpplaringRepresenterer.BRANSJE_ID ||
-          e.representerer === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
+          e.type === OpplaringRepresenterer.BRANSJE_ID ||
+          e.type === OpplaringRepresenterer.UTDANNINGSPROGRAM_ID
       )
     : []
 
-  if (kategorier.length === 0 || kategorier[0].valg.length === 0) return null
+  if (kategorier.length === 0 || kategorier[0].valgteElementer.length === 0)
+    return null
   const kategori = kategorier[0]
 
-  return `${getKodeverkRepresentererTekst(kategori.representerer)}: ${kategori.valg.map((v) => v.visningsnavn).join(', ')}`
+  return `${getKodeverkRepresentererTekst(kategori.type)}: ${kategori.valgteElementer.map((v) => v.visningsnavn).join(', ')}`
 }
 
 const getAnnetFeltForInnhold = (

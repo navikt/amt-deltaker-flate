@@ -43,8 +43,8 @@ import {
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import {
-  createMockFlatKodeverk,
-  createMockKodeverkResponse,
+  lagOpplaringKategoriseringResponse,
+  lagOpplaringKategoriseringDeltaljertRespons,
   mockSertifiseringer
 } from './mockKodeverk.ts'
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
@@ -115,10 +115,10 @@ export class MockHandler {
         pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
         oppmoteSted:
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        kodeverk: createMockFlatKodeverk(
+        opplaringKategoriseringValg: lagOpplaringKategoriseringResponse(
           this.tiltakskode,
           erEnkeltplass
-        ) as DeltakerResponse['deltakerliste']['kodeverk'],
+        ),
         prisinformasjon: null
       },
       status: {
@@ -212,7 +212,7 @@ export class MockHandler {
   }
 
   getKodeverk(): KodeverkResponse {
-    return createMockKodeverkResponse(this.tiltakskode)
+    return lagOpplaringKategoriseringDeltaljertRespons(this.tiltakskode)
   }
 
   getForslag(): Forslag[] {
@@ -461,12 +461,13 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
-      oppdatertPamelding.deltakerliste.kodeverk = erNyEnkeltplass
-        ? (createMockFlatKodeverk(
-            this.tiltakskode,
-            erNyEnkeltplass
-          ) as DeltakerResponse['deltakerliste']['kodeverk'])
-        : null
+      oppdatertPamelding.deltakerliste.opplaringKategoriseringValg =
+        erNyEnkeltplass
+          ? lagOpplaringKategoriseringResponse(
+              this.tiltakskode,
+              erNyEnkeltplass
+            )
+          : null
       oppdatertPamelding.adresseDelesMedArrangor =
         delesAdresseMedArrangor(tiltakskode)
 
@@ -824,8 +825,11 @@ export class MockHandler {
   }
 
   getHistorikk() {
-    return HttpResponse.json(
+    const erEnkeltplass = this.pamelding?.deltakerliste.erEnkeltplass
+    const erFellesOppstart =
       this.pamelding?.deltakerliste.oppstartstype === Oppstartstype.FELLES
+    return HttpResponse.json(
+      erFellesOppstart || erEnkeltplass
         ? lagHistorikkFellesOppstart()
         : createHistorikk()
     )

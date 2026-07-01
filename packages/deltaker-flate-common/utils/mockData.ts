@@ -25,8 +25,7 @@ import {
 } from '../model/forslag'
 
 import { INNHOLD_TYPE_ANNET } from './constants'
-import { OpplaringRepresenterer } from '../model/kodeverk.ts'
-
+import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
 
@@ -542,33 +541,9 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       utkastDelt: dayjs().subtract(3, 'day').toDate(),
       utkastGodkjentAvNav: false,
       deltakelsesinnholdVedInnsok: null,
-      //@ts-expect-error('kompiler skjønner ikke at det er riktig type fordi det er en transform')
-      opplaringKategorisering: kodeverkValg
+      opplaringKategorisering: lagOpplaringKategoriseringMockRespons()
     }
   ]
-}
-const kodeverkValg = {
-  valgteKategoriseringer: [
-    {
-      representerer: OpplaringRepresenterer.BRANSJE_ID,
-      valg: {
-        '550e8400-e29b-41d4-a716-446655440000': 'Butikk- og salgsarbeid'
-      }
-    },
-    {
-      representerer: OpplaringRepresenterer.FORERKORT,
-      valg: {
-        '550e8400-e29b-41d4-a716-446655440000': 'Klasse B'
-      }
-    },
-    {
-      representerer: OpplaringRepresenterer.FORERKORT,
-      valg: {
-        '550e8400-e29b-41d4-a716-446655440000': 'Klasse C'
-      }
-    }
-  ],
-  valgteSertifiseringer: []
 }
 
 export const getLedetekst = (tiltakskode: Tiltakskode) => {

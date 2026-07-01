@@ -33,7 +33,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
     deltakerliste.arrangorNavn,
-    deltakerliste.kodeverk
+    deltakerliste.opplaringKategoriseringValg
   )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {

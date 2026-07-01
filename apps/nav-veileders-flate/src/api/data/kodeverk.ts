@@ -5,8 +5,6 @@ import {
   Tiltakskode
 } from 'deltaker-flate-common'
 
-// Re-eksporter det flate kodeverket fra fellespakken slik at eksisterende
-// imports fra denne fila fortsatt fungerer (FlattKodeverk, utflatetKodeverkSchema).
 export {
   opplaringKategoriseringSchema,
   type OpplaringKategorisering
@@ -88,9 +86,6 @@ export type KodeverkContainer =
   | KodeverkVerdigruppe
   | KodeverkVerdigruppeSok
 
-/*
-  Tilgjengelige kodeverk for tiltakstype med informasjon om de er valgt eller ikke
- */
 export const kodeverkResponseSchema = z.object({
   tiltakskode: z.enum(Tiltakskode),
   alternativer: z.array(

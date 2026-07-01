@@ -51,7 +51,7 @@ const pamelding: DeltakerResponse = {
     oppmoteSted: 'Oslo',
     erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
-    kodeverk: null,
+    opplaringKategoriseringValg: null,
     prisinformasjon: null
   },
   status: {

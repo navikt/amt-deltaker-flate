@@ -14,7 +14,7 @@ export const DeltakerPage = () => {
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
-    deltaker.deltakerliste.kodeverk
+    deltaker.deltakerliste.opplaringKategoriseringValg
   )
 
   return (

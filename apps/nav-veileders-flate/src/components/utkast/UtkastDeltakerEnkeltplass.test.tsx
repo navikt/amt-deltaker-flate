@@ -19,8 +19,8 @@ const createKodeverk = (visningsnavn?: string | null) => ({
   valgteKategoriseringer: visningsnavn
     ? [
         {
-          representerer: OpplaringRepresenterer.KURSTYPE_ID,
-          valg: [{ id: 'kurs-1', visningsnavn }]
+          type: OpplaringRepresenterer.KURSTYPE_ID,
+          valgteElementer: [{ id: 'kurs-1', visningsnavn }]
         }
       ]
     : [],
@@ -28,7 +28,7 @@ const createKodeverk = (visningsnavn?: string | null) => ({
 })
 
 const lagDeltaker = (
-  kodeverk: DeltakerResponse['deltakerliste']['kodeverk'] = null
+  kodeverk: DeltakerResponse['deltakerliste']['opplaringKategoriseringValg'] = null
 ): DeltakerResponse =>
   ({
     deltakerId: '1',
@@ -49,7 +49,7 @@ const lagDeltaker = (
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
       pameldingstype: 'TRENGER_GODKJENNING',
-      kodeverk
+      opplaringKategoriseringValg: kodeverk
     },
     status: {
       id: '1',

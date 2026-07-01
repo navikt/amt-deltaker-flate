@@ -36,8 +36,8 @@ vi.mock('../../api/api-enkeltplass.ts', () => ({
 const createKodeverk = () => ({
   valgteKategoriseringer: [
     {
-      representerer: OpplaringRepresenterer.BRANSJE_ID,
-      valg: [{ id: 'new-id', visningsnavn: 'Ny Bransje' }]
+      type: OpplaringRepresenterer.BRANSJE_ID,
+      valgteElementer: [{ id: 'new-id', visningsnavn: 'Ny Bransje' }]
     }
   ],
   valgteSertifiseringer: []
@@ -63,7 +63,7 @@ const createDeltaker = (): DeltakerResponse =>
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
       pameldingstype: 'SOKNADSBASERT',
-      kodeverk: createKodeverk()
+      opplaringKategoriseringValg: createKodeverk()
     },
     status: {
       id: '1',
