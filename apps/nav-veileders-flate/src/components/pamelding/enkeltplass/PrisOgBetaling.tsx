@@ -33,7 +33,11 @@ import { NumberTextField } from '../../NumberTextField'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import { usePameldingFormContext } from '../PameldingFormContext'
 
-export const PrisOgBetaling = () => {
+export const PrisOgBetaling = ({
+  laasPristype
+}: {
+  laasPristype?: boolean
+}) => {
   const { deltaker } = useDeltakerContext()
   const tiltakskode = deltaker.deltakerliste.tiltakskode
   const { disabled } = usePameldingFormContext()
@@ -68,9 +72,11 @@ export const PrisOgBetaling = () => {
             ref={ref}
             size="small"
             id="pristype"
+            aria-required
             legend="Pris og betalingsbetingelser"
             description="Navs kostnader for opplæringen"
-            disabled={disabled}
+            disabled={disabled || laasPristype}
+            aria-disabled={disabled || laasPristype}
             error={errors.pristype?.message}
             value={value}
             onChange={(nextValue) => {

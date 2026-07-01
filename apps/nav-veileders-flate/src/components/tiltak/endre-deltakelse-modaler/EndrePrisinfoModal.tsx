@@ -1,5 +1,6 @@
 import {
   BegrunnelseInput,
+  DeltakerStatusType,
   EndreDeltakelseType,
   useBegrunnelse
 } from 'deltaker-flate-common'
@@ -26,6 +27,7 @@ interface Props {
   onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
 }
 
+// TODO må håndtere å åpne et eksisterende "forslag"
 export const EndrePrisinfoModal = ({
   pamelding,
   open,
@@ -34,6 +36,8 @@ export const EndrePrisinfoModal = ({
 }: Props) => {
   const { enhetId } = useAppContext()
   const begrunnelse = useBegrunnelse(true)
+  const laasPristype = pamelding.status.type !== DeltakerStatusType.SOKT_INN
+
   const defaultValues = generatePrisinformasjonDefaultValues(pamelding)
   const formSchema = createPrisinformasjonFormSchema()
   const formMethods = useForm<PrisinformasjonFormValues>({
@@ -84,7 +88,7 @@ export const EndrePrisinfoModal = ({
     >
       <FormProvider {...formMethods}>
         <PameldingFormContextProvider>
-          <PrisOgBetaling />
+          <PrisOgBetaling laasPristype={laasPristype} />
         </PameldingFormContextProvider>
       </FormProvider>
 
