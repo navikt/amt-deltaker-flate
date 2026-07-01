@@ -11,16 +11,16 @@ allowBuilds:
 
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
-  '@axe-core/playwright': ^4.11.3
+  '@axe-core/playwright': ^4.12.1
   '@grafana/faro-react': ^2.7.1
   '@grafana/faro-web-sdk': ^2.7.1
-  '@navikt/aksel-icons': ^8.13.0
-  '@navikt/ds-css': ^8.13.0
-  '@navikt/ds-react': ^8.13.0
-  '@navikt/ds-tailwind': ^8.13.0
-  '@playwright/test': ^1.61.0
+  '@navikt/aksel-icons': ^8.13.1
+  '@navikt/ds-css': ^8.13.1
+  '@navikt/ds-react': ^8.13.1
+  '@navikt/ds-tailwind': ^8.13.1
+  '@playwright/test': ^1.61.1
   '@tailwindcss/vite': ^4.3.1
-  '@tanstack/react-query': ^5.101.0
+  '@tanstack/react-query': ^5.101.1
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/react': ^16.3.2
   '@testing-library/user-event': ^14.6.1
@@ -32,14 +32,14 @@ catalog:
   dayjs: ^1.11.21
   jsdom: ^29.1.1
   msw: ^2.14.6
-  playwright: ^1.61.0
+  playwright: ^1.61.1
   react: ^19.2.7
   react-dom: ^19.2.7
   react-router-dom: ^7.18.0
   tailwindcss: ^4.3.1
   typescript: ^6.0.3
   uuid: ^14.0.1
-  vite: ^8.0.16
+  vite: ^8.1.0
   vitest: ^4.1.9
   zod: ^4.4.3
 
