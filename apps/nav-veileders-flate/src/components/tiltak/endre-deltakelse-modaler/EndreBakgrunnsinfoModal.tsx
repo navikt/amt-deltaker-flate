@@ -10,14 +10,14 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreBakgrunnsinfoModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const EndreBakgrunnsinfoModal = ({
-  pamelding,
+  deltaker,
   open,
   onClose,
   onSuccess
@@ -25,7 +25,7 @@ export const EndreBakgrunnsinfoModal = ({
   const { enhetId } = useAppContext()
   const [bakgrunnsinformasjon, setBakgrunnsinformasjon] = useState<
     string | null
-  >(pamelding.bakgrunnsinformasjon)
+  >(deltaker.bakgrunnsinformasjon)
   const [error, setError] = useState<string | null>(null)
 
   const validertRequest = () => {
@@ -39,13 +39,13 @@ export const EndreBakgrunnsinfoModal = ({
       return null
     }
 
-    validerDeltakerKanEndres(pamelding)
-    if (bakgrunnsinformasjon === pamelding.bakgrunnsinformasjon) {
+    validerDeltakerKanEndres(deltaker)
+    if (bakgrunnsinformasjon === deltaker.bakgrunnsinformasjon) {
       throw new Error(getFeilmeldingIngenEndringTekst(false))
     }
 
     return {
-      deltakerId: pamelding.deltakerId,
+      deltakerId: deltaker.deltakerId,
       enhetId,
       body: {
         bakgrunnsinformasjon
@@ -57,7 +57,7 @@ export const EndreBakgrunnsinfoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_BAKGRUNNSINFO}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseBakgrunnsinfo}
@@ -65,7 +65,7 @@ export const EndreBakgrunnsinfoModal = ({
       forslag={null}
     >
       <>
-        {pamelding.importertFraArena && !pamelding.bakgrunnsinformasjon && (
+        {deltaker.importertFraArena && !deltaker.bakgrunnsinformasjon && (
           <Alert variant="info" className="mb-6">
             <Heading size="small" level="2">
               Bakgrunnsinfo erstatter bestillingen fra Arena
@@ -96,7 +96,7 @@ export const EndreBakgrunnsinfoModal = ({
           size="small"
           aria-label={'Bagrunnsinfo'}
           error={error}
-          disabled={!pamelding.erUnderOppfolging}
+          disabled={!deltaker.erUnderOppfolging}
         />
       </>
     </Endringsmodal>

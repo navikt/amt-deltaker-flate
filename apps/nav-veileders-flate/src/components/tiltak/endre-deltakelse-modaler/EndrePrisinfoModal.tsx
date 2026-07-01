@@ -21,24 +21,24 @@ import { PrisOgBetaling } from '../../pamelding/enkeltplass/PrisOgBetaling.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 // TODO må håndtere å åpne et eksisterende "forslag"
 export const EndrePrisinfoModal = ({
-  pamelding,
+  deltaker,
   open,
   onClose,
   onSuccess
 }: Props) => {
   const { enhetId } = useAppContext()
   const begrunnelse = useBegrunnelse(true)
-  const laasPristype = pamelding.status.type !== DeltakerStatusType.SOKT_INN
+  const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
 
-  const defaultValues = generatePrisinformasjonDefaultValues(pamelding)
+  const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
   const formSchema = createPrisinformasjonFormSchema()
   const formMethods = useForm<PrisinformasjonFormValues>({
     defaultValues,
@@ -46,7 +46,7 @@ export const EndrePrisinfoModal = ({
   })
 
   const validertRequest = () => {
-    validerDeltakerKanEndres(pamelding)
+    validerDeltakerKanEndres(deltaker)
 
     const parsed = formSchema.safeParse(formMethods.getValues())
 
@@ -69,7 +69,7 @@ export const EndrePrisinfoModal = ({
     }
 
     return {
-      deltakerId: pamelding.deltakerId,
+      deltakerId: deltaker.deltakerId,
       enhetId,
       body: endring
     }
@@ -79,7 +79,7 @@ export const EndrePrisinfoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_PRISINFO}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endrePrisinfo}
@@ -96,7 +96,7 @@ export const EndrePrisinfoModal = ({
         type="obligatorisk"
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
     </Endringsmodal>
   )

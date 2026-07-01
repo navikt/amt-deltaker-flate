@@ -17,11 +17,11 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreSluttarsakModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 const sluttarsakSporsmalTekst = (statustype: DeltakerStatusType) => {
@@ -33,7 +33,7 @@ const sluttarsakSporsmalTekst = (statustype: DeltakerStatusType) => {
 }
 
 export const EndreSluttarsakModal = ({
-  pamelding,
+  deltaker,
   open,
   forslag,
   onClose,
@@ -49,17 +49,17 @@ export const EndreSluttarsakModal = ({
       aarsak.valider() &&
       aarsak.aarsak !== undefined
     ) {
-      validerDeltakerKanEndres(pamelding)
+      validerDeltakerKanEndres(deltaker)
       const nyArsakBeskrivelse = aarsak.beskrivelse ?? null
       if (
-        aarsak.aarsak === pamelding.status.aarsak?.type &&
-        nyArsakBeskrivelse === pamelding.status.aarsak?.beskrivelse
+        aarsak.aarsak === deltaker.status.aarsak?.type &&
+        nyArsakBeskrivelse === deltaker.status.aarsak?.beskrivelse
       ) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
-      if (!harStatusSomKanEndreSluttarsak(pamelding.status.type)) {
+      if (!harStatusSomKanEndreSluttarsak(deltaker.status.type)) {
         throw new Error(
-          `Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som ${getDeltakerStatusDisplayText(pamelding.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
+          `Kunne ikke lagre\nKan ikke endre sluttårsak for en deltaker som står som ${getDeltakerStatusDisplayText(deltaker.status.type)}.\nDu kan avvise forslaget eller vente med å lagre til deltakeren har sluttet.`
         )
       }
 
@@ -73,7 +73,7 @@ export const EndreSluttarsakModal = ({
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId: enhetId,
         body: endring
       }
@@ -85,7 +85,7 @@ export const EndreSluttarsakModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_SLUTTARSAK}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseSluttarsak}
@@ -93,7 +93,7 @@ export const EndreSluttarsakModal = ({
       forslag={forslag}
     >
       <AarsakRadioGroup
-        legend={sluttarsakSporsmalTekst(pamelding.status.type)}
+        legend={sluttarsakSporsmalTekst(deltaker.status.type)}
         aarsak={aarsak.aarsak}
         aarsakError={aarsak.aarsakError}
         beskrivelse={aarsak.beskrivelse}

@@ -32,21 +32,21 @@ import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface EndreInnholdModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const EndreInnholdModal = ({
-  pamelding,
+  deltaker,
   open,
   onClose,
   onSuccess
 }: EndreInnholdModalProps) => {
-  const innhold = pamelding.deltakelsesinnhold?.innhold ?? []
+  const innhold = deltaker.deltakelsesinnhold?.innhold ?? []
   const [valgteInnhold, setValgteInnhold] = useState<string[] | []>(
-    generateValgtInnholdKoder(pamelding)
+    generateValgtInnholdKoder(deltaker)
   )
   const [innholdError, setInnholdError] = useState<string | null>(null)
   const { enhetId } = useAppContext()
@@ -66,7 +66,7 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
   const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode)
   const visCheckbokser =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
@@ -102,12 +102,12 @@ export const EndreInnholdModal = ({
       )
       return null
     } else {
-      validerDeltakerKanEndres(pamelding)
+      validerDeltakerKanEndres(deltaker)
       if (
         (visCheckbokser &&
           haveSameContents(
             valgteInnhold,
-            generateValgtInnholdKoder(pamelding)
+            generateValgtInnholdKoder(deltaker)
           ) &&
           annetBeskrivelse === getAnnetBeskrivelseFraInnhold(innhold)) ||
         (!visCheckbokser &&
@@ -123,7 +123,7 @@ export const EndreInnholdModal = ({
 
       const endring: EndreInnholdRequest = {
         innhold: generateInnholdForRequest(
-          pamelding,
+          deltaker,
           valgteInnhold,
           annetBeskrivelse,
           innholdsTekst
@@ -131,7 +131,7 @@ export const EndreInnholdModal = ({
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId,
         body: endring
       }
@@ -142,7 +142,7 @@ export const EndreInnholdModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_INNHOLD}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseInnhold}
@@ -156,9 +156,9 @@ export const EndreInnholdModal = ({
       )}
 
       <section>
-        {pamelding.deltakerliste.tilgjengeligInnhold?.ledetekst && (
+        {deltaker.deltakerliste.tilgjengeligInnhold?.ledetekst && (
           <BodyLong size="small">
-            {pamelding.deltakerliste.tilgjengeligInnhold.ledetekst}
+            {deltaker.deltakerliste.tilgjengeligInnhold.ledetekst}
           </BodyLong>
         )}
       </section>
@@ -170,7 +170,7 @@ export const EndreInnholdModal = ({
             legend="Hva mer skal tiltaket inneholde?"
             error={innholdError}
             size="small"
-            disabled={!pamelding.erUnderOppfolging}
+            disabled={!deltaker.erUnderOppfolging}
             aria-required
             id="endreValgteInnhold"
             onChange={(value: string[]) => {
@@ -178,7 +178,7 @@ export const EndreInnholdModal = ({
               setInnholdError(null)
             }}
           >
-            {pamelding.deltakerliste.tilgjengeligInnhold.innhold.map((e) => (
+            {deltaker.deltakerliste.tilgjengeligInnhold.innhold.map((e) => (
               <div key={e.innholdskode}>
                 <Checkbox value={e.innholdskode}>{e.tekst}</Checkbox>
                 {e.innholdskode === INNHOLD_TYPE_ANNET && erAnnetValgt && (
@@ -191,7 +191,7 @@ export const EndreInnholdModal = ({
                     value={annetBeskrivelse ?? ''}
                     aria-label={'Beskrivelse av innhold "Annet"'}
                     aria-required
-                    disabled={!pamelding.erUnderOppfolging}
+                    disabled={!deltaker.erUnderOppfolging}
                     maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
                     size="small"
                     error={annetError}
@@ -223,7 +223,7 @@ export const EndreInnholdModal = ({
             aria-label="Innhold beskrivelse"
             aria-required
             value={innholdsTekst ?? ''}
-            disabled={!pamelding.erUnderOppfolging}
+            disabled={!deltaker.erUnderOppfolging}
             maxLength={BESKRIVELSE_ANNET_MAX_TEGN}
             size="small"
             error={innholdsTekstError}

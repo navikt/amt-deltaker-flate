@@ -40,29 +40,29 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   endreDeltakelseType: EndreDeltakelseType
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const AvsluttDeltakelseModal = ({
-  pamelding,
+  deltaker,
   forslag,
   open,
   endreDeltakelseType,
   onClose,
   onSuccess
 }: Props) => {
-  const defaultSluttdato = getSluttdato(pamelding, forslag)
+  const defaultSluttdato = getSluttdato(deltaker, forslag)
   const harKursAvslutendeStatuser = harKursAvslutning(
-    pamelding.deltakerliste.oppstartstype,
-    pamelding.deltakerliste.tiltakskode
+    deltaker.deltakerliste.oppstartstype,
+    deltaker.deltakerliste.tiltakskode
   )
   const harDeltattMerEnnFjortenDager = !harDeltattMindreEnn15Dager(
-    pamelding,
+    deltaker,
     forslag
   )
 
@@ -71,7 +71,7 @@ export const AvsluttDeltakelseModal = ({
     useState<Avslutningstype | null>(
       getAvslutningstype(
         forslag,
-        pamelding.status.type,
+        deltaker.status.type,
         harDeltattFraForslag,
         harKursAvslutendeStatuser
       )
@@ -83,7 +83,7 @@ export const AvsluttDeltakelseModal = ({
         ? avslutningstype === Avslutningstype.FULLFORT ||
           avslutningstype === Avslutningstype.AVBRUTT
         : harDeltattMerEnnFjortenDager
-          ? pamelding.status.type !== DeltakerStatusType.IKKE_AKTUELL
+          ? deltaker.status.type !== DeltakerStatusType.IKKE_AKTUELL
           : null)
   )
   const [harDeltattError, setHarDeltattError] = useState<string | undefined>()
@@ -98,12 +98,12 @@ export const AvsluttDeltakelseModal = ({
     endreDeltakelseType === EndreDeltakelseType.ENDRE_AVSLUTNING
   const sluttdatoToDate = erEndreAvslutning
     ? dayjs().subtract(1, 'day').toDate()
-    : (pamelding.sluttdato ?? undefined)
+    : (deltaker.sluttdato ?? undefined)
 
   const sluttdato = useSluttdatoInput({
-    deltaker: pamelding,
+    deltaker: deltaker,
     defaultDato: defaultSluttdato ?? undefined,
-    startdato: pamelding.startdato ?? undefined,
+    startdato: deltaker.startdato ?? undefined,
     toDate: sluttdatoToDate,
     isAfterError: erEndreAvslutning
       ? DATO_ETTER_IDAG_FEILMELDING
@@ -112,8 +112,8 @@ export const AvsluttDeltakelseModal = ({
 
   const aarsak = useAarsak(
     forslag,
-    pamelding.status.aarsak?.type,
-    pamelding.status.aarsak?.beskrivelse
+    deltaker.status.aarsak?.type,
+    deltaker.status.aarsak?.beskrivelse
   )
   const begrunnelse = useBegrunnelse(true)
 
@@ -125,7 +125,7 @@ export const AvsluttDeltakelseModal = ({
   const skalViseSluttDato =
     harDeltatt && avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
-    skalViseSluttDato && getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
+    skalViseSluttDato && getSkalBekrefteVarighet(deltaker, sluttdato.sluttdato)
 
   const onSetAvslutningstype = (nyVerdi: Avslutningstype) => {
     setAvslutningstype(nyVerdi)
@@ -153,7 +153,7 @@ export const AvsluttDeltakelseModal = ({
 
     const skalValidereAarsak =
       (!harKursAvslutendeStatuser &&
-        (pamelding.status.type === DeltakerStatusType.DELTAR || !harDeltatt)) ||
+        (deltaker.status.type === DeltakerStatusType.DELTAR || !harDeltatt)) ||
       (harKursAvslutendeStatuser &&
         avslutningstype !== Avslutningstype.FULLFORT)
 
@@ -181,7 +181,7 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (
-      !pamelding.kanEndres &&
+      !deltaker.kanEndres &&
       skalViseSluttDato &&
       sluttdato.sluttdato &&
       dayjs(sluttdato.sluttdato).isSameOrAfter(dayjs(), 'day')
@@ -216,26 +216,26 @@ export const AvsluttDeltakelseModal = ({
         forslagId: forslag ? forslag.id : null
       }
 
-      validerDeltakerKanEndres(pamelding)
-      if (!harStatusSomKanAvslutteDeltakelse(pamelding.status.type)) {
+      validerDeltakerKanEndres(deltaker)
+      if (!harStatusSomKanAvslutteDeltakelse(deltaker.status.type)) {
         throw new Error(
           'Kan ikke avslutte deltakelse for deltaker som ikke har status "Deltar", "Har sluttet", "Avbrutt" eller "Fullført".'
         )
       }
 
       const deltakerErEndret =
-        pamelding.status.type !== DeltakerStatusType.HAR_SLUTTET ||
-        !dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day') ||
-        pamelding.status.aarsak?.type !== aarsak.aarsak ||
-        (pamelding.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse ||
-        (pamelding.status.type === DeltakerStatusType.HAR_SLUTTET &&
+        deltaker.status.type !== DeltakerStatusType.HAR_SLUTTET ||
+        !dayjs(sluttdato.sluttdato).isSame(deltaker.sluttdato, 'day') ||
+        deltaker.status.aarsak?.type !== aarsak.aarsak ||
+        (deltaker.status.aarsak?.beskrivelse || null) !== nyArsakBeskrivelse ||
+        (deltaker.status.type === DeltakerStatusType.HAR_SLUTTET &&
           harDeltatt === false)
       if (!deltakerErEndret) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId: enhetId,
         body: endring
       }
@@ -247,7 +247,7 @@ export const AvsluttDeltakelseModal = ({
     <Endringsmodal
       open={open}
       endringstype={endreDeltakelseType}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={
@@ -347,7 +347,7 @@ export const AvsluttDeltakelseModal = ({
             label="Hva er ny sluttdato?"
             disabled={false}
             error={sluttdato.error}
-            fromDate={pamelding.startdato ?? undefined}
+            fromDate={deltaker.startdato ?? undefined}
             toDate={sluttdatoToDate}
             defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
@@ -368,7 +368,7 @@ export const AvsluttDeltakelseModal = ({
           error={errorVarighetConfirmation}
         >
           {getSoftMaxVarighetBekreftelseText(
-            pamelding.deltakerliste.tiltakskode
+            deltaker.deltakerliste.tiltakskode
           )}
         </ConfirmationPanel>
       )}

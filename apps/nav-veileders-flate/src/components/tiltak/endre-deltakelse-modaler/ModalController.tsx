@@ -14,11 +14,11 @@ import { FjernOppstartsdatoModal } from './FjernOppstartdatoModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   endringsType: EndreDeltakelseType | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const ModalController = (props: ModalControllerProps) => {

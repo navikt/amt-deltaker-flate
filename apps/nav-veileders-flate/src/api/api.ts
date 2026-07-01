@@ -392,7 +392,8 @@ export const endrePrisinfo = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        const message = 'Kunne ikke endre prisinfo for deltakeren.'
+        const message =
+          'Kunne ikke endre pris og betalingsbetingelser for deltakeren.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

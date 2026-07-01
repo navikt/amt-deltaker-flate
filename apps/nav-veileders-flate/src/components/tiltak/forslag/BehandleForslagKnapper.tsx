@@ -67,7 +67,7 @@ export const BehandleForslagKnapper = ({ forslag }: Props) => {
         open={behandleModalOpen}
         onClose={handleCloseBehandleModal}
         onSuccess={handleEndringUtfort}
-        pamelding={deltaker}
+        deltaker={deltaker}
         forslag={forslag}
       />
       <AvvisForslagModal

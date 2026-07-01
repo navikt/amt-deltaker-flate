@@ -95,7 +95,7 @@ export const EndreDeltakelseKnapp = () => {
         open={modalOpen}
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
-        pamelding={deltaker}
+        deltaker={deltaker}
         forslag={forslag}
       />
     </>

@@ -25,7 +25,7 @@ interface Props<T extends EndringRequest> {
   endringstype: EndreDeltakelseType
   deltaker: DeltakerResponse
   onClose: () => void
-  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
@@ -68,7 +68,7 @@ export function Endringsmodal<T extends EndringRequest>({
 }
 
 interface EndrinsmodalBodyProps<T extends EndringRequest> {
-  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
   validertRequest: () => EndringsmodalRequest<T> | null
   forslag: Forslag | null
