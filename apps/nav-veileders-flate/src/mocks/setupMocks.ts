@@ -14,6 +14,7 @@ import {
   endreBakgrunnsinfoSchema,
   endreDeltakelsesmengdeSchema,
   endreInnholdSchema,
+  endrePrisinfoSchema,
   endreSluttarsakSchema,
   endreStartdatoSchema,
   fjernOppstartsdatoSchema,
@@ -214,6 +215,19 @@ export const worker = setupWorker(
         .json()
         .then((json) => endreBakgrunnsinfoSchema.parse(json))
         .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/endre-prisinfo',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => endrePrisinfoSchema.parse(json))
+        .then((body) => handler.endreDeltakelsePrisinfo(body))
 
       return response
     }

@@ -4,6 +4,7 @@ import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
 import { EndreInnholdModal } from './EndreInnholdModal'
 import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
+import { EndrePrisinfoModal } from './EndrePrisinfoModal.tsx'
 import { EndreSluttarsakModal } from './EndreSluttarsakModal.tsx'
 import { ForlengDeltakelseModal } from './ForlengDeltakelseModal.tsx'
 import { IkkeAktuellModal } from './IkkeAktuellModal.tsx'
@@ -13,11 +14,11 @@ import { FjernOppstartsdatoModal } from './FjernOppstartdatoModal.tsx'
 
 interface ModalControllerProps {
   open: boolean
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   endringsType: EndreDeltakelseType | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const ModalController = (props: ModalControllerProps) => {
@@ -32,6 +33,8 @@ export const ModalController = (props: ModalControllerProps) => {
       return <EndreBakgrunnsinfoModal {...props} />
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
+    case EndreDeltakelseType.ENDRE_PRISINFO:
+      return <EndrePrisinfoModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
       return (
         <AvsluttDeltakelseModal

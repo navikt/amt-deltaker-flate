@@ -54,15 +54,14 @@ const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
 
 const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>
   deltaker.deltakerliste.erEnkeltplass &&
-  deltaker.status.type in
-    [
-      DeltakerStatusType.SOKT_INN,
-      DeltakerStatusType.VENTER_PA_OPPSTART,
-      DeltakerStatusType.DELTAR,
-      DeltakerStatusType.FULLFORT,
-      DeltakerStatusType.AVBRUTT,
-      DeltakerStatusType.IKKE_AKTUELL
-    ]
+  [
+    DeltakerStatusType.SOKT_INN,
+    DeltakerStatusType.VENTER_PA_OPPSTART,
+    DeltakerStatusType.DELTAR,
+    DeltakerStatusType.FULLFORT,
+    DeltakerStatusType.AVBRUTT,
+    DeltakerStatusType.IKKE_AKTUELL
+  ].includes(deltaker.status.type)
 
 export const kanEndreOppstartsdato = (deltaker: DeltakerResponse) =>
   deltakerVenterPaOppstartEllerDeltar(deltaker.status.type) ||
@@ -193,17 +192,17 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   if (skalViseEndreBakgrunnsinfoKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)
   }
-  if (deltaker.status.type === DeltakerStatusType.DELTAR) {
-    valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
+  if (skalViseEndrePrisOgBetaling(deltaker) && !deltakelseErLaast) {
+    valg.push(EndreDeltakelseType.ENDRE_PRISINFO)
   }
   if (skalViseEndreDeltakelsesmengde(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE)
   }
-  if (skalViseEndrePrisOgBetaling(deltaker) && !deltakelseErLaast) {
-    // TODO valg.push(....ENDRE_PRIS_OG_BETALING)
-  }
   if (skalViseFjernOppstartsdato(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.FJERN_OPPSTARTSDATO)
+  }
+  if (deltaker.status.type === DeltakerStatusType.DELTAR) {
+    valg.push(EndreDeltakelseType.AVSLUTT_DELTAKELSE)
   }
   if (skalViseEndreSluttarsakKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_SLUTTARSAK)

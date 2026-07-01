@@ -43,28 +43,28 @@ import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreOppstartsdatoModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const EndreOppstartsdatoModal = ({
-  pamelding,
+  deltaker,
   open,
   forslag,
   onClose,
   onSuccess
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
-  const defaultDatoer = getDatoer(pamelding, forslag)
+  const defaultDatoer = getDatoer(deltaker, forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,
       defaultDatoer.sluttdato,
-      pamelding.deltakerliste.tiltakskode
+      deltaker.deltakerliste.tiltakskode
     )
   )
   const [leggTilStartDatoBekreftelse, setLeggTilStartDatoBekreftelse] =
@@ -79,7 +79,7 @@ export const EndreOppstartsdatoModal = ({
     string | null
   >(null)
 
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
 
   const skalVelgeVarighet =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
@@ -90,17 +90,17 @@ export const EndreOppstartsdatoModal = ({
   )
 
   const maxSluttdato = useMemo(() => {
-    return getSisteGyldigeSluttDato(pamelding, startdato)
-  }, [pamelding, startdato])
+    return getSisteGyldigeSluttDato(deltaker, startdato)
+  }, [deltaker, startdato])
 
   const sluttdato = useSluttdato({
-    deltaker: pamelding,
+    deltaker: deltaker,
     valgtVarighet: valgtVarighet,
     defaultAnnetDato: defaultDatoer.sluttdato,
     startdato: startdato
   })
 
-  const erLeggTilOppstartsdato = pamelding.startdato === null
+  const erLeggTilOppstartsdato = deltaker.startdato === null
 
   const skalHaBegrunnelse =
     (!forslag ||
@@ -112,7 +112,7 @@ export const EndreOppstartsdatoModal = ({
 
   const skalBekrefteVarighet =
     startdato &&
-    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato, startdato)
+    getSkalBekrefteVarighet(deltaker, sluttdato.sluttdato, startdato)
 
   const validateStartdato = (
     dateValidation: DateValidationT,
@@ -125,8 +125,8 @@ export const EndreOppstartsdatoModal = ({
     } else if (
       // dateValidation kan ikke vite datoen hvis det er tastaturendringer
       newDate &&
-      (dayjs(newDate).isBefore(pamelding.deltakerliste.startdato, 'date') ||
-        dayjs(newDate).isAfter(pamelding.deltakerliste.sluttdato, 'date'))
+      (dayjs(newDate).isBefore(deltaker.deltakerliste.startdato, 'date') ||
+        dayjs(newDate).isAfter(deltaker.deltakerliste.sluttdato, 'date'))
     ) {
       setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
     } else {
@@ -167,20 +167,20 @@ export const EndreOppstartsdatoModal = ({
 
     if (!hasError && !errorStartdato && startdato) {
       if (
-        dayjs(startdato).isSame(pamelding.startdato, 'day') &&
-        dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')
+        dayjs(startdato).isSame(deltaker.startdato, 'day') &&
+        dayjs(sluttdato.sluttdato).isSame(deltaker.sluttdato, 'day')
       ) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
-      validerDeltakerKanEndres(pamelding)
-      if (!kanEndreOppstartsdato(pamelding)) {
+      validerDeltakerKanEndres(deltaker)
+      if (!kanEndreOppstartsdato(deltaker)) {
         throw new Error(
-          `Kan ikke endre oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+          `Kan ikke endre oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(deltaker.status.type)}.`
         )
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId,
         body: {
           startdato: formatDateToDtoStr(startdato),
@@ -199,7 +199,7 @@ export const EndreOppstartsdatoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_OPPSTARTSDATO}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseStartdato}
@@ -209,20 +209,20 @@ export const EndreOppstartsdatoModal = ({
       <SimpleDatePicker
         label="Ny oppstartsdato"
         error={errorStartdato}
-        fromDate={pamelding.deltakerliste.startdato || undefined}
-        toDate={pamelding.deltakerliste.sluttdato || undefined}
+        fromDate={deltaker.deltakerliste.startdato || undefined}
+        toDate={deltaker.deltakerliste.sluttdato || undefined}
         defaultMonth={dayjs().toDate()}
         defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}
         onChange={(date) => setStartdato(date)}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
       {skalVelgeVarighet && (
         <>
           <VarighetField
             title="Hva er forventet varighet?"
             className="mt-6"
-            tiltakskode={pamelding.deltakerliste.tiltakskode}
+            tiltakskode={deltaker.deltakerliste.tiltakskode}
             startDato={startdato}
             sluttdato={maxSluttdato}
             errorVarighet={sluttdato.varighetError}
@@ -232,7 +232,7 @@ export const EndreOppstartsdatoModal = ({
             onChangeVarighet={onChangeVarighet}
             onChangeSluttDato={sluttdato.handleChange}
             onValidateSluttDato={sluttdato.validerDato}
-            disabled={!pamelding.erUnderOppfolging}
+            disabled={!deltaker.erUnderOppfolging}
           />
           {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
             <BodyShort className="mt-2" size="small">
@@ -286,7 +286,7 @@ export const EndreOppstartsdatoModal = ({
           type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
           onChange={begrunnelse.handleChange}
           error={begrunnelse.error}
-          disabled={!pamelding.erUnderOppfolging}
+          disabled={!deltaker.erUnderOppfolging}
         />
       )}
     </Endringsmodal>

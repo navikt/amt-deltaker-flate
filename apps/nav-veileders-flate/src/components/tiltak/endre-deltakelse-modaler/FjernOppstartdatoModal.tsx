@@ -14,15 +14,15 @@ import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface FjernOppstartsdatoModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const FjernOppstartsdatoModal = ({
-  pamelding,
+  deltaker,
   forslag,
   open,
   onClose,
@@ -41,20 +41,20 @@ export const FjernOppstartsdatoModal = ({
     }
 
     if (!hasError) {
-      validerDeltakerKanEndres(pamelding)
-      if (pamelding.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART) {
+      validerDeltakerKanEndres(deltaker)
+      if (deltaker.status.type !== DeltakerStatusType.VENTER_PA_OPPSTART) {
         throw new Error(
-          `Kan ikke fjerne oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+          `Kan ikke fjerne oppstartsdato for deltaker med status ${getDeltakerStatusDisplayText(deltaker.status.type)}.`
         )
       }
-      if (!pamelding.startdato) {
+      if (!deltaker.startdato) {
         throw new Error(
           'Kan ikke fjerne oppstartsdato for deltaker som ikke har oppstartsdato.'
         )
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId,
         body: {
           begrunnelse: begrunnelse.begrunnelse || null,
@@ -69,7 +69,7 @@ export const FjernOppstartsdatoModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.FJERN_OPPSTARTSDATO}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseFjernOppstartsdato}
@@ -80,7 +80,7 @@ export const FjernOppstartsdatoModal = ({
         type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
     </Endringsmodal>
   )

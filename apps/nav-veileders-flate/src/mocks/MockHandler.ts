@@ -34,6 +34,7 @@ import {
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
   EndreInnholdRequest,
+  EndrePrisinfoRequest,
   EndreSluttarsakRequest,
   EndreStartdatoRequest,
   FjernOppstartsdatoRequest,
@@ -41,13 +42,13 @@ import {
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
+import { KodeverkResponse } from '../api/data/kodeverk.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import {
   lagOpplaringKategoriseringResponse,
   lagOpplaringKategoriseringDeltaljertRespons,
   mockSertifiseringer
 } from './mockKodeverk.ts'
-import { KodeverkResponse } from '../api/data/kodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -639,6 +640,20 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  // TODO bruke request og fjerne _
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  endreDeltakelsePrisinfo(_request: EndrePrisinfoRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      // TODO lage et forslag for endring av prisinfo
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
     }

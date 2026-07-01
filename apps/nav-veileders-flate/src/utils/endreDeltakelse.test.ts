@@ -144,7 +144,7 @@ describe('erLaastMenNyligAvsluttet', () => {
     expect(erLaastMenNyligAvsluttet(d)).toBe(false)
   })
 })
-describe('getEndreDeltakelsesValg – låst men nylig avsluttet', () => {
+describe('getEndreDeltakelsesValg - låst men nylig avsluttet', () => {
   it('HAR_SLUTTET låst innen 2 mnd: viser kun ENDRE_AVSLUTNING', () => {
     const d = lagAvsluttetDeltaker(DeltakerStatusType.HAR_SLUTTET, false, {
       amount: 1,
@@ -199,7 +199,7 @@ describe('getEndreDeltakelsesValg – låst men nylig avsluttet', () => {
     expect(valg).not.toContain(EndreDeltakelseType.ENDRE_SLUTTARSAK)
   })
 })
-describe('validerDeltakerKanEndres – låst men nylig avsluttet', () => {
+describe('validerDeltakerKanEndres - låst men nylig avsluttet', () => {
   it('kaster ikke feil for låst HAR_SLUTTET avsluttet for 1 mnd siden', () => {
     const d = lagAvsluttetDeltaker(DeltakerStatusType.HAR_SLUTTET, false, {
       amount: 1,
@@ -233,5 +233,72 @@ describe('validerDeltakerKanEndres – låst men nylig avsluttet', () => {
   it('kaster ikke feil for en vanlig (ikke låst) DELTAR deltaker', () => {
     const d = lagDeltaker({ kanEndres: true })
     expect(() => validerDeltakerKanEndres(d)).not.toThrow()
+  })
+})
+
+describe('getEndreDeltakelsesValg - visning av ENDRE_PRISINFO', () => {
+  it('viser ENDRE_PRISINFO for enkeltplass med status SOKT_INN', () => {
+    const d = lagDeltaker({
+      deltakerliste: {
+        ...lagDeltaker({}).deltakerliste,
+        erEnkeltplass: true
+      },
+      status: {
+        ...lagDeltaker({}).status,
+        type: DeltakerStatusType.SOKT_INN
+      }
+    })
+
+    const valg = getEndreDeltakelsesValg(d)
+    expect(valg).toContain(EndreDeltakelseType.ENDRE_PRISINFO)
+  })
+
+  it('viser ikke ENDRE_PRISINFO for ikke-enkeltplass', () => {
+    const d = lagDeltaker({
+      deltakerliste: {
+        ...lagDeltaker({}).deltakerliste,
+        erEnkeltplass: false
+      },
+      status: {
+        ...lagDeltaker({}).status,
+        type: DeltakerStatusType.DELTAR
+      }
+    })
+
+    const valg = getEndreDeltakelsesValg(d)
+    expect(valg).not.toContain(EndreDeltakelseType.ENDRE_PRISINFO)
+  })
+
+  it('viser ikke ENDRE_PRISINFO for enkeltplass med status VENTELISTE (skal ikke gå an)', () => {
+    const d = lagDeltaker({
+      deltakerliste: {
+        ...lagDeltaker({}).deltakerliste,
+        erEnkeltplass: true
+      },
+      status: {
+        ...lagDeltaker({}).status,
+        type: DeltakerStatusType.VENTELISTE
+      }
+    })
+
+    const valg = getEndreDeltakelsesValg(d)
+    expect(valg).not.toContain(EndreDeltakelseType.ENDRE_PRISINFO)
+  })
+
+  it('viser ikke ENDRE_PRISINFO når deltakelsen er låst', () => {
+    const d = lagDeltaker({
+      kanEndres: false,
+      deltakerliste: {
+        ...lagDeltaker({}).deltakerliste,
+        erEnkeltplass: true
+      },
+      status: {
+        ...lagDeltaker({}).status,
+        type: DeltakerStatusType.DELTAR
+      }
+    })
+
+    const valg = getEndreDeltakelsesValg(d)
+    expect(valg).not.toContain(EndreDeltakelseType.ENDRE_PRISINFO)
   })
 })

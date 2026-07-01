@@ -350,6 +350,8 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
       return 'Fjern oppstartsdato'
     case EndreDeltakelseType.ENDRE_AVSLUTNING:
       return 'Endre avslutning'
+    case EndreDeltakelseType.ENDRE_PRISINFO:
+      return 'Endre pris og betalingsbetingelser'
   }
 }
 

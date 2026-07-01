@@ -25,21 +25,21 @@ import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface EndreDeltakelsesmengdeModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   forslag: Forslag | null
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const EndreDeltakelsesmengdeModal = ({
-  pamelding,
+  deltaker,
   open,
   forslag,
   onClose,
   onSuccess
 }: EndreDeltakelsesmengdeModalProps) => {
-  const defaultMengde = getMengde(pamelding, forslag)
+  const defaultMengde = getMengde(deltaker, forslag)
 
   const [deltakelsesprosent, setDeltakelsesprosent] = useState<number | null>(
     defaultMengde.deltakelsesprosent
@@ -54,7 +54,7 @@ export const EndreDeltakelsesmengdeModal = ({
   const [deltakelsesprosentError, setDeltakelsesprosentError] =
     useState<string>()
   const [dagerPerUkeError, setDagerPerUkeError] = useState<string>()
-  const [gyldigFraError, setgyldigFraError] = useState<string>()
+  const [gyldigFraError, setGyldigFraError] = useState<string>()
 
   const erBegrunnelseValgfri =
     forslag !== null &&
@@ -84,7 +84,7 @@ export const EndreDeltakelsesmengdeModal = ({
     }
 
     const harEndring = () => {
-      const siste = pamelding.deltakelsesmengder.sisteDeltakelsesmengde
+      const siste = deltaker.deltakelsesmengder.sisteDeltakelsesmengde
       if (siste === null) {
         return true
       }
@@ -104,7 +104,7 @@ export const EndreDeltakelsesmengdeModal = ({
       throw new Error(getFeilmeldingIngenEndring(forslag !== null))
     }
 
-    validerDeltakerKanEndres(pamelding)
+    validerDeltakerKanEndres(deltaker)
 
     const body: EndreDeltakelsesmengdeRequest = {
       deltakelsesprosent: deltakelsesprosent,
@@ -117,7 +117,7 @@ export const EndreDeltakelsesmengdeModal = ({
       forslagId: forslag?.id ?? null
     }
     return {
-      deltakerId: pamelding.deltakerId,
+      deltakerId: deltaker.deltakerId,
       enhetId,
       body
     }
@@ -148,7 +148,7 @@ export const EndreDeltakelsesmengdeModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelsesmengde}
@@ -157,7 +157,7 @@ export const EndreDeltakelsesmengdeModal = ({
     >
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
         value={deltakelsesprosent || undefined}
         onChange={(e) => {
           setDeltakelsesprosent(e || null)
@@ -171,7 +171,7 @@ export const EndreDeltakelsesmengdeModal = ({
       {deltakelsesprosent && deltakelsesprosent != 100 && (
         <NumberTextField
           label="Hvor mange dager i uka? (valgfritt)"
-          disabled={!pamelding.erUnderOppfolging}
+          disabled={!deltaker.erUnderOppfolging}
           value={dagerPerUke || undefined}
           onChange={(e) => {
             setDagerPerUke(e || null)
@@ -182,26 +182,26 @@ export const EndreDeltakelsesmengdeModal = ({
           id="dagerPerUke"
         />
       )}
-      {pamelding.startdato && (
+      {deltaker.startdato && (
         <SimpleDatePicker
           label="Fra når gjelder ny deltakelsesmengde?"
           defaultDate={gyldigFra}
-          fromDate={pamelding.startdato ?? undefined}
-          toDate={pamelding.sluttdato ?? undefined}
+          fromDate={deltaker.startdato ?? undefined}
+          toDate={deltaker.sluttdato ?? undefined}
           error={gyldigFraError ?? null}
           onValidate={(validation) => {
             if (validation.isBefore) {
-              setgyldigFraError(
+              setGyldigFraError(
                 'Datoen kan ikke velges fordi den er før deltakers startsdato'
               )
             } else if (validation.isAfter) {
-              setgyldigFraError(
+              setGyldigFraError(
                 'Datoen kan ikke velges fordi den er etter deltakers sluttdato'
               )
             } else if (validation.isInvalid) {
-              setgyldigFraError('Ugyldig dato')
+              setGyldigFraError('Ugyldig dato')
             } else {
-              setgyldigFraError(undefined)
+              setGyldigFraError(undefined)
             }
           }}
           onChange={(date: Date | undefined) => setGyldigFra(date)}
@@ -212,7 +212,7 @@ export const EndreDeltakelsesmengdeModal = ({
         onChange={begrunnelse.handleChange}
         type={erBegrunnelseValgfri ? 'valgfri' : 'obligatorisk'}
         error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
     </Endringsmodal>
   )

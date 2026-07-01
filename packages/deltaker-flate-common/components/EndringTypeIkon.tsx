@@ -83,6 +83,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
       )
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
     case EndreDeltakelseType.ENDRE_INNHOLD:
+    case EndreDeltakelseType.ENDRE_PRISINFO:
     case TiltakskoordinatorEndringsType.DelMedArrangor:
     case TiltakskoordinatorEndringsType.SettPaaVenteliste:
       return (

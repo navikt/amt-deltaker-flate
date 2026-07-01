@@ -27,15 +27,17 @@ import {
   NAVET_EGENFINANSIERING_URL,
   NAVET_TILGJENGELIG_SKOLEPLASS_URL
 } from '../../../constants'
-import {
-  PameldingEnkeltplassFormValues,
-  PRISINFO_MAX_TEGN
-} from '../../../model/PameldingEnkeltplassFormValues'
+import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
+import { PRISINFO_MAX_TEGN } from '../../../model/PrisinformasjonFormValues'
 import { NumberTextField } from '../../NumberTextField'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import { usePameldingFormContext } from '../PameldingFormContext'
 
-export const PrisOgBetaling = () => {
+export const PrisOgBetaling = ({
+  laasPristype
+}: {
+  laasPristype?: boolean
+}) => {
   const { deltaker } = useDeltakerContext()
   const tiltakskode = deltaker.deltakerliste.tiltakskode
   const { disabled } = usePameldingFormContext()
@@ -70,9 +72,11 @@ export const PrisOgBetaling = () => {
             ref={ref}
             size="small"
             id="pristype"
+            aria-required
             legend="Pris og betalingsbetingelser"
             description="Navs kostnader for opplæringen"
-            disabled={disabled}
+            disabled={disabled || laasPristype}
+            aria-disabled={disabled || laasPristype}
             error={errors.pristype?.message}
             value={value}
             onChange={(nextValue) => {
@@ -143,10 +147,11 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
                 : undefined
             }
             onChange={(newValue) => {
-              if (!newValue) {
-                onChange(0)
+              if (newValue == null) {
+                onChange(null)
                 return
               }
+
               onChange({
                 type: PrisinformasjonType.Anskaffelse,
                 pris: newValue

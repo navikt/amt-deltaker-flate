@@ -13,14 +13,14 @@ import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface ReaktiverDeltakelseModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const ReaktiverDeltakelseModal = ({
-  pamelding,
+  deltaker,
   open,
   onClose,
   onSuccess
@@ -48,9 +48,9 @@ export const ReaktiverDeltakelseModal = ({
     }
 
     if (!hasError && confirmed && begrunnelse.begrunnelse) {
-      validerDeltakerKanEndres(pamelding)
+      validerDeltakerKanEndres(deltaker)
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId,
         body: {
           begrunnelse: begrunnelse.begrunnelse
@@ -61,14 +61,14 @@ export const ReaktiverDeltakelseModal = ({
   }
 
   const kreverGodkjenning = kreverGodkjenningForPamelding(
-    pamelding.deltakerliste.pameldingstype
+    deltaker.deltakerliste.pameldingstype
   )
 
   return (
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.REAKTIVER_DELTAKELSE}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseReaktiver}
@@ -97,7 +97,7 @@ export const ReaktiverDeltakelseModal = ({
       <BegrunnelseInput
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
     </Endringsmodal>
   )

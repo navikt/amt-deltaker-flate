@@ -18,15 +18,15 @@ import dayjs from 'dayjs'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
 
 interface IkkeAktuellModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 export const IkkeAktuellModal = ({
-  pamelding,
+  deltaker,
   forslag,
   open,
   onClose,
@@ -43,14 +43,14 @@ export const IkkeAktuellModal = ({
       begrunnelse.valider() &&
       aarsak.aarsak !== undefined
     ) {
-      validerDeltakerKanEndres(pamelding)
-      if (!harStatusSomKanSetteTilIkkeAktuell(pamelding.status.type)) {
+      validerDeltakerKanEndres(deltaker)
+      if (!harStatusSomKanSetteTilIkkeAktuell(deltaker.status.type)) {
         throw new Error(
-          `Kan ikke sette deltakelse til "Ikke aktuell" for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+          `Kan ikke sette deltakelse til "Ikke aktuell" for deltaker med status ${getDeltakerStatusDisplayText(deltaker.status.type)}.`
         )
       }
-      if (pamelding.status.type === DeltakerStatusType.DELTAR) {
-        if (harDeltattFemtenDagerEllerMer(pamelding)) {
+      if (deltaker.status.type === DeltakerStatusType.DELTAR) {
+        if (harDeltattFemtenDagerEllerMer(deltaker)) {
           throw new Error(FEILMELDING_15_DAGER_SIDEN)
         }
         if (!forslag) {
@@ -70,7 +70,7 @@ export const IkkeAktuellModal = ({
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId: enhetId,
         body: endring
       }
@@ -82,7 +82,7 @@ export const IkkeAktuellModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.IKKE_AKTUELL}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseIkkeAktuell}
@@ -109,8 +109,8 @@ export const IkkeAktuellModal = ({
   )
 }
 
-const harDeltattFemtenDagerEllerMer = (pamelding: DeltakerResponse) => {
-  const statusdato = pamelding.status.gyldigFra
+const harDeltattFemtenDagerEllerMer = (deltaker: DeltakerResponse) => {
+  const statusdato = deltaker.status.gyldigFra
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(statusdato).isSameOrBefore(femtenDagerSiden, 'day')
 }

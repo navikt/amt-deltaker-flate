@@ -25,9 +25,12 @@ interface Props<T extends EndringRequest> {
   endringstype: EndreDeltakelseType
   deltaker: DeltakerResponse
   onClose: () => void
-  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
-  validertRequest: () => EndringsmodalRequest<T> | null
+  validertRequest: () =>
+    | EndringsmodalRequest<T>
+    | null
+    | Promise<EndringsmodalRequest<T> | null>
   forslag: Forslag | null
   children: ReactNode
 }
@@ -68,9 +71,12 @@ export function Endringsmodal<T extends EndringRequest>({
 }
 
 interface EndrinsmodalBodyProps<T extends EndringRequest> {
-  onSend: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSend: (oppdatertDeltaker: DeltakerResponse | null) => void
   apiFunction: ApiFunction<DeltakerResponse | null, [string, string, T]>
-  validertRequest: () => EndringsmodalRequest<T> | null
+  validertRequest: () =>
+    | EndringsmodalRequest<T>
+    | null
+    | Promise<EndringsmodalRequest<T> | null>
   forslag: Forslag | null
   deltaker: DeltakerResponse
   endringstype: EndreDeltakelseType
@@ -89,9 +95,9 @@ function EndringsmodalBody<T extends EndringRequest>({
   const { state, error, doFetch } = useDeferredFetch(apiFunction)
   const [valideringsError, setValideringsError] = useState<string>()
 
-  const sendEndring = () => {
+  const sendEndring = async () => {
     try {
-      const request = validertRequest()
+      const request = await validertRequest()
       if (request) {
         doFetch(request.deltakerId, request.enhetId, request.body).then(
           (data) => onSend(data)
@@ -169,6 +175,8 @@ function endringstekst(endringstype: EndreDeltakelseType) {
       return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return 'Endre innhold'
+    case EndreDeltakelseType.ENDRE_PRISINFO:
+      return 'Endre pris og betalingsbetingelser'
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return 'Endre bakgrunnsinfo'
     case EndreDeltakelseType.ENDRE_SLUTTDATO:

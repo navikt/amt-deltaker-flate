@@ -75,7 +75,7 @@ export const EndreDeltakelseKnapp = () => {
           Endre deltakelse
         </Button>
 
-        <Dropdown.Menu>
+        <Dropdown.Menu className="whitespace-nowrap w-fit">
           <Dropdown.Menu.List>
             {getEndreDeltakelsesValg(deltaker).map((valgType) => (
               <Dropdown.Menu.List.Item
@@ -95,7 +95,7 @@ export const EndreDeltakelseKnapp = () => {
         open={modalOpen}
         onClose={handleCloseModal}
         onSuccess={handleEndringUtført}
-        pamelding={deltaker}
+        deltaker={deltaker}
         forslag={forslag}
       />
     </>

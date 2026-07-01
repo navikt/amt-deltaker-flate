@@ -29,11 +29,11 @@ import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface ForlengDeltakelseModalProps {
-  pamelding: DeltakerResponse
+  deltaker: DeltakerResponse
   forslag: Forslag | null
   open: boolean
   onClose: () => void
-  onSuccess: (oppdatertPamelding: DeltakerResponse | null) => void
+  onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
 }
 
 const getSluttdatoFraForslag = (forslag: Forslag | null) => {
@@ -48,20 +48,20 @@ const getSluttdatoFraForslag = (forslag: Forslag | null) => {
 }
 
 export const ForlengDeltakelseModal = ({
-  pamelding,
+  deltaker,
   forslag,
   open,
   onClose,
   onSuccess
 }: ForlengDeltakelseModalProps) => {
-  const sluttdatoFraDeltaker = pamelding.sluttdato
+  const sluttdatoFraDeltaker = deltaker.sluttdato
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
       sluttdatoFraDeltaker,
       sluttdatoFraForslag,
-      pamelding.deltakerliste.tiltakskode
+      deltaker.deltakerliste.tiltakskode
     )
   )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
@@ -70,9 +70,9 @@ export const ForlengDeltakelseModal = ({
   >(null)
 
   const sluttdato = useSluttdato({
-    deltaker: pamelding,
+    deltaker: deltaker,
     valgtVarighet: valgtVarighet,
-    defaultAnnetDato: sluttdatoFraForslag || pamelding.sluttdato || undefined,
+    defaultAnnetDato: sluttdatoFraForslag || deltaker.sluttdato || undefined,
     erForleng: true
   })
 
@@ -82,12 +82,12 @@ export const ForlengDeltakelseModal = ({
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
   const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
     sluttdato.sluttdato &&
-    getSkalBekrefteVarighet(pamelding, sluttdato.sluttdato)
+    getSkalBekrefteVarighet(deltaker, sluttdato.sluttdato)
 
   const validertRequest = () => {
     let hasError = false
@@ -105,18 +105,18 @@ export const ForlengDeltakelseModal = ({
     }
 
     if (!hasError && sluttdato.sluttdato) {
-      validerDeltakerKanEndres(pamelding)
-      if (!harStatusSomKanForlengeDeltakelse(pamelding.status.type)) {
+      validerDeltakerKanEndres(deltaker)
+      if (!harStatusSomKanForlengeDeltakelse(deltaker.status.type)) {
         throw new Error(
-          `Kan ikke forlenge deltakelse for deltaker med status ${getDeltakerStatusDisplayText(pamelding.status.type)}.`
+          `Kan ikke forlenge deltakelse for deltaker med status ${getDeltakerStatusDisplayText(deltaker.status.type)}.`
         )
       }
-      if (dayjs(sluttdato.sluttdato).isSame(pamelding.sluttdato, 'day')) {
+      if (dayjs(sluttdato.sluttdato).isSame(deltaker.sluttdato, 'day')) {
         throw new Error(getFeilmeldingIngenEndring(forslag !== null))
       }
 
       return {
-        deltakerId: pamelding.deltakerId,
+        deltakerId: deltaker.deltakerId,
         enhetId,
         body: {
           sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
@@ -136,7 +136,7 @@ export const ForlengDeltakelseModal = ({
     <Endringsmodal
       open={open}
       endringstype={EndreDeltakelseType.FORLENG_DELTAKELSE}
-      deltaker={pamelding}
+      deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
       apiFunction={endreDeltakelseForleng}
@@ -145,17 +145,17 @@ export const ForlengDeltakelseModal = ({
     >
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
-        tiltakskode={pamelding.deltakerliste.tiltakskode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         startDato={sluttdatoFraDeltaker || undefined}
-        sluttdato={getSisteGyldigeSluttDato(pamelding) || undefined}
+        sluttdato={getSisteGyldigeSluttDato(deltaker) || undefined}
         errorVarighet={sluttdato.varighetError}
         errorSluttDato={sluttdato.annetError}
         defaultVarighet={valgtVarighet}
-        defaultAnnetDato={sluttdatoFraForslag || pamelding.sluttdato}
+        defaultAnnetDato={sluttdatoFraForslag || deltaker.sluttdato}
         onChangeVarighet={handleChangeVarighet}
         onChangeSluttDato={sluttdato.handleChange}
         onValidateSluttDato={sluttdato.validerDato}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
       {sluttdato.sluttdato && valgtVarighet !== VarighetValg.ANNET && (
         <BodyShort className="mt-2" size="small">
@@ -181,7 +181,7 @@ export const ForlengDeltakelseModal = ({
         type={skalHaBegrunnelse ? 'obligatorisk' : 'valgfri'}
         onChange={begrunnelse.handleChange}
         error={begrunnelse.error}
-        disabled={!pamelding.erUnderOppfolging}
+        disabled={!deltaker.erUnderOppfolging}
       />
     </Endringsmodal>
   )
