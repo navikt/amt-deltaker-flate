@@ -1,4 +1,7 @@
-import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
+import {
+  OpplaringKategorisering,
+  OpplaringRepresenterer
+} from '../model/kodeverk'
 
 /**
  * Henter første valgnavn for en gitt representerer fra flatt kodeverk.
@@ -9,7 +12,7 @@ import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
  * @returns Visningsnavn på første valg, eller undefined hvis ikke funnet
  */
 export const getKodeverkValgNavn = (
-  kodeverk: FlattKodeverk | undefined | null,
+  kodeverk: OpplaringKategorisering | undefined | null,
   representerer: OpplaringRepresenterer
 ): string | undefined => {
   return kodeverk?.valgteKategoriseringer.find(

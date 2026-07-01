@@ -4,7 +4,7 @@ import {
   Tiltakskode
 } from 'deltaker-flate-common'
 import {
-  FlattKodeverk,
+  OpplaringKategorisering,
   KodeverkAlternativType,
   KodeverkContainer,
   KodeverkResponse,
@@ -13,7 +13,10 @@ import {
   VerdigruppeSokKilde
 } from '../api/data/kodeverk'
 
-type FlattKodeverkWire = Omit<FlattKodeverk, 'valgteKategoriseringer'> & {
+type FlattKodeverkWire = Omit<
+  OpplaringKategorisering,
+  'valgteKategoriseringer'
+> & {
   valgteKategoriseringer: Array<{
     representerer: OpplaringRepresenterer
     valg: Record<string, string>

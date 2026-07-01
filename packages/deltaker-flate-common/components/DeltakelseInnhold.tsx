@@ -1,13 +1,16 @@
 import { BodyLong, List } from '@navikt/ds-react'
 import { Deltakelsesinnhold, Innhold, Tiltakskode } from '../model/deltaker'
-import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk'
+import {
+  OpplaringKategorisering,
+  OpplaringRepresenterer
+} from '../model/kodeverk'
 import { INNHOLD_TYPE_ANNET } from '../utils/constants'
 import { getKodeverkRepresentererTekst } from '../utils/displayText'
 import { erOpplaringstiltak } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
-  kodeverk?: FlattKodeverk | null
+  kodeverk?: OpplaringKategorisering | null
   tiltakskode: Tiltakskode
   heading: React.ReactNode | null
   listClassName?: string
@@ -28,7 +31,7 @@ export const DeltakelseInnhold = ({
       <div className="flex flex-col gap-2">
         {heading ?? null}
 
-        {renderKodeverk(kodeverk)}
+        {Kodeverk(kodeverk)}
       </div>
     )
   }
@@ -65,7 +68,7 @@ export const DeltakelseInnhold = ({
         </BodyLong>
       )}
 
-      {renderKodeverk(kodeverk)}
+      {Kodeverk(kodeverk)}
 
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small">
@@ -84,7 +87,7 @@ export const DeltakelseInnhold = ({
   )
 }
 
-const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
+const Kodeverk = (kodeverk: OpplaringKategorisering | null | undefined) => {
   const kodeverkTekst = getKodeverkTekst(kodeverk)
   const kodeverkForListe = (kodeverk?.valgteKategoriseringer ?? []).filter(
     (e) =>
@@ -134,7 +137,9 @@ const renderKodeverk = (kodeverk: FlattKodeverk | null | undefined) => {
   )
 }
 
-const getKodeverkTekst = (kodeverk: FlattKodeverk | null | undefined) => {
+const getKodeverkTekst = (
+  kodeverk: OpplaringKategorisering | null | undefined
+) => {
   const kategorier = kodeverk
     ? kodeverk.valgteKategoriseringer.filter(
         (e) =>
@@ -170,7 +175,9 @@ function harInnhold(
   )
 }
 
-function harKodeverk(kodeverk: FlattKodeverk | null | undefined): boolean {
+function harKodeverk(
+  kodeverk: OpplaringKategorisering | null | undefined
+): boolean {
   if (!kodeverk) {
     return false
   }

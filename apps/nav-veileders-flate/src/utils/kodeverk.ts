@@ -1,6 +1,8 @@
-import { FlattKodeverk } from 'deltaker-flate-common'
+import { OpplaringKategorisering } from 'deltaker-flate-common'
 
-export const getValgteVerdier = (kodeverkValg: FlattKodeverk | null) => {
+export const getValgteVerdier = (
+  kodeverkValg: OpplaringKategorisering | null
+) => {
   return (
     kodeverkValg?.valgteKategoriseringer
       .filter((e) => e.valg.length > 0)
@@ -12,7 +14,7 @@ export const getValgteVerdier = (kodeverkValg: FlattKodeverk | null) => {
 }
 
 export const getValgteSertifiseringer = (
-  kodeverkValg: FlattKodeverk | null
+  kodeverkValg: OpplaringKategorisering | null
 ) => {
   return (
     kodeverkValg?.valgteSertifiseringer.map((e) => ({

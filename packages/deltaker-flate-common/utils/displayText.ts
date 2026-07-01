@@ -19,7 +19,10 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
-import { FlattKodeverk, OpplaringRepresenterer } from '../model/kodeverk.ts'
+import {
+  OpplaringKategorisering,
+  OpplaringRepresenterer
+} from '../model/kodeverk.ts'
 import { Tilskuddstype } from '../model/prisinformasjon'
 import { getKodeverkValgNavn } from './kodeverkUtils.ts'
 import { formatDateWithMonthName } from './utils.ts'
@@ -27,7 +30,7 @@ import { formatDateWithMonthName } from './utils.ts'
 const getKurstypeText = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
+  kodeverk?: OpplaringKategorisering | null
 ) => {
   const kurstype = getKodeverkValgNavn(
     kodeverk,
@@ -97,7 +100,7 @@ export const hentKladdTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverk: FlattKodeverk | null,
+  kodeverk: OpplaringKategorisering | null,
   erKladd: boolean
 ) => {
   const kurstype = getKodeverkValgNavn(
@@ -117,7 +120,7 @@ export const hentKladdTiltakHosArrangorTittel = (
 export const hentTiltakHosArrangorTittel = (
   tiltakskode: Tiltakskode,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
+  kodeverk?: OpplaringKategorisering | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
 
@@ -132,7 +135,7 @@ export const hentTiltakHosArrangorIngressTekst = (
   tiltakskode: Tiltakskode,
   deltakerlisteNavn: string,
   arrangorNavn: string,
-  kodeverk?: FlattKodeverk | null
+  kodeverk?: OpplaringKategorisering | null
 ) => {
   const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
 

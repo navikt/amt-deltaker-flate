@@ -1,6 +1,12 @@
-import { FlattKodeverk, OpplaringRepresenterer } from 'deltaker-flate-common'
+import {
+  OpplaringKategorisering,
+  OpplaringRepresenterer
+} from 'deltaker-flate-common'
 
-type FlattKodeverkWire = Omit<FlattKodeverk, 'valgteKategoriseringer'> & {
+type FlattKodeverkWire = Omit<
+  OpplaringKategorisering,
+  'valgteKategoriseringer'
+> & {
   valgteKategoriseringer: Array<{
     representerer: OpplaringRepresenterer
     valg: Record<string, string>

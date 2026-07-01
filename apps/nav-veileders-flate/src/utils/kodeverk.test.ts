@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import {
-  type FlattKodeverk,
+  type OpplaringKategorisering,
   OpplaringRepresenterer
 } from 'deltaker-flate-common'
 import { getValgteVerdier } from './kodeverk'
 
 describe('getValgteVerdier', () => {
   it('henter valgte id-er fra en kategorisering', () => {
-    const kodeverkValg: FlattKodeverk = {
+    const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
           representerer: OpplaringRepresenterer.BRANSJE_ID,
@@ -29,7 +29,7 @@ describe('getValgteVerdier', () => {
   })
 
   it('henter valgte id-er fra flere kategoriseringer', () => {
-    const kodeverkValg: FlattKodeverk = {
+    const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
           representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
@@ -59,7 +59,7 @@ describe('getValgteVerdier', () => {
   })
 
   it('returnerer tom liste når kategoriseringer ikke har valg', () => {
-    const kodeverkValg: FlattKodeverk = {
+    const kodeverkValg: OpplaringKategorisering = {
       valgteKategoriseringer: [
         {
           representerer: OpplaringRepresenterer.FORERKORT,
