@@ -542,6 +542,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       utkastDelt: dayjs().subtract(3, 'day').toDate(),
       utkastGodkjentAvNav: false,
       deltakelsesinnholdVedInnsok: null,
+      //@ts-expect-error('kompiler skjønner ikke at det er riktig type fordi det er en transform')
       opplaringKategorisering: kodeverkValg
     }
   ]

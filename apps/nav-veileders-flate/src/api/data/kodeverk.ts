@@ -88,6 +88,9 @@ export type KodeverkContainer =
   | KodeverkVerdigruppe
   | KodeverkVerdigruppeSok
 
+/*
+  Tilgjengelige kodeverk for tiltakstype med informasjon om de er valgt eller ikke
+ */
 export const kodeverkResponseSchema = z.object({
   tiltakskode: z.enum(Tiltakskode),
   alternativer: z.array(
