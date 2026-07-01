@@ -35,7 +35,7 @@ export const EndrePrisinfoModal = ({
   onSuccess
 }: Props) => {
   const { enhetId } = useAppContext()
-  const begrunnelse = useBegrunnelse(true)
+  const begrunnelse = useBegrunnelse(false)
   const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
 
   const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
