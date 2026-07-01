@@ -27,16 +27,15 @@ export const sertifiseringValgSchema = z.array(
  * Inneholder kun ferdig selekterte verdier som skal vises eller persisteres,
  * ikke hele hierarkiet av valg.
  */
+const valgtElementSchema = z.object({
+  id: z.uuid(),
+  visningsnavn: z.string()
+})
 export const opplaringKategoriseringSchema = z.object({
   valgteKategoriseringer: z.array(
     z.object({
-      representerer: z.enum(OpplaringRepresenterer),
-      valg: z.record(z.uuid(), z.string()).transform((valgMap) =>
-        Object.entries(valgMap).map(([id, visningsnavn]) => ({
-          id,
-          visningsnavn
-        }))
-      )
+      type: z.enum(OpplaringRepresenterer),
+      valgteElementer: z.array(valgtElementSchema)
     })
   ),
   valgteSertifiseringer: sertifiseringValgSchema
@@ -45,3 +44,4 @@ export const opplaringKategoriseringSchema = z.object({
 export type OpplaringKategorisering = z.infer<
   typeof opplaringKategoriseringSchema
 >
+export type ValgtKategoriseringElement = z.infer<typeof valgtElementSchema>

@@ -27,7 +27,7 @@ const lagDeltakerliste = (
     tilgjengeligInnhold: { ledetekst: null, innhold: [] },
     oppmoteSted: null,
     pameldingstype: 'DIREKTE_VEDTAK',
-    kodeverk: null,
+    opplaringKategoriseringValg: null,
     ...overrides
   }) as unknown as Deltakerliste
 
@@ -44,11 +44,13 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
-          kodeverk: {
+          opplaringKategoriseringValg: {
             valgteKategoriseringer: [
               {
-                representerer: OpplaringRepresenterer.KURSTYPE_ID,
-                valg: [{ id: 'kurs-1', visningsnavn: 'Norskopplæring' }]
+                type: OpplaringRepresenterer.KURSTYPE_ID,
+                valgteElementer: [
+                  { id: 'kurs-1', visningsnavn: 'Norskopplæring' }
+                ]
               }
             ],
             valgteSertifiseringer: []
@@ -103,11 +105,13 @@ describe('PameldingHeader - FOV heading', () => {
           tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
           deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
           arrangorNavn: 'Kurs AS',
-          kodeverk: {
+          opplaringKategoriseringValg: {
             valgteKategoriseringer: [
               {
-                representerer: OpplaringRepresenterer.BRANSJE_ID,
-                valg: [{ id: 'kurs-2', visningsnavn: 'Bransje: Bygg' }]
+                type: OpplaringRepresenterer.BRANSJE_ID,
+                valgteElementer: [
+                  { id: 'kurs-2', visningsnavn: 'Bransje: Bygg' }
+                ]
               }
             ],
             valgteSertifiseringer: []
@@ -147,8 +151,8 @@ describe('DeltakelseInnhold', () => {
           kodeverk={{
             valgteKategoriseringer: [
               {
-                representerer: OpplaringRepresenterer.BRANSJE_ID,
-                valg: [{ id: 'bransje-3', visningsnavn: 'IT' }]
+                type: OpplaringRepresenterer.BRANSJE_ID,
+                valgteElementer: [{ id: 'bransje-3', visningsnavn: 'IT' }]
               }
             ],
             valgteSertifiseringer: []

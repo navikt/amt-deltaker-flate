@@ -34,7 +34,7 @@ export const DeltakerInfo = ({ className }: Props) => {
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
     deltaker.deltakerliste.tiltakskode,
     deltaker.deltakerliste.arrangorNavn,
-    deltaker.deltakerliste.kodeverk
+    deltaker.deltakerliste.opplaringKategoriseringValg
   )
 
   const skalViseDato =
@@ -133,7 +133,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
-        kodeverk={deltaker.deltakerliste.kodeverk}
+        kodeverk={deltaker.deltakerliste.opplaringKategoriseringValg}
         heading={
           <Heading level="2" size="medium" className="mt-8">
             Dette er innholdet

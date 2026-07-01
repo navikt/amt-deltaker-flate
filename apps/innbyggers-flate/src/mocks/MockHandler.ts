@@ -21,7 +21,7 @@ import {
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { createMockFlatKodeverk } from './mockKodeverk.ts'
+import { createMockOpplaringKategorisering } from './mockKodeverk.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -62,8 +62,7 @@ export const createDeltaker = (
       erEnkeltplass: false,
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-      kodeverk:
-        createMockFlatKodeverk() as unknown as DeltakerResponse['deltakerliste']['kodeverk'],
+      opplaringKategoriseringValg: createMockOpplaringKategorisering(),
       prisinformasjon: null
     },
     status: {
@@ -359,8 +358,11 @@ export class MockHandler {
   }
 
   getHistorikk() {
-    return HttpResponse.json(
+    const erEnkeltplass = this.deltaker?.deltakerliste.erEnkeltplass
+    const erFellesOppstart =
       this.deltaker?.deltakerliste.oppstartstype === Oppstartstype.FELLES
+    return HttpResponse.json(
+      erFellesOppstart || erEnkeltplass
         ? lagHistorikkFellesOppstart()
         : createHistorikk()
     )

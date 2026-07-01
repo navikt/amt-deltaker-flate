@@ -13,7 +13,7 @@ import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 import { PameldingFormContextProvider } from '../pamelding/PameldingFormContext'
 import { AppContext } from '../../AppContext'
-import { KodeverkAlternativType, Seleksjonstype } from '../../api/data/kodeverk'
+import { KodeverkAlternativType, Seleksjonstype } from 'deltaker-flate-common'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -36,8 +36,8 @@ vi.mock('../../api/api-enkeltplass.ts', () => ({
 const createKodeverk = () => ({
   valgteKategoriseringer: [
     {
-      representerer: OpplaringRepresenterer.BRANSJE_ID,
-      valg: [{ id: 'new-id', visningsnavn: 'Ny Bransje' }]
+      type: OpplaringRepresenterer.BRANSJE_ID,
+      valgteElementer: [{ id: 'new-id', visningsnavn: 'Ny Bransje' }]
     }
   ],
   valgteSertifiseringer: []
@@ -63,7 +63,7 @@ const createDeltaker = (): DeltakerResponse =>
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
       pameldingstype: 'SOKNADSBASERT',
-      kodeverk: createKodeverk()
+      opplaringKategoriseringValg: createKodeverk()
     },
     status: {
       id: '1',
