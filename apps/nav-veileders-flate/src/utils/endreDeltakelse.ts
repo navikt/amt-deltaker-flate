@@ -51,9 +51,9 @@ const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
     // For enkeltplasser skal knappen "vises når deltakelsen er forbi statusen 'utkast'"
     (deltaker.deltakerliste.erEnkeltplass &&
       [
+        DeltakerStatusType.SOKT_INN,
         DeltakerStatusType.VENTER_PA_OPPSTART,
         DeltakerStatusType.DELTAR,
-        DeltakerStatusType.SOKT_INN,
         DeltakerStatusType.VURDERES,
         DeltakerStatusType.VENTELISTE
       ].includes(deltaker.status.type)))

@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
   beregnEstimertTotalsum,
   fjernUgyldigeTegn,
   getDayjsFromString,
+  harDeltakelsesmengde,
   haveSameContents,
-  NOK_FORMATTER,
-  harDeltakelsesmengde
+  NOK_FORMATTER
 } from './utils'
 import { Tiltakskode } from '../model/deltaker'
 import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
@@ -122,14 +122,18 @@ describe('harDeltakelsesmengde', () => {
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   ])('returnerer true for %s med erEnkeltplass=false', (kode) => {
-    expect(harDeltakelsesmengde(kode, false)).toBe(true)
+    expect(
+      harDeltakelsesmengde({ tiltakskode: kode, erEnkeltplass: false })
+    ).toBe(true)
   })
 
   it.each([
     Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   ])('returnerer true for %s med erEnkeltplass=true', (kode) => {
-    expect(harDeltakelsesmengde(kode, true)).toBe(true)
+    expect(
+      harDeltakelsesmengde({ tiltakskode: kode, erEnkeltplass: true })
+    ).toBe(true)
   })
 
   it.each(
@@ -139,7 +143,9 @@ describe('harDeltakelsesmengde', () => {
         kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
     )
   )('returnerer false for %s med erEnkeltplass=false', (kode) => {
-    expect(harDeltakelsesmengde(kode, false)).toBe(false)
+    expect(
+      harDeltakelsesmengde({ tiltakskode: kode, erEnkeltplass: false })
+    ).toBe(false)
   })
 
   it.each([
@@ -156,7 +162,9 @@ describe('harDeltakelsesmengde', () => {
   ])(
     'returnerer true for opplæringstiltak %s med erEnkeltplass=true',
     (kode) => {
-      expect(harDeltakelsesmengde(kode, true)).toBe(true)
+      expect(
+        harDeltakelsesmengde({ tiltakskode: kode, erEnkeltplass: true })
+      ).toBe(true)
     }
   )
 
@@ -174,7 +182,9 @@ describe('harDeltakelsesmengde', () => {
   ])(
     'returnerer false for opplæringstiltak %s med erEnkeltplass=false',
     (kode) => {
-      expect(harDeltakelsesmengde(kode, false)).toBe(false)
+      expect(
+        harDeltakelsesmengde({ tiltakskode: kode, erEnkeltplass: false })
+      ).toBe(false)
     }
   )
 })
