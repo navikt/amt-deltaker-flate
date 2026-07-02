@@ -20,10 +20,13 @@ export const getDagerPerUkeError = ({
   dagerPerUke: number | null
   maxDagerPerUke: number
 }) => {
-  if (!dagerPerUke || deltakelsesprosent === 100) {
+  if (dagerPerUke === null || deltakelsesprosent === 100) {
     return undefined
   }
-  const isValid = 0 < dagerPerUke && dagerPerUke <= maxDagerPerUke
+  const isValid =
+    Number.isInteger(dagerPerUke) &&
+    0 < dagerPerUke &&
+    dagerPerUke <= maxDagerPerUke
 
   if (!isValid) {
     return `Dager per uke må være et helt tall fra 1 til ${maxDagerPerUke}`

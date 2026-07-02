@@ -21,4 +21,22 @@ describe('deltakelsesmengdeValidering', () => {
       })
     ).toBe(`Dager per uke må være et helt tall fra 1 til ${maxDagerPerUke}`)
   })
+
+  it('avviser 0 og desimaltall for dager per uke', () => {
+    expect(
+      getDagerPerUkeError({
+        deltakelsesprosent: null,
+        dagerPerUke: 0,
+        maxDagerPerUke: 5
+      })
+    ).toBe('Dager per uke må være et helt tall fra 1 til 5')
+
+    expect(
+      getDagerPerUkeError({
+        deltakelsesprosent: null,
+        dagerPerUke: 2.5,
+        maxDagerPerUke: 5
+      })
+    ).toBe('Dager per uke må være et helt tall fra 1 til 5')
+  })
 })
