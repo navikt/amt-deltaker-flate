@@ -39,14 +39,23 @@ describe('ArrangorValg', () => {
       ).toBeInTheDocument()
     })
 
-    it('viser initial arrangør som valgt når den finnes', () => {
+    it('viser initial arrangør som valgt når den finnes', async () => {
+      const user = userEvent.setup()
       const arrangor = {
         navn: 'Muligheter AS',
         organisasjonsnummer: '123456789'
       }
       renderArrangorValg(arrangor)
 
-      expect(screen.getByText('Muligheter AS - 123456789')).toBeInTheDocument()
+      const input = screen.getByLabelText('Tiltaksarrangør - underenhet')
+      await user.click(input)
+
+      expect(
+        screen.getByRole('option', {
+          name: 'Muligheter AS - 123456789',
+          selected: true
+        })
+      ).toBeInTheDocument()
     })
 
     it('viser ingen valgt arrangør når deltaker ikke har arrangør', () => {
