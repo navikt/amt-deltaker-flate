@@ -87,7 +87,7 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
   return (
     <Endringsmodal
       open={open}
-      endringstype={EndreDeltakelseType.ENDRE_INNHOLD_KODEVERK}
+      endringstype={EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING}
       deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}

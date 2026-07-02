@@ -34,7 +34,7 @@ export const ModalController = (props: ModalControllerProps) => {
       return <EndreBakgrunnsinfoModal {...props} />
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
-    case EndreDeltakelseType.ENDRE_INNHOLD_KODEVERK:
+    case EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING:
       return <EndreInnholdOpplaringKategoriseringModal {...props} />
     case EndreDeltakelseType.ENDRE_PRISINFO:
       return <EndrePrisinfoModal {...props} />

@@ -201,7 +201,7 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
   }
   if (skalViseEndreOpplaringKategorisering(deltaker) && !deltakelseErLaast) {
-    valg.push(EndreDeltakelseType.ENDRE_INNHOLD_KODEVERK)
+    valg.push(EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING)
   }
   if (skalViseEndreBakgrunnsinfoKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)
