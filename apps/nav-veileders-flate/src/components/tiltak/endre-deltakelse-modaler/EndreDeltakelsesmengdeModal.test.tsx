@@ -232,4 +232,28 @@ describe('EndreDeltakelsesmengdeModal', () => {
       screen.getByText('Dager per uke må være et helt tall fra 1 til 5')
     ).toBeInTheDocument()
   })
+
+  it('Gruppe avviser 0 dager per uke', async () => {
+    const user = userEvent.setup()
+    renderModal(lagDeltaker(false))
+    await settDagerPerUke(gruppeDagerLabel, '0')
+    await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+    expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('Dager per uke må være et helt tall fra 1 til 5')
+    ).toBeInTheDocument()
+  })
+
+  it('Enkeltplass avviser 0 dager per uke', async () => {
+    const user = userEvent.setup()
+    renderModal(lagDeltaker(true))
+    await settDagerPerUke(enkeltplassDagerLabel, '0')
+    await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+    expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('Dager per uke må være et helt tall fra 1 til 7')
+    ).toBeInTheDocument()
+  })
 })

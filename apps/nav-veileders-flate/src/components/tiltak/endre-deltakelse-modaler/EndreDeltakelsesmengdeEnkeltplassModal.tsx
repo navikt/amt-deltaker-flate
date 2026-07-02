@@ -121,7 +121,7 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
         dagerPerUkeError={dagerPerUkeError}
         disabled={!deltaker.erUnderOppfolging}
         onChange={(e) => {
-          setDagerPerUke(e || null)
+          setDagerPerUke(e ?? null)
           validerDagerPerUke(e ?? null)
         }}
       />

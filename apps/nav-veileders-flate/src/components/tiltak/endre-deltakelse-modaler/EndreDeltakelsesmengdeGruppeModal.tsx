@@ -144,9 +144,9 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
       <NumberTextField
         label="Hva er ny deltakelsesprosent?"
         disabled={!deltaker.erUnderOppfolging}
-        value={deltakelsesprosent || undefined}
+        value={deltakelsesprosent ?? undefined}
         onChange={(e) => {
-          setDeltakelsesprosent(e || null)
+          setDeltakelsesprosent(e ?? null)
           validerDeltakelsesMengde(e ?? null, dagerPerUke)
         }}
         error={deltakelsesprosentError}
@@ -161,7 +161,7 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
           dagerPerUkeError={dagerPerUkeError}
           disabled={!deltaker.erUnderOppfolging}
           onChange={(e) => {
-            setDagerPerUke(e || null)
+            setDagerPerUke(e ?? null)
             validerDeltakelsesMengde(deltakelsesprosent, e ?? null)
           }}
         />
