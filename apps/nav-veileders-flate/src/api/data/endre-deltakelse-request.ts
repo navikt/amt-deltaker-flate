@@ -1,4 +1,5 @@
 import {
+  OpplaringRepresenterer,
   DeltakerStatusAarsakType,
   prisinformasjonSchema
 } from 'deltaker-flate-common'
@@ -81,6 +82,21 @@ export const endreInnholdSchema = z.object({
 })
 export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 
+export const endreInnholdKodeverkSchema = z.object({
+  beskrivelse: z.string(),
+  opplaringKategoriseringValg: z.array(
+    z.object({
+      representerer: z.enum(OpplaringRepresenterer),
+      valgteIder: z.array(z.string())
+    })
+  ),
+  sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
+})
+
+export type EndreInnholdKodeverkRequest = z.infer<
+  typeof endreInnholdKodeverkSchema
+>
+
 export const endreDeltakelsesmengdeSchema = z.object({
   deltakelsesprosent: z.number().optional(),
   dagerPerUke: z.number().optional(),
@@ -118,3 +134,4 @@ export type EndringRequest =
   | EndreAvslutningRequest
   | FjernOppstartsdatoRequest
   | EndrePrisinfoRequest
+  | EndreInnholdKodeverkRequest

@@ -92,7 +92,7 @@ describe('KladdLagring - auto-lagring', () => {
 
   it('auto-lagrer når kodeverkValg endres via setValue', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
-      kodeverkValg: []
+      kategoriseringValg: []
     })
 
     change('kodeverkValg', [

@@ -13,7 +13,7 @@ import { InnholdBeskrivelse } from './InnholdBeskrivelse'
 import { PameldingDatoer } from './PameldingDatoer'
 import { FormErrorSummary } from '../FormErrorSummary.tsx'
 import { ArrangorValg } from './ArrangorValg.tsx'
-import { KodeverkValg } from './KodeverkValg.tsx'
+import { OpplaringKategoriseringValg } from './OpplaringKategoriseringValg.tsx'
 import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '../../../AppContext.tsx'
 import { getKodeverk } from '../../../api/api-enkeltplass.ts'
@@ -95,7 +95,7 @@ const PameldingEnkeltplassFormInner = ({
       <FormProvider {...methods}>
         <FormErrorSummary erEnkeltplass={true} />
 
-        <KodeverkValg kodeverk={kodeverk} />
+        <OpplaringKategoriseringValg kodeverk={kodeverk} />
 
         <InnholdBeskrivelse />
 

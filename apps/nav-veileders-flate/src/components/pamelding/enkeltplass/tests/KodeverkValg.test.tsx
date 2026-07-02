@@ -2,10 +2,10 @@ import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { KodeverkValg } from '../KodeverkValg'
+import { OpplaringKategoriseringValg } from '../OpplaringKategoriseringValg'
 import { renderWithProviders } from './test-utils'
 import {
-  KodeverkAlternativType,
+  OpplaringKategoriseringAlternativType,
   KodeverkResponse,
   Seleksjonstype
 } from '../../../../api/data/kodeverk'
@@ -17,7 +17,7 @@ const utdanningsprogramLabel = /^Utdanningsprogram\b/i
 const larefagLabel = /^Lærefag\b/i
 
 const bransjeVerdigruppe = {
-  type: KodeverkAlternativType.VERDIGRUPPE as const,
+  type: OpplaringKategoriseringAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Bransje',
   pakrevd: false,
@@ -31,7 +31,7 @@ const bransjeVerdigruppe = {
 }
 
 const forerkortVerdigruppe = {
-  type: KodeverkAlternativType.VERDIGRUPPE as const,
+  type: OpplaringKategoriseringAlternativType.VERDIGRUPPE as const,
   id: null,
   visningsnavn: 'Førerkort',
   pakrevd: false,
@@ -46,7 +46,7 @@ const forerkortVerdigruppe = {
 
 describe('KodeverkValg', () => {
   it('rendrer ikke når kodeverk er undefined', () => {
-    const { container } = renderWithProviders(<KodeverkValg />)
+    const { container } = renderWithProviders(<OpplaringKategoriseringValg />)
     expect(container).toBeEmptyDOMElement()
   })
 
@@ -57,7 +57,7 @@ describe('KodeverkValg', () => {
       sertifiseringValg: []
     }
     const { container } = renderWithProviders(
-      <KodeverkValg kodeverk={kodeverk} />
+      <OpplaringKategoriseringValg kodeverk={kodeverk} />
     )
     expect(container).toBeEmptyDOMElement()
   })
@@ -68,7 +68,7 @@ describe('KodeverkValg', () => {
       alternativer: [bransjeVerdigruppe],
       sertifiseringValg: []
     }
-    renderWithProviders(<KodeverkValg kodeverk={kodeverk} />)
+    renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />)
     expect(screen.getByLabelText(bransjeLabel)).toBeInTheDocument()
   })
 
@@ -85,9 +85,9 @@ describe('KodeverkValg', () => {
       ],
       sertifiseringValg: []
     }
-    renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
+    renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />, {
       defaultValues: {
-        kodeverkValg: [
+        kategoriseringValg: [
           {
             representerer: OpplaringRepresenterer.BRANSJE_ID,
             valgteIder: ['bransje-1']
@@ -108,8 +108,8 @@ describe('KodeverkValg', () => {
         alternativer: [bransjeVerdigruppe, forerkortVerdigruppe],
         sertifiseringValg: []
       }
-      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
-        defaultValues: { kodeverkValg: [] }
+      renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />, {
+        defaultValues: { kategoriseringValg: [] }
       })
 
       // Velg i Bransje
@@ -143,8 +143,8 @@ describe('KodeverkValg', () => {
         sertifiseringValg: []
       }
 
-      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
-        defaultValues: { kodeverkValg: [] }
+      renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />, {
+        defaultValues: { kategoriseringValg: [] }
       })
 
       // Velg i Bransje
@@ -188,8 +188,8 @@ describe('KodeverkValg', () => {
         sertifiseringValg: []
       }
 
-      renderWithProviders(<KodeverkValg kodeverk={kodeverk} />, {
-        defaultValues: { kodeverkValg: [] }
+      renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />, {
+        defaultValues: { kategoriseringValg: [] }
       })
 
       const bransjeInput = screen.getByLabelText(bransjeLabel)
@@ -225,7 +225,7 @@ describe('KodeverkValg', () => {
       sertifiseringValg: [],
       alternativer: [
         {
-          type: KodeverkAlternativType.UTDANNING_GRUPPE,
+          type: OpplaringKategoriseringAlternativType.UTDANNING_GRUPPE,
           visningsnavn: 'Utdanningsprogram',
           representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
           pakrevd: true,
@@ -273,17 +273,23 @@ describe('KodeverkValg', () => {
     }
 
     it('rendrer UtdanningGruppe som combobox', () => {
-      renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
-        defaultValues: { kodeverkValg: [] }
-      })
+      renderWithProviders(
+        <OpplaringKategoriseringValg kodeverk={gruppeKodeverk} />,
+        {
+          defaultValues: { kategoriseringValg: [] }
+        }
+      )
       expect(screen.getByLabelText(utdanningsprogramLabel)).toBeInTheDocument()
     })
 
     it('viser lærefag etter valg av utdanningsprogram', async () => {
       const user = userEvent.setup()
-      renderWithProviders(<KodeverkValg kodeverk={gruppeKodeverk} />, {
-        defaultValues: { kodeverkValg: [] }
-      })
+      renderWithProviders(
+        <OpplaringKategoriseringValg kodeverk={gruppeKodeverk} />,
+        {
+          defaultValues: { kategoriseringValg: [] }
+        }
+      )
 
       const gruppeInput = screen.getByLabelText(utdanningsprogramLabel)
       await user.click(gruppeInput)
@@ -296,7 +302,10 @@ describe('KodeverkValg', () => {
 
     it('auto-åpner utdanningsprogram med valgte verdier', () => {
       const byggGruppe = gruppeKodeverk.alternativer[0]
-      if (byggGruppe.type !== KodeverkAlternativType.UTDANNING_GRUPPE) {
+      if (
+        byggGruppe.type !==
+        OpplaringKategoriseringAlternativType.UTDANNING_GRUPPE
+      ) {
         throw new Error('Forventet UTDANNING_GRUPPE')
       }
       const valgtUtdanning = byggGruppe.utdanninger[0]
@@ -332,20 +341,23 @@ describe('KodeverkValg', () => {
         ]
       }
 
-      renderWithProviders(<KodeverkValg kodeverk={kodeverkMedValg} />, {
-        defaultValues: {
-          kodeverkValg: [
-            {
-              representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
-              valgteIder: ['bygg-id']
-            },
-            {
-              representerer: OpplaringRepresenterer.LAREFAG,
-              valgteIder: ['fag-1']
-            }
-          ]
+      renderWithProviders(
+        <OpplaringKategoriseringValg kodeverk={kodeverkMedValg} />,
+        {
+          defaultValues: {
+            kategoriseringValg: [
+              {
+                representerer: OpplaringRepresenterer.UTDANNINGSPROGRAM_ID,
+                valgteIder: ['bygg-id']
+              },
+              {
+                representerer: OpplaringRepresenterer.LAREFAG,
+                valgteIder: ['fag-1']
+              }
+            ]
+          }
         }
-      })
+      )
 
       expect(screen.getByLabelText(larefagLabel)).toBeInTheDocument()
       expect(

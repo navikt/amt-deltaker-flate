@@ -30,7 +30,7 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     sluttdato,
     prisinformasjon: data.prisinformasjon,
     arrangorUnderenhet: data.arrangorUnderenhet,
-    kodeverkValg: data.kodeverkValg.flatMap((kv) => kv.valgteIder),
+    kodeverkValg: data.kategoriseringValg.flatMap((kv) => kv.valgteIder),
     sertifiseringValg: data.sertifiseringValg
   }
 }

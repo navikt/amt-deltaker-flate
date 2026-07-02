@@ -37,6 +37,7 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
     case EndringType.EndreInnhold:
       return EndreDeltakelseType.ENDRE_INNHOLD
+    // TODO innhold med kodeverk?
     case EndringType.ReaktiverDeltakelse:
       return EndreDeltakelseType.REAKTIVER_DELTAKELSE
     case EndringType.EndreSluttarsak:

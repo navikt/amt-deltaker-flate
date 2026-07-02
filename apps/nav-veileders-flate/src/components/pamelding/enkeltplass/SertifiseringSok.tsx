@@ -1,6 +1,6 @@
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues'
+import { OpplaringKategoriseringFormValues } from '../../../model/OpplaringKategoriseringFormValues.ts'
 import {
   KodeverkContainer,
   KodeverkSertifiseringResponse
@@ -23,16 +23,16 @@ export function SertifiseringSok({
     enhetId
   )
 
-  const { control } = useFormContext<PameldingEnkeltplassFormValues>()
+  const { control } = useFormContext<OpplaringKategoriseringFormValues>()
 
   const sertifiseringerOptions = sertifiseringerAsOptions(sertifiseringer)
 
   const handleToggleSelected = (
     option: string,
     isSelected: boolean,
-    current: PameldingEnkeltplassFormValues['sertifiseringValg'],
+    current: OpplaringKategoriseringFormValues['sertifiseringValg'],
     onChange: (
-      value: PameldingEnkeltplassFormValues['sertifiseringValg']
+      value: OpplaringKategoriseringFormValues['sertifiseringValg']
     ) => void
   ) => {
     if (isSelected) {

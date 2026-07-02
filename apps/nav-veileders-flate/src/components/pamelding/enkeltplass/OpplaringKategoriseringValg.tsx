@@ -2,7 +2,7 @@ import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { logError, OpplaringRepresenterer } from 'deltaker-flate-common'
 import { FieldValues, Path, useFormContext } from 'react-hook-form'
 import {
-  KodeverkAlternativType,
+  OpplaringKategoriseringAlternativType,
   type KodeverkContainer,
   KodeverkResponse,
   type KodeverkUtdanningGruppe,
@@ -10,9 +10,10 @@ import {
   KodeverkVerdigruppeBase
 } from '../../../api/data/kodeverk.ts'
 import { SertifiseringSok } from './SertifiseringSok.tsx'
-import { PameldingEnkeltplassFormValues } from '../../../model/PameldingEnkeltplassFormValues.ts'
+import { OpplaringKategoriseringFormValues } from '../../../model/OpplaringKategoriseringFormValues.ts'
 
-type KodeverkValgEntry = PameldingEnkeltplassFormValues['kodeverkValg'][number]
+type KodeverkValgEntry =
+  OpplaringKategoriseringFormValues['kategoriseringValg'][number]
 
 type KodeverkOption = {
   value: string
@@ -23,10 +24,14 @@ type KodeverkOption = {
  * Rot-komponent som rendrer kodeverk-valgene for enkeltplass-påmelding.
  *
  * Kodeverket er et hierarki av UtdanningGruppe/Verdigruppe med Verdi-noder.
- * Alle valgte verdi-IDer samles i form-feltet `kodeverkValg` (liste av representerer + valgteIder),
+ * Alle valgte verdi-IDer samles i form-feltet `kategoriseringValg` (liste av representerer + valgteIder),
  * som auto-lagres via KladdLagring.
  */
-export const KodeverkValg = ({ kodeverk }: { kodeverk?: KodeverkResponse }) => {
+export const OpplaringKategoriseringValg = ({
+  kodeverk
+}: {
+  kodeverk?: KodeverkResponse
+}) => {
   if (!kodeverk || kodeverk.alternativer.length === 0) return null
 
   return (
@@ -46,11 +51,11 @@ export const KodeverkValg = ({ kodeverk }: { kodeverk?: KodeverkResponse }) => {
  */
 const AlternativValg = ({ alternativ }: { alternativ: KodeverkContainer }) => {
   switch (alternativ.type) {
-    case KodeverkAlternativType.VERDIGRUPPE:
+    case OpplaringKategoriseringAlternativType.VERDIGRUPPE:
       return <VerdigruppeValg verdigruppe={alternativ} />
-    case KodeverkAlternativType.UTDANNING_GRUPPE:
+    case OpplaringKategoriseringAlternativType.UTDANNING_GRUPPE:
       return <UtdanningGruppeValg utdanningGruppe={alternativ} />
-    case KodeverkAlternativType.VERDIGRUPPE_SOK:
+    case OpplaringKategoriseringAlternativType.VERDIGRUPPE_SOK:
       if (alternativ.representerer === OpplaringRepresenterer.SERTIFISERINGER) {
         return <SertifiseringSok alternativ={alternativ} />
       } else {
@@ -78,18 +83,18 @@ const UtdanningGruppeValg = ({
     watch,
     trigger,
     formState: { errors, submitCount }
-  } = useFormContext<PameldingEnkeltplassFormValues>()
+  } = useFormContext<OpplaringKategoriseringFormValues>()
 
   const fieldName = getKodeverkFieldName(utdanningGruppe.representerer)
   const { ref: registerRef, name: registeredFieldName } = register(
-    fieldName as unknown as Path<PameldingEnkeltplassFormValues>
+    fieldName as Path<OpplaringKategoriseringFormValues>
   )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
-  const kodeverkValg = watch('kodeverkValg') ?? []
+  const kategoriseringValg = watch('kategoriseringValg') ?? []
 
   const valgtUtdanningId =
     getValgteIderForRepresenterer(
-      kodeverkValg,
+      kategoriseringValg,
       utdanningGruppe.representerer
     )[0] ?? null
 
@@ -102,7 +107,7 @@ const UtdanningGruppeValg = ({
     utdanningGruppe.utdanninger.find((u) => u.id === valgtUtdanningId) ?? null
 
   function handleValg(optionId: string, isSelected: boolean) {
-    let nesteValg = kodeverkValg
+    let nesteValg = kategoriseringValg
 
     if (valgtUtdanning && valgtUtdanning.id !== optionId) {
       const gamleIder = new Set(
@@ -127,10 +132,10 @@ const UtdanningGruppeValg = ({
       isSelected ? [optionId] : []
     )
 
-    setValue('kodeverkValg', nesteValg, { shouldDirty: true })
+    setValue('kategoriseringValg', nesteValg, { shouldDirty: true })
 
     if (submitCount > 0) {
-      void trigger(fieldName)
+      void trigger(fieldName as Path<OpplaringKategoriseringFormValues>)
     }
   }
 
@@ -161,7 +166,7 @@ const UtdanningGruppeValg = ({
  * Viser en Verdigruppe som en combobox der brukeren velger verdier.
  * Enkeltvalg eller flervalg styres av `seleksjonstype`.
  *
- * Leser og skriver direkte til form-feltet `kodeverkValg`.
+ * Leser og skriver direkte til form-feltet `kategoriseringValg`.
  * For å unngå at én verdigruppe overskriver
  * en annens valg, filtrerer vi ut egne verdi-IDer og merger med resten.
  */
@@ -176,19 +181,19 @@ const VerdigruppeValg = ({
     trigger,
     watch,
     formState: { errors, submitCount }
-  } = useFormContext<PameldingEnkeltplassFormValues>()
+  } = useFormContext<OpplaringKategoriseringFormValues>()
 
   const fieldName = getKodeverkFieldName(verdigruppe.representerer)
   const { ref: registerRef, name: registeredFieldName } = register(
-    fieldName as unknown as Path<PameldingEnkeltplassFormValues>
+    fieldName as Path<OpplaringKategoriseringFormValues>
   )
   const errorMessage = getKodeverkErrorMessage(errors, submitCount, fieldName)
 
-  const kodeverkValg = watch('kodeverkValg') ?? []
+  const kategoriseringValg = watch('kategoriseringValg') ?? []
 
   const egneIds = verdigruppe.alternativer.map((v) => v.id)
   const valgteEgne = getValgteIderForRepresenterer(
-    kodeverkValg,
+    kategoriseringValg,
     verdigruppe.representerer
   ).filter((id) => egneIds.includes(id))
 
@@ -209,17 +214,17 @@ const VerdigruppeValg = ({
 
     // Behold andre verdigruppers valg, erstatt kun egne
     const nesteKodeverkValg = upsertKodeverkValg(
-      kodeverkValg,
+      kategoriseringValg,
       verdigruppe.representerer,
       nyeEgneValg
     )
 
-    setValue('kodeverkValg', nesteKodeverkValg, {
+    setValue('kategoriseringValg', nesteKodeverkValg, {
       shouldDirty: true
     })
 
     if (submitCount > 0) {
-      void trigger(fieldName)
+      void trigger(fieldName as Path<OpplaringKategoriseringFormValues>)
     }
   }
 

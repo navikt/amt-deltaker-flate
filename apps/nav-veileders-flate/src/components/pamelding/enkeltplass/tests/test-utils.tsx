@@ -47,7 +47,7 @@ const FormWrapper = ({
       innhold: '',
       arrangorUnderenhet: '',
       prisinformasjon: null,
-      kodeverkValg: [],
+      kategoriseringValg: [],
       ...defaultValues
     }
   })

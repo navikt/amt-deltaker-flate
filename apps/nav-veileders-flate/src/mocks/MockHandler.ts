@@ -17,6 +17,7 @@ import {
   getUtvidetInnhold,
   harBakgrunnsinfo,
   HistorikkType,
+  IngenKostnaderAarsak,
   Innhold,
   INNHOLD_TYPE_ANNET,
   lagHistorikkFellesOppstart,
@@ -33,6 +34,7 @@ import {
   EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
+  EndreInnholdKodeverkRequest,
   EndreInnholdRequest,
   EndrePrisinfoRequest,
   EndreSluttarsakRequest,
@@ -120,7 +122,13 @@ export class MockHandler {
           this.tiltakskode,
           erEnkeltplass
         ),
-        prisinformasjon: null
+        prisinformasjon: erEnkeltplass
+          ? {
+              type: PrisinformasjonType.IngenKostnader,
+              aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
+              tilleggsopplysninger: null
+            }
+          : null
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -775,6 +783,59 @@ export class MockHandler {
         ledetekst:
           oppdatertPamelding.deltakerliste.tilgjengeligInnhold.ledetekst,
         innhold: nyListe
+      }
+      this.pamelding = oppdatertPamelding
+      return HttpResponse.json(this.pamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  endreDeltakelseInnholdKodeverk(request: EndreInnholdKodeverkRequest) {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      const detaljertKodeverk = this.getKodeverk()
+      const visningsnavnById = new Map<string, string>()
+
+      detaljertKodeverk.alternativer.forEach((alternativ) => {
+        if (alternativ.type === 'Verdigruppe') {
+          alternativ.alternativer.forEach((verdi) => {
+            visningsnavnById.set(verdi.id, verdi.visningsnavn)
+          })
+        }
+
+        if (alternativ.type === 'UtdanningGruppe') {
+          alternativ.utdanninger.forEach((utdanning) => {
+            utdanning.larefag.alternativer.forEach((larefag) => {
+              visningsnavnById.set(larefag.id, larefag.visningsnavn)
+            })
+          })
+        }
+      })
+
+      oppdatertPamelding.deltakerliste.opplaringKategoriseringValg = {
+        valgteKategoriseringer: request.opplaringKategoriseringValg.map(
+          (valg) => ({
+            type: valg.representerer,
+            valgteElementer: valg.valgteIder.map((id) => ({
+              id,
+              visningsnavn: visningsnavnById.get(id) ?? id
+            }))
+          })
+        ),
+        valgteSertifiseringer: request.sertifiseringValg
+      }
+      oppdatertPamelding.deltakelsesinnhold = {
+        ledetekst: null,
+        innhold: [
+          {
+            tekst: 'Annet',
+            innholdskode: INNHOLD_TYPE_ANNET,
+            valgt: true,
+            beskrivelse: request.beskrivelse
+          }
+        ]
       }
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(this.pamelding)
