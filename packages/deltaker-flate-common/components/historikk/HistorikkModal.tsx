@@ -101,7 +101,7 @@ export const HistorikkModal = ({
               {getHistorikkItem(i, tiltakskode, erEnkeltplass)}
             </div>
           ))}
-        {!loading && (!historikk || historikk.length < 0) && (
+        {!loading && (!historikk || historikk.length === 0) && (
           <Alert variant="info" size="small">
             Ingen historikk å vise.
           </Alert>
