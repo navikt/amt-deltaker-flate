@@ -19,7 +19,7 @@ const FormChanger = ({
   onReady: (setValue: (name: string, value: unknown) => void) => void
 }) => {
   const { setValue } = useFormContext<PameldingEnkeltplassFormValues>()
-  onReady((name, value) => setValue(name as never, value as never))
+  onReady((name, value) => setValue(name, value))
   return null
 }
 
