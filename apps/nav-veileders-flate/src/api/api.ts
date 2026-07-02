@@ -12,7 +12,7 @@ import {
   EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
-  EndreInnholdKodeverkRequest,
+  EndreInnholdOpplaringKategoriseringRequest,
   EndreInnholdRequest,
   EndrePrisinfoRequest,
   EndreSluttarsakRequest,
@@ -402,10 +402,10 @@ export const endrePrisinfo = (
     .then(parsePamelding)
 }
 
-export const endreInnholdKodeverk = (
+export const endreInnholdOpplaringKategorisering = (
   deltakerId: string,
   enhetId: string,
-  request: EndreInnholdKodeverkRequest
+  request: EndreInnholdOpplaringKategoriseringRequest
 ): Promise<DeltakerResponse> => {
   return fetch(`${API_URL}/deltaker/${deltakerId}/endre-innhold-kodeverk`, {
     method: 'POST',

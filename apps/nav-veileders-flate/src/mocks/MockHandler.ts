@@ -34,7 +34,7 @@ import {
   EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
-  EndreInnholdKodeverkRequest,
+  EndreInnholdOpplaringKategoriseringRequest,
   EndreInnholdRequest,
   EndrePrisinfoRequest,
   EndreSluttarsakRequest,
@@ -791,7 +791,9 @@ export class MockHandler {
     return new HttpResponse(null, { status: 404 })
   }
 
-  endreDeltakelseInnholdKodeverk(request: EndreInnholdKodeverkRequest) {
+  endreDeltakelseInnholdKodeverk(
+    request: EndreInnholdOpplaringKategoriseringRequest
+  ) {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {

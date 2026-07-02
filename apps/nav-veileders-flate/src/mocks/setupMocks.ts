@@ -13,7 +13,7 @@ import {
   endreAvslutningSchema,
   endreBakgrunnsinfoSchema,
   endreDeltakelsesmengdeSchema,
-  endreInnholdKodeverkSchema,
+  endreInnholdOpplaringKategoriseringSchema,
   endreInnholdSchema,
   endrePrisinfoSchema,
   endreSluttarsakSchema,
@@ -240,7 +240,7 @@ export const worker = setupWorker(
 
       const response = await request
         .json()
-        .then((json) => endreInnholdKodeverkSchema.parse(json))
+        .then((json) => endreInnholdOpplaringKategoriseringSchema.parse(json))
         .then((body) => handler.endreDeltakelseInnholdKodeverk(body))
 
       return response

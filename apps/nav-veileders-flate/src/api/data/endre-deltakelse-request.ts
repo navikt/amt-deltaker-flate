@@ -82,7 +82,7 @@ export const endreInnholdSchema = z.object({
 })
 export type EndreInnholdRequest = z.infer<typeof endreInnholdSchema>
 
-export const endreInnholdKodeverkSchema = z.object({
+export const endreInnholdOpplaringKategoriseringSchema = z.object({
   beskrivelse: z.string(),
   opplaringKategoriseringValg: z.array(
     z.object({
@@ -93,8 +93,8 @@ export const endreInnholdKodeverkSchema = z.object({
   sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
 })
 
-export type EndreInnholdKodeverkRequest = z.infer<
-  typeof endreInnholdKodeverkSchema
+export type EndreInnholdOpplaringKategoriseringRequest = z.infer<
+  typeof endreInnholdOpplaringKategoriseringSchema
 >
 
 export const endreDeltakelsesmengdeSchema = z.object({
@@ -134,4 +134,4 @@ export type EndringRequest =
   | EndreAvslutningRequest
   | FjernOppstartsdatoRequest
   | EndrePrisinfoRequest
-  | EndreInnholdKodeverkRequest
+  | EndreInnholdOpplaringKategoriseringRequest

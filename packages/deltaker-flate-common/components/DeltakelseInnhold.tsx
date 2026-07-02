@@ -10,7 +10,7 @@ import { erOpplaringstiltak } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
-  kodeverk?: OpplaringKategorisering | null
+  opplaringKategoriseringValg?: OpplaringKategorisering | null
   tiltakskode: Tiltakskode
   heading: React.ReactNode | null
   listClassName?: string
@@ -18,12 +18,12 @@ interface Props {
 
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
-  kodeverk,
+  opplaringKategoriseringValg,
   tiltakskode,
   heading
 }: Props) => {
   if (!harInnhold(deltakelsesinnhold)) {
-    if (!harKodeverk(kodeverk)) {
+    if (!harKodeverk(opplaringKategoriseringValg)) {
       return null
     }
 
@@ -31,7 +31,7 @@ export const DeltakelseInnhold = ({
       <div className="flex flex-col gap-2">
         {heading ?? null}
 
-        {Kodeverk(kodeverk)}
+        {Kodeverk(opplaringKategoriseringValg)}
       </div>
     )
   }
@@ -46,7 +46,11 @@ export const DeltakelseInnhold = ({
     deltakelsesinnhold
   )
 
-  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk)) {
+  if (
+    harInnholdsTekst &&
+    !annetFelt &&
+    !harKodeverk(opplaringKategoriseringValg)
+  ) {
     return null
   }
 
@@ -68,7 +72,7 @@ export const DeltakelseInnhold = ({
         </BodyLong>
       )}
 
-      {Kodeverk(kodeverk)}
+      {Kodeverk(opplaringKategoriseringValg)}
 
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small">

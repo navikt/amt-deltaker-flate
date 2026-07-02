@@ -34,7 +34,9 @@ export const UtkastDeltakerEnkeltplass = () => {
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
-        kodeverk={deltaker.deltakerliste.opplaringKategoriseringValg}
+        opplaringKategoriseringValg={
+          deltaker.deltakerliste.opplaringKategoriseringValg
+        }
         heading={
           <Heading level="3" size="medium">
             Dette er innholdet

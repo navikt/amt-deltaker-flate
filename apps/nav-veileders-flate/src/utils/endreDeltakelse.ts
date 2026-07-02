@@ -63,7 +63,7 @@ const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>
     DeltakerStatusType.IKKE_AKTUELL
   ].includes(deltaker.status.type)
 
-const skalViseEndreInnholdKodeverk = (deltaker: DeltakerResponse) =>
+const skalViseEndreOpplaringKategorisering = (deltaker: DeltakerResponse) =>
   erEnkeltPlass(deltaker) &&
   [
     DeltakerStatusType.SOKT_INN,
@@ -200,7 +200,7 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   if (skalViseEndreInnholdKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
   }
-  if (skalViseEndreInnholdKodeverk(deltaker) && !deltakelseErLaast) {
+  if (skalViseEndreOpplaringKategorisering(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD_KODEVERK)
   }
   if (skalViseEndreBakgrunnsinfoKnapp(deltaker) && !deltakelseErLaast) {

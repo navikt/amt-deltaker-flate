@@ -136,7 +136,7 @@ describe('DeltakelseInnhold', () => {
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={null}
+          opplaringKategoriseringValg={null}
           heading={<h3>Heading</h3>}
         />
       )
@@ -148,7 +148,7 @@ describe('DeltakelseInnhold', () => {
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={{
+          opplaringKategoriseringValg={{
             valgteKategoriseringer: [
               {
                 type: OpplaringRepresenterer.BRANSJE_ID,
@@ -168,7 +168,7 @@ describe('DeltakelseInnhold', () => {
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={{
+          opplaringKategoriseringValg={{
             valgteKategoriseringer: [],
             valgteSertifiseringer: []
           }}

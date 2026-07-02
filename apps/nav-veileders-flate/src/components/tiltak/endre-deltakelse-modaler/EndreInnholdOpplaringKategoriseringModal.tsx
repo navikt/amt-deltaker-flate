@@ -4,9 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import { EndreDeltakelseType } from 'deltaker-flate-common'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getKodeverk } from '../../../api/api-enkeltplass.ts'
-import { endreInnholdKodeverk } from '../../../api/api.ts'
+import { endreInnholdOpplaringKategorisering } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
-import { EndreInnholdKodeverkRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { EndreInnholdOpplaringKategoriseringRequest } from '../../../api/data/endre-deltakelse-request.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import {
   createOpplaringKategoriseringFormSchema,
@@ -71,7 +71,7 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
       throw new Error(getFeilmeldingIngenEndring(false))
     }
 
-    const endring: EndreInnholdKodeverkRequest = {
+    const endring: EndreInnholdOpplaringKategoriseringRequest = {
       opplaringKategoriseringValg: formData.kategoriseringValg,
       sertifiseringValg: formData.sertifiseringValg,
       beskrivelse: formData.innhold
@@ -91,7 +91,7 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
       deltaker={deltaker}
       onClose={onClose}
       onSend={onSuccess}
-      apiFunction={endreInnholdKodeverk}
+      apiFunction={endreInnholdOpplaringKategorisering}
       validertRequest={validertRequest}
       forslag={null}
     >
