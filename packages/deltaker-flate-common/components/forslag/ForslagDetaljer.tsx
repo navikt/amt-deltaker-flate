@@ -136,7 +136,7 @@ const detaljer = (endring: ForslagEndring) => {
             {deltakerprosentText(
               endring.deltakelsesprosent,
               endring.dagerPerUke,
-              // TODO: dette er forslag fra arrangør? Relevant for enkeltplasser?
+              // erEnkeltplass = false fordi forslag kommer fra arrangør, og enkeltplasser har per def. ikke arrangør
               false
             )}
           </BodyShort>
