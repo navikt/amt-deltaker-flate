@@ -19,7 +19,7 @@ const FormChanger = ({
   onReady: (setValue: (name: string, value: unknown) => void) => void
 }) => {
   const { setValue } = useFormContext<PameldingEnkeltplassFormValues>()
-  onReady((name, value) => setValue(name as 'innhold', value as string))
+  onReady((name, value) => setValue(name as never, value as never))
   return null
 }
 
@@ -95,7 +95,7 @@ describe('KladdLagring - auto-lagring', () => {
       kategoriseringValg: []
     })
 
-    change('kodeverkValg', [
+    change('kategoriseringValg', [
       {
         representerer: OpplaringRepresenterer.BRANSJE_ID,
         valgteIder: ['bransje-1']
