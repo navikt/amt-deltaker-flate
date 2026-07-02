@@ -13,7 +13,10 @@ import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 import { PameldingFormContextProvider } from '../pamelding/PameldingFormContext'
 import { AppContext } from '../../AppContext'
-import { KodeverkAlternativType, Seleksjonstype } from '../../api/data/kodeverk'
+import {
+  OpplaringKategoriseringAlternativType,
+  Seleksjonstype
+} from '../../api/data/kodeverk'
 
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -126,7 +129,7 @@ describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
       alternativer: [
         {
-          type: KodeverkAlternativType.VERDIGRUPPE,
+          type: OpplaringKategoriseringAlternativType.VERDIGRUPPE,
           id: null,
           visningsnavn: 'Bransje',
           representerer: OpplaringRepresenterer.BRANSJE_ID,
@@ -145,7 +148,7 @@ describe('Utkast - Endre utkast invaliderer kodeverk-cache', () => {
       tiltakskode: 'ARBEIDSMARKEDSOPPLAERING',
       alternativer: [
         {
-          type: KodeverkAlternativType.VERDIGRUPPE,
+          type: OpplaringKategoriseringAlternativType.VERDIGRUPPE,
           id: null,
           visningsnavn: 'Bransje',
           representerer: OpplaringRepresenterer.BRANSJE_ID,

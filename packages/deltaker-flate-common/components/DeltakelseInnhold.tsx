@@ -10,7 +10,7 @@ import { erOpplaringstiltak } from '../utils/utils'
 
 interface Props {
   deltakelsesinnhold: Deltakelsesinnhold | null
-  kodeverk?: OpplaringKategorisering | null
+  opplaringKategoriseringValg?: OpplaringKategorisering | null
   tiltakskode: Tiltakskode
   heading: React.ReactNode | null
   listClassName?: string
@@ -18,12 +18,12 @@ interface Props {
 
 export const DeltakelseInnhold = ({
   deltakelsesinnhold,
-  kodeverk,
+  opplaringKategoriseringValg,
   tiltakskode,
   heading
 }: Props) => {
   if (!harInnhold(deltakelsesinnhold)) {
-    if (!harKodeverk(kodeverk)) {
+    if (!harOpplaringKategorisering(opplaringKategoriseringValg)) {
       return null
     }
 
@@ -31,7 +31,7 @@ export const DeltakelseInnhold = ({
       <div className="flex flex-col gap-2">
         {heading ?? null}
 
-        {Kodeverk(kodeverk)}
+        {OpplaringKategoriseringValg(opplaringKategoriseringValg)}
       </div>
     )
   }
@@ -46,7 +46,11 @@ export const DeltakelseInnhold = ({
     deltakelsesinnhold
   )
 
-  if (harInnholdsTekst && !annetFelt && !harKodeverk(kodeverk)) {
+  if (
+    harInnholdsTekst &&
+    !annetFelt &&
+    !harOpplaringKategorisering(opplaringKategoriseringValg)
+  ) {
     return null
   }
 
@@ -68,7 +72,7 @@ export const DeltakelseInnhold = ({
         </BodyLong>
       )}
 
-      {Kodeverk(kodeverk)}
+      {OpplaringKategoriseringValg(opplaringKategoriseringValg)}
 
       {!harInnholdsTekst && deltakelsesinnhold.innhold.length > 0 && (
         <List as="ul" size="small">
@@ -87,16 +91,21 @@ export const DeltakelseInnhold = ({
   )
 }
 
-const Kodeverk = (kodeverk: OpplaringKategorisering | null | undefined) => {
-  const kodeverkTekst = getKodeverkTekst(kodeverk)
-  const kodeverkForListe = (kodeverk?.valgteKategoriseringer ?? []).filter(
+const OpplaringKategoriseringValg = (
+  opplaringKategoriseringValg: OpplaringKategorisering | null | undefined
+) => {
+  const kodeverkTekst = getKodeverkTekst(opplaringKategoriseringValg)
+  const kodeverkForListe = (
+    opplaringKategoriseringValg?.valgteKategoriseringer ?? []
+  ).filter(
     (e) =>
       e.type !== OpplaringRepresenterer.BRANSJE_ID &&
       e.type !== OpplaringRepresenterer.UTDANNINGSPROGRAM_ID &&
       e.type !== OpplaringRepresenterer.KURSTYPE_ID &&
       e.type.length > 0
   )
-  const valgteSertifiseringer = kodeverk?.valgteSertifiseringer ?? []
+  const valgteSertifiseringer =
+    opplaringKategoriseringValg?.valgteSertifiseringer ?? []
   const visListe =
     kodeverkForListe.length > 0 || valgteSertifiseringer.length > 0
 
@@ -175,7 +184,7 @@ function harInnhold(
   )
 }
 
-function harKodeverk(
+function harOpplaringKategorisering(
   kodeverk: OpplaringKategorisering | null | undefined
 ): boolean {
   if (!kodeverk) {

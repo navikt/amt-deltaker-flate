@@ -24,7 +24,7 @@ const lagFormData = (
     type: PrisinformasjonType.Anskaffelse,
     pris: 1000
   },
-  kodeverkValg: [],
+  kategoriseringValg: [],
   sertifiseringValg: [],
   ...overrides
 })
@@ -53,7 +53,7 @@ describe('formToEnkeltplassRequest', () => {
 
   it('returnerer tomme lister når kodeverk og sertifiseringer ikke har valgte verdier', () => {
     const request = formToEnkeltplassRequest(
-      lagFormData({ kodeverkValg: [], sertifiseringValg: [] })
+      lagFormData({ kategoriseringValg: [], sertifiseringValg: [] })
     )
 
     expect(request.kodeverkValg).toEqual([])
@@ -63,7 +63,7 @@ describe('formToEnkeltplassRequest', () => {
   it('flater ut valgte kodeverkverdier', () => {
     const request = formToEnkeltplassRequest(
       lagFormData({
-        kodeverkValg: [
+        kategoriseringValg: [
           {
             representerer: OpplaringRepresenterer.BRANSJE_ID,
             valgteIder: ['11111111-1111-1111-1111-111111111111']

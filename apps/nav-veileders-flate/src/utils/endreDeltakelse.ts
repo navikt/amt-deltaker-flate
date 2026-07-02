@@ -36,7 +36,7 @@ const skalViseForlengKnapp = (
     harSluttetEllerFullfort(deltaker))
 
 const skalViseEndreInnholdKnapp = (deltaker: DeltakerResponse) =>
-  harInnhold(deltaker.deltakerliste.tiltakskode)
+  harInnhold(deltaker.deltakerliste.tiltakskode) && !erEnkeltPlass(deltaker)
 
 const skalViseEndreBakgrunnsinfoKnapp = (deltaker: DeltakerResponse) =>
   venterDeltarEllerAvsluttet(deltaker) &&
@@ -53,7 +53,18 @@ const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
   (venterDeltarEllerAvsluttet(deltaker) || erEnkeltplassSoktInn(deltaker))
 
 const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>
-  deltaker.deltakerliste.erEnkeltplass &&
+  erEnkeltPlass(deltaker) &&
+  [
+    DeltakerStatusType.SOKT_INN,
+    DeltakerStatusType.VENTER_PA_OPPSTART,
+    DeltakerStatusType.DELTAR,
+    DeltakerStatusType.FULLFORT,
+    DeltakerStatusType.AVBRUTT,
+    DeltakerStatusType.IKKE_AKTUELL
+  ].includes(deltaker.status.type)
+
+const skalViseEndreOpplaringKategorisering = (deltaker: DeltakerResponse) =>
+  erEnkeltPlass(deltaker) &&
   [
     DeltakerStatusType.SOKT_INN,
     DeltakerStatusType.VENTER_PA_OPPSTART,
@@ -188,6 +199,9 @@ export const getEndreDeltakelsesValg = (deltaker: DeltakerResponse) => {
   }
   if (skalViseEndreInnholdKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_INNHOLD)
+  }
+  if (skalViseEndreOpplaringKategorisering(deltaker) && !deltakelseErLaast) {
+    valg.push(EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING)
   }
   if (skalViseEndreBakgrunnsinfoKnapp(deltaker) && !deltakelseErLaast) {
     valg.push(EndreDeltakelseType.ENDRE_BAKGRUNNSINFO)

@@ -157,7 +157,9 @@ export const DeltakerPage = () => {
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
-        kodeverk={deltaker.deltakerliste.opplaringKategoriseringValg}
+        opplaringKategoriseringValg={
+          deltaker.deltakerliste.opplaringKategoriseringValg
+        }
         heading={
           <Heading level="2" size="medium" className="mt-8">
             Dette er innholdet

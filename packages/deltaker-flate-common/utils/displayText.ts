@@ -333,6 +333,7 @@ export const getEndreDeltakelseTypeText = (type: EndreDeltakelseType) => {
     case EndreDeltakelseType.ENDRE_BAKGRUNNSINFO:
       return 'Endre bakgrunnsinfo'
     case EndreDeltakelseType.ENDRE_INNHOLD:
+    case EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING:
       return 'Endre innhold'
     case EndreDeltakelseType.ENDRE_OPPSTARTSDATO:
       return 'Endre oppstartsdato'

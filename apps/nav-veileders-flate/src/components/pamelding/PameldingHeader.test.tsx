@@ -130,25 +130,25 @@ describe('PameldingHeader - FOV heading', () => {
 })
 
 describe('DeltakelseInnhold', () => {
-  describe('harKodeverk', () => {
-    it('returnerer null når ingen innhold og ingen kodeverk', () => {
+  describe('opplaringKategorisering', () => {
+    it('returnerer null når ingen innhold og ingen opplaringKategorisering', () => {
       const { container } = render(
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={null}
+          opplaringKategoriseringValg={null}
           heading={<h3>Heading</h3>}
         />
       )
       expect(container).toBeEmptyDOMElement()
     })
 
-    it('viser kodeverk-valg når deltakelsesinnhold er null men kodeverk har valg', () => {
+    it('viser opplaringKategorisering-valg når deltakelsesinnhold er null men opplaringKategorisering har valg', () => {
       render(
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={{
+          opplaringKategoriseringValg={{
             valgteKategoriseringer: [
               {
                 type: OpplaringRepresenterer.BRANSJE_ID,
@@ -163,12 +163,12 @@ describe('DeltakelseInnhold', () => {
       expect(screen.getByText('Bransje: IT')).toBeInTheDocument()
     })
 
-    it('returnerer null når kodeverk har tom valg og null tittel', () => {
+    it('returnerer null når opplaringKategorisering har tom valg og null tittel', () => {
       const { container } = render(
         <DeltakelseInnhold
           tiltakskode={Tiltakskode.ARBEIDSMARKEDSOPPLAERING}
           deltakelsesinnhold={null}
-          kodeverk={{
+          opplaringKategoriseringValg={{
             valgteKategoriseringer: [],
             valgteSertifiseringer: []
           }}

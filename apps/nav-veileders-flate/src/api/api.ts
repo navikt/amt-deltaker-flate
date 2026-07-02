@@ -12,6 +12,7 @@ import {
   EndreAvslutningRequest,
   EndreBakgrunnsinfoRequest,
   EndreDeltakelsesmengdeRequest,
+  EndreInnholdOpplaringKategoriseringRequest,
   EndreInnholdRequest,
   EndrePrisinfoRequest,
   EndreSluttarsakRequest,
@@ -394,6 +395,31 @@ export const endrePrisinfo = (
       if (response.status !== 200) {
         const message =
           'Kunne ikke endre pris og betalingsbetingelser for deltakeren.'
+        handleError(message, deltakerId, response.status)
+      }
+      return response.json()
+    })
+    .then(parsePamelding)
+}
+
+export const endreInnholdOpplaringKategorisering = (
+  deltakerId: string,
+  enhetId: string,
+  request: EndreInnholdOpplaringKategoriseringRequest
+): Promise<DeltakerResponse> => {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/endre-innhold-kodeverk`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    },
+    body: JSON.stringify(request)
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        const message = 'Kunne ikke endre innhold for deltakeren.'
         handleError(message, deltakerId, response.status)
       }
       return response.json()

@@ -6,7 +6,7 @@ import {
   Tiltakskode
 } from 'deltaker-flate-common'
 import {
-  KodeverkAlternativType,
+  OpplaringKategoriseringAlternativType,
   type KodeverkResponse,
   type KodeverkSertifiseringResponse,
   type KodeverkVerdigruppe,
@@ -54,7 +54,9 @@ const berikMedValg = (
   return {
     ...response,
     alternativer: response.alternativer.map((container) => {
-      if (container.type === KodeverkAlternativType.VERDIGRUPPE) {
+      if (
+        container.type === OpplaringKategoriseringAlternativType.VERDIGRUPPE
+      ) {
         return {
           ...container,
           alternativer: container.alternativer.map((a) => ({
@@ -63,7 +65,10 @@ const berikMedValg = (
           }))
         } satisfies KodeverkVerdigruppe
       }
-      if (container.type === KodeverkAlternativType.UTDANNING_GRUPPE) {
+      if (
+        container.type ===
+        OpplaringKategoriseringAlternativType.UTDANNING_GRUPPE
+      ) {
         return {
           ...container,
           utdanninger: container.utdanninger.map((u) => ({
@@ -94,7 +99,7 @@ const detaljertKodeverkMockRespons: KodeverkResponse[] = [
     tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     alternativer: [
       {
-        type: KodeverkAlternativType.VERDIGRUPPE,
+        type: OpplaringKategoriseringAlternativType.VERDIGRUPPE,
         visningsnavn: 'Bransje',
         pakrevd: true,
         representerer: OpplaringRepresenterer.BRANSJE_ID,
@@ -153,7 +158,7 @@ const detaljertKodeverkMockRespons: KodeverkResponse[] = [
         ]
       },
       {
-        type: KodeverkAlternativType.VERDIGRUPPE,
+        type: OpplaringKategoriseringAlternativType.VERDIGRUPPE,
         visningsnavn: 'Førerkort',
         pakrevd: false,
         representerer: OpplaringRepresenterer.FORERKORT,
@@ -252,7 +257,7 @@ const detaljertKodeverkMockRespons: KodeverkResponse[] = [
         ]
       },
       {
-        type: KodeverkAlternativType.VERDIGRUPPE_SOK,
+        type: OpplaringKategoriseringAlternativType.VERDIGRUPPE_SOK,
         pakrevd: false,
         visningsnavn: 'Sertifiseringer',
         representerer: OpplaringRepresenterer.SERTIFISERINGER,

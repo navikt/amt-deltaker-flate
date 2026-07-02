@@ -174,6 +174,7 @@ function endringstekst(endringstype: EndreDeltakelseType) {
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:
       return 'Avslutt deltakelse'
     case EndreDeltakelseType.ENDRE_INNHOLD:
+    case EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING:
       return 'Endre innhold'
     case EndreDeltakelseType.ENDRE_PRISINFO:
       return 'Endre pris og betalingsbetingelser'

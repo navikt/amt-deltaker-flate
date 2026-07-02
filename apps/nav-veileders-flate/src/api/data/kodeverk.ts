@@ -10,7 +10,7 @@ export {
   type OpplaringKategorisering
 } from 'deltaker-flate-common'
 
-export enum KodeverkAlternativType {
+export enum OpplaringKategoriseringAlternativType {
   UTDANNING_GRUPPE = 'UtdanningGruppe',
   VERDIGRUPPE = 'Verdigruppe',
   VERDIGRUPPE_SOK = 'VerdigruppeSok'
@@ -44,13 +44,13 @@ export type KodeverkVerdigruppeBase = z.infer<
 >
 
 export const kodeverkVerdigruppeSchema = kodeverkVerdigruppeBaseSchema.extend({
-  type: z.literal(KodeverkAlternativType.VERDIGRUPPE)
+  type: z.literal(OpplaringKategoriseringAlternativType.VERDIGRUPPE)
 })
 
 export type KodeverkVerdigruppe = z.infer<typeof kodeverkVerdigruppeSchema>
 
 export const kodeverkVerdigruppeSokSchema = z.object({
-  type: z.literal(KodeverkAlternativType.VERDIGRUPPE_SOK),
+  type: z.literal(OpplaringKategoriseringAlternativType.VERDIGRUPPE_SOK),
   visningsnavn: z.string(),
   pakrevd: z.boolean().default(false),
   representerer: z.enum(OpplaringRepresenterer).nullable(),
@@ -70,7 +70,7 @@ export const kodeverkUtdanningValgSchema = z.object({
 })
 
 export const kodeverkUtdanningGruppeSchema = z.object({
-  type: z.literal(KodeverkAlternativType.UTDANNING_GRUPPE),
+  type: z.literal(OpplaringKategoriseringAlternativType.UTDANNING_GRUPPE),
   visningsnavn: z.string(),
   representerer: z.enum(OpplaringRepresenterer),
   pakrevd: z.boolean().default(false),

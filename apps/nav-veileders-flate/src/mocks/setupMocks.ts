@@ -13,6 +13,7 @@ import {
   endreAvslutningSchema,
   endreBakgrunnsinfoSchema,
   endreDeltakelsesmengdeSchema,
+  endreInnholdOpplaringKategoriseringSchema,
   endreInnholdSchema,
   endrePrisinfoSchema,
   endreSluttarsakSchema,
@@ -228,6 +229,19 @@ export const worker = setupWorker(
         .json()
         .then((json) => endrePrisinfoSchema.parse(json))
         .then((body) => handler.endreDeltakelsePrisinfo(body))
+
+      return response
+    }
+  ),
+  http.post(
+    '/amt-deltaker-bff/deltaker/:deltakerId/endre-innhold-kodeverk',
+    async ({ request }) => {
+      await delay(1000)
+
+      const response = await request
+        .json()
+        .then((json) => endreInnholdOpplaringKategoriseringSchema.parse(json))
+        .then((body) => handler.endreDeltakelseInnholdKodeverk(body))
 
       return response
     }

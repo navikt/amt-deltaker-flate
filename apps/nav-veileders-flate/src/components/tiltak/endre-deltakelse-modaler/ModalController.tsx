@@ -2,6 +2,7 @@ import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
+import { EndreInnholdOpplaringKategoriseringModal } from './EndreInnholdOpplaringKategoriseringModal.tsx'
 import { EndreInnholdModal } from './EndreInnholdModal'
 import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'
 import { EndrePrisinfoModal } from './EndrePrisinfoModal.tsx'
@@ -33,6 +34,8 @@ export const ModalController = (props: ModalControllerProps) => {
       return <EndreBakgrunnsinfoModal {...props} />
     case EndreDeltakelseType.ENDRE_INNHOLD:
       return <EndreInnholdModal {...props} />
+    case EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING:
+      return <EndreInnholdOpplaringKategoriseringModal {...props} />
     case EndreDeltakelseType.ENDRE_PRISINFO:
       return <EndrePrisinfoModal {...props} />
     case EndreDeltakelseType.AVSLUTT_DELTAKELSE:

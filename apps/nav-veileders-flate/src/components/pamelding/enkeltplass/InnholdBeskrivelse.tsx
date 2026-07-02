@@ -1,23 +1,24 @@
 import { Textarea } from '@navikt/ds-react'
 import { fjernUgyldigeTegn } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
-import { usePameldingFormContext } from '../PameldingFormContext'
 import {
   INNHOLD_MAX_TEGN,
-  PameldingEnkeltplassFormValues
-} from '../../../model/PameldingEnkeltplassFormValues'
+  OpplaringKategoriseringFormValues
+} from '../../../model/OpplaringKategoriseringFormValues'
+import { usePameldingFormContext } from '../PameldingFormContext'
 
-export const InnholdBeskrivelse = () => {
+export const InnholdBeskrivelse = ({ className }: { className?: string }) => {
   const { disabled } = usePameldingFormContext()
   const {
     register,
     setValue,
     watch,
     formState: { errors }
-  } = useFormContext<PameldingEnkeltplassFormValues>()
+  } = useFormContext<OpplaringKategoriseringFormValues>()
 
   return (
     <Textarea
+      className={className ?? ''}
       label="Dette er innholdet"
       {...register('innhold')}
       value={watch('innhold')}

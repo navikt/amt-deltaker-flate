@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { SertifiseringSok } from '../SertifiseringSok'
 import { renderWithProviders } from './test-utils'
 import {
-  KodeverkAlternativType,
+  OpplaringKategoriseringAlternativType,
   KodeverkContainer,
   Seleksjonstype,
   VerdigruppeSokKilde
@@ -25,7 +25,7 @@ vi.mock('../../../../hooks/useDebounce.ts', () => ({
 }))
 
 const sertifiseringAlternativ: KodeverkContainer = {
-  type: KodeverkAlternativType.VERDIGRUPPE_SOK,
+  type: OpplaringKategoriseringAlternativType.VERDIGRUPPE_SOK,
   visningsnavn: 'Sertifiseringer',
   representerer: OpplaringRepresenterer.SERTIFISERINGER,
   seleksjonstype: Seleksjonstype.FLERVALG,

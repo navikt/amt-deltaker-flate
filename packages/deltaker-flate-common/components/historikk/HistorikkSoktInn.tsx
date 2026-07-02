@@ -37,7 +37,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
             Dette er innholdet
           </BodyLong>
         }
-        kodeverk={opplaringKategorisering}
+        opplaringKategoriseringValg={opplaringKategorisering}
       />
 
       <Detail className="mt-1" textColor="subtle">
