@@ -37,6 +37,7 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
   const { data: kodeverk, isLoading } = useQuery({
     queryKey: ['kodeverk-endring', deltaker.deltakerId, enhetId],
     queryFn: () => getKodeverk(deltaker.deltakerId, enhetId),
+    enabled: open,
     throwOnError: false
   })
 
