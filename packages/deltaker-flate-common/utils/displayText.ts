@@ -59,7 +59,9 @@ export const deltakerprosentText = (
   const fordeltPaDagerIUkaText = dagerPerUke
     ? `fordelt på ${dagerIUkaText}`
     : ''
-  return `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
+  return fordeltPaDagerIUkaText
+    ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
+    : `${deltakelsesprosent ?? 100}\u00A0%`
 }
 
 export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
