@@ -12,8 +12,8 @@ allowBuilds:
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
   '@axe-core/playwright': ^4.12.1
-  '@grafana/faro-react': ^2.7.1
-  '@grafana/faro-web-sdk': ^2.7.1
+  '@grafana/faro-react': ^2.8.0
+  '@grafana/faro-web-sdk': ^2.8.0
   '@navikt/aksel-icons': ^8.13.1
   '@navikt/ds-css': ^8.13.1
   '@navikt/ds-react': ^8.13.1
