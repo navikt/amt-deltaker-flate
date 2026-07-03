@@ -59,7 +59,7 @@ export const EndrePrisValg = ({
   )
 }
 
-export function useEndrePrisValg(required: boolean = true) {
+export function useEndrePrisValg() {
   const [endrePrisValg, setEndrePrisValg] = useState<EndrePrisValgType>()
   const [error, setError] = useState<string>()
 
@@ -69,7 +69,7 @@ export function useEndrePrisValg(required: boolean = true) {
   }
 
   const valider = () => {
-    if (required && !endrePrisValg) {
+    if (!endrePrisValg) {
       setError(
         'Du må velge om endringen vil påvirke pris og betalingsbetingelser før du kan fortsette.'
       )
