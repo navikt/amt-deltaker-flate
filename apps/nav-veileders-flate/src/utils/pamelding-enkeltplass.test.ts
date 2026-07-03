@@ -102,6 +102,16 @@ describe('formToEnkeltplassRequest', () => {
       { id: 2, navn: 'Sertifisert zumba-instruktør' }
     ])
   })
+
+  it('sender med dagerPerUke', () => {
+    const request = formToEnkeltplassRequest(
+      lagFormData({
+        dagerPerUke: 4
+      })
+    )
+
+    expect(request.dagerPerUke).toBe(4)
+  })
 })
 
 describe('formToEnkeltplassKladdRequest', () => {
@@ -134,5 +144,15 @@ describe('formToEnkeltplassKladdRequest', () => {
       ],
       tilleggsopplysninger: 'Test'
     })
+  })
+
+  it('sender med dagerPerUke i kladd-request', () => {
+    const request = formToEnkeltplassKladdRequest(
+      lagFormData({
+        dagerPerUke: 3
+      })
+    )
+
+    expect(request.dagerPerUke).toBe(3)
   })
 })

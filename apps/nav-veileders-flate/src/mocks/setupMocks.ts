@@ -24,6 +24,7 @@ import {
 } from '../api/data/endre-deltakelse-request.ts'
 import { enkeltplassPameldingSchema } from '../api/data/enkeltplass-pamelding.ts'
 import {
+  enkeltplassKladdSchema,
   opprettEnkeltplassKladdRequestSchema,
   opprettKladdRequestSchema
 } from '../api/data/kladd-request.ts'
@@ -350,12 +351,14 @@ export const worker = setupWorker(
   }),
   http.post(
     '/amt-deltaker-bff/enkeltplass/oppdater-kladd/:deltakerId',
-    async () => {
+    async ({ request }) => {
       await delay(1000)
+      const response = await request
+        .json()
+        .then((json) => enkeltplassKladdSchema.parse(json))
+        .then((body) => handler.oppdaterEnkeltplassKladd(body))
 
-      return new HttpResponse(null, {
-        status: 200
-      })
+      return response
     }
   ),
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {

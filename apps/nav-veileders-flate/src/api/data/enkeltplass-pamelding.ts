@@ -6,6 +6,7 @@ export const enkeltplassPameldingSchema = z.object({
   prisinformasjon: prisinformasjonSchema,
   startdato: z.string(),
   sluttdato: z.string(),
+  dagerPerUke: z.number().nullable().optional(),
   arrangorUnderenhet: z.string(),
   kodeverkValg: z.array(z.string()).optional(),
   sertifiseringValg: z

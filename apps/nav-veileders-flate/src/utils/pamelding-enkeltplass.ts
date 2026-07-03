@@ -82,7 +82,8 @@ export const generateEnkeltplassPameldingRequest = (
         (kodeverk) => kodeverk.valgteElementer.map((v) => v.id)
       ),
     sertifiseringValg:
-      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteSertifiseringer
+      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteSertifiseringer,
+    dagerPerUke: deltaker.dagerPerUke
   }
 }
 
