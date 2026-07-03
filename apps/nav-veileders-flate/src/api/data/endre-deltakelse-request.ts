@@ -90,7 +90,8 @@ export const endreInnholdOpplaringKategoriseringSchema = z.object({
       valgteIder: z.array(z.string())
     })
   ),
-  sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() }))
+  sertifiseringValg: z.array(z.object({ id: z.number(), navn: z.string() })),
+  pavirkerPris: z.boolean()
 })
 
 export type EndreInnholdOpplaringKategoriseringRequest = z.infer<
