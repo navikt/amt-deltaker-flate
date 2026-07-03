@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'build',
-      sourcemap: true
+      sourcemap: isOfflineMode ? 'inline' : true
     }
   }
 })

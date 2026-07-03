@@ -136,7 +136,8 @@ export const createMockDeltaker = (
     aktiveForslag: aktiveForslag,
     kanEndres: statusType !== DeltakerStatusType.AVBRUTT,
     ulesteHendelser: ulesteHendelserUtvalg,
-    deltakelsesinnhold: 'Test'
+    deltakelsesinnhold: 'Test',
+    erEnkeltplass: false
   }
 }
 

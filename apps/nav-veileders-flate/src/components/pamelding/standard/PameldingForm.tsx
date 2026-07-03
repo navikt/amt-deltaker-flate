@@ -4,12 +4,12 @@ import {
   erOpplaringstiltak,
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
+  harDeltakelsesmengde,
   harLopendeOppstart,
   OmKurset,
   Oppmotested,
   skalMeldePaaDirekte,
-  Tiltakskode,
-  harDeltakelsesmengde
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -117,7 +117,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             </section>
           )}
 
-          {harDeltakelsesmengde(tiltakskode, false) && (
+          {harDeltakelsesmengde(deltaker.deltakerliste) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde

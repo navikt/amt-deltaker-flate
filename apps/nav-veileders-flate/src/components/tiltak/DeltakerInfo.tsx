@@ -8,17 +8,17 @@ import {
   DeltakerStatusType,
   DialogLenke,
   EMDASH,
+  formatDate,
+  getDeltakerStatusAarsakText,
+  harDeltakelsesmengde,
+  hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
+  kanDeleDeltakerMedArrangorForVurdering,
   OmKurset,
   Oppmotested,
   PrisOgBetaling,
   SeEndringer,
-  VedtakOgKlage,
-  formatDate,
-  getDeltakerStatusAarsakText,
-  hentTiltakHosArrangorTittel,
-  kanDeleDeltakerMedArrangorForVurdering,
-  harDeltakelsesmengde
+  VedtakOgKlage
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
@@ -155,13 +155,11 @@ export const DeltakerInfo = ({ className }: Props) => {
         className="mt-8"
       />
 
-      {harDeltakelsesmengde(
-        deltaker.deltakerliste.tiltakskode,
-        deltaker.deltakerliste.erEnkeltplass
-      ) && (
+      {harDeltakelsesmengde(deltaker.deltakerliste) && (
         <DeltakelsesmengdeInfo
           deltakelsesprosent={deltaker.deltakelsesprosent}
           dagerPerUke={deltaker.dagerPerUke}
+          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
           nesteDeltakelsesmengde={
             deltaker.deltakelsesmengder.nesteDeltakelsesmengde
           }
@@ -171,6 +169,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <SeEndringer
         className="mt-8"
         tiltakskode={deltaker.deltakerliste.tiltakskode}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
       />

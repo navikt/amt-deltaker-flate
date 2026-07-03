@@ -31,7 +31,8 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
     prisinformasjon: data.prisinformasjon,
     arrangorUnderenhet: data.arrangorUnderenhet,
     kodeverkValg: data.kategoriseringValg.flatMap((kv) => kv.valgteIder),
-    sertifiseringValg: data.sertifiseringValg
+    sertifiseringValg: data.sertifiseringValg,
+    dagerPerUke: data.dagerPerUke
   }
 }
 
@@ -81,7 +82,8 @@ export const generateEnkeltplassPameldingRequest = (
         (kodeverk) => kodeverk.valgteElementer.map((v) => v.id)
       ),
     sertifiseringValg:
-      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteSertifiseringer
+      deltaker.deltakerliste.opplaringKategoriseringValg?.valgteSertifiseringer,
+    dagerPerUke: deltaker.dagerPerUke
   }
 }
 

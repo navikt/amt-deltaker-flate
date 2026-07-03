@@ -1,8 +1,8 @@
 import {
+  DeltakerlisteStatus,
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  DeltakerlisteStatus,
   Oppstartstype,
   Pameldingstype,
   Tiltakskode
@@ -47,12 +47,21 @@ const getKurstypeText = (
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null
+  dagerPerUke: number | null,
+  erEnkeltplass: boolean
 ) => {
   const dagerIUkaText = dagerPerUke
-    ? `fordelt på ${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
+    ? `${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
     : ''
-  return `${deltakelsesprosent ?? 100}\u00A0% ${dagerIUkaText}`
+  if (erEnkeltplass) {
+    return dagerIUkaText
+  }
+  const fordeltPaDagerIUkaText = dagerPerUke
+    ? `fordelt på ${dagerIUkaText}`
+    : ''
+  return fordeltPaDagerIUkaText
+    ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
+    : `${deltakelsesprosent ?? 100}\u00A0%`
 }
 
 export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
@@ -379,7 +388,7 @@ export const getForslagTittel = (endringstype: ForslagEndringType) => {
   }
 }
 
-export const getEndringsTittel = (endring: Endring) => {
+export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell:
       return 'Deltakelsen er ikke aktuell'
@@ -390,8 +399,16 @@ export const getEndringsTittel = (endring: Endring) => {
       return `Ny sluttdato er ${formatDateWithMonthName(endring.sluttdato)}`
     case EndringType.EndreBakgrunnsinformasjon:
       return 'Bakgrunnsinfo er endret'
-    case EndringType.EndreDeltakelsesmengde:
-      return `Deltakelsen er endret til ${deltakerprosentText(endring.deltakelsesprosent, endring.dagerPerUke)}`
+    case EndringType.EndreDeltakelsesmengde: {
+      const deltakelsesmengdeText = deltakerprosentText(
+        endring.deltakelsesprosent,
+        endring.dagerPerUke,
+        erEnkeltplass
+      )
+      return deltakelsesmengdeText
+        ? `Deltakelsen er endret til ${deltakelsesmengdeText}`
+        : 'Deltakelsesmengde endret'
+    }
     case EndringType.EndreInnhold:
       return 'Innholdet er endret'
     case EndringType.ReaktiverDeltakelse:

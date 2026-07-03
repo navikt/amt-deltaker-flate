@@ -52,7 +52,7 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      {harDeltakelsesmengde(tiltakskode, erEnkeltplass) && (
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
         <div>
           <Heading level="3" size="small">
             Deltakelsesmengde
@@ -60,7 +60,8 @@ export const UtkastDeltaker = () => {
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(
               deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke
+              deltaker.dagerPerUke,
+              erEnkeltplass
             )}
           </BodyLong>
         </div>

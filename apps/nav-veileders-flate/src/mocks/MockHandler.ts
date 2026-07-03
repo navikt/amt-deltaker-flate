@@ -47,10 +47,11 @@ import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.t
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
 import {
-  lagOpplaringKategoriseringResponse,
   lagOpplaringKategoriseringDeltaljertRespons,
+  lagOpplaringKategoriseringResponse,
   mockSertifiseringer
 } from './mockKodeverk.ts'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request.ts'
 
 const bakgrunnsinformasjon =
   'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
@@ -376,9 +377,21 @@ export class MockHandler {
       startdato: request.startdato
         ? getDateFromString(request.startdato)
         : null,
-      sluttdato: request.sluttdato ? getDateFromString(request.sluttdato) : null
+      sluttdato: request.sluttdato
+        ? getDateFromString(request.sluttdato)
+        : null,
+      dagerPerUke: request.dagerPerUke ?? null
     } as DeltakerResponse
     return HttpResponse.json(this.pamelding)
+  }
+
+  oppdaterEnkeltplassKladd(request: EnkeltplassKladdRequest) {
+    if (this.pamelding === null) {
+      return new HttpResponse(null, { status: 404 })
+    }
+
+    this.pamelding.dagerPerUke = request.dagerPerUke ?? null
+    return new HttpResponse(null, { status: 200 })
   }
 
   sendInnPamelding(request: PameldingRequest) {

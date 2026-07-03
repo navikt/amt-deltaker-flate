@@ -14,9 +14,14 @@ import { HistorikkElement } from './HistorikkElement'
 interface Props {
   endringsVedtak: Vedtak
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
 }
 
-export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
+export const HistorikkVedtak = ({
+  endringsVedtak,
+  tiltakskode,
+  erEnkeltplass
+}: Props) => {
   const {
     fattet,
     fattetAvNav,
@@ -59,13 +64,17 @@ export const HistorikkVedtak = ({ endringsVedtak, tiltakskode }: Props) => {
         </>
       )}
 
-      {harDeltakelsesmengde(tiltakskode, false) && ( // TODO må sende innn enkeltplass
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
         <>
           <BodyLong size="small" weight="semibold" className="mt-2">
             Deltakelsesmengde
           </BodyLong>
           <BodyLong size="small">
-            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+            {deltakerprosentText(
+              deltakelsesprosent,
+              dagerPerUke,
+              erEnkeltplass
+            )}
           </BodyLong>
         </>
       )}

@@ -20,6 +20,8 @@ import { getKodeverk } from '../../../api/api-enkeltplass.ts'
 import { Loader } from '@navikt/ds-react'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { KodeverkResponse } from '../../../api/data/kodeverk.ts'
+import { DeltakelsesmengdeValg } from './DeltakelsesmengdeValg.tsx'
+import { harDeltakelsesmengde } from 'deltaker-flate-common'
 
 interface Props {
   className?: string
@@ -105,6 +107,9 @@ const PameldingEnkeltplassFormInner = ({
         />
 
         <ArrangorValg />
+        {harDeltakelsesmengde(deltaker.deltakerliste) && (
+          <DeltakelsesmengdeValg />
+        )}
         <PrisOgBetaling />
 
         <PameldingFormButtons />

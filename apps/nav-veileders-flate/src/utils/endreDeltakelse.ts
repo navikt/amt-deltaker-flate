@@ -46,10 +46,7 @@ const skalViseEndreSluttarsakKnapp = (deltaker: DeltakerResponse) =>
   deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
 
 const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
-  harDeltakelsesmengde(
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.erEnkeltplass
-  ) &&
+  harDeltakelsesmengde(deltaker.deltakerliste) &&
   (venterDeltarEllerAvsluttet(deltaker) || erEnkeltplassSoktInn(deltaker))
 
 const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>

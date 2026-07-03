@@ -11,17 +11,25 @@ export const getProsentError = (deltakelsesprosent: number | null) => {
   return undefined
 }
 
-export const getDagerPerUkeError = (
-  deltakelsesprosent: number | null,
+export const getDagerPerUkeError = ({
+  deltakelsesprosent,
+  dagerPerUke,
+  maxDagerPerUke
+}: {
+  deltakelsesprosent: number | null
   dagerPerUke: number | null
-) => {
-  if (!dagerPerUke || deltakelsesprosent === 100) {
+  maxDagerPerUke: number
+}) => {
+  if (dagerPerUke === null || deltakelsesprosent === 100) {
     return undefined
   }
-  const isValid = 0 < dagerPerUke && dagerPerUke <= 5
+  const isValid =
+    Number.isInteger(dagerPerUke) &&
+    0 < dagerPerUke &&
+    dagerPerUke <= maxDagerPerUke
 
   if (!isValid) {
-    return 'Dager per uke må være et helt tall fra 1 til 5'
+    return `Dager per uke må være et helt tall fra 1 til ${maxDagerPerUke}`
   }
 
   return undefined

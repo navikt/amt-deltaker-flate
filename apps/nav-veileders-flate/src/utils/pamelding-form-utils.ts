@@ -1,8 +1,8 @@
 import {
   erOpplaringstiltak,
+  harDeltakelsesmengde,
   INNHOLD_TYPE_ANNET,
-  Tiltakskode,
-  harDeltakelsesmengde
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { KladdRequest } from '../api/data/kladd-request.ts'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
@@ -59,10 +59,7 @@ const getDeltakerProsent = (
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
       ? 100
       : data.deltakelsesprosent
-  return harDeltakelsesmengde(
-    deltaker.deltakerliste.tiltakskode,
-    deltaker.deltakerliste.erEnkeltplass
-  )
+  return harDeltakelsesmengde(deltaker.deltakerliste)
     ? deltakelsesprosent
     : undefined
 }

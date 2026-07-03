@@ -1,11 +1,11 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  EMDASH,
-  UtkastHeader,
   deltakerprosentText,
+  EMDASH,
+  harDeltakelsesmengde,
   hentTiltakHosArrangorTittel,
-  harDeltakelsesmengde
+  UtkastHeader
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 
@@ -50,10 +50,7 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      {harDeltakelsesmengde(
-        deltaker.deltakerliste.tiltakskode,
-        deltaker.deltakerliste.erEnkeltplass
-      ) && (
+      {harDeltakelsesmengde(deltaker.deltakerliste) && (
         <>
           <Heading level="3" size="medium" className="mt-6">
             Deltakelsesmengde
@@ -61,7 +58,8 @@ export const AvbruttUtkastPage = () => {
           <BodyLong size="small" className="mt-2">
             {deltakerprosentText(
               deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke
+              deltaker.dagerPerUke,
+              deltaker.deltakerliste.erEnkeltplass
             )}
           </BodyLong>
         </>

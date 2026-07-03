@@ -135,7 +135,9 @@ const detaljer = (endring: ForslagEndring) => {
             Ny deltakelsesmengde:{' '}
             {deltakerprosentText(
               endring.deltakelsesprosent,
-              endring.dagerPerUke
+              endring.dagerPerUke,
+              // erEnkeltplass = false fordi forslag kommer fra arrangør, og enkeltplasser har per def. ikke arrangør
+              false
             )}
           </BodyShort>
           {endring.gyldigFra && (

@@ -129,16 +129,16 @@ export const formatDateFromString = (
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }
 
-export const harDeltakelsesmengde = (
-  tiltakskode: Tiltakskode,
+export const harDeltakelsesmengde = ({
+  tiltakskode,
+  erEnkeltplass
+}: {
+  tiltakskode: Tiltakskode
   erEnkeltplass: boolean
-) => {
-  return (
-    tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
-    tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    (erOpplaringstiltak(tiltakskode) && erEnkeltplass)
-  )
-}
+}) =>
+  tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
+  tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+  erEnkeltplass
 
 export const logError = (message: string, ...args: unknown[]) => {
   console.error(`AMT_LOGS: ${message}`, args)

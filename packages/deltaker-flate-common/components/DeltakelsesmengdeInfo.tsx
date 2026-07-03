@@ -6,14 +6,19 @@ import { formatDate } from '../utils/utils'
 interface Props {
   deltakelsesprosent: number | null
   dagerPerUke: number | null
+  erEnkeltplass: boolean
   nesteDeltakelsesmengde: Deltakelsesmengde | null
 }
 
 export function DeltakelsesmengdeInfo({
   deltakelsesprosent,
   dagerPerUke,
+  erEnkeltplass,
   nesteDeltakelsesmengde
 }: Props) {
+  if (erEnkeltplass && dagerPerUke == null) {
+    return null
+  }
   return (
     <>
       <Heading level="2" size="medium" className="mt-8">
@@ -25,21 +30,27 @@ export function DeltakelsesmengdeInfo({
             Nåværende periode:
           </BodyShort>
           <BodyShort size="small">
-            {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+            {deltakerprosentText(
+              deltakelsesprosent,
+              dagerPerUke,
+              erEnkeltplass
+            )}
           </BodyShort>
           <BodyShort size="small" className="mt-2">
-            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}):
+            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
+            ):
           </BodyShort>
           <BodyShort size="small">
             {deltakerprosentText(
               nesteDeltakelsesmengde.deltakelsesprosent,
-              nesteDeltakelsesmengde.dagerPerUke
+              nesteDeltakelsesmengde.dagerPerUke,
+              erEnkeltplass
             )}
           </BodyShort>
         </>
       ) : (
         <BodyShort size="small" className="mt-2">
-          {deltakerprosentText(deltakelsesprosent, dagerPerUke)}
+          {deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)}
         </BodyShort>
       )}
     </>

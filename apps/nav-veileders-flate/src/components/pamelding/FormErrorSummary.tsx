@@ -9,6 +9,7 @@ const enkeltplassFields: Path<PameldingEnkeltplassFormValues>[] = [
   'startdato',
   'sluttdato',
   'arrangorUnderenhet',
+  'dagerPerUke',
   'pristype'
 ]
 
