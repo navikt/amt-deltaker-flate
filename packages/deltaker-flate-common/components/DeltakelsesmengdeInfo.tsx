@@ -16,6 +16,9 @@ export function DeltakelsesmengdeInfo({
   erEnkeltplass,
   nesteDeltakelsesmengde
 }: Props) {
+  if (erEnkeltplass && dagerPerUke == null) {
+    return null
+  }
   return (
     <>
       <Heading level="2" size="medium" className="mt-8">
@@ -34,7 +37,8 @@ export function DeltakelsesmengdeInfo({
             )}
           </BodyShort>
           <BodyShort size="small" className="mt-2">
-            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}):
+            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
+            ):
           </BodyShort>
           <BodyShort size="small">
             {deltakerprosentText(
