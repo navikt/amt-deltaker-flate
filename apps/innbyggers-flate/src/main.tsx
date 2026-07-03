@@ -1,5 +1,5 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
-import { FaroErrorBoundary } from '@grafana/faro-react'
+import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
@@ -9,8 +9,16 @@ import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
 
+const AppWithErrorBoundary = withFaroErrorBoundary(
+  () => (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  ),
+  { fallback: <ErrorFallback /> }
+)
+
 const renderApp = () => {
-  // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
   if (import.meta.env.MODE !== 'offline') {
     injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
@@ -26,11 +34,7 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <FaroErrorBoundary fallback={<ErrorFallback />}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </FaroErrorBoundary>
+      <AppWithErrorBoundary />
     </React.StrictMode>
   )
 }
@@ -62,4 +66,16 @@ if (import.meta.env.VITE_FARO_URL) {
   })
 }
 
-enableMocking().then(renderApp)
+declare const window: {
+  __appInitialized?: boolean
+} & Window
+
+if (import.meta.env.MODE === 'offline') {
+  const browserWindow = window
+  if (!browserWindow.__appInitialized) {
+    browserWindow.__appInitialized = true
+    renderApp()
+  }
+} else {
+  enableMocking().then(renderApp)
+}
