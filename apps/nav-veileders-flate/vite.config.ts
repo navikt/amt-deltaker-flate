@@ -8,9 +8,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
-    css: {
-      devSourcemap: true
-    },
     test: {
       globals: true,
       environment: 'jsdom',
