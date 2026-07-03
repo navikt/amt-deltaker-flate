@@ -13,6 +13,7 @@ import {
 } from '@navikt/ds-react'
 import {
   beregnEstimertTotalsum,
+  fjernUgyldigeTegn,
   getPrisInformasjonTekst,
   IngenKostnaderAarsak,
   NOK_FORMATTER,
@@ -410,26 +411,28 @@ const Tilleggsopplysninger = ({
       maxLength={PRISINFO_MAX_TEGN}
       value={tilleggsopplysninger}
       onChange={(e) => {
+        const value = fjernUgyldigeTegn(e.target.value)
+
         if (type === PrisinformasjonType.Tilskudd) {
           setValue('prisinformasjon', {
-            type: PrisinformasjonType.Tilskudd,
+            type,
             tilskudd: erTilskudd(prisinformasjon)
               ? prisinformasjon.tilskudd
               : [],
-            tilleggsopplysninger: e.target.value
+            tilleggsopplysninger: value
           })
           return
         }
 
         setValue('prisinformasjon', {
-          type: PrisinformasjonType.IngenKostnader,
+          type,
           aarsak: erIngenKostnader(prisinformasjon)
             ? prisinformasjon.aarsak
             : IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
-          tilleggsopplysninger: e.target.value
+          tilleggsopplysninger: value
         })
 
-        if (e.target.value.trim().length > 0) {
+        if (value.trim().length > 0) {
           clearErrors(`prisinformasjon_${textAreaId}`)
         }
       }}
