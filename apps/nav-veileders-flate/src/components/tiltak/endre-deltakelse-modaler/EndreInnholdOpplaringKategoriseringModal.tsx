@@ -19,6 +19,11 @@ import { OpplaringKategoriseringValg } from '../../pamelding/enkeltplass/Opplari
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { InnholdBeskrivelse } from '../../pamelding/enkeltplass/InnholdBeskrivelse.tsx'
 import { PameldingFormContextProvider } from '../../pamelding/PameldingFormContext.tsx'
+import {
+  EndrePrisValg,
+  EndrePrisValgType,
+  useEndrePrisValg
+} from '../EndrePrisValg.tsx'
 
 interface Props {
   deltaker: DeltakerResponse
@@ -34,6 +39,7 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
   onSuccess
 }: Props) => {
   const { enhetId } = useAppContext()
+  const endrePrisValg = useEndrePrisValg()
   const { data: kodeverk, isLoading } = useQuery({
     queryKey: ['kodeverk-endring', deltaker.deltakerId, enhetId],
     queryFn: () => getKodeverk(deltaker.deltakerId, enhetId),
@@ -67,6 +73,10 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
       return null
     }
 
+    if (!endrePrisValg.valider()) {
+      return null
+    }
+
     if (harIngenKodeverkEndring(formData, defaultValues)) {
       throw new Error(getFeilmeldingIngenEndring(false))
     }
@@ -74,7 +84,8 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
     const endring: EndreInnholdOpplaringKategoriseringRequest = {
       opplaringKategoriseringValg: formData.kategoriseringValg,
       sertifiseringValg: formData.sertifiseringValg,
-      beskrivelse: formData.innhold
+      beskrivelse: formData.innhold,
+      pavirkerPris: endrePrisValg.endrePrisValg === EndrePrisValgType.JA
     }
 
     return {
@@ -110,10 +121,17 @@ export const EndreInnholdOpplaringKategoriseringModal = ({
           )}
 
           {!isLoading && kodeverk && (
-            <OpplaringKategoriseringValg kodeverk={kodeverk} />
+            <>
+              <OpplaringKategoriseringValg kodeverk={kodeverk} />
+              <InnholdBeskrivelse className="mt-8" />
+              <EndrePrisValg
+                value={endrePrisValg.endrePrisValg}
+                onChange={endrePrisValg.handleChange}
+                error={endrePrisValg.error}
+                className="mt-8"
+              />
+            </>
           )}
-
-          {!isLoading && kodeverk && <InnholdBeskrivelse className="mt-8" />}
         </PameldingFormContextProvider>
       </FormProvider>
     </Endringsmodal>
