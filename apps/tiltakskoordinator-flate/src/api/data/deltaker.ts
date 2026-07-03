@@ -56,7 +56,8 @@ export const deltakerDetaljerSchema = z.object({
   pameldingstype: z.enum(Pameldingstype),
   tilgangTilBruker: z.boolean(),
   aktiveForslag: z.array(forslagSchema),
-  ulesteHendelser: z.array(ulesthendelseSchema)
+  ulesteHendelser: z.array(ulesthendelseSchema),
+  erEnkeltplass: z.boolean()
 })
 
 export type DeltakerDetaljer = z.infer<typeof deltakerDetaljerSchema>

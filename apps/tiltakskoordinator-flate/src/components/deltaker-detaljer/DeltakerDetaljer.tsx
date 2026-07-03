@@ -94,7 +94,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
           deltakerId={deltaker.id}
           tiltakskode={deltaker.tiltakskode}
           fetchHistorikk={getDeltakerHistorikk}
-          erEnkeltplass={false}
+          erEnkeltplass={deltaker.erEnkeltplass}
         />
       )}
     </div>
