@@ -29,7 +29,7 @@ export const enkeltplassKladdSchema = z.object({
   prisinformasjon: prisinformasjonSchema.nullable(),
   startdato: z.string().optional(),
   sluttdato: z.string().optional(),
-  dagerPerUke: z.number().nullable().optional(),
+  dagerPerUke: z.number().nullable(),
   arrangorUnderenhet: z.string().optional(),
   kodeverkValg: z.array(z.string()).optional(),
   sertifiseringValg: z
