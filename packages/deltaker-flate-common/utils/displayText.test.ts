@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { deltakerprosentText } from './displayText'
+import { EndringType } from '../model/deltakerHistorikk'
+import { deltakerprosentText, getEndringsTittel } from './displayText'
 
 describe('deltakerprosentText', () => {
   it.each([
@@ -62,5 +63,22 @@ describe('deltakerprosentText', () => {
   it('0 dager behandles som manglende dager', () => {
     expect(deltakerprosentText(80, 0, false)).toBe('80\u00A0%')
     expect(deltakerprosentText(null, 0, true)).toBe('')
+  })
+})
+
+describe('getEndringsTittel', () => {
+  it('bruker fallback-tittel når enkeltplass mangler dagerPerUke', () => {
+    expect(
+      getEndringsTittel(
+        {
+          type: EndringType.EndreDeltakelsesmengde,
+          deltakelsesprosent: null,
+          dagerPerUke: null,
+          gyldigFra: null,
+          begrunnelse: null
+        },
+        true
+      )
+    ).toBe('Deltakelsesmengde endret')
   })
 })

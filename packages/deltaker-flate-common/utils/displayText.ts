@@ -399,8 +399,16 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
       return `Ny sluttdato er ${formatDateWithMonthName(endring.sluttdato)}`
     case EndringType.EndreBakgrunnsinformasjon:
       return 'Bakgrunnsinfo er endret'
-    case EndringType.EndreDeltakelsesmengde:
-      return `Deltakelsen er endret til ${deltakerprosentText(endring.deltakelsesprosent, endring.dagerPerUke, erEnkeltplass)}`
+    case EndringType.EndreDeltakelsesmengde: {
+      const deltakelsesmengdeText = deltakerprosentText(
+        endring.deltakelsesprosent,
+        endring.dagerPerUke,
+        erEnkeltplass
+      )
+      return deltakelsesmengdeText
+        ? `Deltakelsen er endret til ${deltakelsesmengdeText}`
+        : 'Deltakelsesmengde endret'
+    }
     case EndringType.EndreInnhold:
       return 'Innholdet er endret'
     case EndringType.ReaktiverDeltakelse:
