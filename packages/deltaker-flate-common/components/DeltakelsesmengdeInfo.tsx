@@ -34,7 +34,7 @@ export function DeltakelsesmengdeInfo({
               deltakelsesprosent,
               dagerPerUke,
               erEnkeltplass
-            )}
+            ) || '(ikke satt)'}
           </BodyShort>
           <BodyShort size="small" className="mt-2">
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
