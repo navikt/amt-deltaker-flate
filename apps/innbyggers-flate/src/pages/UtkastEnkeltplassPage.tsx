@@ -8,7 +8,9 @@ import {
   formatDateFromString,
   hentTiltakHosArrangorIngressTekst,
   hentTiltakHosArrangorTittel,
-  useDeferredFetch
+  useDeferredFetch,
+  harDeltakelsesmengde,
+  deltakerprosentText
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -90,6 +92,25 @@ export const UtkastEnkeltplassPage = () => {
           </Heading>
         }
       />
+
+      {harDeltakelsesmengde({
+        tiltakskode: deltaker.deltakerliste.tiltakskode,
+        erEnkeltplass: true
+      }) &&
+        deltaker.dagerPerUke != null && (
+          <div className="mt-4">
+            <Heading level="3" size="small">
+              Deltakelsesmengde
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {deltakerprosentText(
+                deltaker.deltakelsesprosent,
+                deltaker.dagerPerUke,
+                true
+              )}
+            </BodyLong>
+          </div>
+        )}
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
