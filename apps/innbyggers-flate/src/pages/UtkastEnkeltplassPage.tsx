@@ -19,6 +19,11 @@ import { godkjennUtkast } from '../api/api'
 export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
+  const deltakelsesmengdeText = deltakerprosentText(
+    deltaker.deltakelsesprosent,
+    deltaker.dagerPerUke,
+    true
+  )
 
   const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
@@ -97,17 +102,13 @@ export const UtkastEnkeltplassPage = () => {
         tiltakskode: deltaker.deltakerliste.tiltakskode,
         erEnkeltplass: true
       }) &&
-        deltaker.dagerPerUke != null && (
+        deltakelsesmengdeText && (
           <div className="mt-4">
             <Heading level="3" size="small">
               Deltakelsesmengde
             </Heading>
             <BodyLong size="small" className="mt-2">
-              {deltakerprosentText(
-                deltaker.deltakelsesprosent,
-                deltaker.dagerPerUke,
-                true
-              )}
+              {deltakelsesmengdeText}
             </BodyLong>
           </div>
         )}

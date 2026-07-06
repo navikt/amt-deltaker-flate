@@ -13,6 +13,11 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const deltakelsesmengdeText = deltakerprosentText(
+    deltaker.deltakelsesprosent,
+    deltaker.dagerPerUke,
+    true
+  )
 
   return (
     <div className="flex flex-col gap-8">
@@ -47,17 +52,13 @@ export const UtkastDeltakerEnkeltplass = () => {
       />
 
       {harDeltakelsesmengde({ tiltakskode, erEnkeltplass: true }) &&
-        deltaker.dagerPerUke != null && (
+        deltakelsesmengdeText && (
           <div>
             <Heading level="3" size="small">
               Deltakelsesmengde
             </Heading>
             <BodyLong size="small" className="mt-2">
-              {deltakerprosentText(
-                deltaker.deltakelsesprosent,
-                deltaker.dagerPerUke,
-                true
-              )}
+              {deltakelsesmengdeText}
             </BodyLong>
           </div>
         )}

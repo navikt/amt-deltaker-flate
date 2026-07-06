@@ -16,7 +16,13 @@ export function DeltakelsesmengdeInfo({
   erEnkeltplass,
   nesteDeltakelsesmengde
 }: Props) {
-  if (erEnkeltplass && dagerPerUke == null && nesteDeltakelsesmengde == null) {
+  const deltakelsesmengdeText = deltakerprosentText(
+    deltakelsesprosent,
+    dagerPerUke,
+    erEnkeltplass
+  )
+
+  if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
     return null
   }
   return (
@@ -30,11 +36,7 @@ export function DeltakelsesmengdeInfo({
             Nåværende periode:
           </BodyShort>
           <BodyShort size="small">
-            {deltakerprosentText(
-              deltakelsesprosent,
-              dagerPerUke,
-              erEnkeltplass
-            ) || '(ikke satt)'}
+            {deltakelsesmengdeText || '(ikke satt)'}
           </BodyShort>
           <BodyShort size="small" className="mt-2">
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
@@ -50,7 +52,7 @@ export function DeltakelsesmengdeInfo({
         </>
       ) : (
         <BodyShort size="small" className="mt-2">
-          {deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)}
+          {deltakelsesmengdeText}
         </BodyShort>
       )}
     </>

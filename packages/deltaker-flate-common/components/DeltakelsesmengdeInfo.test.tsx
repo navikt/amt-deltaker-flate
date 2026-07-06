@@ -38,7 +38,7 @@ describe('DeltakelsesmengdeInfo', () => {
       nesteDeltakelsesmengde: {
         deltakelsesprosent: 60,
         dagerPerUke: 3,
-        gyldigFra: '2025-08-01'
+        gyldigFra: '2025-08-01' as unknown as Date
       }
     })
     const text = extractText(result).join(' ')
@@ -62,17 +62,14 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(text).not.toContain('Nåværende periode:')
   })
 
-  it('viser kun overskrift når dagerPerUke er 0 uten neste periode', () => {
+  it('returnerer null når dagerPerUke er 0 uten neste periode', () => {
     const result = DeltakelsesmengdeInfo({
       deltakelsesprosent: null,
       dagerPerUke: 0,
       erEnkeltplass: true,
       nesteDeltakelsesmengde: null
     })
-    const text = extractText(result).join(' ')
 
-    expect(text).toContain('Deltakelsesmengde')
-    expect(text).not.toContain('dag i uka')
-    expect(text).not.toContain('dager i uka')
+    expect(result).toBeNull()
   })
 })
