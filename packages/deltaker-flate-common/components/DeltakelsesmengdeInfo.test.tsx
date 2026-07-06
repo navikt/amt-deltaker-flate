@@ -38,7 +38,7 @@ describe('DeltakelsesmengdeInfo', () => {
       nesteDeltakelsesmengde: {
         deltakelsesprosent: 60,
         dagerPerUke: 3,
-        gyldigFra: '2025-08-01' as unknown as Date
+        gyldigFra: new Date('2025-08-01')
       }
     })
     const text = extractText(result).join(' ')
