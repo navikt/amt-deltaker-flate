@@ -10,6 +10,7 @@ import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
 
 const renderApp = () => {
+  // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
   if (import.meta.env.MODE !== 'offline') {
     injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
