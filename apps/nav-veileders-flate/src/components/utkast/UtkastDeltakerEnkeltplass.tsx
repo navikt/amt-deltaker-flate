@@ -1,7 +1,9 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
+  deltakerprosentText,
   formatDate,
+  harDeltakelsesmengde,
   hentTiltakHosArrangorIngressTekst,
   PrisOgBetaling,
   VeilederSnakkeboble
@@ -11,6 +13,11 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const deltakelsesmengdeText = deltakerprosentText(
+    deltaker.deltakelsesprosent,
+    deltaker.dagerPerUke,
+    true
+  )
 
   return (
     <div className="flex flex-col gap-8">
@@ -43,6 +50,18 @@ export const UtkastDeltakerEnkeltplass = () => {
           </Heading>
         }
       />
+
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass: true }) &&
+        deltakelsesmengdeText && (
+          <div>
+            <Heading level="3" size="small">
+              Deltakelsesmengde
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {deltakelsesmengdeText}
+            </BodyLong>
+          </div>
+        )}
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
