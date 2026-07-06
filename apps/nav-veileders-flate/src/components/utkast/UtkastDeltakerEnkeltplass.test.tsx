@@ -121,3 +121,53 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
     ).toBeInTheDocument()
   })
 })
+
+describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
+  it('viser deltakelsesmengde når dagerPerUke er satt', () => {
+    const deltaker = lagDeltaker()
+    deltaker.dagerPerUke = 3
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText('3 dager i uka')).toBeInTheDocument()
+  })
+
+  it('skjuler deltakelsesmengde når dagerPerUke er null', () => {
+    const deltaker = lagDeltaker()
+    deltaker.dagerPerUke = null
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
+  })
+
+  it('viser 1 dag i uka når dagerPerUke er 1', () => {
+    const deltaker = lagDeltaker()
+    deltaker.dagerPerUke = 1
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.getByText('1 dag i uka')).toBeInTheDocument()
+  })
+
+  it('viser korrekt antall dager når dagerPerUke er 5', () => {
+    const deltaker = lagDeltaker()
+    deltaker.dagerPerUke = 5
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.getByText('5 dager i uka')).toBeInTheDocument()
+  })
+
+  it('viser deltakelsesmengde for arbeidsmarkedsopplæring', () => {
+    const deltaker = lagDeltaker()
+    deltaker.deltakerliste.tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
+    deltaker.dagerPerUke = 4
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText('4 dager i uka')).toBeInTheDocument()
+  })
+})
