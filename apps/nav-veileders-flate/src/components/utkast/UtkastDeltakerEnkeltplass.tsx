@@ -1,7 +1,9 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
+  deltakerprosentText,
   formatDate,
+  harDeltakelsesmengde,
   hentTiltakHosArrangorIngressTekst,
   PrisOgBetaling,
   VeilederSnakkeboble
@@ -43,6 +45,22 @@ export const UtkastDeltakerEnkeltplass = () => {
           </Heading>
         }
       />
+
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass: true }) &&
+        deltaker.dagerPerUke != null && (
+          <div>
+            <Heading level="3" size="small">
+              Deltakelsesmengde
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {deltakerprosentText(
+                deltaker.deltakelsesprosent,
+                deltaker.dagerPerUke,
+                true
+              )}
+            </BodyLong>
+          </div>
+        )}
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
