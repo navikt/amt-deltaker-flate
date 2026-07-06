@@ -67,4 +67,19 @@ if (import.meta.env.VITE_FARO_URL) {
   })
 }
 
-enableMocking().then(renderApp)
+declare const window: {
+  __appInitialized?: boolean
+} & Window
+
+if (import.meta.env.MODE === 'offline') {
+  // Lagt til flagg fordi appen ellers har en tendens til å rendres to ganger
+  // "oppå hverandre" i containerelementet. Treffer ingen eksterne miljøer
+  // eller produksjon.
+  const browserWindow = window
+  if (!browserWindow.__appInitialized) {
+    browserWindow.__appInitialized = true
+    renderApp()
+  }
+} else {
+  enableMocking().then(renderApp)
+}
