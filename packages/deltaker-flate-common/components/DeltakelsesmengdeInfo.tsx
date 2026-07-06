@@ -16,7 +16,7 @@ export function DeltakelsesmengdeInfo({
   erEnkeltplass,
   nesteDeltakelsesmengde
 }: Props) {
-  if (erEnkeltplass && dagerPerUke == null) {
+  if (erEnkeltplass && dagerPerUke == null && nesteDeltakelsesmengde == null) {
     return null
   }
   return (
