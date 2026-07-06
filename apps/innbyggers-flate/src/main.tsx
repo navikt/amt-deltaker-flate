@@ -67,6 +67,9 @@ declare const window: {
 } & Window
 
 if (import.meta.env.MODE === 'offline') {
+  // Lagt til flagg fordi appen ellers har en tendens til å rendres to ganger
+  // "oppå hverandre" i containerelementet. Treffer ingen eksterne miljøer
+  // eller produksjon.
   const browserWindow = window
   if (!browserWindow.__appInitialized) {
     browserWindow.__appInitialized = true
