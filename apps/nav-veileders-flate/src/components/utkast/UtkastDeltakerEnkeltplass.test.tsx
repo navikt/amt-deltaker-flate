@@ -170,4 +170,14 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
     expect(screen.getByText('4 dager i uka')).toBeInTheDocument()
   })
+
+  it('viser overskrift uten dagtekst når dagerPerUke er 0', () => {
+    const deltaker = lagDeltaker()
+    deltaker.dagerPerUke = 0
+
+    renderWithDeltaker(deltaker)
+
+    expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.queryByText(/dag(er)? i uka/)).not.toBeInTheDocument()
+  })
 })
