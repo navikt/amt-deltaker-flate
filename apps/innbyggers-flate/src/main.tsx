@@ -1,5 +1,5 @@
 import { initializeFaro } from '@grafana/faro-web-sdk'
-import { withFaroErrorBoundary } from '@grafana/faro-react'
+import { FaroErrorBoundary } from '@grafana/faro-react'
 import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
@@ -8,15 +8,6 @@ import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
-
-const AppWithErrorBoundary = withFaroErrorBoundary(
-  () => (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  ),
-  { fallback: <ErrorFallback /> }
-)
 
 const renderApp = () => {
   if (import.meta.env.MODE !== 'offline') {
@@ -34,7 +25,11 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <AppWithErrorBoundary />
+      <FaroErrorBoundary fallback={<ErrorFallback />}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </FaroErrorBoundary>
     </React.StrictMode>
   )
 }
