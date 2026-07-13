@@ -4,6 +4,7 @@ import { Tiltakskode } from '../../model/deltaker.ts'
 import { Innsok } from '../../model/deltakerHistorikk.ts'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
+import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
 
 interface Props {
@@ -17,6 +18,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
     innsoktAv,
     innsoktAvEnhet,
     deltakelsesinnholdVedInnsok,
+    prisinformasjonVedInnsok,
     opplaringKategorisering,
     utkastDelt,
     utkastGodkjentAvNav
@@ -38,6 +40,16 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
           </BodyLong>
         }
         opplaringKategoriseringValg={opplaringKategorisering}
+      />
+
+      <PrisOgBetaling
+        prisinformasjon={prisinformasjonVedInnsok}
+        headinglevel="3"
+        heading={
+          <BodyLong size="small" weight="semibold" className="mt-4">
+            Pris og betalingsbetingelser
+          </BodyLong>
+        }
       />
 
       <Detail className="mt-1" textColor="subtle">

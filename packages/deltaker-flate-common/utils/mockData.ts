@@ -23,6 +23,7 @@ import {
   ForslagStatusType,
   HistorikkType
 } from '../model/forslag'
+import { PrisinformasjonType } from '../model/prisinformasjon'
 
 import { INNHOLD_TYPE_ANNET } from './constants'
 import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
@@ -541,6 +542,10 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       utkastDelt: dayjs().subtract(3, 'day').toDate(),
       utkastGodkjentAvNav: false,
       deltakelsesinnholdVedInnsok: null,
+      prisinformasjonVedInnsok: {
+        type: PrisinformasjonType.Anskaffelse,
+        pris: 25000
+      },
       opplaringKategorisering: lagOpplaringKategoriseringMockRespons()
     }
   ]

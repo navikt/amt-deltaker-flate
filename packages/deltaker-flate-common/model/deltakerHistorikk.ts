@@ -7,6 +7,7 @@ import {
   pameldingStatusSchema,
   Vurderingstype
 } from './deltaker'
+import { prisinformasjonSchema } from './prisinformasjon'
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
@@ -171,6 +172,7 @@ export const soktInnSchema = z.object({
   innsoktAv: z.string(),
   innsoktAvEnhet: z.string(),
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
+  prisinformasjonVedInnsok: prisinformasjonSchema.nullable(),
   opplaringKategorisering: opplaringKategoriseringSchema.nullable(),
   utkastDelt: nullableDateSchema,
   utkastGodkjentAvNav: z.boolean()
