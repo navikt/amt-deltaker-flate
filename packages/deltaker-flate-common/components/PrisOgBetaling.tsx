@@ -11,7 +11,7 @@ interface Props {
   prisinformasjon?: Prisinformasjon | null
   headinglevel: '2' | '3'
   headingsize?: 'medium' | 'small'
-  heading?: React.ReactNode
+  showHeading?: boolean
   className?: string
 }
 
@@ -19,7 +19,7 @@ export const PrisOgBetaling = ({
   prisinformasjon,
   headinglevel,
   headingsize = 'medium',
-  heading,
+  showHeading = true,
   className
 }: Props) => {
   if (!prisinformasjon) {
@@ -94,7 +94,7 @@ export const PrisOgBetaling = ({
 
   return (
     <div className={className ?? ''}>
-      {heading ?? (
+      {showHeading && (
         <Heading level={headinglevel} size={headingsize}>
           Pris og betalingsbetingelser
         </Heading>

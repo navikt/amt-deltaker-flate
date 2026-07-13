@@ -42,15 +42,19 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
         opplaringKategoriseringValg={opplaringKategorisering}
       />
 
-      <PrisOgBetaling
-        prisinformasjon={prisinformasjonVedInnsok}
-        headinglevel="3"
-        heading={
+      {prisinformasjonVedInnsok && (
+        <>
           <BodyLong size="small" weight="semibold" className="mt-4">
             Pris og betalingsbetingelser
           </BodyLong>
-        }
-      />
+
+          <PrisOgBetaling
+            prisinformasjon={prisinformasjonVedInnsok}
+            headinglevel="3"
+            showHeading={false}
+          />
+        </>
+      )}
 
       <Detail className="mt-1" textColor="subtle">
         {utkastGodkjentAvNav
