@@ -12,6 +12,7 @@ interface Props {
   headinglevel: '2' | '3'
   headingsize?: 'medium' | 'small'
   showHeading?: boolean
+  showTilleggsstonaderInfo?: boolean
   className?: string
 }
 
@@ -20,6 +21,7 @@ export const PrisOgBetaling = ({
   headinglevel,
   headingsize = 'medium',
   showHeading = true,
+  showTilleggsstonaderInfo = true,
   className
 }: Props) => {
   if (!prisinformasjon) {
@@ -102,13 +104,15 @@ export const PrisOgBetaling = ({
 
       {renderPrisinformasjon()}
 
-      <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
-        Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
-        <Link href="https://www.nav.no/tilleggsstonader">
-          nav.no/tilleggsstønader
-        </Link>
-        .
-      </BodyLong>
+      {showTilleggsstonaderInfo && (
+        <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+          Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
+          <Link href="https://www.nav.no/tilleggsstonader">
+            nav.no/tilleggsstønader
+          </Link>
+          .
+        </BodyLong>
+      )}
     </div>
   )
 }

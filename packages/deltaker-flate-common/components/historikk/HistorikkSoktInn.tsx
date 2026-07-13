@@ -52,6 +52,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
             prisinformasjon={prisinformasjonVedInnsok}
             headinglevel="3"
             showHeading={false}
+            showTilleggsstonaderInfo={false}
           />
         </>
       )}
