@@ -2,7 +2,12 @@ import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import { Innsok } from '../../model/deltakerHistorikk.ts'
-import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
+import { deltakerprosentText } from '../../utils/displayText.ts'
+import {
+  formatDate,
+  formatDateWithMonthName,
+  harDeltakelsesmengde
+} from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
@@ -18,6 +23,7 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
     innsoktAv,
     innsoktAvEnhet,
     deltakelsesinnholdVedInnsok,
+    dagerPerUkeVedInnsok,
     prisinformasjonVedInnsok,
     opplaringKategorisering,
     utkastDelt,
@@ -41,6 +47,18 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
         }
         opplaringKategoriseringValg={opplaringKategorisering}
       />
+
+      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass: true }) &&
+        dagerPerUkeVedInnsok != null && (
+          <>
+            <BodyLong size="small" weight="semibold" className="mt-4">
+              Deltakelsesmengde
+            </BodyLong>
+            <BodyLong size="small">
+              {deltakerprosentText(null, dagerPerUkeVedInnsok, true)}
+            </BodyLong>
+          </>
+        )}
 
       {prisinformasjonVedInnsok && (
         <>

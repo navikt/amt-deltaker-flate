@@ -172,6 +172,7 @@ export const soktInnSchema = z.object({
   innsoktAv: z.string(),
   innsoktAvEnhet: z.string(),
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
+  dagerPerUkeVedInnsok: z.number().nullable(),
   prisinformasjonVedInnsok: prisinformasjonSchema.nullable(),
   opplaringKategorisering: opplaringKategoriseringSchema.nullable(),
   utkastDelt: nullableDateSchema,
