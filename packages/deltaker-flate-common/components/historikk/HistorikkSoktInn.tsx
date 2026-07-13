@@ -15,9 +15,14 @@ import { HistorikkElement } from './HistorikkElement.tsx'
 interface Props {
   soktInnHistorikk: Innsok
   tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
 }
 
-export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
+export const HistorikkSoktInn = ({
+  soktInnHistorikk,
+  tiltakskode,
+  erEnkeltplass
+}: Props) => {
   const {
     innsokt,
     innsoktAv,
@@ -48,14 +53,15 @@ export const HistorikkSoktInn = ({ soktInnHistorikk, tiltakskode }: Props) => {
         opplaringKategoriseringValg={opplaringKategorisering}
       />
 
-      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass: true }) &&
+      {erEnkeltplass &&
+        harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) &&
         dagerPerUkeVedInnsok != null && (
           <>
             <BodyLong size="small" weight="semibold" className="mt-4">
               Deltakelsesmengde
             </BodyLong>
             <BodyLong size="small">
-              {deltakerprosentText(null, dagerPerUkeVedInnsok, true)}
+              {deltakerprosentText(null, dagerPerUkeVedInnsok, erEnkeltplass)}
             </BodyLong>
           </>
         )}
