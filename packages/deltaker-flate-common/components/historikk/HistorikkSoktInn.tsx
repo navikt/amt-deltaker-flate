@@ -27,6 +27,8 @@ export const HistorikkSoktInn = ({
     innsokt,
     innsoktAv,
     innsoktAvEnhet,
+    startdato,
+    sluttdato,
     deltakelsesinnholdVedInnsok,
     dagerPerUkeVedInnsok,
     prisinformasjonVedInnsok,
@@ -34,6 +36,7 @@ export const HistorikkSoktInn = ({
     utkastDelt,
     utkastGodkjentAvNav
   } = soktInnHistorikk
+  const datoText = `${formatDate(startdato)} ${sluttdato ? '– ' + formatDate(sluttdato) : '—'}`
 
   return (
     <HistorikkElement
@@ -42,6 +45,9 @@ export const HistorikkSoktInn = ({
         <CaretRightCircleFillIcon color="var(--ax-text-meta-lime-decoration)" />
       }
     >
+      <BodyLong size="small" className="mb-2">
+        <span className="font-semibold">Dato:</span> {datoText}
+      </BodyLong>
       <DeltakelseInnhold
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnholdVedInnsok}
