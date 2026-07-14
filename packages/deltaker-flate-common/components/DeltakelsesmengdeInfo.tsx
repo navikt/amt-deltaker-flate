@@ -1,9 +1,10 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
-import { Deltakelsesmengde } from '../model/deltaker'
-import { deltakerprosentText } from '../utils/displayText'
+import { Deltakelsesmengde, Tiltakskode } from '../model/deltaker'
 import { formatDate } from '../utils/utils'
+import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
 
 interface Props {
+  tiltakskode: Tiltakskode
   deltakelsesprosent: number | null
   dagerPerUke: number | null
   erEnkeltplass: boolean
@@ -11,16 +12,27 @@ interface Props {
 }
 
 export function DeltakelsesmengdeInfo({
+  tiltakskode,
   deltakelsesprosent,
   dagerPerUke,
   erEnkeltplass,
   nesteDeltakelsesmengde
 }: Props) {
-  const deltakelsesmengdeText = deltakerprosentText(
+  const deltakelsesmengdeText = getDeltakelsesmengdeText({
+    tiltakskode,
     deltakelsesprosent,
     dagerPerUke,
     erEnkeltplass
-  )
+  })
+
+  const nesteDeltakelsesmengdeText = nesteDeltakelsesmengde
+    ? getDeltakelsesmengdeText({
+        tiltakskode,
+        deltakelsesprosent: nesteDeltakelsesmengde.deltakelsesprosent,
+        dagerPerUke: nesteDeltakelsesmengde.dagerPerUke,
+        erEnkeltplass
+      })
+    : null
 
   if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
     return null
@@ -42,13 +54,7 @@ export function DeltakelsesmengdeInfo({
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
             ):
           </BodyShort>
-          <BodyShort size="small">
-            {deltakerprosentText(
-              nesteDeltakelsesmengde.deltakelsesprosent,
-              nesteDeltakelsesmengde.dagerPerUke,
-              erEnkeltplass
-            )}
-          </BodyShort>
+          <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
         </>
       ) : (
         <BodyShort size="small" className="mt-2">

@@ -2,15 +2,14 @@ import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakelseInnhold,
+  DeltakelsesmengdeVisning,
   PrisOgBetaling,
   UtkastHeader,
   VeilederSnakkeboble,
   formatDateFromString,
   hentTiltakHosArrangorIngressTekst,
   hentTiltakHosArrangorTittel,
-  useDeferredFetch,
-  harDeltakelsesmengde,
-  deltakerprosentText
+  useDeferredFetch
 } from 'deltaker-flate-common'
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -19,11 +18,6 @@ import { godkjennUtkast } from '../api/api'
 export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
-  const deltakelsesmengdeText = deltakerprosentText(
-    deltaker.deltakelsesprosent,
-    deltaker.dagerPerUke,
-    true
-  )
 
   const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
     deltakerliste.tiltakskode,
@@ -98,20 +92,24 @@ export const UtkastEnkeltplassPage = () => {
         }
       />
 
-      {harDeltakelsesmengde({
-        tiltakskode: deltaker.deltakerliste.tiltakskode,
-        erEnkeltplass: true
-      }) &&
-        deltakelsesmengdeText && (
+      <DeltakelsesmengdeVisning
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        erEnkeltplass={true}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+        hideWhenEmpty
+      >
+        {(text) => (
           <div className="mt-4">
             <Heading level="3" size="small">
               Deltakelsesmengde
             </Heading>
             <BodyLong size="small" className="mt-2">
-              {deltakelsesmengdeText}
+              {text}
             </BodyLong>
           </div>
         )}
+      </DeltakelsesmengdeVisning>
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}

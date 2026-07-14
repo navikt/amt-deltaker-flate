@@ -2,10 +2,9 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
-  deltakerprosentText,
+  DeltakelsesmengdeVisning,
   DeltakerStatusType,
   harBakgrunnsinfo,
-  harDeltakelsesmengde,
   hentTiltakHosArrangorIngressTekst,
   OmKurset,
   Oppmotested,
@@ -52,20 +51,23 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
-        <div>
-          <Heading level="3" size="small">
-            Deltakelsesmengde
-          </Heading>
-          <BodyLong size="small" className="mt-2">
-            {deltakerprosentText(
-              deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke,
-              erEnkeltplass
-            )}
-          </BodyLong>
-        </div>
-      )}
+      <DeltakelsesmengdeVisning
+        tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+      >
+        {(text) => (
+          <div>
+            <Heading level="3" size="small">
+              Deltakelsesmengde
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {text}
+            </BodyLong>
+          </div>
+        )}
+      </DeltakelsesmengdeVisning>
 
       <OmKurset
         tiltakskode={deltaker.deltakerliste.tiltakskode}

@@ -2,13 +2,9 @@ import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import { Vedtak } from '../../model/deltakerHistorikk'
-import { deltakerprosentText } from '../../utils/displayText'
-import {
-  formatDate,
-  formatDateWithMonthName,
-  harDeltakelsesmengde
-} from '../../utils/utils'
+import { formatDate, formatDateWithMonthName } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
+import { DeltakelsesmengdeVisning } from '../DeltakelsesmengdeVisning.tsx'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -64,20 +60,21 @@ export const HistorikkVedtak = ({
         </>
       )}
 
-      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
-        <>
-          <BodyLong size="small" weight="semibold" className="mt-2">
-            Deltakelsesmengde
-          </BodyLong>
-          <BodyLong size="small">
-            {deltakerprosentText(
-              deltakelsesprosent,
-              dagerPerUke,
-              erEnkeltplass
-            )}
-          </BodyLong>
-        </>
-      )}
+      <DeltakelsesmengdeVisning
+        tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
+        deltakelsesprosent={deltakelsesprosent}
+        dagerPerUke={dagerPerUke}
+      >
+        {(text) => (
+          <>
+            <BodyLong size="small" weight="semibold" className="mt-2">
+              Deltakelsesmengde
+            </BodyLong>
+            <BodyLong size="small">{text}</BodyLong>
+          </>
+        )}
+      </DeltakelsesmengdeVisning>
 
       <Detail className="mt-1" textColor="subtle">
         {fattetAvNav

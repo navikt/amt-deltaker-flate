@@ -3,15 +3,11 @@ import { BodyLong, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker'
 import { importertFraArena } from '../../model/deltakerHistorikk'
 import {
-  deltakerprosentText,
   getDeltakerStatusAarsakText,
   getDeltakerStatusDisplayText
 } from '../../utils/displayText'
-import {
-  formatDate,
-  formatDateWithMonthName,
-  harDeltakelsesmengde
-} from '../../utils/utils'
+import { formatDate, formatDateWithMonthName } from '../../utils/utils'
+import { DeltakelsesmengdeVisning } from '../DeltakelsesmengdeVisning'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -51,17 +47,16 @@ export const HistorikkImportertFraArena = ({
         <BodyLong size="small">{`Dato: ${datoText}`}</BodyLong>
       )}
 
-      {harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) && (
-        <>
-          <BodyLong size="small">
-            {`Deltakelsesmengde: ${deltakerprosentText(
-              deltakelseVedImport.deltakelsesprosent,
-              deltakelseVedImport.dagerPerUke,
-              erEnkeltplass
-            )}`}
-          </BodyLong>
-        </>
-      )}
+      <DeltakelsesmengdeVisning
+        tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
+        deltakelsesprosent={deltakelseVedImport.deltakelsesprosent}
+        dagerPerUke={deltakelseVedImport.dagerPerUke}
+      >
+        {(text) => (
+          <BodyLong size="small">{`Deltakelsesmengde: ${text}`}</BodyLong>
+        )}
+      </DeltakelsesmengdeVisning>
 
       <Detail className="mt-1" textColor="subtle">
         Deltakelsen ble opprettet i et annet datasystem og dette var

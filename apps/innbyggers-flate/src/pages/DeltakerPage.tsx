@@ -11,7 +11,6 @@ import {
   formatDateFromString,
   getDateFromString,
   getDeltakerStatusAarsakText,
-  harDeltakelsesmengde,
   hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
   kanDeleDeltakerMedArrangorForVurdering,
@@ -180,16 +179,15 @@ export const DeltakerPage = () => {
         className="mt-8"
       />
 
-      {harDeltakelsesmengde(deltaker.deltakerliste) && (
-        <DeltakelsesmengdeInfo
-          deltakelsesprosent={deltaker.deltakelsesprosent}
-          dagerPerUke={deltaker.dagerPerUke}
-          nesteDeltakelsesmengde={
-            deltaker.deltakelsesmengder.nesteDeltakelsesmengde
-          }
-          erEnkeltplass={erEnkeltplass}
-        />
-      )}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+        nesteDeltakelsesmengde={
+          deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+        }
+        erEnkeltplass={erEnkeltplass}
+      />
 
       <SeEndringer
         className="mt-8"

@@ -1,9 +1,8 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  deltakerprosentText,
+  DeltakelsesmengdeVisning,
   EMDASH,
-  harDeltakelsesmengde,
   hentTiltakHosArrangorTittel,
   UtkastHeader
 } from 'deltaker-flate-common'
@@ -50,20 +49,23 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      {harDeltakelsesmengde(deltaker.deltakerliste) && (
-        <>
-          <Heading level="3" size="medium" className="mt-6">
-            Deltakelsesmengde
-          </Heading>
-          <BodyLong size="small" className="mt-2">
-            {deltakerprosentText(
-              deltaker.deltakelsesprosent,
-              deltaker.dagerPerUke,
-              deltaker.deltakerliste.erEnkeltplass
-            )}
-          </BodyLong>
-        </>
-      )}
+      <DeltakelsesmengdeVisning
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+      >
+        {(text) => (
+          <>
+            <Heading level="3" size="medium" className="mt-6">
+              Deltakelsesmengde
+            </Heading>
+            <BodyLong size="small" className="mt-2">
+              {text}
+            </BodyLong>
+          </>
+        )}
+      </DeltakelsesmengdeVisning>
     </div>
   )
 }
