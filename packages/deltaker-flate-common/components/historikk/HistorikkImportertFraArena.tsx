@@ -7,7 +7,7 @@ import {
   getDeltakerStatusDisplayText
 } from '../../utils/displayText'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils'
-import { DeltakelsesmengdeVisning } from '../DeltakelsesmengdeVisning'
+import { DeltakelsesmengdeInline } from '../DeltakelsesmengdeVisning'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -47,16 +47,12 @@ export const HistorikkImportertFraArena = ({
         <BodyLong size="small">{`Dato: ${datoText}`}</BodyLong>
       )}
 
-      <DeltakelsesmengdeVisning
+      <DeltakelsesmengdeInline
         tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
         deltakelsesprosent={deltakelseVedImport.deltakelsesprosent}
         dagerPerUke={deltakelseVedImport.dagerPerUke}
-      >
-        {(text) => (
-          <BodyLong size="small">{`Deltakelsesmengde: ${text}`}</BodyLong>
-        )}
-      </DeltakelsesmengdeVisning>
+      />
 
       <Detail className="mt-1" textColor="subtle">
         Deltakelsen ble opprettet i et annet datasystem og dette var

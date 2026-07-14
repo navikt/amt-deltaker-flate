@@ -2,7 +2,7 @@ import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakelseInnhold,
-  DeltakelsesmengdeVisning,
+  DeltakelsesmengdeSection,
   PrisOgBetaling,
   UtkastHeader,
   VeilederSnakkeboble,
@@ -92,24 +92,17 @@ export const UtkastEnkeltplassPage = () => {
         }
       />
 
-      <DeltakelsesmengdeVisning
+      <DeltakelsesmengdeSection
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         hideWhenEmpty
-      >
-        {(text) => (
-          <div className="mt-4">
-            <Heading level="3" size="small">
-              Deltakelsesmengde
-            </Heading>
-            <BodyLong size="small" className="mt-2">
-              {text}
-            </BodyLong>
-          </div>
-        )}
-      </DeltakelsesmengdeVisning>
+        className="mt-4"
+        headingLevel="3"
+        headingSize="small"
+        bodyClassName="mt-2"
+      />
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}

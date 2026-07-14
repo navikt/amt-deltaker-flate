@@ -4,7 +4,7 @@ import { Tiltakskode } from '../../model/deltaker.ts'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
-import { DeltakelsesmengdeVisning } from '../DeltakelsesmengdeVisning.tsx'
+import { DeltakelsesmengdeBodyLongSection } from '../DeltakelsesmengdeVisning.tsx'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -60,21 +60,13 @@ export const HistorikkVedtak = ({
         </>
       )}
 
-      <DeltakelsesmengdeVisning
+      <DeltakelsesmengdeBodyLongSection
         tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
         deltakelsesprosent={deltakelsesprosent}
         dagerPerUke={dagerPerUke}
-      >
-        {(text) => (
-          <>
-            <BodyLong size="small" weight="semibold" className="mt-2">
-              Deltakelsesmengde
-            </BodyLong>
-            <BodyLong size="small">{text}</BodyLong>
-          </>
-        )}
-      </DeltakelsesmengdeVisning>
+        headingClassName="mt-2"
+      />
 
       <Detail className="mt-1" textColor="subtle">
         {fattetAvNav

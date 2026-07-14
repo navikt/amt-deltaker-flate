@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../../model/deltaker'
 import { Innsok } from '../../model/deltakerHistorikk'
 import {
-  DeltakelsesmengdeVisning,
+  DeltakelsesmengdeBodyLongSection,
   getDeltakelsesmengdeText
 } from '../DeltakelsesmengdeVisning'
 import { HistorikkSoktInn } from './HistorikkSoktInn'
-import { extractText, finnElement } from './test-utils'
+import { finnElement } from './test-utils'
 
 const lagInnsok = (dagerPerUkeVedInnsok: number | null = 3): Innsok =>
   ({
@@ -31,12 +31,12 @@ describe('HistorikkSoktInn - Deltakelsesmengde', () => {
       tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
       erEnkeltplass: true
     })
-    const visning = finnElement(tree, DeltakelsesmengdeVisning)
+    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
     expect(visning).not.toBeNull()
 
     const text = getDeltakelsesmengdeText(visning!.props)
     expect(text).not.toBeNull()
-    expect(extractText(visning!.props.children('dummy')).join(' ')).toContain(
+    expect(visning!.props.headingText ?? 'Deltakelsesmengde').toBe(
       'Deltakelsesmengde'
     )
   })
@@ -47,7 +47,7 @@ describe('HistorikkSoktInn - Deltakelsesmengde', () => {
       tiltakskode: Tiltakskode.OPPFOLGING,
       erEnkeltplass: false
     })
-    const visning = finnElement(tree, DeltakelsesmengdeVisning)
+    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
     expect(visning).toBeNull()
   })
 })

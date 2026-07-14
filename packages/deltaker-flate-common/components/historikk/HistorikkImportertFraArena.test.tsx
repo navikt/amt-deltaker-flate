@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from '../../model/deltaker'
 import { importertFraArena } from '../../model/deltakerHistorikk'
 import {
-  DeltakelsesmengdeVisning,
+  DeltakelsesmengdeInline,
   getDeltakelsesmengdeText
 } from '../DeltakelsesmengdeVisning'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
-import { extractText, finnElement } from './test-utils'
+import { finnElement } from './test-utils'
 
 const lagImportertFraArena = (): importertFraArena =>
   ({
@@ -26,12 +26,12 @@ describe('HistorikkImportertFraArena - Deltakelsesmengde', () => {
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false
     })
-    const visning = finnElement(tree, DeltakelsesmengdeVisning)
+    const visning = finnElement(tree, DeltakelsesmengdeInline)
     expect(visning).not.toBeNull()
 
     const text = getDeltakelsesmengdeText(visning!.props)
     expect(text).not.toBeNull()
-    expect(extractText(visning!.props.children('dummy')).join(' ')).toContain(
+    expect(visning!.props.prefix ?? 'Deltakelsesmengde:').toBe(
       'Deltakelsesmengde:'
     )
   })
@@ -42,7 +42,7 @@ describe('HistorikkImportertFraArena - Deltakelsesmengde', () => {
       tiltakskode: Tiltakskode.OPPFOLGING,
       erEnkeltplass: false
     })
-    const visning = finnElement(tree, DeltakelsesmengdeVisning)
+    const visning = finnElement(tree, DeltakelsesmengdeInline)
     expect(visning).not.toBeNull()
 
     const text = getDeltakelsesmengdeText(visning!.props)

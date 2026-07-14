@@ -1,7 +1,7 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeVisning,
+  DeltakelsesmengdeSection,
   EMDASH,
   hentTiltakHosArrangorTittel,
   UtkastHeader
@@ -49,23 +49,16 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      <DeltakelsesmengdeVisning
+      <DeltakelsesmengdeSection
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
-      >
-        {(text) => (
-          <>
-            <Heading level="3" size="medium" className="mt-6">
-              Deltakelsesmengde
-            </Heading>
-            <BodyLong size="small" className="mt-2">
-              {text}
-            </BodyLong>
-          </>
-        )}
-      </DeltakelsesmengdeVisning>
+        headingLevel="3"
+        headingSize="medium"
+        headingClassName="mt-6"
+        bodyClassName="mt-2"
+      />
     </div>
   )
 }
