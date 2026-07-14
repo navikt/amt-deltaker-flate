@@ -60,11 +60,12 @@ export const EndreOppstartsdatoModal = ({
   const { enhetId } = useAppContext()
   const defaultDatoer = getDatoer(deltaker, forslag)
 
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,
       defaultDatoer.sluttdato,
-      deltaker.deltakerliste.tiltakskode.kode
+      tiltakskode
     )
   )
   const [leggTilStartDatoBekreftelse, setLeggTilStartDatoBekreftelse] =
@@ -78,8 +79,6 @@ export const EndreOppstartsdatoModal = ({
   const [errorVarighetConfirmation, setErrorVarighetConfirmation] = useState<
     string | null
   >(null)
-
-  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   const skalVelgeVarighet =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
@@ -222,7 +221,7 @@ export const EndreOppstartsdatoModal = ({
           <VarighetField
             title="Hva er forventet varighet?"
             className="mt-6"
-            tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+            tiltakskode={tiltakskode}
             startDato={startdato}
             sluttdato={maxSluttdato}
             errorVarighet={sluttdato.varighetError}

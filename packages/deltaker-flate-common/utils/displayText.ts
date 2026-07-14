@@ -5,7 +5,8 @@ import {
   DeltakerStatusType,
   Oppstartstype,
   Pameldingstype,
-  Tiltakskode
+  Tiltakskode,
+  TiltakskodeDto
 } from '../model/deltaker'
 import {
   Endring,
@@ -64,49 +65,8 @@ export const deltakerprosentText = (
     : `${deltakelsesprosent ?? 100}\u00A0%`
 }
 
-export const getTiltakskodeDisplayText = (type: Tiltakskode): string => {
-  switch (type) {
-    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
-      return 'Arbeidsforberedende trening'
-    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
-      return 'Arbeidsrettet rehabilitering'
-    case Tiltakskode.AVKLARING:
-      return 'Avklaring'
-    case Tiltakskode.OPPFOLGING:
-      return 'Oppfølging'
-    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
-      return 'Digitalt jobbsøkerkurs'
-    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.JOBBKLUBB:
-      return 'Jobbsøkerkurs'
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-      return 'Varig tilrettelagt arbeid'
-    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
-      return 'Tilrettelagt arbeid i ordinær virksomhet'
-    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring (enkeltplass)'
-    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring (enkeltplass)'
-    case Tiltakskode.HOYERE_UTDANNING:
-      return 'Høyere utdanning'
-    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
-      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
-    case Tiltakskode.STUDIESPESIALISERING:
-      return 'Studiespesialisering'
-    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
-      return 'Høyere yrkesfaglig utdanning'
-  }
-}
-
 export const hentKladdTiltakHosArrangorTittel = (
-  tiltakskode: Tiltakskode,
+  tiltakskode: TiltakskodeDto,
   deltakerlisteNavn: string,
   arrangorNavn: string,
   kodeverk: OpplaringKategorisering | null,
@@ -116,7 +76,7 @@ export const hentKladdTiltakHosArrangorTittel = (
     kodeverk,
     OpplaringRepresenterer.KURSTYPE_ID
   )
-  if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode))
+  if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode.kode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
   return hentTiltakHosArrangorTittel(
@@ -127,32 +87,32 @@ export const hentKladdTiltakHosArrangorTittel = (
 }
 
 export const hentTiltakHosArrangorTittel = (
-  tiltakskode: Tiltakskode,
+  tiltakskode: TiltakskodeDto,
   arrangorNavn: string,
   kodeverk?: OpplaringKategorisering | null
 ) => {
-  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+  const kurstype = getKurstypeText(tiltakskode.kode, arrangorNavn, kodeverk)
 
   if (kurstype) return kurstype
-  if (tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+  if (tiltakskode.kode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
     return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
 
-  return `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+  return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
 }
 
 export const hentTiltakHosArrangorIngressTekst = (
-  tiltakskode: Tiltakskode,
+  tiltakskode: TiltakskodeDto,
   deltakerlisteNavn: string,
   arrangorNavn: string,
   kodeverk?: OpplaringKategorisering | null
 ) => {
-  const kurstype = getKurstypeText(tiltakskode, arrangorNavn, kodeverk)
+  const kurstype = getKurstypeText(tiltakskode.kode, arrangorNavn, kodeverk)
 
   if (kurstype) return kurstype
-  if (skalBrukeDeltakerlisteNavn(tiltakskode))
+  if (skalBrukeDeltakerlisteNavn(tiltakskode.kode))
     return `${deltakerlisteNavn} hos ${arrangorNavn}`
 
-  return `${getTiltakskodeDisplayText(tiltakskode)} hos ${arrangorNavn}`
+  return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
 }
 
 const skalBrukeDeltakerlisteNavn = (tiltakskode: Tiltakskode) =>

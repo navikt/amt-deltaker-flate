@@ -17,11 +17,11 @@ export const generateInnholdForRequest = (
   innholdsTekst?: string | null
 ): InnholdDto[] => {
   if (
-    deltaker.deltakerliste.tiltakskode.kode ===
+    deltaker.deltakerliste.tiltakskodeDto.kode ===
       Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-    deltaker.deltakerliste.tiltakskode.kode ===
+    deltaker.deltakerliste.tiltakskodeDto.kode ===
       Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER ||
-    erOpplaringstiltak(deltaker.deltakerliste.tiltakskode.kode)
+    erOpplaringstiltak(deltaker.deltakerliste.tiltakskodeDto.kode)
   ) {
     return innholdsTekst
       ? [

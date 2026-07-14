@@ -105,7 +105,7 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },

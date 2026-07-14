@@ -14,7 +14,7 @@ export const OpprettEnkeltplassPameldingPage = () => {
     >
       <Tilbakeknapp />
       <Heading level="1" size="large">
-        {deltaker.deltakerliste.tiltakskode.visningsnavn}
+        {deltaker.deltakerliste.tiltakskodeDto.visningsnavn}
       </Heading>
       <Detail className="mb-4">Enkeltplass uten rammeavtale</Detail>
       <Tag variant="outline" data-color="warning" size="small">

@@ -142,7 +142,7 @@ export const generateFormDefaultValues = (
   }
 
   return {
-    tiltakskode: pamelding.deltakerliste.tiltakskode.kode,
+    tiltakskode: pamelding.deltakerliste.tiltakskodeDto.kode,
     tilgjengeligInnhold: pamelding.deltakerliste.tilgjengeligInnhold.innhold,
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(pamelding),

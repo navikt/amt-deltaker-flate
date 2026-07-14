@@ -165,7 +165,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
 
   it('viser deltakelsesmengde for arbeidsmarkedsopplæring', () => {
     const deltaker = lagDeltaker()
-    deltaker.deltakerliste.tiltakskode.kode =
+    deltaker.deltakerliste.tiltakskodeDto.kode =
       Tiltakskode.ARBEIDSMARKEDSOPPLAERING
     deltaker.dagerPerUke = 4
 

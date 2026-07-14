@@ -36,12 +36,12 @@ const skalViseForlengKnapp = (
     harSluttetEllerFullfort(deltaker))
 
 const skalViseEndreInnholdKnapp = (deltaker: DeltakerResponse) =>
-  harInnhold(deltaker.deltakerliste.tiltakskode.kode) &&
+  harInnhold(deltaker.deltakerliste.tiltakskodeDto.kode) &&
   !erEnkeltPlass(deltaker)
 
 const skalViseEndreBakgrunnsinfoKnapp = (deltaker: DeltakerResponse) =>
   venterDeltarEllerAvsluttet(deltaker) &&
-  harBakgrunnsinfo(deltaker.deltakerliste.tiltakskode.kode)
+  harBakgrunnsinfo(deltaker.deltakerliste.tiltakskodeDto.kode)
 
 const skalViseEndreSluttarsakKnapp = (deltaker: DeltakerResponse) =>
   deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL

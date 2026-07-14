@@ -27,7 +27,7 @@ interface Props {
 
 export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
-  const tiltakskode = pamelding.deltakerliste.tiltakskode.kode
+  const tiltakskode = pamelding.deltakerliste.tiltakskodeDto.kode
   const skalViseInnholdSjekkbokser =
     erInnholdPakrevd(tiltakskode) && innhold.innhold.length > 0
 

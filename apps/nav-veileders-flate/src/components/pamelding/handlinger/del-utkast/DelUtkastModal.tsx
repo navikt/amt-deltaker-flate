@@ -28,7 +28,7 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
   const { getValues } = useFormContext<PameldingFormValues>()
 
   const tiltakHosArrangor = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskode.kode,
+    deltaker.deltakerliste.tiltakskodeDto,
     deltaker.deltakerliste.arrangorNavn,
     null
   )

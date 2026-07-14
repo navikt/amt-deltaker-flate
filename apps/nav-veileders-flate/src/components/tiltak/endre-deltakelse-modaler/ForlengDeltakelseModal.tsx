@@ -61,7 +61,7 @@ export const ForlengDeltakelseModal = ({
     finnValgtVarighetForTiltakskode(
       sluttdatoFraDeltaker,
       sluttdatoFraForslag,
-      deltaker.deltakerliste.tiltakskode.kode
+      deltaker.deltakerliste.tiltakskodeDto.kode
     )
   )
   const [varighetBekreftelse, setVarighetConfirmation] = useState(false)
@@ -82,7 +82,7 @@ export const ForlengDeltakelseModal = ({
 
   const begrunnelse = useBegrunnelse(!skalHaBegrunnelse)
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
   const { enhetId } = useAppContext()
 
   const skalBekrefteVarighet =
@@ -145,7 +145,7 @@ export const ForlengDeltakelseModal = ({
     >
       <VarighetField
         title="Hvor lenge skal deltakelsen forlenges?"
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
         startDato={sluttdatoFraDeltaker || undefined}
         sluttdato={getSisteGyldigeSluttDato(deltaker) || undefined}
         errorVarighet={sluttdato.varighetError}

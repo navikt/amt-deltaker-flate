@@ -39,7 +39,7 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
 
   const { doRedirect } = useModiaLink()
   const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskode.kode,
+    deltakerliste.tiltakskodeDto,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg
   )

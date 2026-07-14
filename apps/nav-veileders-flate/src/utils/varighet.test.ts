@@ -34,7 +34,8 @@ const pamelding: DeltakerResponse = {
   deltakerliste: {
     deltakerlisteId: uuidv4(),
     deltakerlisteNavn: 'Testliste',
-    tiltakskode: {
+    tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    tiltakskodeDto: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
     },
@@ -208,7 +209,7 @@ describe('getSkalBekrefteVarighet', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
             visningsnavn: 'Varig tilrettelagt arbeid'
           }
@@ -226,7 +227,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
             visningsnavn: 'Arbeidsforberedende trening'
           }
@@ -247,7 +248,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2024-04-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
             visningsnavn: 'Arbeidsforberedende trening'
           }
@@ -268,7 +269,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2024-02-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
             visningsnavn: 'Arbeidsforberedende trening'
           }
@@ -289,7 +290,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
             visningsnavn: 'Arbeidsforberedende trening'
           }
@@ -310,7 +311,7 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: {
+          tiltakskodeDto: {
             kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
             visningsnavn: 'Arbeidsforberedende trening'
           }

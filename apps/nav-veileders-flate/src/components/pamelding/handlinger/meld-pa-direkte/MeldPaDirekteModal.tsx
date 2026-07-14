@@ -52,7 +52,7 @@ export const MeldPaDirekteModal = ({
   const { doRedirect } = useModiaLink()
 
   const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskode.kode,
+    deltaker.deltakerliste.tiltakskodeDto,
     deltaker.deltakerliste.arrangorNavn,
     null
   )

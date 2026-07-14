@@ -20,12 +20,12 @@ export const UtkastEnkeltplassPage = () => {
   const deltakerliste = deltaker.deltakerliste
 
   const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskodeDto,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg
   )
   const ingressTekst = hentTiltakHosArrangorIngressTekst(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskodeDto,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg
@@ -69,7 +69,7 @@ export const UtkastEnkeltplassPage = () => {
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
         arrangorNavn={deltakerliste.arrangorNavn}
-        tiltakskode={deltakerliste.tiltakskode.kode}
+        tiltakskode={deltakerliste.tiltakskodeDto.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={ingressTekst}
       />
@@ -80,7 +80,7 @@ export const UtkastEnkeltplassPage = () => {
       </BodyLong>
 
       <DeltakelseInnhold
-        tiltakskode={deltakerliste.tiltakskode.kode}
+        tiltakskode={deltakerliste.tiltakskodeDto.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -93,7 +93,7 @@ export const UtkastEnkeltplassPage = () => {
       />
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}

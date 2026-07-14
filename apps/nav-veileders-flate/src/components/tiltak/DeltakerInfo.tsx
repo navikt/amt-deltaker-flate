@@ -31,7 +31,7 @@ interface Props {
 export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskode.kode,
+    deltaker.deltakerliste.tiltakskodeDto,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.opplaringKategoriseringValg
   )
@@ -49,11 +49,12 @@ export const DeltakerInfo = ({ className }: Props) => {
     dato = formatDate(deltaker.startdato)
   }
 
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
-      deltaker.deltakerliste.tiltakskode.kode,
+      tiltakskode,
       deltaker.deltakerliste.erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
@@ -81,7 +82,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <DeltakerStatusInfoTekst
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeDto}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
@@ -110,7 +111,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
@@ -130,7 +131,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={tiltakskode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -166,7 +167,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <SeEndringer
         className="mt-8"
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
@@ -177,7 +178,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <VedtakOgKlage
         statusType={deltaker.status.type}
         statusDato={deltaker.status.opprettet}
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={tiltakskode}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         importertFraArena={deltaker.importertFraArena}
@@ -186,7 +187,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <HvaDelesMedArrangor
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+        tiltakskode={tiltakskode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}

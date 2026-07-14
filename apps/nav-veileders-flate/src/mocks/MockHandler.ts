@@ -64,88 +64,6 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
-const getTiltakskodeVisningsNavn = (tiltakskode: Tiltakskode) => {
-  switch (tiltakskode) {
-    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
-      return 'Arbeidsforberedende trening'
-    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
-      return 'Arbeidsrettet rehabilitering'
-    case Tiltakskode.AVKLARING:
-      return 'Avklaring'
-    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
-      return 'Digitalt jobbsøkerkurs'
-    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.JOBBKLUBB:
-      return 'Jobbsøkerkurs'
-    case Tiltakskode.OPPFOLGING:
-      return 'Oppfølging'
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-      return 'Varig tilrettelagt arbeid'
-    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
-      return 'Tilrettelagt arbeid i ordinær virksomhet'
-    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring (enkeltplass)'
-    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring (enkeltplass)'
-    case Tiltakskode.HOYERE_UTDANNING:
-      return 'Høyere utdanning'
-    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
-      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
-    case Tiltakskode.STUDIESPESIALISERING:
-      return 'Studiespesialisering'
-    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
-      return 'Høyere yrkesfaglig utdanning'
-  }
-}
-
-const getTiltakskodeVisningsNavn = (tiltakskode: Tiltakskode) => {
-  switch (tiltakskode) {
-    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
-      return 'Arbeidsforberedende trening'
-    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
-      return 'Arbeidsrettet rehabilitering'
-    case Tiltakskode.AVKLARING:
-      return 'Avklaring'
-    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
-      return 'Digitalt jobbsøkerkurs'
-    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.JOBBKLUBB:
-      return 'Jobbsøkerkurs'
-    case Tiltakskode.OPPFOLGING:
-      return 'Oppfølging'
-    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
-      return 'Varig tilrettelagt arbeid'
-    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
-      return 'Tilrettelagt arbeid i ordinær virksomhet'
-    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring (enkeltplass)'
-    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring (enkeltplass)'
-    case Tiltakskode.HOYERE_UTDANNING:
-      return 'Høyere utdanning'
-    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
-      return 'Arbeidsmarkedsopplæring'
-    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
-      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
-    case Tiltakskode.STUDIESPESIALISERING:
-      return 'Studiespesialisering'
-    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
-      return 'Fag- og yrkesopplæring'
-    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
-      return 'Høyere yrkesfaglig utdanning'
-  }
-}
-
 export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
@@ -183,9 +101,10 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakskode: {
+        tiltakskode: this.tiltakskode,
+        tiltakskodeDto: {
           kode: this.tiltakskode,
-          visningsnavn: getTiltakskodeVisningsNavn(this.tiltakskode)
+          visningsnavn: this.tiltakskode.toLocaleLowerCase().replace('_', ' ')
         },
         oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: arrangor.navn,
@@ -567,9 +486,9 @@ export class MockHandler {
       tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.tiltakskode = {
+      oppdatertPamelding.deltakerliste.tiltakskodeDto = {
         kode: tiltakskode,
-        visningsnavn: getTiltakskodeVisningsNavn(tiltakskode)
+        visningsnavn: mockVisningsnavn(tiltakskode)
       }
       oppdatertPamelding.deltakerliste.opplaringKategoriseringValg =
         erNyEnkeltplass
@@ -1121,4 +1040,8 @@ const delesAdresseMedArrangor = (tiltakskode: Tiltakskode) => {
     tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
     !erOpplaringstiltak(tiltakskode)
   )
+}
+
+function mockVisningsnavn(tiltakskode: Tiltakskode) {
+  return tiltakskode.toLocaleLowerCase().replace('_', ' ')
 }

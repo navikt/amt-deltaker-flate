@@ -9,6 +9,7 @@ import {
   pameldingStatusSchema,
   Pameldingstype,
   prisinformasjonSchema,
+  Tiltakskode,
   tiltakskodeDtoSchema,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
@@ -30,7 +31,8 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: tiltakskodeDtoSchema,
+  tiltakskode: z.enum(Tiltakskode),
+  tiltakskodeDto: tiltakskodeDtoSchema,
   arrangorNavn: z.string(),
   arrangor: z
     .object({

@@ -324,7 +324,7 @@ export const getSkalBekrefteVarighet = (
   nySluttDato?: Date | null,
   nyStartdato?: Date | null
 ) => {
-  const tiltakskode = pamelding.deltakerliste.tiltakskode.kode
+  const tiltakskode = pamelding.deltakerliste.tiltakskodeDto.kode
   const startdato = nyStartdato || pamelding.startdato || undefined
   const softMaxVarighetDato =
     startdato && pamelding.softMaxVarighet

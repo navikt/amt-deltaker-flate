@@ -36,7 +36,7 @@ interface Props {
 export const PameldingForm = ({ className, focusOnOpen }: Props) => {
   const { deltaker } = useDeltakerContext()
   const { disabled } = usePameldingFormContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
 
   const defaultValues = generateFormDefaultValues(deltaker)
   const formRef = useRef<HTMLFormElement>(null)
@@ -61,10 +61,9 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
   const visVedtaksvarselVedDirektePamelding =
     harLopendeOppstart(deltaker.deltakerliste.oppstartstype) &&
     skalMeldePaaDirekte(deltaker.deltakerliste.pameldingstype) &&
-    (erOpplaringstiltak(deltaker.deltakerliste.tiltakskode.kode) ||
-      deltaker.deltakerliste.tiltakskode.kode === Tiltakskode.JOBBKLUBB ||
-      deltaker.deltakerliste.tiltakskode.kode ===
-        Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
+    (erOpplaringstiltak(tiltakskode) ||
+      tiltakskode === Tiltakskode.JOBBKLUBB ||
+      tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
 
   return (
     <form
@@ -81,7 +80,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
           <Innhold pamelding={deltaker} isDisabled={disabled} />
 
           <OmKurset
-            tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+            tiltakskode={tiltakskode}
             statusType={deltaker.status.type}
             oppstartstype={deltaker.deltakerliste.oppstartstype}
             pameldingstype={deltaker.deltakerliste.pameldingstype}
