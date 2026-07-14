@@ -9,19 +9,29 @@ import {
 } from './test-utils'
 
 describe('AvbruttUtkastPage - Deltakelsesmengde', () => {
+  const baseStatus = {
+    id: 's1',
+    type: DeltakerStatusType.AVBRUTT_UTKAST,
+    aarsak: null,
+    gyldigFra: new Date(),
+    gyldigTil: null,
+    opprettet: new Date()
+  }
+  const stottetTiltakDeltaker = lagInnbyggerDeltaker({
+    status: baseStatus
+  })
+  const ikkeStottetTiltakDeltaker = {
+    ...stottetTiltakDeltaker,
+    deltakerliste: {
+      ...stottetTiltakDeltaker.deltakerliste,
+      tiltakskode: Tiltakskode.OPPFOLGING
+    }
+  }
+
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithInnbyggerDeltakerContext(
       <AvbruttUtkastPage />,
-      lagInnbyggerDeltaker({
-        status: {
-          id: 's1',
-          type: DeltakerStatusType.AVBRUTT_UTKAST,
-          aarsak: null,
-          gyldigFra: new Date(),
-          gyldigTil: null,
-          opprettet: new Date()
-        }
-      })
+      stottetTiltakDeltaker
     )
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
   })
@@ -29,19 +39,7 @@ describe('AvbruttUtkastPage - Deltakelsesmengde', () => {
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
     renderWithInnbyggerDeltakerContext(
       <AvbruttUtkastPage />,
-      lagInnbyggerDeltaker(
-        {
-          status: {
-            id: 's1',
-            type: DeltakerStatusType.AVBRUTT_UTKAST,
-            aarsak: null,
-            gyldigFra: new Date(),
-            gyldigTil: null,
-            opprettet: new Date()
-          }
-        },
-        { tiltakskode: Tiltakskode.OPPFOLGING }
-      )
+      ikkeStottetTiltakDeltaker
     )
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })

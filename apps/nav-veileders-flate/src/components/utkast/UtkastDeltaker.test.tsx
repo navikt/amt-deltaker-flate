@@ -9,10 +9,19 @@ import {
 } from '../test-utils/deltaker-context-test-utils'
 
 describe('UtkastDeltaker - Deltakelsesmengde', () => {
+  const stottetTiltakDeltaker = lagNavVeilederDeltaker()
+  const ikkeStottetTiltakDeltaker = {
+    ...stottetTiltakDeltaker,
+    deltakerliste: {
+      ...stottetTiltakDeltaker.deltakerliste,
+      tiltakskode: Tiltakskode.OPPFOLGING
+    }
+  }
+
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithNavVeilederDeltakerContext(
       <UtkastDeltaker />,
-      lagNavVeilederDeltaker()
+      stottetTiltakDeltaker
     )
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
   })
@@ -20,7 +29,7 @@ describe('UtkastDeltaker - Deltakelsesmengde', () => {
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
     renderWithNavVeilederDeltakerContext(
       <UtkastDeltaker />,
-      lagNavVeilederDeltaker({}, { tiltakskode: Tiltakskode.OPPFOLGING })
+      ikkeStottetTiltakDeltaker
     )
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })

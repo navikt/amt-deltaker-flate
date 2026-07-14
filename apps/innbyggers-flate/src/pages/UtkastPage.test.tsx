@@ -13,15 +13,24 @@ vi.mock('react-router-dom', () => ({
 }))
 
 describe('UtkastPage - Deltakelsesmengde', () => {
+  const stottetTiltakDeltaker = lagInnbyggerDeltaker()
+  const ikkeStottetTiltakDeltaker = {
+    ...stottetTiltakDeltaker,
+    deltakerliste: {
+      ...stottetTiltakDeltaker.deltakerliste,
+      tiltakskode: Tiltakskode.OPPFOLGING
+    }
+  }
+
   it('viser deltakelsesmengde når tiltak støtter det', () => {
-    renderWithInnbyggerDeltakerContext(<UtkastPage />, lagInnbyggerDeltaker())
+    renderWithInnbyggerDeltakerContext(<UtkastPage />, stottetTiltakDeltaker)
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
     renderWithInnbyggerDeltakerContext(
       <UtkastPage />,
-      lagInnbyggerDeltaker({}, { tiltakskode: Tiltakskode.OPPFOLGING })
+      ikkeStottetTiltakDeltaker
     )
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })
