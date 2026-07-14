@@ -10,7 +10,6 @@ import {
 import { forslagSchema, HistorikkType } from './forslag'
 import { dateSchema, nullableDateSchema } from './utils'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
-import { prisinformasjonSchema } from './prisinformasjon.ts'
 
 export enum EndringType {
   EndreStartdato = 'EndreStartdato',
@@ -171,11 +170,7 @@ export const soktInnSchema = z.object({
   innsokt: nullableDateSchema,
   innsoktAv: z.string(),
   innsoktAvEnhet: z.string(),
-  startdato: nullableDateSchema.optional(),
-  sluttdato: nullableDateSchema.optional(),
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
-  dagerPerUkeVedInnsok: z.number().nullable().optional(),
-  prisinformasjonVedInnsok: prisinformasjonSchema.nullable().optional(),
   opplaringKategorisering: opplaringKategoriseringSchema.nullable(),
   utkastDelt: nullableDateSchema,
   utkastGodkjentAvNav: z.boolean()
