@@ -7,22 +7,7 @@ import {
   DeltakelsesmengdeAvsnitt,
   getDeltakelsesmengdeText
 } from './DeltakelsesmengdeVisning'
-
-const extractText = (node: ReactNode): string[] => {
-  if (node == null || typeof node === 'boolean') {
-    return []
-  }
-  if (typeof node === 'string' || typeof node === 'number') {
-    return [String(node)]
-  }
-  if (Array.isArray(node)) {
-    return node.flatMap(extractText)
-  }
-  if (isValidElement<{ children?: ReactNode }>(node)) {
-    return extractText(node.props.children)
-  }
-  return []
-}
+import { extractText } from './historikk/test-utils.ts'
 
 describe('DeltakelsesmengdeSection', () => {
   it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {
