@@ -7,7 +7,7 @@ import {
   DeltakelsesmengdeAvsnitt,
   getDeltakelsesmengdeText
 } from './DeltakelsesmengdeVisning'
-import { extractText } from './historikk/test-utils.ts'
+import { extractText } from './test-utils'
 
 describe('DeltakelsesmengdeSection', () => {
   it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {

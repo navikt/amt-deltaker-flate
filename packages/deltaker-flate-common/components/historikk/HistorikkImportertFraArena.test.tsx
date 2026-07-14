@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from '../../model/deltaker'
 import { importertFraArena } from '../../model/deltakerHistorikk'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
-import { extractText } from './test-utils'
+import { extractText } from '../test-utils'
 
 const lagImportertFraArena = (): importertFraArena =>
   ({

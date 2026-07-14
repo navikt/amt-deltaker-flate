@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../../model/deltaker'
 import { Vedtak } from '../../model/deltakerHistorikk'
 import { HistorikkVedtak } from './HistorikkVedtak'
-import { extractText } from './test-utils'
+import { extractText } from '../test-utils'
 
 const lagVedtak = (): Vedtak =>
   ({

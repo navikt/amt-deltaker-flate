@@ -51,6 +51,23 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(text).toContain('3 dager i uka')
   })
 
+  // Litt søkt edgecase, men test dokumenterer oppførsel som evt kan justeres ved behov.
+  it('returnerer null når tiltaket ikke støtter deltakelsesmengde selv om neste periode finnes', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.OPPFOLGING,
+      deltakelsesprosent: 80,
+      dagerPerUke: 3,
+      erEnkeltplass: false,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: 60,
+        dagerPerUke: 3,
+        gyldigFra: new Date('2025-08-01')
+      }
+    })
+
+    expect(result).toBeNull()
+  })
+
   it('viser enkel periode når neste deltakelsesmengde mangler', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,

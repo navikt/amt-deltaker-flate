@@ -43,7 +43,6 @@ const getHistorikkItem = (
         <HistorikkSoktInn
           soktInnHistorikk={historikk}
           tiltakskode={tiltakskode}
-          erEnkeltplass={erEnkeltplass}
         />
       )
     case HistorikkType.Endring:

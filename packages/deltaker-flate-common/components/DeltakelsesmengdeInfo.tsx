@@ -34,6 +34,10 @@ export function DeltakelsesmengdeInfo({
       })
     : null
 
+  if (deltakelsesmengdeText === null) {
+    return null
+  }
+
   if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
     return null
   }
