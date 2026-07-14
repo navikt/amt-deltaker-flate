@@ -58,7 +58,7 @@ export const DeltakelsesmengdeAvsnitt = ({
 }: DeltakelsesmengdeSectionProps) => {
   const text = getDeltakelsesmengdeText(props)
 
-  if (text === null || (hideWhenEmpty && !text)) {
+  if (text === null || !text) {
     return null
   }
 
@@ -93,7 +93,7 @@ export const DeltakelsesmengdeBodyLongSection = ({
 }: DeltakelsesmengdeBodyLongSectionProps) => {
   const text = getDeltakelsesmengdeText(props)
 
-  if (text === null || (hideWhenEmpty && !text)) {
+  if (text === null || !text) {
     return null
   }
 
@@ -117,7 +117,7 @@ export const DeltakelsesmengdeInline = ({
 }: DeltakelsesmengdeInlineProps) => {
   const text = getDeltakelsesmengdeText(props)
 
-  if (text === null || (hideWhenEmpty && !text)) {
+  if (text === null || !text) {
     return null
   }
 

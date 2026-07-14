@@ -52,13 +52,12 @@ describe('DeltakelsesmengdeSection', () => {
     expect(extractText(result).join(' ')).toContain('Deltakelsesmengde')
   })
 
-  it('hideWhenEmpty skjuler rendering når tekst er tom', () => {
+  it('skjuler rendering når tekst er tom selv uten hideWhenEmpty', () => {
     const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: true,
       deltakelsesprosent: null,
       dagerPerUke: 0,
-      hideWhenEmpty: true,
       headingLevel: '3',
       headingSize: 'small'
     })
