@@ -16,7 +16,6 @@ interface DeltakelsesmengdeSectionProps extends DeltakelsesmengdeProps {
   headingSize: 'medium' | 'small'
   headingClassName?: string
   bodyClassName?: string
-  className?: string
 }
 
 interface DeltakelsesmengdeBodyLongSectionProps extends DeltakelsesmengdeProps {
@@ -48,7 +47,6 @@ export const DeltakelsesmengdeAvsnitt = ({
   headingSize,
   headingClassName,
   bodyClassName,
-  className,
   ...props
 }: DeltakelsesmengdeSectionProps) => {
   const text = getDeltakelsesmengdeText(props)
@@ -57,7 +55,7 @@ export const DeltakelsesmengdeAvsnitt = ({
     return null
   }
 
-  const content = (
+  return (
     <>
       <Heading
         level={headingLevel}
@@ -71,12 +69,6 @@ export const DeltakelsesmengdeAvsnitt = ({
       </BodyLong>
     </>
   )
-
-  if (className) {
-    return <div className={className}>{content}</div>
-  }
-
-  return content
 }
 
 export const DeltakelsesmengdeBodyLongSection = ({
