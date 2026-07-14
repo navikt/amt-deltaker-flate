@@ -4,7 +4,6 @@ import {
   getDeltakerStatusDisplayText,
   getOppstartstypeDisplayText,
   getPameldingstypeDisplayText,
-  getTiltakskodeDisplayText,
   logError,
   Oppstartstype,
   Pameldingstype,
@@ -15,6 +14,47 @@ import { useState } from 'react'
 import { useDeltakerContext } from '../../DeltakerContext.tsx'
 import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker.ts'
 import { API_URL, useMock } from '../../utils/environment-utils'
+
+const getTiltakskodeVisningsNavn = (tiltakskode: Tiltakskode) => {
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
+      return 'Arbeidsforberedende trening'
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
+      return 'Arbeidsrettet rehabilitering'
+    case Tiltakskode.AVKLARING:
+      return 'Avklaring'
+    case Tiltakskode.OPPFOLGING:
+      return 'Oppfølging'
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+      return 'Varig tilrettelagt arbeid'
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
+      return 'Digitalt jobbsøkerkurs'
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.JOBBKLUBB:
+      return 'Jobbsøkerkurs'
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring (enkeltplass)'
+    case Tiltakskode.HOYERE_UTDANNING:
+      return 'Høyere utdanning'
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
+    case Tiltakskode.STUDIESPESIALISERING:
+      return 'Studiespesialisering'
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+      return 'Høyere yrkesfaglig utdanning'
+    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
+      return 'Tilrettelagt arbeid i ordinær virksomhet'
+  }
+}
 
 export const endreMockTiltakskode = (
   nyTiltakskode: Tiltakskode
@@ -243,7 +283,7 @@ const DemoStatusInstillinger = () => {
         >
           {Object.values(Tiltakskode).map((kode) => (
             <option key={kode} value={kode}>
-              {getTiltakskodeDisplayText(kode)}
+              {getTiltakskodeVisningsNavn(kode)}
             </option>
           ))}
         </Select>

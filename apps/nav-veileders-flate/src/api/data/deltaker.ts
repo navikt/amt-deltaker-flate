@@ -31,6 +31,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
   tiltakskode: z.enum(Tiltakskode),
+  tiltakskodeVisningsNavn: z.string(),
   arrangorNavn: z.string(),
   arrangor: z
     .object({

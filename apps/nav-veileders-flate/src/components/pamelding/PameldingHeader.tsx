@@ -4,7 +4,6 @@ import {
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
-  getTiltakskodeDisplayText,
   hentKladdTiltakHosArrangorTittel,
   Tiltakskode,
   UtkastHeader,
@@ -57,7 +56,7 @@ export const PameldingHeader = ({
       </Heading>
 
       <Detail className="mb-4">
-        {getTiltakskodeDisplayText(deltakerliste.tiltakskode)}
+        {deltakerliste.tiltakskodeVisningsNavn}
         {visGruppe && ' (gruppe)'}
       </Detail>
 
