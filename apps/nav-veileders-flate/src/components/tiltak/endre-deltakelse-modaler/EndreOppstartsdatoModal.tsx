@@ -64,7 +64,7 @@ export const EndreOppstartsdatoModal = ({
     finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,
       defaultDatoer.sluttdato,
-      deltaker.deltakerliste.tiltakskode
+      deltaker.deltakerliste.tiltakskode.kode
     )
   )
   const [leggTilStartDatoBekreftelse, setLeggTilStartDatoBekreftelse] =
@@ -79,7 +79,7 @@ export const EndreOppstartsdatoModal = ({
     string | null
   >(null)
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   const skalVelgeVarighet =
     tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
@@ -222,7 +222,7 @@ export const EndreOppstartsdatoModal = ({
           <VarighetField
             title="Hva er forventet varighet?"
             className="mt-6"
-            tiltakskode={deltaker.deltakerliste.tiltakskode}
+            tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
             startDato={startdato}
             sluttdato={maxSluttdato}
             errorVarighet={sluttdato.varighetError}

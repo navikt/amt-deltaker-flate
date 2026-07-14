@@ -35,13 +35,13 @@ export const UtkastPage = () => {
 
   const arrangorNavn = deltakerliste.arrangorNavn
   const navnHosArrangorTekst = hentTiltakHosArrangorIngressTekst(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskode.kode,
     deltakerliste.deltakerlisteNavn,
     arrangorNavn
   )
 
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskode.kode,
     deltakerliste.arrangorNavn
   )
 
@@ -65,12 +65,12 @@ export const UtkastPage = () => {
     }
   }
 
-  const tiltakskode = deltakerliste.tiltakskode
+  const tiltakskode = deltakerliste.tiltakskode.kode
   const visInnholdOgBakgrunnsinfo =
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltakerliste.pameldingstype,
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskode.kode,
     deltakerliste.erEnkeltplass
   )
 
@@ -94,13 +94,13 @@ export const UtkastPage = () => {
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
         arrangorNavn={arrangorNavn}
-        tiltakskode={deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={navnHosArrangorTekst}
       />
 
       <OmKurset
-        tiltakskode={deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltakerliste.oppstartstype}
         pameldingstype={deltakerliste.pameldingstype}
@@ -117,7 +117,7 @@ export const UtkastPage = () => {
       />
 
       <DeltakelseInnhold
-        tiltakskode={deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6">

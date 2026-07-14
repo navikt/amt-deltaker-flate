@@ -12,7 +12,7 @@ import { DIALOG_URL } from '../utils/environment-utils.ts'
 export const DeltakerPage = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskode,
+    deltaker.deltakerliste.tiltakskode.kode,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.opplaringKategoriseringValg
   )

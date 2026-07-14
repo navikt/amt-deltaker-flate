@@ -118,7 +118,7 @@ export const generateFormDefaultValues = (
   deltaker: DeltakerResponse
 ): PameldingEnkeltplassFormValues => {
   return {
-    tiltakskode: deltaker.deltakerliste.tiltakskode,
+    tiltakskode: deltaker.deltakerliste.tiltakskode.kode,
     arrangorUnderenhet:
       deltaker.deltakerliste.arrangor?.organisasjonsnummer ?? '',
     startdato: deltaker.startdato

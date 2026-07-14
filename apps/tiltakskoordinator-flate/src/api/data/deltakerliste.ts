@@ -4,7 +4,7 @@ import {
   nullableDateSchema,
   Oppstartstype,
   Pameldingstype,
-  Tiltakskode,
+  tiltakskodeDtoSchema,
   Vurderingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -64,7 +64,7 @@ const koordinatorSchema = z.object({
 export const deltakerlisteDetaljerSchema = z.object({
   id: z.uuid(),
   navn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
+  tiltakskode: tiltakskodeDtoSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   oppstartstype: z.enum(Oppstartstype).nullable(),

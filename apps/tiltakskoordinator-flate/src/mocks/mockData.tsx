@@ -125,7 +125,12 @@ export const createMockDeltaker = (
       epost: 'veileder.veiledersen@epost.no'
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
-    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    tiltakskode: {
+      kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      visningsnavn: getTiltakskodeVisningsNavn(
+        Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+      )
+    },
     pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
     oppstartstype: Oppstartstype.FELLES,
     tilgangTilBruker: !adresseBeskyttet,
@@ -138,6 +143,47 @@ export const createMockDeltaker = (
     ulesteHendelser: ulesteHendelserUtvalg,
     deltakelsesinnhold: 'Test',
     erEnkeltplass: false
+  }
+}
+
+const getTiltakskodeVisningsNavn = (tiltakskode: Tiltakskode) => {
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
+      return 'Arbeidsforberedende trening'
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
+      return 'Arbeidsrettet rehabilitering'
+    case Tiltakskode.AVKLARING:
+      return 'Avklaring'
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
+      return 'Digitalt jobbsøkerkurs'
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.JOBBKLUBB:
+      return 'Jobbsøkerkurs'
+    case Tiltakskode.OPPFOLGING:
+      return 'Oppfølging'
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+      return 'Varig tilrettelagt arbeid'
+    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
+      return 'Tilrettelagt arbeid i ordinær virksomhet'
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring (enkeltplass)'
+    case Tiltakskode.HOYERE_UTDANNING:
+      return 'Høyere utdanning'
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
+    case Tiltakskode.STUDIESPESIALISERING:
+      return 'Studiespesialisering'
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+      return 'Høyere yrkesfaglig utdanning'
   }
 }
 
@@ -222,7 +268,12 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
   return {
     id: uuidv4(),
     navn: 'Kometrytter Kurs',
-    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    tiltakskode: {
+      kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      visningsnavn: getTiltakskodeVisningsNavn(
+        Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+      )
+    },
     erEnkeltplass: false,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),

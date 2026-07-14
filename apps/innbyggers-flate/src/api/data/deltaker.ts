@@ -7,18 +7,17 @@ import {
   vedtaksinformasjonSchema,
   Oppstartstype,
   nullableDateSchema,
-  Tiltakskode,
   Pameldingstype,
   opplaringKategoriseringSchema,
-  prisinformasjonSchema
+  prisinformasjonSchema,
+  tiltakskodeDtoSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
-  tiltakskodeVisningsNavn: z.string(),
+  tiltakskode: tiltakskodeDtoSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   pameldingstype: z.enum(Pameldingstype),

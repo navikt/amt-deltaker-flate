@@ -22,7 +22,10 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Test',
-      tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      tiltakskode: {
+        kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+        visningsnavn: 'Arbeidsmarkedsopplæring'
+      },
       arrangor,
       erEnkeltplass: true,
       sluttdato: dayjs('2030-02-20').toDate(),

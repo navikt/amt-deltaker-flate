@@ -33,6 +33,47 @@ const harVedtak = (statusType: DeltakerStatusType) => {
   )
 }
 
+const getTiltakskodeVisningsNavn = (tiltakskode: Tiltakskode) => {
+  switch (tiltakskode) {
+    case Tiltakskode.ARBEIDSFORBEREDENDE_TRENING:
+      return 'Arbeidsforberedende trening'
+    case Tiltakskode.ARBEIDSRETTET_REHABILITERING:
+      return 'Arbeidsrettet rehabilitering'
+    case Tiltakskode.AVKLARING:
+      return 'Avklaring'
+    case Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK:
+      return 'Digitalt jobbsøkerkurs'
+    case Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.JOBBKLUBB:
+      return 'Jobbsøkerkurs'
+    case Tiltakskode.OPPFOLGING:
+      return 'Oppfølging'
+    case Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET:
+      return 'Varig tilrettelagt arbeid'
+    case Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER:
+      return 'Tilrettelagt arbeid i ordinær virksomhet'
+    case Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring (enkeltplass)'
+    case Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring (enkeltplass)'
+    case Tiltakskode.HOYERE_UTDANNING:
+      return 'Høyere utdanning'
+    case Tiltakskode.ARBEIDSMARKEDSOPPLAERING:
+      return 'Arbeidsmarkedsopplæring'
+    case Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV:
+      return 'Norskopplæring, grunnleggende ferdigheter og FOV'
+    case Tiltakskode.STUDIESPESIALISERING:
+      return 'Studiespesialisering'
+    case Tiltakskode.FAG_OG_YRKESOPPLAERING:
+      return 'Fag- og yrkesopplæring'
+    case Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING:
+      return 'Høyere yrkesfaglig utdanning'
+  }
+}
+
 export const createDeltaker = (
   statusType: DeltakerStatusType,
   tiltakskode: Tiltakskode
@@ -53,7 +94,10 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'Testliste',
-      tiltakskode: tiltakskode,
+      tiltakskode: {
+        kode: tiltakskode,
+        visningsnavn: getTiltakskodeVisningsNavn(tiltakskode)
+      },
       arrangorNavn: 'Den Beste Arrangøren AS',
       oppstartstype: Oppstartstype.LOPENDE,
       pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
@@ -167,7 +211,10 @@ export class MockHandler {
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
-      oppdatertDeltaker.deltakerliste.tiltakskode = tiltakskode
+      oppdatertDeltaker.deltakerliste.tiltakskode = {
+        kode: tiltakskode,
+        visningsnavn: getTiltakskodeVisningsNavn(tiltakskode)
+      }
 
       const innhold = getInnholdForTiltakskode(tiltakskode)
       oppdatertDeltaker.deltakelsesinnhold = {

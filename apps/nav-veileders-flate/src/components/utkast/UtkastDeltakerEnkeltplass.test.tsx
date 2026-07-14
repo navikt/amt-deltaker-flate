@@ -38,7 +38,10 @@ const lagDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Norskopplæring, grunnleggende ferdigheter og FOV',
-      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+      tiltakskode: {
+        kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+        visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'
+      },
       arrangorNavn: 'Språkskolen AS',
       arrangor: { navn: 'Språkskolen AS', organisasjonsnummer: '999888777' },
       erEnkeltplass: true,
@@ -162,7 +165,8 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
 
   it('viser deltakelsesmengde for arbeidsmarkedsopplæring', () => {
     const deltaker = lagDeltaker()
-    deltaker.deltakerliste.tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
+    deltaker.deltakerliste.tiltakskode.kode =
+      Tiltakskode.ARBEIDSMARKEDSOPPLAERING
     deltaker.dagerPerUke = 4
 
     renderWithDeltaker(deltaker)
