@@ -23,6 +23,7 @@ import {
   ForslagStatusType,
   HistorikkType
 } from '../model/forslag'
+import { PrisinformasjonType } from '../model/prisinformasjon'
 
 import { INNHOLD_TYPE_ANNET } from './constants'
 import { lagOpplaringKategoriseringMockRespons } from './mockKodeverk.ts'
@@ -538,9 +539,16 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       innsokt: dayjs().subtract(10, 'days').toDate(),
       innsoktAv: 'Navn Navnesen',
       innsoktAvEnhet: 'Nav Fredrikstad',
+      startdato: dayjs().add(2, 'months').toDate(),
+      sluttdato: dayjs().add(10, 'months').toDate(),
+      dagerPerUkeVedInnsok: 3,
       utkastDelt: dayjs().subtract(3, 'day').toDate(),
       utkastGodkjentAvNav: false,
       deltakelsesinnholdVedInnsok: null,
+      prisinformasjonVedInnsok: {
+        type: PrisinformasjonType.Anskaffelse,
+        pris: 25000
+      },
       opplaringKategorisering: lagOpplaringKategoriseringMockRespons()
     }
   ]
