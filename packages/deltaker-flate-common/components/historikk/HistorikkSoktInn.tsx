@@ -2,13 +2,9 @@ import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import { Innsok } from '../../model/deltakerHistorikk.ts'
-import { deltakerprosentText } from '../../utils/displayText.ts'
-import {
-  formatDate,
-  formatDateWithMonthName,
-  harDeltakelsesmengde
-} from '../../utils/utils.ts'
+import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
+import { DeltakelsesmengdeBodyLongSection } from '../DeltakelsesmengdeVisning.tsx'
 import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
 
@@ -59,18 +55,13 @@ export const HistorikkSoktInn = ({
         opplaringKategoriseringValg={opplaringKategorisering}
       />
 
-      {erEnkeltplass &&
-        harDeltakelsesmengde({ tiltakskode, erEnkeltplass }) &&
-        dagerPerUkeVedInnsok != null && (
-          <>
-            <BodyLong size="small" weight="semibold" className="mt-4">
-              Deltakelsesmengde
-            </BodyLong>
-            <BodyLong size="small">
-              {deltakerprosentText(null, dagerPerUkeVedInnsok, erEnkeltplass)}
-            </BodyLong>
-          </>
-        )}
+      <DeltakelsesmengdeBodyLongSection
+        tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
+        deltakelsesprosent={null}
+        dagerPerUke={dagerPerUkeVedInnsok}
+        headingClassName="mt-4"
+      />
 
       {prisinformasjonVedInnsok && (
         <>
