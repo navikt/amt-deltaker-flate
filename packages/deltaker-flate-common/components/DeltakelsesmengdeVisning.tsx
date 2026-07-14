@@ -10,11 +10,7 @@ interface DeltakelsesmengdeProps {
   dagerPerUke: number | null
 }
 
-interface DeltakelsesmengdeCommonProps extends DeltakelsesmengdeProps {
-  hideWhenEmpty?: boolean
-}
-
-interface DeltakelsesmengdeSectionProps extends DeltakelsesmengdeCommonProps {
+interface DeltakelsesmengdeSectionProps extends DeltakelsesmengdeProps {
   headingText?: string
   headingLevel: '2' | '3'
   headingSize: 'medium' | 'small'
@@ -23,13 +19,13 @@ interface DeltakelsesmengdeSectionProps extends DeltakelsesmengdeCommonProps {
   className?: string
 }
 
-interface DeltakelsesmengdeBodyLongSectionProps extends DeltakelsesmengdeCommonProps {
+interface DeltakelsesmengdeBodyLongSectionProps extends DeltakelsesmengdeProps {
   headingText?: string
   headingClassName?: string
   bodyClassName?: string
 }
 
-interface DeltakelsesmengdeInlineProps extends DeltakelsesmengdeCommonProps {
+interface DeltakelsesmengdeInlineProps extends DeltakelsesmengdeProps {
   prefix?: string
   className?: string
 }
@@ -47,7 +43,6 @@ export const getDeltakelsesmengdeText = ({
 }
 
 export const DeltakelsesmengdeAvsnitt = ({
-  hideWhenEmpty = false,
   headingText = 'Deltakelsesmengde',
   headingLevel,
   headingSize,
@@ -85,7 +80,6 @@ export const DeltakelsesmengdeAvsnitt = ({
 }
 
 export const DeltakelsesmengdeBodyLongSection = ({
-  hideWhenEmpty = false,
   headingText = 'Deltakelsesmengde',
   headingClassName,
   bodyClassName,
@@ -110,7 +104,6 @@ export const DeltakelsesmengdeBodyLongSection = ({
 }
 
 export const DeltakelsesmengdeInline = ({
-  hideWhenEmpty = false,
   prefix = 'Deltakelsesmengde:',
   className,
   ...props

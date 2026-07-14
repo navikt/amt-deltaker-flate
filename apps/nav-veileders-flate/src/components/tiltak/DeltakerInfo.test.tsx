@@ -3,8 +3,8 @@ import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import {
-  lagNavVeilederDeltaker,
-  renderWithNavVeilederDeltakerContext
+  lagDeltaker,
+  renderWithDeltakerContext
 } from '../test-utils/deltaker-context-test-utils'
 import { DeltakerInfo } from './DeltakerInfo'
 
@@ -17,7 +17,7 @@ describe('DeltakerInfo - Deltakelsesmengde', () => {
     gyldigTil: null,
     opprettet: new Date()
   }
-  const stottetTiltakDeltaker = lagNavVeilederDeltaker({
+  const stottetTiltakDeltaker = lagDeltaker({
     status: baseStatus
   })
   const ikkeStottetTiltakDeltaker = {
@@ -29,7 +29,7 @@ describe('DeltakerInfo - Deltakelsesmengde', () => {
   }
 
   it('viser deltakelsesmengde når tiltak støtter det', () => {
-    renderWithNavVeilederDeltakerContext(
+    renderWithDeltakerContext(
       <DeltakerInfo className="" />,
       stottetTiltakDeltaker
     )
@@ -37,7 +37,7 @@ describe('DeltakerInfo - Deltakelsesmengde', () => {
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
-    renderWithNavVeilederDeltakerContext(
+    renderWithDeltakerContext(
       <DeltakerInfo className="" />,
       ikkeStottetTiltakDeltaker
     )

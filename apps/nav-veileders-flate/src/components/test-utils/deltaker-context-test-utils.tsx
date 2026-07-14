@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
 
-export const lagNavVeilederDeltaker = (
+export const lagDeltaker = (
   overrides: Partial<DeltakerResponse> = {},
   deltakerlisteOverrides: Partial<DeltakerResponse['deltakerliste']> = {}
 ): DeltakerResponse => {
@@ -63,7 +63,7 @@ export const lagNavVeilederDeltaker = (
   } as unknown as DeltakerResponse
 }
 
-export const renderWithNavVeilederDeltakerContext = (
+export const renderWithDeltakerContext = (
   ui: ReactNode,
   deltaker: DeltakerResponse
 ) =>

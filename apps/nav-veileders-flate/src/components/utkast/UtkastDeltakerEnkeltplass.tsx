@@ -50,7 +50,6 @@ export const UtkastDeltakerEnkeltplass = () => {
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
-        hideWhenEmpty
         headingLevel="3"
         headingSize="small"
         bodyClassName="mt-2"

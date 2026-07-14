@@ -97,7 +97,6 @@ export const UtkastEnkeltplassPage = () => {
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
-        hideWhenEmpty
         className="mt-4"
         headingLevel="3"
         headingSize="small"
