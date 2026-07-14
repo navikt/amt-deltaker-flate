@@ -1,12 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../../model/deltaker'
 import { Vedtak } from '../../model/deltakerHistorikk'
-import {
-  DeltakelsesmengdeBodyLongSection,
-  getDeltakelsesmengdeText
-} from '../DeltakelsesmengdeVisning'
 import { HistorikkVedtak } from './HistorikkVedtak'
-import { finnElement } from './test-utils'
+import { extractText } from './test-utils'
 
 const lagVedtak = (): Vedtak =>
   ({
@@ -24,31 +20,27 @@ const lagVedtak = (): Vedtak =>
 
 describe('HistorikkVedtak - Deltakelsesmengde', () => {
   it('konfigurerer visning når tiltak støtter deltakelsesmengde', () => {
-    const tree = HistorikkVedtak({
-      endringsVedtak: lagVedtak(),
-      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      erEnkeltplass: false
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
-    expect(visning).not.toBeNull()
+    const text = extractText(
+      HistorikkVedtak({
+        endringsVedtak: lagVedtak(),
+        tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+        erEnkeltplass: false
+      })
+    ).join(' ')
 
-    const text = getDeltakelsesmengdeText(visning!.props)
-    expect(text).not.toBeNull()
-    expect(visning!.props.headingText ?? 'Deltakelsesmengde').toBe(
-      'Deltakelsesmengde'
-    )
+    expect(text).toContain('Deltakelsesmengde')
+    expect(text).toContain('80')
   })
 
-  it('konfigurerer skjuling når tiltak ikke støtter deltakelsesmengde', () => {
-    const tree = HistorikkVedtak({
-      endringsVedtak: lagVedtak(),
-      tiltakskode: Tiltakskode.OPPFOLGING,
-      erEnkeltplass: false
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
-    expect(visning).not.toBeNull()
+  it('skjuler visning når tiltak ikke støtter deltakelsesmengde', () => {
+    const text = extractText(
+      HistorikkVedtak({
+        endringsVedtak: lagVedtak(),
+        tiltakskode: Tiltakskode.OPPFOLGING,
+        erEnkeltplass: false
+      })
+    ).join(' ')
 
-    const text = getDeltakelsesmengdeText(visning!.props)
-    expect(text).toBeNull()
+    expect(text).not.toContain('Deltakelsesmengde')
   })
 })

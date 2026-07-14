@@ -71,6 +71,10 @@ export const DeltakelsesmengdeAvsnitt = ({
   )
 }
 
+/**
+ * TODO: med korrekt semantisk HTML i historikken burde denne kunne erstattes med
+ *   [DeltakelsesmengdeAvsnitt].
+ */
 export const DeltakelsesmengdeBodyLongSection = ({
   headingText = 'Deltakelsesmengde',
   headingClassName,

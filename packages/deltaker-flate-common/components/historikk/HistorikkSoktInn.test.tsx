@@ -1,12 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../../model/deltaker'
 import { Innsok } from '../../model/deltakerHistorikk'
-import {
-  DeltakelsesmengdeBodyLongSection,
-  getDeltakelsesmengdeText
-} from '../DeltakelsesmengdeVisning'
 import { HistorikkSoktInn } from './HistorikkSoktInn'
-import { finnElement } from './test-utils'
+import { extractText } from './test-utils'
 
 const lagInnsok = (dagerPerUkeVedInnsok: number | null = 3): Innsok =>
   ({
@@ -26,28 +22,27 @@ const lagInnsok = (dagerPerUkeVedInnsok: number | null = 3): Innsok =>
 
 describe('HistorikkSoktInn - Deltakelsesmengde', () => {
   it('konfigurerer visning når tiltak støtter deltakelsesmengde', () => {
-    const tree = HistorikkSoktInn({
-      soktInnHistorikk: lagInnsok(3),
-      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-      erEnkeltplass: true
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
-    expect(visning).not.toBeNull()
+    const text = extractText(
+      HistorikkSoktInn({
+        soktInnHistorikk: lagInnsok(3),
+        tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+        erEnkeltplass: true
+      })
+    ).join(' ')
 
-    const text = getDeltakelsesmengdeText(visning!.props)
-    expect(text).not.toBeNull()
-    expect(visning!.props.headingText ?? 'Deltakelsesmengde').toBe(
-      'Deltakelsesmengde'
-    )
+    expect(text).toContain('Deltakelsesmengde')
+    expect(text).toContain('3 dager i uka')
   })
 
   it('konfigurerer skjuling når deltaker ikke er enkeltplass', () => {
-    const tree = HistorikkSoktInn({
-      soktInnHistorikk: lagInnsok(3),
-      tiltakskode: Tiltakskode.OPPFOLGING,
-      erEnkeltplass: false
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeBodyLongSection)
-    expect(visning).toBeNull()
+    const text = extractText(
+      HistorikkSoktInn({
+        soktInnHistorikk: lagInnsok(3),
+        tiltakskode: Tiltakskode.OPPFOLGING,
+        erEnkeltplass: false
+      })
+    ).join(' ')
+
+    expect(text).not.toContain('Deltakelsesmengde')
   })
 })

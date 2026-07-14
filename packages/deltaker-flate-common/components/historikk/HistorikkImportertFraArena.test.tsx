@@ -1,12 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from '../../model/deltaker'
 import { importertFraArena } from '../../model/deltakerHistorikk'
-import {
-  DeltakelsesmengdeInline,
-  getDeltakelsesmengdeText
-} from '../DeltakelsesmengdeVisning'
 import { HistorikkImportertFraArena } from './HistorikkImportertFraArena'
-import { finnElement } from './test-utils'
+import { extractText } from './test-utils'
 
 const lagImportertFraArena = (): importertFraArena =>
   ({
@@ -21,31 +17,27 @@ const lagImportertFraArena = (): importertFraArena =>
 
 describe('HistorikkImportertFraArena - Deltakelsesmengde', () => {
   it('konfigurerer inline-visning når tiltak støtter deltakelsesmengde', () => {
-    const tree = HistorikkImportertFraArena({
-      deltakelseVedImport: lagImportertFraArena(),
-      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      erEnkeltplass: false
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeInline)
-    expect(visning).not.toBeNull()
+    const text = extractText(
+      HistorikkImportertFraArena({
+        deltakelseVedImport: lagImportertFraArena(),
+        tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+        erEnkeltplass: false
+      })
+    ).join(' ')
 
-    const text = getDeltakelsesmengdeText(visning!.props)
-    expect(text).not.toBeNull()
-    expect(visning!.props.prefix ?? 'Deltakelsesmengde:').toBe(
-      'Deltakelsesmengde:'
-    )
+    expect(text).toContain('Deltakelsesmengde:')
+    expect(text).toContain('80')
   })
 
   it('konfigurerer skjuling når tiltak ikke støtter deltakelsesmengde', () => {
-    const tree = HistorikkImportertFraArena({
-      deltakelseVedImport: lagImportertFraArena(),
-      tiltakskode: Tiltakskode.OPPFOLGING,
-      erEnkeltplass: false
-    })
-    const visning = finnElement(tree, DeltakelsesmengdeInline)
-    expect(visning).not.toBeNull()
+    const text = extractText(
+      HistorikkImportertFraArena({
+        deltakelseVedImport: lagImportertFraArena(),
+        tiltakskode: Tiltakskode.OPPFOLGING,
+        erEnkeltplass: false
+      })
+    ).join(' ')
 
-    const text = getDeltakelsesmengdeText(visning!.props)
-    expect(text).toBeNull()
+    expect(text).not.toContain('Deltakelsesmengde:')
   })
 })

@@ -47,7 +47,6 @@ describe('DeltakelsesmengdeSection', () => {
       headingLevel: '3',
       headingSize: 'small'
     })
-
     expect(extractText(result).join(' ')).toContain('80')
     expect(extractText(result).join(' ')).toContain('Deltakelsesmengde')
   })
@@ -74,7 +73,6 @@ describe('DeltakelsesmengdeBodyLongSection', () => {
       deltakelsesprosent: 80,
       dagerPerUke: 3
     })
-
     const text = extractText(result).join(' ')
     expect(text).toContain('Deltakelsesmengde')
     expect(text).toContain('80')
@@ -89,7 +87,6 @@ describe('DeltakelsesmengdeInline', () => {
       deltakelsesprosent: 80,
       dagerPerUke: 3
     })
-
     const text = extractText(result).join(' ')
     expect(text).toContain('Deltakelsesmengde:')
     expect(text).toContain('80')
