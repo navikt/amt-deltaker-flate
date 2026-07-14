@@ -4,7 +4,7 @@ import { Tiltakskode } from '../model/deltaker'
 import {
   DeltakelsesmengdeBodyLongSection,
   DeltakelsesmengdeInline,
-  DeltakelsesmengdeSection,
+  DeltakelsesmengdeAvsnitt,
   getDeltakelsesmengdeText
 } from './DeltakelsesmengdeVisning'
 
@@ -26,7 +26,7 @@ const extractText = (node: ReactNode): string[] => {
 
 describe('DeltakelsesmengdeSection', () => {
   it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {
-    const result = DeltakelsesmengdeSection({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.OPPFOLGING,
       erEnkeltplass: false,
       deltakelsesprosent: 80,
@@ -39,7 +39,7 @@ describe('DeltakelsesmengdeSection', () => {
   })
 
   it('renderer tekst når tiltaket har deltakelsesmengde', () => {
-    const result = DeltakelsesmengdeSection({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
       deltakelsesprosent: 80,
@@ -53,7 +53,7 @@ describe('DeltakelsesmengdeSection', () => {
   })
 
   it('hideWhenEmpty skjuler rendering når tekst er tom', () => {
-    const result = DeltakelsesmengdeSection({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: true,
       deltakelsesprosent: null,

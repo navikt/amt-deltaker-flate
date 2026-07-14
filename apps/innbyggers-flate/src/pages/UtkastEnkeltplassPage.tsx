@@ -2,7 +2,7 @@ import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   DeferredFetchState,
   DeltakelseInnhold,
-  DeltakelsesmengdeSection,
+  DeltakelsesmengdeAvsnitt,
   PrisOgBetaling,
   UtkastHeader,
   VeilederSnakkeboble,
@@ -92,7 +92,7 @@ export const UtkastEnkeltplassPage = () => {
         }
       />
 
-      <DeltakelsesmengdeSection
+      <DeltakelsesmengdeAvsnitt
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}

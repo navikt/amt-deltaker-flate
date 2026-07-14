@@ -46,7 +46,7 @@ export const getDeltakelsesmengdeText = ({
   return deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)
 }
 
-export const DeltakelsesmengdeSection = ({
+export const DeltakelsesmengdeAvsnitt = ({
   hideWhenEmpty = false,
   headingText = 'Deltakelsesmengde',
   headingLevel,

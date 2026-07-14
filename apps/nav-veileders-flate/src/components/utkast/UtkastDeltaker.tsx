@@ -2,7 +2,7 @@ import { Heading } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
-  DeltakelsesmengdeSection,
+  DeltakelsesmengdeAvsnitt,
   DeltakerStatusType,
   harBakgrunnsinfo,
   hentTiltakHosArrangorIngressTekst,
@@ -51,7 +51,7 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      <DeltakelsesmengdeSection
+      <DeltakelsesmengdeAvsnitt
         tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}

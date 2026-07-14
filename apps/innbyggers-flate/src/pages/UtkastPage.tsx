@@ -4,7 +4,7 @@ import {
   ConfirmInfoCard,
   DeferredFetchState,
   DeltakelseInnhold,
-  DeltakelsesmengdeSection,
+  DeltakelsesmengdeAvsnitt,
   harBakgrunnsinfo,
   harInnhold,
   hentTiltakHosArrangorIngressTekst,
@@ -134,7 +134,7 @@ export const UtkastPage = () => {
         />
       )}
 
-      <DeltakelsesmengdeSection
+      <DeltakelsesmengdeAvsnitt
         tiltakskode={deltakerliste.tiltakskode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
