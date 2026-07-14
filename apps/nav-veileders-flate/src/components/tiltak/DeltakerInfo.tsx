@@ -10,7 +10,6 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
-  harDeltakelsesmengde,
   hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
   kanDeleDeltakerMedArrangorForVurdering,
@@ -155,16 +154,15 @@ export const DeltakerInfo = ({ className }: Props) => {
         className="mt-8"
       />
 
-      {harDeltakelsesmengde(deltaker.deltakerliste) && (
-        <DeltakelsesmengdeInfo
-          deltakelsesprosent={deltaker.deltakelsesprosent}
-          dagerPerUke={deltaker.dagerPerUke}
-          erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-          nesteDeltakelsesmengde={
-            deltaker.deltakelsesmengder.nesteDeltakelsesmengde
-          }
-        />
-      )}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        nesteDeltakelsesmengde={
+          deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+        }
+      />
 
       <SeEndringer
         className="mt-8"
