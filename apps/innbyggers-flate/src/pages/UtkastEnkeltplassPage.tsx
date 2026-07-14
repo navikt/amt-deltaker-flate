@@ -92,17 +92,16 @@ export const UtkastEnkeltplassPage = () => {
         }
       />
 
-      <div className="mt-4">
-        <DeltakelsesmengdeAvsnitt
-          tiltakskode={deltaker.deltakerliste.tiltakskode}
-          erEnkeltplass={true}
-          deltakelsesprosent={deltaker.deltakelsesprosent}
-          dagerPerUke={deltaker.dagerPerUke}
-          headingLevel="3"
-          headingSize="small"
-          bodyClassName="mt-2"
-        />
-      </div>
+      <DeltakelsesmengdeAvsnitt
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        erEnkeltplass={true}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
+        headingLevel="3"
+        headingSize="small"
+        headingClassName="mt-4"
+        bodyClassName="mt-2"
+      />
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
