@@ -1,4 +1,3 @@
-import { isValidElement, ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../model/deltaker'
 import {
