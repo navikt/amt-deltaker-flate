@@ -1,24 +1,24 @@
 import dayjs from 'dayjs'
 import {
+  createHistorikk,
   DeltakerStatusType,
   EMDASH,
   Forslag,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,
-  HistorikkType,
-  Oppstartstype,
-  Pameldingstype,
-  PrisinformasjonType,
-  Tiltakskode,
-  createHistorikk,
   getInnholdForTiltakskode,
   getLedetekst,
   getUtvidetInnhold,
   harBakgrunnsinfo,
+  HistorikkType,
   lagHistorikkFellesOppstart,
   lagOpplaringKategoriseringMockRespons,
-  mockVisningsnavn
+  mockVisningsnavn,
+  Oppstartstype,
+  Pameldingstype,
+  PrisinformasjonType,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -54,7 +54,8 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'Testliste',
-      tiltakskode: {
+      tiltakskode,
+      tiltakskodeResponse: {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
       },
@@ -171,7 +172,7 @@ export class MockHandler {
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
-      oppdatertDeltaker.deltakerliste.tiltakskode = {
+      oppdatertDeltaker.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
       }

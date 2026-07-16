@@ -11,7 +11,7 @@ import { useDeltakerContext } from '../DeltakerContext'
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse.kode,
+    deltaker.deltakerliste.tiltakskodeResponse,
     deltaker.deltakerliste.arrangorNavn
   )
 

@@ -13,7 +13,7 @@ import { UtkastEnkeltplassPage } from '../pages/UtkastEnkeltplassPage.tsx'
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse.kode,
+    deltaker.deltakerliste.tiltakskodeResponse,
     deltaker.deltakerliste.arrangorNavn
   )
 

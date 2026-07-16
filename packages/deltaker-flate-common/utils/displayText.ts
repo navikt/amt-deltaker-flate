@@ -6,7 +6,7 @@ import {
   Oppstartstype,
   Pameldingstype,
   Tiltakskode,
-  TiltakskodeDto
+  TiltakskodeResponse
 } from '../model/deltaker'
 import {
   Endring,

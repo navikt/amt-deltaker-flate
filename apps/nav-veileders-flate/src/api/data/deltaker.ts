@@ -10,7 +10,7 @@ import {
   Pameldingstype,
   prisinformasjonSchema,
   Tiltakskode,
-  tiltakskodeDtoSchema,
+  tiltakskodeResponseSchema,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'

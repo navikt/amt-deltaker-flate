@@ -34,7 +34,7 @@ export const DeltakerPage = () => {
   const visEndringer = searchParams.get('vis_endringer') === ''
 
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse.kode,
+    deltaker.deltakerliste.tiltakskodeResponse,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.opplaringKategoriseringValg
   )
@@ -106,7 +106,7 @@ export const DeltakerPage = () => {
       )}
 
       <DeltakerStatusInfoTekst
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}

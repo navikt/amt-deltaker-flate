@@ -7,7 +7,7 @@ import {
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { Oppstartstype, TiltakskodeDto } from '../model/deltaker.ts'
+import { Oppstartstype, TiltakskodeResponse } from '../model/deltaker.ts'
 
 interface DeltakerStatusInfoTekstProps {
   tiltakskode: TiltakskodeResponse
