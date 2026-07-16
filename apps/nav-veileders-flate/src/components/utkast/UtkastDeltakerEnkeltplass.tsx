@@ -11,7 +11,7 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse
 
   return (
     <div className="flex flex-col gap-8">

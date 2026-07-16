@@ -22,7 +22,7 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Test',
-      tiltakskodeDto: {
+      tiltakskodeResponse: {
         kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
       },

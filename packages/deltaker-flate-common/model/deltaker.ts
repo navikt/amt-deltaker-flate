@@ -40,7 +40,7 @@ export enum Tiltakskode {
   HOYERE_YRKESFAGLIG_UTDANNING = 'HOYERE_YRKESFAGLIG_UTDANNING'
 }
 
-export const tiltakskodeDtoSchema = z.object({
+export const tiltakskodeResponseSchema = z.object({
   kode: z.enum(Tiltakskode),
   visningsnavn: z.string()
 })
@@ -150,4 +150,4 @@ export type importertDeltakerFraArena = z.infer<
   typeof importertDeltakerFraArenaSchema
 >
 export type Deltakelsesmengde = z.infer<typeof deltakelsesmengdeSchema>
-export type TiltakskodeDto = z.infer<typeof tiltakskodeDtoSchema>
+export type TiltakskodeDto = z.infer<typeof tiltakskodeResponseSchema>

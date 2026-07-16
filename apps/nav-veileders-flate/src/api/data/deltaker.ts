@@ -32,7 +32,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
   tiltakskode: z.enum(Tiltakskode),
-  tiltakskodeDto: tiltakskodeDtoSchema,
+  tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   arrangor: z
     .object({

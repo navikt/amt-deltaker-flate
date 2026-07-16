@@ -24,7 +24,7 @@ export const UtkastDeltaker = () => {
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
-          deltaker.deltakerliste.tiltakskodeDto,
+          deltaker.deltakerliste.tiltakskodeResponse,
           deltaker.deltakerliste.deltakerlisteNavn,
           deltaker.deltakerliste.arrangorNavn
         )}
@@ -62,7 +62,7 @@ export const UtkastDeltaker = () => {
       />
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}

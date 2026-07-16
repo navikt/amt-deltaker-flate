@@ -103,7 +103,7 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     const deltaker = lagDeltaker({
       deltakerliste: {
         ...lagDeltaker().deltakerliste,
-        tiltakskodeDto: {
+        tiltakskodeResponse: {
           kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
           visningsnavn: 'Varig tilrettelagt arbeid'
         }

@@ -38,13 +38,13 @@ export const PameldingHeader = ({
 
   const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
   const visGruppe =
-    deltakerliste.tiltakskodeDto.kode ===
+    deltakerliste.tiltakskodeResponse.kode ===
       Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-    deltakerliste.tiltakskodeDto.kode ===
+    deltakerliste.tiltakskodeResponse.kode ===
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
   const tiltakNavnHosArrangor = hentKladdTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeDto,
+    deltakerliste.tiltakskodeResponse,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg,
@@ -58,7 +58,7 @@ export const PameldingHeader = ({
       </Heading>
 
       <Detail className="mb-4">
-        {deltakerliste.tiltakskodeDto.visningsnavn}
+        {deltakerliste.tiltakskodeResponse.visningsnavn}
         {visGruppe && ' (gruppe)'}
       </Detail>
 

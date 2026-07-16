@@ -31,7 +31,7 @@ interface Props {
 export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeDto,
+    deltaker.deltakerliste.tiltakskodeResponse,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.opplaringKategoriseringValg
   )
@@ -49,7 +49,7 @@ export const DeltakerInfo = ({ className }: Props) => {
     dato = formatDate(deltaker.startdato)
   }
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse.kode
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
@@ -82,7 +82,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <DeltakerStatusInfoTekst
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}

@@ -64,7 +64,7 @@ const koordinatorSchema = z.object({
 export const deltakerlisteDetaljerSchema = z.object({
   id: z.uuid(),
   navn: z.string(),
-  tiltakskode: tiltakskodeDtoSchema,
+  tiltakskode: tiltakskodeResponseSchema,
   startdato: nullableDateSchema,
   sluttdato: nullableDateSchema,
   oppstartstype: z.enum(Oppstartstype).nullable(),

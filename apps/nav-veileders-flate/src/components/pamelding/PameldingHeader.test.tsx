@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import {
   DeltakelseInnhold,
+  DeltakerStatusType,
   OpplaringRepresenterer,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { DeltakerStatusType } from 'deltaker-flate-common'
 import { Deltakerliste } from '../../api/data/deltaker'
 import { PameldingHeader } from './PameldingHeader.tsx'
 
@@ -105,7 +105,7 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
-          tiltakskodeDto: {
+          tiltakskodeResponse: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },

@@ -34,7 +34,7 @@ export const DeltakerPage = () => {
   const visEndringer = searchParams.get('vis_endringer') === ''
 
   const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeDto.kode,
+    deltaker.deltakerliste.tiltakskodeResponse.kode,
     deltaker.deltakerliste.arrangorNavn,
     deltaker.deltakerliste.opplaringKategoriseringValg
   )
@@ -50,7 +50,7 @@ export const DeltakerPage = () => {
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
-      deltaker.deltakerliste.tiltakskodeDto.kode,
+      deltaker.deltakerliste.tiltakskodeResponse.kode,
       erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
@@ -106,7 +106,7 @@ export const DeltakerPage = () => {
       )}
 
       <DeltakerStatusInfoTekst
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
@@ -135,7 +135,7 @@ export const DeltakerPage = () => {
       )}
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
@@ -155,7 +155,7 @@ export const DeltakerPage = () => {
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -191,7 +191,7 @@ export const DeltakerPage = () => {
 
       <SeEndringer
         className="mt-8"
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
         open={visEndringer}
@@ -206,7 +206,7 @@ export const DeltakerPage = () => {
       <VedtakOgKlage
         statusType={deltaker.status.type}
         statusDato={deltaker.status.opprettet}
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         importertFraArena={deltaker.importertFraArena}
@@ -215,7 +215,7 @@ export const DeltakerPage = () => {
       <HvaDelesMedArrangor
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-        tiltakskode={deltaker.deltakerliste.tiltakskodeDto.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}

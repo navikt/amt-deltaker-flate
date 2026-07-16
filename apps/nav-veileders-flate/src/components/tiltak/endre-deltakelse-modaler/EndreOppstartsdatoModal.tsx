@@ -11,9 +11,9 @@ import {
   Forslag,
   ForslagEndring,
   ForslagEndringType,
+  getDeltakerStatusDisplayText,
   StartdatoForslag,
   Tiltakskode,
-  getDeltakerStatusDisplayText,
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { useMemo, useState } from 'react'
@@ -29,14 +29,14 @@ import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
-  LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
-  VARIGHET_BEKREFTELSE_FEILMELDING,
-  VarighetValg,
   finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText
+  getSoftMaxVarighetBekreftelseText,
+  LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
+  UGYLDIG_DATO_FEILMELDING,
+  VARIGHET_BEKREFTELSE_FEILMELDING,
+  VarighetValg
 } from '../../../utils/varighet.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
@@ -60,7 +60,7 @@ export const EndreOppstartsdatoModal = ({
   const { enhetId } = useAppContext()
   const defaultDatoer = getDatoer(deltaker, forslag)
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeDto.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse.kode
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,
