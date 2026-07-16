@@ -24,7 +24,8 @@ import {
   Oppstartstype,
   Pameldingstype,
   PrisinformasjonType,
-  Tiltakskode
+  Tiltakskode,
+  mockVisningsnavn
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -1040,8 +1041,4 @@ const delesAdresseMedArrangor = (tiltakskode: Tiltakskode) => {
     tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
     !erOpplaringstiltak(tiltakskode)
   )
-}
-
-function mockVisningsnavn(tiltakskode: Tiltakskode) {
-  return tiltakskode.toLocaleLowerCase().replace('_', ' ')
 }
