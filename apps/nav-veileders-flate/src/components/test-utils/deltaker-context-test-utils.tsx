@@ -31,7 +31,8 @@ export const lagDeltaker = (
     prisinformasjon: null,
     visningsnavn: {
       tiltakHosArrangorTittel: 'tittel',
-      tiltakHosArrangorIngressTekst: 'ingress'
+      tiltakHosArrangorIngressTekst: 'ingress',
+      kladdTiltakHosArrangorTittel: 'kladd-tittel'
     }
   } as DeltakerResponse['deltakerliste']
 

@@ -59,7 +59,8 @@ const pamelding: DeltakerResponse = {
     prisinformasjon: null,
     visningsnavn: {
       tiltakHosArrangorTittel: 'tittel',
-      tiltakHosArrangorIngressTekst: 'ingress'
+      tiltakHosArrangorIngressTekst: 'ingress',
+      kladdTiltakHosArrangorTittel: 'kladd-tittel'
     }
   },
   status: {

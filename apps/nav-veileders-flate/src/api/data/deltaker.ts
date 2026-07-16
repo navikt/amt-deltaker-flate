@@ -30,7 +30,8 @@ const tilgjengeligInnholdSchema = z.object({
 
 const visningsnavnSchema = z.object({
   tiltakHosArrangorTittel: z.string(),
-  tiltakHosArrangorIngressTekst: z.string()
+  tiltakHosArrangorIngressTekst: z.string(),
+  kladdTiltakHosArrangorTittel: z.string()
 })
 
 export const deltakerlisteSchema = z.object({
