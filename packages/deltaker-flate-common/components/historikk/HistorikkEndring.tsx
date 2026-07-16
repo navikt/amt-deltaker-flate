@@ -142,9 +142,13 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
     }
     case EndringType.ReaktiverDeltakelse: {
       return (
-        <BodyLong size="small" className="whitespace-pre-wrap">
-          Navs begrunnelse: {endring.begrunnelse}
-        </BodyLong>
+        <>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
       )
     }
     case EndringType.EndreDeltakelsesmengde:

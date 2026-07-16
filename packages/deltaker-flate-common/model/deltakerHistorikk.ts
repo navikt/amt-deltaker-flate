@@ -109,7 +109,7 @@ export const endreSluttarsakSchema = z.object({
 export const reaktiverDeltakelseSchema = z.object({
   type: z.literal(EndringType.ReaktiverDeltakelse),
   reaktivertDato: dateSchema,
-  begrunnelse: z.string()
+  begrunnelse: z.string().nullable()
 })
 
 export const fjernOppstartsdatoSchema = z.object({
