@@ -26,7 +26,7 @@ const tiltakskodeVisningsnavn: Partial<Record<Tiltakskode, string>> = {
 }
 
 const fallbackVisningsnavn = (tiltakskode: Tiltakskode) =>
-  tiltakskode.toLocaleLowerCase().replace(/_/g, ' ')
+  tiltakskode.toLowerCase().replace(/_/g, ' ')
 
 export const mockVisningsnavn = (tiltakskode: Tiltakskode) =>
   tiltakskodeVisningsnavn[tiltakskode] ?? fallbackVisningsnavn(tiltakskode)

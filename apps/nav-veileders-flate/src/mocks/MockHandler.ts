@@ -21,11 +21,11 @@ import {
   Innhold,
   INNHOLD_TYPE_ANNET,
   lagHistorikkFellesOppstart,
+  mockVisningsnavn,
   Oppstartstype,
   Pameldingstype,
   PrisinformasjonType,
-  Tiltakskode,
-  mockVisningsnavn
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -487,6 +487,7 @@ export class MockHandler {
       tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
 
     if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
       oppdatertPamelding.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)

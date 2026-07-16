@@ -25,7 +25,8 @@ const lagDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
-      tiltakskode: {
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+      tiltakskodeResponse: {
         kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
       },
