@@ -104,7 +104,7 @@ export class MockHandler {
         tiltakskode: this.tiltakskode,
         tiltakskodeResponse: {
           kode: this.tiltakskode,
-          visningsnavn: this.tiltakskode.toLocaleLowerCase().replace('_', ' ')
+          visningsnavn: mockVisningsnavn(this.tiltakskode)
         },
         oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: arrangor.navn,

@@ -66,7 +66,7 @@ export const deltakerprosentText = (
 }
 
 export const hentKladdTiltakHosArrangorTittel = (
-  tiltakskode: TiltakskodeDto,
+  tiltakskode: TiltakskodeResponse,
   deltakerlisteNavn: string,
   arrangorNavn: string,
   kodeverk: OpplaringKategorisering | null,
@@ -87,7 +87,7 @@ export const hentKladdTiltakHosArrangorTittel = (
 }
 
 export const hentTiltakHosArrangorTittel = (
-  tiltakskode: TiltakskodeDto,
+  tiltakskode: TiltakskodeResponse,
   arrangorNavn: string,
   kodeverk?: OpplaringKategorisering | null
 ) => {
@@ -101,7 +101,7 @@ export const hentTiltakHosArrangorTittel = (
 }
 
 export const hentTiltakHosArrangorIngressTekst = (
-  tiltakskode: TiltakskodeDto,
+  tiltakskode: TiltakskodeResponse,
   deltakerlisteNavn: string,
   arrangorNavn: string,
   kodeverk?: OpplaringKategorisering | null

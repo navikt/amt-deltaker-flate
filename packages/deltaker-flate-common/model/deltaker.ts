@@ -150,4 +150,4 @@ export type importertDeltakerFraArena = z.infer<
   typeof importertDeltakerFraArenaSchema
 >
 export type Deltakelsesmengde = z.infer<typeof deltakelsesmengdeSchema>
-export type TiltakskodeDto = z.infer<typeof tiltakskodeResponseSchema>
+export type TiltakskodeResponse = z.infer<typeof tiltakskodeResponseSchema>

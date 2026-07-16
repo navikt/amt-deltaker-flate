@@ -10,7 +10,7 @@ import {
 import { Oppstartstype, TiltakskodeDto } from '../model/deltaker.ts'
 
 interface DeltakerStatusInfoTekstProps {
-  tiltakskode: TiltakskodeDto
+  tiltakskode: TiltakskodeResponse
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
