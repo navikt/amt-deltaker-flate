@@ -35,6 +35,10 @@ const pamelding: DeltakerResponse = {
     deltakerlisteId: uuidv4(),
     deltakerlisteNavn: 'Testliste',
     tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+    tiltakskodeResponse: {
+      kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      visningsnavn: 'Arbeidsforberedende trening'
+    },
     arrangorNavn: 'Den Beste Arrangøren AS',
     arrangor: {
       navn: 'Den Beste Arrangøren AS',
@@ -205,7 +209,10 @@ describe('getSkalBekrefteVarighet', () => {
         ...pamelding,
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+          tiltakskodeResponse: {
+            kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+            visningsnavn: 'Varig tilrettelagt arbeid'
+          }
         }
       },
       dayjs('2024-03-20').toDate()
@@ -220,7 +227,10 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+          tiltakskodeResponse: {
+            kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+            visningsnavn: 'Arbeidsforberedende trening'
+          }
         },
         maxVarighet: null,
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -238,7 +248,10 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2024-04-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+          tiltakskodeResponse: {
+            kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+            visningsnavn: 'Arbeidsforberedende trening'
+          }
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -256,7 +269,10 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2024-02-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+          tiltakskodeResponse: {
+            kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+            visningsnavn: 'Arbeidsforberedende trening'
+          }
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -274,7 +290,10 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+          tiltakskodeResponse: {
+            kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+            visningsnavn: 'Arbeidsforberedende trening'
+          }
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: dayjs.duration(1, 'month').asMilliseconds()
@@ -292,7 +311,10 @@ describe('getSkalBekrefteVarighet', () => {
         sluttdato: dayjs('2025-10-28').toDate(),
         deltakerliste: {
           ...pamelding.deltakerliste,
-          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+          tiltakskodeResponse: {
+            kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+            visningsnavn: 'Arbeidsforberedende trening'
+          }
         },
         maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
         softMaxVarighet: null

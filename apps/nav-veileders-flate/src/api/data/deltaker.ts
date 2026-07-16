@@ -10,6 +10,7 @@ import {
   Pameldingstype,
   prisinformasjonSchema,
   Tiltakskode,
+  tiltakskodeResponseSchema,
   vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -31,6 +32,7 @@ export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
   tiltakskode: z.enum(Tiltakskode),
+  tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   arrangor: z
     .object({

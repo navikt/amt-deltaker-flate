@@ -1,5 +1,4 @@
 import { Detail, Heading, Tag } from '@navikt/ds-react'
-import { getTiltakskodeDisplayText } from 'deltaker-flate-common'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { useDeltakerContext } from '../components/tiltak/DeltakerContext.tsx'
 import { PameldingEnkeltplassForm } from '../components/pamelding/enkeltplass/PameldingEnkeltplassForm.tsx'
@@ -15,7 +14,7 @@ export const OpprettEnkeltplassPameldingPage = () => {
     >
       <Tilbakeknapp />
       <Heading level="1" size="large">
-        {getTiltakskodeDisplayText(deltaker.deltakerliste.tiltakskode)}
+        {deltaker.deltakerliste.tiltakskodeResponse.visningsnavn}
       </Heading>
       <Detail className="mb-4">Enkeltplass uten rammeavtale</Detail>
       <Tag variant="outline" data-color="warning" size="small">

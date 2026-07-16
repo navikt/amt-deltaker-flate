@@ -4,7 +4,6 @@ import {
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
-  getTiltakskodeDisplayText,
   hentKladdTiltakHosArrangorTittel,
   Tiltakskode,
   UtkastHeader,
@@ -39,11 +38,13 @@ export const PameldingHeader = ({
 
   const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
   const visGruppe =
-    deltakerliste.tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-    deltakerliste.tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+    deltakerliste.tiltakskodeResponse.kode ===
+      Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
+    deltakerliste.tiltakskodeResponse.kode ===
+      Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
   const tiltakNavnHosArrangor = hentKladdTiltakHosArrangorTittel(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskodeResponse,
     deltakerliste.deltakerlisteNavn,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg,
@@ -57,7 +58,7 @@ export const PameldingHeader = ({
       </Heading>
 
       <Detail className="mb-4">
-        {getTiltakskodeDisplayText(deltakerliste.tiltakskode)}
+        {deltakerliste.tiltakskodeResponse.visningsnavn}
         {visGruppe && ' (gruppe)'}
       </Detail>
 

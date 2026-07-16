@@ -6,6 +6,7 @@ import {
   DeltakerStatusType,
   ForslagEndringAarsakType,
   ForslagEndringType,
+  mockVisningsnavn,
   Oppstartstype,
   Pameldingstype,
   Tiltakskode,
@@ -126,6 +127,12 @@ export const createMockDeltaker = (
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    tiltakskodeResponse: {
+      kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      visningsnavn: mockVisningsnavn(
+        Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+      )
+    },
     pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
     oppstartstype: Oppstartstype.FELLES,
     tilgangTilBruker: !adresseBeskyttet,
@@ -223,6 +230,12 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
     id: uuidv4(),
     navn: 'Kometrytter Kurs',
     tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    tiltakskodeResponse: {
+      kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+      visningsnavn: mockVisningsnavn(
+        Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
+      )
+    },
     erEnkeltplass: false,
     startdato: dayjs().subtract(1, 'month').toDate(),
     sluttdato: dayjs().add(1, 'year').toDate(),

@@ -7,10 +7,10 @@ import {
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { Oppstartstype } from '../model/deltaker.ts'
+import { Oppstartstype, TiltakskodeResponse } from '../model/deltaker.ts'
 
 interface DeltakerStatusInfoTekstProps {
-  tiltakskode: Tiltakskode
+  tiltakskode: TiltakskodeResponse
   deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
@@ -45,7 +45,7 @@ export const DeltakerStatusInfoTekst = ({
     ) : null
   }
 
-  if (tiltakskode === Tiltakskode.HOYERE_UTDANNING) {
+  if (tiltakskode.kode === Tiltakskode.HOYERE_UTDANNING) {
     return getHoyereUtdanningInfo(statusType)
   }
 
@@ -66,7 +66,7 @@ export const DeltakerStatusInfoTekst = ({
         statusType === DeltakerStatusType.VENTER_PA_OPPSTART && (
           <Alert variant="info" className="mt-4" size="small">
             {getIngenStartDatoInfoTekst(
-              tiltakskode,
+              tiltakskode.kode,
               pameldingstype,
               oppstartstype,
               arrangorNavn,

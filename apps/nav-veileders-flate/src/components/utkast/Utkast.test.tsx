@@ -56,6 +56,10 @@ const createDeltaker = (): DeltakerResponse =>
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Test',
       tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+      tiltakskodeResponse: {
+        kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+        visningsnavn: 'Arbeidsmarkedsopplæring'
+      },
       arrangorNavn: 'Kurs AS',
       arrangor: { navn: 'Kurs AS', organisasjonsnummer: '123456789' },
       erEnkeltplass: true,

@@ -4,8 +4,8 @@ import {
   getDeltakerStatusDisplayText,
   getOppstartstypeDisplayText,
   getPameldingstypeDisplayText,
-  getTiltakskodeDisplayText,
   logError,
+  mockVisningsnavn,
   Oppstartstype,
   Pameldingstype,
   Tiltakskode,
@@ -243,7 +243,7 @@ const DemoStatusInstillinger = () => {
         >
           {Object.values(Tiltakskode).map((kode) => (
             <option key={kode} value={kode}>
-              {getTiltakskodeDisplayText(kode)}
+              {mockVisningsnavn(kode)}
             </option>
           ))}
         </Select>

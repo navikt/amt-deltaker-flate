@@ -11,14 +11,14 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskode
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse
 
   return (
     <div className="flex flex-col gap-8">
       <VeilederSnakkeboble
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
-        tiltakskode={tiltakskode}
+        tiltakskode={tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
           tiltakskode,
@@ -33,7 +33,7 @@ export const UtkastDeltakerEnkeltplass = () => {
       </BodyLong>
 
       <DeltakelseInnhold
-        tiltakskode={tiltakskode}
+        tiltakskode={tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -46,7 +46,7 @@ export const UtkastDeltakerEnkeltplass = () => {
       />
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={tiltakskode}
+        tiltakskode={tiltakskode.kode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}

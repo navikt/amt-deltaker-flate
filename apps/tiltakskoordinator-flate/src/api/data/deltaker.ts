@@ -6,6 +6,7 @@ import {
   Oppstartstype,
   Pameldingstype,
   Tiltakskode,
+  tiltakskodeResponseSchema,
   Vurderingstype
 } from 'deltaker-flate-common'
 import { z } from 'zod'
@@ -52,6 +53,7 @@ export const deltakerDetaljerSchema = z.object({
   vurdering: vurderingSchema.nullable(),
   innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
   tiltakskode: z.enum(Tiltakskode),
+  tiltakskodeResponse: tiltakskodeResponseSchema,
   oppstartstype: z.enum(Oppstartstype).nullable(),
   pameldingstype: z.enum(Pameldingstype),
   tilgangTilBruker: z.boolean(),

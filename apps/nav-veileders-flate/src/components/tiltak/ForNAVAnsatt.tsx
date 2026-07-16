@@ -56,7 +56,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
           <LinkCard.Description>
             <BodyShort size="small">
               {hentTiltakHosArrangorTittel(
-                deltaker.deltakerliste.tiltakskode,
+                deltaker.deltakerliste.tiltakskodeResponse,
                 deltaker.deltakerliste.arrangorNavn
               )}
             </BodyShort>

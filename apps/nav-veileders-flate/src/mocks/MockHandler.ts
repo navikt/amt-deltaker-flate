@@ -21,6 +21,7 @@ import {
   Innhold,
   INNHOLD_TYPE_ANNET,
   lagHistorikkFellesOppstart,
+  mockVisningsnavn,
   Oppstartstype,
   Pameldingstype,
   PrisinformasjonType,
@@ -102,6 +103,10 @@ export class MockHandler {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
         tiltakskode: this.tiltakskode,
+        tiltakskodeResponse: {
+          kode: this.tiltakskode,
+          visningsnavn: mockVisningsnavn(this.tiltakskode)
+        },
         oppstartstype: Oppstartstype.LOPENDE,
         arrangorNavn: arrangor.navn,
         arrangor: {
@@ -483,6 +488,10 @@ export class MockHandler {
 
     if (oppdatertPamelding) {
       oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
+      oppdatertPamelding.deltakerliste.tiltakskodeResponse = {
+        kode: tiltakskode,
+        visningsnavn: mockVisningsnavn(tiltakskode)
+      }
       oppdatertPamelding.deltakerliste.opplaringKategoriseringValg =
         erNyEnkeltplass
           ? lagOpplaringKategoriseringResponse(

@@ -31,7 +31,7 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
 
   const { doRedirect } = useModiaLink()
   const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskode,
+    deltakerliste.tiltakskodeResponse,
     deltakerliste.arrangorNavn,
     deltakerliste.opplaringKategoriseringValg
   )

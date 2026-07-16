@@ -66,11 +66,11 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskode
-  const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode)
+  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse
+  const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode.kode)
   const visCheckbokser =
-    tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
-    tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER &&
+    tiltakskode.kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+    tiltakskode.kode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER &&
     !erOpplaringsTiltak
 
   const validertRequest = () => {
@@ -114,8 +114,8 @@ export const EndreInnholdModal = ({
           innholdsTekst === getAnnetBeskrivelseFraInnhold(innhold))
       ) {
         throw new Error(
-          tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
-            tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
+          tiltakskode.kode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+            tiltakskode.kode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
             ? getFeilmeldingIngenEndringTekst(false)
             : getFeilmeldingIngenEndring(false)
         )
@@ -211,7 +211,8 @@ export const EndreInnholdModal = ({
             label={
               erOpplaringsTiltak
                 ? 'Dette er innholdet (valgfritt)'
-                : tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+                : tiltakskode.kode ===
+                    Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
                   ? 'Her kan du beskrive hva slags arbeidsoppgaver ol. tiltaket kan inneholde (valgfritt)'
                   : 'Her kan du beskrive hvor personen skal jobbe eller hva tiltaket skal inneholde (valgfritt)'
             }

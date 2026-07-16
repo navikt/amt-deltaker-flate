@@ -4,11 +4,11 @@ import { useRef, useState } from 'react'
 import { DeltakerResponse } from '../../api/data/deltaker.ts'
 import { getEndreDeltakelsesValg } from '../../utils/endreDeltakelse.ts'
 import {
-  Forslag,
   EndreDeltakelseType,
   EndringTypeIkon,
-  getEndreDeltakelseTypeText,
-  getEndreDeltakelsesType
+  Forslag,
+  getEndreDeltakelsesType,
+  getEndreDeltakelseTypeText
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from './DeltakerContext.tsx'
 import { ModalController } from './endre-deltakelse-modaler/ModalController.tsx'
@@ -22,7 +22,7 @@ export const EndreDeltakelseKnapp = () => {
   const [forslag, setForslag] = useState<Forslag | null>(null)
   const { erKometMasterForTiltak } = useFeatureToggles()
   const enableEndreDeltakelse = erKometMasterForTiltak(
-    deltaker.deltakerliste.tiltakskode
+    deltaker.deltakerliste.tiltakskodeResponse.kode
   )
 
   const openModal = (type: EndreDeltakelseType) => {

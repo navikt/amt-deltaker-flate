@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const InnholdOgBakgrunn = ({ pamelding, isDisabled }: Props) => {
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = pamelding.deltakerliste.tiltakskodeResponse.kode
 
   const {
     watch,

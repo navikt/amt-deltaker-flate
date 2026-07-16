@@ -6,9 +6,9 @@ import {
   Textarea
 } from '@navikt/ds-react'
 import {
-  Tiltakskode,
   fjernUgyldigeTegn,
-  INNHOLD_TYPE_ANNET
+  INNHOLD_TYPE_ANNET,
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -27,7 +27,7 @@ interface Props {
 
 export const Innhold = ({ pamelding, isDisabled }: Props) => {
   const innhold = pamelding.deltakerliste.tilgjengeligInnhold
-  const tiltakskode = pamelding.deltakerliste.tiltakskode
+  const tiltakskode = pamelding.deltakerliste.tiltakskodeResponse.kode
   const skalViseInnholdSjekkbokser =
     erInnholdPakrevd(tiltakskode) && innhold.innhold.length > 0
 

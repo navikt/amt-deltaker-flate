@@ -26,6 +26,10 @@ const lagDeltaker = (
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
       tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+      tiltakskodeResponse: {
+        kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+        visningsnavn: 'Arbeidsmarkedsopplæring'
+      },
       arrangorNavn: 'Test AS',
       arrangor: { navn: 'Test AS', organisasjonsnummer: '999888777' },
       erEnkeltplass: true,
@@ -100,7 +104,10 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     const deltaker = lagDeltaker({
       deltakerliste: {
         ...lagDeltaker().deltakerliste,
-        tiltakskode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
+        tiltakskodeResponse: {
+          kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+          visningsnavn: 'Varig tilrettelagt arbeid'
+        }
       },
       dagerPerUke: 4
     })
