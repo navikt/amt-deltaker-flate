@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import dayjs from 'dayjs'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { DeltakerStatusType, EndreDeltakelseType } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  EndreDeltakelseType,
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import {
   erLaastMenNyligAvsluttet,
   getEndreDeltakelsesValg,
@@ -16,18 +22,22 @@ const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
     deltakerliste: {
       deltakerlisteId: 'liste-id',
       deltakerlisteNavn: 'Testtiltak',
-      tiltakskode: 'ARBEIDSTRENING',
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      tiltakskodeResponse: {
+        kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+        visningsnavn: 'Arbeidsforberedende trening'
+      },
       arrangorNavn: 'Arrangøren',
       arrangor: null,
-      oppstartstype: 'LOPENDE',
+      oppstartstype: Oppstartstype.LOPENDE,
       startdato: null,
       sluttdato: null,
       status: 'GJENNOMFORES',
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       erEnkeltplass: false,
       oppmoteSted: null,
-      pameldingstype: 'PAMELDING',
-      kodeverk: null
+      pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
+      opplaringKategoriseringValg: null
     },
     status: {
       id: 'status-id',
