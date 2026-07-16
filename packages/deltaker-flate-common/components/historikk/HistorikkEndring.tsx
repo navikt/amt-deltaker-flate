@@ -49,7 +49,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.FJERN_OPPSTARTSDATO
     case EndringType.EndreAvslutning:
       return EndreDeltakelseType.ENDRE_AVSLUTNING
-    // TODO vi må få prisinfo i historikken – skal det være på EndringType, eller ha en egen?
+    case EndringType.EndrePrisinfo:
+      return EndreDeltakelseType.ENDRE_PRISINFO
   }
 }
 

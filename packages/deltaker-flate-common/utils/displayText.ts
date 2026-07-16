@@ -381,6 +381,8 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
       return 'Oppstartsdato er fjernet'
     case EndringType.EndreAvslutning:
       return 'Avslutning endret'
+    case EndringType.EndrePrisinfo:
+      return 'Prisinformasjon er endret'
   }
 }
 
