@@ -28,7 +28,11 @@ export const lagDeltaker = (
     oppmoteSted: null,
     pameldingstype: 'TRENGER_GODKJENNING',
     opplaringKategoriseringValg: null,
-    prisinformasjon: null
+    prisinformasjon: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel: 'tittel',
+      tiltakHosArrangorIngressTekst: 'ingress'
+    }
   } as DeltakerResponse['deltakerliste']
 
   const { deltakerliste, ...rest } = overrides

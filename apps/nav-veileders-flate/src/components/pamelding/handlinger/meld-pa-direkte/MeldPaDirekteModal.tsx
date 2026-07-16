@@ -8,7 +8,6 @@ import {
 import {
   ConfirmInfoCard,
   DeferredFetchState,
-  hentTiltakHosArrangorTittel,
   skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -51,11 +50,8 @@ export const MeldPaDirekteModal = ({
 
   const { doRedirect } = useModiaLink()
 
-  const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn,
-    null
-  )
+  const tiltakHosArrangorTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',

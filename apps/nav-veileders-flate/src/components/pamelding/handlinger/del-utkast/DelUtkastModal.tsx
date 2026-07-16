@@ -1,7 +1,6 @@
 import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   DeferredFetchState,
-  hentTiltakHosArrangorTittel,
   skalMeldePaaDirekte,
   useDeferredFetch
 } from 'deltaker-flate-common'
@@ -27,11 +26,8 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
   const { deltaker } = useDeltakerContext()
   const { getValues } = useFormContext<PameldingFormValues>()
 
-  const tiltakHosArrangor = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn,
-    null
-  )
+  const tiltakHosArrangor =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
   const deltakerNavn = getDeltakerNavn(deltaker)
   const meldPaDirekte = skalMeldePaaDirekte(
     deltaker.deltakerliste.pameldingstype

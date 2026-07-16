@@ -56,7 +56,11 @@ const pamelding: DeltakerResponse = {
     erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
     opplaringKategoriseringValg: null,
-    prisinformasjon: null
+    prisinformasjon: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel: 'tittel',
+      tiltakHosArrangorIngressTekst: 'ingress'
+    }
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

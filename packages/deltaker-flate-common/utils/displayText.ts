@@ -86,7 +86,7 @@ export const hentKladdTiltakHosArrangorTittel = (
   )
 }
 
-export const hentTiltakHosArrangorTittel = (
+const hentTiltakHosArrangorTittel = (
   tiltakskode: TiltakskodeResponse,
   arrangorNavn: string,
   kodeverk?: OpplaringKategorisering | null

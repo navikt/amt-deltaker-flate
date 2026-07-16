@@ -134,7 +134,11 @@ export class MockHandler {
               aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
               tilleggsopplysninger: null
             }
-          : null
+          : null,
+        visningsnavn: {
+          tiltakHosArrangorTittel: 'tittel',
+          tiltakHosArrangorIngressTekst: 'ingress'
+        }
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

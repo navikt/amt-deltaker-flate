@@ -28,6 +28,11 @@ const tilgjengeligInnholdSchema = z.object({
   innhold: z.array(innholdselementSchema)
 })
 
+const visningsnavnSchema = z.object({
+  tiltakHosArrangorTittel: z.string(),
+  tiltakHosArrangorIngressTekst: z.string()
+})
+
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
@@ -49,7 +54,8 @@ export const deltakerlisteSchema = z.object({
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  visningsnavn: visningsnavnSchema
 })
 
 export const deltakerSchema = z.object({
