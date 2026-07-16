@@ -172,6 +172,7 @@ export class MockHandler {
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.tiltakskode = tiltakskode
       oppdatertDeltaker.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)

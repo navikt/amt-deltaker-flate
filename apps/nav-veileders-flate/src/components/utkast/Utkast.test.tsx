@@ -55,6 +55,7 @@ const createDeltaker = (): DeltakerResponse =>
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Test',
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
       tiltakskodeResponse: {
         kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
