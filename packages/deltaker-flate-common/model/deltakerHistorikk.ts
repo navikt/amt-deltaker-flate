@@ -120,7 +120,7 @@ export const fjernOppstartsdatoSchema = z.object({
 export const endrePrisinfoSchema = z.object({
   type: z.literal(EndringType.EndrePrisinfo),
   prisinfo: prisinformasjonSchema.nullable(),
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullish()
 })
 
 const endringSchema = z.discriminatedUnion('type', [
