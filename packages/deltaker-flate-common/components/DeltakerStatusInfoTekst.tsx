@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 import {
   DeltakerStatusType,
   formatDateWithMonthName,
-  hentTiltakHosArrangorIngressTekst,
   Pameldingstype,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -11,7 +10,6 @@ import { Oppstartstype, TiltakskodeResponse } from '../model/deltaker.ts'
 
 interface DeltakerStatusInfoTekstProps {
   tiltakskode: TiltakskodeResponse
-  deltakerlisteNavn: string
   statusType: DeltakerStatusType
   arrangorNavn: string
   oppstartsdato: Date | null
@@ -19,18 +17,19 @@ interface DeltakerStatusInfoTekstProps {
   oppstartstype: Oppstartstype | null
   tiltaketsStartDato: Date | null
   erEnkeltplass: boolean
+  tiltakHosArrangorIngressTekst: string
 }
 
 export const DeltakerStatusInfoTekst = ({
   tiltakskode,
-  deltakerlisteNavn,
   statusType,
   arrangorNavn,
   oppstartsdato,
   pameldingstype,
   oppstartstype,
   tiltaketsStartDato,
-  erEnkeltplass
+  erEnkeltplass,
+  tiltakHosArrangorIngressTekst
 }: DeltakerStatusInfoTekstProps) => {
   if (!skalViseDeltakerStatusInfoTekst(statusType)) {
     return null
@@ -55,11 +54,7 @@ export const DeltakerStatusInfoTekst = ({
         {getInfoTekst(
           pameldingstype === Pameldingstype.TRENGER_GODKJENNING,
           statusType,
-          hentTiltakHosArrangorIngressTekst(
-            tiltakskode,
-            deltakerlisteNavn,
-            arrangorNavn
-          )
+          tiltakHosArrangorIngressTekst
         )}
       </BodyLong>
       {!oppstartsdato &&

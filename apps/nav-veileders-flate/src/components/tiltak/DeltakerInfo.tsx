@@ -79,7 +79,6 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <DeltakerStatusInfoTekst
         tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
@@ -87,6 +86,9 @@ export const DeltakerInfo = ({ className }: Props) => {
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        tiltakHosArrangorIngressTekst={
+          deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+        }
       />
 
       {skalViseDato && (

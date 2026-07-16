@@ -100,21 +100,6 @@ const hentTiltakHosArrangorTittel = (
   return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
 }
 
-export const hentTiltakHosArrangorIngressTekst = (
-  tiltakskode: TiltakskodeResponse,
-  deltakerlisteNavn: string,
-  arrangorNavn: string,
-  kodeverk?: OpplaringKategorisering | null
-) => {
-  const kurstype = getKurstypeText(tiltakskode.kode, arrangorNavn, kodeverk)
-
-  if (kurstype) return kurstype
-  if (skalBrukeDeltakerlisteNavn(tiltakskode.kode))
-    return `${deltakerlisteNavn} hos ${arrangorNavn}`
-
-  return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
-}
-
 const skalBrukeDeltakerlisteNavn = (tiltakskode: Tiltakskode) =>
   [
     // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplass uten rammeavtale
