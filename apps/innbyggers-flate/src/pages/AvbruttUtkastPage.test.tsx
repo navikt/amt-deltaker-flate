@@ -24,7 +24,7 @@ describe('AvbruttUtkastPage - Deltakelsesmengde', () => {
     ...stottetTiltakDeltaker,
     deltakerliste: {
       ...stottetTiltakDeltaker.deltakerliste,
-      tiltakskodeResponse: {
+      tiltakskode: {
         kode: Tiltakskode.OPPFOLGING,
         visningsnavn: 'Oppfølging'
       }
