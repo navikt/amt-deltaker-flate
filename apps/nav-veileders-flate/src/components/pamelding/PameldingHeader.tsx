@@ -42,8 +42,9 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskodeResponse.kode ===
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
-  const tiltakNavnHosArrangor =
-    deltakerliste.visningsnavn.kladdTiltakHosArrangorTittel
+  const tiltakNavnHosArrangor = erKladd
+    ? deltakerliste.visningsnavn.kladdTiltakHosArrangorTittel
+    : deltakerliste.visningsnavn.tiltakHosArrangorTittel
   return (
     <div>
       <Heading level="1" size="large">

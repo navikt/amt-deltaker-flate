@@ -32,6 +32,14 @@ const lagDeltakerliste = (
     oppmoteSted: null,
     pameldingstype: 'DIREKTE_VEDTAK',
     opplaringKategoriseringValg: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans',
+      tiltakHosArrangorIngressTekst:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans',
+      kladdTiltakHosArrangorTittel:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans'
+    },
     ...overrides
   }) as unknown as Deltakerliste
 
@@ -48,6 +56,12 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
+          visningsnavn: {
+            tiltakHosArrangorTittel: 'Norskopplæring hos A & A Eiendom Ans',
+            tiltakHosArrangorIngressTekst: 'Norskopplæring hos A & A Eiendom Ans',
+            kladdTiltakHosArrangorTittel:
+              'Kladd: Norskopplæring hos A & A Eiendom Ans'
+          },
           opplaringKategoriseringValg: {
             valgteKategoriseringer: [
               {
@@ -106,6 +120,11 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
+          visningsnavn: {
+            tiltakHosArrangorTittel: 'Annen tittel hos Kurs AS',
+            tiltakHosArrangorIngressTekst: 'Annen tittel hos Kurs AS',
+            kladdTiltakHosArrangorTittel: 'Arbeidsmarkedsopplæring hos Kurs AS'
+          },
           tiltakskodeResponse: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
