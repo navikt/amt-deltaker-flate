@@ -31,7 +31,7 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskodeResponse: tiltakskodeResponseSchema,
+  tiltakskode: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   arrangor: z
     .object({

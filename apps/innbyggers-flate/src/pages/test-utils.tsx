@@ -12,7 +12,7 @@ export const lagInnbyggerDeltaker = (
   const baseDeltakerliste = {
     deltakerlisteId: 'l1',
     deltakerlisteNavn: 'Tiltak',
-    tiltakskodeResponse: {
+    tiltakskode: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
     },

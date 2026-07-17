@@ -26,7 +26,7 @@ export const AvbruttUtkastPage = () => {
       />
 
       <DeltakelseInnhold
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-2">
@@ -47,7 +47,7 @@ export const AvbruttUtkastPage = () => {
       )}
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}

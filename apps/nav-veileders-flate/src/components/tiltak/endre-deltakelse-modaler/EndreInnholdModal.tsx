@@ -66,7 +66,7 @@ export const EndreInnholdModal = ({
   const erAnnetValgt =
     valgteInnhold.find((vi) => vi === INNHOLD_TYPE_ANNET) !== undefined
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse
+  const tiltakskode = deltaker.deltakerliste.tiltakskode
   const erOpplaringsTiltak = erOpplaringstiltak(tiltakskode.kode)
   const visCheckbokser =
     tiltakskode.kode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&

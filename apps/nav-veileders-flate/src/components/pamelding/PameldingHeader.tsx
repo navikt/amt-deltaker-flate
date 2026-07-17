@@ -37,9 +37,9 @@ export const PameldingHeader = ({
 
   const erKladd = deltakerStatus.type === DeltakerStatusType.KLADD
   const visGruppe =
-    deltakerliste.tiltakskodeResponse.kode ===
+    deltakerliste.tiltakskode.kode ===
       Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-    deltakerliste.tiltakskodeResponse.kode ===
+    deltakerliste.tiltakskode.kode ===
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
   const tiltakNavnHosArrangor =
@@ -51,7 +51,7 @@ export const PameldingHeader = ({
       </Heading>
 
       <Detail className="mb-4">
-        {deltakerliste.tiltakskodeResponse.visningsnavn}
+        {deltakerliste.tiltakskode.visningsnavn}
         {visGruppe && ' (gruppe)'}
       </Detail>
 

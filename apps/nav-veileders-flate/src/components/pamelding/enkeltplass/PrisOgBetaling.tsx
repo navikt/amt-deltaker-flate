@@ -40,7 +40,7 @@ export const PrisOgBetaling = ({
   laasPristype?: boolean
 }) => {
   const { deltaker } = useDeltakerContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
   const { disabled } = usePameldingFormContext()
   const {
     control,

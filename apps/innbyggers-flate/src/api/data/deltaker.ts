@@ -18,7 +18,7 @@ import { z } from 'zod'
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskodeResponse: tiltakskodeResponseSchema,
+  tiltakskode: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
   pameldingstype: z.enum(Pameldingstype),

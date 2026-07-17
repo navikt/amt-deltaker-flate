@@ -56,12 +56,12 @@ export const UtkastPage = () => {
     }
   }
 
-  const tiltakskode = deltakerliste.tiltakskodeResponse.kode
+  const tiltakskode = deltakerliste.tiltakskode.kode
   const visInnholdOgBakgrunnsinfo =
     harBakgrunnsinfo(tiltakskode) || harInnhold(tiltakskode)
   const kanDeleDeltakerMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltakerliste.pameldingstype,
-    deltakerliste.tiltakskodeResponse.kode,
+    deltakerliste.tiltakskode.kode,
     deltakerliste.erEnkeltplass
   )
 
@@ -85,13 +85,13 @@ export const UtkastPage = () => {
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
         arrangorNavn={arrangorNavn}
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={navnHosArrangorTekst}
       />
 
       <OmKurset
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltakerliste.oppstartstype}
         pameldingstype={deltakerliste.pameldingstype}
@@ -108,7 +108,7 @@ export const UtkastPage = () => {
       />
 
       <DeltakelseInnhold
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         heading={
           <Heading level="3" size="medium" className="mt-6">
@@ -126,7 +126,7 @@ export const UtkastPage = () => {
       )}
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}

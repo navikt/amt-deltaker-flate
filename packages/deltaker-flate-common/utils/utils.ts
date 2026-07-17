@@ -132,11 +132,11 @@ export const formatDateFromString = (
 
 export const harDeltakerlisteDeltakelsesmengde = (arg: {
   // Delmengde av deltakerliste-typen
-  tiltakskodeResponse: TiltakskodeResponse
+  tiltakskode: TiltakskodeResponse
   erEnkeltplass: boolean
 }) =>
   harDeltakelsesmengde({
-    tiltakskode: arg.tiltakskodeResponse.kode,
+    tiltakskode: arg.tiltakskode.kode,
     erEnkeltplass: arg.erEnkeltplass
   })
 

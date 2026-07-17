@@ -36,7 +36,7 @@ interface Props {
 export const PameldingForm = ({ className, focusOnOpen }: Props) => {
   const { deltaker } = useDeltakerContext()
   const { disabled } = usePameldingFormContext()
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   const defaultValues = generateFormDefaultValues(deltaker)
   const formRef = useRef<HTMLFormElement>(null)

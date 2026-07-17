@@ -60,7 +60,7 @@ export const EndreOppstartsdatoModal = ({
   const { enhetId } = useAppContext()
   const defaultDatoer = getDatoer(deltaker, forslag)
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse.kode
+  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
       defaultDatoer.startdato,

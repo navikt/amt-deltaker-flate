@@ -23,7 +23,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
 
   const visVurdering = kanDeleDeltakerMedArrangorForVurdering(
     deltaker.pameldingstype,
-    deltaker.tiltakskodeResponse.kode,
+    deltaker.tiltakskode.kode,
     /*
         dataene er ikke tilgjengelige i dette endepunktet enda,
         funksjonalitet er ekvivalent som tidligere
@@ -92,7 +92,7 @@ export const DeltakerDetaljer = ({ deltaker }: Props) => {
         <SeEndringer
           className="mt-4 w-fit"
           deltakerId={deltaker.id}
-          tiltakskode={deltaker.tiltakskodeResponse.kode}
+          tiltakskode={deltaker.tiltakskode.kode}
           fetchHistorikk={getDeltakerHistorikk}
           erEnkeltplass={deltaker.erEnkeltplass}
         />

@@ -102,7 +102,7 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakskodeResponse: {
+        tiltakskode: {
           kode: this.tiltakskode,
           visningsnavn: mockVisningsnavn(this.tiltakskode)
         },
@@ -491,7 +491,7 @@ export class MockHandler {
       tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.tiltakskodeResponse = {
+      oppdatertPamelding.deltakerliste.tiltakskode = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
       }

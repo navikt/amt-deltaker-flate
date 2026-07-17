@@ -46,7 +46,7 @@ export const DeltakerPage = () => {
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
-      deltaker.deltakerliste.tiltakskodeResponse.kode,
+      deltaker.deltakerliste.tiltakskode.kode,
       erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
@@ -102,7 +102,7 @@ export const DeltakerPage = () => {
       )}
 
       <DeltakerStatusInfoTekst
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
+        tiltakskode={deltaker.deltakerliste.tiltakskode}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
@@ -133,7 +133,7 @@ export const DeltakerPage = () => {
       )}
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
@@ -153,7 +153,7 @@ export const DeltakerPage = () => {
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -178,7 +178,7 @@ export const DeltakerPage = () => {
       />
 
       <DeltakelsesmengdeInfo
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         nesteDeltakelsesmengde={
@@ -189,7 +189,7 @@ export const DeltakerPage = () => {
 
       <SeEndringer
         className="mt-8"
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
         open={visEndringer}
@@ -204,7 +204,7 @@ export const DeltakerPage = () => {
       <VedtakOgKlage
         statusType={deltaker.status.type}
         statusDato={deltaker.status.opprettet}
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         importertFraArena={deltaker.importertFraArena}
@@ -213,7 +213,7 @@ export const DeltakerPage = () => {
       <HvaDelesMedArrangor
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}

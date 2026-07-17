@@ -25,7 +25,7 @@ const lagDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
-      tiltakskodeResponse: {
+      tiltakskode: {
         kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
       },
@@ -108,7 +108,7 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     const deltaker = lagDeltaker({
       deltakerliste: {
         ...lagDeltaker().deltakerliste,
-        tiltakskodeResponse: {
+        tiltakskode: {
           kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
           visningsnavn: 'Varig tilrettelagt arbeid'
         }

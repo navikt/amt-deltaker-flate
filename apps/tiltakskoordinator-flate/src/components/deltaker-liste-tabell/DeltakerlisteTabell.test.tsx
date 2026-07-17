@@ -18,7 +18,7 @@ const deltakerlisteDetaljer: Partial<DeltakerlisteDetaljer> = {
   id: 'liste-id',
   pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
   oppstartstype: Oppstartstype.LOPENDE,
-  tiltakskodeResponse: {
+  tiltakskode: {
     kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
     visningsnavn: 'Arbeidsmarkedsopplæring'
   },

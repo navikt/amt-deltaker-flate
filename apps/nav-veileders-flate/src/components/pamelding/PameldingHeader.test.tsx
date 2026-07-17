@@ -126,7 +126,7 @@ describe('PameldingHeader - FOV heading', () => {
             kladdTiltakHosArrangorTittel:
               'Kladd: Arbeidsmarkedsopplæring hos Kurs AS'
           },
-          tiltakskodeResponse: {
+          tiltakskode: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },

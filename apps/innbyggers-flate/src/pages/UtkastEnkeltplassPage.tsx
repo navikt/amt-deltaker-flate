@@ -59,7 +59,7 @@ export const UtkastEnkeltplassPage = () => {
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
         arrangorNavn={deltakerliste.arrangorNavn}
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={ingressTekst}
       />
@@ -70,7 +70,7 @@ export const UtkastEnkeltplassPage = () => {
       </BodyLong>
 
       <DeltakelseInnhold
-        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltakerliste.tiltakskode.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -83,7 +83,7 @@ export const UtkastEnkeltplassPage = () => {
       />
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
