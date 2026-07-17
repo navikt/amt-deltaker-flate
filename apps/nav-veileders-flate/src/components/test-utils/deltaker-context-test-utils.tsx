@@ -12,7 +12,6 @@ export const lagDeltaker = (
   const baseDeltakerliste = {
     deltakerlisteId: 'l1',
     deltakerlisteNavn: 'Tiltak',
-    tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     tiltakskodeResponse: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
