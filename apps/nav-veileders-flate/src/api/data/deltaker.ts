@@ -11,7 +11,8 @@ import {
   prisinformasjonSchema,
   Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
