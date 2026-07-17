@@ -11,7 +11,8 @@ import {
   prisinformasjonSchema,
   Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
@@ -28,7 +29,8 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  visningsnavn: visningsnavnSchema
 })
 
 export const deltakerSchema = z.object({

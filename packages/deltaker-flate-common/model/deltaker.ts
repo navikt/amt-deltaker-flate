@@ -45,6 +45,12 @@ export const tiltakskodeResponseSchema = z.object({
   visningsnavn: z.string()
 })
 
+export const visningsnavnSchema = z.object({
+  tiltakHosArrangorTittel: z.string(),
+  tiltakHosArrangorIngressTekst: z.string(),
+  kladdTiltakHosArrangorTittel: z.string()
+})
+
 export enum DeltakerStatusType {
   KLADD = 'KLADD',
   UTKAST_TIL_PAMELDING = 'UTKAST_TIL_PAMELDING',
@@ -151,3 +157,4 @@ export type importertDeltakerFraArena = z.infer<
 >
 export type Deltakelsesmengde = z.infer<typeof deltakelsesmengdeSchema>
 export type TiltakskodeResponse = z.infer<typeof tiltakskodeResponseSchema>
+export type Visningsnavn = z.infer<typeof visningsnavnSchema>

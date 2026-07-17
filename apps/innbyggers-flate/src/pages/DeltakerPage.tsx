@@ -11,7 +11,6 @@ import {
   formatDateFromString,
   getDateFromString,
   getDeltakerStatusAarsakText,
-  hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
@@ -33,11 +32,8 @@ export const DeltakerPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''
 
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn,
-    deltaker.deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakOgStedTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
   const skalViseDato =
     deltaker.startdato &&
     deltaker.startdato !== EMDASH &&
@@ -107,7 +103,6 @@ export const DeltakerPage = () => {
 
       <DeltakerStatusInfoTekst
         tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
@@ -115,6 +110,9 @@ export const DeltakerPage = () => {
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         erEnkeltplass={erEnkeltplass}
+        tiltakHosArrangorIngressTekst={
+          deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+        }
       />
 
       {visDeltMedArrangor && (

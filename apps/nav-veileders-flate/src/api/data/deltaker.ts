@@ -11,7 +11,8 @@ import {
   prisinformasjonSchema,
   Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
@@ -26,12 +27,6 @@ export const innholdselementSchema = z.object({
 const tilgjengeligInnholdSchema = z.object({
   ledetekst: z.string().nullable(),
   innhold: z.array(innholdselementSchema)
-})
-
-const visningsnavnSchema = z.object({
-  tiltakHosArrangorTittel: z.string(),
-  tiltakHosArrangorIngressTekst: z.string(),
-  kladdTiltakHosArrangorTittel: z.string()
 })
 
 export const deltakerlisteSchema = z.object({
