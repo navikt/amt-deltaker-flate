@@ -28,12 +28,6 @@ const tilgjengeligInnholdSchema = z.object({
   innhold: z.array(innholdselementSchema)
 })
 
-const visningsnavnSchema = z.object({
-  tiltakHosArrangorTittel: z.string(),
-  tiltakHosArrangorIngressTekst: z.string(),
-  kladdTiltakHosArrangorTittel: z.string()
-})
-
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
