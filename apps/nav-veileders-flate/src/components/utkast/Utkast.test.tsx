@@ -69,9 +69,14 @@ const createDeltaker = (): DeltakerResponse =>
       status: null,
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
-      pameldingstype: 'SOKNADSBASERT',
-      opplaringKategoriseringValg: createKodeverk()
-    },
+      pameldingstype: 'TRENGER_GODKJENNING',
+      opplaringKategoriseringValg: createKodeverk(),
+      visningsnavn: {
+        tiltakHosArrangorTittel: 'tittel',
+        tiltakHosArrangorIngressTekst: 'ingress',
+        kladdTiltakHosArrangorTittel: 'kladd-tittel'
+      }
+    } as DeltakerResponse['deltakerliste'],
     status: {
       id: '1',
       type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
