@@ -41,7 +41,12 @@ const lagDeltaker = (
       oppmoteSted: null,
       pameldingstype: 'TRENGER_GODKJENNING',
       opplaringKategoriseringValg: null,
-      prisinformasjon: null
+      prisinformasjon: null,
+      visningsnavn: {
+        tiltakHosArrangorTittel: 'tittel',
+        tiltakHosArrangorIngressTekst: 'ingress',
+        kladdTiltakHosArrangorTittel: 'kladd-tittel'
+      }
     },
     status: {
       id: '1',
@@ -72,7 +77,7 @@ const lagDeltaker = (
     erUnderOppfolging: true,
     erManueltDeltMedArrangor: false,
     ...overrides
-  }) as unknown as DeltakerResponse
+  }) as DeltakerResponse
 
 const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   render(

@@ -4,9 +4,7 @@ import {
   DeltakerStatusAarsakType,
   DeltakerStatusType,
   Oppstartstype,
-  Pameldingstype,
-  Tiltakskode,
-  TiltakskodeResponse
+  Pameldingstype
 } from '../model/deltaker'
 import {
   Endring,
@@ -20,31 +18,9 @@ import {
   ForslagEndringType,
   ForslagStatusType
 } from '../model/forslag.ts'
-import {
-  OpplaringKategorisering,
-  OpplaringRepresenterer
-} from '../model/kodeverk.ts'
+import { OpplaringRepresenterer } from '../model/kodeverk.ts'
 import { Tilskuddstype } from '../model/prisinformasjon'
-import { getKodeverkValgNavn } from './kodeverkUtils.ts'
 import { formatDateWithMonthName } from './utils.ts'
-
-const getKurstypeText = (
-  tiltakskode: Tiltakskode,
-  arrangorNavn: string,
-  kodeverk?: OpplaringKategorisering | null
-) => {
-  const kurstype = getKodeverkValgNavn(
-    kodeverk,
-    OpplaringRepresenterer.KURSTYPE_ID
-  )
-  if (
-    tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV &&
-    kurstype
-  ) {
-    return `${kurstype} hos ${arrangorNavn}`
-  }
-  return null
-}
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
@@ -64,69 +40,6 @@ export const deltakerprosentText = (
     ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
     : `${deltakelsesprosent ?? 100}\u00A0%`
 }
-
-export const hentKladdTiltakHosArrangorTittel = (
-  tiltakskode: TiltakskodeResponse,
-  deltakerlisteNavn: string,
-  arrangorNavn: string,
-  kodeverk: OpplaringKategorisering | null,
-  erKladd: boolean
-) => {
-  const kurstype = getKodeverkValgNavn(
-    kodeverk,
-    OpplaringRepresenterer.KURSTYPE_ID
-  )
-  if (!kurstype && skalBrukeDeltakerlisteNavn(tiltakskode.kode))
-    return `${deltakerlisteNavn} hos ${arrangorNavn}`
-
-  return hentTiltakHosArrangorTittel(
-    tiltakskode,
-    arrangorNavn,
-    erKladd ? null : kodeverk
-  )
-}
-
-export const hentTiltakHosArrangorTittel = (
-  tiltakskode: TiltakskodeResponse,
-  arrangorNavn: string,
-  kodeverk?: OpplaringKategorisering | null
-) => {
-  const kurstype = getKurstypeText(tiltakskode.kode, arrangorNavn, kodeverk)
-
-  if (kurstype) return kurstype
-  if (tiltakskode.kode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER)
-    return `Tilrettelagt arbeid med oppfølging hos ${arrangorNavn}`
-
-  return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
-}
-
-export const hentTiltakHosArrangorIngressTekst = (
-  tiltakskode: TiltakskodeResponse,
-  deltakerlisteNavn: string,
-  arrangorNavn: string,
-  kodeverk?: OpplaringKategorisering | null
-) => {
-  const kurstype = getKurstypeText(tiltakskode.kode, arrangorNavn, kodeverk)
-
-  if (kurstype) return kurstype
-  if (skalBrukeDeltakerlisteNavn(tiltakskode.kode))
-    return `${deltakerlisteNavn} hos ${arrangorNavn}`
-
-  return `${tiltakskode.visningsnavn} hos ${arrangorNavn}`
-}
-
-const skalBrukeDeltakerlisteNavn = (tiltakskode: Tiltakskode) =>
-  [
-    // Backend setter deltakerlisteNavn til tiltakstypenavn hvis det er enkeltplass uten rammeavtale
-    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
-    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-    Tiltakskode.STUDIESPESIALISERING,
-    Tiltakskode.FAG_OG_YRKESOPPLAERING,
-    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
-    Tiltakskode.HOYERE_UTDANNING
-  ].includes(tiltakskode)
 
 export const getDeltakerStatusDisplayText = (
   type: DeltakerStatusType

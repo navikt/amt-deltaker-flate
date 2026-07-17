@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Detail, Heading, LinkCard } from '@navikt/ds-react'
-import { formatDate, hentTiltakHosArrangorTittel } from 'deltaker-flate-common'
+import { formatDate } from 'deltaker-flate-common'
 import {
   TILTAKSGJENNOMFORING_LINK,
   useModiaLink
@@ -55,10 +55,7 @@ export const ForNAVAnsatt = ({ className }: Props) => {
           </LinkCard.Title>
           <LinkCard.Description>
             <BodyShort size="small">
-              {hentTiltakHosArrangorTittel(
-                deltaker.deltakerliste.tiltakskodeResponse,
-                deltaker.deltakerliste.arrangorNavn
-              )}
+              {deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel}
             </BodyShort>
             <Detail textColor="subtle" className="mb-1">
               {deltaker.deltakerliste.deltakerlisteNavn}

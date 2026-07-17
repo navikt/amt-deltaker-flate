@@ -7,8 +7,6 @@ import {
   DeltakelsesmengdeAvsnitt,
   harBakgrunnsinfo,
   harInnhold,
-  hentTiltakHosArrangorIngressTekst,
-  hentTiltakHosArrangorTittel,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   OmKurset,
@@ -34,16 +32,9 @@ export const UtkastPage = () => {
   )
 
   const arrangorNavn = deltakerliste.arrangorNavn
-  const navnHosArrangorTekst = hentTiltakHosArrangorIngressTekst(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.deltakerlisteNavn,
-    arrangorNavn
-  )
-
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.arrangorNavn
-  )
+  const navnHosArrangorTekst =
+    deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+  const tiltakOgStedTekst = deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
   const { deltakerId } = useParams()
   const {

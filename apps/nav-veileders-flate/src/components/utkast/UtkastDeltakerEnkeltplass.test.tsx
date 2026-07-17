@@ -1,11 +1,7 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import {
-  DeltakerStatusType,
-  OpplaringRepresenterer,
-  Tiltakskode
-} from 'deltaker-flate-common'
+import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { UtkastDeltakerEnkeltplass } from './UtkastDeltakerEnkeltplass'
 import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
@@ -15,29 +11,27 @@ import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)
 
-const createKodeverk = (visningsnavn?: string | null) => ({
-  valgteKategoriseringer: visningsnavn
-    ? [
-        {
-          type: OpplaringRepresenterer.KURSTYPE_ID,
-          valgteElementer: [{ id: 'kurs-1', visningsnavn }]
-        }
-      ]
-    : [],
-  valgteSertifiseringer: []
+const lagVisningsnavn = (
+  ingressTekst: string
+): DeltakerResponse['deltakerliste']['visningsnavn'] => ({
+  tiltakHosArrangorIngressTekst: ingressTekst,
+  tiltakHosArrangorTittel:
+    'Norskopplæring, grunnleggende ferdigheter og FOV hos Språkskolen AS',
+  kladdTiltakHosArrangorTittel: 'FOV kurs liste hos Språkskolen AS'
 })
 
 const lagDeltaker = (
-  kodeverk: DeltakerResponse['deltakerliste']['opplaringKategoriseringValg'] = null
-): DeltakerResponse =>
-  ({
+  kodeverk: DeltakerResponse['deltakerliste']['opplaringKategoriseringValg'] = null,
+  visningsnavn?: DeltakerResponse['deltakerliste']['visningsnavn']
+): DeltakerResponse => {
+  return {
     deltakerId: '1',
     fornavn: 'Ola',
     mellomnavn: null,
     etternavn: 'Nordmann',
     deltakerliste: {
       deltakerlisteId: '1',
-      deltakerlisteNavn: 'Norskopplæring, grunnleggende ferdigheter og FOV',
+      deltakerlisteNavn: 'FOV kurs liste',
       tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       tiltakskodeResponse: {
         kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
@@ -53,8 +47,14 @@ const lagDeltaker = (
       tilgjengeligInnhold: { ledetekst: null, innhold: [] },
       oppmoteSted: null,
       pameldingstype: 'TRENGER_GODKJENNING',
-      opplaringKategoriseringValg: kodeverk
-    },
+      opplaringKategoriseringValg: kodeverk,
+      visningsnavn: visningsnavn || {
+        tiltakHosArrangorIngressTekst: 'FOV kurs liste hos Språkskolen AS',
+        tiltakHosArrangorTittel:
+          'Norskopplæring, grunnleggende ferdigheter og FOV hos Språkskolen AS',
+        kladdTiltakHosArrangorTittel: 'FOV kurs liste hos Språkskolen AS'
+      }
+    } as DeltakerResponse['deltakerliste'],
     status: {
       id: '1',
       type: DeltakerStatusType.UTKAST_TIL_PAMELDING,
@@ -79,7 +79,8 @@ const lagDeltaker = (
       sisteDeltakelsesmengde: null,
       nesteDeltakelsesmengde: null
     }
-  }) as unknown as DeltakerResponse
+  } as unknown as DeltakerResponse
+}
 
 const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   render(
@@ -89,8 +90,11 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
-  it('bruker kurstype fra kodeverk i snakkeboblen når tilgjengelig', () => {
-    const deltaker = lagDeltaker(createKodeverk('Norskopplæring B1'))
+  it('renders ingress text from backend visningsnavn', () => {
+    const deltaker = lagDeltaker(
+      null,
+      lagVisningsnavn('Norskopplæring B1 hos Språkskolen AS')
+    )
 
     renderWithDeltaker(deltaker)
 
@@ -101,26 +105,17 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
     ).toBeInTheDocument()
   })
 
-  it('faller tilbake til deltakerlisteNavn når kodeverk er null', () => {
-    const deltaker = lagDeltaker(null)
+  it('renders ingress text when backend returns course list name', () => {
+    const deltaker = lagDeltaker(
+      null,
+      lagVisningsnavn('FOV kurs liste hos Språkskolen AS')
+    )
 
     renderWithDeltaker(deltaker)
 
     expect(
       screen.getByText(
-        /utkast til søknad til Norskopplæring, grunnleggende ferdigheter og FOV hos Språkskolen AS/
-      )
-    ).toBeInTheDocument()
-  })
-
-  it('faller tilbake til deltakerlisteNavn når kodeverk.tittel er null', () => {
-    const deltaker = lagDeltaker(createKodeverk(null))
-
-    renderWithDeltaker(deltaker)
-
-    expect(
-      screen.getByText(
-        /utkast til søknad til Norskopplæring, grunnleggende ferdigheter og FOV hos Språkskolen AS/
+        /utkast til søknad til FOV kurs liste hos Språkskolen AS/
       )
     ).toBeInTheDocument()
   })

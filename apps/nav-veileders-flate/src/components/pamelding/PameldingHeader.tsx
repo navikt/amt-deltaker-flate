@@ -4,7 +4,6 @@ import {
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
-  hentKladdTiltakHosArrangorTittel,
   Tiltakskode,
   UtkastHeader,
   Vedtaksinformasjon
@@ -43,14 +42,8 @@ export const PameldingHeader = ({
     deltakerliste.tiltakskodeResponse.kode ===
       Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING
 
-  const tiltakNavnHosArrangor = hentKladdTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.deltakerlisteNavn,
-    deltakerliste.arrangorNavn,
-    deltakerliste.opplaringKategoriseringValg,
-    erKladd
-  )
-
+  const tiltakNavnHosArrangor =
+    deltakerliste.visningsnavn.kladdTiltakHosArrangorTittel
   return (
     <div>
       <Heading level="1" size="large">

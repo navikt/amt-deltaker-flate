@@ -32,6 +32,14 @@ const lagDeltakerliste = (
     oppmoteSted: null,
     pameldingstype: 'DIREKTE_VEDTAK',
     opplaringKategoriseringValg: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans',
+      tiltakHosArrangorIngressTekst:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans',
+      kladdTiltakHosArrangorTittel:
+        'Norskopplæring, grunnleggende ferdigheter og FOV hos A & A Eiendom Ans'
+    },
     ...overrides
   }) as unknown as Deltakerliste
 
@@ -48,6 +56,12 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
+          visningsnavn: {
+            tiltakHosArrangorTittel: 'Norskopplæring hos A & A Eiendom Ans',
+            tiltakHosArrangorIngressTekst:
+              'Norskopplæring hos A & A Eiendom Ans',
+            kladdTiltakHosArrangorTittel: 'Norskopplæring hos A & A Eiendom Ans'
+          },
           opplaringKategoriseringValg: {
             valgteKategoriseringer: [
               {
@@ -94,7 +108,7 @@ describe('PameldingHeader - FOV heading', () => {
     ).toBeInTheDocument()
   })
 
-  it('bruker standard tiltaksnavn for andre tiltakskoder selv med kodeverk.tittel', () => {
+  it('bruker kladdTiltakHosArrangorTittel når status er KLADD', () => {
     render(
       <PameldingHeader
         deltakerStatus={{
@@ -106,23 +120,18 @@ describe('PameldingHeader - FOV heading', () => {
           opprettet: new Date()
         }}
         deltakerliste={lagDeltakerliste({
+          visningsnavn: {
+            tiltakHosArrangorTittel: 'Arbeidsmarkedsopplæring hos Kurs AS',
+            tiltakHosArrangorIngressTekst:
+              'Arbeidsmarkedsopplæring hos Kurs AS',
+            kladdTiltakHosArrangorTittel:
+              'Kladd: Arbeidsmarkedsopplæring hos Kurs AS'
+          },
           tiltakskodeResponse: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },
-          deltakerlisteNavn: 'Arbeidsmarkedsopplæring',
-          arrangorNavn: 'Kurs AS',
-          opplaringKategoriseringValg: {
-            valgteKategoriseringer: [
-              {
-                type: OpplaringRepresenterer.BRANSJE_ID,
-                valgteElementer: [
-                  { id: 'kurs-2', visningsnavn: 'Bransje: Bygg' }
-                ]
-              }
-            ],
-            valgteSertifiseringer: []
-          }
+          arrangorNavn: 'Kurs AS'
         })}
         vedtaksinformasjon={null}
       />
@@ -130,7 +139,7 @@ describe('PameldingHeader - FOV heading', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: 'Arbeidsmarkedsopplæring hos Kurs AS'
+        name: 'Kladd: Arbeidsmarkedsopplæring hos Kurs AS'
       })
     ).toBeInTheDocument()
   })

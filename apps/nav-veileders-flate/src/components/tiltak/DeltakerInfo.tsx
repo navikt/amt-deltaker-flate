@@ -10,7 +10,6 @@ import {
   EMDASH,
   formatDate,
   getDeltakerStatusAarsakText,
-  hentTiltakHosArrangorTittel,
   HvaDelesMedArrangor,
   kanDeleDeltakerMedArrangorForVurdering,
   OmKurset,
@@ -30,11 +29,8 @@ interface Props {
 
 export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn,
-    deltaker.deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakOgStedTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
   const skalViseDato =
     deltaker.startdato &&
@@ -83,7 +79,6 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <DeltakerStatusInfoTekst
         tiltakskode={deltaker.deltakerliste.tiltakskodeResponse}
-        deltakerlisteNavn={deltaker.deltakerliste.deltakerlisteNavn}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
@@ -91,6 +86,9 @@ export const DeltakerInfo = ({ className }: Props) => {
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        tiltakHosArrangorIngressTekst={
+          deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+        }
       />
 
       {skalViseDato && (

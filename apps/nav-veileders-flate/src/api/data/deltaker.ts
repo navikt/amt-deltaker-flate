@@ -11,7 +11,8 @@ import {
   prisinformasjonSchema,
   Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
@@ -49,7 +50,8 @@ export const deltakerlisteSchema = z.object({
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  visningsnavn: visningsnavnSchema
 })
 
 export const deltakerSchema = z.object({

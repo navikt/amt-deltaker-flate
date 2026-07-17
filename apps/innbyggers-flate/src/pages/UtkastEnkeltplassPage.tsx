@@ -4,8 +4,6 @@ import {
   DeltakelseInnhold,
   DeltakelsesmengdeAvsnitt,
   formatDateFromString,
-  hentTiltakHosArrangorIngressTekst,
-  hentTiltakHosArrangorTittel,
   PrisOgBetaling,
   useDeferredFetch,
   UtkastHeader,
@@ -19,17 +17,9 @@ export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
   const deltakerliste = deltaker.deltakerliste
 
-  const tiltakNavnHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.arrangorNavn,
-    deltakerliste.opplaringKategoriseringValg
-  )
-  const ingressTekst = hentTiltakHosArrangorIngressTekst(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.deltakerlisteNavn,
-    deltakerliste.arrangorNavn,
-    deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakNavnHosArrangorTekst =
+    deltakerliste.visningsnavn.tiltakHosArrangorTittel
+  const ingressTekst = deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
 
   const { deltakerId } = useParams()
   const {

@@ -2,7 +2,6 @@ import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
 import {
   ConfirmInfoCard,
   DeferredFetchState,
-  hentTiltakHosArrangorTittel,
   useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
@@ -38,11 +37,8 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.arrangorNavn,
-    deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakHosArrangorTekst =
+    deltakerliste.visningsnavn.tiltakHosArrangorTittel
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',

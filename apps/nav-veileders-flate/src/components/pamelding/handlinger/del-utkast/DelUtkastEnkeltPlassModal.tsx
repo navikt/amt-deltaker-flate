@@ -1,9 +1,5 @@
 import { BodyLong, Button, LocalAlert, Modal } from '@navikt/ds-react'
-import {
-  DeferredFetchState,
-  hentTiltakHosArrangorTittel,
-  useDeferredFetch
-} from 'deltaker-flate-common'
+import { DeferredFetchState, useDeferredFetch } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
 import { delUtkastMedInnbygger } from '../../../../api/api-enkeltplass'
 import { useAppContext } from '../../../../AppContext'
@@ -30,11 +26,8 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { deltakerliste } = deltaker
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst = hentTiltakHosArrangorTittel(
-    deltakerliste.tiltakskodeResponse,
-    deltakerliste.arrangorNavn,
-    deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakHosArrangorTekst =
+    deltakerliste.visningsnavn.tiltakHosArrangorTittel
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',
