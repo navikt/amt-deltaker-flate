@@ -4,7 +4,7 @@ import {
   DeltakerStatusType,
   EndreDeltakelseType,
   harBakgrunnsinfo,
-  harDeltakelsesmengde,
+  harDeltakerlisteDeltakelsesmengde,
   harInnhold,
   harLopendeOppstart
 } from 'deltaker-flate-common'
@@ -47,7 +47,7 @@ const skalViseEndreSluttarsakKnapp = (deltaker: DeltakerResponse) =>
   deltaker.status.type === DeltakerStatusType.IKKE_AKTUELL
 
 const skalViseEndreDeltakelsesmengde = (deltaker: DeltakerResponse) =>
-  harDeltakelsesmengde(deltaker.deltakerliste) &&
+  harDeltakerlisteDeltakelsesmengde(deltaker.deltakerliste) &&
   (venterDeltarEllerAvsluttet(deltaker) || erEnkeltplassSoktInn(deltaker))
 
 const skalViseEndrePrisOgBetaling = (deltaker: DeltakerResponse) =>

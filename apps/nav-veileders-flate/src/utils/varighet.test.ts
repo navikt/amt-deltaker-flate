@@ -34,7 +34,6 @@ const pamelding: DeltakerResponse = {
   deltakerliste: {
     deltakerlisteId: uuidv4(),
     deltakerlisteNavn: 'Testliste',
-    tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     tiltakskodeResponse: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'

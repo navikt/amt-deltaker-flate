@@ -16,7 +16,6 @@ const lagDeltakerliste = (
   ({
     deltakerlisteId: '1',
     deltakerlisteNavn: 'Norskopplæring, grunnleggende ferdigheter og FOV',
-    tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
     tiltakskodeResponse: {
       kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'

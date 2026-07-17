@@ -9,7 +9,6 @@ import {
   pameldingStatusSchema,
   Pameldingstype,
   prisinformasjonSchema,
-  Tiltakskode,
   tiltakskodeResponseSchema,
   vedtaksinformasjonSchema,
   visningsnavnSchema
@@ -19,7 +18,6 @@ import { z } from 'zod'
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
   tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),

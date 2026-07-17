@@ -5,7 +5,6 @@ import {
   nullableDateSchema,
   Oppstartstype,
   Pameldingstype,
-  Tiltakskode,
   tiltakskodeResponseSchema,
   Vurderingstype
 } from 'deltaker-flate-common'
@@ -52,7 +51,6 @@ export const deltakerDetaljerSchema = z.object({
   beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
   innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
-  tiltakskode: z.enum(Tiltakskode),
   tiltakskodeResponse: tiltakskodeResponseSchema,
   oppstartstype: z.enum(Oppstartstype).nullable(),
   pameldingstype: z.enum(Pameldingstype),

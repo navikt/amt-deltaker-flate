@@ -126,7 +126,7 @@ export const UtkastPage = () => {
       )}
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltakerliste.tiltakskode}
+        tiltakskode={deltakerliste.tiltakskodeResponse.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
