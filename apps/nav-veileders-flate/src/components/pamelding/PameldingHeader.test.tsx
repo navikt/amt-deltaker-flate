@@ -60,8 +60,7 @@ describe('PameldingHeader - FOV heading', () => {
             tiltakHosArrangorTittel: 'Norskopplæring hos A & A Eiendom Ans',
             tiltakHosArrangorIngressTekst:
               'Norskopplæring hos A & A Eiendom Ans',
-            kladdTiltakHosArrangorTittel:
-              'Kladd: Norskopplæring hos A & A Eiendom Ans'
+            kladdTiltakHosArrangorTittel: 'Norskopplæring hos A & A Eiendom Ans'
           },
           opplaringKategoriseringValg: {
             valgteKategoriseringer: [
