@@ -45,12 +45,12 @@ export const DeltakerInfo = ({ className }: Props) => {
     dato = formatDate(deltaker.startdato)
   }
 
-  const tiltakskode = deltaker.deltakerliste.tiltakskodeResponse
+  const { tiltakskodeResponse } = deltaker.deltakerliste
   const visDeltMedArrangor =
     deltaker.erManueltDeltMedArrangor &&
     kanDeleDeltakerMedArrangorForVurdering(
       deltaker.deltakerliste.pameldingstype,
-      tiltakskode.kode,
+      tiltakskodeResponse.kode,
       deltaker.deltakerliste.erEnkeltplass
     ) &&
     (deltaker.status.type === DeltakerStatusType.SOKT_INN ||
@@ -109,7 +109,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       )}
 
       <OmKurset
-        tiltakskode={tiltakskode.kode}
+        tiltakskode={tiltakskodeResponse.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
@@ -129,7 +129,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
 
       <DeltakelseInnhold
-        tiltakskode={tiltakskode.kode}
+        tiltakskode={tiltakskodeResponse.kode}
         deltakelsesinnhold={deltaker.deltakelsesinnhold}
         opplaringKategoriseringValg={
           deltaker.deltakerliste.opplaringKategoriseringValg
@@ -165,7 +165,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <SeEndringer
         className="mt-8"
-        tiltakskode={tiltakskode.kode}
+        tiltakskode={tiltakskodeResponse.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakerId={deltaker.deltakerId}
         fetchHistorikk={getHistorikk}
@@ -176,7 +176,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <VedtakOgKlage
         statusType={deltaker.status.type}
         statusDato={deltaker.status.opprettet}
-        tiltakskode={tiltakskode.kode}
+        tiltakskode={tiltakskodeResponse.kode}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         vedtaksinformasjon={deltaker.vedtaksinformasjon}
         importertFraArena={deltaker.importertFraArena}
@@ -185,7 +185,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       <HvaDelesMedArrangor
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
-        tiltakskode={tiltakskode.kode}
+        tiltakskode={tiltakskodeResponse.kode}
         statusType={deltaker.status.type}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
