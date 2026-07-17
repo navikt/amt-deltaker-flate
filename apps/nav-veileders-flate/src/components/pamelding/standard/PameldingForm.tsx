@@ -4,7 +4,7 @@ import {
   erOpplaringstiltak,
   fjernUgyldigeTegn,
   harBakgrunnsinfo,
-  harDeltakelsesmengde,
+  harDeltakerlisteDeltakelsesmengde,
   harLopendeOppstart,
   OmKurset,
   Oppmotested,
@@ -116,7 +116,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
             </section>
           )}
 
-          {harDeltakelsesmengde(deltaker.deltakerliste) && (
+          {harDeltakerlisteDeltakelsesmengde(deltaker.deltakerliste) && (
             <div>
               <Heading size="medium" level="3" className="mb-4">
                 Deltakelsesmengde

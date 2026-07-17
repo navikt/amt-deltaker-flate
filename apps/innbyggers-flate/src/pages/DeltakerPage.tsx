@@ -178,7 +178,7 @@ export const DeltakerPage = () => {
       />
 
       <DeltakelsesmengdeInfo
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         nesteDeltakelsesmengde={

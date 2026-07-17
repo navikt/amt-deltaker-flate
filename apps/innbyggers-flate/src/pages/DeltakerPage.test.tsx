@@ -28,7 +28,10 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
     ...stottetTiltakDeltaker,
     deltakerliste: {
       ...stottetTiltakDeltaker.deltakerliste,
-      tiltakskode: Tiltakskode.OPPFOLGING
+      tiltakskodeResponse: {
+        kode: Tiltakskode.OPPFOLGING,
+        visningsnavn: 'Oppfølging'
+      }
     }
   }
 

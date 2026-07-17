@@ -9,7 +9,6 @@ import {
   pameldingStatusSchema,
   Pameldingstype,
   prisinformasjonSchema,
-  Tiltakskode,
   tiltakskodeResponseSchema,
   vedtaksinformasjonSchema,
   visningsnavnSchema
@@ -32,7 +31,6 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
   tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   arrangor: z

@@ -1,8 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { Pameldingstype } from 'deltaker-flate-common'
+import {
+  Oppstartstype,
+  Pameldingstype,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { MemoryRouter } from 'react-router-dom'
-import { Deltaker } from '../../api/data/deltakerliste'
+import { Deltaker, DeltakerlisteDetaljer } from '../../api/data/deltakerliste'
 import { DeltakerlisteTabell } from './DeltakerlisteTabell'
 
 import { lagTestDeltaker } from '../../test-utils/lagTestDeltaker'
@@ -10,11 +14,14 @@ import { lagTestDeltaker } from '../../test-utils/lagTestDeltaker'
 const lagDeltaker = (id: string, fornavn: string, etternavn: string) =>
   lagTestDeltaker({ id, fornavn, etternavn })
 
-const deltakerlisteDetaljer = {
+const deltakerlisteDetaljer: Partial<DeltakerlisteDetaljer> = {
   id: 'liste-id',
   pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
-  oppstartstype: 'LOPENDE',
-  tiltakskode: 'GRUPPE_ARBEIDSMARKEDSOPPLAERING',
+  oppstartstype: Oppstartstype.LOPENDE,
+  tiltakskodeResponse: {
+    kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    visningsnavn: 'Arbeidsmarkedsopplæring'
+  },
   erEnkeltplass: false
 }
 

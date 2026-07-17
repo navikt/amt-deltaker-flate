@@ -126,7 +126,6 @@ export const createMockDeltaker = (
       epost: 'veileder.veiledersen@epost.no'
     },
     innsatsgruppe: InnsatsbehovType.STANDARD_INNSATS,
-    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     tiltakskodeResponse: {
       kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
       visningsnavn: mockVisningsnavn(
@@ -229,7 +228,6 @@ export const createMockDeltakerlisteDetaljer = (): DeltakerlisteDetaljer => {
   return {
     id: uuidv4(),
     navn: 'Kometrytter Kurs',
-    tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
     tiltakskodeResponse: {
       kode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
       visningsnavn: mockVisningsnavn(

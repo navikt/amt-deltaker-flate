@@ -54,7 +54,6 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'Testliste',
-      tiltakskode,
       tiltakskodeResponse: {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
@@ -177,7 +176,6 @@ export class MockHandler {
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
-      oppdatertDeltaker.deltakerliste.tiltakskode = tiltakskode
       oppdatertDeltaker.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)

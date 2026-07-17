@@ -16,7 +16,7 @@ export const StatusFilter = () => {
         getFilterStatuser(
           deltakerlisteDetaljer.oppstartstype,
           deltakerlisteDetaljer.pameldingstype,
-          deltakerlisteDetaljer.tiltakskode
+          deltakerlisteDetaljer.tiltakskodeResponse.kode
         )
       )
     ].map((filtervalg) => ({
@@ -26,7 +26,7 @@ export const StatusFilter = () => {
   }, [
     deltakerlisteDetaljer.oppstartstype,
     deltakerlisteDetaljer.pameldingstype,
-    deltakerlisteDetaljer.tiltakskode
+    deltakerlisteDetaljer.tiltakskodeResponse.kode
   ])
 
   return (

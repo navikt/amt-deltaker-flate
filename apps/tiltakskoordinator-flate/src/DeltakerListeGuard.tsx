@@ -41,7 +41,7 @@ export const DeltakerListeGuard = () => {
         getFilterStatuser(
           deltakerlisteDetaljerQuery.data.oppstartstype,
           deltakerlisteDetaljerQuery.data.pameldingstype,
-          deltakerlisteDetaljerQuery.data.tiltakskode
+          deltakerlisteDetaljerQuery.data.tiltakskodeResponse.kode
         )
       )
     ]

@@ -47,7 +47,7 @@ export const AvbruttUtkastPage = () => {
       )}
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
