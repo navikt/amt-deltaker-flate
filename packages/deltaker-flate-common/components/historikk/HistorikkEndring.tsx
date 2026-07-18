@@ -14,6 +14,7 @@ import {
 import { formatDate, harKursAvslutning } from '../../utils/utils'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
+import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
@@ -49,7 +50,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.FJERN_OPPSTARTSDATO
     case EndringType.EndreAvslutning:
       return EndreDeltakelseType.ENDRE_AVSLUTNING
-    // TODO vi må få prisinfo i historikken – skal det være på EndringType, eller ha en egen?
+    case EndringType.EndrePrisinfo:
+      return EndreDeltakelseType.ENDRE_PRISINFO
   }
 }
 
@@ -191,6 +193,23 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
     case EndringType.FjernOppstartsdato: {
       return (
         <>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.EndrePrisinfo: {
+      return (
+        <>
+          <PrisOgBetaling
+            prisinformasjon={endring.prisinfo}
+            headinglevel="3"
+            showHeading={false}
+            showTilleggsstonaderInfo={false}
+          />
           {endring.begrunnelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}

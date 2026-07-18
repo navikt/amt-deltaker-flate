@@ -24,7 +24,8 @@ export enum EndringType {
   AvsluttDeltakelse = 'AvsluttDeltakelse',
   EndreSluttarsak = 'EndreSluttarsak',
   ReaktiverDeltakelse = 'ReaktiverDeltakelse',
-  FjernOppstartsdato = 'FjernOppstartsdato'
+  FjernOppstartsdato = 'FjernOppstartsdato',
+  EndrePrisinfo = 'EndrePrisinfo'
 }
 
 export enum ArrangorEndringsType {
@@ -116,6 +117,12 @@ export const fjernOppstartsdatoSchema = z.object({
   begrunnelse: z.string().nullable()
 })
 
+export const endrePrisinfoSchema = z.object({
+  type: z.literal(EndringType.EndrePrisinfo),
+  prisinfo: prisinformasjonSchema.nullable(),
+  begrunnelse: z.string().nullable()
+})
+
 const endringSchema = z.discriminatedUnion('type', [
   endreBakgrunnsinformasjonSchema,
   endreInnholdSchema,
@@ -128,7 +135,8 @@ const endringSchema = z.discriminatedUnion('type', [
   endreAvslutningSchema,
   endreSluttarsakSchema,
   reaktiverDeltakelseSchema,
-  fjernOppstartsdatoSchema
+  fjernOppstartsdatoSchema,
+  endrePrisinfoSchema
 ])
 
 const arrangorLeggTilOppstartSchema = z.object({
