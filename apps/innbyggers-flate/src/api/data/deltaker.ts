@@ -9,16 +9,15 @@ import {
   pameldingStatusSchema,
   Pameldingstype,
   prisinformasjonSchema,
-  Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
   tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   oppstartstype: z.enum(Oppstartstype).nullable(),
@@ -28,7 +27,8 @@ export const deltakerlisteSchema = z.object({
   erEnkeltplass: z.boolean(),
   oppmoteSted: z.string().nullable(),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  visningsnavn: visningsnavnSchema
 })
 
 export const deltakerSchema = z.object({

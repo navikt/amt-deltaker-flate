@@ -5,7 +5,6 @@ import {
   DeltakelsesmengdeAvsnitt,
   DeltakerStatusType,
   harBakgrunnsinfo,
-  hentTiltakHosArrangorIngressTekst,
   OmKurset,
   Oppmotested,
   VeilederSnakkeboble
@@ -14,7 +13,8 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
-  const { tiltakskode, erEnkeltplass } = deltaker.deltakerliste
+  const { tiltakskodeResponse, erEnkeltplass } = deltaker.deltakerliste
+  const tiltakskode = tiltakskodeResponse.kode
 
   return (
     <div className="flex flex-col gap-8">
@@ -23,11 +23,9 @@ export const UtkastDeltaker = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
-          deltaker.deltakerliste.tiltakskodeResponse,
-          deltaker.deltakerliste.deltakerlisteNavn,
-          deltaker.deltakerliste.arrangorNavn
-        )}
+        tiltaksnavnHosArrangor={
+          deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+        }
       />
 
       <DeltakelseInnhold

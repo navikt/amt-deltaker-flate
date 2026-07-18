@@ -1,6 +1,6 @@
 import {
   erOpplaringstiltak,
-  harDeltakelsesmengde,
+  harDeltakerlisteDeltakelsesmengde,
   INNHOLD_TYPE_ANNET,
   Tiltakskode
 } from 'deltaker-flate-common'
@@ -59,7 +59,7 @@ const getDeltakerProsent = (
     data.deltakelsesprosentValg === DeltakelsesprosentValg.JA
       ? 100
       : data.deltakelsesprosent
-  return harDeltakelsesmengde(deltaker.deltakerliste)
+  return harDeltakerlisteDeltakelsesmengde(deltaker.deltakerliste)
     ? deltakelsesprosent
     : undefined
 }

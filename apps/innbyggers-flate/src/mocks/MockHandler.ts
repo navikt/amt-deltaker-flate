@@ -54,7 +54,6 @@ export const createDeltaker = (
     deltakerliste: {
       deltakerlisteId: '450e0f37-c4bb-4611-ac66-f725e05bad3e',
       deltakerlisteNavn: 'Testliste',
-      tiltakskode,
       tiltakskodeResponse: {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
@@ -68,7 +67,12 @@ export const createDeltaker = (
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
       opplaringKategoriseringValg: lagOpplaringKategoriseringMockRespons(),
-      prisinformasjon: null
+      prisinformasjon: null,
+      visningsnavn: {
+        tiltakHosArrangorTittel: 'tittel',
+        tiltakHosArrangorIngressTekst: 'ingress',
+        kladdTiltakHosArrangorTittel: 'kladd-tittel'
+      }
     },
     status: {
       id: '5ac4076b-7b09-4883-9db1-bc181bd8d4f8',
@@ -172,7 +176,6 @@ export class MockHandler {
       tiltakskode === Tiltakskode.HOYERE_UTDANNING
 
     if (oppdatertDeltaker) {
-      oppdatertDeltaker.deltakerliste.tiltakskode = tiltakskode
       oppdatertDeltaker.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)

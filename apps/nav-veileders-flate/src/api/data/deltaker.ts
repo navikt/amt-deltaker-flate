@@ -9,9 +9,9 @@ import {
   pameldingStatusSchema,
   Pameldingstype,
   prisinformasjonSchema,
-  Tiltakskode,
   tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema
+  vedtaksinformasjonSchema,
+  visningsnavnSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
 import { opplaringKategoriseringSchema } from './kodeverk.ts'
@@ -31,7 +31,6 @@ const tilgjengeligInnholdSchema = z.object({
 export const deltakerlisteSchema = z.object({
   deltakerlisteId: z.uuid(),
   deltakerlisteNavn: z.string(),
-  tiltakskode: z.enum(Tiltakskode),
   tiltakskodeResponse: tiltakskodeResponseSchema,
   arrangorNavn: z.string(),
   arrangor: z
@@ -49,7 +48,8 @@ export const deltakerlisteSchema = z.object({
   oppmoteSted: z.string().nullable(),
   pameldingstype: z.enum(Pameldingstype),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  visningsnavn: visningsnavnSchema
 })
 
 export const deltakerSchema = z.object({

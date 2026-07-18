@@ -1,8 +1,4 @@
-import {
-  DeltakerStatusType,
-  FeilregistrertInfo,
-  hentTiltakHosArrangorTittel
-} from 'deltaker-flate-common'
+import { DeltakerStatusType, FeilregistrertInfo } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 import { AvbruttUtkastPage } from '../pages/AvbruttUtkastPage.tsx'
 import { DeltakerPage } from '../pages/DeltakerPage.tsx'
@@ -12,10 +8,8 @@ import { UtkastEnkeltplassPage } from '../pages/UtkastEnkeltplassPage.tsx'
 
 export const DeltakerGuard = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn
-  )
+  const tiltakOgStedTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
   if (deltaker.status.type === DeltakerStatusType.UTKAST_TIL_PAMELDING) {
     return deltaker.deltakerliste.erEnkeltplass ? (

@@ -34,7 +34,6 @@ const pamelding: DeltakerResponse = {
   deltakerliste: {
     deltakerlisteId: uuidv4(),
     deltakerlisteNavn: 'Testliste',
-    tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     tiltakskodeResponse: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
@@ -56,7 +55,12 @@ const pamelding: DeltakerResponse = {
     erEnkeltplass: false,
     pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
     opplaringKategoriseringValg: null,
-    prisinformasjon: null
+    prisinformasjon: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel: 'tittel',
+      tiltakHosArrangorIngressTekst: 'ingress',
+      kladdTiltakHosArrangorTittel: 'kladd-tittel'
+    }
   },
   status: {
     id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',

@@ -1,8 +1,4 @@
-import {
-  DeltakerStatusType,
-  FeilregistrertInfo,
-  hentTiltakHosArrangorTittel
-} from 'deltaker-flate-common'
+import { DeltakerStatusType, FeilregistrertInfo } from 'deltaker-flate-common'
 import { Tilbakeknapp } from '../components/Tilbakeknapp.tsx'
 import { DeltakerInfo } from '../components/tiltak/DeltakerInfo.tsx'
 import { ForNAVAnsatt } from '../components/tiltak/ForNAVAnsatt.tsx'
@@ -11,11 +7,8 @@ import { DIALOG_URL } from '../utils/environment-utils.ts'
 
 export const DeltakerPage = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn,
-    deltaker.deltakerliste.opplaringKategoriseringValg
-  )
+  const tiltakOgStedTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
   return (
     <div className="max-w-313 m-auto" data-testid="page_tiltak">

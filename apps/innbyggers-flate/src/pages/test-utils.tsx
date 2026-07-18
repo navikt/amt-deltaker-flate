@@ -12,7 +12,6 @@ export const lagInnbyggerDeltaker = (
   const baseDeltakerliste = {
     deltakerlisteId: 'l1',
     deltakerlisteNavn: 'Tiltak',
-    tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     tiltakskodeResponse: {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
@@ -28,7 +27,12 @@ export const lagInnbyggerDeltaker = (
     oppmoteSted: null,
     pameldingstype: 'TRENGER_GODKJENNING',
     opplaringKategoriseringValg: null,
-    prisinformasjon: null
+    prisinformasjon: null,
+    visningsnavn: {
+      tiltakHosArrangorIngressTekst: 'ingress',
+      tiltakHosArrangorTittel: 'tittel',
+      kladdTiltakHosArrangorTittel: 'kladd-tittel'
+    }
   } as DeltakerResponse['deltakerliste']
 
   const { deltakerliste, ...rest } = overrides
@@ -71,7 +75,7 @@ export const lagInnbyggerDeltaker = (
     erUnderOppfolging: true,
     erManueltDeltMedArrangor: false,
     ...rest
-  } as unknown as DeltakerResponse
+  } as DeltakerResponse
 }
 
 export const renderWithInnbyggerDeltakerContext = (

@@ -3,17 +3,14 @@ import {
   DeltakelseInnhold,
   DeltakelsesmengdeAvsnitt,
   EMDASH,
-  hentTiltakHosArrangorTittel,
   UtkastHeader
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
 
 export const AvbruttUtkastPage = () => {
   const { deltaker } = useDeltakerContext()
-  const tiltakOgStedTekst = hentTiltakHosArrangorTittel(
-    deltaker.deltakerliste.tiltakskodeResponse,
-    deltaker.deltakerliste.arrangorNavn
-  )
+  const tiltakOgStedTekst =
+    deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
   return (
     <div className="flex flex-col items-start mb-8">
@@ -50,7 +47,7 @@ export const AvbruttUtkastPage = () => {
       )}
 
       <DeltakelsesmengdeAvsnitt
-        tiltakskode={deltaker.deltakerliste.tiltakskode}
+        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}

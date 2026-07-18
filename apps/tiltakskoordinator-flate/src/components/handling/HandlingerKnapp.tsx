@@ -31,7 +31,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
   const { erKometMasterForTiltak } = useFeatureToggles()
   const { containerElement } = useShadowDom()
   const kometErMaster = erKometMasterForTiltak(
-    deltakerlisteDetaljer.tiltakskode
+    deltakerlisteDetaljer.tiltakskodeResponse.kode
   )
   const handlingValgRef = useRef<HandlingValg | null>(null)
   const handlingKnappRef = useRef<HTMLButtonElement>(null)
@@ -62,7 +62,7 @@ export const HandlingerKnapp = ({ onModalOpen, className }: Props) => {
 
   const kanDeleMedArrangor = kanDeleDeltakerMedArrangorForVurdering(
     deltakerlisteDetaljer.pameldingstype,
-    deltakerlisteDetaljer.tiltakskode,
+    deltakerlisteDetaljer.tiltakskodeResponse.kode,
     deltakerlisteDetaljer.erEnkeltplass
   )
 

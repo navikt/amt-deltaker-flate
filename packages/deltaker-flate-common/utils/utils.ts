@@ -5,7 +5,8 @@ import {
   DeltakerStatusAarsakType,
   Oppstartstype,
   Pameldingstype,
-  Tiltakskode
+  Tiltakskode,
+  TiltakskodeResponse
 } from '../model/deltaker'
 import { Prisinformasjon, PrisinformasjonType } from '../model/prisinformasjon'
 import { EMDASH } from './constants'
@@ -128,6 +129,16 @@ export const formatDateFromString = (
   const date = dayjs(dateStr)
   return date.isValid() ? date.format('DD.MM.YYYY') : EMDASH
 }
+
+export const harDeltakerlisteDeltakelsesmengde = (arg: {
+  // Delmengde av deltakerliste-typen
+  tiltakskodeResponse: TiltakskodeResponse
+  erEnkeltplass: boolean
+}) =>
+  harDeltakelsesmengde({
+    tiltakskode: arg.tiltakskodeResponse.kode,
+    erEnkeltplass: arg.erEnkeltplass
+  })
 
 export const harDeltakelsesmengde = ({
   tiltakskode,

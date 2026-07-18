@@ -3,7 +3,6 @@ import {
   DeltakelseInnhold,
   DeltakelsesmengdeAvsnitt,
   formatDate,
-  hentTiltakHosArrangorIngressTekst,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
@@ -20,12 +19,9 @@ export const UtkastDeltakerEnkeltplass = () => {
         arrangorNavn={deltaker.deltakerliste.arrangorNavn}
         tiltakskode={tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        tiltaksnavnHosArrangor={hentTiltakHosArrangorIngressTekst(
-          tiltakskode,
-          deltaker.deltakerliste.deltakerlisteNavn,
-          deltaker.deltakerliste.arrangorNavn,
-          deltaker.deltakerliste.opplaringKategoriseringValg
-        )}
+        tiltaksnavnHosArrangor={
+          deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
+        }
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}

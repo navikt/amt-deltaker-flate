@@ -102,7 +102,6 @@ export class MockHandler {
       deltakerliste: {
         deltakerlisteId: deltakerlisteId,
         deltakerlisteNavn: 'Testliste',
-        tiltakskode: this.tiltakskode,
         tiltakskodeResponse: {
           kode: this.tiltakskode,
           visningsnavn: mockVisningsnavn(this.tiltakskode)
@@ -134,7 +133,12 @@ export class MockHandler {
               aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
               tilleggsopplysninger: null
             }
-          : null
+          : null,
+        visningsnavn: {
+          tiltakHosArrangorTittel: 'tittel',
+          tiltakHosArrangorIngressTekst: 'ingress',
+          kladdTiltakHosArrangorTittel: 'kladd-tittel'
+        }
       },
       status: {
         id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
@@ -487,7 +491,6 @@ export class MockHandler {
       tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
 
     if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.tiltakskode = tiltakskode
       oppdatertPamelding.deltakerliste.tiltakskodeResponse = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
