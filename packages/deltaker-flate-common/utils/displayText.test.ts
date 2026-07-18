@@ -81,4 +81,32 @@ describe('getEndringsTittel', () => {
       )
     ).toBe('Deltakelsesmengde endret')
   })
+
+  it('should return tittel for EndreAvslutning', () => {
+    expect(
+      getEndringsTittel(
+        {
+          type: EndringType.EndreAvslutning,
+          aarsak: null,
+          sluttdato: null,
+          begrunnelse: null,
+          harFullfort: null
+        },
+        false
+      )
+    ).toBe('Avslutning endret')
+  })
+
+  it('should return tittel for EndrePrisinfo', () => {
+    expect(
+      getEndringsTittel(
+        {
+          type: EndringType.EndrePrisinfo,
+          prisinfo: null,
+          begrunnelse: null
+        },
+        false
+      )
+    ).toBe('Prisinformasjon er endret')
+  })
 })
