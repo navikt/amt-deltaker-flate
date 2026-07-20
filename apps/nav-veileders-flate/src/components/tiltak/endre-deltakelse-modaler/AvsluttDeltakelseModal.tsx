@@ -59,7 +59,7 @@ export const AvsluttDeltakelseModal = ({
   const defaultSluttdato = getSluttdato(deltaker, forslag)
   const harKursAvslutendeStatuser = harKursAvslutning(
     deltaker.deltakerliste.oppstartstype,
-    deltaker.deltakerliste.tiltakskodeResponse.kode
+    deltaker.deltakerliste.tiltakskode.kode
   )
   const harDeltattMerEnnFjortenDager = !harDeltattMindreEnn15Dager(
     deltaker,
@@ -368,7 +368,7 @@ export const AvsluttDeltakelseModal = ({
           error={errorVarighetConfirmation}
         >
           {getSoftMaxVarighetBekreftelseText(
-            deltaker.deltakerliste.tiltakskodeResponse.kode
+            deltaker.deltakerliste.tiltakskode.kode
           )}
         </ConfirmationPanel>
       )}

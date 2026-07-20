@@ -13,6 +13,7 @@ import {
   getEndreDeltakelsesValg,
   validerDeltakerKanEndres
 } from './endreDeltakelse.ts'
+
 const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
   ({
     deltakerId: 'test-id',
@@ -22,8 +23,7 @@ const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
     deltakerliste: {
       deltakerlisteId: 'liste-id',
       deltakerlisteNavn: 'Testtiltak',
-      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      tiltakskodeResponse: {
+      tiltakskode: {
         kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
         visningsnavn: 'Arbeidsforberedende trening'
       },

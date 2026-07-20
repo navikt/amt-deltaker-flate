@@ -25,7 +25,7 @@ export const Utkast = () => {
   const kanEndreUtkast = ![
     Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
     Tiltakskode.JOBBKLUBB
-  ].includes(deltaker.deltakerliste.tiltakskodeResponse.kode)
+  ].includes(deltaker.deltakerliste.tiltakskode.kode)
 
   if (redigerUtkastModus) {
     return erEnkeltPlass(deltaker) ? (

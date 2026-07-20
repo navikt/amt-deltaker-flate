@@ -32,8 +32,7 @@ const lagDeltaker = (
     deltakerliste: {
       deltakerlisteId: '1',
       deltakerlisteNavn: 'FOV kurs liste',
-      tiltakskode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
-      tiltakskodeResponse: {
+      tiltakskode: {
         kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
         visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'
       },
@@ -161,7 +160,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
 
   it('viser deltakelsesmengde for arbeidsmarkedsopplæring', () => {
     const deltaker = lagDeltaker()
-    deltaker.deltakerliste.tiltakskodeResponse.kode =
+    deltaker.deltakerliste.tiltakskode.kode =
       Tiltakskode.ARBEIDSMARKEDSOPPLAERING
     deltaker.dagerPerUke = 4
 

@@ -16,7 +16,7 @@ const lagDeltakerliste = (
   ({
     deltakerlisteId: '1',
     deltakerlisteNavn: 'Norskopplæring, grunnleggende ferdigheter og FOV',
-    tiltakskodeResponse: {
+    tiltakskode: {
       kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'
     },
@@ -126,7 +126,7 @@ describe('PameldingHeader - FOV heading', () => {
             kladdTiltakHosArrangorTittel:
               'Kladd: Arbeidsmarkedsopplæring hos Kurs AS'
           },
-          tiltakskodeResponse: {
+          tiltakskode: {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },

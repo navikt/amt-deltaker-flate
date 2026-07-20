@@ -51,7 +51,7 @@ export const deltakerDetaljerSchema = z.object({
   beskyttelsesmarkering: z.array(z.enum(Beskyttelsesmarkering)),
   vurdering: vurderingSchema.nullable(),
   innsatsgruppe: z.enum(InnsatsbehovType).nullable(),
-  tiltakskodeResponse: tiltakskodeResponseSchema,
+  tiltakskode: tiltakskodeResponseSchema,
   oppstartstype: z.enum(Oppstartstype).nullable(),
   pameldingstype: z.enum(Pameldingstype),
   tilgangTilBruker: z.boolean(),

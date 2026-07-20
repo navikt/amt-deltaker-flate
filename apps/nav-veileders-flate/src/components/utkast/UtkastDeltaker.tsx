@@ -13,8 +13,8 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
-  const { tiltakskodeResponse, erEnkeltplass } = deltaker.deltakerliste
-  const tiltakskode = tiltakskodeResponse.kode
+  const { erEnkeltplass } = deltaker.deltakerliste
+  const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   return (
     <div className="flex flex-col gap-8">
@@ -60,7 +60,7 @@ export const UtkastDeltaker = () => {
       />
 
       <OmKurset
-        tiltakskode={deltaker.deltakerliste.tiltakskodeResponse.kode}
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         statusType={DeltakerStatusType.UTKAST_TIL_PAMELDING}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
