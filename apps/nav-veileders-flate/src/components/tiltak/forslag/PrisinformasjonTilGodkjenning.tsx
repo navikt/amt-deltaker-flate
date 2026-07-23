@@ -1,13 +1,23 @@
-import { Box, Button, Heading, HGrid, Tag, VStack } from '@navikt/ds-react'
+import {
+  Alert,
+  Box,
+  Button,
+  Heading,
+  HGrid,
+  Tag,
+  VStack
+} from '@navikt/ds-react'
 import {
   ACTION_BLUE_TAG_STYLE,
+  DeferredFetchState,
   EndringerBox,
   EndringerWrapper,
   EndreDeltakelseType,
   EndringTypeIkon,
   getEndreDeltakelseTypeText,
   Prisinformasjon,
-  PrisOgBetaling
+  PrisOgBetaling,
+  useDeferredFetch
 } from 'deltaker-flate-common'
 import { useState } from 'react'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
@@ -26,7 +36,12 @@ export const PrisinformasjonTilGodkjenning = ({
   const { enhetId } = useAppContext()
   const { deltaker, setDeltaker } = useDeltakerContext()
   const [endreModalOpen, setEndreModalOpen] = useState(false)
-  const [laster, setLaster] = useState(false)
+
+  const {
+    state: tilbakekallState,
+    error: tilbakekallFeil,
+    doFetch: doTilbakekall
+  } = useDeferredFetch(tilbakekallPrisendring)
 
   const handleEndringUtfort = (oppdatertDeltaker: DeltakerResponse | null) => {
     setEndreModalOpen(false)
@@ -35,21 +50,20 @@ export const PrisinformasjonTilGodkjenning = ({
     }
   }
 
-  const handleTilbakekall = async () => {
-    setLaster(true)
-    try {
-      await tilbakekallPrisendring(deltaker.deltakerId, enhetId)
-      const oppdatertDeltaker: DeltakerResponse = {
-        ...deltaker,
-        deltakerliste: {
-          ...deltaker.deltakerliste,
-          prisinformasjonTilGodkjenning: null
-        }
-      }
-      setDeltaker(oppdatertDeltaker)
-    } finally {
-      setLaster(false)
-    }
+  const handleTilbakekall = () => {
+    doTilbakekall(deltaker.deltakerId, enhetId)
+      .then(() => {
+        setDeltaker({
+          ...deltaker,
+          deltakerliste: {
+            ...deltaker.deltakerliste,
+            prisinformasjonTilGodkjenning: null
+          }
+        })
+      })
+      .catch(() => {
+        // Feil vises via tilbakekallFeil
+      })
   }
 
   return (
@@ -109,22 +123,29 @@ export const PrisinformasjonTilGodkjenning = ({
                 variant="secondary"
                 className="ml-2"
                 onClick={handleTilbakekall}
-                loading={laster}
+                loading={tilbakekallState === DeferredFetchState.LOADING}
               >
                 Tilbakekall forslag
               </Button>
             </div>
+            {tilbakekallFeil && (
+              <Alert size="small" variant="error" className="mt-2">
+                Kunne ikke tilbakekalle forslaget. Prøv igjen.
+              </Alert>
+            )}
           </Box>
         </EndringerBox>
       </VStack>
 
-      <EndrePrisinfoModal
-        open={endreModalOpen}
-        onClose={() => setEndreModalOpen(false)}
-        onSuccess={handleEndringUtfort}
-        deltaker={deltaker}
-        initialPrisinformasjon={prisinformasjonTilGodkjenning}
-      />
+      {endreModalOpen && (
+        <EndrePrisinfoModal
+          open={endreModalOpen}
+          onClose={() => setEndreModalOpen(false)}
+          onSuccess={handleEndringUtfort}
+          deltaker={deltaker}
+          initialPrisinformasjon={prisinformasjonTilGodkjenning}
+        />
+      )}
     </EndringerWrapper>
   )
 }
