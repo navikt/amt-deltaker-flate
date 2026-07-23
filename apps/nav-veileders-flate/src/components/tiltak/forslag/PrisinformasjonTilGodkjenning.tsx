@@ -14,7 +14,7 @@ import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { tilbakekallPrisendring } from '../../../api/api-enkeltplass.ts'
 import { useAppContext } from '../../../AppContext.tsx'
 import { useDeltakerContext } from '../DeltakerContext.tsx'
-import { ModalController } from '../endre-deltakelse-modaler/ModalController.tsx'
+import { EndrePrisinfoModal } from '../endre-deltakelse-modaler/EndrePrisinfoModal.tsx'
 
 export const PrisinformasjonTilGodkjenning = ({
   prisinformasjonTilGodkjenning,
@@ -118,13 +118,12 @@ export const PrisinformasjonTilGodkjenning = ({
         </EndringerBox>
       </VStack>
 
-      <ModalController
-        endringsType={EndreDeltakelseType.ENDRE_PRISINFO}
+      <EndrePrisinfoModal
         open={endreModalOpen}
         onClose={() => setEndreModalOpen(false)}
         onSuccess={handleEndringUtfort}
         deltaker={deltaker}
-        forslag={null}
+        initialPrisinformasjon={prisinformasjonTilGodkjenning}
       />
     </EndringerWrapper>
   )
