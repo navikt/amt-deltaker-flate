@@ -708,7 +708,15 @@ export class MockHandler {
   }
 
   tilbakekallPrisendring() {
-    return new HttpResponse(null, { status: 200 })
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.prisinformasjonTilGodkjenning = null
+      this.pamelding = oppdatertPamelding
+      return new HttpResponse(null, { status: 200 })
+    }
+
+    return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseFjernOppstartsdato(request: FjernOppstartsdatoRequest) {
