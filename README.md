@@ -103,5 +103,3 @@ I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
 | `tiltakskoordinator-flate` | Nav tiltaksadministrasjon                        | Navs CDN                       |
 | `nav-veileders-flate`      | Modia                                            | Navs CDN (i dev)               |
 | `innbyggers-flate`         | Selvstendig app, lenkes til fra aktivitetsplanen | Egen kjørende instans          |
-
-![img.png](img.png)
