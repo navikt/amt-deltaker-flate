@@ -53,13 +53,13 @@ export const PrisinformasjonTilGodkjenning = ({
   const handleTilbakekall = () => {
     doTilbakekall(deltaker.deltakerId, enhetId)
       .then(() => {
-        setDeltaker({
-          ...deltaker,
+        setDeltaker((prev) => ({
+          ...prev,
           deltakerliste: {
-            ...deltaker.deltakerliste,
+            ...prev.deltakerliste,
             prisinformasjonTilGodkjenning: null
           }
-        })
+        }))
       })
       .catch(() => {
         // Feil vises via tilbakekallFeil
