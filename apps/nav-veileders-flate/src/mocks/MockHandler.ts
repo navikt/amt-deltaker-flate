@@ -25,7 +25,8 @@ import {
   Oppstartstype,
   Pameldingstype,
   PrisinformasjonType,
-  Tiltakskode
+  Tiltakskode,
+  Tilskuddstype
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -132,6 +133,18 @@ export class MockHandler {
               type: PrisinformasjonType.IngenKostnader,
               aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
               tilleggsopplysninger: null
+            }
+          : null,
+        prisinformasjonTilGodkjenning: erEnkeltplass
+          ? {
+              type: PrisinformasjonType.Tilskudd,
+              tilskudd: [
+                { type: Tilskuddstype.SEMESTERAVGIFT, pris: 2500 },
+                { type: Tilskuddstype.SKOLEPENGER, pris: 31000 },
+                { type: Tilskuddstype.EKSAMENSGEBYR, pris: 3900 }
+              ],
+              tilleggsopplysninger:
+                '[Fritekst: Etter avtale kan du søke Nav om refusjon for de 2 første årene. Det tredje året skal du dekke selv]'
             }
           : null,
         visningsnavn: {
@@ -689,6 +702,18 @@ export class MockHandler {
       // TODO lage et forslag for endring av prisinfo
       this.pamelding = oppdatertPamelding
       return HttpResponse.json(oppdatertPamelding)
+    }
+
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  tilbakekallPrisendring() {
+    const oppdatertPamelding = this.pamelding
+
+    if (oppdatertPamelding) {
+      oppdatertPamelding.deltakerliste.prisinformasjonTilGodkjenning = null
+      this.pamelding = oppdatertPamelding
+      return new HttpResponse(null, { status: 200 })
     }
 
     return new HttpResponse(null, { status: 404 })

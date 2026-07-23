@@ -227,6 +227,27 @@ export const sokUnderenhet = async (
     })
 }
 
+export const tilbakekallPrisendring = (
+  deltakerId: string,
+  enhetId: string
+): Promise<number> => {
+  return fetch(`${API_URL}/enkeltplass/tilbakekall-prisendring/${deltakerId}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'aktiv-enhet': enhetId
+    }
+  }).then((response) => {
+    if (response.status !== 200) {
+      const message = 'Kunne ikke tilbakekalle prisendringen.'
+      handleError(message, deltakerId, response.status)
+    }
+    return response.status
+  })
+}
+
 export const sokSertifiseringer = async (
   term: string,
   enhetId: string

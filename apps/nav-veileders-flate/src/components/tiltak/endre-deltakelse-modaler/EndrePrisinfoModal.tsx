@@ -2,6 +2,7 @@ import {
   BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
+  Prisinformasjon,
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -26,6 +27,7 @@ interface Props {
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
+  initialPrisinformasjon?: Prisinformasjon | null
 }
 
 // TODO må håndtere å åpne et eksisterende "forslag"
@@ -33,13 +35,17 @@ export const EndrePrisinfoModal = ({
   deltaker,
   open,
   onClose,
-  onSuccess
+  onSuccess,
+  initialPrisinformasjon
 }: Props) => {
   const { enhetId } = useAppContext()
   const begrunnelse = useBegrunnelse(false)
   const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
 
-  const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
+  const defaultValues = generatePrisinformasjonDefaultValues(
+    deltaker,
+    initialPrisinformasjon
+  )
   const formMethods = useForm<PrisinformasjonFormValues>({
     defaultValues,
     resolver: zodResolver(createPrisinformasjonFormSchema()),

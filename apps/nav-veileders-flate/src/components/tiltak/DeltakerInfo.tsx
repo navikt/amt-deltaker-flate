@@ -22,6 +22,7 @@ import { getHistorikk } from '../../api/api.ts'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
 import { useDeltakerContext } from './DeltakerContext.tsx'
 import { AktiveForslag } from './forslag/AktiveForslag.tsx'
+import { PrisinformasjonTilGodkjenning } from './forslag/PrisinformasjonTilGodkjenning.tsx'
 
 interface Props {
   className: string
@@ -127,6 +128,15 @@ export const DeltakerInfo = ({ className }: Props) => {
       />
 
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
+
+      {deltaker.deltakerliste.prisinformasjonTilGodkjenning && (
+        <PrisinformasjonTilGodkjenning
+          className="mt-8"
+          prisinformasjonTilGodkjenning={
+            deltaker.deltakerliste.prisinformasjonTilGodkjenning
+          }
+        />
+      )}
 
       <DeltakelseInnhold
         tiltakskode={tiltakskode.kode}

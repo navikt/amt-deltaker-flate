@@ -36,67 +36,52 @@ const handler = new MockHandler()
 export const worker = setupWorker(
   http.post('/amt-deltaker-bff/setup/status/:status', async ({ params }) => {
     const { status } = params
-
-    const response = handler.setStatus(status as DeltakerStatusType)
-    return response
+    return handler.setStatus(status as DeltakerStatusType)
   }),
   http.post(
     '/amt-deltaker-bff/setup/tiltakskode/:tiltakskode',
     async ({ params }) => {
       const { tiltakskode } = params
-
-      const response = handler.setTiltakskode(tiltakskode as Tiltakskode)
-      return response
+      return handler.setTiltakskode(tiltakskode as Tiltakskode)
     }
   ),
   http.post(
     '/amt-deltaker-bff/setup/oppstartstype/:oppstartstype',
     async ({ params }) => {
       const { oppstartstype } = params
-
-      const response = handler.setOppstartstype(oppstartstype as Oppstartstype)
-      return response
+      return handler.setOppstartstype(oppstartstype as Oppstartstype)
     }
   ),
   http.post(
     '/amt-deltaker-bff/setup/pameldingstype/:pameldingstype',
     async ({ params }) => {
       const { pameldingstype } = params
-
-      const response = handler.setPameldingstype(
-        pameldingstype as Pameldingstype
-      )
-      return response
+      return handler.setPameldingstype(pameldingstype as Pameldingstype)
     }
   ),
   http.post(
     '/amt-deltaker-bff/setup/er-enkeltplass/:erEnkeltplass',
     async ({ params }) => {
       const { erEnkeltplass } = params
-
-      const response = handler.setErEnkeltplass(erEnkeltplass === 'true')
-      return response
+      return handler.setErEnkeltplass(erEnkeltplass === 'true')
     }
   ),
   http.post('/amt-deltaker-bff/kladd', async ({ request }) => {
     await delay(1000)
-    const response = await request
+    return await request
       .json()
       .then((json) => opprettKladdRequestSchema.parse(json))
       .then((body) => handler.createPamelding(body.deltakerlisteId))
-
-    return response
   }),
   http.post(
     '/amt-deltaker-bff/enkeltplass/opprett-kladd',
     async ({ request }) => {
       await delay(1000)
-      const response = await request
+
+      return await request
         .json()
         .then((json) => opprettEnkeltplassKladdRequestSchema.parse(json))
         .then((body) => handler.createEnkeltplassPamelding(body.tiltakskode))
-
-      return response
     }
   ),
   http.delete('/amt-deltaker-bff/kladd/:deltakerId', async ({ params }) => {
@@ -107,24 +92,20 @@ export const worker = setupWorker(
   http.post('/amt-deltaker-bff/pamelding/:deltakerId', async ({ request }) => {
     await delay(1000)
 
-    const response = await request
+    return await request
       .json()
       .then((json) => pameldingRequestSchema.parse(json))
       .then((body) => handler.sendInnPamelding(body))
-
-    return response
   }),
   http.post(
     '/amt-deltaker-bff/pamelding/:deltakerId/utenGodkjenning',
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => pameldingRequestSchema.parse(json))
         .then(() => new HttpResponse(null, { status: 200 }))
-
-      return response
     }
   ),
   http.post(
@@ -132,12 +113,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => enkeltplassPameldingSchema.parse(json))
         .then((body) => handler.sendInnPameldingEnkeltplass(body))
-
-      return response
     }
   ),
   http.post(
@@ -145,12 +124,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => enkeltplassPameldingSchema.parse(json))
         .then((body) => handler.sendInnPameldingEnkeltplass(body))
-
-      return response
     }
   ),
   http.post(
@@ -158,12 +135,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => enkeltplassPameldingSchema.parse(json))
         .then(() => new HttpResponse(null, { status: 200 }))
-
-      return response
     }
   ),
   http.post(
@@ -171,12 +146,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(100)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => ikkeAktuellSchema.parse(json))
         .then((body) => handler.endreDeltakelseIkkeAktuell(body))
-
-      return response
     }
   ),
   http.post('/amt-deltaker-bff/deltaker/:deltakerId/reaktiver', async () => {
@@ -187,12 +160,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => forlengDeltakelseSchema.parse(json))
         .then((body) => handler.endreDeltakelseForleng(body))
-
-      return response
     }
   ),
   http.post(
@@ -200,12 +171,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endreStartdatoSchema.parse(json))
         .then((body) => handler.endreDeltakelseStartdato(body))
-
-      return response
     }
   ),
   http.post(
@@ -213,12 +182,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endreBakgrunnsinfoSchema.parse(json))
         .then((body) => handler.endreDeltakelseBakgrunnsinfo(body))
-
-      return response
     }
   ),
   http.post(
@@ -226,12 +193,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endrePrisinfoSchema.parse(json))
         .then((body) => handler.endreDeltakelsePrisinfo(body))
-
-      return response
     }
   ),
   http.post(
@@ -239,12 +204,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endreInnholdOpplaringKategoriseringSchema.parse(json))
         .then((body) => handler.endreDeltakelseInnholdKodeverk(body))
-
-      return response
     }
   ),
   http.post(
@@ -252,12 +215,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(1000)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => fjernOppstartsdatoSchema.parse(json))
         .then((body) => handler.endreDeltakelseFjernOppstartsdato(body))
-
-      return response
     }
   ),
   http.post(
@@ -265,36 +226,32 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(100)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endreSluttarsakSchema.parse(json))
         .then((body) => handler.endreDeltakelseSluttarsak(body))
-
-      return response
     }
   ),
   http.post(
     '/amt-deltaker-bff/deltaker/:deltakerId/innhold',
     async ({ request }) => {
       await delay(100)
-      const response = await request
+
+      return await request
         .json()
         .then((json) => endreInnholdSchema.parse(json))
         .then((body) => handler.endreDeltakelseInnhold(body))
-
-      return response
     }
   ),
   http.post(
     '/amt-deltaker-bff/deltaker/:deltakerId/deltakelsesmengde',
     async ({ request }) => {
       await delay(100)
-      const response = await request
+
+      return await request
         .json()
         .then((json) => endreDeltakelsesmengdeSchema.parse(json))
         .then((body) => handler.endreDeltakelsesmengde(body))
-
-      return response
     }
   ),
   http.post(
@@ -302,12 +259,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(100)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => avsluttDeltakelseSchema.parse(json))
         .then((body) => handler.avsluttDeltakelse(body))
-
-      return response
     }
   ),
   http.post(
@@ -315,12 +270,10 @@ export const worker = setupWorker(
     async ({ request }) => {
       await delay(100)
 
-      const response = await request
+      return await request
         .json()
         .then((json) => endreAvslutningSchema.parse(json))
         .then((body) => handler.endreAvslutning(body))
-
-      return response
     }
   ),
   http.post(
@@ -329,10 +282,7 @@ export const worker = setupWorker(
       await delay(1000)
       const { forslagId } = params as { forslagId: string }
 
-      const respone = await request
-        .json()
-        .then(() => handler.avvisForslag(forslagId))
-      return respone
+      return await request.json().then(() => handler.avvisForslag(forslagId))
     }
   ),
   http.post('/amt-deltaker-bff/pamelding/:deltakerId/avbryt', async () => {
@@ -353,12 +303,11 @@ export const worker = setupWorker(
     '/amt-deltaker-bff/enkeltplass/oppdater-kladd/:deltakerId',
     async ({ request }) => {
       await delay(1000)
-      const response = await request
+
+      return await request
         .json()
         .then((json) => enkeltplassKladdSchema.parse(json))
         .then((body) => handler.oppdaterEnkeltplassKladd(body))
-
-      return response
     }
   ),
   http.get('/amt-deltaker-bff/deltaker/:deltakerId/historikk', async () => {
@@ -393,5 +342,12 @@ export const worker = setupWorker(
   http.get('/amt-deltaker-bff/enkeltplass/kodeverk/:deltakerId', async () => {
     await delay(1000)
     return HttpResponse.json(handler.getKodeverk())
-  })
+  }),
+  http.post(
+    '/amt-deltaker-bff/enkeltplass/tilbakekall-prisendring/:deltakerId',
+    async () => {
+      await delay(1000)
+      return handler.tilbakekallPrisendring()
+    }
+  )
 )
