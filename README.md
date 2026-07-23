@@ -104,4 +104,4 @@ I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
 | `nav-veileders-flate`      | Modia                                            | Navs CDN (i dev)               |
 | `innbyggers-flate`         | Selvstendig app, lenkes til fra aktivitetsplanen | Egen kjørende instans          |
 
-> ⚠️ **Merk:** I prod hentes `nav-veileders-flate` fra den kjørende instansen i stedet for Navs CDN. Dette bør på sikt endres slik at prod og dev fungerer likt.
+![img.png](img.png)
