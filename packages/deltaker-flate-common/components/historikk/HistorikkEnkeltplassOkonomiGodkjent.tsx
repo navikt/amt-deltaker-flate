@@ -1,4 +1,4 @@
-import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
+import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
 import { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { formatDate } from '../../utils/utils'
@@ -19,7 +19,9 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
   return (
     <HistorikkElement
       tittel="Opplæring godkjent"
-      icon={<CheckmarkCircleFillIcon color="var(--ax-text-on-action)" />}
+      icon={
+        <CaretRightCircleFillIcon color="var(--ax-text-meta-lime-decoration)" />
+      }
     >
       <BodyShort size="small">
         Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
