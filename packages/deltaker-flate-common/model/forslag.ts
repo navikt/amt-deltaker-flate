@@ -11,7 +11,8 @@ export enum HistorikkType {
   EndringFraArrangor = 'EndringFraArrangor',
   ImportertFraArena = 'ImportertFraArena',
   VurderingFraArrangor = 'VurderingFraArrangor',
-  EndringFraTiltakskoordinator = 'EndringFraTiltakskoordinator'
+  EndringFraTiltakskoordinator = 'EndringFraTiltakskoordinator',
+  EnkeltplassOkonomiGodkjent = 'EnkeltplassOkonomiGodkjent'
 }
 
 export enum ForslagStatusType {

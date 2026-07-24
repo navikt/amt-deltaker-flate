@@ -14,6 +14,7 @@ import { HistorikkSoktInn } from './HistorikkSoktInn.tsx'
 import { HistorikkTiltakskoordinatorEndring } from './HistorikkTiltakskoordinatorEndring.tsx'
 import { HistorikkVedtak } from './HistorikkVedtak'
 import { HistorikkVurderingFraArrangor } from './HistorikkVurderingFraArrangor.tsx'
+import { HistorikkEnkeltplassOkonomiGodkjent } from './HistorikkEnkeltplassOkonomiGodkjent.tsx'
 
 interface Props {
   historikk: DeltakerHistorikkListe | null
@@ -73,6 +74,10 @@ const getHistorikkItem = (
         <HistorikkTiltakskoordinatorEndring
           tiltakskoordinatorEndring={historikk}
         />
+      )
+    case HistorikkType.EnkeltplassOkonomiGodkjent:
+      return (
+        <HistorikkEnkeltplassOkonomiGodkjent endringsHistorikk={historikk} />
       )
   }
 }
