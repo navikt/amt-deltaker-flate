@@ -1,18 +1,19 @@
 import { InformationSquareFillIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
+import type { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { formatDate } from '../../utils/utils'
 import { HistorikkElement } from './HistorikkElement'
 
+interface Props {
+  endringsHistorikk: Extract<
+    DeltakerHistorikk,
+    { type: 'EnkeltplassOkonomiGodkjent' }
+  >
+}
+
 export const HistorikkEnkeltplassOkonomiGodkjent = ({
   endringsHistorikk
-}: {
-  endringsHistorikk: {
-    type: 'EnkeltplassOkonomiGodkjent'
-    endretAv: string
-    endretAvEnhet: string
-    endret: Date
-  }
-}) => {
+}: Props) => {
   const { endretAv, endretAvEnhet, endret } = endringsHistorikk
 
   return (
