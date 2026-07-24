@@ -1,13 +1,14 @@
 import { InformationSquareFillIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
 import type { DeltakerHistorikk } from '../../model/deltakerHistorikk'
+import { HistorikkType } from '../../model/forslag'
 import { formatDate } from '../../utils/utils'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {
   endringsHistorikk: Extract<
     DeltakerHistorikk,
-    { type: 'EnkeltplassOkonomiGodkjent' }
+    { type: HistorikkType.EnkeltplassOkonomiGodkjent }
   >
 }
 
