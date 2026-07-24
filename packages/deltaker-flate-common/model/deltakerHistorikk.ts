@@ -247,7 +247,6 @@ export const endringFraTiltakskoordinatorSchema = z.object({
 
 export const enkelplassOkonomiGodkjentSchema = z.object({
   type: z.literal(HistorikkType.EnkeltplassOkonomiGodkjent),
-  prisinformasjon: prisinformasjonSchema,
   endretAv: z.string(),
   endretAvEnhet: z.string(),
   endret: dateSchema

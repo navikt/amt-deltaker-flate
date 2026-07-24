@@ -1,27 +1,24 @@
-import { CaretRightCircleFillIcon } from '@navikt/aksel-icons'
+import { InformationSquareFillIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
-import { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { formatDate } from '../../utils/utils'
 import { HistorikkElement } from './HistorikkElement'
 
-interface Props {
-  endringsHistorikk: Extract<
-    DeltakerHistorikk,
-    { type: 'EnkeltplassOkonomiGodkjent' }
-  >
-}
-
 export const HistorikkEnkeltplassOkonomiGodkjent = ({
   endringsHistorikk
-}: Props) => {
+}: {
+  endringsHistorikk: {
+    type: 'EnkeltplassOkonomiGodkjent'
+    endretAv: string
+    endretAvEnhet: string
+    endret: Date
+  }
+}) => {
   const { endretAv, endretAvEnhet, endret } = endringsHistorikk
 
   return (
     <HistorikkElement
       tittel="Opplæring godkjent"
-      icon={
-        <CaretRightCircleFillIcon color="var(--ax-text-meta-lime-decoration)" />
-      }
+      icon={<InformationSquareFillIcon color="var(--ax-text-on-action)" />}
     >
       <BodyShort size="small">
         Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
