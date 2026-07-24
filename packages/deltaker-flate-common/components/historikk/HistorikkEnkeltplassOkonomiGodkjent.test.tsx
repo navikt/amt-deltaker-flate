@@ -9,10 +9,6 @@ const lagEnkeltplassOkonomiGodkjent = (): Extract<
 > =>
   ({
     type: 'EnkeltplassOkonomiGodkjent',
-    prisinformasjon: {
-      type: 'Anskaffelse',
-      pris: 50000
-    },
     endretAv: 'Bernt Besluttersen',
     endretAvEnhet: 'Nav Tiltak Oslo',
     endret: new Date('2026-10-15')
