@@ -2,20 +2,17 @@ import { describe, expect, it } from 'vitest'
 import { HistorikkEnkeltplassOkonomiGodkjent } from './HistorikkEnkeltplassOkonomiGodkjent'
 import { extractText } from '../test-utils'
 import { DeltakerHistorikk } from '../../model/deltakerHistorikk'
+import { HistorikkType } from '../../model/forslag'
 
 const lagEnkeltplassOkonomiGodkjent = (): Extract<
   DeltakerHistorikk,
-  { type: 'EnkeltplassOkonomiGodkjent' }
-> =>
-  ({
-    type: 'EnkeltplassOkonomiGodkjent',
-    endretAv: 'Bernt Besluttersen',
-    endretAvEnhet: 'Nav Tiltak Oslo',
-    endret: new Date('2026-10-15')
-  }) as unknown as Extract<
-    DeltakerHistorikk,
-    { type: 'EnkeltplassOkonomiGodkjent' }
-  >
+  { type: HistorikkType.EnkeltplassOkonomiGodkjent }
+> => ({
+  type: HistorikkType.EnkeltplassOkonomiGodkjent,
+  endretAv: 'Bernt Besluttersen',
+  endretAvEnhet: 'Nav Tiltak Oslo',
+  endret: new Date('2026-10-15')
+})
 
 describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
   it('rendrer tittel og innhold korrekt', () => {
