@@ -245,6 +245,14 @@ export const endringFraTiltakskoordinatorSchema = z.object({
   endretAvEnhet: z.string().nullable().optional()
 })
 
+export const enkelplassOkonomiGodkjentSchema = z.object({
+  type: z.literal(HistorikkType.EnkeltplassOkonomiGodkjent),
+  prisinformasjon: prisinformasjonSchema,
+  endretAv: z.string(),
+  endretAvEnhet: z.string(),
+  endret: dateSchema
+})
+
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   vedtakSchema,
   soktInnSchema,
@@ -253,7 +261,8 @@ export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
   endringFraArrangorSchema,
   importertFraArenaSchema,
   vurderingFraArrangorSchema,
-  endringFraTiltakskoordinatorSchema
+  endringFraTiltakskoordinatorSchema,
+  enkelplassOkonomiGodkjentSchema
 ])
 
 export const deltakerHistorikkListeSchema = z.array(deltakerHistorikkSchema)
