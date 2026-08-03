@@ -12,35 +12,35 @@ allowBuilds:
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
   '@axe-core/playwright': ^4.12.1
-  '@grafana/faro-react': ^2.8.0
-  '@grafana/faro-web-sdk': ^2.8.0
-  '@navikt/aksel-icons': ^8.13.1
-  '@navikt/ds-css': ^8.13.1
-  '@navikt/ds-react': ^8.13.1
-  '@navikt/ds-tailwind': ^8.13.1
-  '@playwright/test': ^1.61.1
-  '@tailwindcss/vite': ^4.3.1
-  '@tanstack/react-query': ^5.101.1
+  '@grafana/faro-react': ^2.8.2
+  '@grafana/faro-web-sdk': ^2.8.2
+  '@navikt/aksel-icons': ^8.15.0
+  '@navikt/ds-css': ^8.15.0
+  '@navikt/ds-react': ^8.15.0
+  '@navikt/ds-tailwind': ^8.15.0
+  '@playwright/test': ^1.62.0
+  '@tailwindcss/vite': ^4.3.3
+  '@tanstack/react-query': ^5.101.4
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/react': ^16.3.2
   '@testing-library/user-event': ^14.6.1
-  '@types/node': ^26.0.1
+  '@types/node': ^26.1.1
   '@types/react': ^19.2.17
   '@types/react-dom': ^19.2.3
   '@types/react-router-dom': ^5.3.3
-  '@vitejs/plugin-react-swc': ^4.3.1
+  '@vitejs/plugin-react-swc': ^4.3.2
   dayjs: ^1.11.21
   jsdom: ^29.1.1
-  msw: ^2.14.6
-  playwright: ^1.61.1
-  react: ^19.2.7
-  react-dom: ^19.2.7
-  react-router-dom: ^7.18.0
-  tailwindcss: ^4.3.1
+  msw: ^2.15.0
+  playwright: ^1.62.0
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  react-router-dom: ^7.18.1
+  tailwindcss: ^4.3.3
   typescript: ^6.0.3
   uuid: ^14.0.1
-  vite: ^8.1.0
-  vitest: ^4.1.9
+  vite: ^8.1.5
+  vitest: ^4.1.10
   zod: ^4.4.3
 
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
