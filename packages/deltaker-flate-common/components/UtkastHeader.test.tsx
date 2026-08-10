@@ -55,7 +55,7 @@ describe('UtkastHeader', () => {
     expect(text).toContain('Annen saksbehandler')
   })
 
-  it('skjuler sist endret når backend sender samme tidspunkt som opprettet', () => {
+  it('skjuler sist endret når backend sender samme endrings-tidspunkt som opprettet-tidspunkt', () => {
     const opprettet = new Date('2026-01-01T08:00:00.000Z')
     const sistEndret = new Date('2026-01-01T08:00:00.000Z')
 
@@ -75,7 +75,7 @@ describe('UtkastHeader', () => {
     expect(text).not.toContain('Sist endret:')
   })
 
-  it('skjuler sist endret når bare sistEndretAv er forskjellig', () => {
+  it('skjuler sist endret dersom bare sistEndretAv er forskjellig, mens sistEndret==opprettet', () => {
     const opprettet = new Date('2026-01-01T08:00:00.000Z')
     const sistEndret = new Date('2026-01-01T08:00:00.000Z')
 
@@ -98,7 +98,7 @@ describe('UtkastHeader', () => {
     expect(text).not.toContain('Annen saksbehandler')
   })
 
-  it('viser sist endret når bare tidspunktet er forskjellig', () => {
+  it('viser sist endret så lenge tidspunktet er forskjellig', () => {
     const opprettet = new Date('2026-01-01T08:00:00.000Z')
     const sistEndret = new Date('2026-01-01T08:00:00.001Z')
 
@@ -119,7 +119,7 @@ describe('UtkastHeader', () => {
     expect(text).toContain('Saksbehandler')
   })
 
-  it('viser avbrutttekst når utkastet er endret og samarbeidet er avsluttet', () => {
+  it('viser avbrutt-tekst når utkastet er endret og samarbeidet er avsluttet', () => {
     const opprettet = new Date('2026-01-01T08:00:00.000Z')
     const sistEndret = new Date('2026-01-01T12:00:00.000Z')
     const gyldigFra = new Date('2026-01-03T00:00:00.000Z')
