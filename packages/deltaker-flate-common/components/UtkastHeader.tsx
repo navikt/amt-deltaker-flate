@@ -4,7 +4,7 @@ import {
   DeltakerStatusAarsakType,
   Vedtaksinformasjon
 } from '../model/deltaker'
-import { formatDate, formatDateWithMonthName } from '../utils/utils'
+import { formatDateWithMonthName } from '../utils/utils'
 import { ACTION_BLUE_TAG_STYLE } from '../utils/forslagUtils'
 
 interface Props {
@@ -23,14 +23,10 @@ export const UtkastHeader = ({
   const avbruttPgaGjennomforing =
     deltakerStatus.aarsak?.type ===
     DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT
-  const erEndret =
-    vedtaksinformasjon?.sistEndret !== vedtaksinformasjon?.opprettet ||
-    vedtaksinformasjon?.sistEndretAv !== vedtaksinformasjon?.opprettetAv
-
-  const erEndretSammeDag =
-    erEndret &&
-    formatDate(vedtaksinformasjon?.sistEndret) ===
-      formatDate(vedtaksinformasjon?.opprettet)
+  const harUlikSistEndretTid =
+    vedtaksinformasjon != null &&
+    vedtaksinformasjon.sistEndret.getTime() !==
+      vedtaksinformasjon.opprettet.getTime()
 
   const detailTextColor = erNAVVeileder ? 'subtle' : 'default'
 
@@ -47,7 +43,7 @@ export const UtkastHeader = ({
         </Tag>
       )}
       {vedtaksinformasjon &&
-        (erEndret ? (
+        (harUlikSistEndretTid ? (
           <>
             <div className="flex gap-2" aria-atomic>
               <Detail as="span" weight="semibold" textColor={detailTextColor}>
@@ -58,24 +54,22 @@ export const UtkastHeader = ({
                 {vedtaksinformasjon.opprettetAv}
               </Detail>
             </div>
-            {(!erEndretSammeDag || avbruttPgaGjennomforing) && (
-              <div className="flex gap-2 mt-2" aria-atomic>
-                <Detail as="span" weight="semibold" textColor={detailTextColor}>
-                  Sist endret:
+            <div className="flex gap-2 mt-2" aria-atomic>
+              <Detail as="span" weight="semibold" textColor={detailTextColor}>
+                Sist endret:
+              </Detail>
+              {avbruttPgaGjennomforing ? (
+                <Detail as="span">
+                  {formatDateWithMonthName(deltakerStatus.gyldigFra)} -
+                  Samarbeidet med arrangøren er avsluttet
                 </Detail>
-                {avbruttPgaGjennomforing ? (
-                  <Detail as="span">
-                    {formatDateWithMonthName(deltakerStatus.gyldigFra)} -
-                    Samarbeidet med arrangøren er avsluttet
-                  </Detail>
-                ) : (
-                  <Detail as="span">
-                    {formatDateWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
-                    {vedtaksinformasjon.sistEndretAv}
-                  </Detail>
-                )}
-              </div>
-            )}
+              ) : (
+                <Detail as="span">
+                  {formatDateWithMonthName(vedtaksinformasjon.sistEndret)}{' '}
+                  {vedtaksinformasjon.sistEndretAv}
+                </Detail>
+              )}
+            </div>
           </>
         ) : (
           <div className="flex gap-2" aria-atomic>
