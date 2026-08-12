@@ -1,4 +1,4 @@
-import { InformationSquareFillIcon } from '@navikt/aksel-icons'
+import { ChevronRightCircleFillIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
 import type { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { HistorikkType } from '../../model/forslag'
@@ -20,7 +20,9 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
   return (
     <HistorikkElement
       tittel="Opplæring godkjent"
-      icon={<InformationSquareFillIcon color="var(--ax-text-on-action)" />}
+      icon={
+        <ChevronRightCircleFillIcon color="var(--ax-text-accent-decoration)" />
+      }
     >
       <BodyShort size="small">
         Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
