@@ -95,9 +95,6 @@ export const UtkastEnkeltplassPage = () => {
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
-        prisinformasjonBegrunnelse={
-          deltaker.deltakerliste.prisinformasjonBegrunnelse
-        }
         headinglevel="3"
         className="mt-8"
       />

@@ -28,7 +28,6 @@ export const deltakerlisteSchema = z.object({
   oppmoteSted: z.string().nullable(),
   opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
   prisinformasjon: prisinformasjonSchema.nullish(),
-  prisinformasjonBegrunnelse: z.string().nullish(),
   visningsnavn: visningsnavnSchema
 })
 
