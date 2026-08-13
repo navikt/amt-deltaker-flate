@@ -22,7 +22,7 @@
   "dependencies": {
     "@grafana/faro-react": "catalog:",
     "@grafana/faro-web-sdk": "catalog:",
-    "@hookform/resolvers": "^5.5.7",
+    "@hookform/resolvers": "^5.7.1",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
@@ -33,7 +33,7 @@
     "msw": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-hook-form": "^7.83.0",
+    "react-hook-form": "^7.84.0",
     "react-router-dom": "catalog:",
     "uuid": "catalog:",
     "zod": "catalog:"
