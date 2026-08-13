@@ -9,6 +9,7 @@ import { beregnEstimertTotalsum, NOK_FORMATTER } from '../utils/utils'
 
 interface Props {
   prisinformasjon?: Prisinformasjon | null
+  prisinformasjonBegrunnelse?: string | null
   headinglevel: '2' | '3'
   headingsize?: 'medium' | 'small'
   showHeading?: boolean
@@ -18,6 +19,7 @@ interface Props {
 
 export const PrisOgBetaling = ({
   prisinformasjon,
+  prisinformasjonBegrunnelse,
   headinglevel,
   headingsize = 'medium',
   showHeading = true,
@@ -103,6 +105,12 @@ export const PrisOgBetaling = ({
       )}
 
       {renderPrisinformasjon()}
+
+      {prisinformasjonBegrunnelse && (
+        <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+          Nav sin begrunnelse: {prisinformasjonBegrunnelse}
+        </BodyLong>
+      )}
 
       {showTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">

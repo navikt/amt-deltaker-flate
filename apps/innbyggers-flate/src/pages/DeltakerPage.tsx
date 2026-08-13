@@ -167,6 +167,9 @@ export const DeltakerPage = () => {
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
+        prisinformasjonBegrunnelse={
+          deltaker.deltakerliste.prisinformasjonBegrunnelse
+        }
         headinglevel="2"
         className="mt-8"
       />
