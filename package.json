@@ -19,11 +19,11 @@
   "devDependencies": {
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/typescript-config": "workspace:*",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "husky": "^9.1.7",
-    "lint-staged": "^17.2.0",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.9.6",
-    "turbo": "^2.10.7"
+    "turbo": "^2.10.9"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
