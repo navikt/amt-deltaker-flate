@@ -11,7 +11,7 @@ allowBuilds:
 
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
-  '@axe-core/playwright': ^4.12.1
+  '@axe-core/playwright': ^4.13.0
   '@grafana/faro-react': ^2.9.0
   '@grafana/faro-web-sdk': ^2.9.0
   '@navikt/aksel-icons': ^8.16.1
@@ -23,7 +23,7 @@ catalog:
   '@tanstack/react-query': ^5.101.4
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/react': ^16.3.2
-  '@testing-library/user-event': ^14.6.3
+  '@testing-library/user-event': ^14.6.4
   '@types/node': ^26.2.0
   '@types/react': ^19.2.18
   '@types/react-dom': ^19.2.4
