@@ -21,7 +21,7 @@ catalog:
   '@playwright/test': ^1.62.1
   '@tailwindcss/vite': ^4.3.3
   '@tanstack/react-query': ^5.101.4
-  '@testing-library/jest-dom': ^6.9.1
+  '@testing-library/jest-dom': ^7.0.1
   '@testing-library/react': ^16.3.2
   '@testing-library/user-event': ^14.6.4
   '@types/node': ^26.2.0
@@ -30,14 +30,14 @@ catalog:
   '@types/react-router-dom': ^5.3.3
   '@vitejs/plugin-react-swc': ^4.3.3
   dayjs: ^1.11.21
-  jsdom: ^29.1.1
+  jsdom: ^30.0.1
   msw: ^2.15.0
   playwright: ^1.62.1
   react: ^19.2.8
   react-dom: ^19.2.8
   react-router-dom: ^7.18.2
   tailwindcss: ^4.3.3
-  typescript: ^6.0.3
+  typescript: ^7.0.2
   uuid: ^14.0.1
   vite: ^8.2.1
   vitest: ^4.1.10
