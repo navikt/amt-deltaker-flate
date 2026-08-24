@@ -11,7 +11,7 @@ import {
   Tiltakskode,
   useDeferredFetch
 } from 'deltaker-flate-common'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DeltakerResponse, deltakerSchema } from '../../api/data/deltaker'
 import { API_URL, useMock } from '../../utils/environment-utils'
 import { useDeltakerContext } from '../tiltak/DeltakerContext'
@@ -137,19 +137,19 @@ export const endreMockEnkeltplass = (
 }
 
 const DemoStatusInstillinger = () => {
-  const { setDeltaker } = useDeltakerContext()
+  const { deltaker, setDeltaker } = useDeltakerContext()
 
   const [tiltakskode, setTiltakskode] = useState<Tiltakskode>(
-    Tiltakskode.ARBEIDSMARKEDSOPPLAERING
+    deltaker.deltakerliste.tiltakskode.kode
   )
   const [pameldingStatus, setPameldingStatus] = useState<DeltakerStatusType>(
-    DeltakerStatusType.KLADD
+    deltaker.status.type
   )
   const [oppstartsType, setOppstartsType] = useState<Oppstartstype>(
-    Oppstartstype.LOPENDE
+    deltaker.deltakerliste.oppstartstype || Oppstartstype.LOPENDE
   )
   const [pameldingsType, setPameldingsType] = useState<Pameldingstype>(
-    Pameldingstype.TRENGER_GODKJENNING
+    deltaker.deltakerliste.pameldingstype
   )
 
   const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(true)
@@ -222,10 +222,6 @@ const DemoStatusInstillinger = () => {
       })
     }
   }
-
-  useEffect(() => {
-    handlePameldingStatusChange(DeltakerStatusType.KLADD)
-  }, [])
 
   return (
     <div className="mt-2 flex gap-4 flex-wrap">

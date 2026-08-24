@@ -69,7 +69,7 @@ const harVedtak = (statusType: DeltakerStatusType) => {
 export class MockHandler {
   pamelding: DeltakerResponse | null = null
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
-  statusType = DeltakerStatusType.KLADD
+  statusType = DeltakerStatusType.DELTAR
   tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
 
   createDeltaker(

@@ -110,4 +110,6 @@ export class Deltaker extends HTMLElement {
 // https://github.com/navikt/aktivitetsplan/tree/main
 // https://github.com/navikt/mulighetsrommet/tree/main/frontend/mulighetsrommet-veileder-flate
 
-customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
+if (!customElements.get(APPLICATION_WEB_COMPONENT_NAME)) {
+  customElements.define(APPLICATION_WEB_COMPONENT_NAME, Deltaker)
+}
