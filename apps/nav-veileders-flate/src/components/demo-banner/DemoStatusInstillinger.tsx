@@ -152,7 +152,9 @@ const DemoStatusInstillinger = () => {
     deltaker.deltakerliste.pameldingstype
   )
 
-  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(true)
+  const [erEnkeltplass, setErEnkeltplass] = useState<boolean>(
+    deltaker.deltakerliste.erEnkeltplass
+  )
 
   const { doFetch: doFetchEndreMockTiltakskode } =
     useDeferredFetch(endreMockTiltakskode)
