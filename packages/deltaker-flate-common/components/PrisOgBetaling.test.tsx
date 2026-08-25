@@ -4,7 +4,7 @@ import { extractText } from './test-utils'
 import { PrisOgBetaling } from './PrisOgBetaling'
 
 describe('PrisOgBetaling', () => {
-  it('viser Nav sin begrunnelse når begrunnelse er satt', () => {
+  it('viser Navs begrunnelse når begrunnelse er satt', () => {
     const text = extractText(
       PrisOgBetaling({
         prisinformasjon: {
@@ -16,11 +16,11 @@ describe('PrisOgBetaling', () => {
       })
     ).join(' ')
 
-    expect(text).toContain('Nav sin begrunnelse:')
+    expect(text).toContain('Navs begrunnelse:')
     expect(text).toContain('Dette tiltaket gir best læringsutbytte.')
   })
 
-  it('viser ikke Nav sin begrunnelse når begrunnelse mangler', () => {
+  it('viser ikke Navs begrunnelse når begrunnelse mangler', () => {
     const text = extractText(
       PrisOgBetaling({
         prisinformasjon: {
@@ -32,6 +32,6 @@ describe('PrisOgBetaling', () => {
       })
     ).join(' ')
 
-    expect(text).not.toContain('Nav sin begrunnelse:')
+    expect(text).not.toContain('Navs begrunnelse:')
   })
 })

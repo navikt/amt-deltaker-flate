@@ -106,7 +106,7 @@ export const PrisOgBetaling = ({
 
       {prisinformasjon.begrunnelse && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
-          Nav sin begrunnelse: {prisinformasjon.begrunnelse}
+          Navs begrunnelse: {prisinformasjon.begrunnelse}
         </BodyLong>
       )}
 
