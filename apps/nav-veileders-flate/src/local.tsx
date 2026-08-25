@@ -3,7 +3,6 @@ import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
 import React from 'react'
 import './app.css'
-import './webComponentWrapper.tsx'
 import { AppContextProvider } from './AppContext.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
@@ -23,21 +22,6 @@ export async function enableMocking() {
 }
 
 const renderAsReactRoot = () => {
-  /*  TEST webcomponent lokalt:
-
-const renderAsReactRoot = () => {
-  const container = document.getElementById('root')
-  const rootElement = createRoot(container!)
-
-  rootElement.render(
-    React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
-      'data-personident': '29418716256',
-      'data-deltakerlisteId': '3fcac2a6-68cf-464e-8dd1-62ccec5933df',
-      'data-enhetId': '0106'
-    })
-  )
-  */
-
   const container = document.getElementById('root')
   const root = createRoot(container!)
   const params = new URLSearchParams(location.search)
@@ -58,9 +42,19 @@ const renderAsReactRoot = () => {
       </div>
     </React.StrictMode>
   )
+
+  /*  TEST webcomponent lokalt:
+
+  root.render(
+    React.createElement(APPLICATION_WEB_COMPONENT_NAME, {
+      'data-personident': '29418716256',
+      'data-deltakerlisteId': '3fcac2a6-68cf-464e-8dd1-62ccec5933df',
+      'data-enhetId': '0106'
+    })
+  )
+  */
 }
 
 enableMocking().then(() => {
-  // renderAsReactRoot()
   renderAsReactRoot()
 })

@@ -1,7 +1,9 @@
 import {
   Alert,
+  BodyLong,
   Box,
   Button,
+  Dialog,
   Heading,
   HGrid,
   Tag,
@@ -36,6 +38,7 @@ export const PrisinformasjonTilGodkjenning = ({
   const { enhetId } = useAppContext()
   const { deltaker, setDeltaker } = useDeltakerContext()
   const [endreModalOpen, setEndreModalOpen] = useState(false)
+  const [tilbakekallDialogOpen, setTilbakekallDialogOpen] = useState(false)
 
   const {
     state: tilbakekallState,
@@ -122,7 +125,7 @@ export const PrisinformasjonTilGodkjenning = ({
                 size="small"
                 variant="secondary"
                 className="ml-2"
-                onClick={handleTilbakekall}
+                onClick={() => setTilbakekallDialogOpen(true)}
                 loading={tilbakekallState === DeferredFetchState.LOADING}
               >
                 Tilbakekall forslag
@@ -146,6 +149,43 @@ export const PrisinformasjonTilGodkjenning = ({
           initialPrisinformasjon={prisinformasjonTilGodkjenning}
         />
       )}
+
+      <Dialog
+        open={tilbakekallDialogOpen}
+        onOpenChange={(open) => setTilbakekallDialogOpen(open)}
+      >
+        <Dialog.Popup
+          width="small"
+          role="alertdialog"
+          closeOnOutsideClick={false}
+        >
+          <Dialog.Header>
+            <Dialog.Title>Tilbakekall forslag</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>
+            <BodyLong>
+              Er du helt sikker på at du vil tilbakekalle forslaget?
+            </BodyLong>
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Dialog.CloseTrigger>
+              <Button variant="secondary" data-color="neutral" size="small">
+                Nei, avbryt
+              </Button>
+            </Dialog.CloseTrigger>
+            <Dialog.CloseTrigger>
+              <Button
+                variant="danger"
+                size="small"
+                loading={tilbakekallState === DeferredFetchState.LOADING}
+                onClick={handleTilbakekall}
+              >
+                Ja, tilbakekall
+              </Button>
+            </Dialog.CloseTrigger>
+          </Dialog.Footer>
+        </Dialog.Popup>
+      </Dialog>
     </EndringerWrapper>
   )
 }
