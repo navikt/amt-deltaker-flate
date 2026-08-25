@@ -21,7 +21,8 @@ export enum IngenKostnaderAarsak {
 
 export const anskaffelseSchema = z.object({
   type: z.literal(PrisinformasjonType.Anskaffelse),
-  pris: z.int()
+  pris: z.int(),
+  begrunnelse: z.string().nullish()
 })
 
 export const tilskuddSchema = z.object({
@@ -32,13 +33,15 @@ export const tilskuddSchema = z.object({
       pris: z.int()
     })
   ),
-  tilleggsopplysninger: z.string().nullish()
+  tilleggsopplysninger: z.string().nullish(),
+  begrunnelse: z.string().nullish()
 })
 
 export const ingenKostnaderSchema = z.object({
   type: z.literal(PrisinformasjonType.IngenKostnader),
   aarsak: z.enum(IngenKostnaderAarsak),
-  tilleggsopplysninger: z.string().nullish()
+  tilleggsopplysninger: z.string().nullish(),
+  begrunnelse: z.string().nullish()
 })
 
 export const prisinformasjonSchema = z.discriminatedUnion('type', [

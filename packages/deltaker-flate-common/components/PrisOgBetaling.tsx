@@ -104,6 +104,12 @@ export const PrisOgBetaling = ({
 
       {renderPrisinformasjon()}
 
+      {prisinformasjon.begrunnelse && (
+        <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+          Navs begrunnelse: {prisinformasjon.begrunnelse}
+        </BodyLong>
+      )}
+
       {showTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
           Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
