@@ -133,7 +133,9 @@ export const ForlengDeltakelseModal = ({
           sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
           forslagId: forslag ? forslag.id : null,
-          pavirkerPris: endrePrisValg.endrePrisValg === EndrePrisValgType.JA
+          pavirkerPris: erEnkeltPlass(deltaker)
+            ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
+            : null
         }
       }
     }

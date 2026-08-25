@@ -199,7 +199,9 @@ export const EndreOppstartsdatoModal = ({
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id,
-          pavirkerPris: endrePrisValg.endrePrisValg === EndrePrisValgType.JA
+          pavirkerPris: erEnkeltPlass(deltaker)
+            ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
+            : null
         }
       }
     }
