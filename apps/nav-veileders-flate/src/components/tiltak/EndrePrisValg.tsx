@@ -34,7 +34,7 @@ export const EndrePrisValg = ({
         required
         disabled={disabled}
         error={error}
-        value={value}
+        value={value ?? ''}
         onChange={(nextValue) => onChange(nextValue as EndrePrisValgType)}
       >
         <Radio value={EndrePrisValgType.JA}>Ja</Radio>

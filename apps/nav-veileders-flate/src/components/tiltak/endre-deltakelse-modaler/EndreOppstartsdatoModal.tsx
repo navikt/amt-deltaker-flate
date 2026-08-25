@@ -25,6 +25,7 @@ import {
   kanEndreOppstartsdato,
   validerDeltakerKanEndres
 } from '../../../utils/endreDeltakelse.ts'
+import { erEnkeltPlass } from '../../../utils/pamelding-enkeltplass.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
@@ -38,6 +39,11 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
+import {
+  EndrePrisValg,
+  EndrePrisValgType,
+  useEndrePrisValg
+} from '../EndrePrisValg.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
@@ -59,6 +65,7 @@ export const EndreOppstartsdatoModal = ({
 }: EndreOppstartsdatoModalProps) => {
   const { enhetId } = useAppContext()
   const defaultDatoer = getDatoer(deltaker, forslag)
+  const endrePrisValg = useEndrePrisValg()
 
   const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
@@ -164,6 +171,10 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
+    if (erEnkeltPlass(deltaker) && !endrePrisValg.valider()) {
+      hasError = true
+    }
+
     if (!hasError && !errorStartdato && startdato) {
       if (
         dayjs(startdato).isSame(deltaker.startdato, 'day') &&
@@ -187,7 +198,8 @@ export const EndreOppstartsdatoModal = ({
             ? formatDateToDtoStr(sluttdato.sluttdato)
             : null,
           begrunnelse: begrunnelse.begrunnelse,
-          forslagId: forslag?.id
+          forslagId: forslag?.id,
+          pavirkerPris: endrePrisValg.endrePrisValg === EndrePrisValgType.JA
         }
       }
     }
@@ -286,6 +298,15 @@ export const EndreOppstartsdatoModal = ({
           onChange={begrunnelse.handleChange}
           error={begrunnelse.error}
           disabled={!deltaker.erUnderOppfolging}
+        />
+      )}
+
+      {erEnkeltPlass(deltaker) && (
+        <EndrePrisValg
+          value={endrePrisValg.endrePrisValg}
+          onChange={endrePrisValg.handleChange}
+          error={endrePrisValg.error}
+          className="mt-8"
         />
       )}
     </Endringsmodal>

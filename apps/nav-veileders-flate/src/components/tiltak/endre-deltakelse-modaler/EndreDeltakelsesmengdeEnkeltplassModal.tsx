@@ -10,17 +10,22 @@ import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakels
 import { getDagerPerUkeError } from '../../../utils/deltakelsesmengdeValidering.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import {
-  DagerPerUkeField,
-  GyldigFraField
-} from './EndreDeltakelsesmengdeFelter.tsx'
+  EndrePrisValg,
+  EndrePrisValgType,
+  useEndrePrisValg
+} from '../EndrePrisValg.tsx'
+import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import {
   EndreDeltakelsesmengdeModalProps,
   getMengde,
   harEndringSidenSisteDeltakelsesmengde,
   lagFellesDeltakelsesmengdeBodyFelter
 } from './EndreDeltakelsesmengdeFelles.ts'
+import {
+  DagerPerUkeField,
+  GyldigFraField
+} from './EndreDeltakelsesmengdeFelter.tsx'
 
 export const EndreDeltakelsesmengdeEnkeltplassModal = ({
   deltaker,
@@ -32,6 +37,7 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
   const defaultMengde = getMengde(deltaker, forslag)
   const { enhetId } = useAppContext()
 
+  const endrePrisValg = useEndrePrisValg()
   const [dagerPerUke, setDagerPerUke] = useState<number | null>(
     defaultMengde.dagerPerUke
   )
@@ -74,6 +80,10 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
       return null
     }
 
+    if (!endrePrisValg.valider()) {
+      return null
+    }
+
     if (
       !harEndringSidenSisteDeltakelsesmengde(
         deltaker,
@@ -93,7 +103,8 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
         gyldigFra,
         begrunnelse.begrunnelse,
         forslag?.id
-      )
+      ),
+      pavirkerPris: endrePrisValg.endrePrisValg === EndrePrisValgType.JA
     }
 
     return {
@@ -137,6 +148,13 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
         type={erBegrunnelseValgfri ? 'valgfri' : 'obligatorisk'}
         error={begrunnelse.error}
         disabled={!deltaker.erUnderOppfolging}
+      />
+
+      <EndrePrisValg
+        value={endrePrisValg.endrePrisValg}
+        onChange={endrePrisValg.handleChange}
+        error={endrePrisValg.error}
+        className="mt-8"
       />
     </Endringsmodal>
   )
