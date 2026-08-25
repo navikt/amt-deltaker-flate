@@ -151,7 +151,6 @@ export const PrisinformasjonTilGodkjenning = ({
       )}
 
       <Dialog
-        size="small"
         open={tilbakekallDialogOpen}
         onOpenChange={(open) => setTilbakekallDialogOpen(open)}
       >
@@ -164,7 +163,7 @@ export const PrisinformasjonTilGodkjenning = ({
             <Dialog.Title>Tilbakekall forslag</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body>
-            <BodyLong size="small">
+            <BodyLong>
               Er du helt sikker på at du vil tilbakekalle forslaget?
             </BodyLong>
           </Dialog.Body>
