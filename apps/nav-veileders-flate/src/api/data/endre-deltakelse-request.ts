@@ -106,7 +106,7 @@ export const endreDeltakelsesmengdeSchema = z.object({
   gyldigFra: z.string(),
   begrunnelse: z.string().nullable(),
   forslagId: z.string().nullable(),
-  pavirkerPris: z.boolean().nullish()
+  pavirkerPris: z.boolean().nullable()
 })
 export type EndreDeltakelsesmengdeRequest = z.infer<
   typeof endreDeltakelsesmengdeSchema

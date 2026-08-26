@@ -118,7 +118,8 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
         gyldigFra,
         begrunnelse.begrunnelse,
         forslag?.id
-      )
+      ),
+      pavirkerPris: null
     }
 
     return {
