@@ -4,24 +4,24 @@ import {
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { useAppContext } from '../../../AppContext.tsx'
-import { endreDeltakelsesmengde } from '../../../api/api.ts'
-import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakelse-request.ts'
-import { getDagerPerUkeError } from '../../../utils/deltakelsesmengdeValidering.ts'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { useAppContext } from '../../../../AppContext.tsx'
+import { endreDeltakelsesmengde } from '../../../../api/api.ts'
+import { EndreDeltakelsesmengdeRequest } from '../../../../api/data/endre-deltakelse-request.ts'
+import { getDagerPerUkeError } from '../../../../utils/deltakelsesmengdeValidering.ts'
+import { getFeilmeldingIngenEndring } from '../../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../../utils/endreDeltakelse.ts'
 import {
   EndrePrisValg,
   EndrePrisValgType,
   useEndrePrisValg
-} from '../EndrePrisValg.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+} from '../../EndrePrisValg.tsx'
+import { Endringsmodal } from '../../modal/Endringsmodal.tsx'
 import {
   EndreDeltakelsesmengdeModalProps,
   getMengde,
   harEndringSidenSisteDeltakelsesmengde,
   lagFellesDeltakelsesmengdeBodyFelter
-} from './EndreDeltakelsesmengdeFelles.ts'
+} from './utils.ts'
 import {
   DagerPerUkeField,
   GyldigFraField

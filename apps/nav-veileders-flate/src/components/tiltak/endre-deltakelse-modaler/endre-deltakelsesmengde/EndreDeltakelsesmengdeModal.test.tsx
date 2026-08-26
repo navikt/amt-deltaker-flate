@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AppContext } from '../../../AppContext.tsx'
-import { DeltakerResponse } from '../../../api/data/deltaker.ts'
+import { AppContext } from '../../../../AppContext.tsx'
+import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
 
 const endreDeltakelsesmengdeMock = vi.fn().mockResolvedValue(null)
@@ -14,7 +14,7 @@ const gruppeDagerLabel = 'Hvor mange dager i uka? (valgfritt)'
 const enkeltplassDagerLabel =
   'Antall dager i uka som personen deltar (valgfritt)'
 
-vi.mock('../../../api/api.ts', () => ({
+vi.mock('../../../../api/api.ts', () => ({
   endreDeltakelsesmengde: (...args: unknown[]) =>
     endreDeltakelsesmengdeMock(...args)
 }))

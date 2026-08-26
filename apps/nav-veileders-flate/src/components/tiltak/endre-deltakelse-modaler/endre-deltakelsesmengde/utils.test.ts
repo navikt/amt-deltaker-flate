@@ -1,10 +1,10 @@
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { describe, expect, it } from 'vitest'
-import { DeltakerResponse } from '../../../api/data/deltaker.ts'
+import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
 import {
   harEndringSidenSisteDeltakelsesmengde,
   lagFellesDeltakelsesmengdeBodyFelter
-} from './EndreDeltakelsesmengdeFelles.ts'
+} from './utils.ts'
 
 type SisteDeltakelsesmengde =
   DeltakerResponse['deltakelsesmengder']['sisteDeltakelsesmengde']

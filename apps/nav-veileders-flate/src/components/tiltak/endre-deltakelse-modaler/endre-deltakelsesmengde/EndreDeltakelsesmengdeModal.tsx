@@ -1,6 +1,6 @@
 import { EndreDeltakelsesmengdeEnkeltplassModal } from './EndreDeltakelsesmengdeEnkeltplassModal.tsx'
 import { EndreDeltakelsesmengdeGruppeModal } from './EndreDeltakelsesmengdeGruppeModal.tsx'
-import { EndreDeltakelsesmengdeModalProps } from './EndreDeltakelsesmengdeFelles.ts'
+import { EndreDeltakelsesmengdeModalProps } from './utils.ts'
 
 export const EndreDeltakelsesmengdeModal = ({
   deltaker,

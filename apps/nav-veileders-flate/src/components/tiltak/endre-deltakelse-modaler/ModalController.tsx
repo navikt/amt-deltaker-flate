@@ -1,7 +1,7 @@
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal.tsx'
 import { EndreBakgrunnsinfoModal } from './EndreBakgrunnsinfoModal.tsx'
-import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
+import { EndreDeltakelsesmengdeModal } from './endre-deltakelsesmengde/EndreDeltakelsesmengdeModal.tsx'
 import { EndreInnholdOpplaringKategoriseringModal } from './EndreInnholdOpplaringKategoriseringModal.tsx'
 import { EndreInnholdModal } from './EndreInnholdModal'
 import { EndreOppstartsdatoModal } from './EndreOppstartsdatoModal.tsx'

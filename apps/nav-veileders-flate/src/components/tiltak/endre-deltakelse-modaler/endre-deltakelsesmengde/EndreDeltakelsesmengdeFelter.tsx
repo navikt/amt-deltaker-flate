@@ -1,6 +1,6 @@
-import { NumberTextField } from '../../NumberTextField.tsx'
-import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
-import { DeltakerResponse } from '../../../api/data/deltaker.ts'
+import { NumberTextField } from '../../../NumberTextField.tsx'
+import { SimpleDatePicker } from '../../SimpleDatePicker.tsx'
+import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
 
 interface DagerPerUkeFieldProps {
   label: string
