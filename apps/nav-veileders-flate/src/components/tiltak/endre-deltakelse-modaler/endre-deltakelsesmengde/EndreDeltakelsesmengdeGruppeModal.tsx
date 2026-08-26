@@ -4,17 +4,17 @@ import {
   useBegrunnelse
 } from 'deltaker-flate-common'
 import { useState } from 'react'
-import { useAppContext } from '../../../AppContext.tsx'
-import { endreDeltakelsesmengde } from '../../../api/api.ts'
-import { EndreDeltakelsesmengdeRequest } from '../../../api/data/endre-deltakelse-request.ts'
+import { useAppContext } from '../../../../AppContext.tsx'
+import { endreDeltakelsesmengde } from '../../../../api/api.ts'
+import { EndreDeltakelsesmengdeRequest } from '../../../../api/data/endre-deltakelse-request.ts'
 import {
   getDagerPerUkeError,
   getProsentError
-} from '../../../utils/deltakelsesmengdeValidering.ts'
-import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
-import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import { NumberTextField } from '../../NumberTextField.tsx'
-import { Endringsmodal } from '../modal/Endringsmodal.tsx'
+} from '../../../../utils/deltakelsesmengdeValidering.ts'
+import { getFeilmeldingIngenEndring } from '../../../../utils/displayText.ts'
+import { validerDeltakerKanEndres } from '../../../../utils/endreDeltakelse.ts'
+import { NumberTextField } from '../../../NumberTextField.tsx'
+import { Endringsmodal } from '../../modal/Endringsmodal.tsx'
 import {
   DagerPerUkeField,
   GyldigFraField
@@ -24,7 +24,7 @@ import {
   getMengde,
   harEndringSidenSisteDeltakelsesmengde,
   lagFellesDeltakelsesmengdeBodyFelter
-} from './EndreDeltakelsesmengdeFelles.ts'
+} from './utils.ts'
 
 export const EndreDeltakelsesmengdeGruppeModal = ({
   deltaker,

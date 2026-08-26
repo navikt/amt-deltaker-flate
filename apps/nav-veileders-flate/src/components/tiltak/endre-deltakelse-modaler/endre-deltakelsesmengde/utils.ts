@@ -5,8 +5,8 @@ import {
   ForslagEndring,
   ForslagEndringType
 } from 'deltaker-flate-common'
-import { DeltakerResponse } from '../../../api/data/deltaker.ts'
-import { formatDateToDtoStr } from '../../../utils/utils.ts'
+import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
+import { formatDateToDtoStr } from '../../../../utils/utils.ts'
 
 export interface EndreDeltakelsesmengdeModalProps {
   deltaker: DeltakerResponse
