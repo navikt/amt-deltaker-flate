@@ -112,8 +112,12 @@ const renderModal = (deltaker: DeltakerResponse) =>
     </AppContext.Provider>
   )
 
-const klikkLagre = async () => {
+const klikkLagre = async (endrePris = 'Nei') => {
   const user = userEvent.setup()
+  const prisvalg = screen.queryByRole('radio', { name: endrePris })
+  if (prisvalg) {
+    await user.click(prisvalg)
+  }
   await user.click(screen.getByRole('button', { name: 'Lagre' }))
   await waitFor(() =>
     expect(endreDeltakelsesmengdeMock).toHaveBeenCalledTimes(1)
@@ -200,7 +204,8 @@ describe('EndreDeltakelsesmengdeModal', () => {
         '0101',
         expect.objectContaining({
           deltakelsesprosent: forventetDeltakelsesprosent,
-          dagerPerUke: 3
+          dagerPerUke: 3,
+          ...(erEnkeltplass ? { pavirkerPris: false } : {})
         })
       )
     }
@@ -216,9 +221,34 @@ describe('EndreDeltakelsesmengdeModal', () => {
       '0101',
       expect.objectContaining({
         deltakelsesprosent: undefined,
-        dagerPerUke: 7
+        dagerPerUke: 7,
+        pavirkerPris: false
       })
     )
+  })
+
+  it('sender pavirkerPris true når endringen påvirker pris', async () => {
+    renderModal(lagDeltaker(true))
+    await klikkLagre('Ja')
+
+    expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(
+      'deltaker-1',
+      '0101',
+      expect.objectContaining({ pavirkerPris: true })
+    )
+  })
+
+  it('krever valg om endringen påvirker pris før lagring', async () => {
+    const user = userEvent.setup()
+    renderModal(lagDeltaker(true))
+    await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+    expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText(
+        'Du må velge om endringen vil påvirke pris og betalingsbetingelser før du kan fortsette.'
+      )
+    ).toBeInTheDocument()
   })
 
   it('Gruppe avviser 7 dager per uke', async () => {

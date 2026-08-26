@@ -15,6 +15,7 @@ import { endreDeltakelseForleng } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { erEnkeltPlass } from '../../../utils/pamelding-enkeltplass.ts'
 import { useSluttdato } from '../../../utils/use-sluttdato.ts'
 import { formatDateToDtoStr, formatDateToString } from '../../../utils/utils.ts'
 import {
@@ -25,6 +26,11 @@ import {
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
+import {
+  EndrePrisValg,
+  EndrePrisValgType,
+  useEndrePrisValg
+} from '../EndrePrisValg.tsx'
 import { VarighetField } from '../VarighetField.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
@@ -56,6 +62,7 @@ export const ForlengDeltakelseModal = ({
 }: ForlengDeltakelseModalProps) => {
   const sluttdatoFraDeltaker = deltaker.sluttdato
   const sluttdatoFraForslag = getSluttdatoFraForslag(forslag)
+  const endrePrisValg = useEndrePrisValg()
 
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
     finnValgtVarighetForTiltakskode(
@@ -104,6 +111,10 @@ export const ForlengDeltakelseModal = ({
       hasError = true
     }
 
+    if (erEnkeltPlass(deltaker) && !endrePrisValg.valider()) {
+      hasError = true
+    }
+
     if (!hasError && sluttdato.sluttdato) {
       validerDeltakerKanEndres(deltaker)
       if (!harStatusSomKanForlengeDeltakelse(deltaker.status.type)) {
@@ -121,7 +132,10 @@ export const ForlengDeltakelseModal = ({
         body: {
           sluttdato: formatDateToDtoStr(sluttdato.sluttdato),
           begrunnelse: begrunnelse.begrunnelse || null,
-          forslagId: forslag ? forslag.id : null
+          forslagId: forslag ? forslag.id : null,
+          pavirkerPris: erEnkeltPlass(deltaker)
+            ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
+            : null
         }
       }
     }
@@ -183,6 +197,15 @@ export const ForlengDeltakelseModal = ({
         error={begrunnelse.error}
         disabled={!deltaker.erUnderOppfolging}
       />
+
+      {erEnkeltPlass(deltaker) && (
+        <EndrePrisValg
+          value={endrePrisValg.endrePrisValg}
+          onChange={endrePrisValg.handleChange}
+          error={endrePrisValg.error}
+          className="mt-8"
+        />
+      )}
     </Endringsmodal>
   )
 }
