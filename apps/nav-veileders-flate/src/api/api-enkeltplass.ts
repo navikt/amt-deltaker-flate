@@ -231,7 +231,7 @@ export const tilbakekallPrisendring = (
   deltakerId: string,
   enhetId: string
 ): Promise<number> => {
-  return fetch(`${API_URL}/enkeltplass/tilbakekall-prisendring/${deltakerId}`, {
+  return fetch(`${API_URL}/deltaker/${deltakerId}/tilbakekall-prisendring`, {
     method: 'POST',
     credentials: 'include',
     headers: {
