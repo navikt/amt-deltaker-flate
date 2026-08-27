@@ -128,10 +128,16 @@ export const fjernOppstartsdatoSchema = z.object({
   begrunnelse: z.string().nullable()
 })
 
+export enum EndrePrisinfoStatus {
+  SENDT_TIL_GODKJENNING = 'SENDT_TIL_GODKJENNING',
+  ENDRET_DIREKTE = 'ENDRET_DIREKTE'
+}
+
 export const endrePrisinfoSchema = z.object({
   type: z.literal(EndringType.EndrePrisinfo),
   prisinfo: prisinformasjonSchema.nullable(),
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  status: z.enum(EndrePrisinfoStatus).nullable()
 })
 
 const endringSchema = z.discriminatedUnion('type', [

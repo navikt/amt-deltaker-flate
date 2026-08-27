@@ -7,6 +7,7 @@ import {
   Pameldingstype
 } from '../model/deltaker'
 import {
+  EndrePrisinfoStatus,
   Endring,
   EndringType,
   TiltakskoordinatorEndringsType
@@ -296,8 +297,18 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
       return 'Oppstartsdato er fjernet'
     case EndringType.EndreAvslutning:
       return 'Avslutning endret'
-    case EndringType.EndrePrisinfo:
-      return 'Prisinformasjon er endret'
+    case EndringType.EndrePrisinfo: {
+      const status = 'status' in endring ? endring.status : undefined
+      if (status == null) {
+        return 'Pris og betalingsbetingelser er endret'
+      }
+      switch (status) {
+        case EndrePrisinfoStatus.ENDRET_DIREKTE:
+          return 'Pris og betalingsbetingelser er endret'
+        case EndrePrisinfoStatus.SENDT_TIL_GODKJENNING:
+          return 'Sendt til godkjenning: Endre pris og betalingsbetingelser'
+      }
+    }
   }
 }
 
