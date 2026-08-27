@@ -1,8 +1,15 @@
-import { BodyLong, BodyShort, Detail, InlineMessage } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  Detail,
+  InlineMessage,
+  ReadMore
+} from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
+  EndrePrisinfoStatus,
   EndringType
 } from '../../model/deltakerHistorikk'
 import { EndreDeltakelseType } from '../../model/endre-deltaker'
@@ -252,17 +259,74 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
   }
 }
 
+const erTilbakekaltPrisinfo = (
+  endring: Endring
+): endring is Extract<Endring, { type: EndringType.EndrePrisinfo }> =>
+  endring.type === EndringType.EndrePrisinfo &&
+  endring.status === EndrePrisinfoStatus.TILBAKEKALT
+
+const TilbakekaltPrisinfoEndring = ({
+  deltakerEndring,
+  tiltakskode,
+  erEnkeltplass,
+  icon,
+  forslag
+}: {
+  deltakerEndring: DeltakerEndring
+  tiltakskode: Tiltakskode
+  erEnkeltplass: boolean
+  icon: React.ReactNode
+  forslag: DeltakerEndring['forslag']
+}) => {
+  const endring = deltakerEndring.endring
+  if (!erTilbakekaltPrisinfo(endring)) {
+    return null
+  }
+
+  const byline = `Tilbakekalt ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`
+
+  return (
+    <HistorikkElement
+      tittel={getEndringsTittel(endring, erEnkeltplass)}
+      icon={icon}
+      forslag={forslag}
+    >
+      <Detail className="mt-1" textColor="subtle">
+        {byline}
+      </Detail>
+      <div className="mt-2">
+        <ReadMore size="small" header="Endringen som ble tilbakekalt">
+          {getEndringsDetaljer(endring, tiltakskode)}
+        </ReadMore>
+      </div>
+    </HistorikkElement>
+  )
+}
+
 export const HistorikkEndring = ({
   deltakerEndring,
   tiltakskode,
   erEnkeltplass
 }: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
+  const icon = <EndringTypeIkon type={endreDeltakelsesType} size={'small'} />
+
+  if (erTilbakekaltPrisinfo(deltakerEndring.endring)) {
+    return (
+      <TilbakekaltPrisinfoEndring
+        deltakerEndring={deltakerEndring}
+        tiltakskode={tiltakskode}
+        erEnkeltplass={erEnkeltplass}
+        icon={icon}
+        forslag={deltakerEndring.forslag}
+      />
+    )
+  }
 
   return (
     <HistorikkElement
       tittel={getEndringsTittel(deltakerEndring.endring, erEnkeltplass)}
-      icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
+      icon={icon}
       forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring, tiltakskode)}
