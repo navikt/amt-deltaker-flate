@@ -307,6 +307,8 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
           return 'Pris og betalingsbetingelser er endret'
         case EndrePrisinfoStatus.SENDT_TIL_GODKJENNING:
           return 'Sendt til godkjenning: Endre pris og betalingsbetingelser'
+        case EndrePrisinfoStatus.TILBAKEKALT:
+          return 'Tilbakekalt: Endre pris og betalingsbetingelser'
       }
     }
   }

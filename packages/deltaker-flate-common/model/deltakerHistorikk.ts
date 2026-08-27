@@ -130,7 +130,8 @@ export const fjernOppstartsdatoSchema = z.object({
 
 export enum EndrePrisinfoStatus {
   SENDT_TIL_GODKJENNING = 'SENDT_TIL_GODKJENNING',
-  ENDRET_DIREKTE = 'ENDRET_DIREKTE'
+  ENDRET_DIREKTE = 'ENDRET_DIREKTE',
+  TILBAKEKALT = 'TILBAKEKALT'
 }
 
 export const endrePrisinfoSchema = z.object({
