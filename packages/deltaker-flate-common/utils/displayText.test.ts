@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { EndringType } from '../model/deltakerHistorikk'
+import { EndrePrisinfoStatus, EndringType } from '../model/deltakerHistorikk'
 import { deltakerprosentText, getEndringsTittel } from './displayText'
 
 describe('deltakerprosentText', () => {
@@ -104,11 +104,26 @@ describe('getEndringsTittel', () => {
         {
           type: EndringType.EndrePrisinfo,
           prisinfo: null,
-          begrunnelse: null
+          begrunnelse: null,
+          status: null
         },
         false
       )
-    ).toBe('Prisinformasjon er endret')
+    ).toBe('Pris og betalingsbetingelser er endret')
+  })
+
+  it('should return tittel for EndrePrisinfo med TILBAKEKALT', () => {
+    expect(
+      getEndringsTittel(
+        {
+          type: EndringType.EndrePrisinfo,
+          prisinfo: null,
+          begrunnelse: null,
+          status: EndrePrisinfoStatus.TILBAKEKALT
+        },
+        false
+      )
+    ).toBe('Tilbakekalt: Endre pris og betalingsbetingelser')
   })
 
   it('should return tittel for EndreOpplaringKategorisering', () => {
