@@ -12,8 +12,8 @@ allowBuilds:
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
   '@axe-core/playwright': ^4.13.0
-  '@grafana/faro-react': ^2.9.0
-  '@grafana/faro-web-sdk': ^2.9.0
+  '@grafana/faro-react': ^2.10.0
+  '@grafana/faro-web-sdk': ^2.10.0
   '@navikt/aksel-icons': ^8.16.1
   '@navikt/ds-css': ^8.16.1
   '@navikt/ds-react': ^8.16.1
@@ -23,13 +23,13 @@ catalog:
   '@tanstack/react-query': ^5.101.4
   '@testing-library/jest-dom': ^7.0.1
   '@testing-library/react': ^16.3.2
-  '@testing-library/user-event': ^14.6.4
+  '@testing-library/user-event': ^14.6.5
   '@types/node': ^26.2.0
   '@types/react': ^19.2.18
   '@types/react-dom': ^19.2.4
   '@types/react-router-dom': ^5.3.3
   '@vitejs/plugin-react-swc': ^4.3.3
-  dayjs: ^1.11.21
+  dayjs: ^1.11.23
   jsdom: ^30.0.1
   msw: ^2.15.0
   playwright: ^1.62.1
@@ -38,9 +38,9 @@ catalog:
   react-router-dom: ^7.18.2
   tailwindcss: ^4.3.3
   typescript: ^6.0.3
-  uuid: ^14.0.1
-  vite: ^8.2.1
-  vitest: ^4.1.10
+  uuid: ^14.0.2
+  vite: ^8.2.2
+  vitest: ^4.1.11
   zod: ^4.4.3
 
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
