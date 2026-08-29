@@ -18,6 +18,7 @@ export enum EndringType {
   EndreDeltakelsesmengde = 'EndreDeltakelsesmengde',
   EndreBakgrunnsinformasjon = 'EndreBakgrunnsinformasjon',
   EndreInnhold = 'EndreInnhold',
+  EndreOpplaringKategorisering = 'EndreOpplaringKategorisering',
   EndreAvslutning = 'EndreAvslutning',
   IkkeAktuell = 'IkkeAktuell',
   ForlengDeltakelse = 'ForlengDeltakelse',
@@ -48,6 +49,12 @@ export const endreInnholdSchema = z.object({
   type: z.literal(EndringType.EndreInnhold),
   ledetekst: z.string().optional().nullable(),
   innhold: z.array(innholdSchema)
+})
+
+export const endreOpplaringKategoriseringSchema = z.object({
+  type: z.literal(EndringType.EndreOpplaringKategorisering),
+  opplaringKategoriseringValg: opplaringKategoriseringSchema,
+  beskrivelse: z.string()
 })
 
 export const endreDeltakelsesmengdeSchema = z.object({
@@ -126,6 +133,7 @@ export const endrePrisinfoSchema = z.object({
 const endringSchema = z.discriminatedUnion('type', [
   endreBakgrunnsinformasjonSchema,
   endreInnholdSchema,
+  endreOpplaringKategoriseringSchema,
   endreDeltakelsesmengdeSchema,
   endreStartdatoSchema,
   endreSluttdatoSchema,

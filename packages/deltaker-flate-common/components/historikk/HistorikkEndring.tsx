@@ -39,7 +39,8 @@ const mapEndringsType = (endringType: EndringType) => {
       return EndreDeltakelseType.ENDRE_DELTAKELSESMENGDE
     case EndringType.EndreInnhold:
       return EndreDeltakelseType.ENDRE_INNHOLD
-    // TODO innhold med kodeverk?
+    case EndringType.EndreOpplaringKategorisering:
+      return EndreDeltakelseType.ENDRE_INNHOLD_OPPLARING_KATEGORISERING
     case EndringType.ReaktiverDeltakelse:
       return EndreDeltakelseType.REAKTIVER_DELTAKELSE
     case EndringType.EndreSluttarsak:
@@ -139,6 +140,23 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
           //  listClassName="-mt-3 -mb-2" TODO sjekk ut
           heading={null}
         />
+      )
+    }
+    case EndringType.EndreOpplaringKategorisering: {
+      return (
+        <>
+          <DeltakelseInnhold
+            tiltakskode={tiltakskode}
+            deltakelsesinnhold={null}
+            opplaringKategoriseringValg={endring.opplaringKategoriseringValg}
+            heading={null}
+          />
+          {endring.beskrivelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Beskrivelse: {endring.beskrivelse}
+            </BodyLong>
+          )}
+        </>
       )
     }
     case EndringType.ReaktiverDeltakelse: {

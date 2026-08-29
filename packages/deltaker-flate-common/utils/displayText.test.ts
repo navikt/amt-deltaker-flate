@@ -109,4 +109,20 @@ describe('getEndringsTittel', () => {
       )
     ).toBe('Prisinformasjon er endret')
   })
+
+  it('should return tittel for EndreOpplaringKategorisering', () => {
+    expect(
+      getEndringsTittel(
+        {
+          type: EndringType.EndreOpplaringKategorisering,
+          opplaringKategoriseringValg: {
+            valgteKategoriseringer: [],
+            valgteSertifiseringer: []
+          },
+          beskrivelse: ''
+        },
+        false
+      )
+    ).toBe('Innholdet er endret')
+  })
 })
