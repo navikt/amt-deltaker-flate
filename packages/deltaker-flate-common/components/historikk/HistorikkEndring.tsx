@@ -136,7 +136,6 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
           }}
-          // TODO kodeverk
           //  listClassName="-mt-3 -mb-2" TODO sjekk ut
           heading={null}
         />
