@@ -375,6 +375,19 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       forslag: null
     },
     {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreOpplaringKategorisering,
+        opplaringKategoriseringValg: lagOpplaringKategoriseringMockRespons(),
+        beskrivelse:
+          'Deltakeren skal ta førerkort klasse B og C, og få opplæring i butikk- og salgsarbeid.'
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Grunerløkka',
+      endret: dayjs().subtract(3, 'day').toDate(),
+      forslag: null
+    },
+    {
       type: HistorikkType.Vedtak,
       fattet: dayjs().subtract(10, 'days').toDate(),
       bakgrunnsinformasjon: 'Bakgrunnsinformasjon',

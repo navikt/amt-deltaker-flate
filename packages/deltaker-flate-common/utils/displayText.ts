@@ -284,6 +284,8 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
     }
     case EndringType.EndreInnhold:
       return 'Innholdet er endret'
+    case EndringType.EndreOpplaringKategorisering:
+      return 'Innholdet er endret'
     case EndringType.ReaktiverDeltakelse:
       return 'Deltakelsen er endret til å være aktiv'
     case EndringType.EndreSluttarsak:
