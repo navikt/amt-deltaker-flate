@@ -75,7 +75,8 @@ describe('getEndringsTittel', () => {
           deltakelsesprosent: null,
           dagerPerUke: null,
           gyldigFra: null,
-          begrunnelse: null
+          begrunnelse: null,
+          pavirkerPris: false
         },
         true
       )
@@ -119,7 +120,8 @@ describe('getEndringsTittel', () => {
             valgteKategoriseringer: [],
             valgteSertifiseringer: []
           },
-          beskrivelse: ''
+          beskrivelse: '',
+          pavirkerPris: false
         },
         false
       )

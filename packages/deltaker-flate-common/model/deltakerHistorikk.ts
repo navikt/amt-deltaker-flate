@@ -54,7 +54,8 @@ export const endreInnholdSchema = z.object({
 export const endreOpplaringKategoriseringSchema = z.object({
   type: z.literal(EndringType.EndreOpplaringKategorisering),
   opplaringKategoriseringValg: opplaringKategoriseringSchema,
-  beskrivelse: z.string()
+  beskrivelse: z.string(),
+  pavirkerPris: z.boolean()
 })
 
 export const endreDeltakelsesmengdeSchema = z.object({
@@ -62,14 +63,16 @@ export const endreDeltakelsesmengdeSchema = z.object({
   deltakelsesprosent: z.number().nullable(),
   dagerPerUke: z.number().nullable(),
   gyldigFra: nullableDateSchema,
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  pavirkerPris: z.boolean()
 })
 
 export const endreStartdatoSchema = z.object({
   type: z.literal(EndringType.EndreStartdato),
   startdato: dateSchema,
   sluttdato: nullableDateSchema,
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  pavirkerPris: z.boolean()
 })
 
 export const endreSluttdatoSchema = z.object({
@@ -81,7 +84,8 @@ export const endreSluttdatoSchema = z.object({
 export const forlengDeltakelseSchema = z.object({
   type: z.literal(EndringType.ForlengDeltakelse),
   sluttdato: dateSchema,
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  pavirkerPris: z.boolean()
 })
 
 export const ikkeAktuellSchema = z.object({

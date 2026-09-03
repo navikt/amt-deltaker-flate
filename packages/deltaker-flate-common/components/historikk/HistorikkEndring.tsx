@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, InlineMessage } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
@@ -136,7 +136,6 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
           }}
-          //  listClassName="-mt-3 -mb-2" TODO sjekk ut
           heading={null}
         />
       )
@@ -151,9 +150,15 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             heading={null}
           />
           {endring.beskrivelse && (
-            <BodyLong size="small" className="whitespace-pre-wrap">
+            <BodyLong size="small" className="whitespace-pre-wrap mt-1">
               Beskrivelse: {endring.beskrivelse}
             </BodyLong>
+          )}
+          {endring.pavirkerPris && (
+            <InlineMessage status="warning" size="small" className="mt-1">
+              Hvis prisen eller betalingsbetingelsene endres, vil du få beskjed
+              om dette.
+            </InlineMessage>
           )}
         </>
       )
@@ -178,9 +183,32 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
+          {endring.pavirkerPris && (
+            <InlineMessage status="warning" size="small" className="mt-1">
+              Hvis prisen eller betalingsbetingelsene endres, vil du få beskjed
+              om dette.
+            </InlineMessage>
+          )}
         </>
       )
     case EndringType.ForlengDeltakelse:
+      return endring.begrunnelse || endring.pavirkerPris ? (
+        <>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+          {endring.pavirkerPris && (
+            <InlineMessage status="warning" size="small" className="mt-1">
+              Hvis prisen eller betalingsbetingelsene endres, vil du få beskjed
+              om dette.
+            </InlineMessage>
+          )}
+        </>
+      ) : (
+        <div className="-mb-1" />
+      )
     case EndringType.EndreSluttdato:
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
@@ -203,6 +231,12 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             <BodyLong size="small" className="whitespace-pre-wrap">
               Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
+          )}
+          {endring.pavirkerPris && (
+            <InlineMessage status="warning" size="small" className="mt-1">
+              Hvis prisen eller betalingsbetingelsene endres, vil du få beskjed
+              om dette.
+            </InlineMessage>
           )}
         </>
       )
