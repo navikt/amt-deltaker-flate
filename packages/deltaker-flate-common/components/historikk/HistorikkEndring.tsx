@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, InlineMessage } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
@@ -136,14 +136,13 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             ledetekst: endring.ledetekst || null,
             innhold: endring.innhold
           }}
-          //  listClassName="-mt-3 -mb-2" TODO sjekk ut
           heading={null}
         />
       )
     }
     case EndringType.EndreOpplaringKategorisering: {
       return (
-        <>
+        <div className="flex flex-col gap-1">
           <DeltakelseInnhold
             tiltakskode={tiltakskode}
             deltakelsesinnhold={null}
@@ -155,7 +154,8 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Beskrivelse: {endring.beskrivelse}
             </BodyLong>
           )}
-        </>
+          {endring.pavirkerPris && <PavirkerPris />}
+        </div>
       )
     }
     case EndringType.ReaktiverDeltakelse: {
@@ -167,7 +167,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
     }
     case EndringType.EndreDeltakelsesmengde:
       return (
-        <>
+        <div className="flex flex-col gap-1">
           {endring.gyldigFra && (
             <BodyShort size="small">
               Gjelder fra: {formatDate(endring.gyldigFra)}
@@ -178,9 +178,22 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
-        </>
+          {endring.pavirkerPris && <PavirkerPris />}
+        </div>
       )
     case EndringType.ForlengDeltakelse:
+      return endring.begrunnelse || endring.pavirkerPris ? (
+        <div className="flex flex-col gap-1">
+          {endring.begrunnelse && (
+            <BodyLong size="small" className="whitespace-pre-wrap">
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+          {endring.pavirkerPris && <PavirkerPris />}
+        </div>
+      ) : (
+        <div className="-mb-1" />
+      )
     case EndringType.EndreSluttdato:
     case EndringType.EndreSluttarsak: {
       return endring.begrunnelse ? (
@@ -193,7 +206,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
     }
     case EndringType.EndreStartdato: {
       return (
-        <>
+        <div className="flex flex-col gap-1">
           {endring.sluttdato && (
             <BodyLong size="small">
               Forventet sluttdato: {formatDate(endring.sluttdato)}
@@ -204,7 +217,8 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
               Navs begrunnelse: {endring.begrunnelse}
             </BodyLong>
           )}
-        </>
+          {endring.pavirkerPris && <PavirkerPris />}
+        </div>
       )
     }
     case EndringType.FjernOppstartsdato: {
@@ -258,3 +272,10 @@ export const HistorikkEndring = ({
     </HistorikkElement>
   )
 }
+
+const PavirkerPris = () => (
+  <InlineMessage status="warning" size="small">
+    Endringen forutsetter at endring i pris eller betalingsbetingelser blir
+    godkjent. Du vil få en egen beskjed om dette.
+  </InlineMessage>
+)

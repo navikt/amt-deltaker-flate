@@ -114,7 +114,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         type: EndringType.EndreStartdato,
         sluttdato: dayjs().toDate(),
         startdato: dayjs().toDate(),
-        begrunnelse: null
+        begrunnelse: null,
+        pavirkerPris: false
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -142,7 +143,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         type: EndringType.EndreStartdato,
         sluttdato: null,
         startdato: dayjs().toDate(),
-        begrunnelse: null
+        begrunnelse: null,
+        pavirkerPris: false
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -233,7 +235,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       endring: {
         type: EndringType.ForlengDeltakelse,
         sluttdato: dayjs().add(1, 'month').toDate(),
-        begrunnelse: 'Forlenger fordi vi må'
+        begrunnelse: 'Forlenger fordi vi må',
+        pavirkerPris: false
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -279,7 +282,8 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
         begrunnelse: 'Det er ok.',
         deltakelsesprosent: 80,
         dagerPerUke: 4,
-        gyldigFra: dayjs().toDate()
+        gyldigFra: dayjs().toDate(),
+        pavirkerPris: false
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
@@ -375,19 +379,6 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
       forslag: null
     },
     {
-      type: HistorikkType.Endring,
-      endring: {
-        type: EndringType.EndreOpplaringKategorisering,
-        opplaringKategoriseringValg: lagOpplaringKategoriseringMockRespons(),
-        beskrivelse:
-          'Deltakeren skal ta førerkort klasse B og C, og få opplæring i butikk- og salgsarbeid.'
-      },
-      endretAv: 'Navn Navnesen',
-      endretAvEnhet: 'Nav Grunerløkka',
-      endret: dayjs().subtract(3, 'day').toDate(),
-      forslag: null
-    },
-    {
       type: HistorikkType.Vedtak,
       fattet: dayjs().subtract(10, 'days').toDate(),
       bakgrunnsinformasjon: 'Bakgrunnsinformasjon',
@@ -444,6 +435,33 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       endret: dayjs().subtract(5, 'day').toDate(),
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad'
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndreOpplaringKategorisering,
+        opplaringKategoriseringValg: lagOpplaringKategoriseringMockRespons(),
+        beskrivelse:
+          'Deltakeren skal ta førerkort klasse B og C, og få opplæring i butikk- og salgsarbeid.',
+        pavirkerPris: true
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Grunerløkka',
+      endret: dayjs().subtract(3, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.ForlengDeltakelse,
+        sluttdato: dayjs().add(1, 'month').toDate(),
+        begrunnelse: null,
+        pavirkerPris: true
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
     },
     {
       type: HistorikkType.Endring,

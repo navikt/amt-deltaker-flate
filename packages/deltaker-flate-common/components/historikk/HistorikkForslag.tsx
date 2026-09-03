@@ -40,7 +40,9 @@ export const HistorikkForslag = ({ forslag }: Props) => {
       )}
 
       {forslagStatusTekst && (
-        <Detail textColor="subtle">{forslagStatusTekst}</Detail>
+        <Detail textColor="subtle" className="mt-1">
+          {forslagStatusTekst}
+        </Detail>
       )}
     </HistorikkElement>
   )
