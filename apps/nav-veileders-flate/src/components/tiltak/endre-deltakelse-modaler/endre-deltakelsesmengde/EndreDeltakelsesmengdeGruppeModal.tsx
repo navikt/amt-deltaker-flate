@@ -119,7 +119,7 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
         begrunnelse.begrunnelse,
         forslag?.id
       ),
-      pavirkerPris: null
+      pavirkerPris: false
     }
 
     return {

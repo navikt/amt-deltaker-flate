@@ -135,7 +135,7 @@ export const ForlengDeltakelseModal = ({
           forslagId: forslag ? forslag.id : null,
           pavirkerPris: erEnkeltPlass(deltaker)
             ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
-            : null
+            : false
         }
       }
     }
