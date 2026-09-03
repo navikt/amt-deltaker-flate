@@ -455,8 +455,8 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       endring: {
         type: EndringType.ForlengDeltakelse,
         sluttdato: dayjs().add(1, 'month').toDate(),
-        begrunnelse: 'Forlenger fordi vi må',
-        pavirkerPris: false
+        begrunnelse: null,
+        pavirkerPris: true
       },
       endretAv: 'Navn Navnesen',
       endretAvEnhet: 'Nav Fredrikstad',
