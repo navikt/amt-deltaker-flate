@@ -201,7 +201,7 @@ export const EndreOppstartsdatoModal = ({
           forslagId: forslag?.id,
           pavirkerPris: erEnkeltPlass(deltaker)
             ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
-            : null
+            : false
         }
       }
     }

@@ -22,7 +22,7 @@ export const forlengDeltakelseSchema = z.object({
   sluttdato: z.string(),
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullable(),
-  pavirkerPris: z.boolean().nullable()
+  pavirkerPris: z.boolean()
 })
 export type ForlengDeltakelseRequest = z.infer<typeof forlengDeltakelseSchema>
 
@@ -37,7 +37,7 @@ export const endreStartdatoSchema = z.object({
   sluttdato: z.string().nullable(),
   begrunnelse: z.string().nullable(),
   forslagId: z.uuid().nullish(),
-  pavirkerPris: z.boolean().nullable()
+  pavirkerPris: z.boolean()
 })
 export type EndreStartdatoRequest = z.infer<typeof endreStartdatoSchema>
 
@@ -106,7 +106,7 @@ export const endreDeltakelsesmengdeSchema = z.object({
   gyldigFra: z.string(),
   begrunnelse: z.string().nullable(),
   forslagId: z.string().nullable(),
-  pavirkerPris: z.boolean().nullable()
+  pavirkerPris: z.boolean()
 })
 export type EndreDeltakelsesmengdeRequest = z.infer<
   typeof endreDeltakelsesmengdeSchema
