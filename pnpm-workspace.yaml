@@ -35,13 +35,13 @@ catalog:
   playwright: ^1.62.1
   react: ^19.2.8
   react-dom: ^19.2.8
-  react-router-dom: ^7.18.2
+  react-router-dom: ^7.18.3
   tailwindcss: ^4.3.3
   typescript: ^6.0.3
   uuid: ^14.0.2
   vite: ^8.2.2
   vitest: ^4.1.11
-  zod: ^4.4.3
+  zod: ^4.5.4
 
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
 # Et sikkerhetstiltak i tilfelle en pakke blir komprimittert
