@@ -43,6 +43,9 @@ catalog:
   vitest: ^4.1.11
   zod: ^4.5.4
 
+overrides:
+  'brace-expansion@<1.1.18': '1.1.18'
+
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
 # Et sikkerhetstiltak i tilfelle en pakke blir komprimittert
 minimumReleaseAge: 10080 # 24 x 60 x 7
