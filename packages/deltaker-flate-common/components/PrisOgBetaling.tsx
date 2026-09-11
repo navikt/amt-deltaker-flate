@@ -98,7 +98,7 @@ export const PrisOgBetaling = ({
           <>
             <BodyLong
               size="small"
-              className={`${compact ? 'mt-0' : 'mt-4'} whitespace-pre-wrap`}
+              className={`${compact ? 'mt-0' : 'mt-2'} whitespace-pre-wrap`}
             >
               {prisinformasjon.aarsak ===
               IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI

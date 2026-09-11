@@ -48,7 +48,7 @@ export const HistorikkSoktInn = ({
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnholdVedInnsok}
         heading={
-          <BodyLong size="small" weight="semibold">
+          <BodyLong size="small" weight="semibold" className="-mb-2">
             Dette er innholdet
           </BodyLong>
         }
@@ -65,7 +65,7 @@ export const HistorikkSoktInn = ({
 
       {prisinformasjonVedInnsok && (
         <>
-          <BodyLong size="small" weight="semibold" className="mt-4 mb-2">
+          <BodyLong size="small" weight="semibold" className="mt-4">
             Pris og betalingsbetingelser
           </BodyLong>
 

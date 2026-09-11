@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  PrisinformasjonType,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { DeltakerPage } from './DeltakerPage'
 import {
   lagInnbyggerDeltaker,
@@ -50,5 +54,38 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
       ikkeStottetTiltakDeltaker
     )
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
+  })
+})
+
+describe('DeltakerPage - prisinformasjon til godkjenning', () => {
+  beforeEach(() => {
+    window.scrollTo = vi.fn()
+  })
+
+  it('viser prisinformasjon til godkjenning når forslaget finnes', () => {
+    const deltaker = lagInnbyggerDeltaker(
+      {},
+      {
+        prisinformasjonTilGodkjenning: {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 5000
+        }
+      }
+    )
+
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, deltaker)
+
+    expect(
+      screen.getByRole('heading', { name: 'Endring sendt til godkjenning:' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Venter på godkjenning')).toBeInTheDocument()
+  })
+
+  it('skjuler prisinformasjon til godkjenning når forslaget mangler', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, lagInnbyggerDeltaker())
+
+    expect(
+      screen.queryByRole('heading', { name: 'Endring sendt til godkjenning:' })
+    ).not.toBeInTheDocument()
   })
 })
