@@ -16,6 +16,7 @@ import {
   kreverGodkjenningForPamelding,
   OmKurset,
   Oppmotested,
+  PrisinformasjonTilGodkjenningForslag,
   PrisOgBetaling,
   SeEndringer,
   VedtakOgKlage
@@ -151,6 +152,15 @@ export const DeltakerPage = () => {
       />
 
       <AktiveForslag className="mt-8" forslag={deltaker.forslag} />
+
+      {deltaker.deltakerliste.prisinformasjonTilGodkjenning && (
+        <PrisinformasjonTilGodkjenningForslag
+          className="mt-8"
+          prisinformasjonTilGodkjenning={
+            deltaker.deltakerliste.prisinformasjonTilGodkjenning
+          }
+        />
+      )}
 
       <DeltakelseInnhold
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
