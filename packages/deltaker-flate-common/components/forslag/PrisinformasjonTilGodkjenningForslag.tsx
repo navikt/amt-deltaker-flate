@@ -21,7 +21,7 @@ export const PrisinformasjonTilGodkjenningForslag = ({
     <EndringerWrapper className={className ?? ''}>
       <VStack gap="space-16">
         <Heading level="2" size="medium">
-          Forslag sendt til godkjenning:
+          Endring sendt til godkjenning:
         </Heading>
         <EndringerBox>
           <HGrid columns="2rem auto" className="p-4 items-start">
@@ -48,6 +48,7 @@ export const PrisinformasjonTilGodkjenningForslag = ({
                 prisinformasjon={prisinformasjonTilGodkjenning}
                 headinglevel="3"
                 showHeading={false}
+                compact
                 showTilleggsstonaderInfo={false}
               />
             </VStack>

@@ -65,7 +65,7 @@ export const HistorikkSoktInn = ({
 
       {prisinformasjonVedInnsok && (
         <>
-          <BodyLong size="small" weight="semibold" className="mt-4">
+          <BodyLong size="small" weight="semibold" className="mt-4 mb-2">
             Pris og betalingsbetingelser
           </BodyLong>
 
@@ -73,6 +73,7 @@ export const HistorikkSoktInn = ({
             prisinformasjon={prisinformasjonVedInnsok}
             headinglevel="3"
             showHeading={false}
+            compact
             showTilleggsstonaderInfo={false}
           />
         </>
