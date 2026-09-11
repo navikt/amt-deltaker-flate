@@ -54,7 +54,7 @@ export const ForslagDetaljer = ({ forslag }: ForslagDetaljerProps) => {
       <EndringTypeIkon type={endreDeltakelsesType} size="large" />
 
       <VStack className="items-start">
-        <div className="flex gap-8 mb-2">
+        <div className="flex justify-between w-full mb-2">
           <Heading level="3" size="small">
             {getEndreDeltakelseTypeText(endreDeltakelsesType)}
           </Heading>
