@@ -12,6 +12,7 @@ interface Props {
   headinglevel: '2' | '3'
   headingsize?: 'medium' | 'small'
   showHeading?: boolean
+  compact?: boolean
   showTilleggsstonaderInfo?: boolean
   className?: string
 }
@@ -22,6 +23,7 @@ export const PrisOgBetaling = ({
   headingsize = 'medium',
   showHeading = true,
   showTilleggsstonaderInfo = true,
+  compact = false,
   className
 }: Props) => {
   if (!prisinformasjon) {
@@ -33,11 +35,17 @@ export const PrisOgBetaling = ({
       case PrisinformasjonType.Anskaffelse:
         return (
           <>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-0' : 'mt-2'} whitespace-pre-wrap`}
+            >
               Nav har kjøpt en plass hos opplæringsstedet. Nav betaler for
               opplæringen.
             </BodyLong>
-            <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+            >
               Totalkostnaden er {NOK_FORMATTER.format(prisinformasjon.pris)}{' '}
               kroner.
             </BodyLong>
@@ -46,10 +54,13 @@ export const PrisOgBetaling = ({
       case PrisinformasjonType.Tilskudd:
         return (
           <>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-0' : 'mt-2'} whitespace-pre-wrap`}
+            >
               Du kan få tilskudd til å dekke disse utgiftene:
             </BodyLong>
-            <List className="mt-4" size="small">
+            <List className={`${compact ? 'mt-2' : 'mt-4'}`} size="small">
               {prisinformasjon.tilskudd.map((tilskudd) => (
                 <List.Item key={tilskudd.type}>
                   {getPrisInformasjonTekst(tilskudd.type)}:{' '}
@@ -57,17 +68,26 @@ export const PrisOgBetaling = ({
                 </List.Item>
               ))}
             </List>
-            <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+            >
               Totalt anslått tilskudd:{' '}
               {NOK_FORMATTER.format(beregnEstimertTotalsum(prisinformasjon))}{' '}
               kroner.
             </BodyLong>
-            <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+            >
               Utbetaling skjer når utgiftene er dokumentert.
             </BodyLong>
 
             {prisinformasjon.tilleggsopplysninger && (
-              <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+              <BodyLong
+                size="small"
+                className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+              >
                 {prisinformasjon.tilleggsopplysninger}
               </BodyLong>
             )}
@@ -76,14 +96,20 @@ export const PrisOgBetaling = ({
       case PrisinformasjonType.IngenKostnader:
         return (
           <>
-            <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-0' : 'mt-2'} whitespace-pre-wrap`}
+            >
               {prisinformasjon.aarsak ===
               IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI
                 ? 'Du eller Nav skal ikke betale for opplæringen.'
                 : 'Du må selv betale for opplæringen.'}
             </BodyLong>
             {prisinformasjon.tilleggsopplysninger && (
-              <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+              <BodyLong
+                size="small"
+                className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+              >
                 {prisinformasjon.tilleggsopplysninger}
               </BodyLong>
             )}

@@ -48,7 +48,7 @@ export const HistorikkSoktInn = ({
         tiltakskode={tiltakskode}
         deltakelsesinnhold={deltakelsesinnholdVedInnsok}
         heading={
-          <BodyLong size="small" weight="semibold">
+          <BodyLong size="small" weight="semibold" className="-mb-2">
             Dette er innholdet
           </BodyLong>
         }
@@ -73,6 +73,7 @@ export const HistorikkSoktInn = ({
             prisinformasjon={prisinformasjonVedInnsok}
             headinglevel="3"
             showHeading={false}
+            compact
             showTilleggsstonaderInfo={false}
           />
         </>

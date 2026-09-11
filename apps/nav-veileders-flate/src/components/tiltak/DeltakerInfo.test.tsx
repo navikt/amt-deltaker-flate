@@ -86,7 +86,7 @@ describe('DeltakerInfo - PrisinformasjonTilGodkjenning', () => {
     renderMedPrisinformasjon(deltaker)
 
     expect(
-      screen.getByText('Forslag sendt til godkjenning:')
+      screen.getByText('Endring sendt til godkjenning:')
     ).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Tilbakekall forslag' })
@@ -102,7 +102,7 @@ describe('DeltakerInfo - PrisinformasjonTilGodkjenning', () => {
     renderMedPrisinformasjon(deltaker)
 
     expect(
-      screen.queryByText('Forslag sendt til godkjenning:')
+      screen.queryByText('Endring sendt til godkjenning:')
     ).not.toBeInTheDocument()
   })
 })

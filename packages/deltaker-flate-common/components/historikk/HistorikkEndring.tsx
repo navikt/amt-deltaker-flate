@@ -239,6 +239,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             prisinformasjon={endring.prisinfo}
             headinglevel="3"
             showHeading={false}
+            compact
             showTilleggsstonaderInfo={false}
           />
           {endring.begrunnelse && (
