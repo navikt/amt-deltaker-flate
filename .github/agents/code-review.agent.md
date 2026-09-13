@@ -9,11 +9,11 @@ tools:
   - web
   - todo
   - ms-vscode.vscode-websearchforcopilot/websearch
-  - io.github.navikt/github-mcp/get_file_contents
-  - io.github.navikt/github-mcp/search_code
-  - io.github.navikt/github-mcp/pull_request_read
-  - io.github.navikt/github-mcp/list_pull_requests
-  - io.github.navikt/github-mcp/search_pull_requests
+  - github/get_file_contents
+  - github/search_code
+  - github/pull_request_read
+  - github/list_pull_requests
+  - github/search_pull_requests
 ---
 
 # Code Review Agent
@@ -32,15 +32,15 @@ cd apps/<app-name> && mise check
 cd apps/<app-name> && mise test
 ```
 
-## Related Agents
+## Related agents and skills
 
-| Agent                      | Delegate When                                            |
+| Agent / skill              | Owns                                                     |
 | -------------------------- | -------------------------------------------------------- |
 | `@security-champion-agent` | Threat modeling, GDPR compliance, secrets management     |
 | `@accessibility-agent`     | WCAG compliance, ARIA attributes, keyboard navigation    |
-| `@observability-agent`     | Metrics, tracing, health endpoints, alerting             |
+| `$observability-setup`     | Metrics, tracing, health endpoints, alerting             |
 | `@aksel-agent`             | Aksel component usage, spacing tokens, responsive layout |
-| `@auth-agent`              | JWT validation, TokenX, ID-porten, Azure AD              |
+| `$nav-auth`                | JWT validation, TokenX, ID-porten, Azure AD              |
 
 ## Review Process
 
@@ -245,7 +245,6 @@ if err != nil {
 - Run `mise check` before reporting findings
 - Explain **why** each finding matters
 - Prioritize findings (🔴 before 🟡 before 💭)
-- Delegate to specialist agents for deep domain reviews
 - Read the actual code before reviewing — don't guess
 - For AI-generated code: verify the author understands the design decisions
 
