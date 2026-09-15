@@ -1,4 +1,6 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
+import { afterEach } from 'vitest'
+import { cleanup } from '@testing-library/react'
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
@@ -9,3 +11,8 @@ dayjs.locale(nb)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(duration)
+
+// Auto-clean between tests
+afterEach(() => {
+  cleanup()
+})

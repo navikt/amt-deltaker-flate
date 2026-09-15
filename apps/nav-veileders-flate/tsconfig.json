@@ -1,6 +1,7 @@
 {
   "extends": "@amt-deltaker-flate/typescript-config/base.json",
   "compilerOptions": {
+    "types": ["vitest/globals", "@testing-library/jest-dom/vitest"],
     "plugins": [
       {
         "name": "next"
