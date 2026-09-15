@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
