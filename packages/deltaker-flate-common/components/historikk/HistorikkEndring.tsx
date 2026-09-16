@@ -1,15 +1,8 @@
-import {
-  BodyLong,
-  BodyShort,
-  Detail,
-  InlineMessage,
-  ReadMore
-} from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, InlineMessage } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
   Endring,
-  EndrePrisinfoStatus,
   EndringType
 } from '../../model/deltakerHistorikk'
 import { EndreDeltakelseType } from '../../model/endre-deltaker'
@@ -23,6 +16,10 @@ import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement'
+import {
+  erTilbakekaltPrisinfo,
+  TilbakekaltPrisinfoEndring
+} from './TilbakekaltPrisinfoEndring.tsx'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -260,50 +257,6 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
   }
 }
 
-const erTilbakekaltPrisinfo = (
-  endring: Endring
-): endring is Extract<Endring, { type: EndringType.EndrePrisinfo }> =>
-  endring.type === EndringType.EndrePrisinfo &&
-  endring.status === EndrePrisinfoStatus.TILBAKEKALT
-
-const TilbakekaltPrisinfoEndring = ({
-  deltakerEndring,
-  tiltakskode,
-  erEnkeltplass,
-  icon,
-  forslag
-}: {
-  deltakerEndring: DeltakerEndring
-  tiltakskode: Tiltakskode
-  erEnkeltplass: boolean
-  icon: React.ReactNode
-  forslag: DeltakerEndring['forslag']
-}) => {
-  const endring = deltakerEndring.endring
-  if (!erTilbakekaltPrisinfo(endring)) {
-    return null
-  }
-
-  const byline = `Tilbakekalt ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`
-
-  return (
-    <HistorikkElement
-      tittel={getEndringsTittel(endring, erEnkeltplass)}
-      icon={icon}
-      forslag={forslag}
-    >
-      <Detail className="mt-1" textColor="subtle">
-        {byline}
-      </Detail>
-      <div className="mt-2">
-        <ReadMore size="small" header="Endringen som ble tilbakekalt">
-          {getEndringsDetaljer(endring, tiltakskode)}
-        </ReadMore>
-      </div>
-    </HistorikkElement>
-  )
-}
-
 export const HistorikkEndring = ({
   deltakerEndring,
   tiltakskode,
@@ -316,10 +269,13 @@ export const HistorikkEndring = ({
     return (
       <TilbakekaltPrisinfoEndring
         deltakerEndring={deltakerEndring}
-        tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
         icon={icon}
         forslag={deltakerEndring.forslag}
+        endringsDetaljer={getEndringsDetaljer(
+          deltakerEndring.endring,
+          tiltakskode
+        )}
       />
     )
   }
