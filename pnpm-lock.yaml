@@ -46,14 +46,14 @@ catalogs:
       specifier: ^14.6.7
       version: 14.6.7
     '@types/node':
-      specifier: ^26.5.0
-      version: 26.5.0
+      specifier: ^26.5.1
+      version: 26.5.1
     '@types/react':
-      specifier: ^19.2.18
-      version: 19.2.18
+      specifier: ^19.3.0
+      version: 19.3.0
     '@types/react-dom':
-      specifier: ^19.2.7
-      version: 19.2.7
+      specifier: ^19.3.0
+      version: 19.3.0
     '@types/react-router-dom':
       specifier: ^5.3.3
       version: 5.3.3
@@ -73,11 +73,11 @@ catalogs:
       specifier: ^1.63.0
       version: 1.63.0
     react:
-      specifier: ^19.2.8
-      version: 19.2.8
+      specifier: ^19.3.0
+      version: 19.3.0
     react-dom:
-      specifier: ^19.2.8
-      version: 19.2.8
+      specifier: ^19.3.0
+      version: 19.3.0
     react-router-dom:
       specifier: ^7.18.3
       version: 7.18.3
@@ -97,8 +97,8 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     zod:
-      specifier: ^4.5.4
-      version: 4.5.4
+      specifier: ^4.6.1
+      version: 4.6.1
 
 overrides:
   brace-expansion@<1.1.18: 1.1.18
@@ -133,7 +133,7 @@ importers:
     dependencies:
       '@grafana/faro-react':
         specifier: 'catalog:'
-        version: 2.11.0(react-dom@19.2.8(react@19.2.8))(react-router-dom@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-router@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 2.11.0(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@grafana/faro-web-sdk':
         specifier: 'catalog:'
         version: 2.11.0
@@ -145,10 +145,10 @@ importers:
         version: 8.16.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^4.3.0
-        version: 4.3.0(html-react-parser@6.0.1(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
+        version: 4.3.0(html-react-parser@6.0.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       dayjs:
         specifier: 'catalog:'
         version: 1.11.23
@@ -157,19 +157,19 @@ importers:
         version: link:../../packages/deltaker-flate-common
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       react-router-dom:
         specifier: 'catalog:'
-        version: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       uuid:
         specifier: 'catalog:'
         version: 14.0.2
       zod:
         specifier: 'catalog:'
-        version: 4.5.4
+        version: 4.6.1
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -185,37 +185,37 @@ importers:
         version: 1.63.0
       '@tailwindcss/vite':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)))
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.7(@testing-library/dom@10.4.1)
       '@types/node':
         specifier: 'catalog:'
-        version: 26.5.0
+        version: 26.5.1
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.18
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.7(@types/react@19.2.18)
+        version: 19.3.0(@types/react@19.3.0)
       '@types/react-router-dom':
         specifier: 'catalog:'
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^6.1.1
-        version: 6.1.1(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 6.1.1(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       jsdom:
         specifier: 'catalog:'
         version: 30.0.1
       msw:
         specifier: 'catalog:'
-        version: 2.15.0(@types/node@26.5.0)(typescript@6.0.3)
+        version: 2.15.0(@types/node@26.5.1)(typescript@6.0.3)
       playwright:
         specifier: 'catalog:'
         version: 1.63.0
@@ -227,22 +227,22 @@ importers:
         version: 6.0.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+        version: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/nav-veileders-flate:
     dependencies:
       '@grafana/faro-react':
         specifier: 'catalog:'
-        version: 2.11.0(react-dom@19.2.8(react@19.2.8))(react-router-dom@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-router@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 2.11.0(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@grafana/faro-web-sdk':
         specifier: 'catalog:'
         version: 2.11.0
       '@hookform/resolvers':
         specifier: ^5.9.1
-        version: 5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.87.0(react@19.2.8))(zod@4.5.4)
+        version: 5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.87.0(react@19.3.0))(zod@4.6.1)
       '@navikt/aksel-icons':
         specifier: 'catalog:'
         version: 8.16.2
@@ -251,13 +251,13 @@ importers:
         version: 8.16.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
         version: 8.16.2
       '@tanstack/react-query':
         specifier: 'catalog:'
-        version: 5.102.8(react@19.2.8)
+        version: 5.102.8(react@19.3.0)
       dayjs:
         specifier: 'catalog:'
         version: 1.11.23
@@ -266,25 +266,25 @@ importers:
         version: link:../../packages/deltaker-flate-common
       msw:
         specifier: 'catalog:'
-        version: 2.15.0(@types/node@26.5.0)(typescript@6.0.3)
+        version: 2.15.0(@types/node@26.5.1)(typescript@6.0.3)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       react-hook-form:
         specifier: ^7.87.0
-        version: 7.87.0(react@19.2.8)
+        version: 7.87.0(react@19.3.0)
       react-router-dom:
         specifier: 'catalog:'
-        version: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       uuid:
         specifier: 'catalog:'
         version: 14.0.2
       zod:
         specifier: 'catalog:'
-        version: 4.5.4
+        version: 4.6.1
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -300,31 +300,31 @@ importers:
         version: 1.63.0
       '@tailwindcss/vite':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)))
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.7(@testing-library/dom@10.4.1)
       '@types/node':
         specifier: 'catalog:'
-        version: 26.5.0
+        version: 26.5.1
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.18
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.7(@types/react@19.2.18)
+        version: 19.3.0(@types/react@19.3.0)
       '@types/react-router-dom':
         specifier: 'catalog:'
         version: 5.3.3
       '@vitejs/plugin-react-swc':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       jsdom:
         specifier: 'catalog:'
         version: 30.0.1
@@ -339,16 +339,16 @@ importers:
         version: 6.0.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+        version: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/tiltakskoordinator-flate:
     dependencies:
       '@grafana/faro-react':
         specifier: 'catalog:'
-        version: 2.11.0(react-dom@19.2.8(react@19.2.8))(react-router-dom@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-router@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 2.11.0(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@grafana/faro-web-sdk':
         specifier: 'catalog:'
         version: 2.11.0
@@ -360,13 +360,13 @@ importers:
         version: 8.16.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
         version: 8.16.2
       '@tanstack/react-query':
         specifier: 'catalog:'
-        version: 5.102.8(react@19.2.8)
+        version: 5.102.8(react@19.3.0)
       dayjs:
         specifier: 'catalog:'
         version: 1.11.23
@@ -375,22 +375,22 @@ importers:
         version: link:../../packages/deltaker-flate-common
       msw:
         specifier: 'catalog:'
-        version: 2.15.0(@types/node@26.5.0)(typescript@6.0.3)
+        version: 2.15.0(@types/node@26.5.1)(typescript@6.0.3)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       react-router-dom:
         specifier: 'catalog:'
-        version: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       uuid:
         specifier: 'catalog:'
         version: 14.0.2
       zod:
         specifier: 'catalog:'
-        version: 4.5.4
+        version: 4.6.1
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -409,31 +409,31 @@ importers:
         version: 1.63.0
       '@tailwindcss/vite':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)))
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)))
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.7(@testing-library/dom@10.4.1)
       '@types/node':
         specifier: 'catalog:'
-        version: 26.5.0
+        version: 26.5.1
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.18
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.7(@types/react@19.2.18)
+        version: 19.3.0(@types/react@19.3.0)
       '@types/react-router-dom':
         specifier: 'catalog:'
         version: 5.3.3
       '@vitejs/plugin-react-swc':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       jsdom:
         specifier: 'catalog:'
         version: 30.0.1
@@ -448,10 +448,10 @@ importers:
         version: 6.0.3
       vite:
         specifier: 'catalog:'
-        version: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+        version: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/deltaker-flate-common:
     dependencies:
@@ -460,13 +460,13 @@ importers:
         version: 8.16.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       dayjs:
         specifier: 'catalog:'
         version: 1.11.23
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -475,7 +475,7 @@ importers:
         version: 14.0.2
       zod:
         specifier: 'catalog:'
-        version: 4.5.4
+        version: 4.6.1
     devDependencies:
       '@amt-deltaker-flate/eslint-config':
         specifier: workspace:*
@@ -485,10 +485,10 @@ importers:
         version: link:../../shared-config/tailwind
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.18
+        version: 19.3.0
       vitest:
         specifier: 'catalog:'
-        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
 
   shared-config/eslint-config:
     dependencies:
@@ -1397,13 +1397,13 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@26.5.0':
-    resolution: {integrity: sha512-dVSGpriSoCgz8WnDNTuSSuSv1PC/ALXihO4ulRZt7Md8k9mlbdin3lGOcDE8SnWOgf513ByWlXd7BK4azmyg/A==}
+  '@types/node@26.5.1':
+    resolution: {integrity: sha512-CzNm2FezW4VR/LjG6yUdiEgLE/rAQ9Slj5gCu/C2VrdcW7I0ahNZ8DRbHT7zOZ6r3ONgd/bsQIeSaoDGrd1C6g==}
 
-  '@types/react-dom@19.2.7':
-    resolution: {integrity: sha512-I8bPpDLcHBv1qiIiXDCy71Rt8eQDKJP0sMSWJphDdAcdqiJ1sGpZamavoEIRZmYzjia9LuEb2HlYdDpmoENpvQ==}
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
     peerDependencies:
-      '@types/react': ^19.2.0
+      '@types/react': ^19.3.0
 
   '@types/react-router-dom@5.3.3':
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
@@ -1411,8 +1411,8 @@ packages:
   '@types/react-router@5.1.20':
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
 
-  '@types/react@19.2.18':
-    resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/set-cookie-parser@2.4.10':
     resolution: {integrity: sha512-GGmQVGpQWUe5qglJozEjZV/5dyxbOOZ0LHe/lqyWssB88Y4svNfst0uqBVscdDeIKl5Jy5+aPSvy7mI9tYRguw==}
@@ -2581,10 +2581,10 @@ packages:
       '@types/react':
         optional: true
 
-  react-dom@19.2.8:
-    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
+  react-dom@19.3.0:
+    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
     peerDependencies:
-      react: ^19.2.8
+      react: ^19.3.0
 
   react-hook-form@7.87.0:
     resolution: {integrity: sha512-zhFzWvLxNHH+8839OnZcUxgMZw88ah2jZWDWvKWgF3Tpbnd0vKL+dlcuU3nZVWESZQjd81EW8K+wU+cYfYAc0w==}
@@ -2618,8 +2618,8 @@ packages:
       react-dom:
         optional: true
 
-  react@19.2.8:
-    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
+  react@19.3.0:
+    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
     engines: {node: '>=0.10.0'}
 
   redent@3.0.0:
@@ -2670,8 +2670,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  scheduler@0.27.0:
-    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
+  scheduler@0.28.0:
+    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
 
   semver@7.8.5:
     resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
@@ -3080,8 +3080,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@4.5.4:
-    resolution: {integrity: sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA==}
+  zod@4.6.1:
+    resolution: {integrity: sha512-341aRWQsve0rvronKNTqZpjmzdbUDlFuzHaI/XLg/Ej82qffDJRRfBTCuv7+9q/rMjB6LSLyEBnW4InJeMtt/Q==}
 
 snapshots:
 
@@ -3208,18 +3208,18 @@ snapshots:
       '@floating-ui/core': 1.8.0
       '@floating-ui/utils': 0.2.12
 
-  '@floating-ui/react-dom@2.1.9(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@floating-ui/react-dom@2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@floating-ui/dom': 1.8.0
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
-  '@floating-ui/react@0.27.20(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@floating-ui/react@0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/utils': 0.2.12
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
       tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.12': {}
@@ -3229,16 +3229,16 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/otlp-transformer': 0.221.0(@opentelemetry/api@1.9.1)
 
-  '@grafana/faro-react@2.11.0(react-dom@19.2.8(react@19.2.8))(react-router-dom@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-router@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)':
+  '@grafana/faro-react@2.11.0(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@grafana/faro-web-sdk': 2.11.0
       '@grafana/faro-web-tracing': 2.11.0
       hoist-non-react-statics: 3.3.2
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      react-dom: 19.2.8(react@19.2.8)
-      react-router: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      react-router-dom: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react-dom: 19.3.0(react@19.3.0)
+      react-router: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-router-dom: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -3264,13 +3264,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@hookform/resolvers@5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.87.0(react@19.2.8))(zod@4.5.4)':
+  '@hookform/resolvers@5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.87.0(react@19.3.0))(zod@4.6.1)':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.87.0(react@19.2.8)
+      react-hook-form: 7.87.0(react@19.3.0)
     optionalDependencies:
       '@standard-schema/spec': 1.1.0
-      zod: 4.5.4
+      zod: 4.6.1
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -3290,30 +3290,30 @@ snapshots:
 
   '@inquirer/ansi@2.0.7': {}
 
-  '@inquirer/confirm@6.1.1(@types/node@26.5.0)':
+  '@inquirer/confirm@6.1.1(@types/node@26.5.1)':
     dependencies:
-      '@inquirer/core': 11.2.1(@types/node@26.5.0)
-      '@inquirer/type': 4.0.7(@types/node@26.5.0)
+      '@inquirer/core': 11.2.1(@types/node@26.5.1)
+      '@inquirer/type': 4.0.7(@types/node@26.5.1)
     optionalDependencies:
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
 
-  '@inquirer/core@11.2.1(@types/node@26.5.0)':
+  '@inquirer/core@11.2.1(@types/node@26.5.1)':
     dependencies:
       '@inquirer/ansi': 2.0.7
       '@inquirer/figures': 2.0.7
-      '@inquirer/type': 4.0.7(@types/node@26.5.0)
+      '@inquirer/type': 4.0.7(@types/node@26.5.1)
       cli-width: 4.1.0
       fast-wrap-ansi: 0.2.2
       mute-stream: 3.0.0
       signal-exit: 4.1.0
     optionalDependencies:
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
 
   '@inquirer/figures@2.0.7': {}
 
-  '@inquirer/type@4.0.7(@types/node@26.5.0)':
+  '@inquirer/type@4.0.7(@types/node@26.5.1)':
     optionalDependencies:
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -3357,29 +3357,29 @@ snapshots:
 
   '@navikt/ds-css@8.16.2': {}
 
-  '@navikt/ds-react@8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@navikt/ds-react@8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@floating-ui/react': 0.27.20(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@floating-ui/react': 0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/aksel-icons': 8.16.2
       '@navikt/ds-tokens': 8.16.2
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
       date-fns: 4.1.0
-      react: 19.2.8
-      react-day-picker: 10.0.1(@types/react@19.2.18)(react@19.2.8)
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-day-picker: 10.0.1(@types/react@19.3.0)(react@19.3.0)
+      react-dom: 19.3.0(react@19.3.0)
 
   '@navikt/ds-tailwind@8.16.2': {}
 
   '@navikt/ds-tokens@8.16.2': {}
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@6.0.1(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)':
+  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@6.0.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@navikt/analytics-types': 0.0.9
       csp-header: 6.3.1
-      html-react-parser: 6.0.1(@types/react@19.2.18)(react@19.2.8)
+      html-react-parser: 6.0.1(@types/react@19.3.0)(react@19.3.0)
       js-cookie: 3.0.8
-      react: 19.2.8
+      react: 19.3.0
 
   '@open-draft/deferred-promise@2.2.0': {}
 
@@ -3682,19 +3682,19 @@ snapshots:
       postcss: 8.5.28
       tailwindcss: 4.3.3
 
-  '@tailwindcss/vite@4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))':
+  '@tailwindcss/vite@4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
-      vite: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
 
   '@tanstack/query-core@5.102.8': {}
 
-  '@tanstack/react-query@5.102.8(react@19.2.8)':
+  '@tanstack/react-query@5.102.8(react@19.3.0)':
     dependencies:
       '@tanstack/query-core': 5.102.8
-      react: 19.2.8
+      react: 19.3.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -3707,7 +3707,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)))':
     dependencies:
       '@adobe/css-tools': 4.4.4
       '@testing-library/dom': 10.4.1
@@ -3717,17 +3717,17 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+      vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
 
-  '@testing-library/react@16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@testing-library/react@16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@testing-library/dom': 10.4.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
     optionalDependencies:
-      '@types/react': 19.2.18
-      '@types/react-dom': 19.2.7(@types/react@19.2.18)
+      '@types/react': 19.3.0
+      '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
   '@testing-library/user-event@14.6.7(@testing-library/dom@10.4.1)':
     dependencies:
@@ -3768,32 +3768,32 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@26.5.0':
+  '@types/node@26.5.1':
     dependencies:
       undici-types: 8.9.0
 
-  '@types/react-dom@19.2.7(@types/react@19.2.18)':
+  '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
 
-  '@types/react@19.2.18':
+  '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
 
   '@types/statuses@2.0.6': {}
 
@@ -3888,28 +3888,28 @@ snapshots:
       '@typescript-eslint/types': 8.70.0
       eslint-visitor-keys: 5.0.1
 
-  '@vitejs/plugin-react-swc@4.3.3(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))':
+  '@vitejs/plugin-react-swc@4.3.3(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       '@swc/core': 1.15.47
-      vite: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@6.1.1(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))':
+  '@vitejs/plugin-react@6.1.1(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
 
-  '@vitest/mocker@5.0.0(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))':
+  '@vitest/mocker@5.0.0(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.0
       estree-walker: 3.0.3
       magic-string: 1.2.3
     optionalDependencies:
-      msw: 2.15.0(@types/node@26.5.0)(typescript@6.0.3)
-      vite: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+      msw: 2.15.0(@types/node@26.5.1)(typescript@6.0.3)
+      vite: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
 
   '@vitest/spy@5.0.0': {}
 
@@ -4533,15 +4533,15 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
 
-  html-react-parser@6.0.1(@types/react@19.2.18)(react@19.2.8):
+  html-react-parser@6.0.1(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       domhandler: 6.0.1
       html-dom-parser: 7.0.1
-      react: 19.2.8
+      react: 19.3.0
       react-property: 2.0.2
       style-to-js: 1.1.21
     optionalDependencies:
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
 
   htmlparser2@12.0.0:
     dependencies:
@@ -4885,9 +4885,9 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3):
+  msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3):
     dependencies:
-      '@inquirer/confirm': 6.1.1(@types/node@26.5.0)
+      '@inquirer/confirm': 6.1.1(@types/node@26.5.1)
       '@mswjs/interceptors': 0.41.9
       '@open-draft/deferred-promise': 3.0.0
       '@types/statuses': 2.0.6
@@ -5018,22 +5018,22 @@ snapshots:
     dependencies:
       hookified: 2.2.0
 
-  react-day-picker@10.0.1(@types/react@19.2.18)(react@19.2.8):
+  react-day-picker@10.0.1(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       '@date-fns/tz': 1.4.1
       date-fns: 4.1.0
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.18
+      '@types/react': 19.3.0
 
-  react-dom@19.2.8(react@19.2.8):
+  react-dom@19.3.0(react@19.3.0):
     dependencies:
-      react: 19.2.8
-      scheduler: 0.27.0
+      react: 19.3.0
+      scheduler: 0.28.0
 
-  react-hook-form@7.87.0(react@19.2.8):
+  react-hook-form@7.87.0(react@19.3.0):
     dependencies:
-      react: 19.2.8
+      react: 19.3.0
 
   react-is@16.13.1: {}
 
@@ -5041,21 +5041,21 @@ snapshots:
 
   react-property@2.0.2: {}
 
-  react-router-dom@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  react-router-dom@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-      react-router: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+      react-router: 7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
 
-  react-router@7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  react-router@7.18.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       cookie: 1.1.1
-      react: 19.2.8
+      react: 19.3.0
       set-cookie-parser: 2.7.2
     optionalDependencies:
-      react-dom: 19.2.8(react@19.2.8)
+      react-dom: 19.3.0(react@19.3.0)
 
-  react@19.2.8: {}
+  react@19.3.0: {}
 
   redent@3.0.0:
     dependencies:
@@ -5138,7 +5138,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  scheduler@0.27.0: {}
+  scheduler@0.28.0: {}
 
   semver@7.8.5: {}
 
@@ -5403,7 +5403,7 @@ snapshots:
 
   uuid@14.0.2: {}
 
-  vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0):
+  vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -5411,15 +5411,15 @@ snapshots:
       rolldown: 1.2.4
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
       fsevents: 2.3.3
       jiti: 2.7.0
       yaml: 2.9.0
 
-  vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.0)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)):
+  vitest@5.0.0(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(jsdom@30.0.1)(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.0(msw@2.15.0(@types/node@26.5.0)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0))
+      '@vitest/mocker': 5.0.0(msw@2.15.0(@types/node@26.5.1)(typescript@6.0.3))(vite@8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -5430,11 +5430,11 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
-      vite: 8.2.2(@types/node@26.5.0)(jiti@2.7.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.5.1)(jiti@2.7.0)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
-      '@types/node': 26.5.0
+      '@types/node': 26.5.1
       jsdom: 30.0.1
     transitivePeerDependencies:
       - msw
@@ -5546,4 +5546,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@4.5.4: {}
+  zod@4.6.1: {}

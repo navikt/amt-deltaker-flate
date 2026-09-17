@@ -24,24 +24,24 @@ catalog:
   '@testing-library/jest-dom': ^7.0.1
   '@testing-library/react': ^16.3.3
   '@testing-library/user-event': ^14.6.7
-  '@types/node': ^26.5.0
-  '@types/react': ^19.2.18
-  '@types/react-dom': ^19.2.7
+  '@types/node': ^26.5.1
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
   '@types/react-router-dom': ^5.3.3
   '@vitejs/plugin-react-swc': ^4.3.3
   dayjs: ^1.11.23
   jsdom: ^30.0.1
   msw: ^2.15.0
   playwright: ^1.63.0
-  react: ^19.2.8
-  react-dom: ^19.2.8
+  react: ^19.3.0
+  react-dom: ^19.3.0
   react-router-dom: ^7.18.3
   tailwindcss: ^4.3.3
   typescript: ^6.0.3
   uuid: ^14.0.2
   vite: ^8.2.2
   vitest: ^5.0.0
-  zod: ^4.5.4
+  zod: ^4.6.1
 
 overrides:
   'brace-expansion@<1.1.18': '1.1.18'
