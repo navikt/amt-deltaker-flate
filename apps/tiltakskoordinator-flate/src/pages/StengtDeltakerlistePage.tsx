@@ -14,10 +14,11 @@ export function StengtDeltakerlistePage() {
           ref={ref}
           className="outline-none"
         >
-          Deltakerlisten for gjennomføringen er stengt
+          Deltakerlisten er stengt
         </Heading>
         <BodyLong>
-          Tiltaket er avsluttet, og deltakerlisten vises derfor ikke lenger.
+          Tiltaket ble avsluttet for mer enn 6 måneder siden. Deltakerlisten
+          vises derfor ikke lenger.
         </BodyLong>
       </div>
     </Box>
