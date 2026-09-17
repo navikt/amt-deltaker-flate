@@ -36,14 +36,12 @@ export const HistorikkElement = ({
           <Heading level="2" size="small" className="mb-1">
             {tittel}
           </Heading>
-          {(badge || forslag) && (
+          {badge && <div className="w-fit shrink-0">{badge}</div>}
+          {forslag && (
             <div className="w-fit shrink-0">
-              {badge}
-              {forslag && (
-                <div className={badge ? 'mt-1' : ''}>
-                  {getForslagStatusTag(forslag.status.type)}
-                </div>
-              )}
+              <div className={badge ? 'mt-1' : ''}>
+                {getForslagStatusTag(forslag.status.type)}
+              </div>
             </div>
           )}
         </div>
