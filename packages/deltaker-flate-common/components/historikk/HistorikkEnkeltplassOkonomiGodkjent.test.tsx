@@ -49,6 +49,7 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
     ).join(' ')
 
     expect(text).toContain('Godkjent: Endre pris og betalingsbetingelser')
+    expect((text.match(/Godkjent/g) ?? []).length).toBe(2)
     expect(text).not.toContain('vedtak er fattet')
     expect(text).toContain('Nav har kjøpt en plass hos opplæringsstedet')
     expect(text).toContain('Totalkostnaden er')

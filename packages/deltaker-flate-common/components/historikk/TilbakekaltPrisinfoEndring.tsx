@@ -7,7 +7,7 @@ import {
 import { formatDate } from '../../utils/utils.ts'
 import { HistorikkElement } from './HistorikkElement.tsx'
 import { getEndringsTittel } from '../../utils/displayText.ts'
-import { Detail, ReadMore } from '@navikt/ds-react'
+import { Detail, ReadMore, Tag } from '@navikt/ds-react'
 
 export const erTilbakekaltPrisinfo = (
   endring: Endring
@@ -37,6 +37,11 @@ export const TilbakekaltPrisinfoEndring = ({
       tittel={getEndringsTittel(endring, erEnkeltplass)}
       icon={icon}
       forslag={forslag}
+      badge={
+        <Tag variant="outline" data-color="neutral" size="small">
+          Tilbakekalt
+        </Tag>
+      }
     >
       <Detail className="mt-1" textColor="subtle">
         {byline}

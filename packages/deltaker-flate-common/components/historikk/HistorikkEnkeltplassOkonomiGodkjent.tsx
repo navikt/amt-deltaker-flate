@@ -1,5 +1,5 @@
 import { ChevronRightCircleFillIcon } from '@navikt/aksel-icons'
-import { BodyShort, Detail } from '@navikt/ds-react'
+import { BodyShort, Detail, Tag } from '@navikt/ds-react'
 import type { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { HistorikkType } from '../../model/forslag'
 import { formatDate } from '../../utils/utils'
@@ -33,6 +33,13 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
       }
       icon={
         <ChevronRightCircleFillIcon color="var(--ax-text-accent-decoration)" />
+      }
+      badge={
+        !erForsteGodkjenning ? (
+          <Tag variant="outline" data-color="success" size="small">
+            Godkjent
+          </Tag>
+        ) : undefined
       }
     >
       {erForsteGodkjenning ? (
