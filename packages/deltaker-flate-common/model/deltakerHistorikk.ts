@@ -268,7 +268,9 @@ export const enkeltplassOkonomiGodkjentSchema = z.object({
   type: z.literal(HistorikkType.EnkeltplassOkonomiGodkjent),
   endretAv: z.string(),
   endretAvEnhet: z.string(),
-  endret: dateSchema
+  endret: dateSchema,
+  erForsteGodkjenning: z.boolean().default(false),
+  prisinformasjon: prisinformasjonSchema.nullish()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
