@@ -64,4 +64,25 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
     expect(text).toContain('Bernt Besluttersen')
     expect(text).toContain('Nav Tiltak Oslo')
   })
+
+  it('viser ikke attribusjon når endretAv mangler', () => {
+    const historikk = {
+      ...lagEnkeltplassOkonomiGodkjent(),
+      endretAv: null
+    } satisfies Extract<
+      DeltakerHistorikk,
+      { type: HistorikkType.EnkeltplassOkonomiGodkjent }
+    >
+
+    const text = extractText(
+      HistorikkEnkeltplassOkonomiGodkjent({
+        endringsHistorikk: historikk
+      })
+    ).join(' ')
+
+    expect(text).toContain('Opplæring godkjent')
+    expect(text).toContain('Pris og betalingsbetingelser er godkjent')
+    expect(text).not.toContain('Endret')
+    expect(text).not.toContain('Bernt Besluttersen')
+  })
 })

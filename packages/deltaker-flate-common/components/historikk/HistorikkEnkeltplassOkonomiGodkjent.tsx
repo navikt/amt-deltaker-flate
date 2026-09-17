@@ -50,7 +50,9 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
       )}
 
       <Detail className="mt-2" textColor="subtle">
-        {`Endret ${formatDate(endret)} av ${endretAv} ${endretAvEnhet}.`}
+        {endretAv === null
+          ? null
+          : `Endret ${formatDate(endret)} av ${endretAv}${endretAvEnhet ? ` ${endretAvEnhet}` : ''}.`}
       </Detail>
     </HistorikkElement>
   )
