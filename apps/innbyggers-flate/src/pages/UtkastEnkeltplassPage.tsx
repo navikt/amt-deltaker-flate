@@ -3,6 +3,7 @@ import {
   DeferredFetchState,
   DeltakelseInnhold,
   DeltakelsesmengdeAvsnitt,
+  DialogLenke,
   formatDateFromString,
   PrisOgBetaling,
   useDeferredFetch,
@@ -12,6 +13,7 @@ import {
 import { useParams } from 'react-router-dom'
 import { useDeltakerContext } from '../DeltakerContext'
 import { godkjennUtkast } from '../api/api'
+import { DIALOG_URL } from '../utils/environment-utils'
 
 export const UtkastEnkeltplassPage = () => {
   const { deltaker, setDeltaker, setShowSuccessMessage } = useDeltakerContext()
@@ -98,6 +100,8 @@ export const UtkastEnkeltplassPage = () => {
         headinglevel="3"
         className="mt-8"
       />
+
+      <DialogLenke dialogUrl={DIALOG_URL} className="mt-8" />
 
       <Button
         variant="primary"
