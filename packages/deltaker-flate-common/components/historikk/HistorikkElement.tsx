@@ -32,18 +32,18 @@ export const HistorikkElement = ({
       </div>
 
       <div className="pt-2">
-        <div className="flex items-start justify-between w-full gap-2">
-          <Heading level="2" size="small" className="mb-1">
+        <div className="flex flex-wrap items-start justify-between w-full gap-x-2 gap-y-1">
+          <Heading level="2" size="small" className="mb-1 min-w-0 break-words">
             {tittel}
           </Heading>
-          {badge && <div className="w-fit shrink-0">{badge}</div>}
-          {forslag && (
-            <div className="w-fit shrink-0">
-              <div className={badge ? 'mt-1' : ''}>
+          <div className="flex flex-wrap items-start gap-2 shrink-0">
+            {badge && <div className="w-fit shrink-0">{badge}</div>}
+            {forslag && (
+              <div className="w-fit shrink-0">
                 {getForslagStatusTag(forslag.status.type)}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {children}
