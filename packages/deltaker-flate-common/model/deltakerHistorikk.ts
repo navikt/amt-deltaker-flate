@@ -128,10 +128,17 @@ export const fjernOppstartsdatoSchema = z.object({
   begrunnelse: z.string().nullable()
 })
 
+export enum EndrePrisinfoStatus {
+  SENDT_TIL_GODKJENNING = 'SENDT_TIL_GODKJENNING',
+  ENDRET_DIREKTE = 'ENDRET_DIREKTE',
+  TILBAKEKALT = 'TILBAKEKALT'
+}
+
 export const endrePrisinfoSchema = z.object({
   type: z.literal(EndringType.EndrePrisinfo),
   prisinfo: prisinformasjonSchema.nullable(),
-  begrunnelse: z.string().nullable()
+  begrunnelse: z.string().nullable(),
+  status: z.enum(EndrePrisinfoStatus).nullable()
 })
 
 const endringSchema = z.discriminatedUnion('type', [
@@ -259,9 +266,11 @@ export const endringFraTiltakskoordinatorSchema = z.object({
 
 export const enkeltplassOkonomiGodkjentSchema = z.object({
   type: z.literal(HistorikkType.EnkeltplassOkonomiGodkjent),
-  endretAv: z.string(),
-  endretAvEnhet: z.string(),
-  endret: dateSchema
+  endretAv: z.string().nullable(),
+  endretAvEnhet: z.string().nullable(),
+  endret: dateSchema,
+  erForsteGodkjenning: z.boolean().default(false),
+  prisinformasjon: prisinformasjonSchema.nullish()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [

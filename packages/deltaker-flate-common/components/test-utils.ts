@@ -38,8 +38,13 @@ export const extractText = (node: ReactNode): string[] => {
     return [String(node)]
   }
   if (Array.isArray(node)) return node.flatMap(extractText)
-  if (isValidElement<{ children?: ReactNode }>(node)) {
-    return extractText(node.props.children)
+  if (isValidElement<{ children?: ReactNode; header?: ReactNode }>(node)) {
+    // Enkelte komponenter (f.eks. ReadMore) viser tekst via en `header`-prop
+    // i stedet for children. Ta med den så synlig tekst ikke går tapt.
+    return [
+      ...extractText(node.props.header),
+      ...extractText(node.props.children)
+    ]
   }
   return []
 }

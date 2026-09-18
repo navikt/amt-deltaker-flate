@@ -8,6 +8,7 @@ import { ForslagtypeDetaljer } from '../forslag/ForslagDetaljer'
 interface Props {
   tittel: string
   icon: React.ReactNode
+  badge?: React.ReactNode
   forslag?: Forslag | null
   children: React.ReactNode
 }
@@ -15,6 +16,7 @@ interface Props {
 export const HistorikkElement = ({
   tittel,
   icon,
+  badge,
   forslag,
   children
 }: Props) => {
@@ -30,15 +32,18 @@ export const HistorikkElement = ({
       </div>
 
       <div className="pt-2">
-        <div className="flex ax-md:flex-row flex-col justify-between w-full">
-          <Heading level="2" size="small" className="mb-1">
+        <div className="flex flex-wrap items-start justify-between w-full gap-x-2 gap-y-1">
+          <Heading level="2" size="small" className="mb-1 min-w-0 break-words">
             {tittel}
           </Heading>
-          {forslag && (
-            <div className="w-fit ax-md:mb-0 mb-1">
-              {getForslagStatusTag(forslag.status.type)}
-            </div>
-          )}
+          <div className="flex flex-wrap items-start gap-2 shrink-0">
+            {badge && <div className="w-fit shrink-0">{badge}</div>}
+            {forslag && (
+              <div className="w-fit shrink-0">
+                {getForslagStatusTag(forslag.status.type)}
+              </div>
+            )}
+          </div>
         </div>
 
         {children}

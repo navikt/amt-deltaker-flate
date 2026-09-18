@@ -16,6 +16,10 @@ import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
 import { EndringTypeIkon } from '../EndringTypeIkon'
 import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement'
+import {
+  erTilbakekaltPrisinfo,
+  TilbakekaltPrisinfoEndring
+} from './TilbakekaltPrisinfoEndring.tsx'
 
 interface Props {
   deltakerEndring: DeltakerEndring
@@ -259,11 +263,27 @@ export const HistorikkEndring = ({
   erEnkeltplass
 }: Props) => {
   const endreDeltakelsesType = mapEndringsType(deltakerEndring.endring.type)
+  const icon = <EndringTypeIkon type={endreDeltakelsesType} size={'small'} />
+
+  if (erTilbakekaltPrisinfo(deltakerEndring.endring)) {
+    return (
+      <TilbakekaltPrisinfoEndring
+        deltakerEndring={deltakerEndring}
+        erEnkeltplass={erEnkeltplass}
+        icon={icon}
+        forslag={deltakerEndring.forslag}
+        endringsDetaljer={getEndringsDetaljer(
+          deltakerEndring.endring,
+          tiltakskode
+        )}
+      />
+    )
+  }
 
   return (
     <HistorikkElement
       tittel={getEndringsTittel(deltakerEndring.endring, erEnkeltplass)}
-      icon={<EndringTypeIkon type={endreDeltakelsesType} size={'small'} />}
+      icon={icon}
       forslag={deltakerEndring.forslag}
     >
       {getEndringsDetaljer(deltakerEndring.endring, tiltakskode)}
