@@ -2,11 +2,13 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
   DeltakelsesmengdeAvsnitt,
+  DialogLenke,
   formatDate,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
+import { DIALOG_URL } from '../../utils/environment-utils.ts'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
@@ -55,6 +57,8 @@ export const UtkastDeltakerEnkeltplass = () => {
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
         headinglevel="3"
       />
+
+      <DialogLenke dialogUrl={DIALOG_URL} />
     </div>
   )
 }
