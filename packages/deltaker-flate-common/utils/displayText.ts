@@ -119,7 +119,7 @@ export const getKodeverkRepresentererTekst = (type: OpplaringRepresenterer) => {
 export const getPrisInformasjonTekst = (tilskuddstype: Tilskuddstype) => {
   switch (tilskuddstype) {
     case Tilskuddstype.SKOLEPENGER:
-      return 'Skolepenger / Kursavgift'
+      return 'Skolepenger'
     case Tilskuddstype.STUDIEREISE:
       return 'Studiereiser som er nødvendig for at deltakeren skal kunne ta eksamen'
     case Tilskuddstype.EKSAMENSGEBYR:

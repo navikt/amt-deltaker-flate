@@ -127,7 +127,6 @@ export const EndreDeltakelsesmengdeEnkeltplassModal = ({
     >
       <DagerPerUkeField
         label="Antall dager i uka som personen deltar (valgfritt)"
-        description="Fyll ut hvis personen skal søke om tiltakspenger eller tilleggsstønader"
         dagerPerUke={dagerPerUke}
         dagerPerUkeError={dagerPerUkeError}
         disabled={!deltaker.erUnderOppfolging}

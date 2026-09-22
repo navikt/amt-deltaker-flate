@@ -105,7 +105,6 @@ const getEnkeltplassInfoTekst = (statusType: DeltakerStatusType) => {
     case DeltakerStatusType.SOKT_INN:
       return 'Du er søkt inn og Nav vurderer søknaden din. Du vil få beskjed om resultatet.'
     case DeltakerStatusType.VENTER_PA_OPPSTART:
-      return 'Nav mener at denne opplæringen vil gi deg bedre muligheter til å komme i arbeid. Opplæringen kan ha egne opptakskrav. I så fall er det opplæringsstedet som avgjør om du får plass.'
     case DeltakerStatusType.DELTAR:
       return 'Nav mener at denne opplæringen vil gi deg bedre muligheter til å komme i arbeid.'
     case DeltakerStatusType.IKKE_AKTUELL:
@@ -118,12 +117,10 @@ const getEnkeltplassInfoTekst = (statusType: DeltakerStatusType) => {
 }
 
 const getHoyereUtdanningInfo = (statusType: DeltakerStatusType) => {
-  if (
-    !(
-      statusType === DeltakerStatusType.SOKT_INN ||
-      statusType === DeltakerStatusType.VENTER_PA_OPPSTART
-    )
-  ) {
+  if (!(
+    statusType === DeltakerStatusType.SOKT_INN ||
+    statusType === DeltakerStatusType.VENTER_PA_OPPSTART
+  )) {
     return null
   }
 

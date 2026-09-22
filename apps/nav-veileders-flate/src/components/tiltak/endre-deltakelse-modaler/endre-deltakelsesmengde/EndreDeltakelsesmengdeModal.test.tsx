@@ -145,11 +145,6 @@ describe('EndreDeltakelsesmengdeModal', () => {
       expect(
         screen.queryByLabelText(enkeltplassDagerLabel)
       ).not.toBeInTheDocument()
-      expect(
-        screen.queryByText(
-          'Fyll ut hvis personen skal søke om tiltakspenger eller tilleggsstønader'
-        )
-      ).not.toBeInTheDocument()
     })
 
     it('Enkeltplass-variant viser enkeltplass-felter og skjuler prosentfelt', () => {
@@ -157,11 +152,6 @@ describe('EndreDeltakelsesmengdeModal', () => {
 
       expect(screen.queryByLabelText(prosentLabel)).not.toBeInTheDocument()
       expect(screen.getByLabelText(enkeltplassDagerLabel)).toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'Fyll ut hvis personen skal søke om tiltakspenger eller tilleggsstønader'
-        )
-      ).toBeInTheDocument()
       expect(screen.queryByLabelText(gruppeDagerLabel)).not.toBeInTheDocument()
     })
 

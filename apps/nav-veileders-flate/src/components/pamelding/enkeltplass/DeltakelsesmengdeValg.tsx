@@ -13,7 +13,6 @@ export const DeltakelsesmengdeValg = () => {
   return (
     <TextField
       label="Antall dager i uka som personen deltar (valgfritt)"
-      description="Fyll ut hvis personen skal søke om tiltakspenger eller tilleggsstønader"
       inputMode="numeric"
       {...register('dagerPerUke', {
         setValueAs: (value) => {
