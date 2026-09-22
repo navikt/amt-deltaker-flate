@@ -206,7 +206,7 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
 
       <CheckboxGroup
         legend="Velg hvilke tilskudd som er aktuelle og anslå beløp"
-        description="Ved flere semester skal du oppgi den estimerte totalsummen"
+        description="Hvis opplæringen går over flere semester, skal du oppgi det estimerte totalbeløpet for hele perioden"
         disabled={disabled}
         size="small"
         id="tilskuddstype-checkbox"
