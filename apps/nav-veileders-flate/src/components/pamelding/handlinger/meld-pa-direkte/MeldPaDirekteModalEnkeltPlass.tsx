@@ -16,7 +16,8 @@ import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkel
 import { getDeltakerNavn } from '../../../../utils/displayText.ts'
 import {
   formToEnkeltplassRequest,
-  generateEnkeltplassPameldingRequest
+  generateEnkeltplassPameldingRequest,
+  getEnkeltplassTiltakHosArrangorTekst
 } from '../../../../utils/pamelding-enkeltplass.ts'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext.tsx'
 
@@ -37,8 +38,10 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const [confirmError, setConfirmError] = useState<string | undefined>()
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst =
-    deltakerliste.visningsnavn.tiltakHosArrangorTittel
+  const tiltakHosArrangorTekst = getEnkeltplassTiltakHosArrangorTekst(
+    deltakerliste,
+    formContext.getValues()
+  )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Bruker er meldt på',
