@@ -40,7 +40,10 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
   const { doRedirect } = useModiaLink()
   const tiltakHosArrangorTekst = getEnkeltplassTiltakHosArrangorTekst(
     deltakerliste,
-    formContext.getValues()
+    formContext?.getValues() ?? {
+      arrangorUnderenhet: deltakerliste.arrangor?.organisasjonsnummer ?? '',
+      arrangorNavn: deltakerliste.arrangor?.navn
+    }
   )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
