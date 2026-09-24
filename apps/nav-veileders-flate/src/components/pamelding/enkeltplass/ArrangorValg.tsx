@@ -16,6 +16,7 @@ export const ArrangorValg = () => {
 
   const {
     control,
+    setValue,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
 
@@ -61,6 +62,14 @@ export const ArrangorValg = () => {
             disabled={disabled}
             onToggleSelected={(option, isSelected) => {
               field.onChange(isSelected ? option : '')
+              setValue(
+                'arrangorNavn',
+                isSelected
+                  ? brregVirksomheter.find(
+                      (virksomhet) => virksomhet.organisasjonsnummer === option
+                    )?.navn
+                  : undefined
+              )
             }}
           />
         )}
@@ -69,12 +78,10 @@ export const ArrangorValg = () => {
   )
 }
 
-const getArrangorOptions = (enheter: ArrangorEnhetResponse) => {
-  const options = enheter
+const getArrangorOptions = (enheter: ArrangorEnhetResponse) =>
+  enheter
     .sort((a, b) => a.navn.localeCompare(b.navn))
     .map((virksomhet) => ({
       value: virksomhet.organisasjonsnummer,
       label: `${virksomhet.navn} - ${virksomhet.organisasjonsnummer}`
     }))
-  return options
-}

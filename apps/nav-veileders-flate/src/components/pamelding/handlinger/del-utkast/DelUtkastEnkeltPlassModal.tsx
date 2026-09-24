@@ -9,7 +9,10 @@ import {
 } from '../../../../hooks/useModiaLink'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { getDeltakerNavn } from '../../../../utils/displayText'
-import { formToEnkeltplassRequest } from '../../../../utils/pamelding-enkeltplass'
+import {
+  formToEnkeltplassRequest,
+  getEnkeltplassTiltakHosArrangorTekst
+} from '../../../../utils/pamelding-enkeltplass'
 import { useDeltakerContext } from '../../../tiltak/DeltakerContext'
 
 interface Props {
@@ -26,8 +29,10 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
   const { deltakerliste } = deltaker
 
   const { doRedirect } = useModiaLink()
-  const tiltakHosArrangorTekst =
-    deltakerliste.visningsnavn.tiltakHosArrangorTittel
+  const tiltakHosArrangorTekst = getEnkeltplassTiltakHosArrangorTekst(
+    deltakerliste,
+    getValues()
+  )
   const returnToFrontpageWithSuccessMessage = () => {
     doRedirect(DELTAKELSESOVERSIKT_LINK, {
       heading: 'Utkastet er delt med bruker',

@@ -8,8 +8,10 @@ import {
 import { PameldingEnkeltplassFormValues } from '../model/PameldingEnkeltplassFormValues'
 import {
   formToEnkeltplassKladdRequest,
-  formToEnkeltplassRequest
+  formToEnkeltplassRequest,
+  getEnkeltplassTiltakHosArrangorTekst
 } from './pamelding-enkeltplass'
+import { DeltakerResponse } from '../api/data/deltaker'
 
 const lagFormData = (
   overrides: Partial<PameldingEnkeltplassFormValues> = {}
@@ -154,5 +156,49 @@ describe('formToEnkeltplassKladdRequest', () => {
     )
 
     expect(request.dagerPerUke).toBe(3)
+  })
+})
+
+describe('getEnkeltplassTiltakHosArrangorTekst', () => {
+  const deltakerliste = {
+    tiltakskode: {
+      visningsnavn: 'Arbeidsmarkedsopplæring'
+    },
+    arrangor: null,
+    visningsnavn: {
+      tiltakHosArrangorTittel: 'Arbeidsmarkedsopplæring'
+    }
+  } as DeltakerResponse['deltakerliste']
+
+  it('tar med navnet på en arrangør som nettopp er valgt i skjemaet', () => {
+    const tekst = getEnkeltplassTiltakHosArrangorTekst(deltakerliste, {
+      arrangorUnderenhet: '999999999',
+      arrangorNavn: 'Ny Arrangør AS'
+    })
+
+    expect(tekst).toBe('Arbeidsmarkedsopplæring hos Ny Arrangør AS')
+  })
+
+  it('beholder visningsteksten fra backend for en lagret arrangør', () => {
+    const tekst = getEnkeltplassTiltakHosArrangorTekst(
+      {
+        ...deltakerliste,
+        arrangor: {
+          organisasjonsnummer: '123456789',
+          navn: 'Lagret Arrangør AS'
+        },
+        visningsnavn: {
+          ...deltakerliste.visningsnavn,
+          tiltakHosArrangorTittel:
+            'Arbeidsmarkedsopplæring hos Lagret Arrangør AS'
+        }
+      },
+      {
+        arrangorUnderenhet: '123456789',
+        arrangorNavn: 'Lagret Arrangør AS'
+      }
+    )
+
+    expect(tekst).toBe('Arbeidsmarkedsopplæring hos Lagret Arrangør AS')
   })
 })

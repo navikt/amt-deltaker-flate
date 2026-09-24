@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useWatch } from 'react-hook-form'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as brregHook from '../../../../hooks/useSokBrregUnderenhet'
+import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { ArrangorValg } from '../ArrangorValg'
 import { createDeltaker, renderWithProviders } from './test-utils'
 
@@ -18,12 +20,30 @@ const renderArrangorValg = (
   arrangor: { navn: string; organisasjonsnummer: string } | null = null
 ) => {
   const deltaker = createDeltaker(arrangor)
-  return renderWithProviders(<ArrangorValg />, {
-    deltaker,
-    defaultValues: {
-      arrangorUnderenhet: arrangor?.organisasjonsnummer ?? ''
+  return renderWithProviders(
+    <>
+      <ArrangorValg />
+      <ValgtArrangorNavn />
+    </>,
+    {
+      deltaker,
+      defaultValues: {
+        arrangorUnderenhet: arrangor?.organisasjonsnummer ?? '',
+        arrangorNavn: arrangor?.navn
+      }
     }
+  )
+}
+
+const ValgtArrangorNavn = () => {
+  const arrangorNavn = useWatch<PameldingEnkeltplassFormValues>({
+    name: 'arrangorNavn'
   })
+  return (
+    <output data-testid="valgt-arrangor-navn">
+      {typeof arrangorNavn === 'string' ? arrangorNavn : ''}
+    </output>
+  )
 }
 
 describe('ArrangorValg', () => {
@@ -111,6 +131,9 @@ describe('ArrangorValg', () => {
           selected: true
         })
       ).toBeInTheDocument()
+      expect(screen.getByTestId('valgt-arrangor-navn')).toHaveTextContent(
+        'Ny Arrangør AS'
+      )
     })
 
     it('kan tømme valgt arrangør', async () => {

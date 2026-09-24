@@ -93,3 +93,21 @@ export const generateEnkeltplassPameldingRequest = (
 export const erEnkeltPlass = (deltaker: DeltakerResponse) => {
   return deltaker.deltakerliste.erEnkeltplass
 }
+
+export const getEnkeltplassTiltakHosArrangorTekst = (
+  deltakerliste: DeltakerResponse['deltakerliste'],
+  formValues: Pick<
+    PameldingEnkeltplassFormValues,
+    'arrangorUnderenhet' | 'arrangorNavn'
+  >
+) => {
+  const harSammeArrangorSomDeltakerliste =
+    formValues.arrangorUnderenhet ===
+    deltakerliste.arrangor?.organisasjonsnummer
+
+  if (harSammeArrangorSomDeltakerliste || !formValues.arrangorNavn) {
+    return deltakerliste.visningsnavn.tiltakHosArrangorTittel
+  }
+
+  return `${deltakerliste.tiltakskode.visningsnavn} hos ${formValues.arrangorNavn}`
+}
