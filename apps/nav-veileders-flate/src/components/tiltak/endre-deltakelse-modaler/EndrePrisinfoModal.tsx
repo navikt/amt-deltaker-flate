@@ -30,7 +30,6 @@ interface Props {
   initialPrisinformasjon?: Prisinformasjon | null
 }
 
-// TODO må håndtere å åpne et eksisterende "forslag"
 export const EndrePrisinfoModal = ({
   deltaker,
   open,

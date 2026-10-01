@@ -1,5 +1,6 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import {
+  BodyLong,
   BodyShort,
   Checkbox,
   CheckboxGroup,
@@ -7,8 +8,10 @@ import {
   InlineMessage,
   Label,
   Link,
+  List,
   Radio,
   RadioGroup,
+  ReadMore,
   Textarea
 } from '@navikt/ds-react'
 import {
@@ -107,13 +110,16 @@ export const PrisOgBetaling = ({
               value={PrisinformasjonType.IngenKostnader}
               description="Ikke aktuelt med betaling eller refusjon fra Nav"
             >
-              Ingen kostnader
+              Ingen kostnader for Nav
             </Radio>
           </RadioGroup>
         )}
       />
 
       {renderPrisTypeInfo()}
+
+      <TilleggsstoenaderEllerTiltakspenger />
+      {valgtPrisType && <PrisInfoCard />}
     </div>
   )
 }
@@ -167,8 +173,6 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
           />
         )}
       />
-
-      <PrisInfoCard />
     </>
   )
 }
@@ -190,22 +194,15 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
 
   return (
     <>
-      <div>
-        <InlineMessage status="info" size="small">
-          Husk at tilskudd bare kan gis når opplæringen er en{' '}
-          <Link href={NAVET_TILGJENGELIG_SKOLEPLASS_URL}>
-            tilgjengelig studie- eller skoleplass.
-          </Link>
-        </InlineMessage>
-        <InlineMessage status="info" size="small" className="mt-2">
-          Tilskuddene utbetales ikke automatisk. Brukeren betaler som regel selv
-          og kan senere søke Nav om refusjon. For at refusjon skal være mulig,
-          må du først registrere aktuelle tilskudd her.
-        </InlineMessage>
-      </div>
+      <InlineMessage status="info" size="small">
+        Husk at tilskuddtypene nedenfor bare kan gis når opplæringen er en{' '}
+        <Link href={NAVET_TILGJENGELIG_SKOLEPLASS_URL}>
+          tilgjengelig studie- eller skoleplass.
+        </Link>
+      </InlineMessage>
 
       <CheckboxGroup
-        legend="Velg hvilke tilskudd som er aktuelle og anslå beløp"
+        legend="Velg hvilke tilskudd som er aktuelle og anslå Navs utgifter"
         description="Hvis opplæringen går over flere semester, skal du oppgi det estimerte totalbeløpet for hele perioden"
         disabled={disabled}
         size="small"
@@ -273,20 +270,46 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
         Estimert totalsum: {NOK_FORMATTER.format(estimertTotalsum)} kr
       </Label>
 
-      <InlineMessage status="info" size="small">
-        Hvis brukeren kun skal ha <b>tiltakspenger</b> eller{' '}
-        <b>tilleggsstønader</b>, må du velge «ingen kostnader». Brukeren må i
-        tillegg sende en egen søknad om disse ytelsene.
-      </InlineMessage>
+      <div>
+        <ReadMore
+          variant="moderate"
+          header="Hvordan utbetales tillskuddene?"
+          size="small"
+        >
+          <BodyLong size="small">
+            Tilskuddene utbetales ikke automatisk. Brukeren betaler enten selv
+            og sender Nav dokumentasjon på utgiftene og betalingen, eller
+            opplæringsstedet sender en faktura til Nav.
+          </BodyLong>
+          <BodyLong size="small" className="mt-2">
+            Du må først registrere de aktuelle tilskuddene her før Nav kan
+            behandle dem.
+          </BodyLong>
+        </ReadMore>
+
+        <ReadMore
+          variant="moderate"
+          header="Skal brukeren betale noe selv?"
+          size="small"
+          className="mt-4"
+        >
+          <BodyLong size="small">
+            Du må først inngå en skriftlig avtale med bruker om
+            egenfinansiering. Før deretter opp hvilke kostnader brukeren selv
+            skal dekke, i tekstfeltet under.
+            <Link href={NAVET_EGENFINANSIERING_URL}>
+              Les mer på Navet om del- og egenfinansiering.
+            </Link>
+          </BodyLong>
+        </ReadMore>
+      </div>
 
       <Tilleggsopplysninger
         disabled={disabled}
         type={PrisinformasjonType.Tilskudd}
-        label="Tilleggsopplysninger om kostnader (valgfritt)"
-        description="For eksempel om brukeren skal dekke deler av kostnadene selv"
+        label="Eventuell delfinansiering fra brukeren (valgfritt)"
+        description="Ved full egenfinansiering skal du velge «Ingen kostnader for Nav» høyere opp"
       />
-
-      <PrisInfoCard />
     </>
   )
 }
@@ -344,8 +367,9 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
       {visEgenfinansiering && (
         <>
           <InlineMessage status="info" size="small">
-            Husk å først inngå en skriftlig avtale med bruker om
-            egenfinansiering.
+            Du må først inngå en skriftlig avtale med bruker om
+            egenfinansiering. Før deretter opp hvilke kostnader brukeren selv
+            skal dekke, i tekstfeltet under.
             <Link href={NAVET_EGENFINANSIERING_URL}>
               Les mer på Navet om del- og egenfinansiering.
             </Link>
@@ -359,13 +383,6 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
           />
         </>
       )}
-
-      <InlineMessage status="info" size="small">
-        Husk at hvis Nav skal gi tiltakspenger eller tilleggsstønader så må
-        brukeren sende egen søknad om dette.
-      </InlineMessage>
-
-      <PrisInfoCard />
     </>
   )
 }
@@ -456,6 +473,29 @@ const PrisInfoCard = () => {
         </BodyShort>
       </InfoCard.Content>
     </InfoCard>
+  )
+}
+
+const TilleggsstoenaderEllerTiltakspenger = () => {
+  return (
+    <ReadMore
+      variant="moderate"
+      header="Skal brukeren søke om tilleggsstønader eller tiltakspenger?"
+      size="small"
+    >
+      <BodyLong size="small">
+        Tilleggsstønader og tiltakspenger må søkes om separat og inngår ikke i
+        denne påmeldingen. Tilleggsstønader kan blant annet være:
+      </BodyLong>
+      <List as="ul" size="small" className="mt-2">
+        <List.Item>Daglig reise</List.Item>
+        <List.Item>Læremidler</List.Item>
+      </List>
+      <BodyLong size="small" className="mt-2">
+        Hvis det kun er aktuelt med tilleggsstønader eller tiltakspenger, velger
+        du «Ingen kostnader for Nav».
+      </BodyLong>
+    </ReadMore>
   )
 }
 
