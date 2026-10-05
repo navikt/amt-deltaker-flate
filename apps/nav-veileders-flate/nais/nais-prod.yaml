@@ -41,7 +41,7 @@ spec:
         - /amt-deltaker-bff/**
   gcp:
     buckets:
-      - name: amt-deltaker-flate-prod
+      - name: amt-veileder-flate-prod
         cascadingDelete: false
   accessPolicy:
     outbound:
