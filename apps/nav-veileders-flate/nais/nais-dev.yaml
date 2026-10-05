@@ -41,7 +41,7 @@ spec:
     buckets:
       - name: amt-deltaker-flate-dev-v2 #pr lenke dev
         cascadingDelete: false
-      - name: amt-deltaker-flate-veileder-dev #vanlig dev
+      - name: amt-veileder-flate-dev #vanlig dev
         cascadingDelete: false
   accessPolicy:
     outbound:
