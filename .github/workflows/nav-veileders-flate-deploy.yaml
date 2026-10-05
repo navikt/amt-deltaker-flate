@@ -134,7 +134,7 @@ jobs:
         uses: nais/deploy/actions/cdn-upload/v2@027a91857992525139798892f2804b0ca21f4af6 # master
         with:
           team: amt
-          source: apps/amt-veileders-flate/build
+          source: apps/nav-veileders-flate/build
           destination: amt-veileder-flate-prod
           no_cache_paths: amt-veileder-flate-prod/build/asset-manifest.json
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
