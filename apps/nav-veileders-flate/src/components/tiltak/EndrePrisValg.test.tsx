@@ -18,8 +18,12 @@ describe('EndrePrisValg', () => {
 
     await user.click(screen.getByRole('radio', { name: 'Ja' }))
 
+    expect(screen.getByText('Dette må du gjøre')).toBeInTheDocument()
+    expect(screen.getByRole('list')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+    expect(screen.getByText('Lagre denne endringen.')).toBeInTheDocument()
     expect(
-      screen.getByText('Husk at du også må gjøre en endring i pris')
+      screen.getByText('Legg inn en endring i pris og betalingsbetingelser.')
     ).toBeInTheDocument()
   })
 
