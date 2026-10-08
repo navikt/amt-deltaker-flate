@@ -91,7 +91,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
   })
 
   it('har error med varighet over max-varighet men ikke etter varighet endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.TOLV_MANEDER)
     )
     expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
@@ -100,13 +100,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med varighet over max-varighet men ikke etter annet dato endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.TOLV_MANEDER)
     )
     expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
@@ -118,13 +116,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter annet dato endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.ANNET)
     )
 
@@ -142,13 +138,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter varighet endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.ANNET)
     )
 
@@ -164,14 +158,12 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter startdato endres', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -191,14 +183,12 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.setStartdato(startdato.add(18, 'months').toDate())
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har ikke error med annet-dato men har det etter startdato endres utover max-varighet', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -217,8 +207,6 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     act(() => {
       result.current.setStartdato(startdato.subtract(1, 'month').toDate())
     })
-
-    rerender()
 
     expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
   })
@@ -287,7 +275,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
 
   it('har en error - sluttdato er undefined', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -305,13 +293,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
 
-    rerender()
     expect(result.current.sluttdato).toBeTypeOf('object')
 
     act(() => {
       result.current.setVarighetValg(VarighetValg.TOLV_MANEDER)
     })
-    rerender()
     expect(result.current.sluttdato).toBe(undefined)
   })
 

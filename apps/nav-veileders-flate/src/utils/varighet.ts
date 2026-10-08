@@ -213,13 +213,12 @@ export const getMaxVarighetDato = (
 ) => {
   if (!pamelding.maxVarighet) {
     return null
-  } else if (nyStartdato) {
-    return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
-  } else {
-    return pamelding.startdato
-      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
-      : null
   }
+
+  const startdato = nyStartdato ?? pamelding.startdato
+  return startdato
+    ? dayjs(startdato).add(pamelding.maxVarighet, 'millisecond')
+    : null
 }
 
 export const erSluttdatoInnenforEksisterendeMaksUnntak = (
@@ -328,18 +327,13 @@ export const getSluttDatoFeilmelding = (
   nyStartdato?: Date,
   erForleng?: boolean
 ) => {
-  const deltakerstartDato = pamelding.startdato
   const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
 
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
   const sluttDato = dayjs(nySluttDato)
+  const oppstartsdato = nyStartdato ?? pamelding.startdato
 
-  if (
-    (nyStartdato && sluttDato.isBefore(nyStartdato, 'date')) ||
-    (!nyStartdato &&
-      deltakerstartDato &&
-      sluttDato.isBefore(deltakerstartDato, 'date'))
-  ) {
+  if (oppstartsdato && sluttDato.isBefore(oppstartsdato, 'date')) {
     return SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
   }
 
@@ -352,19 +346,19 @@ export const getSluttDatoFeilmelding = (
     return DATO_FOER_SLUTTDATO_FEILMELDING
   }
 
-  if (!maxVarighetDato && !deltakerlisteSluttDato) {
-    return null
-  }
-
-  if (!maxVarighetDato && sluttDato.isAfter(deltakerlisteSluttDato, 'date')) {
+  // Prioriterer tiltaksperioden når datoen overskrider både den og maksvarigheten.
+  if (
+    deltakerlisteSluttDato &&
+    sluttDato.isAfter(deltakerlisteSluttDato, 'date')
+  ) {
     return DATO_UTENFOR_TILTAKGJENNOMFORING
   }
 
-  if (
-    maxVarighetDato &&
-    !deltakerlisteSluttDato &&
-    sluttDato.isAfter(maxVarighetDato, 'date')
-  ) {
+  if (!maxVarighetDato || !sluttDato.isAfter(maxVarighetDato, 'date')) {
+    return null
+  }
+
+  if (!deltakerlisteSluttDato) {
     if (
       erSluttdatoInnenforEksisterendeMaksUnntak(
         sluttDato,
@@ -374,33 +368,9 @@ export const getSluttDatoFeilmelding = (
     ) {
       return null
     }
-    return getVarighetValgFeilmelding(
-      getSenesteTillatteSluttdato(
-        opprinneligSluttdato,
-        maxVarighetDato.toDate()
-      )
-    )
   }
 
-  if (
-    (sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date') &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date')) ||
-    (!maxVarighetDato &&
-      sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date')) ||
-    (!deltakerlisteSluttDato &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date'))
-  ) {
-    return null
-  }
-
-  if (
-    maxVarighetDato &&
-    dayjs(maxVarighetDato).isBefore(deltakerlisteSluttDato, 'date')
-  ) {
-    return sluttDato.isAfter(deltakerlisteSluttDato)
-      ? DATO_UTENFOR_TILTAKGJENNOMFORING
-      : getVarighetValgFeilmelding(maxVarighetDato.toDate())
-  } else {
-    return DATO_UTENFOR_TILTAKGJENNOMFORING
-  }
+  return getVarighetValgFeilmelding(
+    getSenesteTillatteSluttdato(opprinneligSluttdato, maxVarighetDato.toDate())
+  )
 }
