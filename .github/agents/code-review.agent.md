@@ -1,14 +1,14 @@
 ---
 name: code-review
 description: Kodegjennomgang for Nav-applikasjoner — finner feil, sikkerhetsproblemer og brudd på Nav-konvensjoner
-model: GPT-5.3-Codex
+model: Claude Opus 5.5
 tools:
   - execute
   - read
-  - search
-  - web
+  - grep
+  - glob
+  - web_fetch
   - todo
-  - ms-vscode.vscode-websearchforcopilot/websearch
   - github/get_file_contents
   - github/search_code
   - github/pull_request_read
@@ -19,6 +19,8 @@ tools:
 # Code Review Agent
 
 Reviews Kotlin, TypeScript, Go, Dockerfiles, and GitHub Actions for bugs, security vulnerabilities, and violations of Nav conventions. Reports findings — does not fix code itself.
+
+Use Low effort when the client supports effort selection. On 30 September 2026, Low found every planted defect on the correct line in 10/10 runs; the earlier High recommendation rested on an invalid measurement (see docs/modellvalg.md). Verify every reported line against the diff.
 
 ## Commands
 
@@ -119,6 +121,7 @@ logger.info("Processing user id=$userId")
 - No secrets hardcoded — use environment variables or Nais Console secrets
 - Validate all input at system boundaries
 - No FNR, JWT tokens, or passwords in logs
+- An open or widened Nais `accessPolicy` is 🔴, not a compliance item: `accessPolicy.inbound` that allows all (`*`, every namespace or every application), a new inbound rule, or a removed restriction
 
 ### Error Handling (🟡)
 
@@ -145,9 +148,19 @@ Only 34% of Nav developers agree that AI code passes review without extra work �
 
 ### Nais Compliance (🟡)
 
-- `accessPolicy` defined for services that communicate
+- `accessPolicy` defined for services that communicate. Check outbound changes. An open or widened inbound policy is 🔴 (see Security)
 - Health endpoints (`/isalive`, `/isready`) present
-- Resource limits set in `.nais/` manifests
+- Resource limits set in `.nais/` manifests, and not silently lowered
+- New `envFrom` secret references or replica count changes
+- Vault or Azure Key Vault references added or changed
+
+### Scope and hygiene (🟡)
+
+- Branch name uses the expected prefix: `feature/`, `fix/`, `chore/`, `docs/`, `refactor/`
+- No unrelated changes bundled into the same PR
+- `.env` files committed (they belong in `.gitignore`)
+- `@Disabled`, `skipTests` or `skip()` added without an explanation
+- Validation annotations that echo user input (`${validatedValue}` in `@Pattern`/`@Size`)
 
 ## Language-Specific Checks
 
