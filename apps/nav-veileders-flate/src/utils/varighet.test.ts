@@ -432,6 +432,71 @@ describe('getSluttDatoFeilmelding', () => {
     expect(feilmelding).toEqual(null)
   })
 
+  it.each([
+    { dagerFraMaksdato: -1, forventetFeil: null },
+    { dagerFraMaksdato: 0, forventetFeil: null },
+    {
+      dagerFraMaksdato: 1,
+      forventetFeil: getVarighetValgFeilmelding(dayjs('2024-02-28').toDate())
+    }
+  ])(
+    'validerer sluttdato $dagerFraMaksdato dag(er) fra maksvarighetsgrensen',
+    ({ dagerFraMaksdato, forventetFeil }) => {
+      const startdato = dayjs('2024-01-31')
+      const maxVarighet = 28 * 24 * 60 * 60 * 1000
+      const pameldingMedMaksdato = {
+        ...pamelding,
+        startdato: startdato.toDate(),
+        sluttdato: null,
+        maxVarighet,
+        deltakerliste: {
+          ...pamelding.deltakerliste,
+          sluttdato: dayjs('2024-04-30').toDate()
+        }
+      }
+
+      const feilmelding = getSluttDatoFeilmelding(
+        pameldingMedMaksdato,
+        startdato
+          .add(maxVarighet, 'millisecond')
+          .add(dagerFraMaksdato, 'day')
+          .toDate()
+      )
+
+      expect(feilmelding).toBe(forventetFeil)
+    }
+  )
+
+  it.each([
+    { dagerFraTiltaksslutt: -1, forventetFeil: null },
+    { dagerFraTiltaksslutt: 0, forventetFeil: null },
+    {
+      dagerFraTiltaksslutt: 1,
+      forventetFeil: DATO_UTENFOR_TILTAKGJENNOMFORING
+    }
+  ])(
+    'validerer sluttdato $dagerFraTiltaksslutt dag(er) fra tiltaksperiodens sluttdato',
+    ({ dagerFraTiltaksslutt, forventetFeil }) => {
+      const deltakerlisteSluttdato = dayjs('2024-03-31')
+      const pameldingMedTiltaksgrense = {
+        ...pamelding,
+        startdato: dayjs('2024-01-01').toDate(),
+        maxVarighet: null,
+        deltakerliste: {
+          ...pamelding.deltakerliste,
+          sluttdato: deltakerlisteSluttdato.toDate()
+        }
+      }
+
+      const feilmelding = getSluttDatoFeilmelding(
+        pameldingMedTiltaksgrense,
+        deltakerlisteSluttdato.add(dagerFraTiltaksslutt, 'day').toDate()
+      )
+
+      expect(feilmelding).toBe(forventetFeil)
+    }
+  )
+
   it('returnerer feilmelding for ny sluttdato etter max varighet, og maks varighet er før tiltaktes sluttdato', () => {
     const feilmelding = getSluttDatoFeilmelding(
       {

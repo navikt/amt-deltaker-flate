@@ -276,6 +276,21 @@ describe('PameldingDatoer', () => {
       expect(screen.getByTestId('startdato-value')).toHaveTextContent('ugyldig')
     })
 
+    it('beholder ugyldig sluttdato og viser formatfeil ved blur', async () => {
+      const user = userEvent.setup()
+      renderPameldingDatoer()
+
+      const input = screen.getByLabelText('Sluttdato')
+      await user.type(input, 'ugyldig')
+      await user.tab()
+
+      expect(input).toHaveValue('ugyldig')
+      expect(screen.getByTestId('sluttdato-value')).toHaveTextContent('ugyldig')
+      expect(
+        await screen.findByText('Ugyldig datoformat: Bruk dd.mm.åååå')
+      ).toBeInTheDocument()
+    })
+
     it('beholder feilen når startdatoen fortsatt er ugyldig ved blur', async () => {
       const user = userEvent.setup()
       renderPameldingDatoer()

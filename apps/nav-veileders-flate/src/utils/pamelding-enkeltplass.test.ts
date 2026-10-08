@@ -66,7 +66,7 @@ const lagPameldingMedSluttdatoOverMaksVarighet = () => {
 
 describe('PameldingEnkeltplassFormSchema', () => {
   it('avviser ny startdato før datovelgerens nedre grense', () => {
-    const startdato = dayjs().subtract(3, 'month')
+    const startdato = dayjs().subtract(2, 'month').subtract(1, 'day')
     const schema = createPameldingEnkeltplassFormSchema(
       lagPameldingForDatoValidering(null)
     )
@@ -87,6 +87,22 @@ describe('PameldingEnkeltplassFormSchema', () => {
         })
       )
     }
+  })
+
+  it('godtar startdato på datovelgerens nedre grense', () => {
+    const startdato = dayjs().subtract(2, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: startdato.add(1, 'day').format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
   })
 
   it('godtar eksisterende startdato selv om den er før nedre grense', () => {
@@ -127,8 +143,70 @@ describe('PameldingEnkeltplassFormSchema', () => {
     }
   })
 
+  it('rapporterer formatfeil for ugyldig sluttdato', () => {
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: dayjs().add(1, 'day').format('DD.MM.YYYY'),
+        sluttdato: 'ugyldig'
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: 'Ugyldig datoformat: Bruk dd.mm.åååå'
+        })
+      )
+    }
+  })
+
+  it('godtar 29. februar i et skuddår', () => {
+    const skuddarsdato = dayjs('2024-02-29')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(skuddarsdato.toDate())
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: skuddarsdato.format('DD.MM.YYYY'),
+        sluttdato: skuddarsdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('avviser 29. februar som sluttdato i et år uten skuddag', () => {
+    const startdato = dayjs('2023-02-28')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(startdato.toDate())
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: '29.02.2023'
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: 'Ugyldig datoformat: Bruk dd.mm.åååå'
+        })
+      )
+    }
+  })
+
   it('avviser ny sluttdato før nedre grense når startdato mangler', () => {
-    const sluttdato = dayjs().subtract(3, 'month')
+    const sluttdato = dayjs().subtract(2, 'month').subtract(1, 'day')
     const schema = createPameldingEnkeltplassFormSchema(
       lagPameldingForDatoValidering(null)
     )
@@ -142,6 +220,32 @@ describe('PameldingEnkeltplassFormSchema', () => {
     expect(result.success).toBe(false)
     if (!result.success) {
       expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: SLUTTDATO_FOR_TIDLIG_FEILMELDING
+        })
+      )
+    }
+  })
+
+  it('gir ikke feil for sluttdato på nedre grense når startdato mangler', () => {
+    const sluttdato = dayjs().subtract(2, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: '',
+        sluttdato: sluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({ path: ['startdato'] })
+      )
+      expect(result.error.issues).not.toContainEqual(
         expect.objectContaining({
           path: ['sluttdato'],
           message: SLUTTDATO_FOR_TIDLIG_FEILMELDING
