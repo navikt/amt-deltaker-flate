@@ -33,12 +33,12 @@ import {
   finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
   LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
   UGYLDIG_DATO_FEILMELDING,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
-} from '../../../utils/varighet.tsx'
+} from '../../../utils/varighet.ts'
+import { SoftMaxVarighetBekreftelse } from '../SoftMaxVarighetBekreftelse.tsx'
 import {
   EndrePrisValg,
   EndrePrisValgType,
@@ -147,7 +147,7 @@ export const EndreOppstartsdatoModal = ({
   const validertRequest = () => {
     let hasError = false
     if (!startdato) {
-      setErrorStartDato('Du må velge startdato')
+      setErrorStartDato((error) => error ?? 'Du må velge startdato')
       hasError = true
     }
 
@@ -266,7 +266,7 @@ export const EndreOppstartsdatoModal = ({
               size="small"
               error={errorVarighetConfirmation}
             >
-              {getSoftMaxVarighetBekreftelseText(tiltakskode)}
+              <SoftMaxVarighetBekreftelse tiltakskode={tiltakskode} />
             </ConfirmationPanel>
           )}
         </>

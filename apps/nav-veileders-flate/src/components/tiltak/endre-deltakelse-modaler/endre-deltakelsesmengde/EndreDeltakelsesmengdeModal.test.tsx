@@ -155,6 +155,27 @@ describe('EndreDeltakelsesmengdeModal', () => {
       expect(screen.queryByLabelText(gruppeDagerLabel)).not.toBeInTheDocument()
     })
 
+    it.each([
+      { navn: 'gruppe', erEnkeltplass: false },
+      { navn: 'enkeltplass', erEnkeltplass: true }
+    ])(
+      'viser påkrevd-feil når gyldigFra tømmes i $navn-varianten',
+      async ({ erEnkeltplass }) => {
+        const user = userEvent.setup()
+        renderModal(lagDeltaker(erEnkeltplass))
+
+        await user.clear(
+          screen.getByLabelText('Fra når gjelder ny deltakelsesmengde?')
+        )
+        await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+        expect(
+          await screen.findByText('Du må velge en dato.')
+        ).toBeInTheDocument()
+        expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+      }
+    )
+
     it('Gruppe-variant oppdaterer synlighet av gruppe-dager dynamisk når prosent endres', async () => {
       const user = userEvent.setup()
       renderModal(lagDeltaker(false, 100))

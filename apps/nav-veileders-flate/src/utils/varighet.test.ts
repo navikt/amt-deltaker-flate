@@ -16,12 +16,23 @@ import {
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
   getSluttDatoFeilmelding,
+  getVarighetValgFeilmelding,
   getVarighet,
   kalkulerSluttdato,
   SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
   VarighetValg
-} from './varighet.tsx'
+} from './varighet.ts'
+
+const senesteSluttdatoFeilmelding =
+  /^Seneste tillatte sluttdato er \d{2}\.\d{2}\.\d{4}\.$/
+
+describe('getVarighetValgFeilmelding', () => {
+  it('viser seneste tillatte sluttdato i norsk datoformat', () => {
+    expect(getVarighetValgFeilmelding(new Date(2026, 9, 8))).toBe(
+      'Seneste tillatte sluttdato er 08.10.2026.'
+    )
+  })
+})
 
 const startdato = dayjs().subtract(1, 'year') // '2023-10-28'
 const sluttdato = dayjs().add(1, 'year')
@@ -369,7 +380,25 @@ describe('getSluttDatoFeilmelding', () => {
       dayjs().add(3, 'month').toDate(),
       dayjs().subtract(9, 'day').toDate()
     )
-    expect(feilmelding).toEqual(VARGIHET_VALG_FEILMELDING)
+    expect(feilmelding).toMatch(senesteSluttdatoFeilmelding)
+  })
+
+  it('oppgir eksisterende sluttdato som seneste dato når den er etter maks varighet', () => {
+    const eksisterendeSluttdato = dayjs('2024-07-01').toDate()
+    const pameldingMedGrandfatheredSluttdato = {
+      ...pamelding,
+      startdato: dayjs('2024-01-01').toDate(),
+      sluttdato: eksisterendeSluttdato,
+      deltakerliste: { ...pamelding.deltakerliste, sluttdato: null },
+      maxVarighet: dayjs.duration(5, 'month').asMilliseconds()
+    }
+
+    const feilmelding = getSluttDatoFeilmelding(
+      pameldingMedGrandfatheredSluttdato,
+      dayjs('2024-07-02').toDate()
+    )
+
+    expect(feilmelding).toBe(getVarighetValgFeilmelding(eksisterendeSluttdato))
   })
 
   it('returnerer feilmelding for ny sluttdato utenfor tiltakets periode', () => {
@@ -415,7 +444,7 @@ describe('getSluttDatoFeilmelding', () => {
       },
       dayjs().add(2, 'month').toDate()
     )
-    expect(feilmelding).toEqual(VARGIHET_VALG_FEILMELDING)
+    expect(feilmelding).toMatch(senesteSluttdatoFeilmelding)
   })
 
   it('returnerer feilmelding for ny sluttdato utenfor tiltakets periode, og maks varighet er før tiltaktes sluttdato', () => {
