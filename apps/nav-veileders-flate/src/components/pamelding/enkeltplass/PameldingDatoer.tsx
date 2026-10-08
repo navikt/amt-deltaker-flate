@@ -98,13 +98,8 @@ export function PameldingDatoer() {
     sluttdatoOnBlur?.(event)
     sluttdatoField.onBlur()
 
-    if (inputValue === '') {
-      sluttdatoField.onChange('')
-      void trigger('sluttdato')
-      return
-    }
-
-    if (sluttdatoIsInvalid || !sluttdatoField.value) {
+    // Behold rå input når feltet er tomt eller DatePicker ikke har en gyldig verdi
+    if (inputValue === '' || sluttdatoIsInvalid || !sluttdatoField.value) {
       sluttdatoField.onChange(inputValue)
     }
 
@@ -116,17 +111,14 @@ export function PameldingDatoer() {
     startdatoOnBlur?.(event)
     startdatoField.onBlur()
 
-    if (inputValue === '') {
-      startdatoField.onChange('')
-      void trigger('startdato')
-      return
-    }
-
-    if (startdatoIsInvalid || !startdatoField.value) {
+    // Behold rå input når feltet er tomt eller DatePicker ikke har en gyldig verdi
+    if (inputValue === '' || startdatoIsInvalid || !startdatoField.value) {
       startdatoField.onChange(inputValue)
     }
 
-    if (startdatoIsInvalid && errors.startdato) return
+    // Behold eksisterende feil ved ugyldig tekst; trigger ville overskrevet
+    // den med formatfeilen
+    if (inputValue !== '' && startdatoIsInvalid && errors.startdato) return
 
     void trigger('startdato')
   }
