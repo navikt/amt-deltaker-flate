@@ -7,7 +7,6 @@ import {
   InfoCard,
   InlineMessage,
   Label,
-  Link,
   List,
   Radio,
   RadioGroup,
@@ -36,6 +35,7 @@ import { PRISINFO_MAX_TEGN } from '../../../model/PrisinformasjonFormValues'
 import { NumberTextField } from '../../NumberTextField'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import { usePameldingFormContext } from '../PameldingFormContext'
+import { LenkeNyFane } from '../../LenkeNyFane'
 
 export const PrisOgBetaling = ({
   laasPristype
@@ -135,9 +135,10 @@ const Anskaffelse = ({ disabled }: { disabled: boolean }) => {
     <>
       <InlineMessage status="info" size="small">
         Husk å følge{' '}
-        <Link href={NAVET_ANSKAFFELSE_URL}>
-          rutinen for anskaffelse av enkeltplasser på Navet.
-        </Link>
+        <LenkeNyFane
+          url={NAVET_ANSKAFFELSE_URL}
+          tekst="rutinen for anskaffelse av enkeltplasser på Navet (åpner i en ny fane)."
+        />
       </InlineMessage>
 
       <Controller
@@ -196,9 +197,10 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
     <>
       <InlineMessage status="info" size="small">
         Husk at tilskuddtypene nedenfor bare kan gis når opplæringen er en{' '}
-        <Link href={NAVET_TILGJENGELIG_SKOLEPLASS_URL}>
-          tilgjengelig studie- eller skoleplass.
-        </Link>
+        <LenkeNyFane
+          url={NAVET_TILGJENGELIG_SKOLEPLASS_URL}
+          tekst="tilgjengelig studie- eller skoleplass (åpner i en ny fane)."
+        />
       </InlineMessage>
 
       <CheckboxGroup
@@ -297,9 +299,10 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
             Du må først inngå en skriftlig avtale med bruker om
             egenfinansiering. Før deretter opp hvilke kostnader brukeren selv
             skal dekke, i tekstfeltet under.
-            <Link href={NAVET_EGENFINANSIERING_URL}>
-              Les mer på Navet om del- og egenfinansiering.
-            </Link>
+            <LenkeNyFane
+              url={NAVET_EGENFINANSIERING_URL}
+              tekst="Les mer på Navet om del- og egenfinansiering (åpner i en ny fane)."
+            />
           </BodyLong>
         </ReadMore>
       </div>
@@ -370,9 +373,10 @@ const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
             Du må først inngå en skriftlig avtale med bruker om
             egenfinansiering. Før deretter opp hvilke kostnader brukeren selv
             skal dekke, i tekstfeltet under.
-            <Link href={NAVET_EGENFINANSIERING_URL}>
-              Les mer på Navet om del- og egenfinansiering.
-            </Link>
+            <LenkeNyFane
+              url={NAVET_EGENFINANSIERING_URL}
+              tekst="Les mer på Navet om del- og egenfinansiering (åpner i en ny fane)."
+            />
           </InlineMessage>
 
           <Tilleggsopplysninger
