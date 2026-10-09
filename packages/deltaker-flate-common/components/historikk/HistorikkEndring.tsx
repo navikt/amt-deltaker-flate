@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, Detail, InlineMessage } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail } from '@navikt/ds-react'
 import { Tiltakskode } from '../../model/deltaker.ts'
 import {
   DeltakerEndring,
@@ -295,8 +295,8 @@ export const HistorikkEndring = ({
 }
 
 const PavirkerPris = () => (
-  <InlineMessage status="warning" size="small">
+  <BodyLong size="small">
     Endringen forutsetter at endring i pris eller betalingsbetingelser blir
     godkjent. Du vil få en egen beskjed om dette.
-  </InlineMessage>
+  </BodyLong>
 )
