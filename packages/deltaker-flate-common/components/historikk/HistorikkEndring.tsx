@@ -295,8 +295,8 @@ export const HistorikkEndring = ({
 }
 
 const PavirkerPris = () => (
-  <InlineMessage status="warning" size="small">
+  <BodyLong size="small">
     Endringen forutsetter at endring i pris eller betalingsbetingelser blir
     godkjent. Du vil få en egen beskjed om dette.
-  </InlineMessage>
+  </BodyLong>
 )
