@@ -161,9 +161,7 @@ export function PameldingDatoer() {
         aria-live="polite"
       >
         {errors.startdato && (
-          <ErrorMessage size="small" showIcon>
-            {errors.startdato?.message}
-          </ErrorMessage>
+          <ErrorMessage size="small">{errors.startdato?.message}</ErrorMessage>
         )}
       </div>
       <div
@@ -173,9 +171,7 @@ export function PameldingDatoer() {
         aria-live="polite"
       >
         {errors.sluttdato && (
-          <ErrorMessage size="small" showIcon>
-            {errors.sluttdato?.message}
-          </ErrorMessage>
+          <ErrorMessage size="small">{errors.sluttdato?.message}</ErrorMessage>
         )}
       </div>
     </div>
