@@ -1,4 +1,4 @@
-import { Alert, Detail, Link, Modal } from '@navikt/ds-react'
+import { Alert, Detail, Modal } from '@navikt/ds-react'
 import {
   BegrunnelseInput,
   DeferredFetchState,
@@ -11,6 +11,7 @@ import { avvisForslag } from '../../../api/api'
 import { DeltakerResponse } from '../../../api/data/deltaker'
 import { useAppContext } from '../../../AppContext'
 import { ErrorPage } from '../../../pages/ErrorPage'
+import { LenkeNyFane } from '../../LenkeNyFane'
 import { ModalFooter } from '../../ModalFooter'
 import { ModalForslagDetaljer } from '../forslag/ModalForslagDetaljer'
 
@@ -59,9 +60,11 @@ export default function AvvisningsmodalBody({
         <Alert variant="info" className="mt-4" size="small">
           Brukeren mottar ikke varsel når forslaget avvises. Vurder om det er
           behov for et{' '}
-          <Link href={RUTINE_NAVET_LINK} inlineText target="_blank">
-            avslagsbrev (åpner i en ny fane).
-          </Link>
+          <LenkeNyFane
+            url={RUTINE_NAVET_LINK}
+            inlineText
+            tekst="avslagsbrev (åpner i en ny fane)."
+          />
         </Alert>
       </Modal.Body>
       <ModalFooter
