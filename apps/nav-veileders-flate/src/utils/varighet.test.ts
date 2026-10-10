@@ -85,10 +85,6 @@ const pamelding: DeltakerResponse = {
   forslag: [],
   importertFraArena: null,
   harAdresse: false,
-  deltakelsesmengder: {
-    sisteDeltakelsesmengde: null,
-    nesteDeltakelsesmengde: null
-  },
   gyldigeDeltakelsesmengder: [],
   erUnderOppfolging: true,
   erManueltDeltMedArrangor: true

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
@@ -69,8 +69,6 @@ const lagDeltaker = (
 ): DeltakerResponse =>
   ({
     deltakerId: 'deltaker-1',
-    deltakelsesprosent,
-    dagerPerUke: 3,
     status: {
       id: 'status-1',
       type: DeltakerStatusType.DELTAR,
@@ -83,10 +81,13 @@ const lagDeltaker = (
     startdato: new Date('2026-01-01'),
     sluttdato: new Date('2026-12-31'),
     erUnderOppfolging: true,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
+    gyldigeDeltakelsesmengder: [
+      {
+        deltakelsesprosent,
+        dagerPerUke: 3,
+        gyldigFra: new Date('2026-01-01')
+      }
+    ],
     deltakerliste: {
       erEnkeltplass
     }
@@ -137,8 +138,10 @@ describe('EndreDeltakelsesmengdeModal', () => {
   })
 
   describe('EndreDeltakelsesmengdeModal UI', () => {
-    it('Gruppe-variant viser gruppe-felter og skjuler enkeltplass-tekst', () => {
-      renderModal(lagDeltaker(false))
+    it('Gruppe-variant viser gruppe-felter og skjuler enkeltplass-tekst', async () => {
+      await act(async () => {
+        renderModal(lagDeltaker(false))
+      })
 
       expect(screen.getByLabelText(prosentLabel)).toBeInTheDocument()
       expect(screen.getByLabelText(gruppeDagerLabel)).toBeInTheDocument()
@@ -147,8 +150,10 @@ describe('EndreDeltakelsesmengdeModal', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('Enkeltplass-variant viser enkeltplass-felter og skjuler prosentfelt', () => {
-      renderModal(lagDeltaker(true))
+    it('Enkeltplass-variant viser enkeltplass-felter og skjuler prosentfelt', async () => {
+      await act(async () => {
+        renderModal(lagDeltaker(true))
+      })
 
       expect(screen.queryByLabelText(prosentLabel)).not.toBeInTheDocument()
       expect(screen.getByLabelText(enkeltplassDagerLabel)).toBeInTheDocument()
@@ -187,6 +192,10 @@ describe('EndreDeltakelsesmengdeModal', () => {
     'sender riktig payload for $navn',
     async ({ erEnkeltplass, forventetDeltakelsesprosent }) => {
       renderModal(lagDeltaker(erEnkeltplass))
+      await settDagerPerUke(
+        erEnkeltplass ? enkeltplassDagerLabel : gruppeDagerLabel,
+        '4'
+      )
       await klikkLagre()
 
       expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(
@@ -194,7 +203,7 @@ describe('EndreDeltakelsesmengdeModal', () => {
         '0101',
         expect.objectContaining({
           deltakelsesprosent: forventetDeltakelsesprosent,
-          dagerPerUke: 3,
+          dagerPerUke: 4,
           ...(erEnkeltplass ? { pavirkerPris: false } : {})
         })
       )
@@ -219,6 +228,7 @@ describe('EndreDeltakelsesmengdeModal', () => {
 
   it('sender pavirkerPris true når endringen påvirker pris', async () => {
     renderModal(lagDeltaker(true))
+    await settDagerPerUke(enkeltplassDagerLabel, '4')
     await klikkLagre('Ja')
 
     expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(

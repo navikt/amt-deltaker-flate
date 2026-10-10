@@ -25,7 +25,14 @@ describe('DeltakerInfo - Deltakelsesmengde', () => {
     opprettet: new Date()
   }
   const stottetTiltakDeltaker = lagDeltaker({
-    status: baseStatus
+    status: baseStatus,
+    gyldigeDeltakelsesmengder: [
+      {
+        deltakelsesprosent: 80,
+        dagerPerUke: 3,
+        gyldigFra: new Date(2026, 0, 1)
+      }
+    ]
   })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
@@ -38,12 +45,15 @@ describe('DeltakerInfo - Deltakelsesmengde', () => {
     }
   }
 
-  it('viser deltakelsesmengde når tiltak støtter det', () => {
+  it('viser gyldig deltakelsesmengde når tiltak støtter det', () => {
     renderWithDeltakerContext(
       <DeltakerInfo className="" />,
       stottetTiltakDeltaker
     )
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(
+      screen.getByText(/01\.01\.2026:.*80.*fordelt på 3 dager i uka/)
+    ).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {

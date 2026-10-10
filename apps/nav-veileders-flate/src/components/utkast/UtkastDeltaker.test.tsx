@@ -9,7 +9,15 @@ import {
 } from '../test-utils/deltaker-context-test-utils'
 
 describe('UtkastDeltaker - Deltakelsesmengde', () => {
-  const stottetTiltakDeltaker = lagDeltaker()
+  const stottetTiltakDeltaker = lagDeltaker({
+    gyldigeDeltakelsesmengder: [
+      {
+        deltakelsesprosent: 80,
+        dagerPerUke: 3,
+        gyldigFra: new Date(2026, 0, 1)
+      }
+    ]
+  })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
     deltakerliste: {
@@ -24,6 +32,7 @@ describe('UtkastDeltaker - Deltakelsesmengde', () => {
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithDeltakerContext(<UtkastDeltaker />, stottetTiltakDeltaker)
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {

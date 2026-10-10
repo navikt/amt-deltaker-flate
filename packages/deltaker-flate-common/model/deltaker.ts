@@ -140,11 +140,6 @@ export const gyldigeDeltakelsesmengderSchema = z
   .array(deltakelsesmengdeSchema)
   .default([])
 
-export const deltakelsesmengderSchema = z.object({
-  nesteDeltakelsesmengde: deltakelsesmengdeSchema.nullable(),
-  sisteDeltakelsesmengde: deltakelsesmengdeSchema.nullable()
-})
-
 export type Vedtaksinformasjon = z.infer<typeof vedtaksinformasjonSchema>
 export type DeltakerStatusAarsak = z.infer<typeof deltakerStatusAarsakSchema>
 export type Innhold = z.infer<typeof innholdSchema>

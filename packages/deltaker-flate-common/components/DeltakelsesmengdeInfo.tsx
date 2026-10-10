@@ -1,57 +1,28 @@
-import { BodyShort, Heading } from '@navikt/ds-react'
-import dayjs from 'dayjs'
+import { BodyShort, Heading, List } from '@navikt/ds-react'
 import { Deltakelsesmengde, Tiltakskode } from '../model/deltaker'
 import { formatDate } from '../utils/utils'
 import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
 
 interface Props {
   tiltakskode: Tiltakskode
-  deltakelsesprosent: number | null
-  dagerPerUke: number | null
   erEnkeltplass: boolean
   gyldigeDeltakelsesmengder: Deltakelsesmengde[]
-  sluttdato: Date | string | null
-  nesteDeltakelsesmengde: Deltakelsesmengde | null
+  headingLevel?: '2' | '3'
+  headingSize?: 'medium' | 'small'
+  headingClassName?: string
 }
 
 export function DeltakelsesmengdeInfo({
   tiltakskode,
-  deltakelsesprosent,
-  dagerPerUke,
   erEnkeltplass,
   gyldigeDeltakelsesmengder,
-  sluttdato,
-  nesteDeltakelsesmengde
+  headingLevel = '2',
+  headingSize = 'medium',
+  headingClassName = 'mt-8'
 }: Props) {
-  const deltakelsesmengdeText = getDeltakelsesmengdeText({
-    tiltakskode,
-    deltakelsesprosent,
-    dagerPerUke,
-    erEnkeltplass
-  })
-
-  const nesteDeltakelsesmengdeText = nesteDeltakelsesmengde
-    ? getDeltakelsesmengdeText({
-        tiltakskode,
-        deltakelsesprosent: nesteDeltakelsesmengde.deltakelsesprosent,
-        dagerPerUke: nesteDeltakelsesmengde.dagerPerUke,
-        erEnkeltplass
-      })
-    : null
-
-  if (deltakelsesmengdeText === null) {
-    return null
-  }
-
-  const perioder = gyldigeDeltakelsesmengder
-    .map((deltakelsesmengde, index) => {
-      const nestePeriode = gyldigeDeltakelsesmengder[index + 1]
-      const sluttdatoPeriode = nestePeriode
-        ? dayjs(nestePeriode.gyldigFra).subtract(1, 'day').toDate()
-        : sluttdato
-          ? dayjs(sluttdato).toDate()
-          : null
-
+  const perioder = [...gyldigeDeltakelsesmengder]
+    .sort((a, b) => a.gyldigFra.getTime() - b.gyldigFra.getTime())
+    .flatMap((deltakelsesmengde) => {
       const tekst = getDeltakelsesmengdeText({
         tiltakskode,
         deltakelsesprosent: deltakelsesmengde.deltakelsesprosent,
@@ -59,57 +30,31 @@ export function DeltakelsesmengdeInfo({
         erEnkeltplass
       })
 
-      const periodeTekst = `Periode (fom. ${formatDate(
-        deltakelsesmengde.gyldigFra
-      )}${sluttdatoPeriode ? ` t.o.m. ${formatDate(sluttdatoPeriode)}` : ''}):`
-
-      return tekst ? { deltakelsesmengde, periodeTekst, tekst } : null
+      return tekst ? [{ deltakelsesmengde, tekst }] : []
     })
-    .filter((periode) => periode !== null)
 
-  if (perioder.length > 0) {
-    return (
-      <div className="flex flex-col gap-2">
-        <Heading level="2" size="medium" className="mt-8">
-          Deltakelsesmengde
-        </Heading>
-        {perioder.map(({ deltakelsesmengde, periodeTekst, tekst }) => (
-          <div key={deltakelsesmengde.gyldigFra.toISOString()}>
-            <BodyShort size="small">{periodeTekst}</BodyShort>
-            <BodyShort size="small">{tekst}</BodyShort>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
+  if (perioder.length === 0) {
     return null
   }
+
   return (
     <div className="flex flex-col gap-2">
-      <Heading level="2" size="medium" className="mt-8">
+      <Heading
+        level={headingLevel}
+        size={headingSize}
+        className={headingClassName}
+      >
         Deltakelsesmengde
       </Heading>
-      {nesteDeltakelsesmengde ? (
-        <>
-          <div>
-            <BodyShort size="small">Nåværende periode:</BodyShort>
-            <BodyShort size="small">
-              {deltakelsesmengdeText || '(ikke satt)'}
+      <List as="ul" size="small">
+        {perioder.map(({ deltakelsesmengde, tekst }) => (
+          <List.Item key={deltakelsesmengde.gyldigFra.toISOString()}>
+            <BodyShort as="span" size="small">
+              {`${formatDate(deltakelsesmengde.gyldigFra)}: ${tekst}`}
             </BodyShort>
-          </div>
-          <div>
-            <BodyShort size="small">
-              Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
-              ):
-            </BodyShort>
-            <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
-          </div>
-        </>
-      ) : (
-        <BodyShort size="small">{deltakelsesmengdeText}</BodyShort>
-      )}
+          </List.Item>
+        ))}
+      </List>
     </div>
   )
 }
