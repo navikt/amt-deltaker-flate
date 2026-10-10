@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../model/deltaker'
-import { DeltakelsesmengdeUtkast } from './DeltakelsesmengdeUtkast'
+import { DeltakelsesmengdeAvsnitt } from './DeltakelsesmengdeAvsnitt'
 import { extractText } from './test-utils'
 
-describe('DeltakelsesmengdeUtkast', () => {
+describe('DeltakelsesmengdeAvsnitt', () => {
   it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {
-    const result = DeltakelsesmengdeUtkast({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.OPPFOLGING,
       erEnkeltplass: false,
       deltakelsesprosent: 80,
@@ -18,7 +18,7 @@ describe('DeltakelsesmengdeUtkast', () => {
   })
 
   it('renderer tekst når tiltaket har deltakelsesmengde', () => {
-    const result = DeltakelsesmengdeUtkast({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
       deltakelsesprosent: 80,
@@ -32,7 +32,7 @@ describe('DeltakelsesmengdeUtkast', () => {
   })
 
   it('skjuler rendering når teksten er tom', () => {
-    const result = DeltakelsesmengdeUtkast({
+    const result = DeltakelsesmengdeAvsnitt({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: true,
       deltakelsesprosent: null,

@@ -1,7 +1,7 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeUtkast,
+  DeltakelsesmengdeAvsnitt,
   EMDASH,
   UtkastHeader
 } from 'deltaker-flate-common'
@@ -46,7 +46,7 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      <DeltakelsesmengdeUtkast
+      <DeltakelsesmengdeAvsnitt
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         deltakelsesprosent={deltaker.deltakelsesprosent}

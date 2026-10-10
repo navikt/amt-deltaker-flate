@@ -1,7 +1,7 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeUtkast,
+  DeltakelsesmengdeAvsnitt,
   DialogLenke,
   formatDate,
   PrisOgBetaling,
@@ -43,7 +43,7 @@ export const UtkastDeltakerEnkeltplass = () => {
         }
       />
 
-      <DeltakelsesmengdeUtkast
+      <DeltakelsesmengdeAvsnitt
         tiltakskode={tiltakskode.kode}
         erEnkeltplass={true}
         deltakelsesprosent={deltaker.deltakelsesprosent}

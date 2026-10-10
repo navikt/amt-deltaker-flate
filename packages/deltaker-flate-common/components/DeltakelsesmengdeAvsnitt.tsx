@@ -13,7 +13,7 @@ interface Props {
   headingClassName?: string
 }
 
-export const DeltakelsesmengdeUtkast = ({
+export const DeltakelsesmengdeAvsnitt = ({
   headingText = 'Deltakelsesmengde',
   headingLevel,
   headingSize,
