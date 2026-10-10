@@ -51,12 +51,14 @@ export function DeltakelsesmengdeInfo({
         : sluttdato
           ? dayjs(sluttdato).toDate()
           : null
+
       const tekst = getDeltakelsesmengdeText({
         tiltakskode,
         deltakelsesprosent: deltakelsesmengde.deltakelsesprosent,
         dagerPerUke: deltakelsesmengde.dagerPerUke,
         erEnkeltplass
       })
+
       const periodeTekst = `Periode (fom. ${formatDate(
         deltakelsesmengde.gyldigFra
       )}${sluttdatoPeriode ? ` t.o.m. ${formatDate(sluttdatoPeriode)}` : ''}):`
@@ -67,19 +69,17 @@ export function DeltakelsesmengdeInfo({
 
   if (perioder.length > 0) {
     return (
-      <>
+      <div className="flex flex-col gap-2">
         <Heading level="2" size="medium" className="mt-8">
           Deltakelsesmengde
         </Heading>
         {perioder.map(({ deltakelsesmengde, periodeTekst, tekst }) => (
           <div key={deltakelsesmengde.gyldigFra.toISOString()}>
-            <BodyShort size="small" className="mt-2">
-              {periodeTekst}
-            </BodyShort>
+            <BodyShort size="small">{periodeTekst}</BodyShort>
             <BodyShort size="small">{tekst}</BodyShort>
           </div>
         ))}
-      </>
+      </div>
     )
   }
 
@@ -87,29 +87,29 @@ export function DeltakelsesmengdeInfo({
     return null
   }
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <Heading level="2" size="medium" className="mt-8">
         Deltakelsesmengde
       </Heading>
       {nesteDeltakelsesmengde ? (
         <>
-          <BodyShort size="small" className="mt-2">
-            Nåværende periode:
-          </BodyShort>
-          <BodyShort size="small">
-            {deltakelsesmengdeText || '(ikke satt)'}
-          </BodyShort>
-          <BodyShort size="small" className="mt-2">
-            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
-            ):
-          </BodyShort>
-          <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
+          <div>
+            <BodyShort size="small">Nåværende periode:</BodyShort>
+            <BodyShort size="small">
+              {deltakelsesmengdeText || '(ikke satt)'}
+            </BodyShort>
+          </div>
+          <div>
+            <BodyShort size="small">
+              Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
+              ):
+            </BodyShort>
+            <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
+          </div>
         </>
       ) : (
-        <BodyShort size="small" className="mt-2">
-          {deltakelsesmengdeText}
-        </BodyShort>
+        <BodyShort size="small">{deltakelsesmengdeText}</BodyShort>
       )}
-    </>
+    </div>
   )
 }
