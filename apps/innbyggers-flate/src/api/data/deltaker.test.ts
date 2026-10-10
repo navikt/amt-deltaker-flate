@@ -1,21 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { lagInnbyggerDeltaker } from '../../pages/test-utils'
 import { deltakerSchema } from './deltaker'
 
 describe('deltakerSchema', () => {
   it('parser gyldige deltakelsesmengder og datoer', () => {
-    const response = deltakerSchema.parse({
-      ...lagInnbyggerDeltaker(),
-      gyldigeDeltakelsesmengder: [
-        {
-          deltakelsesprosent: 60,
-          dagerPerUke: 3,
-          gyldigFra: '2026-10-12'
-        }
-      ]
-    })
+    const response = deltakerSchema.shape.gyldigeDeltakelsesmengder.parse([
+      {
+        deltakelsesprosent: 60,
+        dagerPerUke: 3,
+        gyldigFra: '2026-10-12'
+      }
+    ])
 
-    expect(response.gyldigeDeltakelsesmengder).toEqual([
+    expect(response).toEqual([
       {
         deltakelsesprosent: 60,
         dagerPerUke: 3,
@@ -25,11 +21,10 @@ describe('deltakerSchema', () => {
   })
 
   it('bruker tom liste når responsen mangler feltet', () => {
-    const responseUtenListe = { ...lagInnbyggerDeltaker() }
-    Reflect.deleteProperty(responseUtenListe, 'gyldigeDeltakelsesmengder')
+    const schema = deltakerSchema.pick({
+      gyldigeDeltakelsesmengder: true
+    })
 
-    expect(
-      deltakerSchema.parse(responseUtenListe).gyldigeDeltakelsesmengder
-    ).toEqual([])
+    expect(schema.parse({})).toEqual({ gyldigeDeltakelsesmengder: [] })
   })
 })
