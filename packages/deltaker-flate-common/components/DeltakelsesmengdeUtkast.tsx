@@ -1,4 +1,4 @@
-import { BodyLong, Heading } from '@navikt/ds-react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 import { Tiltakskode } from '../model/deltaker'
 import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
 
@@ -35,7 +35,9 @@ export const DeltakelsesmengdeUtkast = ({
       >
         {headingText}
       </Heading>
-      <BodyLong size="small">{text}</BodyLong>
+      <BodyShort as="span" size="small">
+        {text}
+      </BodyShort>
     </div>
   )
 }
