@@ -61,6 +61,7 @@ export const lagDeltaker = (
       sisteDeltakelsesmengde: null,
       nesteDeltakelsesmengde: null
     },
+    gyldigeDeltakelsesmengder: [],
     forslag: [],
     vedtaksinformasjon: null,
     importertFraArena: null,

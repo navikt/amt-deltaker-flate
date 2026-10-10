@@ -89,6 +89,7 @@ const pamelding: DeltakerResponse = {
     sisteDeltakelsesmengde: null,
     nesteDeltakelsesmengde: null
   },
+  gyldigeDeltakelsesmengder: [],
   erUnderOppfolging: true,
   erManueltDeltMedArrangor: true
 }

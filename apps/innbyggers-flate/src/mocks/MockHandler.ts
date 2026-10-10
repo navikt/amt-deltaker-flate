@@ -107,6 +107,7 @@ export const createDeltaker = (
       nesteDeltakelsesmengde: sisteDeltakelsesmengde,
       sisteDeltakelsesmengde: sisteDeltakelsesmengde
     },
+    gyldigeDeltakelsesmengder: [sisteDeltakelsesmengde],
     erManueltDeltMedArrangor: true
   }
 }

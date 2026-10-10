@@ -1,5 +1,6 @@
 import {
   deltakelsesinnholdSchema,
+  gyldigeDeltakelsesmengderSchema,
   deltakelsesmengderSchema,
   DeltakerlisteStatus,
   forslagSchema,
@@ -77,6 +78,7 @@ export const deltakerSchema = z.object({
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
   erUnderOppfolging: z.boolean(),
   deltakelsesmengder: deltakelsesmengderSchema,
+  gyldigeDeltakelsesmengder: gyldigeDeltakelsesmengderSchema,
   erManueltDeltMedArrangor: z.boolean()
 })
 

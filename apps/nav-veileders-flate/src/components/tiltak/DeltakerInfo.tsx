@@ -168,6 +168,8 @@ export const DeltakerInfo = ({ className }: Props) => {
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        sluttdato={deltaker.sluttdato}
         nesteDeltakelsesmengde={
           deltaker.deltakelsesmengder.nesteDeltakelsesmengde
         }

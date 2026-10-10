@@ -194,6 +194,8 @@ export const DeltakerPage = () => {
         nesteDeltakelsesmengde={
           deltaker.deltakelsesmengder.nesteDeltakelsesmengde
         }
+        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        sluttdato={deltaker.sluttdato}
         erEnkeltplass={erEnkeltplass}
       />
 

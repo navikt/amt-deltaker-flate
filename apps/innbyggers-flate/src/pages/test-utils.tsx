@@ -72,6 +72,7 @@ export const lagInnbyggerDeltaker = (
       sisteDeltakelsesmengde: null,
       nesteDeltakelsesmengde: null
     },
+    gyldigeDeltakelsesmengder: [],
     erUnderOppfolging: true,
     erManueltDeltMedArrangor: false,
     ...rest

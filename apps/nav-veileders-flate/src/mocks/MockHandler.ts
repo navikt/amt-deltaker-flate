@@ -192,6 +192,15 @@ export class MockHandler {
         sisteDeltakelsesmengde,
         nesteDeltakelsesmengde: null
       },
+      gyldigeDeltakelsesmengder: [
+        {
+          ...sisteDeltakelsesmengde,
+          gyldigFra: dayjs(sisteDeltakelsesmengde.gyldigFra)
+            .subtract(1, 'month')
+            .toDate()
+        },
+        sisteDeltakelsesmengde
+      ],
       erManueltDeltMedArrangor: true
     }
   }
@@ -929,6 +938,16 @@ export class MockHandler {
         deltakelsesprosent: request.deltakelsesprosent ?? 100,
         dagerPerUke: request.dagerPerUke ?? null
       }
+      oppdatertPamelding.gyldigeDeltakelsesmengder = [
+        ...oppdatertPamelding.gyldigeDeltakelsesmengder.filter(
+          (mengde) => !dayjs(mengde.gyldigFra).isSame(gyldigFra, 'day')
+        ),
+        {
+          gyldigFra,
+          deltakelsesprosent: request.deltakelsesprosent ?? 100,
+          dagerPerUke: request.dagerPerUke ?? null
+        }
+      ].sort((a, b) => a.gyldigFra.getTime() - b.gyldigFra.getTime())
       this.pamelding = oppdatertPamelding
       this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(this.pamelding)

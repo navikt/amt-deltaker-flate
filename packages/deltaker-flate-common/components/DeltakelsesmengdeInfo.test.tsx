@@ -26,6 +26,8 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: null,
       dagerPerUke: null,
       erEnkeltplass: true,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: null
     })
 
@@ -38,6 +40,8 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: null,
       dagerPerUke: null,
       erEnkeltplass: true,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: {
         deltakelsesprosent: 60,
         dagerPerUke: 3,
@@ -58,6 +62,8 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: 80,
       dagerPerUke: 3,
       erEnkeltplass: false,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: {
         deltakelsesprosent: 60,
         dagerPerUke: 3,
@@ -74,6 +80,8 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: null,
       dagerPerUke: 2,
       erEnkeltplass: true,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: null
     })
     const text = extractText(result).join(' ')
@@ -89,6 +97,8 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: null,
       dagerPerUke: 0,
       erEnkeltplass: true,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: null
     })
 
@@ -101,9 +111,69 @@ describe('DeltakelsesmengdeInfo', () => {
       deltakelsesprosent: 80,
       dagerPerUke: 3,
       erEnkeltplass: false,
+      gyldigeDeltakelsesmengder: [],
+      sluttdato: null,
       nesteDeltakelsesmengde: null
     })
 
     expect(result).toBeNull()
+  })
+
+  it('viser alle gyldige perioder med sluttdato dagen før neste periode starter', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      deltakelsesprosent: 80,
+      dagerPerUke: 4,
+      erEnkeltplass: false,
+      gyldigeDeltakelsesmengder: [
+        {
+          deltakelsesprosent: 40,
+          dagerPerUke: 2,
+          gyldigFra: new Date(2026, 9, 5)
+        },
+        {
+          deltakelsesprosent: 60,
+          dagerPerUke: 3,
+          gyldigFra: new Date(2026, 9, 12)
+        },
+        {
+          deltakelsesprosent: 80,
+          dagerPerUke: 4,
+          gyldigFra: new Date(2026, 10, 2)
+        }
+      ],
+      sluttdato: new Date(2026, 10, 30),
+      nesteDeltakelsesmengde: null
+    })
+    const text = extractText(result).join(' ')
+
+    expect(text).toContain('Periode (fom. 05.10.2026 t.o.m. 11.10.2026)')
+    expect(text).toContain('Periode (fom. 12.10.2026 t.o.m. 01.11.2026)')
+    expect(text).toContain('Periode (fom. 02.11.2026 t.o.m. 30.11.2026)')
+    expect(text).toContain('40')
+    expect(text).toContain('60')
+    expect(text).toContain('80')
+  })
+
+  it('viser bare startdato på siste periode uten deltakersluttdato', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      deltakelsesprosent: 80,
+      dagerPerUke: 4,
+      erEnkeltplass: false,
+      gyldigeDeltakelsesmengder: [
+        {
+          deltakelsesprosent: 80,
+          dagerPerUke: 4,
+          gyldigFra: new Date(2026, 9, 12)
+        }
+      ],
+      sluttdato: null,
+      nesteDeltakelsesmengde: null
+    })
+    const text = extractText(result).join(' ')
+
+    expect(text).toContain('Periode (fom. 12.10.2026):')
+    expect(text).not.toContain('t.o.m.')
   })
 })

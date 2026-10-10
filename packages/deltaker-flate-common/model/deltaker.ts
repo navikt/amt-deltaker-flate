@@ -136,6 +136,10 @@ export const deltakelsesmengdeSchema = z.object({
   gyldigFra: dateSchema
 })
 
+export const gyldigeDeltakelsesmengderSchema = z
+  .array(deltakelsesmengdeSchema)
+  .default([])
+
 export const deltakelsesmengderSchema = z.object({
   nesteDeltakelsesmengde: deltakelsesmengdeSchema.nullable(),
   sisteDeltakelsesmengde: deltakelsesmengdeSchema.nullable()
