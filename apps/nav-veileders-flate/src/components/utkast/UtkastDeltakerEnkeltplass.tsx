@@ -1,10 +1,9 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeInfo,
+  DeltakelsesmengdeUtkast,
   DialogLenke,
   formatDate,
-  lagUtkastDeltakelsesmengderForVisning,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
@@ -44,17 +43,14 @@ export const UtkastDeltakerEnkeltplass = () => {
         }
       />
 
-      <DeltakelsesmengdeInfo
+      <DeltakelsesmengdeUtkast
         tiltakskode={tiltakskode.kode}
         erEnkeltplass={true}
-        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
-          deltaker.startdato,
-          deltaker.deltakelsesprosent,
-          deltaker.dagerPerUke
-        )}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
         headingLevel="3"
         headingSize="small"
-        headingClassName=""
+        bodyClassName="mt-2"
       />
 
       <PrisOgBetaling

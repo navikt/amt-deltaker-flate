@@ -1,9 +1,8 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeInfo,
+  DeltakelsesmengdeUtkast,
   EMDASH,
-  lagUtkastDeltakelsesmengderForVisning,
   UtkastHeader
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -47,17 +46,15 @@ export const AvbruttUtkastPage = () => {
         </>
       )}
 
-      <DeltakelsesmengdeInfo
+      <DeltakelsesmengdeUtkast
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
-          deltaker.startdato,
-          deltaker.deltakelsesprosent,
-          deltaker.dagerPerUke
-        )}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"
+        bodyClassName="mt-2"
       />
     </div>
   )

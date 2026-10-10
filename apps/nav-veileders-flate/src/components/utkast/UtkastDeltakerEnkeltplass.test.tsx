@@ -126,7 +126,7 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
 })
 
 describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
-  it('viser deltakelsesmengde fra utkastfeltene', () => {
+  it('viser deltakelsesmengde fra utkastfeltene uten dato', () => {
     const deltaker = lagDeltaker()
     settDagerPerUke(deltaker, 3)
 
@@ -134,6 +134,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
 
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
     expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
+    expect(screen.queryByText(/01\.01\.2026:/)).not.toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når utkastet mangler mengdeinformasjon', () => {

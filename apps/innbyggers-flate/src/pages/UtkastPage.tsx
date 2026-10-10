@@ -4,10 +4,9 @@ import {
   ConfirmInfoCard,
   DeferredFetchState,
   DeltakelseInnhold,
-  DeltakelsesmengdeInfo,
+  DeltakelsesmengdeUtkast,
   harBakgrunnsinfo,
   harInnhold,
-  lagUtkastDeltakelsesmengderForVisning,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   OmKurset,
@@ -126,17 +125,15 @@ export const UtkastPage = () => {
         />
       )}
 
-      <DeltakelsesmengdeInfo
+      <DeltakelsesmengdeUtkast
         tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
-          deltaker.startdato,
-          deltaker.deltakelsesprosent,
-          deltaker.dagerPerUke
-        )}
+        deltakelsesprosent={deltaker.deltakelsesprosent}
+        dagerPerUke={deltaker.dagerPerUke}
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"
+        bodyClassName="mt-2"
       />
 
       <DetteDelesMedArrangor

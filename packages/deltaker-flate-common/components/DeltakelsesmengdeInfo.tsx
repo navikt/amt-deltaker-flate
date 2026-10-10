@@ -1,38 +1,12 @@
 import { BodyShort, Heading, List } from '@navikt/ds-react'
-import dayjs from 'dayjs'
 import { Deltakelsesmengde, Tiltakskode } from '../model/deltaker'
 import { formatDate } from '../utils/utils'
 import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
 
-type DeltakelsesmengdeForVisning = Omit<
-  Deltakelsesmengde,
-  'deltakelsesprosent'
-> & {
-  deltakelsesprosent: number | null
-}
-
-export function lagUtkastDeltakelsesmengderForVisning(
-  startdato: Date | string | null,
-  deltakelsesprosent: number | null,
-  dagerPerUke: number | null
-): DeltakelsesmengdeForVisning[] {
-  if (!startdato || (deltakelsesprosent === null && dagerPerUke === null)) {
-    return []
-  }
-
-  return [
-    {
-      gyldigFra: dayjs(startdato).toDate(),
-      deltakelsesprosent,
-      dagerPerUke
-    }
-  ]
-}
-
 interface Props {
   tiltakskode: Tiltakskode
   erEnkeltplass: boolean
-  deltakelsesmengder: DeltakelsesmengdeForVisning[]
+  deltakelsesmengder: Deltakelsesmengde[]
   headingLevel?: '2' | '3'
   headingSize?: 'medium' | 'small'
   headingClassName?: string

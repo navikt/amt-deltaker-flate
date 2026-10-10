@@ -90,7 +90,7 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
-  it('viser deltakelsesmengde fra utkastfeltene når listen er tom', () => {
+  it('viser deltakelsesmengde fra utkastfeltene uten dato', () => {
     const deltaker = lagDeltaker({
       startdato: '2026-10-01',
       dagerPerUke: 3
@@ -99,7 +99,8 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     renderWithDeltaker(deltaker)
 
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
-    expect(screen.getByText(/01\.10\.2026: 3 dager i uka/)).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
+    expect(screen.queryByText(/01\.10\.2026:/)).not.toBeInTheDocument()
   })
 
   it('viser deltakelsesmengde for andre tiltakskoder', () => {
