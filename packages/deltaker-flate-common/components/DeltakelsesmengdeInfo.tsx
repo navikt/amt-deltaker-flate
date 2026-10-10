@@ -1,70 +1,60 @@
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Heading, List } from '@navikt/ds-react'
 import { Deltakelsesmengde, Tiltakskode } from '../model/deltaker'
 import { formatDate } from '../utils/utils'
 import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
 
 interface Props {
   tiltakskode: Tiltakskode
-  deltakelsesprosent: number | null
-  dagerPerUke: number | null
   erEnkeltplass: boolean
-  nesteDeltakelsesmengde: Deltakelsesmengde | null
+  deltakelsesmengder: Deltakelsesmengde[]
+  headingLevel?: '2' | '3'
+  headingSize?: 'medium' | 'small'
+  headingClassName?: string
 }
 
 export function DeltakelsesmengdeInfo({
   tiltakskode,
-  deltakelsesprosent,
-  dagerPerUke,
   erEnkeltplass,
-  nesteDeltakelsesmengde
+  deltakelsesmengder,
+  headingLevel = '2',
+  headingSize = 'medium',
+  headingClassName = 'mt-8'
 }: Props) {
-  const deltakelsesmengdeText = getDeltakelsesmengdeText({
-    tiltakskode,
-    deltakelsesprosent,
-    dagerPerUke,
-    erEnkeltplass
-  })
-
-  const nesteDeltakelsesmengdeText = nesteDeltakelsesmengde
-    ? getDeltakelsesmengdeText({
+  const perioder = [...deltakelsesmengder]
+    .sort((a, b) => a.gyldigFra.getTime() - b.gyldigFra.getTime())
+    .flatMap((deltakelsesmengde) => {
+      const tekst = getDeltakelsesmengdeText({
         tiltakskode,
-        deltakelsesprosent: nesteDeltakelsesmengde.deltakelsesprosent,
-        dagerPerUke: nesteDeltakelsesmengde.dagerPerUke,
+        deltakelsesprosent: deltakelsesmengde.deltakelsesprosent,
+        dagerPerUke: deltakelsesmengde.dagerPerUke,
         erEnkeltplass
       })
-    : null
 
-  if (deltakelsesmengdeText === null) {
+      return tekst ? [{ deltakelsesmengde, tekst }] : []
+    })
+
+  if (perioder.length === 0) {
     return null
   }
 
-  if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
-    return null
-  }
   return (
-    <>
-      <Heading level="2" size="medium" className="mt-8">
+    <div className="flex flex-col gap-2">
+      <Heading
+        level={headingLevel}
+        size={headingSize}
+        className={headingClassName}
+      >
         Deltakelsesmengde
       </Heading>
-      {nesteDeltakelsesmengde ? (
-        <>
-          <BodyShort size="small" className="mt-2">
-            Nåværende periode:
-          </BodyShort>
-          <BodyShort size="small">
-            {deltakelsesmengdeText || '(ikke satt)'}
-          </BodyShort>
-          <BodyShort size="small" className="mt-2">
-            Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
-            ):
-          </BodyShort>
-          <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
-        </>
-      ) : (
-        <BodyShort size="small" className="mt-2">
-          {deltakelsesmengdeText}
-        </BodyShort>
-      )}
-    </>
+      <List as="ul" size="small">
+        {perioder.map(({ deltakelsesmengde, tekst }) => (
+          <List.Item key={deltakelsesmengde.gyldigFra.toISOString()}>
+            <BodyShort as="span" size="small">
+              {`${formatDate(deltakelsesmengde.gyldigFra)}: ${tekst}`}
+            </BodyShort>
+          </List.Item>
+        ))}
+      </List>
+    </div>
   )
 }

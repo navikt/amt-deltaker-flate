@@ -28,12 +28,20 @@ export function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
     : deltaker.startdato && dayjs().isBefore(deltaker.startdato)
       ? dayjs(deltaker.startdato).toDate()
       : dayjs().toDate()
-  if (forslag === null)
+
+  if (forslag === null) {
+    const aktiv = hentAktivDeltakelsesmengde(
+      deltaker.gyldigeDeltakelsesmengder,
+      defaultGyldigFra
+    )
+
     return {
-      deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,
-      dagerPerUke: deltaker.dagerPerUke,
+      deltakelsesprosent: aktiv?.deltakelsesprosent ?? 100,
+      dagerPerUke: aktiv?.dagerPerUke ?? null,
       gyldigFra: defaultGyldigFra
     }
+  }
+
   if (isDeltakelsesmengde(forslag.endring)) {
     return {
       deltakelsesprosent: forslag.endring.deltakelsesprosent,
@@ -47,27 +55,39 @@ export function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
   }
 }
 
-type SisteDeltakelsesmengde = NonNullable<
-  DeltakerResponse['deltakelsesmengder']['sisteDeltakelsesmengde']
->
+type Deltakelsesmengde = DeltakerResponse['gyldigeDeltakelsesmengder'][number]
+
+export function hentAktivDeltakelsesmengde(
+  gyldigeDeltakelsesmengder: Deltakelsesmengde[],
+  dato: Date
+): Deltakelsesmengde | null {
+  return (
+    gyldigeDeltakelsesmengder
+      .filter((d) => d.gyldigFra <= dato)
+      .sort((a, b) => b.gyldigFra.getTime() - a.gyldigFra.getTime())[0] ?? null
+  )
+}
 
 export function harEndringSidenSisteDeltakelsesmengde(
   deltaker: DeltakerResponse,
   gyldigFra: Date,
-  erMengdeEndret: (siste: SisteDeltakelsesmengde) => boolean
+  erMengdeEndret: (aktiv: Deltakelsesmengde) => boolean
 ) {
-  const siste = deltaker.deltakelsesmengder.sisteDeltakelsesmengde
-  if (siste === null) {
+  const aktiv = hentAktivDeltakelsesmengde(
+    deltaker.gyldigeDeltakelsesmengder,
+    new Date()
+  )
+  if (aktiv === null) {
     return true
   }
 
-  if (erMengdeEndret(siste)) {
+  if (erMengdeEndret(aktiv)) {
     return true
   }
 
   return dayjs(gyldigFra)
     .startOf('day')
-    .isBefore(dayjs(siste.gyldigFra).startOf('day'))
+    .isBefore(dayjs(aktiv.gyldigFra).startOf('day'))
 }
 
 export function lagFellesDeltakelsesmengdeBodyFelter(

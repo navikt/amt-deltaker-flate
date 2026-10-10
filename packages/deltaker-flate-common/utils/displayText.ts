@@ -34,12 +34,15 @@ export const deltakerprosentText = (
   if (erEnkeltplass) {
     return dagerIUkaText
   }
+  if (deltakelsesprosent === null) {
+    return null
+  }
   const fordeltPaDagerIUkaText = dagerPerUke
     ? `fordelt på ${dagerIUkaText}`
     : ''
   return fordeltPaDagerIUkaText
-    ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
-    : `${deltakelsesprosent ?? 100}\u00A0%`
+    ? `${deltakelsesprosent}\u00A0% ${fordeltPaDagerIUkaText}`
+    : `${deltakelsesprosent}\u00A0%`
 }
 
 export const getDeltakerStatusDisplayText = (

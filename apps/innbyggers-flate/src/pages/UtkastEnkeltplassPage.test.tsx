@@ -69,10 +69,7 @@ const lagDeltaker = (
     importertFraArena: null,
     harAdresse: false,
     adresseDelesMedArrangor: false,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
+    gyldigeDeltakelsesmengder: [],
     erUnderOppfolging: true,
     erManueltDeltMedArrangor: false,
     ...overrides
@@ -93,18 +90,20 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
-  it('viser deltakelsesmengde når arbeidsmarkedsopplæring og dagerPerUke er satt', () => {
+  it('viser deltakelsesmengde fra utkastfeltene uten dato', () => {
     const deltaker = lagDeltaker({
+      startdato: '2026-10-01',
       dagerPerUke: 3
     })
 
     renderWithDeltaker(deltaker)
 
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
-    expect(screen.getByText('3 dager i uka')).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
+    expect(screen.queryByText(/01\.10\.2026:/)).not.toBeInTheDocument()
   })
 
-  it('viser deltakelsesmengde når enkeltplass og dagerPerUke er satt for andre tiltakskoder', () => {
+  it('viser deltakelsesmengde for andre tiltakskoder', () => {
     const deltaker = lagDeltaker({
       deltakerliste: {
         ...lagDeltaker().deltakerliste,
@@ -113,37 +112,38 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
           visningsnavn: 'Varig tilrettelagt arbeid'
         }
       },
+      startdato: '2026-10-01',
       dagerPerUke: 4
     })
 
     renderWithDeltaker(deltaker)
 
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
-    expect(screen.getByText('4 dager i uka')).toBeInTheDocument()
+    expect(screen.getByText(/4 dager i uka/)).toBeInTheDocument()
   })
 
-  it('skjuler deltakelsesmengde når dagerPerUke er null', () => {
-    const deltaker = lagDeltaker({
-      dagerPerUke: null
-    })
+  it('skjuler deltakelsesmengde når utkastet mangler mengdeinformasjon', () => {
+    const deltaker = lagDeltaker()
 
     renderWithDeltaker(deltaker)
 
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })
 
-  it('viser 1 dag i uka når dagerPerUke er 1', () => {
+  it('viser 1 dag i uka fra utkastfeltene', () => {
     const deltaker = lagDeltaker({
+      startdato: '2026-10-01',
       dagerPerUke: 1
     })
 
     renderWithDeltaker(deltaker)
 
-    expect(screen.getByText('1 dag i uka')).toBeInTheDocument()
+    expect(screen.getByText(/1 dag i uka/)).toBeInTheDocument()
   })
 
-  it('skjuler deltakelsesmengde når dagerPerUke er 0', () => {
+  it('skjuler deltakelsesmengde når utkastet ikke har dager', () => {
     const deltaker = lagDeltaker({
+      startdato: '2026-10-01',
       dagerPerUke: 0
     })
 

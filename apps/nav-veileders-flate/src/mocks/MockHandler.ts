@@ -87,7 +87,7 @@ export class MockHandler {
     const ledetekst = getLedetekst(this.tiltakskode)
     const innhold = getInnholdForTiltakskode(this.tiltakskode)
 
-    const sisteDeltakelsesmengde: Deltakelsesmengde = {
+    const standardDeltakelsesmengde: Deltakelsesmengde = {
       gyldigFra: _startdato ?? new Date(),
       dagerPerUke: null,
       deltakelsesprosent: 100
@@ -163,8 +163,8 @@ export class MockHandler {
       },
       startdato: _startdato,
       sluttdato: _sluttdato,
-      dagerPerUke: sisteDeltakelsesmengde.dagerPerUke,
-      deltakelsesprosent: sisteDeltakelsesmengde.deltakelsesprosent,
+      dagerPerUke: standardDeltakelsesmengde.dagerPerUke,
+      deltakelsesprosent: standardDeltakelsesmengde.deltakelsesprosent,
       bakgrunnsinformasjon: bakgrunnsinformasjon,
       deltakelsesinnhold: {
         ledetekst: ledetekst,
@@ -188,10 +188,15 @@ export class MockHandler {
       forslag: [],
       importertFraArena: null,
       erUnderOppfolging: true,
-      deltakelsesmengder: {
-        sisteDeltakelsesmengde,
-        nesteDeltakelsesmengde: null
-      },
+      gyldigeDeltakelsesmengder: [
+        {
+          ...standardDeltakelsesmengde,
+          gyldigFra: dayjs(standardDeltakelsesmengde.gyldigFra)
+            .subtract(1, 'month')
+            .toDate()
+        },
+        standardDeltakelsesmengde
+      ],
       erManueltDeltMedArrangor: true
     }
   }
@@ -900,35 +905,22 @@ export class MockHandler {
     const oppdatertPamelding = this.pamelding
 
     if (oppdatertPamelding) {
-      const nesteDeltakelsesmengde =
-        oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde
       const gyldigFra = dayjs(request.gyldigFra).toDate()
       if (gyldigFra <= new Date()) {
         oppdatertPamelding.deltakelsesprosent =
           request.deltakelsesprosent || null
         oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
-      } else if (
-        nesteDeltakelsesmengde === null ||
-        gyldigFra <= nesteDeltakelsesmengde.gyldigFra
-      ) {
-        if (
-          request.dagerPerUke != oppdatertPamelding.dagerPerUke ||
-          request.deltakelsesprosent != oppdatertPamelding.deltakelsesprosent
-        ) {
-          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
-            gyldigFra: gyldigFra,
-            deltakelsesprosent: request.deltakelsesprosent ?? 100,
-            dagerPerUke: request.dagerPerUke ?? null
-          }
-        } else {
-          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = null
+      }
+      oppdatertPamelding.gyldigeDeltakelsesmengder = [
+        ...oppdatertPamelding.gyldigeDeltakelsesmengder.filter(
+          (mengde) => !dayjs(mengde.gyldigFra).isSame(gyldigFra, 'day')
+        ),
+        {
+          gyldigFra,
+          deltakelsesprosent: request.deltakelsesprosent ?? 100,
+          dagerPerUke: request.dagerPerUke ?? null
         }
-      }
-      oppdatertPamelding.deltakelsesmengder.sisteDeltakelsesmengde = {
-        gyldigFra: gyldigFra,
-        deltakelsesprosent: request.deltakelsesprosent ?? 100,
-        dagerPerUke: request.dagerPerUke ?? null
-      }
+      ].sort((a, b) => a.gyldigFra.getTime() - b.gyldigFra.getTime())
       this.pamelding = oppdatertPamelding
       this.fjernAktivtForslag(request.forslagId)
       return HttpResponse.json(this.pamelding)

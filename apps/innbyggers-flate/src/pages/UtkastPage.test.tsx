@@ -13,7 +13,11 @@ vi.mock('react-router-dom', () => ({
 }))
 
 describe('UtkastPage - Deltakelsesmengde', () => {
-  const stottetTiltakDeltaker = lagInnbyggerDeltaker()
+  const stottetTiltakDeltaker = lagInnbyggerDeltaker({
+    startdato: '2026-01-01',
+    deltakelsesprosent: 80,
+    dagerPerUke: 3
+  })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
     deltakerliste: {
@@ -28,6 +32,7 @@ describe('UtkastPage - Deltakelsesmengde', () => {
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithInnbyggerDeltakerContext(<UtkastPage />, stottetTiltakDeltaker)
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {

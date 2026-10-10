@@ -43,7 +43,7 @@ export const createDeltaker = (
   const dagerPerUke = 1
   const deltakelsesprosent = 10
 
-  const sisteDeltakelsesmengde = {
+  const framtidigDeltakelsesmengde = {
     gyldigFra: dayjs().add(1, 'week').toDate(),
     deltakelsesprosent: 100,
     dagerPerUke: null
@@ -103,10 +103,7 @@ export const createDeltaker = (
     adresseDelesMedArrangor: true,
     forslag: [],
     importertFraArena: null,
-    deltakelsesmengder: {
-      nesteDeltakelsesmengde: sisteDeltakelsesmengde,
-      sisteDeltakelsesmengde: sisteDeltakelsesmengde
-    },
+    gyldigeDeltakelsesmengder: [framtidigDeltakelsesmengde],
     erManueltDeltMedArrangor: true
   }
 }

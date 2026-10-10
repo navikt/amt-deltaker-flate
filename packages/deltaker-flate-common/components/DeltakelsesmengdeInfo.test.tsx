@@ -20,90 +20,78 @@ const extractText = (node: ReactNode): string[] => {
 }
 
 describe('DeltakelsesmengdeInfo', () => {
-  it('returnerer null når enkeltplass mangler nåværende og neste deltakelsesmengde', () => {
+  it('returnerer null når det ikke finnes gyldige deltakelsesmengder', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      deltakelsesprosent: null,
-      dagerPerUke: null,
       erEnkeltplass: true,
-      nesteDeltakelsesmengde: null
+      deltakelsesmengder: []
     })
 
     expect(result).toBeNull()
   })
 
-  it('viser "(ikke satt)" for nåværende periode når neste deltakelsesmengde finnes', () => {
-    const result = DeltakelsesmengdeInfo({
-      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      deltakelsesprosent: null,
-      dagerPerUke: null,
-      erEnkeltplass: true,
-      nesteDeltakelsesmengde: {
-        deltakelsesprosent: 60,
-        dagerPerUke: 3,
-        gyldigFra: new Date('2025-08-01')
-      }
-    })
-    const text = extractText(result).join(' ')
-
-    expect(text).toContain('Nåværende periode:')
-    expect(text).toContain('(ikke satt)')
-    expect(text).toContain('3 dager i uka')
-  })
-
-  // Litt søkt edgecase, men test dokumenterer oppførsel som evt kan justeres ved behov.
-  it('returnerer null når tiltaket ikke støtter deltakelsesmengde selv om neste periode finnes', () => {
+  it('returnerer null når tiltaket ikke støtter deltakelsesmengde', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.OPPFOLGING,
-      deltakelsesprosent: 80,
-      dagerPerUke: 3,
       erEnkeltplass: false,
-      nesteDeltakelsesmengde: {
-        deltakelsesprosent: 60,
-        dagerPerUke: 3,
-        gyldigFra: new Date('2025-08-01')
-      }
+      deltakelsesmengder: [
+        {
+          deltakelsesprosent: 80,
+          dagerPerUke: 3,
+          gyldigFra: new Date(2026, 9, 12)
+        }
+      ]
     })
 
     expect(result).toBeNull()
   })
 
-  it('viser enkel periode når neste deltakelsesmengde mangler', () => {
+  it('viser alle deltakelsesmengder som sorterte kulepunkter med startdato', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      deltakelsesprosent: null,
-      dagerPerUke: 2,
-      erEnkeltplass: true,
-      nesteDeltakelsesmengde: null
+      erEnkeltplass: false,
+      deltakelsesmengder: [
+        {
+          deltakelsesprosent: 60,
+          dagerPerUke: 3,
+          gyldigFra: new Date(2026, 9, 20)
+        },
+        {
+          deltakelsesprosent: 40,
+          dagerPerUke: 2,
+          gyldigFra: new Date(2026, 9, 12)
+        }
+      ]
     })
     const text = extractText(result).join(' ')
 
-    expect(text).toContain('Deltakelsesmengde')
+    expect(text.indexOf('12.10.2026:')).toBeLessThan(
+      text.indexOf('20.10.2026:')
+    )
+    expect(text).toContain('40')
     expect(text).toContain('2 dager i uka')
-    expect(text).not.toContain('Nåværende periode:')
+    expect(text).toContain('60')
+    expect(text).toContain('3 dager i uka')
+    expect(text).not.toContain('Periode')
+    expect(text).not.toContain('t.o.m.')
   })
 
-  it('returnerer null når dagerPerUke er 0 uten neste periode', () => {
+  it('viser dager uten prosent for enkeltplass', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
-      deltakelsesprosent: null,
-      dagerPerUke: 0,
       erEnkeltplass: true,
-      nesteDeltakelsesmengde: null
+      deltakelsesmengder: [
+        {
+          deltakelsesprosent: 60,
+          dagerPerUke: 3,
+          gyldigFra: new Date(2026, 9, 12)
+        }
+      ]
     })
+    const text = extractText(result).join(' ')
 
-    expect(result).toBeNull()
-  })
-
-  it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {
-    const result = DeltakelsesmengdeInfo({
-      tiltakskode: Tiltakskode.OPPFOLGING,
-      deltakelsesprosent: 80,
-      dagerPerUke: 3,
-      erEnkeltplass: false,
-      nesteDeltakelsesmengde: null
-    })
-
-    expect(result).toBeNull()
+    expect(text).toContain('12.10.2026:')
+    expect(text).toContain('3 dager i uka')
+    expect(text).not.toContain('60')
   })
 })

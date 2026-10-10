@@ -50,7 +50,6 @@ export const UtkastDeltakerEnkeltplass = () => {
         dagerPerUke={deltaker.dagerPerUke}
         headingLevel="3"
         headingSize="small"
-        bodyClassName="mt-2"
       />
 
       <PrisOgBetaling
