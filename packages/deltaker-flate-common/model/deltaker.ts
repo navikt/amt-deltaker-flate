@@ -131,7 +131,7 @@ export const importertDeltakerFraArenaSchema = z.object({
 })
 
 export const deltakelsesmengdeSchema = z.object({
-  deltakelsesprosent: z.number(),
+  deltakelsesprosent: z.number().nullable(),
   dagerPerUke: z.number().nullable(),
   gyldigFra: dateSchema
 })

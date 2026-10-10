@@ -20,6 +20,24 @@ describe('deltakerSchema', () => {
     ])
   })
 
+  it('parser deltakelsesmengde uten prosent', () => {
+    const response = deltakerSchema.shape.gyldigeDeltakelsesmengder.parse([
+      {
+        deltakelsesprosent: null,
+        dagerPerUke: 5,
+        gyldigFra: '2026-10-12'
+      }
+    ])
+
+    expect(response).toEqual([
+      {
+        deltakelsesprosent: null,
+        dagerPerUke: 5,
+        gyldigFra: new Date(2026, 9, 12)
+      }
+    ])
+  })
+
   it('bruker tom liste når responsen mangler feltet', () => {
     const schema = deltakerSchema.pick({
       gyldigeDeltakelsesmengder: true

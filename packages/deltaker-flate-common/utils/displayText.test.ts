@@ -40,11 +40,11 @@ describe('deltakerprosentText', () => {
       expected: '50\u00A0% fordelt på 3 dager i uka'
     },
     {
-      navn: 'gruppe med nullverdi for prosent bruker 100 som fallback',
+      navn: 'gruppe med null prosent har ingen mengdetekst',
       deltakelsesprosent: null,
       dagerPerUke: 2,
       erEnkeltplass: false,
-      expected: '100\u00A0% fordelt på 2 dager i uka'
+      expected: null
     }
   ])(
     '$navn',
