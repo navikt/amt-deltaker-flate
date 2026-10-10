@@ -1,6 +1,7 @@
 import { DatePicker, ErrorMessage, useDatepicker } from '@navikt/ds-react'
 import dayjs from 'dayjs'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useEffect, useRef, useState, type FocusEvent } from 'react'
+import { useController, useFormContext } from 'react-hook-form'
 import { usePameldingFormContext } from '../PameldingFormContext'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import {
@@ -8,47 +9,66 @@ import {
   PameldingEnkeltplassFormValues
 } from '../../../model/PameldingEnkeltplassFormValues'
 import { getMaxVarighetDato } from '../../../utils/varighet'
-import { getDayjsFromString } from 'deltaker-flate-common'
 
-interface Props {
-  defaultStartdato?: string
-  defaultSluttdato?: string
-}
-
-export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
+export function PameldingDatoer() {
   const {
     control,
-    setValue,
-    watch,
     clearErrors,
+    trigger,
     formState: { errors }
   } = useFormContext<PameldingEnkeltplassFormValues>()
+  const { field: startdatoField } = useController({
+    control,
+    name: 'startdato'
+  })
+  const { field: sluttdatoField } = useController({
+    control,
+    name: 'sluttdato'
+  })
   const { disabled } = usePameldingFormContext()
   const { deltaker } = useDeltakerContext()
 
-  const startdato = watch('startdato')
+  const startdato = startdatoField.value
+  const tidligsteStartdato = dayjs().subtract(2, 'month')
   const startdatoDayjs = startdato
     ? dayjs(startdato, DATE_FORMAT, true)
     : undefined
-  const sluttdato = watch('sluttdato')
-  const maxSluttdato = startdatoDayjs
-    ? getMaxVarighetDato(deltaker, startdatoDayjs?.toDate())?.toDate()
+  const sluttdatoDayjs = sluttdatoField.value
+    ? dayjs(sluttdatoField.value, DATE_FORMAT, true)
+    : undefined
+  const [startdatoIsInvalid, setStartdatoIsInvalid] = useState(false)
+  const [sluttdatoIsInvalid, setSluttdatoIsInvalid] = useState(false)
+  const previousStartdato = useRef(startdato)
+
+  useEffect(() => {
+    if (previousStartdato.current === startdato) return
+
+    previousStartdato.current = startdato
+    setSluttdatoIsInvalid(false)
+    if (sluttdatoField.value) {
+      void trigger('sluttdato')
+    }
+  }, [startdato, sluttdatoField.value, trigger])
+
+  const maxSluttdato = startdatoDayjs?.isValid()
+    ? getMaxVarighetDato(deltaker, startdatoDayjs.toDate())?.toDate()
     : undefined
 
   const {
     datepickerProps: datepickerPropsStartdato,
     inputProps: { onBlur: startdatoOnBlur, ...startdatoInputProps }
   } = useDatepicker({
-    fromDate: dayjs().subtract(2, 'month').toDate(),
-    defaultSelected: defaultStartdato
-      ? dayjs(defaultStartdato, DATE_FORMAT, true)?.toDate()
+    fromDate: tidligsteStartdato.toDate(),
+    defaultSelected: startdatoDayjs?.isValid()
+      ? startdatoDayjs.toDate()
       : undefined,
+    onValidate: ({ isInvalid }) => setStartdatoIsInvalid(isInvalid),
     onDateChange: (date) => {
-      setValue('startdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
-        shouldDirty: true
-      })
-      clearErrors('startdato')
-      handleStardatoChanged(date)
+      startdatoField.onChange(date ? dayjs(date).format(DATE_FORMAT) : '')
+      if (date) {
+        setStartdatoIsInvalid(false)
+        clearErrors('startdato')
+      }
     }
   })
 
@@ -56,98 +76,83 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
     datepickerProps: datepickerPropsSluttdato,
     inputProps: { onBlur: sluttdatoOnBlur, ...sluttdatoInputProps }
   } = useDatepicker({
-    fromDate: startdatoDayjs?.toDate() ?? dayjs().subtract(2, 'month').toDate(),
+    fromDate: startdatoDayjs?.isValid()
+      ? startdatoDayjs.toDate()
+      : tidligsteStartdato.toDate(),
     toDate: maxSluttdato ?? undefined,
-    defaultSelected: defaultSluttdato
-      ? dayjs(defaultSluttdato, DATE_FORMAT, true)?.toDate()
+    defaultSelected: sluttdatoDayjs?.isValid()
+      ? sluttdatoDayjs.toDate()
       : undefined,
+    onValidate: ({ isInvalid }) => setSluttdatoIsInvalid(isInvalid),
     onDateChange: (date) => {
-      setValue('sluttdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
-        shouldDirty: true
-      })
-      clearErrors('sluttdato')
+      sluttdatoField.onChange(date ? dayjs(date).format(DATE_FORMAT) : '')
+      if (date) {
+        setSluttdatoIsInvalid(false)
+        clearErrors('sluttdato')
+      }
     }
   })
 
-  const handleBlur = (newDate: string, id: 'startdato' | 'sluttdato') => {
-    const parsed = getDayjsFromString(newDate)
+  const handleSluttdatoBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const inputValue = event.currentTarget.value
+    sluttdatoOnBlur?.(event)
+    sluttdatoField.onBlur()
 
-    if (parsed?.isValid()) {
-      setValue(id, parsed.format(DATE_FORMAT), { shouldDirty: true })
-    } else {
-      setValue(id, newDate || '', { shouldDirty: true })
+    // Behold rå input når feltet er tomt eller DatePicker ikke har en gyldig verdi
+    if (inputValue === '' || sluttdatoIsInvalid || !sluttdatoField.value) {
+      sluttdatoField.onChange(inputValue)
     }
 
-    clearErrors(id)
-
-    if (id === 'startdato' && parsed) {
-      handleStardatoChanged(parsed.toDate())
-    }
+    void trigger('sluttdato')
   }
 
-  // Hvis startdato endres kan sluttdato bli gyldig:
-  const handleStardatoChanged = (newStart?: Date) => {
-    const sluttdatoDayjs = sluttdato
-      ? dayjs(sluttdato, DATE_FORMAT, true)
-      : undefined
+  const handleStartdatoBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const inputValue = event.currentTarget.value
+    startdatoOnBlur?.(event)
+    startdatoField.onBlur()
 
-    const sluttdatoErGyldig =
-      newStart &&
-      sluttdatoDayjs &&
-      sluttdatoDayjs.isSameOrAfter(newStart, 'date') &&
-      (!maxSluttdato || sluttdatoDayjs.isSameOrBefore(maxSluttdato, 'date'))
+    // Behold rå input når feltet er tomt eller DatePicker ikke har en gyldig verdi
+    if (inputValue === '' || startdatoIsInvalid || !startdatoField.value) {
+      startdatoField.onChange(inputValue)
+    }
 
-    if (sluttdatoErGyldig) clearErrors('sluttdato')
+    // Behold eksisterende feil ved ugyldig tekst; trigger ville overskrevet
+    // den med formatfeilen
+    if (inputValue !== '' && startdatoIsInvalid && errors.startdato) return
+
+    void trigger('startdato')
   }
 
   return (
     <div>
       <div className="flex gap-4">
-        <Controller
-          control={control}
-          name="startdato"
-          render={({ field: { ref } }) => (
-            <DatePicker {...datepickerPropsStartdato}>
-              <DatePicker.Input
-                label="Startdato"
-                ref={ref}
-                {...startdatoInputProps}
-                id="startdato"
-                error={!!errors['startdato']?.message}
-                aria-describedby="startdato-error"
-                size="small"
-                onBlur={(event) => {
-                  startdatoOnBlur?.(event)
-                  handleBlur(event.target.value, 'startdato')
-                }}
-                disabled={disabled}
-              />
-            </DatePicker>
-          )}
-        />
+        <DatePicker {...datepickerPropsStartdato}>
+          <DatePicker.Input
+            label="Startdato"
+            ref={startdatoField.ref}
+            {...startdatoInputProps}
+            id="startdato"
+            error={!!errors['startdato']?.message}
+            aria-describedby="startdato-error"
+            size="small"
+            onBlur={handleStartdatoBlur}
+            disabled={disabled}
+          />
+        </DatePicker>
 
-        <Controller
-          control={control}
-          name="sluttdato"
-          render={({ field: { ref } }) => (
-            <DatePicker {...datepickerPropsSluttdato}>
-              <DatePicker.Input
-                label="Sluttdato"
-                ref={ref}
-                {...sluttdatoInputProps}
-                id="sluttdato"
-                error={!!errors['sluttdato']?.message}
-                aria-describedby="sluttdato-error"
-                size="small"
-                onBlur={(event) => {
-                  sluttdatoOnBlur?.(event)
-                  handleBlur(event.target.value, 'sluttdato')
-                }}
-                disabled={disabled}
-              />
-            </DatePicker>
-          )}
-        />
+        <DatePicker {...datepickerPropsSluttdato}>
+          <DatePicker.Input
+            label="Sluttdato"
+            ref={sluttdatoField.ref}
+            {...sluttdatoInputProps}
+            id="sluttdato"
+            error={!!errors['sluttdato']?.message}
+            aria-describedby="sluttdato-error"
+            size="small"
+            onBlur={handleSluttdatoBlur}
+            disabled={disabled}
+          />
+        </DatePicker>
       </div>
       <div
         className="mt-4"
@@ -156,7 +161,9 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
         aria-live="polite"
       >
         {errors.startdato && (
-          <ErrorMessage showIcon>{errors.startdato?.message}</ErrorMessage>
+          <ErrorMessage size="small" showIcon>
+            {errors.startdato?.message}
+          </ErrorMessage>
         )}
       </div>
       <div
@@ -166,7 +173,9 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
         aria-live="polite"
       >
         {errors.sluttdato && (
-          <ErrorMessage showIcon>{errors.sluttdato?.message}</ErrorMessage>
+          <ErrorMessage size="small" showIcon>
+            {errors.sluttdato?.message}
+          </ErrorMessage>
         )}
       </div>
     </div>

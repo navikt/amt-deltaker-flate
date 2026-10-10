@@ -5,15 +5,14 @@ import {
   RadioGroup,
   useDatepicker
 } from '@navikt/ds-react'
+import { getDayjsFromString, Tiltakskode } from 'deltaker-flate-common'
 import dayjs from 'dayjs'
-import { Tiltakskode } from 'deltaker-flate-common'
-import { useRef, useState } from 'react'
-import { formatDateToInputStr } from '../../utils/utils.ts'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import {
   VarighetValg,
   getVarighet,
   varighetValgForTiltakskode
-} from '../../utils/varighet.tsx'
+} from '../../utils/varighet.ts'
 
 interface Props {
   className?: string
@@ -59,48 +58,83 @@ export const VarighetField = ({
     }
   )
 
-  const datePickerRef = useRef<HTMLInputElement>(null)
   const visDatovelger = valgtVarighet === VarighetValg.ANNET
-  const [dateInput, setDateInput] = useState<string>(
-    defaultAnnetDato ? formatDateToInputStr(defaultAnnetDato) : ''
-  )
 
-  const { datepickerProps } = useDatepicker({
+  const [inputDateCandidate, setInputDateCandidate] = useState<Date>()
+  const inputDateCandidateRef = useRef<Date | undefined>(undefined)
+  const [inputDateIsOutOfRange, setInputDateIsOutOfRange] = useState(false)
+  const {
+    datepickerProps,
+    inputProps: { onChange: handleDatepickerInputChange, ...inputProps }
+  } = useDatepicker({
     fromDate: startDato,
     toDate: sluttdato,
     defaultMonth: startDato,
     defaultSelected: defaultAnnetDato || undefined,
     onValidate: (dateValidation) => {
-      // Treffer valg endret av musepeker
-      onValidateSluttDato(dateValidation)
+      const isOutOfRange = dateValidation.isAfter || dateValidation.isBefore
+      setInputDateIsOutOfRange(isOutOfRange)
+      const candidate = isOutOfRange ? inputDateCandidateRef.current : undefined
+      if (candidate) {
+        onValidateSluttDato(dateValidation, candidate)
+      } else {
+        onValidateSluttDato(dateValidation)
+      }
     },
     onDateChange: (date) => {
-      // Denne treffer valg i date picker fra klikk
-      // den vil alltid velge gyldige datoer definert av datepicker.
       if (date) {
-        setDateInput(formatDateToInputStr(date))
+        setInputDateCandidate(undefined)
+        inputDateCandidateRef.current = undefined
+        setInputDateIsOutOfRange(false)
       }
       onChangeSluttDato(date)
     }
   })
 
+  useEffect(() => {
+    if (!inputDateCandidate || !inputDateIsOutOfRange) return
+
+    const isBeforeStart =
+      startDato && dayjs(inputDateCandidate).isBefore(startDato, 'date')
+    const isAfterEnd =
+      sluttdato && dayjs(inputDateCandidate).isAfter(sluttdato, 'date')
+
+    if (isBeforeStart || isAfterEnd) {
+      onValidateSluttDato(
+        isBeforeStart
+          ? dateValidation({ isBefore: true })
+          : dateValidation({ isAfter: true }),
+        inputDateCandidate
+      )
+      return
+    }
+
+    const validDateValidation = dateValidation({ isValidDate: true })
+    onChangeSluttDato(inputDateCandidate)
+    onValidateSluttDato(validDateValidation, inputDateCandidate)
+    setInputDateIsOutOfRange(false)
+    setInputDateCandidate(undefined)
+    inputDateCandidateRef.current = undefined
+  }, [
+    inputDateIsOutOfRange,
+    inputDateCandidate,
+    onChangeSluttDato,
+    onValidateSluttDato,
+    startDato,
+    sluttdato
+  ])
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.currentTarget.value
+    const parsedDate = getDayjsFromString(inputValue)?.toDate()
+    setInputDateCandidate(parsedDate)
+    inputDateCandidateRef.current = parsedDate
+    handleDatepickerInputChange?.(event)
+  }
+
   const handleChangeVarighet = (valg: VarighetValg) => {
     setValgtVarighet(valg)
     onChangeVarighet(valg)
-  }
-
-  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Denne treffers hvis vi endrer date-input med tastatur.
-    setDateInput(e.target.value)
-
-    const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
-    if (date.isValid()) {
-      onChangeSluttDato(date.toDate())
-      onValidateSluttDato(dateValidation({ isValidDate: true }), date.toDate())
-    } else {
-      onValidateSluttDato(dateValidation({ isInvalid: true }))
-      onChangeSluttDato(undefined)
-    }
   }
 
   return (
@@ -128,14 +162,13 @@ export const VarighetField = ({
           <div className={visRadioAnnet ? 'mt-2 ml-7' : ''}>
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
-                value={dateInput}
-                ref={datePickerRef}
+                {...inputProps}
+                onChange={handleInputChange}
                 label="Annet - velg dato"
                 size="small"
                 hideLabel={true}
                 error={errorSluttDato}
                 disabled={disabled}
-                onChange={handleDateInputChange}
               />
             </DatePicker>
           </div>

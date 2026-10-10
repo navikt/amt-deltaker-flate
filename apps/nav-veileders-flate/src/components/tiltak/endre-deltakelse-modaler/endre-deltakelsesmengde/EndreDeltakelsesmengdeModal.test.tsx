@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DeltakerStatusType } from 'deltaker-flate-common'
 import { ReactNode } from 'react'
@@ -137,8 +137,10 @@ describe('EndreDeltakelsesmengdeModal', () => {
   })
 
   describe('EndreDeltakelsesmengdeModal UI', () => {
-    it('Gruppe-variant viser gruppe-felter og skjuler enkeltplass-tekst', () => {
-      renderModal(lagDeltaker(false))
+    it('Gruppe-variant viser gruppe-felter og skjuler enkeltplass-tekst', async () => {
+      await act(async () => {
+        renderModal(lagDeltaker(false))
+      })
 
       expect(screen.getByLabelText(prosentLabel)).toBeInTheDocument()
       expect(screen.getByLabelText(gruppeDagerLabel)).toBeInTheDocument()
@@ -147,13 +149,36 @@ describe('EndreDeltakelsesmengdeModal', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('Enkeltplass-variant viser enkeltplass-felter og skjuler prosentfelt', () => {
-      renderModal(lagDeltaker(true))
+    it('Enkeltplass-variant viser enkeltplass-felter og skjuler prosentfelt', async () => {
+      await act(async () => {
+        renderModal(lagDeltaker(true))
+      })
 
       expect(screen.queryByLabelText(prosentLabel)).not.toBeInTheDocument()
       expect(screen.getByLabelText(enkeltplassDagerLabel)).toBeInTheDocument()
       expect(screen.queryByLabelText(gruppeDagerLabel)).not.toBeInTheDocument()
     })
+
+    it.each([
+      { navn: 'gruppe', erEnkeltplass: false },
+      { navn: 'enkeltplass', erEnkeltplass: true }
+    ])(
+      'viser påkrevd-feil når gyldigFra tømmes i $navn-varianten',
+      async ({ erEnkeltplass }) => {
+        const user = userEvent.setup()
+        renderModal(lagDeltaker(erEnkeltplass))
+
+        await user.clear(
+          screen.getByLabelText('Fra når gjelder ny deltakelsesmengde?')
+        )
+        await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+        expect(
+          await screen.findByText('Du må velge en dato.')
+        ).toBeInTheDocument()
+        expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+      }
+    )
 
     it('Gruppe-variant oppdaterer synlighet av gruppe-dager dynamisk når prosent endres', async () => {
       const user = userEvent.setup()
