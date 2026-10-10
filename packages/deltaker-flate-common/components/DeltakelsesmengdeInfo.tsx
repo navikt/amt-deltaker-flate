@@ -57,8 +57,11 @@ export function DeltakelsesmengdeInfo({
         dagerPerUke: deltakelsesmengde.dagerPerUke,
         erEnkeltplass
       })
+      const periodeTekst = `Periode (fom. ${formatDate(
+        deltakelsesmengde.gyldigFra
+      )}${sluttdatoPeriode ? ` t.o.m. ${formatDate(sluttdatoPeriode)}` : ''}):`
 
-      return tekst ? { deltakelsesmengde, sluttdatoPeriode, tekst } : null
+      return tekst ? { deltakelsesmengde, periodeTekst, tekst } : null
     })
     .filter((periode) => periode !== null)
 
@@ -68,14 +71,10 @@ export function DeltakelsesmengdeInfo({
         <Heading level="2" size="medium" className="mt-8">
           Deltakelsesmengde
         </Heading>
-        {perioder.map(({ deltakelsesmengde, sluttdatoPeriode, tekst }) => (
+        {perioder.map(({ deltakelsesmengde, periodeTekst, tekst }) => (
           <div key={deltakelsesmengde.gyldigFra.toISOString()}>
             <BodyShort size="small" className="mt-2">
-              Periode (fom. {formatDate(deltakelsesmengde.gyldigFra)}
-              {sluttdatoPeriode
-                ? ` t.o.m. ${formatDate(sluttdatoPeriode)}`
-                : ''}
-              ):
+              {periodeTekst}
             </BodyShort>
             <BodyShort size="small">{tekst}</BodyShort>
           </div>
