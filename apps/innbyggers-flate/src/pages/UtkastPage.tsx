@@ -133,7 +133,6 @@ export const UtkastPage = () => {
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"
-        bodyClassName="mt-2"
       />
 
       <DetteDelesMedArrangor

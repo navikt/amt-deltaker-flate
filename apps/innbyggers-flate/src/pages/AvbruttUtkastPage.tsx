@@ -54,7 +54,6 @@ export const AvbruttUtkastPage = () => {
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"
-        bodyClassName="mt-2"
       />
     </div>
   )

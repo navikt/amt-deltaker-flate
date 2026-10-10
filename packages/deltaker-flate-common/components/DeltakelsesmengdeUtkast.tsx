@@ -11,7 +11,6 @@ interface Props {
   headingLevel: '2' | '3'
   headingSize: 'medium' | 'small'
   headingClassName?: string
-  bodyClassName?: string
 }
 
 export const DeltakelsesmengdeUtkast = ({
@@ -19,7 +18,6 @@ export const DeltakelsesmengdeUtkast = ({
   headingLevel,
   headingSize,
   headingClassName,
-  bodyClassName,
   ...props
 }: Props) => {
   const text = getDeltakelsesmengdeText(props)
@@ -29,7 +27,7 @@ export const DeltakelsesmengdeUtkast = ({
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <Heading
         level={headingLevel}
         size={headingSize}
@@ -37,9 +35,7 @@ export const DeltakelsesmengdeUtkast = ({
       >
         {headingText}
       </Heading>
-      <BodyLong size="small" className={bodyClassName}>
-        {text}
-      </BodyLong>
-    </>
+      <BodyLong size="small">{text}</BodyLong>
+    </div>
   )
 }
