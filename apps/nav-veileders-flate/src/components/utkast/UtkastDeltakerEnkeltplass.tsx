@@ -4,6 +4,7 @@ import {
   DeltakelsesmengdeInfo,
   DialogLenke,
   formatDate,
+  lagUtkastDeltakelsesmengderForVisning,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
@@ -46,7 +47,11 @@ export const UtkastDeltakerEnkeltplass = () => {
       <DeltakelsesmengdeInfo
         tiltakskode={tiltakskode.kode}
         erEnkeltplass={true}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
+          deltaker.startdato,
+          deltaker.deltakelsesprosent,
+          deltaker.dagerPerUke
+        )}
         headingLevel="3"
         headingSize="small"
         headingClassName=""

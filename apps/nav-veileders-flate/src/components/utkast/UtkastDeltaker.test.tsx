@@ -9,15 +9,7 @@ import {
 } from '../test-utils/deltaker-context-test-utils'
 
 describe('UtkastDeltaker - Deltakelsesmengde', () => {
-  const stottetTiltakDeltaker = lagDeltaker({
-    gyldigeDeltakelsesmengder: [
-      {
-        deltakelsesprosent: 80,
-        dagerPerUke: 3,
-        gyldigFra: new Date(2026, 0, 1)
-      }
-    ]
-  })
+  const stottetTiltakDeltaker = lagDeltaker()
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
     deltakerliste: {

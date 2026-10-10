@@ -65,6 +65,8 @@ const lagDeltaker = (
     startdato: '2025-04-10',
     sluttdato: '2025-10-09',
     deltakelsesinnhold: { ledetekst: null, innhold: [] },
+    deltakelsesprosent: null,
+    dagerPerUke: null,
     vedtaksinformasjon: null,
     kanEndres: true,
     digitalBruker: true,
@@ -86,13 +88,9 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 const settDagerPerUke = (deltaker: DeltakerResponse, dagerPerUke: number) => {
-  deltaker.gyldigeDeltakelsesmengder = [
-    {
-      deltakelsesprosent: 100,
-      dagerPerUke,
-      gyldigFra: new Date(2026, 0, 1)
-    }
-  ]
+  deltaker.startdato = new Date(2026, 0, 1)
+  deltaker.deltakelsesprosent = null
+  deltaker.dagerPerUke = dagerPerUke
 }
 
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
@@ -128,7 +126,7 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
 })
 
 describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
-  it('viser gyldig deltakelsesmengde', () => {
+  it('viser deltakelsesmengde fra utkastfeltene', () => {
     const deltaker = lagDeltaker()
     settDagerPerUke(deltaker, 3)
 
@@ -138,7 +136,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
     expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
   })
 
-  it('skjuler deltakelsesmengde når listen er tom', () => {
+  it('skjuler deltakelsesmengde når utkastet mangler mengdeinformasjon', () => {
     const deltaker = lagDeltaker()
 
     renderWithDeltaker(deltaker)
@@ -146,7 +144,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })
 
-  it('viser 1 dag i uka fra gyldig deltakelsesmengde', () => {
+  it('viser 1 dag i uka fra utkastfeltene', () => {
     const deltaker = lagDeltaker()
     settDagerPerUke(deltaker, 1)
 
@@ -155,7 +153,7 @@ describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
     expect(screen.getByText(/1 dag i uka/)).toBeInTheDocument()
   })
 
-  it('viser korrekt antall dager fra gyldig deltakelsesmengde', () => {
+  it('viser korrekt antall dager fra utkastfeltene', () => {
     const deltaker = lagDeltaker()
     settDagerPerUke(deltaker, 5)
 

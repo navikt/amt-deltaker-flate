@@ -90,24 +90,19 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
-  it('viser gyldig deltakelsesmengde for arbeidsmarkedsopplæring', () => {
+  it('viser deltakelsesmengde fra utkastfeltene når listen er tom', () => {
     const deltaker = lagDeltaker({
-      gyldigeDeltakelsesmengder: [
-        {
-          deltakelsesprosent: 100,
-          dagerPerUke: 3,
-          gyldigFra: new Date(2026, 0, 1)
-        }
-      ]
+      startdato: '2026-10-01',
+      dagerPerUke: 3
     })
 
     renderWithDeltaker(deltaker)
 
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
-    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
+    expect(screen.getByText(/01\.10\.2026: 3 dager i uka/)).toBeInTheDocument()
   })
 
-  it('viser gyldig deltakelsesmengde for andre tiltakskoder', () => {
+  it('viser deltakelsesmengde for andre tiltakskoder', () => {
     const deltaker = lagDeltaker({
       deltakerliste: {
         ...lagDeltaker().deltakerliste,
@@ -116,13 +111,8 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
           visningsnavn: 'Varig tilrettelagt arbeid'
         }
       },
-      gyldigeDeltakelsesmengder: [
-        {
-          deltakelsesprosent: 100,
-          dagerPerUke: 4,
-          gyldigFra: new Date(2026, 0, 1)
-        }
-      ]
+      startdato: '2026-10-01',
+      dagerPerUke: 4
     })
 
     renderWithDeltaker(deltaker)
@@ -131,7 +121,7 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     expect(screen.getByText(/4 dager i uka/)).toBeInTheDocument()
   })
 
-  it('skjuler deltakelsesmengde når listen er tom', () => {
+  it('skjuler deltakelsesmengde når utkastet mangler mengdeinformasjon', () => {
     const deltaker = lagDeltaker()
 
     renderWithDeltaker(deltaker)
@@ -139,15 +129,10 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
   })
 
-  it('viser 1 dag i uka fra gyldig deltakelsesmengde', () => {
+  it('viser 1 dag i uka fra utkastfeltene', () => {
     const deltaker = lagDeltaker({
-      gyldigeDeltakelsesmengder: [
-        {
-          deltakelsesprosent: 100,
-          dagerPerUke: 1,
-          gyldigFra: new Date(2026, 0, 1)
-        }
-      ]
+      startdato: '2026-10-01',
+      dagerPerUke: 1
     })
 
     renderWithDeltaker(deltaker)
@@ -155,15 +140,10 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
     expect(screen.getByText(/1 dag i uka/)).toBeInTheDocument()
   })
 
-  it('skjuler deltakelsesmengde når mengden ikke har dager', () => {
+  it('skjuler deltakelsesmengde når utkastet ikke har dager', () => {
     const deltaker = lagDeltaker({
-      gyldigeDeltakelsesmengder: [
-        {
-          deltakelsesprosent: 100,
-          dagerPerUke: 0,
-          gyldigFra: new Date(2026, 0, 1)
-        }
-      ]
+      startdato: '2026-10-01',
+      dagerPerUke: 0
     })
 
     renderWithDeltaker(deltaker)

@@ -5,6 +5,7 @@ import {
   DeltakelsesmengdeInfo,
   DialogLenke,
   formatDateFromString,
+  lagUtkastDeltakelsesmengderForVisning,
   PrisOgBetaling,
   useDeferredFetch,
   UtkastHeader,
@@ -87,7 +88,11 @@ export const UtkastEnkeltplassPage = () => {
       <DeltakelsesmengdeInfo
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={true}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
+          deltaker.startdato,
+          deltaker.deltakelsesprosent,
+          deltaker.dagerPerUke
+        )}
         headingLevel="3"
         headingSize="small"
         headingClassName="mt-4"

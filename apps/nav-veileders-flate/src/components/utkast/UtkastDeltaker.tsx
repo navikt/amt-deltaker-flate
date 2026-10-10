@@ -5,6 +5,7 @@ import {
   DeltakelsesmengdeInfo,
   DeltakerStatusType,
   harBakgrunnsinfo,
+  lagUtkastDeltakelsesmengderForVisning,
   OmKurset,
   Oppmotested,
   VeilederSnakkeboble
@@ -52,7 +53,11 @@ export const UtkastDeltaker = () => {
       <DeltakelsesmengdeInfo
         tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
+          deltaker.startdato,
+          deltaker.deltakelsesprosent,
+          deltaker.dagerPerUke
+        )}
         headingLevel="3"
         headingSize="small"
         headingClassName=""

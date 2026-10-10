@@ -3,6 +3,7 @@ import {
   DeltakelseInnhold,
   DeltakelsesmengdeInfo,
   EMDASH,
+  lagUtkastDeltakelsesmengderForVisning,
   UtkastHeader
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../DeltakerContext'
@@ -49,7 +50,11 @@ export const AvbruttUtkastPage = () => {
       <DeltakelsesmengdeInfo
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
+          deltaker.startdato,
+          deltaker.deltakelsesprosent,
+          deltaker.dagerPerUke
+        )}
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"

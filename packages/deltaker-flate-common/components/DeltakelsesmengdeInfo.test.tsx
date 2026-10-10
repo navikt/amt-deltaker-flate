@@ -24,7 +24,7 @@ describe('DeltakelsesmengdeInfo', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: true,
-      gyldigeDeltakelsesmengder: []
+      deltakelsesmengder: []
     })
 
     expect(result).toBeNull()
@@ -34,7 +34,7 @@ describe('DeltakelsesmengdeInfo', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.OPPFOLGING,
       erEnkeltplass: false,
-      gyldigeDeltakelsesmengder: [
+      deltakelsesmengder: [
         {
           deltakelsesprosent: 80,
           dagerPerUke: 3,
@@ -50,7 +50,7 @@ describe('DeltakelsesmengdeInfo', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
-      gyldigeDeltakelsesmengder: [
+      deltakelsesmengder: [
         {
           deltakelsesprosent: 60,
           dagerPerUke: 3,
@@ -80,7 +80,7 @@ describe('DeltakelsesmengdeInfo', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: true,
-      gyldigeDeltakelsesmengder: [
+      deltakelsesmengder: [
         {
           deltakelsesprosent: 60,
           dagerPerUke: 3,
@@ -93,5 +93,24 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(text).toContain('12.10.2026:')
     expect(text).toContain('3 dager i uka')
     expect(text).not.toContain('60')
+  })
+
+  it('viser enkeltplassmengde uten deltakelsesprosent', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      erEnkeltplass: true,
+      deltakelsesmengder: [
+        {
+          deltakelsesprosent: null,
+          dagerPerUke: 5,
+          gyldigFra: new Date(2026, 9, 1)
+        }
+      ]
+    })
+    const text = extractText(result).join(' ')
+
+    expect(text).toContain('01.10.2026:')
+    expect(text).toContain('5 dager i uka')
+    expect(text).not.toContain('100')
   })
 })

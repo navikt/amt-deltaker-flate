@@ -7,6 +7,7 @@ import {
   DeltakelsesmengdeInfo,
   harBakgrunnsinfo,
   harInnhold,
+  lagUtkastDeltakelsesmengderForVisning,
   kanDeleDeltakerMedArrangorForVurdering,
   kreverGodkjenningForPamelding,
   OmKurset,
@@ -128,7 +129,11 @@ export const UtkastPage = () => {
       <DeltakelsesmengdeInfo
         tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={lagUtkastDeltakelsesmengderForVisning(
+          deltaker.startdato,
+          deltaker.deltakelsesprosent,
+          deltaker.dagerPerUke
+        )}
         headingLevel="3"
         headingSize="medium"
         headingClassName="mt-6"

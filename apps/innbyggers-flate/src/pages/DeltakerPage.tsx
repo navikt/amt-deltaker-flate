@@ -189,7 +189,7 @@ export const DeltakerPage = () => {
 
       <DeltakelsesmengdeInfo
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
-        gyldigeDeltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
+        deltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
         erEnkeltplass={erEnkeltplass}
       />
 

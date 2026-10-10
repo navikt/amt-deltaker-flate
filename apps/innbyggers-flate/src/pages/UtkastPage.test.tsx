@@ -14,13 +14,9 @@ vi.mock('react-router-dom', () => ({
 
 describe('UtkastPage - Deltakelsesmengde', () => {
   const stottetTiltakDeltaker = lagInnbyggerDeltaker({
-    gyldigeDeltakelsesmengder: [
-      {
-        deltakelsesprosent: 80,
-        dagerPerUke: 3,
-        gyldigFra: new Date(2026, 0, 1)
-      }
-    ]
+    startdato: '2026-01-01',
+    deltakelsesprosent: 80,
+    dagerPerUke: 3
   })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
