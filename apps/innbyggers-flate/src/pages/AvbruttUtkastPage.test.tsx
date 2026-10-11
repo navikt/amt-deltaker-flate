@@ -18,7 +18,10 @@ describe('AvbruttUtkastPage - Deltakelsesmengde', () => {
     opprettet: new Date()
   }
   const stottetTiltakDeltaker = lagInnbyggerDeltaker({
-    status: baseStatus
+    status: baseStatus,
+    startdato: '2026-01-01',
+    deltakelsesprosent: 80,
+    dagerPerUke: 3
   })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,
@@ -37,6 +40,7 @@ describe('AvbruttUtkastPage - Deltakelsesmengde', () => {
       stottetTiltakDeltaker
     )
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {

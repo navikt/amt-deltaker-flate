@@ -1,4 +1,4 @@
-import { BodyLong, Heading } from '@navikt/ds-react'
+import { BodyLong } from '@navikt/ds-react'
 import { Tiltakskode } from '../model/deltaker'
 import { deltakerprosentText } from '../utils/displayText'
 import { harDeltakelsesmengde } from '../utils/utils'
@@ -8,14 +8,6 @@ interface DeltakelsesmengdeProps {
   erEnkeltplass: boolean
   deltakelsesprosent: number | null
   dagerPerUke: number | null
-}
-
-interface DeltakelsesmengdeSectionProps extends DeltakelsesmengdeProps {
-  headingText?: string
-  headingLevel: '2' | '3'
-  headingSize: 'medium' | 'small'
-  headingClassName?: string
-  bodyClassName?: string
 }
 
 interface DeltakelsesmengdeBodyLongSectionProps extends DeltakelsesmengdeProps {
@@ -41,40 +33,7 @@ export const getDeltakelsesmengdeText = ({
   return deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)
 }
 
-export const DeltakelsesmengdeAvsnitt = ({
-  headingText = 'Deltakelsesmengde',
-  headingLevel,
-  headingSize,
-  headingClassName,
-  bodyClassName,
-  ...props
-}: DeltakelsesmengdeSectionProps) => {
-  const text = getDeltakelsesmengdeText(props)
-
-  if (text === null || !text) {
-    return null
-  }
-
-  return (
-    <>
-      <Heading
-        level={headingLevel}
-        size={headingSize}
-        className={headingClassName}
-      >
-        {headingText}
-      </Heading>
-      <BodyLong size="small" className={bodyClassName}>
-        {text}
-      </BodyLong>
-    </>
-  )
-}
-
-/**
- * TODO: med korrekt semantisk HTML i historikken burde denne kunne erstattes med
- *   [DeltakelsesmengdeAvsnitt].
- */
+// TODO: Bruk semantisk Heading når historikken tilbyr korrekt overskriftsnivå.
 export const DeltakelsesmengdeBodyLongSection = ({
   headingText = 'Deltakelsesmengde',
   headingClassName,

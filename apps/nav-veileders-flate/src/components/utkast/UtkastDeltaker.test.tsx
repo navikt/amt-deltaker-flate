@@ -24,6 +24,7 @@ describe('UtkastDeltaker - Deltakelsesmengde', () => {
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithDeltakerContext(<UtkastDeltaker />, stottetTiltakDeltaker)
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+    expect(screen.getByText(/3 dager i uka/)).toBeInTheDocument()
   })
 
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {

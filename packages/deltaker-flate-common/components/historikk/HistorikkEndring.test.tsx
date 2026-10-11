@@ -109,7 +109,7 @@ describe('HistorikkEndring', () => {
     ).join(' ')
 
     expect(text).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
-    expect((text.match(/Tilbakekalt/g) ?? []).length).toBe(2)
+    expect((text.match(/Tilbakekalt/g) ?? []).length).toBe(3)
     expect(text).toContain('Tilbakekalt')
     expect(text).toContain('Endringen som ble tilbakekalt')
     expect(text).not.toContain('Endret')

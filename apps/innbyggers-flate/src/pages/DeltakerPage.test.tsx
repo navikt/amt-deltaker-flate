@@ -26,7 +26,14 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
     opprettet: new Date()
   }
   const stottetTiltakDeltaker = lagInnbyggerDeltaker({
-    status: baseStatus
+    status: baseStatus,
+    gyldigeDeltakelsesmengder: [
+      {
+        deltakelsesprosent: 80,
+        dagerPerUke: 3,
+        gyldigFra: new Date('2026-01-01')
+      }
+    ]
   })
   const ikkeStottetTiltakDeltaker = {
     ...stottetTiltakDeltaker,

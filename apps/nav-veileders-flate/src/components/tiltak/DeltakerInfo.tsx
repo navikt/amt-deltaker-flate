@@ -165,12 +165,8 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <DeltakelsesmengdeInfo
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
-        deltakelsesprosent={deltaker.deltakelsesprosent}
-        dagerPerUke={deltaker.dagerPerUke}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
-        nesteDeltakelsesmengde={
-          deltaker.deltakelsesmengder.nesteDeltakelsesmengde
-        }
+        deltakelsesmengder={deltaker.gyldigeDeltakelsesmengder}
       />
 
       <SeEndringer

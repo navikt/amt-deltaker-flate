@@ -92,7 +92,6 @@ export const UtkastEnkeltplassPage = () => {
         headingLevel="3"
         headingSize="small"
         headingClassName="mt-4"
-        bodyClassName="mt-2"
       />
 
       <PrisOgBetaling
