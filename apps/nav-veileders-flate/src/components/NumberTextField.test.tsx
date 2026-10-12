@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import { NumberTextField } from './NumberTextField'
 
-const NumberTextFieldHarness = ({
+const ControlledNumberTextField = ({
   initialValue,
   inlineLabel = false,
   ariaLabel
@@ -28,13 +28,13 @@ const NumberTextFieldHarness = ({
 
 describe('NumberTextField', () => {
   it('viser etiketten og eksisterende verdi', () => {
-    render(<NumberTextFieldHarness initialValue={1234} />)
+    render(<ControlledNumberTextField initialValue={1234} />)
 
     expect(screen.getByRole('textbox', { name: 'Beløp' })).toHaveValue('1234')
   })
 
   it('beholder hele tallet når det limes inn med ulike mellomrom', () => {
-    render(<NumberTextFieldHarness />)
+    render(<ControlledNumberTextField />)
 
     const field = screen.getByRole('textbox', { name: 'Beløp' })
     fireEvent.change(field, { target: { value: '1 234\u00a0567' } })
@@ -45,7 +45,7 @@ describe('NumberTextField', () => {
   it.each(['', ' \u00a0\u202f'])(
     'tømmer verdien når feltet får verdien %j',
     (input) => {
-      render(<NumberTextFieldHarness initialValue={123} />)
+      render(<ControlledNumberTextField initialValue={123} />)
 
       const field = screen.getByRole('textbox', { name: 'Beløp' })
       fireEvent.change(field, { target: { value: input } })
@@ -55,7 +55,7 @@ describe('NumberTextField', () => {
   )
 
   it('beholder forrige verdi når teksten ikke inneholder et tall', () => {
-    render(<NumberTextFieldHarness initialValue={123} />)
+    render(<ControlledNumberTextField initialValue={123} />)
 
     const field = screen.getByRole('textbox', { name: 'Beløp' })
     fireEvent.change(field, { target: { value: 'abc' } })
@@ -64,7 +64,9 @@ describe('NumberTextField', () => {
   })
 
   it('viser inline-etikett og bruker aria_label som tilgjengelig navn', () => {
-    render(<NumberTextFieldHarness inlineLabel ariaLabel="Antall deltakere" />)
+    render(
+      <ControlledNumberTextField inlineLabel ariaLabel="Antall deltakere" />
+    )
 
     expect(screen.getByText('Beløp')).toBeVisible()
     expect(
