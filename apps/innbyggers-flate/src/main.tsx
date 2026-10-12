@@ -25,7 +25,8 @@ const renderApp = () => {
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
       params: {
         level: 'Level4',
-        logoutWarning: true
+        logoutWarning: true,
+        teamName: 'amt-deltaker-innbyggers-flate.amt'
       }
     })
   }
