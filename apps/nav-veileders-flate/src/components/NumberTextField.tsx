@@ -17,6 +17,8 @@ export interface NumberTextFieldProps {
   onChange: (newValue: number | undefined) => void
 }
 
+const fjernMellomrom = (verdi: string) => verdi.replace(/\s/g, '')
+
 const NumberTextFieldComponent = (
   {
     id,
@@ -47,9 +49,10 @@ const NumberTextFieldComponent = (
       pattern="[0-9]*"
       value={value ?? ''}
       onChange={({ target }) => {
-        const intValue = parseInt(target.value)
+        const verdiUtenMellomrom = fjernMellomrom(target.value)
+        const intValue = parseInt(verdiUtenMellomrom)
         if (!Number.isNaN(intValue)) onChange(intValue)
-        else if (target.value === '') onChange(undefined)
+        else if (verdiUtenMellomrom === '') onChange(undefined)
         else onChange(value)
       }}
       error={error}
