@@ -24,6 +24,7 @@ const renderApp = () => {
     injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
       params: {
+        teamName: 'amt-deltaker-innbyggers-flate.amt',
         level: 'Level4',
         logoutWarning: true
       }
