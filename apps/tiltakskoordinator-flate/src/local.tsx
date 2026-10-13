@@ -11,7 +11,7 @@ export async function enableMocking() {
   if (useMock) {
     const url = `${import.meta.env.BASE_URL}mockServiceWorker.js`
     return worker.start({
-      onUnhandledRequest: 'bypass',
+      onUnhandledFrame: 'bypass',
       serviceWorker: {
         url: url
       }
