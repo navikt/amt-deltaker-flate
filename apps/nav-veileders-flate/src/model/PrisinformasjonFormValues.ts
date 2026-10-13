@@ -124,12 +124,19 @@ export const validatePrisinformasjon = (
     }
 
     tilskudd.forEach(({ type: tilskuddstype, pris: belop }) => {
-      if (!(belop > 0)) {
+      if (!belop) {
         const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
         addPrisinformasjonIssue(
           ctx,
           `pris-${tilskuddstype}`,
           `Du må fylle ut estimert totalbeløp for ${navn}.`
+        )
+      } else if (belop < 0) {
+        const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
+        addPrisinformasjonIssue(
+          ctx,
+          `pris-${tilskuddstype}`,
+          `Pris for ${navn} kan ikke være negativ.`
         )
       } else if (belop > PRISINFO_MAX_BELOP) {
         const navn = tilskuddstype.toLowerCase().replace(/_/g, ' ')
