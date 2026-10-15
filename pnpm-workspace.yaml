@@ -44,11 +44,12 @@ catalog:
   zod: ^4.6.5
 
 overrides:
-  'brace-expansion@<1.1.18': '1.1.18'
+  'brace-expansion@<1.1.21': '1.1.21'
+  'brace-expansion@>=5.0.0 <5.0.12': '5.0.12'
 
 # Pakker må være 7 dager gamle før de kan installeres (likt som dependabot cooldown)
 # Et sikkerhetstiltak i tilfelle en pakke blir komprimittert
 minimumReleaseAge: 10080 # 24 x 60 x 7
 
 # Unntak for manuelt oppdaterte pakker innenfor minimumReleaseAge
-minimumReleaseAgeExclude:
+minimumReleaseAgeExclude: []
