@@ -9,7 +9,7 @@
   ],
   "devDependencies": {
     "@navikt/ds-tailwind": "catalog:",
-    "@tailwindcss/postcss": "4.3.3",
+    "@tailwindcss/postcss": "catalog:",
     "autoprefixer": "^10.6.1",
     "postcss": "^8.5.28",
     "tailwindcss": "catalog:"
