@@ -18,7 +18,6 @@
     "@navikt/ds-react": "catalog:",
     "dayjs": "catalog:",
     "react": "catalog:",
-    "typescript": "catalog:",
     "uuid": "catalog:",
     "zod": "catalog:"
   },
@@ -26,6 +25,7 @@
     "@amt-deltaker-flate/eslint-config": "workspace:*",
     "@amt-deltaker-flate/tailwind-config": "workspace:*",
     "@types/react": "catalog:",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   }
 }
