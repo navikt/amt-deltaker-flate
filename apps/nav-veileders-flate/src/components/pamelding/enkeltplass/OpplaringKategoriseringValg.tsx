@@ -1,4 +1,4 @@
-import { UNSAFE_Combobox } from '@navikt/ds-react'
+import { BodyShort, UNSAFE_Combobox } from '@navikt/ds-react'
 import { logError, OpplaringRepresenterer } from 'deltaker-flate-common'
 import { FieldValues, Path, useFormContext } from 'react-hook-form'
 import {
@@ -141,6 +141,7 @@ const UtdanningGruppeValg = ({
 
   return (
     <div className="flex flex-col gap-8">
+      <KurstypeDeployTestTekst representerer={utdanningGruppe.representerer} />
       <UNSAFE_Combobox
         id={fieldName}
         name={registeredFieldName}
@@ -229,21 +230,33 @@ const VerdigruppeValg = ({
   }
 
   return (
-    <UNSAFE_Combobox
-      id={fieldName}
-      name={registeredFieldName}
-      ref={registerRef}
-      label={getLabel(verdigruppe.visningsnavn, verdigruppe.pakrevd)}
-      selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
-      size="small"
-      error={errorMessage}
-      options={options}
-      aria-required={verdigruppe.pakrevd}
-      isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
-      onToggleSelected={handleValg}
-    />
+    <>
+      <KurstypeDeployTestTekst representerer={verdigruppe.representerer} />
+      <UNSAFE_Combobox
+        id={fieldName}
+        name={registeredFieldName}
+        ref={registerRef}
+        label={getLabel(verdigruppe.visningsnavn, verdigruppe.pakrevd)}
+        selectedOptions={options.filter((o) => valgteEgne.includes(o.value))}
+        size="small"
+        error={errorMessage}
+        options={options}
+        aria-required={verdigruppe.pakrevd}
+        isMultiSelect={verdigruppe.seleksjonstype === Seleksjonstype.FLERVALG}
+        onToggleSelected={handleValg}
+      />
+    </>
   )
 }
+
+const KurstypeDeployTestTekst = ({
+  representerer
+}: {
+  representerer: OpplaringRepresenterer
+}) =>
+  representerer === OpplaringRepresenterer.KURSTYPE_ID ? (
+    <BodyShort size="small">DEPLOYTEST: dummytekst</BodyShort>
+  ) : null
 
 const getKodeverkFieldName = (representerer: OpplaringRepresenterer) =>
   `kodeverkValg_${representerer}`

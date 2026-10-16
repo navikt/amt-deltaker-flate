@@ -70,6 +70,33 @@ describe('KodeverkValg', () => {
     }
     renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />)
     expect(screen.getByLabelText(bransjeLabel)).toBeInTheDocument()
+    expect(screen.queryByText('DEPLOYTEST: dummytekst')).not.toBeInTheDocument()
+  })
+
+  it('viser dummytekst foran Kurstype-comboboxen', () => {
+    const kodeverk: KodeverkResponse = {
+      tiltakskode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+      alternativer: [
+        {
+          ...bransjeVerdigruppe,
+          visningsnavn: 'Kurstype',
+          representerer: OpplaringRepresenterer.KURSTYPE_ID
+        }
+      ],
+      sertifiseringValg: []
+    }
+
+    renderWithProviders(<OpplaringKategoriseringValg kodeverk={kodeverk} />)
+
+    const dummyText = screen.getByText('DEPLOYTEST: dummytekst')
+    const kurstypeCombobox = screen.getByLabelText(/^Kurstype\b/i)
+
+    expect(dummyText).toBeInTheDocument()
+    expect(kurstypeCombobox).toBeInTheDocument()
+    expect(
+      dummyText.compareDocumentPosition(kurstypeCombobox) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy()
   })
 
   it('viser forhåndsvalgte verdier fra valgt: true', () => {
