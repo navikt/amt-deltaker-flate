@@ -55,7 +55,9 @@ export const GyldigFraField = ({
         toDate={deltaker.sluttdato ?? undefined}
         error={gyldigFraError ?? null}
         onValidate={(validation) => {
-          if (validation.isBefore) {
+          if (validation.isEmpty) {
+            onValidate('Du må velge en dato.')
+          } else if (validation.isBefore) {
             onValidate(
               'Datoen kan ikke velges fordi den er før deltakers startsdato'
             )

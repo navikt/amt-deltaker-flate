@@ -27,15 +27,15 @@ import {
 } from '../../../utils/avslutt-deltakelse-utils.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import { useSluttdatoInput } from '../../../utils/use-sluttdato.ts'
+import { useSluttdatoInput } from '../../../utils/use-sluttdato-input.ts'
 import { formatDateToDtoStr } from '../../../utils/utils.ts'
 import {
   DATO_ETTER_IDAG_FEILMELDING,
   DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
   VARIGHET_BEKREFTELSE_FEILMELDING
-} from '../../../utils/varighet.tsx'
+} from '../../../utils/varighet.ts'
+import { SoftMaxVarighetBekreftelse } from '../SoftMaxVarighetBekreftelse.tsx'
 import { SimpleDatePicker } from '../SimpleDatePicker.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
@@ -166,7 +166,9 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (skalViseSluttDato && !sluttdato.sluttdato) {
-      sluttdato.setError('Du må velge en sluttdato.')
+      if (!sluttdato.error) {
+        sluttdato.setError('Du må velge en sluttdato.')
+      }
       hasError = true
     }
 
@@ -367,9 +369,9 @@ export const AvsluttDeltakelseModal = ({
           size="small"
           error={errorVarighetConfirmation}
         >
-          {getSoftMaxVarighetBekreftelseText(
-            deltaker.deltakerliste.tiltakskode.kode
-          )}
+          <SoftMaxVarighetBekreftelse
+            tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
+          />
         </ConfirmationPanel>
       )}
       <BegrunnelseInput

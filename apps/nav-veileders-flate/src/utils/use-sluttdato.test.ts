@@ -1,40 +1,16 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import {
-  DATO_FOER_SLUTTDATO_FEILMELDING,
-  DATO_UTENFOR_TILTAKGJENNOMFORING,
-  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
-  VARGIHET_VALG_FEILMELDING,
-  VarighetValg
-} from './varighet.tsx'
+import { UGYLDIG_DATO_FEILMELDING, VarighetValg } from './varighet.ts'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { dateValidation } from '../components/tiltak/VarighetField.tsx'
 import { useSluttdato } from './use-sluttdato.ts'
-
-const createDeltaker = (
-  startdato?: string,
-  sluttdato?: string,
-  maxVarighetMnd?: number,
-  softMaxVarighetMnd?: number
-): DeltakerResponse => {
-  return {
-    startdato: startdato,
-    sluttdato: sluttdato,
-    deltakerliste: {
-      sluttdato: dayjs('2030-02-20').toDate()
-    },
-    maxVarighet: dayjs.duration(maxVarighetMnd ?? 12, 'month').asMilliseconds(),
-    softMaxVarighet: dayjs
-      .duration(softMaxVarighetMnd ?? 12, 'month')
-      .asMilliseconds()
-  } as unknown as DeltakerResponse
-}
-
-const deltakerUtenDatoer = createDeltaker()
-const deltakerMedDatoer = createDeltaker('2024-07-17', '2024-07-20', 6, 3)
+import {
+  deltakerMedDatoer,
+  deltakerUtenDatoer,
+  senesteSluttdatoFeilmelding
+} from './use-sluttdato.test-utils.ts'
 
 describe('useSluttdato - deltakerUtenDatoer', () => {
   it('har error uten varighet', () => {
@@ -51,7 +27,8 @@ describe('useSluttdato - deltakerUtenDatoer', () => {
 const useCustomVarighetHook = (
   deltaker: DeltakerResponse,
   initVarighet: VarighetValg | undefined,
-  initStartdato?: Date
+  initStartdato?: Date,
+  defaultAnnetDato?: Date
 ) => {
   const [valgtVarighet, setVarighetValg] = useState<VarighetValg | undefined>(
     initVarighet
@@ -61,7 +38,7 @@ const useCustomVarighetHook = (
   const sluttdatoResultat = useSluttdato({
     deltaker,
     valgtVarighet,
-    defaultAnnetDato: undefined,
+    defaultAnnetDato,
     startdato
   })
 
@@ -110,31 +87,27 @@ describe('useSluttdato - deltakerMedDatoer', () => {
         valgtVarighet: VarighetValg.TOLV_MANEDER
       })
     )
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
   })
 
   it('har error med varighet over max-varighet men ikke etter varighet endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.TOLV_MANEDER)
     )
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
 
     act(() => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med varighet over max-varighet men ikke etter annet dato endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.TOLV_MANEDER)
     )
-    expect(result.current.error).toBe(
-      'Datoen kan ikke velges fordi den er utenfor maks varighet.'
-    )
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
 
     act(() => {
       result.current.setVarighetValg(VarighetValg.ANNET)
@@ -143,13 +116,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter annet dato endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.ANNET)
     )
 
@@ -159,7 +130,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
 
     act(() => {
       result.current.handleChange(
@@ -167,13 +138,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    rerender()
-
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter varighet endres', () => {
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(deltakerMedDatoer, VarighetValg.ANNET)
     )
 
@@ -183,20 +152,18 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
 
     act(() => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
-
-    rerender()
 
     expect(result.current.error).toBe(null)
   })
 
   it('har error med annet-dato over max-varighet men ikke etter startdato endres', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -210,20 +177,18 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       )
     })
 
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
 
     act(() => {
       result.current.setStartdato(startdato.add(18, 'months').toDate())
     })
-
-    rerender()
 
     expect(result.current.error).toBe(null)
   })
 
   it('har ikke error med annet-dato men har det etter startdato endres utover max-varighet', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -243,9 +208,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.setStartdato(startdato.subtract(1, 'month').toDate())
     })
 
-    rerender()
-
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
+    expect(result.current.error).toMatch(senesteSluttdatoFeilmelding)
   })
 
   it('beregner sluttdato fra deltakers sluttdato når startdato ikke er gitt', () => {
@@ -282,111 +245,37 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     )
   })
 
-  it('validerDato - dato er ugyldig - setter error', () => {
-    const dagjs = dayjs(deltakerMedDatoer.startdato)
-    const startdato = dagjs.toDate()
-
+  it('beholder formatfeilen når startdato endres mens datofeltet er ugyldig', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato)
     const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.ANNET,
-        startdato
-      })
+      useCustomVarighetHook(
+        deltakerMedDatoer,
+        VarighetValg.ANNET,
+        startdato.toDate()
+      )
     )
 
     act(() => {
       result.current.validerDato(dateValidation({ isInvalid: true }))
     })
-
     expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
-  })
-
-  it('validerDato - dato er før startdato - setter error', () => {
-    const dagjs = dayjs(deltakerMedDatoer.startdato)
-    const startdato = dagjs.toDate()
-
-    const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.ANNET,
-        startdato
-      })
-    )
 
     act(() => {
-      result.current.validerDato(
-        dateValidation({ isBefore: true }),
-        dagjs.subtract(1, 'day').toDate()
-      )
+      result.current.setStartdato(startdato.add(1, 'day').toDate())
     })
+    expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
 
-    expect(result.current.error).toBe(SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING)
-  })
-
-  it('validerDato - startdato ikke satt, dato er før sluttdato - setter error', () => {
-    const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.ANNET
-      })
-    )
-
+    let isValid: boolean | undefined
     act(() => {
-      result.current.validerDato(
-        dateValidation({ isBefore: true }),
-        dayjs(deltakerMedDatoer.sluttdato).subtract(1, 'day').toDate()
-      )
+      isValid = result.current.valider()
     })
-
-    expect(result.current.error).toBe(DATO_FOER_SLUTTDATO_FEILMELDING)
-  })
-
-  it('validerDato - dato er etter max varighet dato - setter error', () => {
-    const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.ANNET
-      })
-    )
-
-    act(() => {
-      result.current.validerDato(
-        dateValidation({ isAfter: true }),
-        dayjs(deltakerMedDatoer.sluttdato).add(12, 'months').toDate()
-      )
-    })
-
-    expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
-  })
-
-  it('validerDato - dato er etter gjennomførings sluttdato - setter error', () => {
-    const deltaker = createDeltaker(
-      dayjs(deltakerMedDatoer.deltakerliste.sluttdato)
-        .subtract(3, 'months')
-        .toString(),
-      dayjs(deltakerMedDatoer.deltakerliste.sluttdato)
-        .subtract(1, 'months')
-        .toString(),
-      12,
-      12
-    )
-    const { result } = renderHook(() =>
-      useSluttdato({ deltaker, valgtVarighet: VarighetValg.ANNET })
-    )
-
-    act(() => {
-      result.current.validerDato(
-        dateValidation({ isAfter: true }),
-        dayjs(deltaker.sluttdato).add(6, 'months').toDate()
-      )
-    })
-
-    expect(result.current.error).toBe(DATO_UTENFOR_TILTAKGJENNOMFORING)
+    expect(isValid).toBe(false)
+    expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
   })
 
   it('har en error - sluttdato er undefined', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useCustomVarighetHook(
         deltakerMedDatoer,
         VarighetValg.ANNET,
@@ -403,14 +292,46 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     act(() => {
       result.current.setVarighetValg(VarighetValg.TRE_MANEDER)
     })
-    rerender()
+
     expect(result.current.sluttdato).toBeTypeOf('object')
 
     act(() => {
       result.current.setVarighetValg(VarighetValg.TOLV_MANEDER)
     })
-    rerender()
     expect(result.current.sluttdato).toBe(undefined)
+  })
+
+  it('gjenoppretter ikke forrige sluttdato etter ugyldig inntasting', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato).toDate()
+    const sluttdato = dayjs(deltakerMedDatoer.startdato)
+      .add(10, 'days')
+      .toDate()
+    const { result } = renderHook(() =>
+      useCustomVarighetHook(
+        deltakerMedDatoer,
+        VarighetValg.ANNET,
+        startdato,
+        sluttdato
+      )
+    )
+
+    expect(result.current.sluttdato).toEqual(sluttdato)
+
+    act(() => {
+      result.current.handleChange(undefined)
+      result.current.validerDato(dateValidation({ isAfter: true }))
+    })
+    expect(result.current.sluttdato).toBeUndefined()
+
+    act(() => {
+      result.current.setStartdato(dayjs(startdato).add(1, 'day').toDate())
+    })
+
+    expect(result.current.sluttdato).toBeUndefined()
+    act(() => {
+      result.current.valider()
+    })
+    expect(result.current.error).toBe('Du må velge en sluttdato')
   })
 
   it('varighet er ikke valgt - sluttdato er undefined', () => {

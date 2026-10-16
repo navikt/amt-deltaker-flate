@@ -2,30 +2,26 @@ import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { DeltakerResponse } from '../api/data/deltaker'
-import {
-  DATO_FOER_SLUTTDATO_FEILMELDING,
-  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
-  VarighetValg,
-  getSluttDatoFeilmelding,
-  getVarighet
-} from './varighet'
+import { useSluttdatoInput } from './use-sluttdato-input'
+import { getSluttDatoFeilmelding, getVarighet, VarighetValg } from './varighet'
 
-interface UseSluttdatoOpts {
-  deltaker: DeltakerResponse
-  valgtVarighet?: VarighetValg
-  defaultAnnetDato?: Date
-  startdato?: Date
-  erForleng?: boolean
-}
-
+/**
+ * Beregner sluttdato fra valgt varighet eller håndterer en manuelt valgt dato.
+ * Returnerer ikke sluttdato når varighet eller dato har en valideringsfeil.
+ */
 export function useSluttdato({
   deltaker,
   valgtVarighet,
   defaultAnnetDato,
   startdato,
   erForleng
-}: UseSluttdatoOpts): {
+}: {
+  deltaker: DeltakerResponse
+  valgtVarighet?: VarighetValg
+  defaultAnnetDato?: Date
+  startdato?: Date
+  erForleng?: boolean
+}): {
   sluttdato: Date | undefined
   error: string | null
   varighetError: string | null
@@ -39,6 +35,7 @@ export function useSluttdato({
   const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
+  /** Synkroniserer manuelt valgt sluttdato med hookens felles dato. */
   const onAnnetChange = (d: Date | undefined) => {
     setSluttdato(d)
   }
@@ -52,6 +49,10 @@ export function useSluttdato({
     erForleng
   })
 
+  /**
+   * Beregner sluttdato fra referansedato og varighet.
+   * Ved forlengelse trekkes ikke én dag fra referansedatoen.
+   */
   const kalkulerSluttdatoFra = (date: Date, varighetValg: VarighetValg) => {
     const varighet = getVarighet(varighetValg)
     return dayjs(date)
@@ -60,6 +61,8 @@ export function useSluttdato({
       .toDate()
   }
 
+  // ANNET bruker valgt dato. Andre varigheter beregnes fra startdato eller,
+  // hvis den mangler, deltakerens opprinnelige sluttdato.
   useEffect(() => {
     if (valgtVarighet === VarighetValg.ANNET) {
       setSluttdato(annet.sluttdato)
@@ -70,6 +73,8 @@ export function useSluttdato({
     }
   }, [startdato, valgtVarighet])
 
+  // Kun beregnede varigheter valideres her.
+  // Feil for ANNET håndteres av useSluttdatoInput.
   useEffect(() => {
     if (sluttdato && valgtVarighet !== VarighetValg.ANNET) {
       setError(
@@ -80,13 +85,14 @@ export function useSluttdato({
     }
   }, [valgtVarighet, sluttdato])
 
+  /** Setter feil for manglende valg og returnerer om dato og varighet er gyldige. */
   const valider = () => {
     if (!valgtVarighet) {
       setError('Du må velge en varighet')
       return false
     }
     if (!sluttdato) {
-      if (valgtVarighet === VarighetValg.ANNET) {
+      if (valgtVarighet === VarighetValg.ANNET && !annet.error) {
         annet.setError('Du må velge en sluttdato')
       }
       return false
@@ -94,10 +100,12 @@ export function useSluttdato({
     return error === null && annet.error === null
   }
 
+  /** Sender DatePicker-resultatet videre til valideringen av manuell sluttdato. */
   const validerDato = (dateValidation: DateValidationT, newDate?: Date) => {
     annet.validate(dateValidation, newDate)
   }
 
+  /** Endrer sluttdato bare når brukeren har valgt varigheten ANNET. */
   const handleChange = (date: Date | undefined) => {
     if (valgtVarighet === VarighetValg.ANNET) {
       annet.onChange(date)
@@ -114,80 +122,5 @@ export function useSluttdato({
     valider,
     validerDato,
     handleChange
-  }
-}
-
-interface SluttdatoInputOpts {
-  deltaker: DeltakerResponse
-  onChange?: (date: Date | undefined) => void
-  defaultDato: Date | undefined
-  startdato?: Date
-  erSkjult?: boolean
-  erForleng?: boolean
-  isAfterError?: string
-  toDate?: Date
-}
-export function useSluttdatoInput({
-  deltaker,
-  onChange,
-  defaultDato,
-  startdato,
-  erSkjult,
-  erForleng,
-  isAfterError,
-  toDate
-}: SluttdatoInputOpts) {
-  const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (sluttdato) {
-      setError(
-        getSluttDatoFeilmelding(deltaker, sluttdato, startdato, erForleng)
-      )
-    } else {
-      setError(null)
-    }
-  }, [startdato])
-
-  const validate = (dateValidation: DateValidationT, newDate?: Date) => {
-    if (dateValidation.isInvalid) {
-      setError(UGYLDIG_DATO_FEILMELDING)
-    } else if (dateValidation.isBefore) {
-      setError(
-        startdato
-          ? SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
-          : DATO_FOER_SLUTTDATO_FEILMELDING
-      )
-    } else if (dateValidation.isAfter && isAfterError) {
-      setError(isAfterError)
-    } else if (newDate) {
-      setError(getSluttDatoFeilmelding(deltaker, newDate, startdato, erForleng))
-    }
-  }
-
-  const handleChange = (date: Date | undefined) => {
-    if (date) {
-      setSluttdato(date)
-      if (toDate && isAfterError && dayjs(date).isAfter(toDate)) {
-        setError(isAfterError)
-      } else {
-        setError(getSluttDatoFeilmelding(deltaker, date, startdato, erForleng))
-      }
-    }
-    if (onChange) {
-      onChange(date)
-    }
-  }
-
-  const errorMsg = erSkjult ? null : error
-
-  return {
-    sluttdato,
-    defaultDato,
-    error: errorMsg,
-    validate,
-    setError,
-    onChange: handleChange
   }
 }

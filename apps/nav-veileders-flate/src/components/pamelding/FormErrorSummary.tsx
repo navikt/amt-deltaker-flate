@@ -30,16 +30,21 @@ export const FormErrorSummary = ({
     return (
       <_FormErrorSummary<PameldingEnkeltplassFormValues>
         schemaFields={enkeltplassFields}
+        minimumAntallFeil={2}
       />
     )
   }
   return (
-    <_FormErrorSummary<PameldingFormValues> schemaFields={standardFields} />
+    <_FormErrorSummary<PameldingFormValues>
+      schemaFields={standardFields}
+      minimumAntallFeil={1}
+    />
   )
 }
 
 interface _FormErrorSummaryProps<T extends FieldValues> {
   schemaFields: Path<T>[]
+  minimumAntallFeil: number
 }
 
 const focusFieldById = (fieldId: string) => {
@@ -61,7 +66,8 @@ const focusFieldById = (fieldId: string) => {
 }
 
 const _FormErrorSummary = <T extends FieldValues>({
-  schemaFields
+  schemaFields,
+  minimumAntallFeil
 }: _FormErrorSummaryProps<T>) => {
   const {
     setFocus,
@@ -75,7 +81,7 @@ const _FormErrorSummary = <T extends FieldValues>({
     [submitCount]
   )
 
-  if (Object.keys(errors).length === 0) {
+  if (Object.keys(errors).length < minimumAntallFeil) {
     return null
   }
 
