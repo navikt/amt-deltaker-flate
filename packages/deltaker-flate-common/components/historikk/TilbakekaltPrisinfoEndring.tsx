@@ -46,11 +46,15 @@ export const TilbakekaltPrisinfoEndring = ({
       <Detail className="mt-1" textColor="subtle">
         {byline}
       </Detail>
-      <div className="mt-2">
-        <ReadMore size="small" header="Endringen som ble tilbakekalt">
-          {endringsDetaljer}
-        </ReadMore>
-      </div>
+
+      <ReadMore
+        variant="moderate"
+        size="small"
+        className="mt-2"
+        header="Endringen som ble tilbakekalt"
+      >
+        {endringsDetaljer}
+      </ReadMore>
     </HistorikkElement>
   )
 }

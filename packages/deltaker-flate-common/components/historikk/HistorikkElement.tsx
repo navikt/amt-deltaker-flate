@@ -49,7 +49,12 @@ export const HistorikkElement = ({
         {children}
         {forslag && (
           <div className="mt-1 mb-1">
-            <ReadMore size="small" header="Forslaget fra arrangør">
+            <ReadMore
+              variant="moderate"
+              size="small"
+              className="mt-2"
+              header="Forslaget fra arrangør"
+            >
               <BodyLong size="small" weight="semibold">
                 {getForslagTittel(forslag.endring.type)}
               </BodyLong>

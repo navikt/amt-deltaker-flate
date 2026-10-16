@@ -1,9 +1,6 @@
 import { BodyLong, Heading, Link, List } from '@navikt/ds-react'
-import {
-  IngenKostnaderAarsak,
-  Prisinformasjon,
-  PrisinformasjonType
-} from '../model/prisinformasjon'
+import { Prisinformasjon, PrisinformasjonType } from '../model/prisinformasjon'
+import { TILLEGGSSTONADER_URL } from '../utils/constants'
 import { getPrisInformasjonTekst } from '../utils/displayText'
 import { beregnEstimertTotalsum, NOK_FORMATTER } from '../utils/utils'
 
@@ -100,10 +97,7 @@ export const PrisOgBetaling = ({
               size="small"
               className={`${compact ? 'mt-0' : 'mt-2'} whitespace-pre-wrap`}
             >
-              {prisinformasjon.aarsak ===
-              IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI
-                ? 'Du eller Nav skal ikke betale for opplæringen.'
-                : 'Du må selv betale for opplæringen.'}
+              Nav skal ikke betale for opplæringen.
             </BodyLong>
             {prisinformasjon.tilleggsopplysninger && (
               <BodyLong
@@ -139,10 +133,7 @@ export const PrisOgBetaling = ({
       {showTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
           Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
-          <Link href="https://www.nav.no/tilleggsstonader">
-            nav.no/tilleggsstønader
-          </Link>
-          .
+          <Link href={TILLEGGSSTONADER_URL}>nav.no/tilleggsstønader</Link>.
         </BodyLong>
       )}
     </div>

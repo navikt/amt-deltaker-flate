@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import {
-  IngenKostnaderAarsak,
   INNHOLD_TYPE_ANNET,
   Prisinformasjon,
   PrisinformasjonType
@@ -39,8 +38,7 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
 // Denne vil i teorien aldri bli brukt, da skjemaet validerer at vi har valgt Prisinformasjon
 // og generateEnkeltplassPameldingRequest blir kalt fra utkast, og den vil også ha Prisinformasjon.
 const defaultPrisInformasjon: Prisinformasjon = {
-  type: PrisinformasjonType.IngenKostnader,
-  aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI
+  type: PrisinformasjonType.IngenKostnader
 }
 
 export const formToEnkeltplassKladdRequest = (

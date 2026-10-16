@@ -14,11 +14,6 @@ export enum Tilskuddstype {
   INTEGRERT_BOTILBUD = 'INTEGRERT_BOTILBUD'
 }
 
-export enum IngenKostnaderAarsak {
-  OPPLAERINGEN_ER_KOSTNADSFRI = 'OPPLAERINGEN_ER_KOSTNADSFRI',
-  OPPLAERINGEN_ER_EGENFINANSIERT = 'OPPLAERINGEN_ER_EGENFINANSIERT'
-}
-
 export const anskaffelseSchema = z.object({
   type: z.literal(PrisinformasjonType.Anskaffelse),
   pris: z.int(),
@@ -39,7 +34,6 @@ export const tilskuddSchema = z.object({
 
 export const ingenKostnaderSchema = z.object({
   type: z.literal(PrisinformasjonType.IngenKostnader),
-  aarsak: z.enum(IngenKostnaderAarsak),
   tilleggsopplysninger: z.string().nullish(),
   begrunnelse: z.string().nullish()
 })

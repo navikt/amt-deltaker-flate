@@ -12,6 +12,7 @@ import {
 import {
   ArrangorEndringsType,
   DeltakerHistorikkListe,
+  EndrePrisinfoStatus,
   EndringType,
   TiltakskoordinatorEndringsType
 } from '../model/deltakerHistorikk'
@@ -422,6 +423,52 @@ export const createHistorikk = (): DeltakerHistorikkListe => {
 
 export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
   return [
+    {
+      type: HistorikkType.EnkeltplassOkonomiGodkjent,
+      endretAv: 'Bernt Besluttersen',
+      endretAvEnhet: 'Nav Tiltak Oslo',
+      endret: dayjs().subtract(3, 'day').toDate(),
+      erForsteGodkjenning: false,
+      prisinformasjon: {
+        type: PrisinformasjonType.Anskaffelse,
+        pris: 25000,
+        begrunnelse: null
+      }
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndrePrisinfo,
+        prisinfo: {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 25000,
+          begrunnelse: null
+        },
+        begrunnelse: null,
+        status: EndrePrisinfoStatus.TILBAKEKALT
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(2, 'day').toDate(),
+      forslag: null
+    },
+    {
+      type: HistorikkType.Endring,
+      endring: {
+        type: EndringType.EndrePrisinfo,
+        prisinfo: {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 25000,
+          begrunnelse: null
+        },
+        begrunnelse: null,
+        status: EndrePrisinfoStatus.ENDRET_DIREKTE
+      },
+      endretAv: 'Navn Navnesen',
+      endretAvEnhet: 'Nav Fredrikstad',
+      endret: dayjs().subtract(1, 'day').toDate(),
+      forslag: null
+    },
     {
       type: HistorikkType.EndringFraTiltakskoordinator,
       endring: {
