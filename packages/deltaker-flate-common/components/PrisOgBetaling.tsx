@@ -1,8 +1,8 @@
 import { BodyLong, Heading, Link, List } from '@navikt/ds-react'
 import { Prisinformasjon, PrisinformasjonType } from '../model/prisinformasjon'
+import { TILLEGGSSTONADER_URL } from '../utils/constants'
 import { getPrisInformasjonTekst } from '../utils/displayText'
 import { beregnEstimertTotalsum, NOK_FORMATTER } from '../utils/utils'
-import { NAV_TILLEGGSSTONADER_URL } from '../../../apps/nav-veileders-flate/src/constants'
 
 interface Props {
   prisinformasjon?: Prisinformasjon | null
@@ -133,7 +133,7 @@ export const PrisOgBetaling = ({
       {showTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
           Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
-          <Link href={NAV_TILLEGGSSTONADER_URL}>nav.no/tilleggsstønader</Link>.
+          <Link href={TILLEGGSSTONADER_URL}>nav.no/tilleggsstønader</Link>.
         </BodyLong>
       )}
     </div>

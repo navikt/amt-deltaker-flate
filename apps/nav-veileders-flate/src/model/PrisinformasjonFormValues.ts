@@ -84,8 +84,8 @@ export const validatePrisinformasjon = (
     if (schema.pristype === PrisinformasjonType.IngenKostnader) {
       addPrisinformasjonIssue(
         ctx,
-        'ingen-kostnader-aarsak',
-        'Du må velge årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav.'
+        'tilleggsopplysninger-ingen-kostnader',
+        'Du må beskrive hvorfor opplæringen ikke medfører kostnader for Nav.'
       )
     }
 
