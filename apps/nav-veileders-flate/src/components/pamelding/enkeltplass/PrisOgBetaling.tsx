@@ -17,7 +17,6 @@ import {
   beregnEstimertTotalsum,
   fjernUgyldigeTegn,
   getPrisInformasjonTekst,
-  IngenKostnaderAarsak,
   NOK_FORMATTER,
   Prisinformasjon,
   PrisinformasjonType,
@@ -110,7 +109,7 @@ export const PrisOgBetaling = ({
               value={PrisinformasjonType.IngenKostnader}
               description="Ikke aktuelt med betaling eller refusjon fra Nav"
             >
-              Ingen kostnader for Nav
+              Nav skal ikke betale for opplæringen
             </Radio>
           </RadioGroup>
         )}
@@ -318,76 +317,13 @@ const Tilskudd = ({ disabled }: { disabled: boolean }) => {
 }
 
 const IngenKostnader = ({ disabled }: { disabled: boolean }) => {
-  const {
-    control,
-    clearErrors,
-    watch,
-    formState: { errors }
-  } = useFormContext<PameldingEnkeltplassFormValues>()
-  const prisinformasjon = watch('prisinformasjon')
-  const valgtAarsak = hentValgtAarsak(prisinformasjon)
-  const visEgenfinansiering =
-    valgtAarsak === IngenKostnaderAarsak.OPPLAERINGEN_ER_EGENFINANSIERT
-
   return (
-    <>
-      <Controller
-        name="prisinformasjon"
-        control={control}
-        render={({ field: { onChange, ref } }) => {
-          return (
-            <RadioGroup
-              ref={ref}
-              size="small"
-              id="ingen-kostnader-aarsak"
-              legend="Årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav"
-              disabled={disabled}
-              error={errors['prisinformasjon_ingen-kostnader-aarsak']?.message}
-              value={valgtAarsak}
-              onChange={(nextValue: IngenKostnaderAarsak) => {
-                onChange({
-                  type: PrisinformasjonType.IngenKostnader,
-                  aarsak: nextValue,
-                  tilleggsopplysninger: null
-                })
-
-                clearErrors('prisinformasjon_ingen-kostnader-aarsak')
-              }}
-            >
-              <Radio value={IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI}>
-                Opplæringen er kostnadsfri
-              </Radio>
-              <Radio
-                value={IngenKostnaderAarsak.OPPLAERINGEN_ER_EGENFINANSIERT}
-              >
-                Bruker dekker opplæringen fullt ut selv
-              </Radio>
-            </RadioGroup>
-          )
-        }}
-      />
-
-      {visEgenfinansiering && (
-        <>
-          <InlineMessage status="info" size="small">
-            Du må først inngå en skriftlig avtale med bruker om
-            egenfinansiering. Før deretter opp hvilke kostnader brukeren selv
-            skal dekke, i tekstfeltet under.
-            <LenkeNyFane
-              url={NAVET_EGENFINANSIERING_URL}
-              tekst="Les mer på Navet om del- og egenfinansiering (åpner i en ny fane)."
-            />
-          </InlineMessage>
-
-          <Tilleggsopplysninger
-            disabled={disabled}
-            required
-            type={PrisinformasjonType.IngenKostnader}
-            label="Tilleggsopplysninger om egenfinansieringen"
-          />
-        </>
-      )}
-    </>
+    <Tilleggsopplysninger
+      disabled={disabled}
+      required
+      type={PrisinformasjonType.IngenKostnader}
+      label="Beskriv hvorfor opplæringen ikke medfører kostnader for Nav"
+    />
   )
 }
 
@@ -447,9 +383,6 @@ const Tilleggsopplysninger = ({
 
         setValue('prisinformasjon', {
           type,
-          aarsak: erIngenKostnader(prisinformasjon)
-            ? prisinformasjon.aarsak
-            : IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
           tilleggsopplysninger: value
         })
 
@@ -497,7 +430,7 @@ const TilleggsstoenaderEllerTiltakspenger = () => {
       </List>
       <BodyLong size="small" className="mt-2">
         Hvis det kun er aktuelt med tilleggsstønader eller tiltakspenger, velger
-        du «Ingen kostnader for Nav».
+        du «Nav skal ikke betale for opplæringen».
       </BodyLong>
     </ReadMore>
   )
@@ -513,6 +446,3 @@ const getTilleggstekst = (prisinformasjon: Prisinformasjon | null) =>
   erTilskudd(prisinformasjon) || erIngenKostnader(prisinformasjon)
     ? (prisinformasjon.tilleggsopplysninger ?? null)
     : null
-
-const hentValgtAarsak = (prisinformasjon: Prisinformasjon | null) =>
-  erIngenKostnader(prisinformasjon) ? prisinformasjon.aarsak : null

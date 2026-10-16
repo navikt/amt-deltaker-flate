@@ -17,7 +17,6 @@ import {
   getUtvidetInnhold,
   harBakgrunnsinfo,
   HistorikkType,
-  IngenKostnaderAarsak,
   Innhold,
   INNHOLD_TYPE_ANNET,
   lagHistorikkFellesOppstart,
@@ -131,7 +130,6 @@ export class MockHandler {
         prisinformasjon: erEnkeltplass
           ? {
               type: PrisinformasjonType.IngenKostnader,
-              aarsak: IngenKostnaderAarsak.OPPLAERINGEN_ER_KOSTNADSFRI,
               tilleggsopplysninger: null
             }
           : null,

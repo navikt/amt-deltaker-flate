@@ -74,7 +74,12 @@ const ForslagFraUlestHendelse = ({
     ulestHendelse.hendelse.endringFraForslag
   ) {
     return (
-      <ReadMore size="small" header="Forslaget fra arrangør">
+      <ReadMore
+        variant="moderate"
+        size="small"
+        header="Forslaget fra arrangør"
+        className="mt-2"
+      >
         <BodyLong size="small" weight="semibold">
           {getForslagTittel(ulestHendelse.hendelse.endringFraForslag.type)}
         </BodyLong>
