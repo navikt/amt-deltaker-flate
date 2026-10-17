@@ -81,8 +81,8 @@ jobs:
         with:
           team: amt
           source: apps/nav-veileders-flate/build
-          destination: amt-veileder-flate-dev
-          no_cache_paths: amt-veileder-flate-dev/build/asset-manifest.json
+          destination: amt-deltaker-flate-veileder-dev
+          no_cache_paths: amt-deltaker-flate-veileder-dev/build/asset-manifest.json
           cache_invalidation: true
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
