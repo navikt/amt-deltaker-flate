@@ -8,6 +8,30 @@
         "VITE_KLAGE_URL",
         "VITE_APP_VERSION"
       ]
+    },
+    "build:dev": {
+      "env": [
+        "VITE_FARO_URL",
+        "VITE_DIALOG_URL",
+        "VITE_KLAGE_URL",
+        "VITE_APP_VERSION"
+      ]
+    },
+    "build:pull-request": {
+      "env": [
+        "VITE_FARO_URL",
+        "VITE_DIALOG_URL",
+        "VITE_KLAGE_URL",
+        "VITE_APP_VERSION"
+      ]
+    },
+    "build:demo": {
+      "env": [
+        "VITE_FARO_URL",
+        "VITE_DIALOG_URL",
+        "VITE_KLAGE_URL",
+        "VITE_APP_VERSION"
+      ]
     }
   }
 }
