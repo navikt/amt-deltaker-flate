@@ -83,6 +83,7 @@ jobs:
           source: apps/nav-veileders-flate/build
           destination: amt-veileder-flate-dev
           no_cache_paths: amt-veileder-flate-dev/build/asset-manifest.json
+          cache_invalidation: true
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
       - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
