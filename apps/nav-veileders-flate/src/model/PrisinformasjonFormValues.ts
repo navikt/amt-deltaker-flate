@@ -1,5 +1,4 @@
 import {
-  IngenKostnaderAarsak,
   Prisinformasjon,
   prisinformasjonSchema,
   PrisinformasjonType
@@ -85,8 +84,8 @@ export const validatePrisinformasjon = (
     if (schema.pristype === PrisinformasjonType.IngenKostnader) {
       addPrisinformasjonIssue(
         ctx,
-        'ingen-kostnader-aarsak',
-        'Du må velge årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav.'
+        'tilleggsopplysninger-ingen-kostnader',
+        'Du må beskrive hvorfor opplæringen ikke medfører kostnader for Nav.'
       )
     }
 
@@ -163,27 +162,14 @@ export const validatePrisinformasjon = (
   }
 
   if (schema.prisinformasjon.type === PrisinformasjonType.IngenKostnader) {
-    if (!schema.prisinformasjon.aarsak) {
-      addPrisinformasjonIssue(
-        ctx,
-        'ingen-kostnader-aarsak',
-        'Du må velge årsaken til at det ikke er aktuelt med betaling eller refusjon fra Nav.'
-      )
-      return
-    }
-
     const tilleggsopplysninger =
       schema.prisinformasjon.tilleggsopplysninger ?? ''
 
-    if (
-      schema.prisinformasjon.aarsak ===
-        IngenKostnaderAarsak.OPPLAERINGEN_ER_EGENFINANSIERT &&
-      tilleggsopplysninger.trim().length === 0
-    ) {
+    if (tilleggsopplysninger.trim().length === 0) {
       addPrisinformasjonIssue(
         ctx,
         'tilleggsopplysninger-ingen-kostnader',
-        'Du må fylle ut tilleggsopplysninger om egenfinansieringen.'
+        'Du må beskrive hvorfor opplæringen ikke medfører kostnader for Nav.'
       )
     }
 

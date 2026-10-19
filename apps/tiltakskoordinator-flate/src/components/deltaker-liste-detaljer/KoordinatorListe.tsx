@@ -72,7 +72,12 @@ export const KoordinatorListe = ({
         ))}
       </List>
 
-      <ReadMore size="small" header="Tidligere koordinatorer">
+      <ReadMore
+        variant="moderate"
+        size="small"
+        className="mt-2"
+        header="Tidligere koordinatorer"
+      >
         {tidligereKoordinatorer.length > 0 ? (
           <List as="ul" size="small">
             {tidligereKoordinatorer.map((koordinator) => (
