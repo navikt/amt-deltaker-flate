@@ -34,7 +34,7 @@ export const tilskuddSchema = z.object({
 
 export const ingenKostnaderSchema = z.object({
   type: z.literal(PrisinformasjonType.IngenKostnader),
-  tilleggsopplysninger: z.string().nullish(),
+  tilleggsopplysninger: z.string(),
   begrunnelse: z.string().nullish()
 })
 

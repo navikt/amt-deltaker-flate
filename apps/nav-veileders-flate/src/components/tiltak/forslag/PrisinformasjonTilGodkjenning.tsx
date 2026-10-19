@@ -99,7 +99,6 @@ export const PrisinformasjonTilGodkjenning = ({
           onClose={() => setEndreModalOpen(false)}
           onSuccess={handleEndringUtfort}
           deltaker={deltaker}
-          initialPrisinformasjon={prisinformasjonTilGodkjenning}
         />
       )}
 

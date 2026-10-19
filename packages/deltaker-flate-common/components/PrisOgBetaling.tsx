@@ -99,14 +99,12 @@ export const PrisOgBetaling = ({
             >
               Nav skal ikke betale for opplæringen.
             </BodyLong>
-            {prisinformasjon.tilleggsopplysninger && (
-              <BodyLong
-                size="small"
-                className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
-              >
-                {prisinformasjon.tilleggsopplysninger}
-              </BodyLong>
-            )}
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+            >
+              {prisinformasjon.tilleggsopplysninger}
+            </BodyLong>
           </>
         )
       default:
