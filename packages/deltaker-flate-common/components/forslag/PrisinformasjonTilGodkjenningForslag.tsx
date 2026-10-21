@@ -49,7 +49,7 @@ export const PrisinformasjonTilGodkjenningForslag = ({
                 headinglevel="3"
                 showHeading={false}
                 compact
-                showTilleggsstonaderInfo={false}
+                visTilleggsstonaderInfo={false}
               />
             </VStack>
           </HGrid>

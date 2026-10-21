@@ -244,8 +244,14 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             headinglevel="3"
             showHeading={false}
             compact
-            showTilleggsstonaderInfo={false}
+            visTilleggsstonaderInfo={false}
           />
+          {endring.begrunnelse &&
+            endring.begrunnelse !== endring.prisinfo?.begrunnelse && (
+              <BodyLong size="small" className="whitespace-pre-wrap mt-1">
+                Navs begrunnelse: {endring.begrunnelse}
+              </BodyLong>
+            )}
         </>
       )
     }

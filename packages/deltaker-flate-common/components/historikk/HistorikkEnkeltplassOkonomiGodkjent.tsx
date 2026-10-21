@@ -77,7 +77,7 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
             headinglevel="3"
             showHeading={false}
             compact
-            showTilleggsstonaderInfo={false}
+            visTilleggsstonaderInfo={false}
           />
         </ReadMore>
       )}

@@ -10,7 +10,7 @@ interface Props {
   headingsize?: 'medium' | 'small'
   showHeading?: boolean
   compact?: boolean
-  showTilleggsstonaderInfo?: boolean
+  visTilleggsstonaderInfo?: boolean
   className?: string
 }
 
@@ -19,7 +19,7 @@ export const PrisOgBetaling = ({
   headinglevel,
   headingsize = 'medium',
   showHeading = true,
-  showTilleggsstonaderInfo = true,
+  visTilleggsstonaderInfo = true,
   compact = false,
   className
 }: Props) => {
@@ -131,7 +131,7 @@ export const PrisOgBetaling = ({
         </BodyLong>
       )}
 
-      {showTilleggsstonaderInfo && (
+      {visTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
           Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
           <Link href={TILLEGGSSTONADER_URL}>nav.no/tilleggsstønader</Link>.

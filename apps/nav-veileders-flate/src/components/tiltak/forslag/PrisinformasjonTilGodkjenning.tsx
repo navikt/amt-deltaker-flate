@@ -45,16 +45,20 @@ export const PrisinformasjonTilGodkjenning = ({
   }
 
   const handleTilbakekall = () => {
-    doTilbakekall(deltaker.deltakerId, enhetId).then(() => {
-      setTilbakekallDialogOpen(false)
-      setDeltaker((prev) => ({
-        ...prev,
-        deltakerliste: {
-          ...prev.deltakerliste,
-          prisinformasjonTilGodkjenning: null
-        }
-      }))
-    })
+    doTilbakekall(deltaker.deltakerId, enhetId)
+      .then(() => {
+        setTilbakekallDialogOpen(false)
+        setDeltaker((prev) => ({
+          ...prev,
+          deltakerliste: {
+            ...prev.deltakerliste,
+            prisinformasjonTilGodkjenning: null
+          }
+        }))
+      })
+      .catch(() => {
+        // Feil vises via tilbakekallFeil
+      })
   }
 
   return (
