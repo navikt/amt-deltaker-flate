@@ -1,4 +1,7 @@
-import { ChevronRightCircleFillIcon } from '@navikt/aksel-icons'
+import {
+  ChevronRightCircleFillIcon,
+  MenuElipsisHorizontalCircleFillIcon
+} from '@navikt/aksel-icons'
 import { BodyShort, Detail, ReadMore, Tag } from '@navikt/ds-react'
 import type { DeltakerHistorikk } from '../../model/deltakerHistorikk'
 import { HistorikkType } from '../../model/forslag'
@@ -32,7 +35,17 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
           : 'Godkjent: Endre pris og betalingsbetingelser'
       }
       icon={
-        <ChevronRightCircleFillIcon color="var(--ax-text-accent-decoration)" />
+        erForsteGodkjenning ? (
+          <ChevronRightCircleFillIcon
+            aria-hidden
+            color="var(--ax-text-accent-decoration)"
+          />
+        ) : (
+          <MenuElipsisHorizontalCircleFillIcon
+            aria-hidden
+            color="var(--ax-text-info-decoration)"
+          />
+        )
       }
       badge={
         !erForsteGodkjenning ? (
@@ -42,11 +55,17 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
         ) : undefined
       }
     >
-      {erForsteGodkjenning ? (
-        <BodyShort size="small">
+      {erForsteGodkjenning && (
+        <BodyShort size="small" className="mb-2">
           Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
         </BodyShort>
-      ) : (
+      )}
+
+      <Detail textColor="subtle">
+        {`Endret ${formatDate(endret)}${endretAv ? ` av ${endretAv}` : ''}${endretAvEnhet ? ` ${endretAvEnhet}` : ''}.`}
+      </Detail>
+
+      {!erForsteGodkjenning && (
         <ReadMore
           variant="moderate"
           size="small"
@@ -62,12 +81,6 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
           />
         </ReadMore>
       )}
-
-      <Detail className="mt-2" textColor="subtle">
-        {endretAv === null
-          ? null
-          : `Endret ${formatDate(endret)} av ${endretAv}${endretAvEnhet ? ` ${endretAvEnhet}` : ''}.`}
-      </Detail>
     </HistorikkElement>
   )
 }

@@ -123,7 +123,10 @@ export const PrisOgBetaling = ({
       {renderPrisinformasjon()}
 
       {prisinformasjon.begrunnelse && (
-        <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+        <BodyLong
+          size="small"
+          className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+        >
           Navs begrunnelse: {prisinformasjon.begrunnelse}
         </BodyLong>
       )}

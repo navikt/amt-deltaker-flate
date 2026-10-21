@@ -1,4 +1,11 @@
-import { Alert, BodyLong, Box, Button, Dialog, Heading } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Box,
+  Button,
+  Dialog,
+  Heading,
+  LocalAlert
+} from '@navikt/ds-react'
 import {
   DeferredFetchState,
   Prisinformasjon,
@@ -38,19 +45,16 @@ export const PrisinformasjonTilGodkjenning = ({
   }
 
   const handleTilbakekall = () => {
-    doTilbakekall(deltaker.deltakerId, enhetId)
-      .then(() => {
-        setDeltaker((prev) => ({
-          ...prev,
-          deltakerliste: {
-            ...prev.deltakerliste,
-            prisinformasjonTilGodkjenning: null
-          }
-        }))
-      })
-      .catch(() => {
-        // Feil vises via tilbakekallFeil
-      })
+    doTilbakekall(deltaker.deltakerId, enhetId).then(() => {
+      setTilbakekallDialogOpen(false)
+      setDeltaker((prev) => ({
+        ...prev,
+        deltakerliste: {
+          ...prev.deltakerliste,
+          prisinformasjonTilGodkjenning: null
+        }
+      }))
+    })
   }
 
   return (
@@ -85,11 +89,6 @@ export const PrisinformasjonTilGodkjenning = ({
               Tilbakekall forslag
             </Button>
           </div>
-          {tilbakekallFeil && (
-            <Alert size="small" variant="error" className="mt-2">
-              Kunne ikke tilbakekalle forslaget. Prøv igjen.
-            </Alert>
-          )}
         </Box>
       </PrisinformasjonTilGodkjenningForslag>
 
@@ -114,27 +113,42 @@ export const PrisinformasjonTilGodkjenning = ({
           <Dialog.Header>
             <Dialog.Title>Tilbakekall forslag</Dialog.Title>
           </Dialog.Header>
+
           <Dialog.Body>
             <BodyLong>
               Er du helt sikker på at du vil tilbakekalle forslaget?
             </BodyLong>
+
+            {tilbakekallFeil && (
+              <LocalAlert status="error" className="mt-2" size="small">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>
+                    Kunne ikke tilbakekalle forslaget. Prøv igjen.
+                  </LocalAlert.Title>
+                </LocalAlert.Header>
+              </LocalAlert>
+            )}
           </Dialog.Body>
+
           <Dialog.Footer>
             <Dialog.CloseTrigger>
-              <Button variant="secondary" data-color="neutral" size="small">
+              <Button
+                variant="secondary"
+                data-color="neutral"
+                size="small"
+                disabled={tilbakekallState === DeferredFetchState.LOADING}
+              >
                 Nei, avbryt
               </Button>
             </Dialog.CloseTrigger>
-            <Dialog.CloseTrigger>
-              <Button
-                variant="danger"
-                size="small"
-                loading={tilbakekallState === DeferredFetchState.LOADING}
-                onClick={handleTilbakekall}
-              >
-                Ja, tilbakekall
-              </Button>
-            </Dialog.CloseTrigger>
+            <Button
+              variant="danger"
+              size="small"
+              loading={tilbakekallState === DeferredFetchState.LOADING}
+              onClick={handleTilbakekall}
+            >
+              Ja, tilbakekall
+            </Button>
           </Dialog.Footer>
         </Dialog.Popup>
       </Dialog>

@@ -246,11 +246,6 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             compact
             showTilleggsstonaderInfo={false}
           />
-          {endring.begrunnelse && (
-            <BodyLong size="small" className="whitespace-pre-wrap">
-              Navs begrunnelse: {endring.begrunnelse}
-            </BodyLong>
-          )}
         </>
       )
     }
@@ -271,7 +266,6 @@ export const HistorikkEndring = ({
         deltakerEndring={deltakerEndring}
         erEnkeltplass={erEnkeltplass}
         icon={icon}
-        forslag={deltakerEndring.forslag}
         endringsDetaljer={getEndringsDetaljer(
           deltakerEndring.endring,
           tiltakskode
