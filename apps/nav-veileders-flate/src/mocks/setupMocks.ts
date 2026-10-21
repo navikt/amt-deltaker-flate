@@ -327,7 +327,7 @@ export const worker = setupWorker(
     return HttpResponse.json(handler.getKodeverk())
   }),
   http.post(
-    `${API_URL}/deltaker/:deltakerId/tilbakekall-prisendring`,
+    `${API_URL}/enkeltplass/tilbakekall-prisendring/:deltakerId`,
     async () => {
       await delay(1000)
       return handler.tilbakekallPrisendring()
