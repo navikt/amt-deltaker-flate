@@ -244,13 +244,14 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
             headinglevel="3"
             showHeading={false}
             compact
-            showTilleggsstonaderInfo={false}
+            visTilleggsstonaderInfo={false}
           />
-          {endring.begrunnelse && (
-            <BodyLong size="small" className="whitespace-pre-wrap">
-              Navs begrunnelse: {endring.begrunnelse}
-            </BodyLong>
-          )}
+          {endring.begrunnelse &&
+            endring.begrunnelse !== endring.prisinfo?.begrunnelse && (
+              <BodyLong size="small" className="whitespace-pre-wrap mt-2">
+                Navs begrunnelse: {endring.begrunnelse}
+              </BodyLong>
+            )}
         </>
       )
     }
@@ -271,7 +272,6 @@ export const HistorikkEndring = ({
         deltakerEndring={deltakerEndring}
         erEnkeltplass={erEnkeltplass}
         icon={icon}
-        forslag={deltakerEndring.forslag}
         endringsDetaljer={getEndringsDetaljer(
           deltakerEndring.endring,
           tiltakskode

@@ -1,5 +1,4 @@
 import {
-  Prisinformasjon,
   prisinformasjonSchema,
   PrisinformasjonType
 } from 'deltaker-flate-common'
@@ -28,13 +27,13 @@ export type PrisinformasjonFormValues = z.infer<
 >
 
 export const generatePrisinformasjonDefaultValues = (
-  deltaker: DeltakerResponse,
-  initialPrisinformasjon?: Prisinformasjon | null
+  deltaker: DeltakerResponse
 ): PrisinformasjonFormValues => {
-  const prisinfo =
-    initialPrisinformasjon !== undefined
-      ? initialPrisinformasjon
-      : deltaker.deltakerliste.prisinformasjon
+  const eksisterendePrisendringForslag =
+    deltaker.deltakerliste.prisinformasjonTilGodkjenning
+  const prisinfo = eksisterendePrisendringForslag
+    ? eksisterendePrisendringForslag
+    : deltaker.deltakerliste.prisinformasjon
   return {
     pristype: prisinfo?.type ?? null,
     prisinformasjon: prisinfo ?? null

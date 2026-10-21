@@ -10,7 +10,7 @@ interface Props {
   headingsize?: 'medium' | 'small'
   showHeading?: boolean
   compact?: boolean
-  showTilleggsstonaderInfo?: boolean
+  visTilleggsstonaderInfo?: boolean
   className?: string
 }
 
@@ -19,7 +19,7 @@ export const PrisOgBetaling = ({
   headinglevel,
   headingsize = 'medium',
   showHeading = true,
-  showTilleggsstonaderInfo = true,
+  visTilleggsstonaderInfo = true,
   compact = false,
   className
 }: Props) => {
@@ -99,14 +99,12 @@ export const PrisOgBetaling = ({
             >
               Nav skal ikke betale for opplæringen.
             </BodyLong>
-            {prisinformasjon.tilleggsopplysninger && (
-              <BodyLong
-                size="small"
-                className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
-              >
-                {prisinformasjon.tilleggsopplysninger}
-              </BodyLong>
-            )}
+            <BodyLong
+              size="small"
+              className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+            >
+              {prisinformasjon.tilleggsopplysninger}
+            </BodyLong>
           </>
         )
       default:
@@ -125,12 +123,15 @@ export const PrisOgBetaling = ({
       {renderPrisinformasjon()}
 
       {prisinformasjon.begrunnelse && (
-        <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
+        <BodyLong
+          size="small"
+          className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
+        >
           Navs begrunnelse: {prisinformasjon.begrunnelse}
         </BodyLong>
       )}
 
-      {showTilleggsstonaderInfo && (
+      {visTilleggsstonaderInfo && (
         <BodyLong size="small" className="mt-4 whitespace-pre-wrap">
           Les mer om støtte til andre utgifter knyttet til opplæringen på{' '}
           <Link href={TILLEGGSSTONADER_URL}>nav.no/tilleggsstønader</Link>.

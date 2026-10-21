@@ -38,7 +38,8 @@ const formToEnkeltplassData = (data: PameldingEnkeltplassFormValues) => {
 // Denne vil i teorien aldri bli brukt, da skjemaet validerer at vi har valgt Prisinformasjon
 // og generateEnkeltplassPameldingRequest blir kalt fra utkast, og den vil også ha Prisinformasjon.
 const defaultPrisInformasjon: Prisinformasjon = {
-  type: PrisinformasjonType.IngenKostnader
+  type: PrisinformasjonType.IngenKostnader,
+  tilleggsopplysninger: ''
 }
 
 export const formToEnkeltplassKladdRequest = (

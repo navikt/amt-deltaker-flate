@@ -432,7 +432,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       prisinformasjon: {
         type: PrisinformasjonType.Anskaffelse,
         pris: 25000,
-        begrunnelse: null
+        begrunnelse: 'Dette er en begrunnelse'
       }
     },
     {
@@ -442,9 +442,9 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
         prisinfo: {
           type: PrisinformasjonType.Anskaffelse,
           pris: 25000,
-          begrunnelse: null
+          begrunnelse: 'Dette er en begrunnelse'
         },
-        begrunnelse: null,
+        begrunnelse: 'Dette er en begrunnelse',
         status: EndrePrisinfoStatus.TILBAKEKALT
       },
       endretAv: 'Navn Navnesen',
@@ -459,9 +459,9 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
         prisinfo: {
           type: PrisinformasjonType.Anskaffelse,
           pris: 25000,
-          begrunnelse: null
+          begrunnelse: 'Dette er en begrunnelse'
         },
-        begrunnelse: null,
+        begrunnelse: 'Dette er en begrunnelse',
         status: EndrePrisinfoStatus.ENDRET_DIREKTE
       },
       endretAv: 'Navn Navnesen',
@@ -502,7 +502,7 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       endring: {
         type: EndringType.ForlengDeltakelse,
         sluttdato: dayjs().add(1, 'month').toDate(),
-        begrunnelse: null,
+        begrunnelse: 'Dette er en begrunnelse',
         pavirkerPris: true
       },
       endretAv: 'Navn Navnesen',

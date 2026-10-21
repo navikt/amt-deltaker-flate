@@ -74,7 +74,7 @@ export const HistorikkSoktInn = ({
             headinglevel="3"
             showHeading={false}
             compact
-            showTilleggsstonaderInfo={false}
+            visTilleggsstonaderInfo={false}
           />
         </>
       )}

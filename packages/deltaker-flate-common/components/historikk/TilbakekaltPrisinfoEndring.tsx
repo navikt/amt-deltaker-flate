@@ -19,24 +19,19 @@ export const TilbakekaltPrisinfoEndring = ({
   deltakerEndring,
   erEnkeltplass,
   icon,
-  forslag,
   endringsDetaljer
 }: {
   deltakerEndring: DeltakerEndring
   erEnkeltplass: boolean
   icon: React.ReactNode
-  forslag: DeltakerEndring['forslag']
   endringsDetaljer: React.JSX.Element
 }) => {
   const endring = deltakerEndring.endring
-
-  const byline = `Tilbakekalt ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`
 
   return (
     <HistorikkElement
       tittel={getEndringsTittel(endring, erEnkeltplass)}
       icon={icon}
-      forslag={forslag}
       badge={
         <Tag variant="outline" data-color="neutral" size="small">
           Tilbakekalt
@@ -44,7 +39,7 @@ export const TilbakekaltPrisinfoEndring = ({
       }
     >
       <Detail className="mt-1" textColor="subtle">
-        {byline}
+        {`Tilbakekalt ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
       </Detail>
 
       <ReadMore

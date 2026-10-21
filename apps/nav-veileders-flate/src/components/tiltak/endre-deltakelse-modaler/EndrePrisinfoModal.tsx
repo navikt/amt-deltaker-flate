@@ -1,11 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   BegrunnelseInput,
   DeltakerStatusType,
   EndreDeltakelseType,
-  Prisinformasjon,
   useBegrunnelse
 } from 'deltaker-flate-common'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { endrePrisinfo } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
@@ -18,8 +17,8 @@ import {
 } from '../../../model/PrisinformasjonFormValues.ts'
 import { getFeilmeldingIngenEndring } from '../../../utils/displayText.ts'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
-import { PameldingFormContextProvider } from '../../pamelding/PameldingFormContext.tsx'
 import { PrisOgBetaling } from '../../pamelding/enkeltplass/PrisOgBetaling.tsx'
+import { PameldingFormContextProvider } from '../../pamelding/PameldingFormContext.tsx'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 
 interface Props {
@@ -27,24 +26,19 @@ interface Props {
   open: boolean
   onClose: () => void
   onSuccess: (oppdatertDeltaker: DeltakerResponse | null) => void
-  initialPrisinformasjon?: Prisinformasjon | null
 }
 
 export const EndrePrisinfoModal = ({
   deltaker,
   open,
   onClose,
-  onSuccess,
-  initialPrisinformasjon
+  onSuccess
 }: Props) => {
   const { enhetId } = useAppContext()
   const begrunnelse = useBegrunnelse(false)
   const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
 
-  const defaultValues = generatePrisinformasjonDefaultValues(
-    deltaker,
-    initialPrisinformasjon
-  )
+  const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
   const formMethods = useForm<PrisinformasjonFormValues>({
     defaultValues,
     resolver: zodResolver(createPrisinformasjonFormSchema()),

@@ -130,7 +130,7 @@ export class MockHandler {
         prisinformasjon: erEnkeltplass
           ? {
               type: PrisinformasjonType.IngenKostnader,
-              tilleggsopplysninger: null
+              tilleggsopplysninger: 'Det er gratis.'
             }
           : null,
         prisinformasjonTilGodkjenning: erEnkeltplass
