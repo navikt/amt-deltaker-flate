@@ -248,7 +248,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
           />
           {endring.begrunnelse &&
             endring.begrunnelse !== endring.prisinfo?.begrunnelse && (
-              <BodyLong size="small" className="whitespace-pre-wrap mt-1">
+              <BodyLong size="small" className="whitespace-pre-wrap mt-2">
                 Navs begrunnelse: {endring.begrunnelse}
               </BodyLong>
             )}
