@@ -1,0 +1,39 @@
+name: Update GitHub Pages
+on:
+  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-tiltaksarrangor-flate/actions/workflows/gh-pages.yaml
+  push:
+    branches:
+      - main
+env:
+  CI: true
+  TZ: Europe/Oslo
+
+jobs:
+  update-gh-pages:
+    permissions:
+      contents: "write"
+    name: Update GitHub pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 11.8.0
+      - name: Setup node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Build mock application
+        run: pnpm build:gh-pages
+      - name: Update GitHub pages
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build

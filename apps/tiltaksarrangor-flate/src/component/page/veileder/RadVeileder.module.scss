@@ -1,0 +1,20 @@
+@use '../../../colors.scss';
+
+.brukersNavn {
+  color: colors.$navBla;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sistEndret {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.aktivEndringIcon {
+  margin-top: -1.5px;
+}

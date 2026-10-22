@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.linkpanel {
+  display: flex;
+  flex-direction: row;
+}
+
+.clipboardimage {
+  display: flex;
+  justify-content: flex-start;
+}

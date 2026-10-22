@@ -1,0 +1,24 @@
+@use 'colors.scss';
+@import '@navikt/ds-css/dist/index.css';
+
+html {
+	background-color: colors.$navLysGra;
+}
+
+button {
+	font-family: var(--ax-font-family);
+}
+
+// V Gjør at applikasjonen fyller plassen til hele skjermen slik at Nav-dekoratør footeren alltid ligger i bånn V
+
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow-y: auto !important;
+	overflow-x: visible !important;
+}
+
+.app {
+	flex-grow: 1;
+}
