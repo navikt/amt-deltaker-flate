@@ -1,21 +1,29 @@
 name: Deploy innbyggers-flate
 on:
-  workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
+  workflow_call:
+    inputs:
+      target_environment:
+        required: true
+        type: string
+    secrets:
+      READER_TOKEN:
+        required: true
+      NAIS_WORKLOAD_IDENTITY_PROVIDER:
+        required: false
   push:
-    paths-ignore:
-      - .github/workflows/nav-veileders-flate-deploy.yaml
-      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
-      - .github/workflows/nav-veileders-flate-pr-comment-link.yaml
-      - .github/workflows/nav-veileders-flate-pr-cleanup.yaml
-      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-dev.yaml
-      - .github/workflows/nav-veileders-flate-deploy-poao-frontend-prod.yaml
-      - apps/nav-veileders-flate/**
-      - .github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml
-      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-cleanup.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-comment-link.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
-      - apps/tiltakskoordinator-flate/**
+    paths:
+      - apps/innbyggers-flate/**
+      - packages/**
+      - shared-config/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - eslint.config.mjs
+      - .github/actions/**
+      - .github/workflows/innbyggers-flate-*.yaml
+      - .github/workflows/reusable-*.yaml
     branches:
       - main
 permissions:
@@ -26,56 +34,34 @@ env:
   VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
-  playwright-version:
-    name: Get playwright version
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: apps/innbyggers-flate
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - id: get-version
-        run: echo "version=$(yq -r '.catalog.playwright' ../../pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
-
   test-and-lint:
     name: Test and lint
-    runs-on: ubuntu-latest
-    needs: playwright-version
-    container:
-      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
-        with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Lint
-        run: pnpm lint
-      - name: Run tests
-        run: pnpm test:no-watch --filter=innbyggers-flate
-      - name: Run playwright tests
-        run: pnpm playwright --filter=innbyggers-flate
+    permissions:
+      contents: read
+    uses: ./.github/workflows/reusable-test-build.yaml
+    with:
+      package: innbyggers-flate
+      app-version: ${{ github.sha }}
+      build-targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
+      app-directory: apps/innbyggers-flate
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
   deploy-dev-innbyggers-flate:
+    if: github.event_name == 'push' || inputs.target_environment == 'dev'
     name: Deploy innbyggers-flate to DEV
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: test-and-lint
     permissions:
       contents: 'read'
       id-token: 'write'
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+      - name: Download frontend assets
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Build
-        run: pnpm build:dev --filter=innbyggers-flate
+          name: frontend-build-dev
+          path: build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
@@ -84,51 +70,47 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
       - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-dev
+        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-dev
 
   deploy-demo-innbyggers-flate:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
     name: Deploy innbyggers-flate DEMO
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: test-and-lint
     permissions:
       contents: 'read'
       id-token: 'write'
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+      - name: Download frontend assets
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Build
-        run: pnpm build:demo --filter=innbyggers-flate
+          name: frontend-build-demo
+          path: build
       - uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
           team: amt
-          source: apps/innbyggers-flate/build
+          source: build
           source_keep_parent_name: false
           destination: amt-innbygger-flate-demo
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-prod-innbyggers-flate:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
     name: Deploy innbyggers-flate to PROD
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: test-and-lint
     permissions:
       contents: 'read'
       id-token: 'write'
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+      - name: Download frontend assets
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Build
-        run: pnpm build --filter=innbyggers-flate
+          name: frontend-build-prod
+          path: build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
@@ -137,4 +119,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
       - name: Upload files to GCS
-        run: gsutil -m rsync -r apps/innbyggers-flate/build gs://amt-deltaker-innbyggers-flate-prod
+        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-prod

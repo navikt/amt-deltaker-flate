@@ -5,44 +5,67 @@ on:
       - main
 permissions:
   contents: read
-env:
-  CI: true
-  TZ: Europe/Amsterdam
 
 jobs:
-  playwright-version:
-    name: Get playwright version
+  changes:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: apps/nav-veileders-flate
+    timeout-minutes: 5
     outputs:
-      version: ${{ steps.get-version.outputs.version }}
+      packages: ${{ contains(fromJSON(steps.filter.outputs.changes), 'all') && '["all"]' || steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - id: get-version
-        run: echo "version=$(yq -r '.catalog.playwright' ../../pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            innbyggers-flate: apps/innbyggers-flate/**
+            nav-veileders-flate: apps/nav-veileders-flate/**
+            amt-tiltaksarrangor-flate: apps/tiltaksarrangor-flate/**
+            tiltakskoordinator-flate: apps/tiltakskoordinator-flate/**
+            all:
+              - '**'
+              - '!apps/innbyggers-flate/**'
+              - '!apps/nav-veileders-flate/**'
+              - '!apps/tiltaksarrangor-flate/**'
+              - '!apps/tiltakskoordinator-flate/**'
+
+  test-and-build:
+    needs: changes
+    if: needs.changes.outputs.packages != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/reusable-test-build.yaml
+    with:
+      package: ${{ matrix.package }}
+      build: true
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
   lint-and-test:
     name: Lint, run tests & build
-    needs: playwright-version
+    if: ${{ always() }}
+    needs: [changes, test-and-build]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    container:
-      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
+    timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
-        with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Lint
-        run: pnpm lint
-      - name: Run tests
-        run: pnpm test:no-watch
-      - name: Run playwright tests
-        run: pnpm playwright
-      - name: Build
-        run: pnpm build
+      - name: Check results
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          PACKAGES: ${{ needs.changes.outputs.packages }}
+          TEST_RESULT: ${{ needs.test-and-build.result }}
+        run: |
+          if [ "$CHANGES_RESULT" != success ]; then
+            echo "Change detection failed or was cancelled."
+            exit 1
+          fi
+          if [ "$PACKAGES" = '[]' ] && [ "$TEST_RESULT" = skipped ]; then
+            echo "No frontend changes."
+          elif [ "$TEST_RESULT" != success ]; then
+            echo "Tests or builds failed, were cancelled, or were unexpectedly skipped."
+            exit 1
+          fi

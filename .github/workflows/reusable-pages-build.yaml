@@ -1,0 +1,49 @@
+name: Reusable GitHub Pages build
+
+on:
+  workflow_call:
+    inputs:
+      app:
+        required: true
+        type: string
+      package:
+        required: true
+        type: string
+    secrets:
+      READER_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  TZ: Europe/Amsterdam
+  VITE_APP_VERSION: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Build GitHub Pages application
+        env:
+          APP: ${{ inputs.app }}
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$APP" = tiltaksarrangor-flate ]; then
+            NODE_ENV=development pnpm --filter="$PACKAGE" exec vite build --mode demo --base "/amt-deltaker-flate/$APP/"
+          else
+            pnpm --filter="$PACKAGE" exec vite build --mode demo --base "/amt-deltaker-flate/$APP/"
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: pages-${{ inputs.app }}-demo
+          path: apps/${{ inputs.app }}/build
+          include-hidden-files: false
+          if-no-files-found: error
+          retention-days: 7
