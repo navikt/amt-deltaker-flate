@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: { { poaoFrontendImage } }
+  image: {{ poaoFrontendImage }}
   port: 8080
   ingresses:
     - https://amt-innbygger-flate-demo.ekstern.dev.nav.no
