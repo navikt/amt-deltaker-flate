@@ -24,8 +24,7 @@ import { axiosInstance, logAndThrowError, parse } from './utils'
 export const fetchMineRoller = (): AxiosPromise<Rolle[]> => {
   const url = appUrl('/amt-tiltaksarrangor-bff/tiltaksarrangor/meg/roller')
   return axiosInstance.get(url).catch((err) => {
-
-    return logAndThrowError(err, url)
+    return logAndThrowError(err)
   })
 }
 
@@ -38,21 +37,21 @@ export const fetchAlleDeltakerlister = (): AxiosPromise<
   return axiosInstance
     .get(url)
     .then(parse(adminDeltakerlisterSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const leggTilDeltakerliste = (deltakerlisteId: string): AxiosPromise => {
   const url = appUrl(
     `/amt-tiltaksarrangor-bff/tiltaksarrangor/koordinator/admin/deltakerliste/${deltakerlisteId}`
   )
-  return axiosInstance.post(url).catch((err) => logAndThrowError(err, url))
+  return axiosInstance.post(url).catch((err) => logAndThrowError(err))
 }
 
 export const fjernDeltakerliste = (deltakerlisteId: string): AxiosPromise => {
   const url = appUrl(
     `/amt-tiltaksarrangor-bff/tiltaksarrangor/koordinator/admin/deltakerliste/${deltakerlisteId}`
   )
-  return axiosInstance.delete(url).catch((err) => logAndThrowError(err, url))
+  return axiosInstance.delete(url).catch((err) => logAndThrowError(err))
 }
 
 export const fetchKoordinatorsDeltakerliste = (
@@ -64,7 +63,7 @@ export const fetchKoordinatorsDeltakerliste = (
   return axiosInstance
     .get(url)
     .then(parse(koordinatorsDeltakerlisteSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const fetchDeltakeroversikt = (): AxiosPromise<MineDeltakerlister> => {
@@ -80,7 +79,7 @@ export const fetchDeltakeroversikt = (): AxiosPromise<MineDeltakerlister> => {
         throw err
       }
 
-      return logAndThrowError(err, url)
+      return logAndThrowError(err)
     })
 }
 
@@ -91,7 +90,7 @@ export const fetchMineDeltakere = (): AxiosPromise<VeiledersDeltaker[]> => {
   return axiosInstance
     .get(url)
     .then(parse(deltakerlisteVeilederSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const fetchDeltaker = (deltakerId: string): AxiosPromise<Deltaker> => {
@@ -101,14 +100,14 @@ export const fetchDeltaker = (deltakerId: string): AxiosPromise<Deltaker> => {
   return axiosInstance
     .get(url)
     .then(parse(deltakerSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const skjulDeltaker = (deltakerId: string): AxiosPromise => {
   const url = appUrl(
     `/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/${deltakerId}`
   )
-  return axiosInstance.delete(url).catch((err) => logAndThrowError(err, url))
+  return axiosInstance.delete(url).catch((err) => logAndThrowError(err))
 }
 
 export const hentTilgjengeligeVeiledere = (
@@ -120,7 +119,7 @@ export const hentTilgjengeligeVeiledere = (
   return axiosInstance
     .get(url)
     .then(parse(tilgjengeligeVeiledereSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const tildelVeilederForDeltaker = (
@@ -136,7 +135,7 @@ export const tildelVeilederForDeltaker = (
         return { ansattId: v.ansattId, erMedveileder: v.erMedveileder }
       })
     })
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const postDeltakerVurderingOppfyllerKravene = (
@@ -147,7 +146,7 @@ export const postDeltakerVurderingOppfyllerKravene = (
   )
   return axiosInstance
     .post(url, { vurderingstype: Vurderingstype.OPPFYLLER_KRAVENE })
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export const postDeltakerVurderingOppfyllerIkkeKravene = (
@@ -162,5 +161,5 @@ export const postDeltakerVurderingOppfyllerIkkeKravene = (
       vurderingstype: Vurderingstype.OPPFYLLER_IKKE_KRAVENE,
       begrunnelse
     })
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }

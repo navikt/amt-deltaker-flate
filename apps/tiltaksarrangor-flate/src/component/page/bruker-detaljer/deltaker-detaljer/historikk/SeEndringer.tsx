@@ -11,22 +11,23 @@ interface Props {
   className?: string
 }
 
-export const SeEndringer = ({
-  deltakerId,
-  tiltakskode,
-  className
-}: Props) => {
-  const [ historikkModalOpen, setHistorikkModalOpen ] = useState(false)
-  const [ historikk, setHistorikk ] = useState<DeltakerHistorikkListe | null>(null)
-  const [ error, setError ] = useState(false)
+export const SeEndringer = ({ deltakerId, tiltakskode, className }: Props) => {
+  const [historikkModalOpen, setHistorikkModalOpen] = useState(false)
+  const [historikk, setHistorikk] = useState<DeltakerHistorikkListe | null>(
+    null
+  )
+  const [error, setError] = useState(false)
 
   const seEndringer = () => {
-    fetchDeltakerHistorikk(deltakerId).then((res) => {
-      setHistorikk(res.data)
-      setHistorikkModalOpen(true)
-    }).catch(() => {
-      setError(true)
-    })
+    fetchDeltakerHistorikk(deltakerId)
+      .then((res) => {
+        setError(false)
+        setHistorikk(res.data)
+        setHistorikkModalOpen(true)
+      })
+      .catch(() => {
+        setError(true)
+      })
   }
 
   return (
@@ -38,14 +39,13 @@ export const SeEndringer = ({
         onClick={seEndringer}
       >
         Se endringer
-      </Button >
+      </Button>
 
       {error && (
         <Alert variant="error" size="small">
           Beklager, vi kunne ikke hente historiske endringer på tiltaket.
         </Alert>
-      )
-      }
+      )}
 
       <HistorikkModal
         historikk={historikk}

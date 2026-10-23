@@ -6,7 +6,9 @@ export function validerObligatoriskBegrunnelse(begrunnelse: string) {
       return reject('Begrunnelse mangler')
     }
     if (begrunnelse.length > BEGRUNNELSE_MAKS_TEGN) {
-      return reject('Begrunnelsen kan ikke være over 200 tegn')
+      return reject(
+        `Begrunnelsen kan ikke være over ${BEGRUNNELSE_MAKS_TEGN} tegn`
+      )
     }
     resolve(begrunnelse)
   })
