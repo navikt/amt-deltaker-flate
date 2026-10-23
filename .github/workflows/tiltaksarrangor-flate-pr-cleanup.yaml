@@ -14,6 +14,7 @@ on:
       - pnpm-workspace.yaml
       - tsconfig.json
       - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-pr-comment-link.yaml
       - .github/workflows/tiltaksarrangor-flate-pr-deploy.yaml
       - .github/workflows/tiltaksarrangor-flate-pr-cleanup.yaml
 
