@@ -34,5 +34,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@11.23.0"
+  "packageManager": "pnpm@12.15.0"
 }
