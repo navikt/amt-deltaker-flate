@@ -7,15 +7,14 @@ on:
       - apps/tiltaksarrangor-flate/**
       - packages/**
       - shared-config/**
+      - .npmrc
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
-      - turbo.json
       - tsconfig.json
-      - eslint.config.mjs
-      - .github/actions/**
-      - .github/workflows/tiltaksarrangor-flate-*.yaml
-      - .github/workflows/reusable-*.yaml
+      - .github/actions/setup-frontend/**
+      - .github/workflows/tiltaksarrangor-flate-pr-deploy.yaml
+      - .github/workflows/tiltaksarrangor-flate-pr-cleanup.yaml
 
 permissions:
   contents: read

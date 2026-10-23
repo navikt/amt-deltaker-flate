@@ -15,15 +15,15 @@ on:
       - apps/tiltakskoordinator-flate/**
       - packages/**
       - shared-config/**
+      - .npmrc
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
       - turbo.json
       - tsconfig.json
-      - eslint.config.mjs
-      - .github/actions/**
-      - .github/workflows/tiltakskoordinator-flate-*.yaml
-      - .github/workflows/reusable-*.yaml
+      - .github/actions/setup-frontend/**
+      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+      - .github/workflows/reusable-test-build.yaml
     branches:
       - main
 permissions:
