@@ -2,20 +2,19 @@ name: Deploy Pull Request Branch - nav-veileders-flate
 on:
   workflow_dispatch: # This workflow can be triggered manually from: https://github.com/navikt/amt-deltaker-flate/actions/workflows/deploy.yaml
   pull_request:
-    paths-ignore:
-      - .github/workflows/innbyggers-flate-deploy.yaml
-      - .github/workflows/innbyggers-flate-deploy-poao-frontend-dev.yaml
-      - .github/workflows/innbyggers-flate-deploy-poao-frontend-demo.yaml
-      - .github/workflows/innbyggers-flate-pr-deploy.yaml
-      - .github/workflows/innbyggers-flate-pr-comment-link.yaml
-      - .github/workflows/innbyggers-flate-pr-cleanup.yaml
-      - apps/innbyggers-flate/**
-      - .github/workflows/tiltakskoordinator-flate-deploy-poao-frontend-dev.yaml
-      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-cleanup.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-comment-link.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
-      - apps/tiltakskoordinator-flate/**
+    paths:
+      - apps/nav-veileders-flate/**
+      - packages/**
+      - shared-config/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - eslint.config.mjs
+      - .github/actions/**
+      - .github/workflows/nav-veileders-flate-*.yaml
+      - .github/workflows/reusable-*.yaml
     branches:
       - main
 permissions:

@@ -6,7 +6,17 @@ on:
       - main
     paths:
       - apps/**
+      - packages/**
+      - shared-config/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - eslint.config.mjs
+      - .github/actions/**
       - .github/workflows/*-flate-*.yaml
+      - .github/workflows/reusable-*.yaml
     types:
       - closed
 permissions:
@@ -29,13 +39,43 @@ jobs:
           filters: |
             innbyggers-flate:
               - apps/innbyggers-flate/**
+              - packages/**
+              - shared-config/**
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - eslint.config.mjs
+              - .github/actions/**
               - .github/workflows/innbyggers-flate-*.yaml
+              - .github/workflows/reusable-*.yaml
             nav-veileders-flate:
               - apps/nav-veileders-flate/**
+              - packages/**
+              - shared-config/**
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - eslint.config.mjs
+              - .github/actions/**
               - .github/workflows/nav-veileders-flate-*.yaml
+              - .github/workflows/reusable-*.yaml
             tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
+              - packages/**
+              - shared-config/**
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - eslint.config.mjs
+              - .github/actions/**
               - .github/workflows/tiltakskoordinator-flate-*.yaml
+              - .github/workflows/reusable-*.yaml
 
   cleanup-pr-flate:
     needs: changes
