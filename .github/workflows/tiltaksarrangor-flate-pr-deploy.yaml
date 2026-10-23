@@ -1,0 +1,73 @@
+name: Preview tiltaksarrangor-flate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - apps/tiltaksarrangor-flate/**
+      - packages/**
+      - shared-config/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - eslint.config.mjs
+      - .github/actions/**
+      - .github/workflows/tiltaksarrangor-flate-*.yaml
+      - .github/workflows/reusable-*.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tiltaksarrangor-flate-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  TZ: Europe/Oslo
+
+jobs:
+  deploy:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Build preview
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: pnpm --filter amt-tiltaksarrangor-flate exec vite build --mode pull-request --base="/deltakeroversikt/pr-deltaker-${PR_NUMBER}/"
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Verify GCP token exchange
+        run: gcloud auth print-access-token > /dev/null
+      - name: Upload preview
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: gsutil -m rsync -r apps/tiltaksarrangor-flate/build "gs://amt-tiltaksarrangor-flate-dev/pr-deltaker-${PR_NUMBER}"
+
+  comment:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        with:
+          comment-tag: tiltaksarrangor-preview
+          message: |
+            Tiltaksarrangor preview:
+            https://amt.intern.dev.nav.no/deltakeroversikt/pr-deltaker-${{ github.event.number }}/index.html
+            https://amt.ansatt.dev.nav.no/deltakeroversikt/pr-deltaker-${{ github.event.number }}/index.html

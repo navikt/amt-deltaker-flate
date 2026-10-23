@@ -7,11 +7,13 @@ Flate for tiltaksarrangør.
 En demo versjon av applikasjonen kan testes gjennom lenken nedenfor.
 All dataen i demo appen er mocket. Demoen vil i mest mulig grad være lik den reelle applikasjonen, men det kan oppstå differanser.
 
-https://navikt.github.io/amt-tiltaksarrangor-flate/
+https://navikt.github.io/amt-deltaker-flate/tiltaksarrangor-flate/
 
 ## Installere avhengigheter
+
+Kjør fra roten av repoet:
+
 `pnpm install`
-Nåværende versjon av pnpm er 9.15.3
 
 ## Start applikasjon lokalt
 `pnpm start`
