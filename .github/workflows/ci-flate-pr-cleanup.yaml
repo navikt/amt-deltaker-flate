@@ -5,8 +5,21 @@ on:
     branches:
       - main
     paths:
-      - apps/**
-      - .github/workflows/*-flate-*.yaml
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/innbyggers-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
     types:
       - closed
 permissions:
@@ -29,13 +42,40 @@ jobs:
           filters: |
             innbyggers-flate:
               - apps/innbyggers-flate/**
-              - .github/workflows/innbyggers-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/innbyggers-flate-pr-deploy.yaml
             nav-veileders-flate:
               - apps/nav-veileders-flate/**
-              - .github/workflows/nav-veileders-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/nav-veileders-flate-pr-deploy.yaml
             tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
-              - .github/workflows/tiltakskoordinator-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
 
   cleanup-pr-flate:
     needs: changes
@@ -55,6 +95,7 @@ jobs:
             gs-path: 'gs://amt-tiltakskoordinator-flate-dev-pr'
 
     steps:
+      # Rydd bare for appendringer i PR-er fra repoet, ikke for fork-PR-er eller Dependabot.
       - name: Set SHOULD_RUN environment variable
         env:
           CHANGES_OUTPUT: ${{ needs.changes.outputs[matrix.app.name] }}

@@ -7,8 +7,21 @@ on:
     types:
       - opened
     paths:
-      - apps/**
-      - .github/workflows/*-flate-*.yaml
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/innbyggers-flate-pr-deploy.yaml
+      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
 
 permissions:
   contents: read
@@ -31,13 +44,40 @@ jobs:
           filters: |
             innbyggers-flate: 
               - apps/innbyggers-flate/**
-              - .github/workflows/innbyggers-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/innbyggers-flate-pr-deploy.yaml
             nav-veileders-flate: 
               - apps/nav-veileders-flate/**
-              - .github/workflows/nav-veileders-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/nav-veileders-flate-pr-deploy.yaml
             tiltakskoordinator-flate: 
               - apps/tiltakskoordinator-flate/**
-              - .github/workflows/tiltakskoordinator-flate-*.yaml
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
 
   create-link:
     needs: changes
@@ -61,6 +101,7 @@ jobs:
       - name: Bygg lenke(r) til test-applikasjon
         id: build-links
         run: |
+          # Lag én PR-lenke per baseadresse, og bevar linjeskiftene i stegets output.
           links=()
           for base in ${{ join(matrix.app.lenker, ' ') }}; do
             links+=("${base}/pr-${{ github.event.number }}/index.html")
@@ -73,6 +114,7 @@ jobs:
 
       - name: Opprett lenke(r) til test-applikasjon
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        # Ikke skriv testlenker for fork-PR-er eller Dependabot.
         if: needs.changes.outputs[matrix.app.name] == 'true' && github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
         with:
           message: |
