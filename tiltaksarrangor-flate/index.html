@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+<script id="amt-pages-restore">(function restoreRoute(appRoot        , parameter        ) {
+  if (location.pathname !== appRoot || location.hash) return
+
+  const parameters = new URLSearchParams(location.search)
+  if (parameters.size !== 1 || !parameters.has(parameter)) return
+
+  const original = parameters.get(parameter)
+  if (!original || !original.startsWith(appRoot)) return
+
+  const target = new URL(original, location.origin)
+  if (
+    target.origin !== location.origin ||
+    !target.pathname.startsWith(appRoot) ||
+    target.href !== location.origin + original
+  ) {
+    return
+  }
+
+  history.replaceState(history.state, '', original)
+})("/amt-deltaker-flate/tiltaksarrangor-flate/","__amt_pages_route");</script>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/amt-deltaker-flate/tiltaksarrangor-flate/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Deltakeroversikt"
+    />
+    <title>Deltakeroversikt</title>
+    <script type="module" crossorigin src="/amt-deltaker-flate/tiltaksarrangor-flate/assets/index-D3JRgi58.js"></script>
+    <link rel="stylesheet" crossorigin href="/amt-deltaker-flate/tiltaksarrangor-flate/assets/index-CUFNs6rN.css">
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" class="app"></div>
+  </body>
+</html>

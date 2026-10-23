@@ -1,6 +1,26 @@
 <!doctype html>
 <html lang="no">
   <head>
+<script id="amt-pages-restore">(function restoreRoute(appRoot        , parameter        ) {
+  if (location.pathname !== appRoot || location.hash) return
+
+  const parameters = new URLSearchParams(location.search)
+  if (parameters.size !== 1 || !parameters.has(parameter)) return
+
+  const original = parameters.get(parameter)
+  if (!original || !original.startsWith(appRoot)) return
+
+  const target = new URL(original, location.origin)
+  if (
+    target.origin !== location.origin ||
+    !target.pathname.startsWith(appRoot) ||
+    target.href !== location.origin + original
+  ) {
+    return
+  }
+
+  history.replaceState(history.state, '', original)
+})("/amt-deltaker-flate/nav-veileders-flate/","__amt_pages_route");</script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/amt-deltaker-flate/nav-veileders-flate/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

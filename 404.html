@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: #fff;
+        color: #111;
+      }
+      h1 {
+        margin: 0 0 1.5rem;
+        font-size: 1.5rem;
+      }
+      .app-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.75rem;
+      }
+      .app-card {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 1rem;
+      }
+      .app-card h2 {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+      .app-card p {
+        margin: 0.5rem 0 0;
+        color: #444;
+        font-size: 0.95rem;
+      }
+      .app-link {
+        display: inline-block;
+        margin-top: 0.75rem;
+      }
+    </style>
+  <script>(function redirectToApp(
+  sitePrefix        ,
+  appIds          ,
+  parameter        
+) {
+  const appId = appIds.find((id) =>
+    location.pathname.startsWith(sitePrefix + id + '/')
+  )
+  if (!appId) return
+
+  const appRoot = sitePrefix + appId + '/'
+  const route = location.pathname.slice(appRoot.length)
+  // Missing entry points and assets must remain 404s, not redirect loops.
+  if (
+    !route ||
+    route === 'index.html' ||
+    route.startsWith('assets/') ||
+    /\.(?:js|mjs|css|map|json|ico|png|jpe?g|gif|svg|webp|woff2?|ttf|html)$/i.test(
+      route
+    )
+  ) {
+    return
+  }
+
+  const original = location.href.slice(location.origin.length)
+  location.replace(
+    appRoot + '?' + parameter + '=' + encodeURIComponent(original)
+  )
+})("/amt-deltaker-flate/",["innbyggers-flate","nav-veileders-flate","tiltakskoordinator-flate","tiltaksarrangor-flate"],"__amt_pages_route");</script>
+</head>
+  <body>
+    <h1>404: Fant ikke siden</h1>
+    <div class="app-list">
+      <div class="app-card">
+  <h2>Innbyggers Flate</h2>
+  <p>Applikasjonen for innbyggere (deltakere i tiltak).</p>
+  <a href="/amt-deltaker-flate/innbyggers-flate/" class="app-link">Åpne app →</a>
+</div>
+
+<div class="app-card">
+  <h2>Nav Veileders Flate</h2>
+  <p>Applikasjonen for NAV-veiledere.</p>
+  <a href="/amt-deltaker-flate/nav-veileders-flate/" class="app-link">Åpne app →</a>
+</div>
+
+<div class="app-card">
+  <h2>Tiltakskoordinator Flate</h2>
+  <p>Applikasjonen for tiltakskoordinatorer.</p>
+  <a href="/amt-deltaker-flate/tiltakskoordinator-flate/" class="app-link">Åpne app →</a>
+</div>
+
+<div class="app-card">
+  <h2>Tiltaksarrangørflate</h2>
+  <p>Applikasjonen for tiltaksarrangører.</p>
+  <a href="/amt-deltaker-flate/tiltaksarrangor-flate/" class="app-link">Åpne app →</a>
+</div>
+
+    </div>
+  </body>
+</html>
