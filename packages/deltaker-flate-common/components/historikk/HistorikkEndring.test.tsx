@@ -5,6 +5,7 @@ import {
   EndrePrisinfoStatus,
   EndringType
 } from '../../model/deltakerHistorikk'
+import { OpplaringRepresenterer } from '../../model/kodeverk'
 import { extractText } from '../test-utils'
 import { HistorikkEndring } from './HistorikkEndring'
 import { HistorikkType } from '../../model/forslag'
@@ -83,6 +84,36 @@ describe('HistorikkEndring', () => {
     }
   )
 
+  it('viser kurstype og beskrivelse for endring i opplæringskategorisering', () => {
+    const deltakerEndring = lagDeltakerEndring({
+      type: EndringType.EndreOpplaringKategorisering,
+      opplaringKategoriseringValg: {
+        valgteKategoriseringer: [
+          {
+            type: OpplaringRepresenterer.KURSTYPE_ID,
+            valgteElementer: [
+              {
+                id: '79d1a970-e8f0-4ecd-8d5e-e7c8d5f3394c',
+                visningsnavn: 'Norsk for arbeidslivet'
+              }
+            ]
+          }
+        ],
+        valgteSertifiseringer: []
+      },
+      beskrivelse: 'For deltakere med norsk som andrespråk',
+      pavirkerPris: true
+    })
+
+    const text = hentTekst(deltakerEndring)
+
+    expect(text).toContain('Kurstype: Norsk for arbeidslivet')
+    expect(text).toContain(
+      'Beskrivelse: For deltakere med norsk som andrespråk'
+    )
+    expect(text).toContain(prisvarsel)
+  })
+
   it('viser egen tilbakekall-visning for EndrePrisinfo med TILBAKEKALT', () => {
     const tekster = extractText(
       <HistorikkEndring
@@ -109,9 +140,9 @@ describe('HistorikkEndring', () => {
     )
     const text = tekster.join(' ')
 
-    expect(tekster).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
-    expect(tekster).toContain('Tilbakekalt')
-    expect(tekster).toContain('Tilbakekalt 27.08.2026 av Veileder Nav Oslo.')
+    expect(text).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
+    expect((text.match(/Tilbakekalt/g) ?? []).length).toBe(3)
+    expect(text).toContain('Tilbakekalt')
     expect(text).toContain('Endringen som ble tilbakekalt')
     expect(text).not.toContain('Endret')
   })

@@ -5,6 +5,7 @@ import {
   Endring,
   EndringType
 } from '../../model/deltakerHistorikk'
+import { OpplaringRepresenterer } from '../../model/kodeverk'
 import { EndreDeltakelseType } from '../../model/endre-deltaker'
 import { EMDASH } from '../../utils/constants'
 import {
@@ -145,8 +146,19 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
       )
     }
     case EndringType.EndreOpplaringKategorisering: {
+      const kurstype =
+        endring.opplaringKategoriseringValg.valgteKategoriseringer
+          .find(
+            (kategori) => kategori.type === OpplaringRepresenterer.KURSTYPE_ID
+          )
+          ?.valgteElementer.map((element) => element.visningsnavn)
+          .join(', ')
+
       return (
         <div className="flex flex-col gap-1">
+          {kurstype && (
+            <BodyLong size="small">{`Kurstype: ${kurstype}`}</BodyLong>
+          )}
           <DeltakelseInnhold
             tiltakskode={tiltakskode}
             deltakelsesinnhold={null}
@@ -155,7 +167,7 @@ const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
           />
           {endring.beskrivelse && (
             <BodyLong size="small" className="whitespace-pre-wrap">
-              Beskrivelse: {endring.beskrivelse}
+              {`Beskrivelse: ${endring.beskrivelse}`}
             </BodyLong>
           )}
           {endring.pavirkerPris && <PavirkerPris />}
