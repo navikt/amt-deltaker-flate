@@ -67,6 +67,6 @@ jobs:
         with:
           comment-tag: tiltaksarrangor-preview
           message: |
-            Tiltaksarrangor preview:
+            Lenke(r) for testing av tiltaksarrangor-flate:
             https://amt.intern.dev.nav.no/deltakeroversikt/pr-deltaker-${{ github.event.number }}/index.html
             https://amt.ansatt.dev.nav.no/deltakeroversikt/pr-deltaker-${{ github.event.number }}/index.html
