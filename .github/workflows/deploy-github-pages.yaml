@@ -30,6 +30,7 @@ jobs:
           pnpm --filter=innbyggers-flate exec vite build --mode demo --base /amt-deltaker-flate/innbyggers-flate/
           pnpm --filter=nav-veileders-flate exec vite build --mode demo --base /amt-deltaker-flate/nav-veileders-flate/
           pnpm --filter=tiltakskoordinator-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltakskoordinator-flate/
+          NODE_ENV=development pnpm --filter=amt-tiltaksarrangor-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltaksarrangor-flate/
 
       - name: Prepare GitHub Pages content
         run: |
@@ -37,6 +38,7 @@ jobs:
           cp -r apps/innbyggers-flate/build github-pages/innbyggers-flate
           cp -r apps/nav-veileders-flate/build github-pages/nav-veileders-flate
           cp -r apps/tiltakskoordinator-flate/build github-pages/tiltakskoordinator-flate
+          cp -r apps/tiltaksarrangor-flate/build github-pages/tiltaksarrangor-flate
 
       - name: Generate index page
         run: node scripts/build-github-pages.ts github-pages
