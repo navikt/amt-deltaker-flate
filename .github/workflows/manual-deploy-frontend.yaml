@@ -1,0 +1,106 @@
+name: Deploy frontend manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Velg app
+        required: true
+        type: choice
+        options:
+          - innbyggers-flate
+          - nav-veileders-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+      target_environment:
+        description: Velg miljø
+        required: true
+        type: choice
+        options:
+          - dev
+          - demo
+          - prod
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-frontend-deploy-${{ inputs.app }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate deployment selection
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Reject unsupported app and environment
+        if: inputs.app == 'tiltaksarrangor-flate' && inputs.target_environment == 'demo'
+        run: |
+          echo "::error::tiltaksarrangor-flate has no demo deployment"
+          exit 1
+      - name: Require main branch for demo and production
+        if: inputs.target_environment != 'dev' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Demo and production deployments must be started from main"
+          exit 1
+      - name: Require main branch for tiltaksarrangor-flate
+        if: inputs.app == 'tiltaksarrangor-flate' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::tiltaksarrangor-flate deployments must be started from main"
+          exit 1
+
+  deploy-innbyggers-flate:
+    name: Deploy innbyggers-flate
+    if: inputs.app == 'innbyggers-flate'
+    needs: validate
+    uses: ./.github/workflows/innbyggers-flate-deploy.yaml
+    with:
+      target_environment: ${{ inputs.target_environment }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    permissions:
+      contents: read
+      id-token: write
+
+  deploy-nav-veileders-flate:
+    name: Deploy nav-veileders-flate
+    if: inputs.app == 'nav-veileders-flate'
+    needs: validate
+    uses: ./.github/workflows/nav-veileders-flate-deploy.yaml
+    with:
+      target_environment: ${{ inputs.target_environment }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    permissions:
+      contents: read
+      id-token: write
+
+  deploy-tiltakskoordinator-flate:
+    name: Deploy tiltakskoordinator-flate
+    if: inputs.app == 'tiltakskoordinator-flate'
+    needs: validate
+    uses: ./.github/workflows/tiltakskoordinator-flate-deploy.yaml
+    with:
+      target_environment: ${{ inputs.target_environment }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    permissions:
+      contents: read
+      id-token: write
+
+  deploy-tiltaksarrangor-flate:
+    name: Deploy tiltaksarrangor-flate
+    if: inputs.app == 'tiltaksarrangor-flate'
+    needs: validate
+    uses: ./.github/workflows/tiltaksarrangor-flate-deploy.yaml
+    with:
+      target_environment: ${{ inputs.target_environment }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+    permissions:
+      contents: write
+      id-token: write

@@ -1,0 +1,101 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: amt-tiltaksarrangor-flate
+  namespace: amt
+  labels:
+    team: amt
+spec:
+  image: europe-north1-docker.pkg.dev/nais-management-233d/poao/poao-frontend:2026.10.14_06.00-3eed73c065fb
+  port: 8080
+  ingresses:
+    - https://amt.intern.dev.nav.no/deltakeroversikt
+    - https://amt.ansatt.dev.nav.no/deltakeroversikt
+  liveness:
+    path: /internal/alive
+    initialDelay: 10
+  readiness:
+    path: /internal/ready
+    initialDelay: 10
+  replicas:
+    disableAutoScaling: true
+    min: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+  tokenx:
+    enabled: true
+  gcp:
+    buckets:
+      - name: amt-tiltaksarrangor-flate-dev
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      rules:
+        - application: amt-tiltaksarrangor-bff
+  env:
+    - name: JSON_CONFIG
+      value: >
+        {
+          "contextPath": "/deltakeroversikt",
+          "fallbackStrategy": "SERVE_INDEX_HTML",
+          "gcs": {
+            "bucketName": "amt-tiltaksarrangor-flate-dev"
+          },
+          "auth": {
+            "loginProvider": "ID_PORTEN"
+          },
+          "proxies": [
+            {
+              "fromPath": "/amt-tiltaksarrangor-bff", "toUrl": "http://amt-tiltaksarrangor-bff",
+              "toApp": { "name": "amt-tiltaksarrangor-bff", "namespace": "amt", "cluster": "dev-gcp" }
+            },
+            {
+              "fromPath": "/pr-:id/amt-tiltaksarrangor-bff",
+              "toUrl": "http://amt-tiltaksarrangor-bff",
+              "toApp": {
+                "name": "amt-tiltaksarrangor-bff",
+                "namespace": "amt",
+                "cluster": "dev-gcp"
+              }
+            }
+          ],
+          "header": {
+              "csp": {
+                "connectSrc":[
+                  "'self'",
+                  "*.nav.no",
+                  "*.boost.ai",
+                  "*.psplugin.com",
+                  "*.taskanalytics.com"
+                ],
+                "scriptSrc":[
+                  "*.nav.no",
+                  "*.psplugin.com",
+                  "*.taskanalytics.com",
+                  "nav.boost.ai",
+                  "'unsafe-inline'",
+                  "'unsafe-eval'",
+                  "'self'",
+                  "blob:"
+                ]
+              }
+            }
+        }
+
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki

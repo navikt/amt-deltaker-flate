@@ -115,7 +115,7 @@ describe('HistorikkEndring', () => {
   })
 
   it('viser egen tilbakekall-visning for EndrePrisinfo med TILBAKEKALT', () => {
-    const text = extractText(
+    const tekster = extractText(
       <HistorikkEndring
         tiltakskode={Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING}
         erEnkeltplass={true}
@@ -137,7 +137,8 @@ describe('HistorikkEndring', () => {
           forslag: null
         }}
       />
-    ).join(' ')
+    )
+    const text = tekster.join(' ')
 
     expect(text).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
     expect((text.match(/Tilbakekalt/g) ?? []).length).toBe(3)

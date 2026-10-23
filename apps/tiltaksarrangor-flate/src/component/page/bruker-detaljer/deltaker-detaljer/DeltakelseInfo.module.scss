@@ -1,0 +1,69 @@
+@use '../../../../colors.scss';
+
+
+.elementWrapper {
+  > * {
+    margin-bottom: 1rem;
+  }
+  @media (min-width: 600px) {
+      > :last-child {
+          margin-bottom: 0;
+      }
+  }
+
+}
+
+.deltakerInfoWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 600px) {
+      flex-direction: row;
+      justify-content: space-between;
+  }
+}
+
+.section {
+  width: 100%;
+  border-bottom: 1px solid colors.$navSubtle;
+  padding: 1rem 0;
+
+  @media (min-width: 600px) {
+      padding: 0 0 1rem 0;
+  }
+}
+
+.body {
+  width: fit-content;
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 1rem;
+}
+
+.statusAlert {
+  grid-column-start: 1;
+  grid-column-end: 1;
+
+  > svg {
+    align-self: center !important;
+  }
+}
+
+.seEndringerKnapp {
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.annetTekst {
+  white-space: pre-wrap;
+}
+
+.listItem {
+  white-space: pre-wrap;
+}
+
+.oppfolgingAlert {
+  margin-bottom: 1rem;
+}

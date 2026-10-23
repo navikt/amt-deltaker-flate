@@ -7,13 +7,13 @@
     "eslint.config.js"
   ],
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "@eslint/js": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-jsx-a11y": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "^8.71.2"
+    "typescript-eslint": "catalog:"
   },
   "dependencies": {
-    "globals": "^17.13.0"
+    "globals": "catalog:"
   }
 }

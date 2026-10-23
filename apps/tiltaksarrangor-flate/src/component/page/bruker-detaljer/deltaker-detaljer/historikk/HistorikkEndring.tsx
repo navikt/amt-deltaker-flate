@@ -1,0 +1,185 @@
+import { BodyLong, Detail } from '@navikt/ds-react'
+import {
+  DeltakerEndring,
+  Endring,
+  EndringType
+} from '../../../../../api/data/historikk'
+import { Tiltakskode } from '../../../../../api/data/tiltak'
+import globalStyles from '../../../../../globals.module.scss'
+import { EMDASH } from '../../../../../utils/constants'
+import { formatDate } from '../../../../../utils/date-utils'
+import { harKursAvslutning } from '../../../../../utils/deltakerliste-utils'
+import {
+  getDeltakerStatusAarsakText,
+  getEndringsTittel
+} from '../../../../../utils/text-mappers'
+import { DeltakelseInnholdListe } from '../DeltakelseInnholdListe'
+import { EndringTypeIkon } from '../EndringTypeIkon'
+import styles from './Historikk.module.scss'
+import { HistorikkElement } from './HistorikkElement'
+
+interface Props {
+  deltakerEndring: DeltakerEndring
+  tiltakskode: Tiltakskode
+}
+
+export const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
+  switch (endring.type) {
+    case EndringType.IkkeAktuell: {
+      return (
+        <>
+          <BodyLong size="small">
+            Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+          </BodyLong>
+          {endring.begrunnelse && (
+            <BodyLong size="small" className={globalStyles.textPreWrap}>
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.AvsluttDeltakelse: {
+      return (
+        <>
+          {endring.aarsak && (
+            <BodyLong size="small">
+              Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+            </BodyLong>
+          )}
+          {harKursAvslutning(endring.oppstartstype, tiltakskode) && (
+            <BodyLong size="small">
+              Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
+            </BodyLong>
+          )}
+          {endring.begrunnelse && (
+            <BodyLong size="small" className={globalStyles.textPreWrap}>
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.EndreAvslutning: {
+      return (
+        <>
+          {endring.aarsak && (
+            <BodyLong size="small">
+              Årsak: {getDeltakerStatusAarsakText(endring.aarsak)}
+            </BodyLong>
+          )}
+
+          {endring.harFullfort !== null && (
+            <BodyLong size="small">
+              Er kurset fullført: {endring.harFullfort ? 'Ja' : 'Nei'}
+            </BodyLong>
+          )}
+
+          {endring.sluttdato && (
+            <BodyLong size="small">
+              Sluttdato: {formatDate(endring.sluttdato)}
+            </BodyLong>
+          )}
+
+          {endring.begrunnelse && (
+            <BodyLong size="small" className={globalStyles.textPreWrap}>
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.EndreBakgrunnsinformasjon: {
+      return (
+        <BodyLong size="small" className={globalStyles.textPreWrap}>
+          {endring.bakgrunnsinformasjon || EMDASH}
+        </BodyLong>
+      )
+    }
+    case EndringType.EndreInnhold: {
+      return (
+        <>
+          {endring.ledetekst && (
+            <BodyLong size="small">{endring.ledetekst}</BodyLong>
+          )}
+          <DeltakelseInnholdListe
+            tiltakskode={tiltakskode}
+            deltakelsesinnhold={{
+              ledetekst: endring.ledetekst ?? '',
+              innhold: endring.innhold
+            }}
+            listClassName={styles.innhold_liste}
+          />
+        </>
+      )
+    }
+    case EndringType.ReaktiverDeltakelse: {
+      return (
+        <BodyLong size="small" className={globalStyles.textPreWrap}>
+          Navs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      )
+    }
+    case EndringType.EndreDeltakelsesmengde: {
+      return (
+        <>
+          {endring.gyldigFra && (
+            <BodyLong size="small">
+              Gjelder fra: {formatDate(endring.gyldigFra)}
+            </BodyLong>
+          )}
+          {endring.begrunnelse && (
+            <BodyLong size="small" className={globalStyles.textPreWrap}>
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+    case EndringType.ForlengDeltakelse:
+    case EndringType.FjernOppstartsdato:
+    case EndringType.EndreSluttdato:
+    case EndringType.EndreSluttarsak: {
+      return endring.begrunnelse ? (
+        <BodyLong size="small" className={globalStyles.textPreWrap}>
+          Navs begrunnelse: {endring.begrunnelse}
+        </BodyLong>
+      ) : (
+        <div className={styles.tomDiv} />
+      )
+    }
+    case EndringType.EndreStartdato: {
+      return (
+        <>
+          {endring.sluttdato && (
+            <BodyLong size="small">
+                Forventet sluttdato: {formatDate(endring.sluttdato)}
+            </BodyLong>
+          )}
+          {endring.begrunnelse && (
+            <BodyLong size="small" className={globalStyles.textPreWrap}>
+              Navs begrunnelse: {endring.begrunnelse}
+            </BodyLong>
+          )}
+        </>
+      )
+    }
+  }
+}
+
+export const HistorikkEndring = ({ deltakerEndring, tiltakskode }: Props) => {
+  return (
+    <HistorikkElement
+      tittel={getEndringsTittel(deltakerEndring.endring)}
+      icon={
+        <EndringTypeIkon type={deltakerEndring.endring.type} size={'small'} />
+      }
+      forslag={deltakerEndring.forslag}
+    >
+      {getEndringsDetaljer(deltakerEndring.endring, tiltakskode)}
+      <Detail className={styles.endring_detail} textColor="subtle">
+        {`Endret ${formatDate(deltakerEndring.endret)} av ${deltakerEndring.endretAv} ${deltakerEndring.endretAvEnhet}.`}
+      </Detail>
+    </HistorikkElement>
+  )
+}

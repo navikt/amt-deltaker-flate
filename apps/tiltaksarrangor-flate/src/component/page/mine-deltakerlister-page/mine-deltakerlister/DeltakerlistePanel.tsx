@@ -1,0 +1,54 @@
+import { Detail, LinkCard } from '@navikt/ds-react'
+import React from 'react'
+
+import { Oppstartstype } from '../../../../api/data/historikk'
+import globalStyles from '../../../../globals.module.scss'
+import { deltakerlisteDetaljerPageUrl } from '../../../../navigation'
+import { formatDate } from '../../../../utils/date-utils'
+import { harFellesOppstart } from '../../../../utils/deltakerliste-utils'
+import { Link } from 'react-router-dom'
+import { useScrollPositionContext } from '../../../../store/ScrollPositionContextProvider'
+
+interface DeltakerlistePanelProps {
+  id: string
+  lopenummer: string | null
+  navn: string
+  startdato: Date | null
+  sluttdato: Date | null
+  oppstartstype: Oppstartstype
+}
+
+export const DeltakerlistePanel = (
+  props: DeltakerlistePanelProps
+): React.ReactElement<DeltakerlistePanelProps> => {
+  const { id, navn, startdato, sluttdato, oppstartstype } = props
+  const { saveActiveScrollPosition } = useScrollPositionContext()
+
+  return (
+    <li className={globalStyles.blokkS}>
+      <LinkCard>
+        <LinkCard.Title>
+          <LinkCard.Anchor asChild>
+            <Link
+              to={deltakerlisteDetaljerPageUrl(id)}
+              onClick={saveActiveScrollPosition}
+            >
+              {navn}
+            </Link>
+          </LinkCard.Anchor>
+        </LinkCard.Title>
+
+        {harFellesOppstart(oppstartstype) && (startdato || sluttdato) && (
+          <LinkCard.Description>
+            {formatDate(startdato)} - {formatDate(sluttdato)}
+          </LinkCard.Description>
+        )}
+        {props.lopenummer && (
+          <LinkCard.Footer>
+            <Detail>Løpenr. {props.lopenummer}</Detail>
+          </LinkCard.Footer>
+        )}
+      </LinkCard>
+    </li>
+  )
+}
