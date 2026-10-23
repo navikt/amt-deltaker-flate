@@ -18,17 +18,6 @@
     "playwright:debug": "playwright test --debug",
     "playwright:open": "playwright test --ui"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
@@ -46,7 +35,6 @@
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@faker-js/faker": "catalog:",
-    "@navikt/aksel": "^8.19.0",
     "@vitejs/plugin-react": "catalog:",
     "@axe-core/playwright": "catalog:",
     "@playwright/test": "catalog:",
@@ -57,8 +45,6 @@
     "eslint-config-prettier": "catalog:",
     "eslint-plugin-jsx-a11y": "catalog:",
     "globals": "catalog:",
-    "husky": "catalog:",
-    "lint-staged": "catalog:",
     "msw": "catalog:",
     "prettier": "catalog:",
     "sass": "^1.105.2",
