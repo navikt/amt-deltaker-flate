@@ -6,15 +6,14 @@ on:
       - apps/tiltakskoordinator-flate/**
       - packages/**
       - shared-config/**
+      - .npmrc
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
       - turbo.json
       - tsconfig.json
-      - eslint.config.mjs
-      - .github/actions/**
-      - .github/workflows/tiltakskoordinator-flate-*.yaml
-      - .github/workflows/reusable-*.yaml
+      - .github/actions/setup-frontend/**
+      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
     branches:
       - main
 permissions:
@@ -36,10 +35,12 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Fjern ^ eller ~ fra pnpm-versjonen før den brukes som Docker-image-tag.
       - id: get-version
         run: echo "version=$(yq -r '.catalog.playwright' ../../pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   deploy-pull-request-branch:
+    # Hopp over fork-PR-er og Dependabot, som ikke skal bruke secrets eller GCP-tilgang.
     if: github.event.pull_request.head.repo.fork != true && github.event.pull_request.user.login != 'dependabot[bot]'
     name: Deploy Pull Request Branch - tiltakskoordinator-flate
     runs-on: ubuntu-latest

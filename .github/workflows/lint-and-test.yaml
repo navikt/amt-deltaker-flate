@@ -11,24 +11,32 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
+      # Ved delt endring settes pakken til «all», så hele frontend-sjekken kjøres én gang.
       packages: ${{ contains(fromJSON(steps.filter.outputs.changes), 'all') && '["all"]' || steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
         id: filter
         with:
-          predicate-quantifier: every
           filters: |
             innbyggers-flate: apps/innbyggers-flate/**
             nav-veileders-flate: apps/nav-veileders-flate/**
             amt-tiltaksarrangor-flate: apps/tiltaksarrangor-flate/**
             tiltakskoordinator-flate: apps/tiltakskoordinator-flate/**
+            # Delte filer påvirker alle appene og utløser lint, tester og bygg for alle.
             all:
-              - '**'
-              - '!apps/innbyggers-flate/**'
-              - '!apps/nav-veileders-flate/**'
-              - '!apps/tiltaksarrangor-flate/**'
-              - '!apps/tiltakskoordinator-flate/**'
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - eslint.config.mjs
+              - .github/actions/setup-frontend/**
+              - .github/workflows/lint-and-test.yaml
+              - .github/workflows/reusable-test-build.yaml
 
   test-and-build:
     needs: changes
@@ -48,6 +56,7 @@ jobs:
 
   lint-and-test:
     name: Lint, run tests & build
+    # Kontroller resultatet også når byggjobben feiler eller blir hoppet over.
     if: ${{ always() }}
     needs: [changes, test-and-build]
     runs-on: ubuntu-latest
@@ -59,10 +68,12 @@ jobs:
           PACKAGES: ${{ needs.changes.outputs.packages }}
           TEST_RESULT: ${{ needs.test-and-build.result }}
         run: |
+          # Endringsdeteksjon må lykkes før resultatet kan vurderes.
           if [ "$CHANGES_RESULT" != success ]; then
             echo "Change detection failed or was cancelled."
             exit 1
           fi
+          # Det er forventet at byggjobben hoppes over når ingen relevante filer er endret.
           if [ "$PACKAGES" = '[]' ] && [ "$TEST_RESULT" = skipped ]; then
             echo "No frontend changes."
           elif [ "$TEST_RESULT" != success ]; then
