@@ -10,7 +10,7 @@ import { formatDate } from '../../../utils/date-utils'
 import { getAktivEndringTekst } from '../../../utils/deltaker-utils'
 import { Fnr } from '../../felles/fnr/Fnr'
 import { StatusMerkelapp } from '../../felles/status-merkelapp/StatusMerkelapp'
-import { AdressebeskyttetModal } from './AdressebeskyttetModal.tsx'
+import { AdressebeskyttetModal } from './AdressebeskyttetModal'
 import { useScrollPositionContext } from '../../../store/ScrollPositionContextProvider'
 import styles from './RadVeileder.module.scss'
 
@@ -48,7 +48,9 @@ export const RadVeileder = (props: RadProps): React.ReactElement<RadProps> => {
     navigate(deltakerDetaljerPageUrl)
   }
 
-  const aktivEndringTekst = aktivEndring ? getAktivEndringTekst(aktivEndring) : ''
+  const aktivEndringTekst = aktivEndring
+    ? getAktivEndringTekst(aktivEndring)
+    : ''
 
   return (
     <Table.Row key={id}>
@@ -78,19 +80,16 @@ export const RadVeileder = (props: RadProps): React.ReactElement<RadProps> => {
               <Button
                 aria-disabled
                 className={styles.aktivEndringIcon}
-                size="xsmall" variant="tertiary-neutral"
+                size="xsmall"
+                variant="tertiary-neutral"
                 icon={<InformationSquareIcon fontSize="1.5rem" />}
               />
             </Tooltip>
           )}
         </BodyShort>
       </Table.DataCell>
-      <Table.DataCell>
-        {formatDate(startDato)}
-      </Table.DataCell>
-      <Table.DataCell>
-        {formatDate(sluttDato)}
-      </Table.DataCell>
+      <Table.DataCell>{formatDate(startDato)}</Table.DataCell>
+      <Table.DataCell>{formatDate(sluttDato)}</Table.DataCell>
       <Table.DataCell>
         <StatusMerkelapp status={status} />
       </Table.DataCell>

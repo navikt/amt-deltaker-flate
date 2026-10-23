@@ -18,7 +18,7 @@ export const deltakerlisteMapper = (
     if (overornetEnhet !== undefined) {
       if (
         !overornetEnhet.arrangorer.some(
-          (i) => i.navn === deltakerliste.arrangorParentNavn
+          (i) => i.id === deltakerliste.arrangorOrgnummer
         )
       ) {
         overornetEnhet.arrangorer.push({
@@ -29,7 +29,7 @@ export const deltakerlisteMapper = (
       }
 
       const enhet = overornetEnhet.arrangorer.find(
-        (i) => i.navn === deltakerliste.arrangorParentNavn
+        (i) => i.id === deltakerliste.arrangorOrgnummer
       )
 
       enhet?.deltakerlister.push({

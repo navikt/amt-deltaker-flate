@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 
-import {Alert, BodyShort, Button, Modal, Textarea} from '@navikt/ds-react'
+import { Alert, BodyShort, Modal, Textarea } from '@navikt/ds-react'
 import styles from './SettVurderingModal.module.scss'
 import { Nullable } from '../../../../../utils/types/or-nothing'
+import { SendTilNavKnapp } from '../endre-deltaker-modal/SendTilNavKnapp'
 import { postDeltakerVurderingOppfyllerIkkeKravene } from '../../../../../api/tiltak-api'
-import { BESKRIVELSE_MAKS_TEGN, fjernUgyldigeTegn } from '../../../../../utils/endre-deltaker-utils'
+import {
+  BESKRIVELSE_MAKS_TEGN,
+  fjernUgyldigeTegn
+} from '../../../../../utils/endre-deltaker-utils'
 
 export interface OppfyllerIkkeKravenelModalProps {
   isOpen: boolean
@@ -30,9 +34,15 @@ export const SettOppfyllerIkkeKravenelModal = ({
     if (beskrivelse?.length > 40) {
       return Promise.reject('Beskrivelse kan ikke være mer enn 40 tegn')
     }
-    return postDeltakerVurderingOppfyllerIkkeKravene(deltakerId, beskrivelse)
-      .then(onClose)
-      .then(onVurderingSendt)
+    return postDeltakerVurderingOppfyllerIkkeKravene(
+      deltakerId,
+      beskrivelse
+    ).then(() => undefined)
+  }
+
+  const onSendt = () => {
+    onClose()
+    onVurderingSendt()
   }
 
   const handleChangeDescription = (
@@ -54,32 +64,30 @@ export const SettOppfyllerIkkeKravenelModal = ({
     >
       <Modal.Body className={styles.content}>
         <Alert variant="info" size="small">
-          Vurderingen sendes til Nav. Deltaker kan se innholdet i begrunnelsen på nav.no.
+          Vurderingen sendes til Nav. Deltaker kan se innholdet i begrunnelsen
+          på nav.no.
         </Alert>
         <div>
-        <BodyShort size="small" spacing>
-          Personen oppfyller ikke kravene for å delta på dette
-          arbeidsmarkedstiltaket.
-        </BodyShort>
+          <BodyShort size="small" spacing>
+            Personen oppfyller ikke kravene for å delta på dette
+            arbeidsmarkedstiltaket.
+          </BodyShort>
           <Textarea
-              label="Forklar hvorfor:"
-              value={beskrivelse ?? ''}
-              onChange={handleChangeDescription}
-              maxLength={BESKRIVELSE_MAKS_TEGN}
-              minRows={1}
-              rows={1}
-              size="small"
+            label="Forklar hvorfor:"
+            value={beskrivelse ?? ''}
+            onChange={handleChangeDescription}
+            maxLength={BESKRIVELSE_MAKS_TEGN}
+            minRows={1}
+            rows={1}
+            size="small"
           />
-          </div>
-        <Button
-          type="button"
-          onClick={sendVurdering}
-          className={styles.modalKnapp}
+        </div>
+        <SendTilNavKnapp
+          sendEndring={sendVurdering}
+          onEndringSendt={onSendt}
           disabled={!kanSendeVurdering}
-          size="small"
-        >
-          Send til Nav
-        </Button>
+          className={styles.modalKnapp}
+        />
       </Modal.Body>
     </Modal>
   )
