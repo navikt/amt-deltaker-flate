@@ -10,35 +10,68 @@ env:
   TZ: Europe/Amsterdam
   VITE_APP_VERSION: ${{ github.sha }}
 
+concurrency:
+  group: deploy-github-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: innbyggers-flate
+            package: innbyggers-flate
+          - app: nav-veileders-flate
+            package: nav-veileders-flate
+          - app: tiltakskoordinator-flate
+            package: tiltakskoordinator-flate
+          - app: tiltaksarrangor-flate
+            package: amt-tiltaksarrangor-flate
+    permissions:
+      contents: read
+    uses: ./.github/workflows/reusable-pages-build.yaml
+    with:
+      app: ${{ matrix.app }}
+      package: ${{ matrix.package }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+
   build-and-deploy:
     name: Build and deploy to GitHub Pages
+    needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Setup frontend
-        uses: ./.github/actions/setup-frontend
+      - name: Setup node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node_auth_token: ${{ secrets.READER_TOKEN }}
+          node-version: '24'
 
-      - name: Build all apps
-        run: |
-          pnpm --filter=innbyggers-flate exec vite build --mode demo --base /amt-deltaker-flate/innbyggers-flate/
-          pnpm --filter=nav-veileders-flate exec vite build --mode demo --base /amt-deltaker-flate/nav-veileders-flate/
-          pnpm --filter=tiltakskoordinator-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltakskoordinator-flate/
-          NODE_ENV=development pnpm --filter=amt-tiltaksarrangor-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltaksarrangor-flate/
-
-      - name: Prepare GitHub Pages content
-        run: |
-          mkdir -p github-pages
-          cp -r apps/innbyggers-flate/build github-pages/innbyggers-flate
-          cp -r apps/nav-veileders-flate/build github-pages/nav-veileders-flate
-          cp -r apps/tiltakskoordinator-flate/build github-pages/tiltakskoordinator-flate
-          cp -r apps/tiltaksarrangor-flate/build github-pages/tiltaksarrangor-flate
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: pages-innbyggers-flate-demo
+          path: github-pages/innbyggers-flate
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: pages-nav-veileders-flate-demo
+          path: github-pages/nav-veileders-flate
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: pages-tiltakskoordinator-flate-demo
+          path: github-pages/tiltakskoordinator-flate
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: pages-tiltaksarrangor-flate-demo
+          path: github-pages/tiltaksarrangor-flate
 
       - name: Generate index page
         run: node scripts/build-github-pages.ts github-pages
