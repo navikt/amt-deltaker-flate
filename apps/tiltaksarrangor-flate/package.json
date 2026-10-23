@@ -1,0 +1,75 @@
+{
+  "name": "amt-tiltaksarrangor-flate",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "build:dev": "vite build",
+    "build:demo": "NODE_ENV=development vite build --mode demo",
+    "build:pull-request": "vite build --mode pull-request",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:no-watch": "vitest run",
+    "lint": "eslint --max-warnings=0 'src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js}'",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "playwright": "playwright test",
+    "playwright:debug": "playwright test --debug",
+    "playwright:open": "playwright test --ui"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@navikt/aksel-icons": "catalog:",
+    "@navikt/ds-css": "catalog:",
+    "@navikt/ds-react": "catalog:",
+    "@navikt/nav-dekoratoren-moduler": "catalog:",
+    "@sentry/react": "^11.6.0",
+    "axios": "^1.20.0",
+    "classnames": "^2.5.1",
+    "dayjs": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router-dom": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@faker-js/faker": "catalog:",
+    "@navikt/aksel": "^8.19.0",
+    "@vitejs/plugin-react": "catalog:",
+    "@axe-core/playwright": "catalog:",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-jsx-a11y": "catalog:",
+    "globals": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "msw": "catalog:",
+    "prettier": "catalog:",
+    "sass": "^1.105.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

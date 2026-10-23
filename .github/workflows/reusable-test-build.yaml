@@ -1,0 +1,168 @@
+name: Reusable frontend tests and build
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        type: string
+        default: all
+      build:
+        type: boolean
+        default: false
+      app-version:
+        type: string
+        default: ''
+      build-targets:
+        type: string
+        default: '[]'
+      app-directory:
+        type: string
+        default: ''
+    secrets:
+      READER_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  TZ: Europe/Amsterdam
+
+jobs:
+  playwright-version:
+    name: Get playwright version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: get-version
+        run: echo "version=$(yq -r '.catalog.playwright' pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+
+  test-and-build:
+    name: Test and build ${{ inputs.package }}
+    needs: playwright-version
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Cache Turbo outputs
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ inputs.package }}-${{ needs.playwright-version.outputs.version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-${{ inputs.package }}-${{ needs.playwright-version.outputs.version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-
+      - name: Set application version
+        if: inputs.app-version != ''
+        env:
+          APP_VERSION: ${{ inputs.app-version }}
+        run: echo "VITE_APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Lint
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$PACKAGE" = all ]; then
+            pnpm lint
+          else
+            pnpm lint --filter="$PACKAGE..."
+          fi
+      - name: Run tests
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$PACKAGE" = all ]; then
+            pnpm test:no-watch
+          else
+            pnpm test:no-watch --filter="$PACKAGE"
+          fi
+      - name: Install matching Chromium
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$PACKAGE" = all ]; then
+            pnpm --recursive --filter './apps/*' exec playwright install chromium
+          else
+            pnpm --filter="$PACKAGE" exec playwright install chromium
+          fi
+      - name: Run playwright tests
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$PACKAGE" = all ]; then
+            pnpm playwright
+          else
+            pnpm playwright --filter="$PACKAGE"
+          fi
+      - name: Build dev
+        if: contains(fromJSON(inputs.build-targets), 'dev')
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          pnpm build:dev --filter="$PACKAGE"
+      - name: Upload dev assets
+        if: contains(fromJSON(inputs.build-targets), 'dev')
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: frontend-build-dev
+          path: ${{ inputs.app-directory }}/build
+          if-no-files-found: error
+          retention-days: 1
+      - name: Build demo
+        if: contains(fromJSON(inputs.build-targets), 'demo')
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          pnpm build:demo --filter="$PACKAGE"
+      - name: Upload demo assets
+        if: contains(fromJSON(inputs.build-targets), 'demo')
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: frontend-build-demo
+          path: ${{ inputs.app-directory }}/build
+          if-no-files-found: error
+          retention-days: 1
+      - name: Build production
+        if: contains(fromJSON(inputs.build-targets), 'prod')
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          pnpm build --filter="$PACKAGE"
+      - name: Upload production assets
+        if: contains(fromJSON(inputs.build-targets), 'prod')
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: frontend-build-prod
+          path: ${{ inputs.app-directory }}/build
+          if-no-files-found: error
+          retention-days: 1
+      - name: Build
+        if: inputs.build
+        env:
+          PACKAGE: ${{ inputs.package }}
+        run: |
+          if [ "$PACKAGE" = all ]; then
+            pnpm build
+          else
+            pnpm build --filter="$PACKAGE"
+          fi
+      - name: Upload Playwright reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: playwright-${{ inputs.package }}
+          path: |
+            apps/*/playwright-report
+            apps/*/test-results
+          include-hidden-files: false
+          if-no-files-found: ignore
+          retention-days: 7

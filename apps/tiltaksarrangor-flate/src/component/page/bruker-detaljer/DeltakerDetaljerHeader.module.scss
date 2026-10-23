@@ -1,0 +1,98 @@
+@use '../../../globals.module.scss';
+@use '../../../colors.scss';
+
+.header {
+  background-color: colors.$navWhiteDefault;
+  padding: 1rem 1rem;
+  margin: auto;
+  max-width: globals.$max-bredde;
+  border-bottom: 1px solid #c9c9c9
+}
+
+.headerContent {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.tilbakelenkeWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.headerInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.headerTitleWrapper {
+  display: flex;
+  flex-direction: column;
+
+  > * {
+      margin-bottom: 0.5rem;
+  }
+}
+
+.headerTitle {
+  margin-right: 2rem;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+
+  > * {
+      margin-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 600px) {
+    .headerInfoWrapper {
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      > *:not(:last-child) {
+        margin-right: 2rem;
+      }
+    }
+    .headerTitleWrapper {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+
+      > * {
+          margin-bottom: 0;
+      }
+  }
+
+  .headerInfo {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+
+      > * {
+          margin-bottom: 0;
+      }
+
+
+      > *:not(:last-child) {
+        margin-right: 2rem;
+      }
+  }
+
+  .header {
+    padding: 1rem 2rem;
+  }
+}
+
+.adresse {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

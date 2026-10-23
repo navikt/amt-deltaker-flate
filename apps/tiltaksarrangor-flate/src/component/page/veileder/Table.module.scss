@@ -1,0 +1,7 @@
+@use '../../../colors.scss';
+
+.sticky {
+  position: sticky;
+  top: 0;
+  background-color: colors.$navWhiteRaised;
+}

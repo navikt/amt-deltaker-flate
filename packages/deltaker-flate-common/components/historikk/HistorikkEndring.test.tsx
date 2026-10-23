@@ -84,7 +84,7 @@ describe('HistorikkEndring', () => {
   )
 
   it('viser egen tilbakekall-visning for EndrePrisinfo med TILBAKEKALT', () => {
-    const text = extractText(
+    const tekster = extractText(
       <HistorikkEndring
         tiltakskode={Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING}
         erEnkeltplass={true}
@@ -106,11 +106,12 @@ describe('HistorikkEndring', () => {
           forslag: null
         }}
       />
-    ).join(' ')
+    )
+    const text = tekster.join(' ')
 
-    expect(text).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
-    expect((text.match(/Tilbakekalt/g) ?? []).length).toBe(2)
-    expect(text).toContain('Tilbakekalt')
+    expect(tekster).toContain('Tilbakekalt: Endre pris og betalingsbetingelser')
+    expect(tekster).toContain('Tilbakekalt')
+    expect(tekster).toContain('Tilbakekalt 27.08.2026 av Veileder Nav Oslo.')
     expect(text).toContain('Endringen som ble tilbakekalt')
     expect(text).not.toContain('Endret')
   })

@@ -4,6 +4,7 @@ packages:
   - packages/*
 
 allowBuilds:
+  '@parcel/watcher': false
   '@swc/core': false
   esbuild: true
   msw: true
@@ -12,12 +13,15 @@ allowBuilds:
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
   '@axe-core/playwright': ^4.13.0
+  '@eslint/js': ^10.0.1
+  '@faker-js/faker': ^10.6.0
   '@grafana/faro-react': ^2.12.1
   '@grafana/faro-web-sdk': ^2.12.1
   '@navikt/aksel-icons': ^8.19.2
   '@navikt/ds-css': ^8.19.2
   '@navikt/ds-react': ^8.19.2
   '@navikt/ds-tailwind': ^8.19.2
+  '@navikt/nav-dekoratoren-moduler': ^4.5.1
   '@playwright/test': ^1.64.1
   '@tailwindcss/postcss': 4.3.3
   '@tailwindcss/vite': ^4.3.3
@@ -28,16 +32,25 @@ catalog:
   '@types/node': ^26.6.5
   '@types/react': ^19.3.0
   '@types/react-dom': ^19.3.0
+  '@vitejs/plugin-react': ^6.1.2
   '@vitejs/plugin-react-swc': ^4.3.3
   dayjs: ^1.11.23
+  eslint: ^10.12.0
+  eslint-config-prettier: ^10.1.8
+  eslint-plugin-jsx-a11y: ^6.10.2
+  globals: ^17.13.0
+  husky: ^9.1.7
   jsdom: ^30.1.2
+  lint-staged: ^17.6.0
   msw: ^3.0.3
   playwright: ^1.64.0
+  prettier: ^3.9.10
   react: ^19.3.1
   react-dom: ^19.3.1
   react-router-dom: ^7.18.4
   tailwindcss: ^4.3.3
   typescript: ^6.0.3
+  typescript-eslint: ^8.71.2
   uuid: ^14.0.3
   vite: ^8.3.4
   vitest: ^5.0.4
