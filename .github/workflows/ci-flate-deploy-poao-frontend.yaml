@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - .github/workflows/*-deploy-poao-frontend.yaml
+      - .nais/poao-frontend.yaml
       - apps/**/nais/nais-*.yaml
 
 permissions:
@@ -26,12 +27,15 @@ jobs:
           filters: |
             innbyggers-flate: 
               - .github/workflows/*-deploy-poao-frontend.yaml
+              - .nais/poao-frontend.yaml
               - apps/innbyggers-flate/nais/nais-*.yaml
             nav-veileders-flate: 
               - .github/workflows/*-deploy-poao-frontend.yaml
+              - .nais/poao-frontend.yaml
               - apps/nav-veileders-flate/nais/nais-*.yaml
             tiltakskoordinator-flate: 
               - .github/workflows/*-deploy-poao-frontend.yaml
+              - .nais/poao-frontend.yaml
               - apps/tiltakskoordinator-flate/nais/nais-*.yaml
 
   deploy:

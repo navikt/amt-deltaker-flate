@@ -40,4 +40,5 @@ jobs:
         env:
           CLUSTER: ${{ matrix.target == 'prod' && 'prod-gcp' || 'dev-gcp' }}
           RESOURCE: apps/${{ inputs.module_path }}/nais/nais-${{ matrix.target }}.yaml
+          VARS: .nais/poao-frontend.yaml
           PRINT_PAYLOAD: true

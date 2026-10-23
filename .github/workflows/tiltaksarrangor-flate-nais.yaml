@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths:
+      - .nais/poao-frontend.yaml
       - apps/tiltaksarrangor-flate/.nais/nais-*.yaml
       - .github/workflows/tiltaksarrangor-flate-nais.yaml
 
@@ -29,6 +30,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: apps/tiltaksarrangor-flate/.nais/nais-dev.yaml
+          VARS: .nais/poao-frontend.yaml
 
   deploy-prod:
     needs: deploy-dev
@@ -44,3 +46,4 @@ jobs:
         env:
           CLUSTER: prod-gcp
           RESOURCE: apps/tiltaksarrangor-flate/.nais/nais-prod.yaml
+          VARS: .nais/poao-frontend.yaml
