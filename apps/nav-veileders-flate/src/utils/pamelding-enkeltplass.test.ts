@@ -1,11 +1,17 @@
 import { describe, expect, it } from 'vitest'
+import dayjs from 'dayjs'
 import {
   OpplaringRepresenterer,
   PrisinformasjonType,
   Tilskuddstype,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { PameldingEnkeltplassFormValues } from '../model/PameldingEnkeltplassFormValues'
+import {
+  createPameldingEnkeltplassFormSchema,
+  SLUTTDATO_FOR_TIDLIG_FEILMELDING,
+  STARTDATO_FOR_TIDLIG_FEILMELDING,
+  type PameldingEnkeltplassFormValues
+} from '../model/PameldingEnkeltplassFormValues'
 import {
   formToEnkeltplassKladdRequest,
   formToEnkeltplassRequest,
@@ -30,6 +36,292 @@ const lagFormData = (
   sertifiseringValg: [],
   dagerPerUke: null,
   ...overrides
+})
+
+const lagPameldingForDatoValidering = (
+  startdato: Date | null,
+  sluttdato: Date | null = null
+) =>
+  ({
+    startdato,
+    sluttdato,
+    maxVarighet: 365 * 24 * 60 * 60 * 1000,
+    deltakerliste: {
+      sluttdato: dayjs('2100-01-01').toDate()
+    }
+  }) as unknown as DeltakerResponse
+
+const lagPameldingMedSluttdatoOverMaksVarighet = () => {
+  const startdato = dayjs('2024-07-17')
+  const sluttdato = dayjs('2025-06-01')
+  const pamelding = lagPameldingForDatoValidering(
+    startdato.toDate(),
+    sluttdato.toDate()
+  )
+  pamelding.maxVarighet = 180 * 24 * 60 * 60 * 1000
+  pamelding.deltakerliste.sluttdato = null
+
+  return { pamelding, startdato, sluttdato }
+}
+
+describe('PameldingEnkeltplassFormSchema', () => {
+  it('avviser ny startdato før datovelgerens nedre grense', () => {
+    const startdato = dayjs().subtract(2, 'month').subtract(1, 'day')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: startdato.add(1, 'day').format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['startdato'],
+          message: STARTDATO_FOR_TIDLIG_FEILMELDING
+        })
+      )
+    }
+  })
+
+  it('godtar startdato på datovelgerens nedre grense', () => {
+    const startdato = dayjs().subtract(2, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: startdato.add(1, 'day').format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('godtar eksisterende startdato selv om den er før nedre grense', () => {
+    const startdato = dayjs().subtract(3, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(startdato.toDate())
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: startdato.add(1, 'day').format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('rapporterer formatfeil for ugyldig startdato', () => {
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: 'ugyldig',
+        sluttdato: dayjs().add(1, 'day').format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['startdato'],
+          message: 'Ugyldig datoformat: Bruk dd.mm.åååå'
+        })
+      )
+    }
+  })
+
+  it('rapporterer formatfeil for ugyldig sluttdato', () => {
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: dayjs().add(1, 'day').format('DD.MM.YYYY'),
+        sluttdato: 'ugyldig'
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: 'Ugyldig datoformat: Bruk dd.mm.åååå'
+        })
+      )
+    }
+  })
+
+  it('godtar 29. februar i et skuddår', () => {
+    const skuddarsdato = dayjs('2024-02-29')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(skuddarsdato.toDate())
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: skuddarsdato.format('DD.MM.YYYY'),
+        sluttdato: skuddarsdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('avviser 29. februar som sluttdato i et år uten skuddag', () => {
+    const startdato = dayjs('2023-02-28')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(startdato.toDate())
+    )
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: '29.02.2023'
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: 'Ugyldig datoformat: Bruk dd.mm.åååå'
+        })
+      )
+    }
+  })
+
+  it('avviser ny sluttdato før nedre grense når startdato mangler', () => {
+    const sluttdato = dayjs().subtract(2, 'month').subtract(1, 'day')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: '',
+        sluttdato: sluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: SLUTTDATO_FOR_TIDLIG_FEILMELDING
+        })
+      )
+    }
+  })
+
+  it('gir ikke feil for sluttdato på nedre grense når startdato mangler', () => {
+    const sluttdato = dayjs().subtract(2, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null)
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: '',
+        sluttdato: sluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({ path: ['startdato'] })
+      )
+      expect(result.error.issues).not.toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: SLUTTDATO_FOR_TIDLIG_FEILMELDING
+        })
+      )
+    }
+  })
+
+  it('gir ikke nedre-grensefeil for eksisterende sluttdato når startdato mangler', () => {
+    const sluttdato = dayjs().subtract(3, 'month')
+    const schema = createPameldingEnkeltplassFormSchema(
+      lagPameldingForDatoValidering(null, sluttdato.toDate())
+    )
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: '',
+        sluttdato: sluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['startdato']
+        })
+      )
+      expect(result.error.issues).not.toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: SLUTTDATO_FOR_TIDLIG_FEILMELDING
+        })
+      )
+    }
+  })
+
+  it('godtar eksisterende sluttdato over maksvarighet', () => {
+    const { pamelding, startdato, sluttdato } =
+      lagPameldingMedSluttdatoOverMaksVarighet()
+    const schema = createPameldingEnkeltplassFormSchema(pamelding)
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: sluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('avviser ny sluttdato etter eksisterende sluttdato over maksvarighet', () => {
+    const { pamelding, startdato, sluttdato } =
+      lagPameldingMedSluttdatoOverMaksVarighet()
+    const schema = createPameldingEnkeltplassFormSchema(pamelding)
+    const nySluttdato = sluttdato.add(1, 'day')
+
+    const result = schema.safeParse(
+      lagFormData({
+        startdato: startdato.format('DD.MM.YYYY'),
+        sluttdato: nySluttdato.format('DD.MM.YYYY')
+      })
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues).toContainEqual(
+        expect.objectContaining({
+          path: ['sluttdato'],
+          message: expect.stringMatching(
+            /^Seneste tillatte sluttdato er \d{2}\.\d{2}\.\d{4}\.$/
+          )
+        })
+      )
+    }
+  })
 })
 
 describe('formToEnkeltplassRequest', () => {

@@ -1,5 +1,4 @@
-import { BodyLong, List } from '@navikt/ds-react'
-import dayjs from 'dayjs'
+import dayjs, { type Dayjs } from 'dayjs'
 import { Tiltakskode } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 
@@ -214,73 +213,39 @@ export const getMaxVarighetDato = (
 ) => {
   if (!pamelding.maxVarighet) {
     return null
-  } else if (nyStartdato) {
-    return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
-  } else {
-    return pamelding.startdato
-      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
-      : null
   }
+
+  const startdato = nyStartdato ?? pamelding.startdato
+  return startdato
+    ? dayjs(startdato).add(pamelding.maxVarighet, 'millisecond')
+    : null
 }
 
-export const getSoftMaxVarighetBekreftelseText = (tiltakskode: Tiltakskode) => {
-  if (tiltakskode === Tiltakskode.OPPFOLGING) {
-    return (
-      <BodyLong>
-        Sluttdatoen er utenfor hovedregelen for maks varighet.<br></br>
-        <br></br>
-        Som hovedregel kan varigheten være maks tre år for brukere med nedsatt
-        arbeidsevne. Hvis tiltaket brukes ved overgang fra skole eller soning i
-        institusjon kan varigheten forlenges med ytterligere seks måneder.{' '}
-        <br></br>
-        <br></br>
-        Brukes tiltaket ved overgang fra skole eller soning i institusjon?
-      </BodyLong>
-    )
-  }
-  if (tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) {
-    return (
-      <BodyLong>
-        Sluttdatoen er utenfor hovedregelen for maks varighet. <br></br>
-        <br></br>
-        Som hovedregel kan varigheten være maks to år. Hvis deltakeren
-        gjennomfører opplæring med sikte på formell kompetanse, kan varigheten
-        forlenges med ytterligere ett år.<br></br>
-        <br></br>
-        Gjennomfører personen opplæring med sikte på formell kompetanse?
-      </BodyLong>
-    )
-  }
-  if (
-    tiltakskode === Tiltakskode.ARBEIDSRETTET_REHABILITERING ||
-    tiltakskode === Tiltakskode.AVKLARING ||
-    tiltakskode === Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK
-  ) {
-    return (
-      <BodyLong size="small">
-        Ny sluttdato er utenfor hovedregelen for maks varighet. Denne godkjennes
-        kun dersom minst ett av følgende krav er oppfylt:
-        <br></br>
-        <List as="ul" size="small">
-          <List.Item>
-            Deltakeren har rett på lovbestemt ferie, og skal stå innmeldt på
-            tiltaket i ferieperioden.
-          </List.Item>
-          <List.Item>
-            Arrangøren har stengt, og deltakeren skal stå innmeldt på tiltaket i
-            stengeperioden.
-          </List.Item>
-        </List>
-      </BodyLong>
-    )
-  }
-  return null
-}
+export const erSluttdatoInnenforEksisterendeMaksUnntak = (
+  sluttdato: Dayjs,
+  eksisterendeSluttdato: Date | null | undefined,
+  maksSluttdato: Dayjs | null
+): boolean =>
+  eksisterendeSluttdato != null &&
+  maksSluttdato != null &&
+  maksSluttdato.isBefore(eksisterendeSluttdato, 'date') &&
+  sluttdato.isSameOrBefore(eksisterendeSluttdato, 'date')
 
 export const DATO_UTENFOR_TILTAKGJENNOMFORING =
   'Datoen kan ikke velges fordi den er utenfor perioden til tiltaket.'
-export const VARGIHET_VALG_FEILMELDING =
-  'Datoen kan ikke velges fordi den er utenfor maks varighet.'
+export const getVarighetValgFeilmelding = (senesteSluttdato?: Date | null) =>
+  senesteSluttdato
+    ? `Seneste tillatte sluttdato er ${dayjs(senesteSluttdato).format('DD.MM.YYYY')}.`
+    : 'Deltakelsesperioden blir lengre enn tillatt.'
+export const getSenesteTillatteSluttdato = (
+  eksisterendeSluttdato: Date | null | undefined,
+  maxVarighetDato?: Date | null
+) =>
+  eksisterendeSluttdato &&
+  maxVarighetDato &&
+  dayjs(maxVarighetDato).isBefore(eksisterendeSluttdato, 'date')
+    ? eksisterendeSluttdato
+    : maxVarighetDato
 export const SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING =
   'Datoen kan ikke velges fordi den er før oppstartsdatoen.'
 export const VARIGHET_BEKREFTELSE_FEILMELDING =
@@ -362,18 +327,13 @@ export const getSluttDatoFeilmelding = (
   nyStartdato?: Date,
   erForleng?: boolean
 ) => {
-  const deltakerstartDato = pamelding.startdato
   const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
 
   const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
   const sluttDato = dayjs(nySluttDato)
+  const oppstartsdato = nyStartdato ?? pamelding.startdato
 
-  if (
-    (nyStartdato && sluttDato.isBefore(nyStartdato, 'date')) ||
-    (!nyStartdato &&
-      deltakerstartDato &&
-      sluttDato.isBefore(deltakerstartDato, 'date'))
-  ) {
+  if (oppstartsdato && sluttDato.isBefore(oppstartsdato, 'date')) {
     return SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
   }
 
@@ -386,40 +346,31 @@ export const getSluttDatoFeilmelding = (
     return DATO_FOER_SLUTTDATO_FEILMELDING
   }
 
-  if (!maxVarighetDato && !deltakerlisteSluttDato) {
-    return null
-  }
-
-  if (!maxVarighetDato && sluttDato.isAfter(deltakerlisteSluttDato, 'date')) {
+  // Prioriterer tiltaksperioden når datoen overskrider både den og maksvarigheten.
+  if (
+    deltakerlisteSluttDato &&
+    sluttDato.isAfter(deltakerlisteSluttDato, 'date')
+  ) {
     return DATO_UTENFOR_TILTAKGJENNOMFORING
   }
 
-  if (!deltakerlisteSluttDato && sluttDato.isAfter(maxVarighetDato, 'date')) {
+  if (!maxVarighetDato || !sluttDato.isAfter(maxVarighetDato, 'date')) {
+    return null
+  }
+
+  if (!deltakerlisteSluttDato) {
     if (
-      maxVarighetDato?.isBefore(pamelding.sluttdato, 'date') &&
-      sluttDato.isSameOrBefore(pamelding.sluttdato, 'date')
+      erSluttdatoInnenforEksisterendeMaksUnntak(
+        sluttDato,
+        opprinneligSluttdato,
+        maxVarighetDato
+      )
     ) {
       return null
     }
-    return VARGIHET_VALG_FEILMELDING
   }
 
-  if (
-    (sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date') &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date')) ||
-    (!maxVarighetDato &&
-      sluttDato.isSameOrBefore(deltakerlisteSluttDato, 'date')) ||
-    (!deltakerlisteSluttDato &&
-      sluttDato.isSameOrBefore(maxVarighetDato, 'date'))
-  ) {
-    return null
-  }
-
-  if (dayjs(maxVarighetDato).isBefore(deltakerlisteSluttDato, 'date')) {
-    return sluttDato.isAfter(deltakerlisteSluttDato)
-      ? DATO_UTENFOR_TILTAKGJENNOMFORING
-      : VARGIHET_VALG_FEILMELDING
-  } else {
-    return DATO_UTENFOR_TILTAKGJENNOMFORING
-  }
+  return getVarighetValgFeilmelding(
+    getSenesteTillatteSluttdato(opprinneligSluttdato, maxVarighetDato.toDate())
+  )
 }
