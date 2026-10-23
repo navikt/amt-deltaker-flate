@@ -1,6 +1,15 @@
 name: Deploy tiltaksarrangor-flate
 
 on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: Velg miljø
+        required: true
+        type: choice
+        options:
+          - dev
+        default: dev
   workflow_call:
     inputs:
       target_environment:
