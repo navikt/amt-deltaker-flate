@@ -22,7 +22,7 @@
   "dependencies": {
     "@grafana/faro-react": "catalog:",
     "@grafana/faro-web-sdk": "catalog:",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^5.9.2",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
