@@ -1,0 +1,105 @@
+name: Reusable detect PR frontend changes
+
+on:
+  workflow_call:
+    inputs:
+      app:
+        required: false
+        type: string
+        default: ''
+    outputs:
+      has-changes:
+        value: ${{ jobs.changes.outputs.has-changes }}
+      apps:
+        value: ${{ jobs.changes.outputs.apps }}
+      innbyggers-flate:
+        value: ${{ jobs.changes.outputs['innbyggers-flate'] }}
+      nav-veileders-flate:
+        value: ${{ jobs.changes.outputs['nav-veileders-flate'] }}
+      tiltakskoordinator-flate:
+        value: ${{ jobs.changes.outputs['tiltakskoordinator-flate'] }}
+      tiltaksarrangor-flate:
+        value: ${{ jobs.changes.outputs['tiltaksarrangor-flate'] }}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  changes:
+    name: Find changed frontend apps
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      has-changes: ${{ inputs.app != '' || steps.filter.outputs.changes != '[]' }}
+      apps: ${{ inputs.app != '' && format('["{0}"]', inputs.app) || steps.filter.outputs.changes }}
+      innbyggers-flate: ${{ inputs.app == 'innbyggers-flate' || steps.filter.outputs['innbyggers-flate'] == 'true' }}
+      nav-veileders-flate: ${{ inputs.app == 'nav-veileders-flate' || steps.filter.outputs['nav-veileders-flate'] == 'true' }}
+      tiltakskoordinator-flate: ${{ inputs.app == 'tiltakskoordinator-flate' || steps.filter.outputs['tiltakskoordinator-flate'] == 'true' }}
+      tiltaksarrangor-flate: ${{ inputs.app == 'tiltaksarrangor-flate' || steps.filter.outputs['tiltaksarrangor-flate'] == 'true' }}
+    steps:
+      - name: Checkout
+        if: inputs.app == ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Find changed frontend apps
+        if: inputs.app == ''
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate:
+              - apps/innbyggers-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
+
+            nav-veileders-flate:
+              - apps/nav-veileders-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
+
+            tiltakskoordinator-flate:
+              - apps/tiltakskoordinator-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
+
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
