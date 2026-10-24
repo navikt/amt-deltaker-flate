@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./playwright.config": "./playwright.config.ts"
+  },
   "files": [
     "playwright.config.ts"
   ],

@@ -25,7 +25,7 @@ export const createPlaywrightConfig = ({ port }: PlaywrightConfigOptions) => {
       }
     ],
     webServer: {
-      command: 'pnpm run start',
+      command: 'pnpm run start --host 127.0.0.1',
       url: baseURL,
       reuseExistingServer: !process.env.CI
     }
