@@ -1,5 +1,17 @@
 name: Deploy NAIS poao-frontend
 on:
+  workflow_dispatch:
+    inputs:
+      module_path:
+        description: Velg app
+        required: true
+        type: choice
+        options:
+          - innbyggers-flate
+          - nav-veileders-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+          - Alle apper
   push:
     branches:
       - main
@@ -14,7 +26,9 @@ permissions:
 
 jobs:
   changes:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     outputs:
       packages: ${{ steps.filter.outputs.changes }}
@@ -25,22 +39,29 @@ jobs:
         id: filter
         with:
           filters: |
-            innbyggers-flate: 
+            innbyggers-flate:
               - .github/workflows/*-deploy-poao-frontend.yaml
               - .nais/poao-frontend.yaml
               - apps/innbyggers-flate/nais/nais-*.yaml
-            nav-veileders-flate: 
+
+            nav-veileders-flate:
               - .github/workflows/*-deploy-poao-frontend.yaml
               - .nais/poao-frontend.yaml
               - apps/nav-veileders-flate/nais/nais-*.yaml
-            tiltakskoordinator-flate: 
+
+            tiltakskoordinator-flate:
               - .github/workflows/*-deploy-poao-frontend.yaml
               - .nais/poao-frontend.yaml
               - apps/tiltakskoordinator-flate/nais/nais-*.yaml
 
+            tiltaksarrangor-flate:
+              - .github/workflows/*-deploy-poao-frontend.yaml
+              - .nais/poao-frontend.yaml
+              - apps/tiltaksarrangor-flate/nais/nais-*.yaml
+
   deploy:
     needs: changes
-    if: ${{ needs.changes.outputs.packages != '[]' }}
+    if: github.event_name == 'push' && needs.changes.outputs.packages != '[]'
     strategy:
       matrix:
         module_path: ${{ fromJSON(needs.changes.outputs.packages) }}
@@ -48,4 +69,24 @@ jobs:
     with:
       module_path: ${{ matrix.module_path }}
       prod_deploy_enabled: ${{ matrix.module_path != 'tiltakskoordinator-flate' }}
-      targets: ${{'["dev","demo","prod"]'}}
+      targets: ${{ matrix.module_path == 'tiltaksarrangor-flate' && '["dev","prod"]' || '["dev","demo","prod"]' }}
+    concurrency:
+      group: poao-frontend-${{ matrix.module_path }}
+      cancel-in-progress: false
+      queue: max
+
+  deploy-manual:
+    if: github.event_name == 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        module_path: ${{ fromJSON(inputs.module_path == 'Alle apper' && '["innbyggers-flate","nav-veileders-flate","tiltakskoordinator-flate","tiltaksarrangor-flate"]' || format('["{0}"]', inputs.module_path)) }}
+    uses: ./.github/workflows/reusable-deploy-poao-frontend.yaml
+    with:
+      module_path: ${{ matrix.module_path }}
+      prod_deploy_enabled: ${{ matrix.module_path != 'tiltakskoordinator-flate' }}
+      targets: ${{ matrix.module_path == 'nav-veileders-flate' && '["dev","demo","prod"]' || '["dev","prod"]' }}
+    concurrency:
+      group: poao-frontend-${{ matrix.module_path }}
+      cancel-in-progress: false
+      queue: max

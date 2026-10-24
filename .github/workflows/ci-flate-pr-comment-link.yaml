@@ -10,6 +10,7 @@ on:
       - apps/innbyggers-flate/**
       - apps/nav-veileders-flate/**
       - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
       - packages/**
       - shared-config/**
       - .npmrc
@@ -19,9 +20,7 @@ on:
       - turbo.json
       - tsconfig.json
       - .github/actions/setup-frontend/**
-      - .github/workflows/innbyggers-flate-pr-deploy.yaml
-      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+      - .github/workflows/ci-flate-pr-deploy.yaml
 
 permissions:
   contents: read
@@ -30,11 +29,16 @@ permissions:
 jobs:
   changes:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
 
     outputs:
       innbyggers-flate: ${{ steps.filter.outputs['innbyggers-flate'] }}
       nav-veileders-flate: ${{ steps.filter.outputs['nav-veileders-flate'] }}
       tiltakskoordinator-flate: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+      tiltaksarrangor-flate: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -53,7 +57,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/innbyggers-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
             nav-veileders-flate: 
               - apps/nav-veileders-flate/**
               - packages/**
@@ -65,7 +69,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
             tiltakskoordinator-flate: 
               - apps/tiltakskoordinator-flate/**
               - packages/**
@@ -77,11 +81,26 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
 
   create-link:
     needs: changes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
     strategy:
       matrix:
         app:
@@ -96,6 +115,10 @@ jobs:
             lenker:
               - 'https://amt-tiltakskoordinator-flate.intern.dev.nav.no'
               - 'https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no'
+          - name: tiltaksarrangor-flate
+            lenker:
+              - 'https://amt.intern.dev.nav.no/deltakeroversikt'
+              - 'https://amt.ansatt.dev.nav.no/deltakeroversikt'
 
     steps:
       - name: Bygg lenke(r) til test-applikasjon

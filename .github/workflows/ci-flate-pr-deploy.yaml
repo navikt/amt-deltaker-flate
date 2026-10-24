@@ -1,0 +1,222 @@
+name: Deploy Pull Request Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App som skal deployes
+        type: choice
+        required: true
+        options:
+          - innbyggers-flate
+          - nav-veileders-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+      pr_number:
+        description: PR-nummer som previewet tilhører
+        type: number
+        required: true
+  pull_request:
+    branches:
+      - main
+    paths:
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-pr-deploy.yaml
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  TZ: Europe/Oslo
+  VITE_APP_VERSION: ${{ github.sha }}
+
+jobs:
+  changes:
+    name: Finn apper som skal deployes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      has-changes: ${{ steps.matrix.outputs.has-changes }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        if: github.event_name == 'pull_request'
+        with:
+          filters: |
+            innbyggers-flate:
+              - apps/innbyggers-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+            nav-veileders-flate:
+              - apps/nav-veileders-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+            tiltakskoordinator-flate:
+              - apps/tiltakskoordinator-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
+      - name: Lag deploy-matrise
+        id: matrix
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SELECTED_APP: ${{ inputs.app }}
+          INNBYGGER_CHANGED: ${{ steps.filter.outputs['innbyggers-flate'] }}
+          VEILEDER_CHANGED: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+          KOORDINATOR_CHANGED: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+          ARRANGOR_CHANGED: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
+        run: |
+          include=()
+
+          add_app() {
+            case "$1" in
+              innbyggers-flate)
+                include+=('{"app_name":"innbyggers-flate","package":"innbyggers-flate","app_directory":"apps/innbyggers-flate","base_prefix":"/arbeidsmarkedstiltak/pr-","gs_path":"gs://amt-deltaker-innbyggers-flate-dev"}')
+                ;;
+              nav-veileders-flate)
+                include+=('{"app_name":"nav-veileders-flate","package":"nav-veileders-flate","app_directory":"apps/nav-veileders-flate","base_prefix":"/pr-","gs_path":"gs://amt-deltaker-flate-dev-v2"}')
+                ;;
+              tiltakskoordinator-flate)
+                include+=('{"app_name":"tiltakskoordinator-flate","package":"tiltakskoordinator-flate","app_directory":"apps/tiltakskoordinator-flate","base_prefix":"/pr-","gs_path":"gs://amt-tiltakskoordinator-flate-dev-pr"}')
+                ;;
+              tiltaksarrangor-flate)
+                include+=('{"app_name":"tiltaksarrangor-flate","package":"tiltaksarrangor-flate","app_directory":"apps/tiltaksarrangor-flate","base_prefix":"/deltakeroversikt/pr-","gs_path":"gs://amt-tiltaksarrangor-flate-dev"}')
+                ;;
+              *)
+                echo "Ukjent app: $1" >&2
+                exit 1
+                ;;
+            esac
+          }
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            add_app "$SELECTED_APP"
+          else
+            [ "$INNBYGGER_CHANGED" = "true" ] && add_app innbyggers-flate
+            [ "$VEILEDER_CHANGED" = "true" ] && add_app nav-veileders-flate
+            [ "$KOORDINATOR_CHANGED" = "true" ] && add_app tiltakskoordinator-flate
+            [ "$ARRANGOR_CHANGED" = "true" ] && add_app tiltaksarrangor-flate
+          fi
+
+          matrix=$(printf '%s\n' "${include[@]}" | jq -sc '{include: .}')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          if [ "${#include[@]}" -gt 0 ]; then
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  playwright-version:
+    name: Get playwright version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Fjern ^ eller ~ fra pnpm-versjonen før den brukes som Docker-image-tag.
+      - id: get-version
+        run: echo "version=$(yq -r '.catalog.playwright' pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+
+  deploy-pull-request-branch:
+    if: >-
+      needs.changes.outputs.has-changes == 'true' &&
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'))
+    name: Deploy Pull Request Branch - ${{ matrix.package }}
+    needs:
+      - changes
+      - playwright-version
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.changes.outputs.matrix) }}
+    concurrency:
+      group: ${{ matrix.app_name }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+      cancel-in-progress: true
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Build Pull Request Application
+        env:
+          PACKAGE: ${{ matrix.package }}
+          BASE_PREFIX: ${{ matrix.base_prefix }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+        run: pnpm build:pull-request --filter="$PACKAGE" -- --base="${BASE_PREFIX}${PR_NUMBER}/"
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Upload files to GCS
+        env:
+          BUILD_DIRECTORY: ${{ matrix.app_directory }}/build
+          GS_PATH: ${{ matrix.gs_path }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+        run: gsutil -m rsync -r "$BUILD_DIRECTORY" "${GS_PATH}/pr-${PR_NUMBER}"

@@ -8,6 +8,7 @@ on:
       - apps/innbyggers-flate/**
       - apps/nav-veileders-flate/**
       - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
       - packages/**
       - shared-config/**
       - .npmrc
@@ -17,9 +18,7 @@ on:
       - turbo.json
       - tsconfig.json
       - .github/actions/setup-frontend/**
-      - .github/workflows/innbyggers-flate-pr-deploy.yaml
-      - .github/workflows/nav-veileders-flate-pr-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+      - .github/workflows/ci-flate-pr-deploy.yaml
     types:
       - closed
 permissions:
@@ -28,11 +27,16 @@ permissions:
 jobs:
   changes:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
 
     outputs:
       innbyggers-flate: ${{ steps.filter.outputs['innbyggers-flate'] }}
       nav-veileders-flate: ${{ steps.filter.outputs['nav-veileders-flate'] }}
       tiltakskoordinator-flate: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+      tiltaksarrangor-flate: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -51,7 +55,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/innbyggers-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
             nav-veileders-flate:
               - apps/nav-veileders-flate/**
               - packages/**
@@ -63,7 +67,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/nav-veileders-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
             tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
               - packages/**
@@ -75,16 +79,30 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/tiltakskoordinator-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-deploy.yaml
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-deploy.yaml
 
   cleanup-pr-flate:
     needs: changes
     name: Rydd applikasjon for PR
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       id-token: write # Used to authenticate with Google Cloud
     strategy:
+      fail-fast: false
       matrix:
         app:
           - name: innbyggers-flate
@@ -93,6 +111,11 @@ jobs:
             gs-path: 'gs://amt-deltaker-flate-dev-v2'
           - name: tiltakskoordinator-flate
             gs-path: 'gs://amt-tiltakskoordinator-flate-dev-pr'
+          - name: tiltaksarrangor-flate
+            gs-path: 'gs://amt-tiltaksarrangor-flate-dev'
+    concurrency:
+      group: ${{ matrix.app.name }}-preview-${{ github.event.number }}
+      cancel-in-progress: true
 
     steps:
       # Rydd bare for appendringer i PR-er fra repoet, ikke for fork-PR-er eller Dependabot.
@@ -122,4 +145,28 @@ jobs:
 
       - name: Delete files on GCS
         if: env.SHOULD_RUN == 'true'
-        run: gsutil rm -r "${{ matrix.app.gs-path }}/pr-${{ github.event.number }}"
+        env:
+          APP_NAME: ${{ matrix.app.name }}
+          GS_PATH: ${{ matrix.app.gs-path }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
+          gsutil ls "$GS_PATH" > /dev/null
+
+          destinations=("${GS_PATH}/pr-${PR_NUMBER}")
+          if [ "$APP_NAME" = "tiltaksarrangor-flate" ]; then
+            destinations+=("${GS_PATH}/pr-deltaker-${PR_NUMBER}")
+          fi
+
+          existing=()
+          for destination in "${destinations[@]}"; do
+            if gsutil ls "${destination}/**" > /dev/null 2>&1; then
+              existing+=("$destination")
+            fi
+          done
+
+          if [ "${#existing[@]}" -gt 0 ]; then
+            gsutil -m rm -r "${existing[@]}"
+          else
+            echo "Ingen preview-filer å slette for ${APP_NAME} PR ${PR_NUMBER}"
+          fi

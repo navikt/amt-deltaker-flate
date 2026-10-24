@@ -30,7 +30,7 @@ jobs:
           pnpm --filter=innbyggers-flate exec vite build --mode demo --base /amt-deltaker-flate/innbyggers-flate/
           pnpm --filter=nav-veileders-flate exec vite build --mode demo --base /amt-deltaker-flate/nav-veileders-flate/
           pnpm --filter=tiltakskoordinator-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltakskoordinator-flate/
-          NODE_ENV=development pnpm --filter=amt-tiltaksarrangor-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltaksarrangor-flate/
+          NODE_ENV=development pnpm --filter=tiltaksarrangor-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltaksarrangor-flate/
 
       - name: Prepare GitHub Pages content
         run: |
