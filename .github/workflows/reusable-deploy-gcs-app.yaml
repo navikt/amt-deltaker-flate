@@ -1,84 +1,95 @@
-name: Deploy innbyggers-flate
+name: Reusable deploy GCS app
+
 on:
   workflow_call:
     inputs:
+      package:
+        required: true
+        type: string
       target_environment:
         required: true
         type: string
+      dev_bucket:
+        required: true
+        type: string
+      prod_bucket:
+        required: true
+        type: string
+      demo_destination:
+        required: false
+        type: string
+        default: ''
     secrets:
       READER_TOKEN:
         required: true
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
         required: false
+
 permissions:
   contents: read
-env:
-  CI: true
-  TZ: Europe/Oslo
-  VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
-  test-and-lint:
-    name: Test and lint
+  test-and-build:
+    name: Test and build ${{ inputs.package }}
     permissions:
       contents: read
     uses: ./.github/workflows/reusable-test-build.yaml
     with:
-      package: innbyggers-flate
+      package: ${{ inputs.package }}
       app-version: ${{ github.sha }}
-      build-targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
-      app-directory: apps/innbyggers-flate
+      build-targets: ${{ github.event_name == 'push' && (inputs.demo_destination != '' && '["dev","demo","prod"]' || '["dev","prod"]') || format('["{0}"]', inputs.target_environment) }}
+      app-directory: apps/${{ inputs.package }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
-  deploy-dev-innbyggers-flate:
+  deploy-dev:
+    name: Deploy ${{ inputs.package }} to DEV
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    needs: test-and-build
     concurrency:
-      group: innbyggers-flate-dev
+      group: ${{ inputs.package }}-dev
       cancel-in-progress: false
-    name: Deploy innbyggers-flate to DEV
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-gcs.yaml
     with:
-      artifact_name: assets-innbyggers-flate-dev
-      bucket: gs://amt-deltaker-innbyggers-flate-dev
+      artifact_name: assets-${{ inputs.package }}-dev
+      bucket: ${{ inputs.dev_bucket }}
       workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
       service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
 
-  deploy-demo-innbyggers-flate:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+  deploy-demo:
+    name: Deploy ${{ inputs.package }} to DEMO
+    if: inputs.demo_destination != '' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+    needs: test-and-build
     concurrency:
-      group: innbyggers-flate-demo
+      group: ${{ inputs.package }}-demo
       cancel-in-progress: false
-    name: Deploy innbyggers-flate DEMO
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-cdn.yaml
     with:
-      artifact_name: assets-innbyggers-flate-demo
-      destination: amt-innbygger-flate-demo
+      artifact_name: assets-${{ inputs.package }}-demo
+      destination: ${{ inputs.demo_destination }}
       source_keep_parent_name: false
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
-  deploy-prod-innbyggers-flate:
+  deploy-prod:
+    name: Deploy ${{ inputs.package }} to PROD
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    needs: test-and-build
     concurrency:
-      group: innbyggers-flate-prod
+      group: ${{ inputs.package }}-prod
       cancel-in-progress: false
-    name: Deploy innbyggers-flate to PROD
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-gcs.yaml
     with:
-      artifact_name: assets-innbyggers-flate-prod
-      bucket: gs://amt-deltaker-innbyggers-flate-prod
+      artifact_name: assets-${{ inputs.package }}-prod
+      bucket: ${{ inputs.prod_bucket }}
       workload_identity_provider: projects/337368476147/locations/global/workloadIdentityPools/github/providers/github-action
       service_account: amt-deltaker-flate-gcs@amt-prod-d4dd.iam.gserviceaccount.com

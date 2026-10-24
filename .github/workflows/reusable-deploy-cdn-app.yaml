@@ -1,86 +1,96 @@
-name: Deploy tiltakskoordinator-flate
+name: Reusable deploy CDN app
+
 on:
   workflow_call:
     inputs:
+      package:
+        required: true
+        type: string
       target_environment:
+        required: true
+        type: string
+      dev_destination:
+        required: true
+        type: string
+      demo_destination:
+        required: true
+        type: string
+      prod_destination:
         required: true
         type: string
     secrets:
       READER_TOKEN:
         required: true
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
-        required: false
+        required: true
+
 permissions:
   contents: read
-env:
-  CI: true
-  TZ: Europe/Oslo
-  VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
-  test-and-lint:
-    name: Test and lint
+  test-and-build:
+    name: Test and build ${{ inputs.package }}
     permissions:
       contents: read
     uses: ./.github/workflows/reusable-test-build.yaml
     with:
-      package: tiltakskoordinator-flate
+      package: ${{ inputs.package }}
       app-version: ${{ github.sha }}
       build-targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
-      app-directory: apps/tiltakskoordinator-flate
+      app-directory: apps/${{ inputs.package }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
-  deploy-dev-tiltakskoordinator-flate:
+  deploy-dev:
+    name: Deploy ${{ inputs.package }} to DEV
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    needs: test-and-build
     concurrency:
-      group: tiltakskoordinator-flate-dev
+      group: ${{ inputs.package }}-dev
       cancel-in-progress: false
-    name: Deploy tiltakskoordinator-flate to DEV
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-cdn.yaml
     with:
-      artifact_name: assets-tiltakskoordinator-flate-dev
-      destination: amt-tiltakskoordinator-flate-dev
-      no_cache_paths: amt-tiltakskoordinator-flate-dev/build/asset-manifest.json
+      artifact_name: assets-${{ inputs.package }}-dev
+      destination: ${{ inputs.dev_destination }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.dev_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
-  deploy-demo-tiltakskoordinator-flate:
+  deploy-demo:
+    name: Deploy ${{ inputs.package }} to DEMO
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+    needs: test-and-build
     concurrency:
-      group: tiltakskoordinator-flate-demo
+      group: ${{ inputs.package }}-demo
       cancel-in-progress: false
-    name: Deploy tiltakskoordinator-flate DEMO
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-cdn.yaml
     with:
-      artifact_name: assets-tiltakskoordinator-flate-demo
-      destination: amt-tiltakskoordinator-flate-demo
+      artifact_name: assets-${{ inputs.package }}-demo
+      destination: ${{ inputs.demo_destination }}
       source_keep_parent_name: false
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
-  deploy-prod-tiltakskoordinator-flate:
+  deploy-prod:
+    name: Deploy ${{ inputs.package }} to PROD
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    needs: test-and-build
     concurrency:
-      group: tiltakskoordinator-flate-prod
+      group: ${{ inputs.package }}-prod
       cancel-in-progress: false
-    name: Deploy tiltakskoordinator-flate to PROD
-    needs: test-and-lint
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-upload-cdn.yaml
     with:
-      artifact_name: assets-tiltakskoordinator-flate-prod
-      destination: amt-tiltakskoordinator-flate-prod
-      no_cache_paths: amt-tiltakskoordinator-flate-prod/build/asset-manifest.json
+      artifact_name: assets-${{ inputs.package }}-prod
+      destination: ${{ inputs.prod_destination }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.prod_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

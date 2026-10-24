@@ -39,10 +39,8 @@ on:
       - tsconfig.json
       - .github/actions/setup-frontend/**
       - .github/workflows/ci-flate-deploy.yaml
-      - .github/workflows/innbyggers-flate-deploy.yaml
-      - .github/workflows/nav-veileders-flate-deploy.yaml
-      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
-      - .github/workflows/tiltaksarrangor-flate-deploy.yaml
+      - .github/workflows/reusable-deploy-cdn-app.yaml
+      - .github/workflows/reusable-deploy-gcs-app.yaml
       - .github/workflows/reusable-test-build.yaml
       - .github/workflows/reusable-upload-cdn.yaml
       - .github/workflows/reusable-upload-gcs.yaml
@@ -88,19 +86,19 @@ jobs:
           filters: |
             innbyggers-flate:
               - apps/innbyggers-flate/**
-              - .github/workflows/innbyggers-flate-deploy.yaml
+              - .github/workflows/reusable-deploy-gcs-app.yaml
 
             nav-veileders-flate:
               - apps/nav-veileders-flate/**
-              - .github/workflows/nav-veileders-flate-deploy.yaml
+              - .github/workflows/reusable-deploy-cdn-app.yaml
 
             tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
-              - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+              - .github/workflows/reusable-deploy-cdn-app.yaml
 
             tiltaksarrangor-flate:
               - apps/tiltaksarrangor-flate/**
-              - .github/workflows/tiltaksarrangor-flate-deploy.yaml
+              - .github/workflows/reusable-deploy-gcs-app.yaml
 
             shared:
               - packages/**
@@ -134,9 +132,13 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/innbyggers-flate-deploy.yaml
+    uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
     with:
+      package: innbyggers-flate
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_bucket: gs://amt-deltaker-innbyggers-flate-dev
+      prod_bucket: gs://amt-deltaker-innbyggers-flate-prod
+      demo_destination: amt-innbygger-flate-demo
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -153,9 +155,13 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/nav-veileders-flate-deploy.yaml
+    uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
     with:
+      package: nav-veileders-flate
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_destination: amt-veileder-flate-dev
+      demo_destination: amt-veileder-flate-demo
+      prod_destination: amt-veileder-flate-prod
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -172,9 +178,13 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/tiltakskoordinator-flate-deploy.yaml
+    uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
     with:
+      package: tiltakskoordinator-flate
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_destination: amt-tiltakskoordinator-flate-dev
+      demo_destination: amt-tiltakskoordinator-flate-demo
+      prod_destination: amt-tiltakskoordinator-flate-prod
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -191,8 +201,11 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/tiltaksarrangor-flate-deploy.yaml
+    uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
     with:
+      package: tiltaksarrangor-flate
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_bucket: gs://amt-tiltaksarrangor-flate-dev
+      prod_bucket: gs://amt-tiltaksarrangor-flate-prod
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
