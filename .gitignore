@@ -9,11 +9,15 @@ lerna-debug.log*
 
 node_modules
 build
+coverage
 dist
 dist-ssr
 *.local
 
+.pnp
+.pnp.js
 .pnpm-store
+package-lock.json
 
 # Editor directories and files
 .vscode
@@ -31,5 +35,9 @@ dist-ssr
 *.tsbuildinfo
 
 # Generated files
+blob-report
+playwright-report
+**/playwright/.cache
+test-results
 test-output
 github-pages

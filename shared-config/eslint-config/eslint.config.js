@@ -23,12 +23,11 @@ export default [
   {
     ignores: [
       '.eslintrc.*',
-      '**/build/*.js',
+      '**/build/**',
       'vite.config.ts',
       '/server/server.js',
       'plugin:react/recommended',
       'node_modules/',
-      'build/',
       'shared-config/'
     ]
   },
