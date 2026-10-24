@@ -1,4 +1,4 @@
-name: Deploy Pull Request Branch
+name: PR-preview
 
 on:
   workflow_dispatch:
@@ -39,7 +39,7 @@ on:
       - tsconfig.json
       - .github/config/preview-apps.json
       - .github/actions/setup-frontend/**
-      - .github/workflows/ci-flate-pr-deploy.yaml
+      - .github/workflows/ci-flate-pr-preview.yaml
 
 permissions:
   contents: read
@@ -50,18 +50,18 @@ env:
   VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
-  changes:
-    name: Finn apper som skal deployes
+  detect-changes:
+    name: Finn berørte frontend-apper
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
       pull-requests: read
     outputs:
-      has-changes: ${{ steps.metadata.outputs.app-configs != '[]' }}
-      app-configs: ${{ steps.metadata.outputs.app-configs }}
+      has_changes: ${{ steps.metadata.outputs.app_configs != '[]' }}
+      app_configs: ${{ steps.metadata.outputs.app_configs }}
     steps:
-      - name: Checkout
+      - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Finn endrede frontend-apper
@@ -93,7 +93,7 @@ jobs:
               - tsconfig.json
               - .github/config/preview-apps.json
               - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-deploy.yaml
+              - .github/workflows/ci-flate-pr-preview.yaml
 
       - name: Legg til preview-konfigurasjon
         id: metadata
@@ -118,17 +118,17 @@ jobs:
             exit 1
           fi
 
-          echo "app-configs=$app_configs" >> "$GITHUB_OUTPUT"
+          echo "app_configs=$app_configs" >> "$GITHUB_OUTPUT"
 
-  deploy-pull-request-branch:
+  deploy-preview:
     if: >-
-      needs.changes.outputs.has-changes == 'true' &&
+      needs.detect-changes.outputs.has_changes == 'true' &&
       (github.event_name == 'workflow_dispatch' ||
       (github.event.action != 'closed' &&
       github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'))
-    name: Deploy Pull Request Branch - ${{ matrix.app.name }}
-    needs: changes
+    name: Deploy PR-preview for ${{ matrix.app.name }}
+    needs: detect-changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -137,43 +137,43 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
     concurrency:
       group: ${{ matrix.app.name }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
       cancel-in-progress: true
     steps:
-      - name: Checkout
+      - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup frontend
+      - name: Sett opp frontend
         uses: ./.github/actions/setup-frontend
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Build Pull Request Application
+      - name: Bygg PR-preview
         env:
           PACKAGE: ${{ matrix.app.name }}
           BASE_PREFIX: ${{ matrix.app.buildBasePrefix }}
           PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
         run: pnpm build:pull-request --filter="$PACKAGE" -- --base="${BASE_PREFIX}${PR_NUMBER}/"
-      - name: Authenticate to Google Cloud
+      - name: Autentiser mot Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
+      - name: Sett opp Google Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
-      - name: Upload files to GCS
+      - name: Last opp filer til GCS
         env:
           BUILD_DIRECTORY: apps/${{ matrix.app.name }}/build
           GS_PATH: ${{ matrix.app.previewBucket }}
           PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
         run: gsutil -m rsync -r "$BUILD_DIRECTORY" "${GS_PATH}/pr-${PR_NUMBER}"
 
-  create-link:
-    needs: changes
+  create-links:
+    needs: detect-changes
     if: >-
       github.event_name == 'pull_request' &&
       github.event.action == 'opened' &&
-      needs.changes.outputs.has-changes == 'true' &&
+      needs.detect-changes.outputs.has_changes == 'true' &&
       github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'
     name: Opprett testlenke for ${{ matrix.app.name }}
@@ -184,10 +184,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
     steps:
-      - name: Bygg lenke(r) til test-applikasjon
-        id: build-links
+      - name: Bygg testlenker
+        id: build_links
         env:
           BASE_URLS: ${{ join(matrix.app.previewUrls, ' ') }}
           PR_NUMBER: ${{ github.event.number }}
@@ -203,19 +203,19 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Opprett lenke(r) til test-applikasjon
+      - name: Opprett testlenker
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         with:
           message: |
-            Lenke(r) for testing av ${{ matrix.app.name }}:
-            ${{ steps.build-links.outputs.links }}
+            Testlenker for ${{ matrix.app.name }}:
+            ${{ steps.build_links.outputs.links }}
 
-  cleanup-pr-flate:
-    needs: changes
+  cleanup-preview:
+    needs: detect-changes
     if: >-
       github.event_name == 'pull_request' &&
       github.event.action == 'closed' &&
-      needs.changes.outputs.has-changes == 'true' &&
+      needs.detect-changes.outputs.has_changes == 'true' &&
       github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'
     name: Rydd ${{ matrix.app.name }} for PR
@@ -227,21 +227,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
     concurrency:
       group: ${{ matrix.app.name }}-preview-${{ github.event.number }}
       cancel-in-progress: true
     steps:
-      - name: Authenticate to Google Cloud
+      - name: Autentiser mot Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
 
-      - name: Set up Cloud SDK
+      - name: Sett opp Google Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
 
-      - name: Delete files on GCS
+      - name: Slett filer fra GCS
         env:
           APP_NAME: ${{ matrix.app.name }}
           GS_PATH: ${{ matrix.app.previewBucket }}

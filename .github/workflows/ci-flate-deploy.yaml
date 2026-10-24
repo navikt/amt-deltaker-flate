@@ -1,4 +1,4 @@
-name: Deploy frontend apps
+name: Deploy frontend-apper
 
 on:
   workflow_dispatch:
@@ -50,7 +50,7 @@ permissions:
 
 jobs:
   selection:
-    name: Select frontend apps to deploy
+    name: Velg frontend-apper for deploy
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -61,30 +61,30 @@ jobs:
       shared: ${{ steps.filter.outputs.shared }}
       cdn: ${{ steps.filter.outputs.cdn }}
       gcs: ${{ steps.filter.outputs.gcs }}
-      playwright_version: ${{ steps.playwright-version.outputs.version }}
+      playwright_version: ${{ steps.playwright_version.outputs.version }}
     steps:
-      - name: Reject invalid app and environment selection
+      - name: Avvis ugyldig app- og miljøvalg
         if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'demo' && (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')
         run: |
           echo "::error::Tiltaksarrangørflaten har ikke demo-deploy. Velg en annen app eller et annet miljø."
           exit 1
 
-      - name: Require main for demo and production deploys
+      - name: Krev main for demo- og produksjonsdeploy
         if: github.event_name == 'workflow_dispatch' && inputs.target_environment != 'dev' && github.ref != 'refs/heads/main'
         run: |
           echo "::error::Demo- og produksjonsdeploy må startes fra main."
           exit 1
 
-      - name: Checkout
+      - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Get Playwright version
-        id: playwright-version
+      - name: Hent Playwright-versjon
+        id: playwright_version
         run: |
           version=$(yq -er '.catalog."@playwright/test"' pnpm-workspace.yaml)
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Find changed frontend apps
+      - name: Finn endrede frontend-apper
         if: github.event_name == 'push'
         uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
         id: filter
