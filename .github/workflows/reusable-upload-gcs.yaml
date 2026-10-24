@@ -42,6 +42,8 @@ jobs:
 
       - name: Sett opp Google Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          skip_install: true
 
       - name: Last opp filer til GCS
         env:
