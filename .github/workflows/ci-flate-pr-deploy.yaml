@@ -101,3 +101,45 @@ jobs:
           GS_PATH: ${{ matrix.app.previewBucket }}
           PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
         run: gsutil -m rsync -r "$BUILD_DIRECTORY" "${GS_PATH}/pr-${PR_NUMBER}"
+
+  create-link:
+    needs: changes
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'opened' &&
+      needs.changes.outputs.has-changes == 'true' &&
+      github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    name: Opprett testlenke for ${{ matrix.app.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
+    steps:
+      - name: Bygg lenke(r) til test-applikasjon
+        id: build-links
+        env:
+          BASE_URLS: ${{ join(matrix.app.previewUrls, ' ') }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          # Lag én PR-lenke per baseadresse, og bevar linjeskiftene i stegets output.
+          links=()
+          for base_url in $BASE_URLS; do
+            links+=("${base_url}/pr-${PR_NUMBER}/index.html")
+          done
+          {
+            echo "links<<EOF"
+            printf '%s\n' "${links[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Opprett lenke(r) til test-applikasjon
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        with:
+          message: |
+            Lenke(r) for testing av ${{ matrix.app.name }}:
+            ${{ steps.build-links.outputs.links }}
