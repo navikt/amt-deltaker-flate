@@ -34,6 +34,7 @@ on:
       - tsconfig.json
       - .github/actions/setup-frontend/**
       - .github/workflows/ci-flate-pr-deploy.yaml
+      - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
 permissions:
   contents: read
@@ -46,72 +47,12 @@ env:
 jobs:
   changes:
     name: Finn apper som skal deployes
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
     permissions:
       contents: read
       pull-requests: read
-    outputs:
-      has-changes: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.changes != '[]' }}
-      apps: ${{ github.event_name == 'workflow_dispatch' && format('["{0}"]', inputs.app) || steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
-        id: filter
-        if: github.event_name == 'pull_request'
-        with:
-          filters: |
-            innbyggers-flate:
-              - apps/innbyggers-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-deploy.yaml
-
-            nav-veileders-flate:
-              - apps/nav-veileders-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-deploy.yaml
-
-            tiltakskoordinator-flate:
-              - apps/tiltakskoordinator-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-deploy.yaml
-
-            tiltaksarrangor-flate:
-              - apps/tiltaksarrangor-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-deploy.yaml
+    uses: ./.github/workflows/reusable-detect-pr-frontend-changes.yaml
+    with:
+      app: ${{ inputs.app }}
   playwright-version:
     name: Get playwright version
     runs-on: ubuntu-latest
