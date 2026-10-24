@@ -1,4 +1,4 @@
-name: Reusable Deploy NAIS poao-frontend
+name: Gjenbrukbar deploy av Nais poao-frontend
 on:
   workflow_call:
     inputs:
@@ -26,12 +26,12 @@ jobs:
     strategy:
       matrix:
         target: ${{ fromJSON(inputs.targets) }}
-    name: Deploy poao-frontend ${{ matrix.target }} - ${{ inputs.module_path }}
+    name: Deploy poao-frontend til ${{ matrix.target }} for ${{ inputs.module_path }}
     steps:
-      - name: Checkout
+      - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Deploy application
+      - name: Deploy app
         if: |
           matrix.target == 'dev' ||
           (matrix.target == 'demo' && github.ref == 'refs/heads/main') ||
@@ -40,4 +40,5 @@ jobs:
         env:
           CLUSTER: ${{ matrix.target == 'prod' && 'prod-gcp' || 'dev-gcp' }}
           RESOURCE: apps/${{ inputs.module_path }}/nais/nais-${{ matrix.target }}.yaml
+          VARS: .nais/poao-frontend.yaml
           PRINT_PAYLOAD: true

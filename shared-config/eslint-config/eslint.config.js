@@ -3,6 +3,9 @@ import globals from 'globals'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import tseslint from 'typescript-eslint'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
+import { fileURLToPath } from 'node:url'
+
+const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url))
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
@@ -17,19 +20,20 @@ export default [
       }
     },
     languageOptions: {
-      globals: globals.browser
+      globals: globals.browser,
+      parserOptions: {
+        tsconfigRootDir: repositoryRoot
+      }
     }
   },
   {
     ignores: [
       '.eslintrc.*',
-      '**/build/*.js',
+      '**/build/**',
       'vite.config.ts',
       '/server/server.js',
       'plugin:react/recommended',
-      'node_modules/',
-      'build/',
-      'shared-config/'
+      'node_modules/'
     ]
   },
   {

@@ -1,4 +1,4 @@
-name: Reusable frontend tests and build
+name: Gjenbrukbar test og bygg av frontend
 
 on:
   workflow_call:
@@ -9,15 +9,18 @@ on:
       build:
         type: boolean
         default: false
-      app-version:
+      app_version:
         type: string
         default: ''
-      build-targets:
+      build_targets:
         type: string
         default: '[]'
-      app-directory:
+      app_directory:
         type: string
         default: ''
+      playwright_version:
+        required: true
+        type: string
     secrets:
       READER_TOKEN:
         required: true
@@ -27,47 +30,35 @@ permissions:
 
 env:
   CI: true
-  TZ: Europe/Amsterdam
+  TZ: Europe/Oslo
 
 jobs:
-  playwright-version:
-    name: Get playwright version
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - id: get-version
-        run: echo "version=$(yq -r '.catalog.playwright' pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
-
   test-and-build:
-    name: Test and build ${{ inputs.package }}
-    needs: playwright-version
+    name: Test og bygg ${{ inputs.package }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     container:
-      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
+      image: mcr.microsoft.com/playwright:v${{ inputs.playwright_version }}-jammy
     steps:
-      - name: Checkout
+      - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Cache Turbo outputs
+      - name: Mellomlagre Turbo-resultater
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ inputs.package }}-${{ needs.playwright-version.outputs.version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-${{ github.sha }}
+          key: turbo-${{ runner.os }}-${{ inputs.package }}-${{ inputs.playwright_version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ runner.os }}-${{ inputs.package }}-${{ needs.playwright-version.outputs.version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-
-      - name: Set application version
-        if: inputs.app-version != ''
+            turbo-${{ runner.os }}-${{ inputs.package }}-${{ inputs.playwright_version }}-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'turbo.json') }}-
+      - name: Sett appversjon
+        if: inputs.app_version != ''
         env:
-          APP_VERSION: ${{ inputs.app-version }}
+          APP_VERSION: ${{ inputs.app_version }}
         run: echo "VITE_APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
-      - name: Setup frontend
+      - name: Sett opp frontend
         uses: ./.github/actions/setup-frontend
         with:
           node_auth_token: ${{ secrets.READER_TOKEN }}
-      - name: Lint
+      - name: Kjør lint
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
@@ -76,7 +67,7 @@ jobs:
           else
             pnpm lint --filter="$PACKAGE..."
           fi
-      - name: Run tests
+      - name: Kjør tester
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
@@ -85,16 +76,7 @@ jobs:
           else
             pnpm test:no-watch --filter="$PACKAGE"
           fi
-      - name: Install matching Chromium
-        env:
-          PACKAGE: ${{ inputs.package }}
-        run: |
-          if [ "$PACKAGE" = all ]; then
-            pnpm --recursive --filter './apps/*' exec playwright install chromium
-          else
-            pnpm --filter="$PACKAGE" exec playwright install chromium
-          fi
-      - name: Run playwright tests
+      - name: Kjør Playwright-tester
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
@@ -103,49 +85,49 @@ jobs:
           else
             pnpm playwright --filter="$PACKAGE"
           fi
-      - name: Build dev
-        if: contains(fromJSON(inputs.build-targets), 'dev')
+      - name: Bygg dev
+        if: contains(fromJSON(inputs.build_targets), 'dev')
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
           pnpm build:dev --filter="$PACKAGE"
-      - name: Upload dev assets
-        if: contains(fromJSON(inputs.build-targets), 'dev')
+      - name: Last opp dev-filer
+        if: contains(fromJSON(inputs.build_targets), 'dev')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: frontend-build-dev
-          path: ${{ inputs.app-directory }}/build
+          name: assets-${{ inputs.package }}-dev
+          path: ${{ inputs.app_directory }}/build
           if-no-files-found: error
           retention-days: 1
-      - name: Build demo
-        if: contains(fromJSON(inputs.build-targets), 'demo')
+      - name: Bygg demo
+        if: contains(fromJSON(inputs.build_targets), 'demo')
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
           pnpm build:demo --filter="$PACKAGE"
-      - name: Upload demo assets
-        if: contains(fromJSON(inputs.build-targets), 'demo')
+      - name: Last opp demo-filer
+        if: contains(fromJSON(inputs.build_targets), 'demo')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: frontend-build-demo
-          path: ${{ inputs.app-directory }}/build
+          name: assets-${{ inputs.package }}-demo
+          path: ${{ inputs.app_directory }}/build
           if-no-files-found: error
           retention-days: 1
-      - name: Build production
-        if: contains(fromJSON(inputs.build-targets), 'prod')
+      - name: Bygg produksjon
+        if: contains(fromJSON(inputs.build_targets), 'prod')
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
           pnpm build --filter="$PACKAGE"
-      - name: Upload production assets
-        if: contains(fromJSON(inputs.build-targets), 'prod')
+      - name: Last opp produksjonsfiler
+        if: contains(fromJSON(inputs.build_targets), 'prod')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: frontend-build-prod
-          path: ${{ inputs.app-directory }}/build
+          name: assets-${{ inputs.package }}-prod
+          path: ${{ inputs.app_directory }}/build
           if-no-files-found: error
           retention-days: 1
-      - name: Build
+      - name: Bygg
         if: inputs.build
         env:
           PACKAGE: ${{ inputs.package }}
@@ -155,8 +137,8 @@ jobs:
           else
             pnpm build --filter="$PACKAGE"
           fi
-      - name: Upload Playwright reports
-        if: ${{ !cancelled() }}
+      - name: Last opp Playwright-rapporter
+        if: '!cancelled()'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: playwright-${{ inputs.package }}

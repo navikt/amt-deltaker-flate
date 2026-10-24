@@ -1,0 +1,258 @@
+name: PR-preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App som skal deployes
+        type: choice
+        required: true
+        options:
+          - innbyggers-flate
+          - nav-veileders-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+      pr_number:
+        description: PR-nummer som previewet tilhører
+        type: number
+        required: true
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/config/preview-apps.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-pr-preview.yaml
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  TZ: Europe/Oslo
+  VITE_APP_VERSION: ${{ github.sha }}
+
+jobs:
+  detect-changes:
+    name: Finn berørte frontend-apper
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      has_changes: ${{ steps.metadata.outputs.app_configs != '[]' }}
+      app_configs: ${{ steps.metadata.outputs.app_configs }}
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Finn endrede frontend-apper
+        if: inputs.app == ''
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate:
+              - apps/innbyggers-flate/**
+
+            nav-veileders-flate:
+              - apps/nav-veileders-flate/**
+
+            tiltakskoordinator-flate:
+              - apps/tiltakskoordinator-flate/**
+
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+
+            shared:
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/config/preview-apps.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-preview.yaml
+
+      - name: Legg til preview-konfigurasjon
+        id: metadata
+        env:
+          SELECTED_APPS: ${{ inputs.app != '' && format('["{0}"]', inputs.app) || steps.filter.outputs.changes }}
+        run: |
+          selected_apps=$(jq --compact-output --argjson selected "$SELECTED_APPS" '
+            if $selected | index("shared") then keys_unsorted else $selected end
+          ' .github/config/preview-apps.json)
+
+          app_configs=$(jq --compact-output --argjson selected "$selected_apps" '
+            [
+              to_entries[]
+              | . as $app
+              | select($selected | index($app.key))
+              | $app.value + { name: $app.key }
+            ]
+          ' .github/config/preview-apps.json)
+
+          if [ "$(jq 'length' <<< "$app_configs")" -ne "$(jq 'length' <<< "$selected_apps")" ]; then
+            echo "::error::Mangler preview-konfigurasjon for en eller flere apper"
+            exit 1
+          fi
+
+          echo "app_configs=$app_configs" >> "$GITHUB_OUTPUT"
+
+  deploy-preview:
+    if: >-
+      needs.detect-changes.outputs.has_changes == 'true' &&
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'))
+    name: Deploy PR-preview for ${{ matrix.app.name }}
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
+    concurrency:
+      group: ${{ matrix.app.name }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Sett opp frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node_auth_token: ${{ secrets.READER_TOKEN }}
+      - name: Bygg PR-preview
+        env:
+          PACKAGE: ${{ matrix.app.name }}
+          BASE_PREFIX: ${{ matrix.app.buildBasePrefix }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+        run: pnpm build:pull-request --filter="$PACKAGE" -- --base="${BASE_PREFIX}${PR_NUMBER}/"
+      - name: Autentiser mot Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+      - name: Sett opp Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Last opp filer til GCS
+        env:
+          BUILD_DIRECTORY: apps/${{ matrix.app.name }}/build
+          GS_PATH: ${{ matrix.app.previewBucket }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+        run: gsutil -m rsync -r "$BUILD_DIRECTORY" "${GS_PATH}/pr-${PR_NUMBER}"
+
+  create-links:
+    needs: detect-changes
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'opened' &&
+      needs.detect-changes.outputs.has_changes == 'true' &&
+      github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    name: Opprett testlenke for ${{ matrix.app.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
+    steps:
+      - name: Bygg testlenker
+        id: build_links
+        env:
+          BASE_URLS: ${{ join(matrix.app.previewUrls, ' ') }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          # Lag én PR-lenke per baseadresse, og bevar linjeskiftene i stegets output.
+          links=()
+          for base_url in $BASE_URLS; do
+            links+=("${base_url}/pr-${PR_NUMBER}/index.html")
+          done
+          {
+            echo "links<<EOF"
+            printf '%s\n' "${links[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Opprett testlenker
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
+        with:
+          message: |
+            Testlenker for ${{ matrix.app.name }}:
+            ${{ steps.build_links.outputs.links }}
+
+  cleanup-preview:
+    needs: detect-changes
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      needs.detect-changes.outputs.has_changes == 'true' &&
+      github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    name: Rydd ${{ matrix.app.name }} for PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.detect-changes.outputs.app_configs) }}
+    concurrency:
+      group: ${{ matrix.app.name }}-preview-${{ github.event.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Autentiser mot Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
+          service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
+
+      - name: Sett opp Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+
+      - name: Slett filer fra GCS
+        env:
+          APP_NAME: ${{ matrix.app.name }}
+          GS_PATH: ${{ matrix.app.previewBucket }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
+          gsutil ls "$GS_PATH" > /dev/null
+
+          destination="${GS_PATH}/pr-${PR_NUMBER}"
+          if gsutil ls "${destination}/**" > /dev/null 2>&1; then
+            gsutil -m rm -r "$destination"
+          else
+            echo "Ingen preview-filer å slette for ${APP_NAME} PR ${PR_NUMBER}"
+          fi

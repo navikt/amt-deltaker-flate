@@ -1,0 +1,226 @@
+name: Deploy frontend-apper
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Velg app
+        required: true
+        type: choice
+        options:
+          - nav-veileders-flate
+          - innbyggers-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+          - Alle apper
+      target_environment:
+        description: Velg miljø
+        required: true
+        type: choice
+        options:
+          - dev
+          - demo
+          - prod
+  push:
+    branches:
+      - main
+    paths:
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-deploy.yaml
+      - .github/workflows/reusable-deploy-cdn-app.yaml
+      - .github/workflows/reusable-deploy-gcs-app.yaml
+      - .github/workflows/reusable-test-build.yaml
+      - .github/workflows/reusable-upload-cdn.yaml
+      - .github/workflows/reusable-upload-gcs.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.event_name == 'push' && 'frontend-deploy-push' || format('frontend-deploy-manual-{0}-{1}', inputs.app, inputs.target_environment) }}
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  selection:
+    name: Velg frontend-apper for deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      innbyggers: ${{ steps.filter.outputs['innbyggers-flate'] }}
+      nav_veileders: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+      tiltakskoordinator: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+      tiltaksarrangor: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
+      shared: ${{ steps.filter.outputs.shared }}
+      cdn: ${{ steps.filter.outputs.cdn }}
+      gcs: ${{ steps.filter.outputs.gcs }}
+      playwright_version: ${{ steps.playwright_version.outputs.version }}
+    steps:
+      - name: Avvis ugyldig app- og miljøvalg
+        if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'demo' && (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')
+        run: |
+          echo "::error::Tiltaksarrangørflaten har ikke demo-deploy. Velg en annen app eller et annet miljø."
+          exit 1
+
+      - name: Krev main for demo- og produksjonsdeploy
+        if: github.event_name == 'workflow_dispatch' && inputs.target_environment != 'dev' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Demo- og produksjonsdeploy må startes fra main."
+          exit 1
+
+      - name: Sjekk ut kode
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Hent Playwright-versjon
+        id: playwright_version
+        run: |
+          version=$(yq -er '.catalog."@playwright/test"' pnpm-workspace.yaml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Finn endrede frontend-apper
+        if: github.event_name == 'push'
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate:
+              - apps/innbyggers-flate/**
+              - .github/workflows/reusable-deploy-gcs-app.yaml
+
+            nav-veileders-flate:
+              - apps/nav-veileders-flate/**
+              - .github/workflows/reusable-deploy-cdn-app.yaml
+
+            tiltakskoordinator-flate:
+              - apps/tiltakskoordinator-flate/**
+              - .github/workflows/reusable-deploy-cdn-app.yaml
+
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - .github/workflows/reusable-deploy-gcs-app.yaml
+
+            shared:
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-deploy.yaml
+              - .github/workflows/reusable-test-build.yaml
+
+            cdn:
+              - .github/workflows/reusable-upload-cdn.yaml
+
+            gcs:
+              - .github/workflows/reusable-upload-gcs.yaml
+
+  deploy-innbyggers-flate:
+    name: Deploy innbyggers-flate
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'innbyggers-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.innbyggers == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true' ||
+      needs.selection.outputs.gcs == 'true'
+    needs: selection
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
+    with:
+      package: innbyggers-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_bucket: gs://amt-deltaker-innbyggers-flate-dev
+      prod_bucket: gs://amt-deltaker-innbyggers-flate-prod
+      demo_destination: amt-innbygger-flate-demo
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-nav-veileders-flate:
+    name: Deploy nav-veileders-flate
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'nav-veileders-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.nav_veileders == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true'
+    needs: selection
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
+    with:
+      package: nav-veileders-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_destination: amt-veileder-flate-dev
+      demo_destination: amt-veileder-flate-demo
+      prod_destination: amt-veileder-flate-prod
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-tiltakskoordinator-flate:
+    name: Deploy tiltakskoordinator-flate
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'tiltakskoordinator-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.tiltakskoordinator == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true'
+    needs: selection
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
+    with:
+      package: tiltakskoordinator-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_destination: amt-tiltakskoordinator-flate-dev
+      demo_destination: amt-tiltakskoordinator-flate-demo
+      prod_destination: amt-tiltakskoordinator-flate-prod
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-tiltaksarrangor-flate:
+    name: Deploy tiltaksarrangor-flate
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.tiltaksarrangor == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.gcs == 'true'
+    needs: selection
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
+    with:
+      package: tiltaksarrangor-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
+      dev_bucket: gs://amt-tiltaksarrangor-flate-dev
+      prod_bucket: gs://amt-tiltaksarrangor-flate-prod
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}

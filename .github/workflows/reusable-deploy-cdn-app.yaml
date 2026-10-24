@@ -1,0 +1,100 @@
+name: Gjenbrukbar deploy av CDN-app
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
+      playwright_version:
+        required: true
+        type: string
+      target_environment:
+        required: true
+        type: string
+      dev_destination:
+        required: true
+        type: string
+      demo_destination:
+        required: true
+        type: string
+      prod_destination:
+        required: true
+        type: string
+    secrets:
+      READER_TOKEN:
+        required: true
+      NAIS_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    name: Test og bygg ${{ inputs.package }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/reusable-test-build.yaml
+    with:
+      package: ${{ inputs.package }}
+      app_version: ${{ github.sha }}
+      playwright_version: ${{ inputs.playwright_version }}
+      build_targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
+      app_directory: apps/${{ inputs.package }}
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+
+  deploy-dev:
+    name: Deploy ${{ inputs.package }} til dev
+    if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    needs: test-and-build
+    concurrency:
+      group: ${{ inputs.package }}-dev
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-${{ inputs.package }}-dev
+      destination: ${{ inputs.dev_destination }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.dev_destination) }}
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-demo:
+    name: Deploy ${{ inputs.package }} til demo
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+    needs: test-and-build
+    concurrency:
+      group: ${{ inputs.package }}-demo
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-${{ inputs.package }}-demo
+      destination: ${{ inputs.demo_destination }}
+      source_keep_parent_name: false
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-prod:
+    name: Deploy ${{ inputs.package }} til produksjon
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    needs: test-and-build
+    concurrency:
+      group: ${{ inputs.package }}-prod
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-${{ inputs.package }}-prod
+      destination: ${{ inputs.prod_destination }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.prod_destination) }}
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
