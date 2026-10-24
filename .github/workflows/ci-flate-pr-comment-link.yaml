@@ -19,6 +19,7 @@ on:
       - pnpm-workspace.yaml
       - turbo.json
       - tsconfig.json
+      - .github/config/preview-apps.json
       - .github/actions/setup-frontend/**
       - .github/workflows/ci-flate-pr-deploy.yaml
       - .github/workflows/reusable-detect-pr-frontend-changes.yaml
@@ -40,7 +41,7 @@ jobs:
       needs.changes.outputs.has-changes == 'true' &&
       github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'
-    name: Opprett testlenke for ${{ matrix.app }}
+    name: Opprett testlenke for ${{ matrix.app.name }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -48,46 +49,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.apps) }}
+        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
 
     steps:
       - name: Bygg lenke(r) til test-applikasjon
         id: build-links
         env:
-          APP_NAME: ${{ matrix.app }}
+          BASE_URLS: ${{ join(matrix.app.previewUrls, ' ') }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          case "$APP_NAME" in
-            innbyggers-flate)
-              base_urls=("https://amt.intern.dev.nav.no/arbeidsmarkedstiltak")
-              ;;
-            nav-veileders-flate)
-              base_urls=(
-                "https://amt-deltaker-flate.intern.dev.nav.no"
-                "https://amt-deltaker-flate.ansatt.dev.nav.no"
-              )
-              ;;
-            tiltakskoordinator-flate)
-              base_urls=(
-                "https://amt-tiltakskoordinator-flate.intern.dev.nav.no"
-                "https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no"
-              )
-              ;;
-            tiltaksarrangor-flate)
-              base_urls=(
-                "https://amt.intern.dev.nav.no/deltakeroversikt"
-                "https://amt.ansatt.dev.nav.no/deltakeroversikt"
-              )
-              ;;
-            *)
-              echo "::error::Ukjent app: $APP_NAME"
-              exit 1
-              ;;
-          esac
-
           # Lag én PR-lenke per baseadresse, og bevar linjeskiftene i stegets output.
           links=()
-          for base_url in "${base_urls[@]}"; do
+          for base_url in $BASE_URLS; do
             links+=("${base_url}/pr-${PR_NUMBER}/index.html")
           done
           {
@@ -100,5 +73,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
         with:
           message: |
-            Lenke(r) for testing av ${{ matrix.app }}:
+            Lenke(r) for testing av ${{ matrix.app.name }}:
             ${{ steps.build-links.outputs.links }}

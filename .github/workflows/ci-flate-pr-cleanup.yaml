@@ -17,6 +17,7 @@ on:
       - pnpm-workspace.yaml
       - turbo.json
       - tsconfig.json
+      - .github/config/preview-apps.json
       - .github/actions/setup-frontend/**
       - .github/workflows/ci-flate-pr-cleanup.yaml
       - .github/workflows/ci-flate-pr-deploy.yaml
@@ -39,7 +40,7 @@ jobs:
       needs.changes.outputs.has-changes == 'true' &&
       github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'
-    name: Rydd ${{ matrix.app }} for PR
+    name: Rydd ${{ matrix.app.name }} for PR
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -48,9 +49,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.apps) }}
+        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
     concurrency:
-      group: ${{ matrix.app }}-preview-${{ github.event.number }}
+      group: ${{ matrix.app.name }}-preview-${{ github.event.number }}
       cancel-in-progress: true
 
     steps:
@@ -65,35 +66,18 @@ jobs:
 
       - name: Delete files on GCS
         env:
-          APP_NAME: ${{ matrix.app }}
+          APP_NAME: ${{ matrix.app.name }}
+          CLEANUP_PREFIXES: ${{ join(matrix.app.cleanupPrefixes, ' ') }}
+          GS_PATH: ${{ matrix.app.previewBucket }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          case "$APP_NAME" in
-            innbyggers-flate)
-              gs_path="gs://amt-deltaker-innbyggers-flate-dev"
-              ;;
-            nav-veileders-flate)
-              gs_path="gs://amt-deltaker-flate-dev-v2"
-              ;;
-            tiltakskoordinator-flate)
-              gs_path="gs://amt-tiltakskoordinator-flate-dev-pr"
-              ;;
-            tiltaksarrangor-flate)
-              gs_path="gs://amt-tiltaksarrangor-flate-dev"
-              ;;
-            *)
-              echo "::error::Ukjent app: $APP_NAME"
-              exit 1
-              ;;
-          esac
-
           # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
-          gsutil ls "$gs_path" > /dev/null
+          gsutil ls "$GS_PATH" > /dev/null
 
-          destinations=("${gs_path}/pr-${PR_NUMBER}")
-          if [ "$APP_NAME" = "tiltaksarrangor-flate" ]; then
-            destinations+=("${gs_path}/pr-deltaker-${PR_NUMBER}")
-          fi
+          destinations=()
+          for prefix in $CLEANUP_PREFIXES; do
+            destinations+=("${GS_PATH}/${prefix}${PR_NUMBER}")
+          done
 
           existing=()
           for destination in "${destinations[@]}"; do
