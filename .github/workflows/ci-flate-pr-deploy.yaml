@@ -32,6 +32,7 @@ on:
       - pnpm-workspace.yaml
       - turbo.json
       - tsconfig.json
+      - .github/config/preview-apps.json
       - .github/actions/setup-frontend/**
       - .github/workflows/ci-flate-pr-deploy.yaml
       - .github/workflows/reusable-detect-pr-frontend-changes.yaml
@@ -60,7 +61,7 @@ jobs:
       (github.event_name == 'workflow_dispatch' ||
       (github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'))
-    name: Deploy Pull Request Branch - ${{ matrix.app }}
+    name: Deploy Pull Request Branch - ${{ matrix.app.name }}
     needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -70,9 +71,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJSON(needs.changes.outputs.apps) }}
+        app: ${{ fromJSON(needs.changes.outputs.app-configs) }}
     concurrency:
-      group: ${{ matrix.app }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
+      group: ${{ matrix.app.name }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
       cancel-in-progress: true
     steps:
       - name: Checkout
@@ -83,8 +84,8 @@ jobs:
           node_auth_token: ${{ secrets.READER_TOKEN }}
       - name: Build Pull Request Application
         env:
-          PACKAGE: ${{ matrix.app }}
-          BASE_PREFIX: ${{ matrix.app == 'innbyggers-flate' && '/arbeidsmarkedstiltak/pr-' || matrix.app == 'tiltaksarrangor-flate' && '/deltakeroversikt/pr-' || '/pr-' }}
+          PACKAGE: ${{ matrix.app.name }}
+          BASE_PREFIX: ${{ matrix.app.buildBasePrefix }}
           PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
         run: pnpm build:pull-request --filter="$PACKAGE" -- --base="${BASE_PREFIX}${PR_NUMBER}/"
       - name: Authenticate to Google Cloud
@@ -96,7 +97,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
       - name: Upload files to GCS
         env:
-          BUILD_DIRECTORY: apps/${{ matrix.app }}/build
-          GS_PATH: ${{ matrix.app == 'innbyggers-flate' && 'gs://amt-deltaker-innbyggers-flate-dev' || matrix.app == 'nav-veileders-flate' && 'gs://amt-deltaker-flate-dev-v2' || matrix.app == 'tiltakskoordinator-flate' && 'gs://amt-tiltakskoordinator-flate-dev-pr' || 'gs://amt-tiltaksarrangor-flate-dev' }}
+          BUILD_DIRECTORY: apps/${{ matrix.app.name }}/build
+          GS_PATH: ${{ matrix.app.previewBucket }}
           PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
         run: gsutil -m rsync -r "$BUILD_DIRECTORY" "${GS_PATH}/pr-${PR_NUMBER}"
