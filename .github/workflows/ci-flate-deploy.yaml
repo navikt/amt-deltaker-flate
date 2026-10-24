@@ -48,6 +48,11 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.event_name == 'push' && 'frontend-deploy-push' || format('frontend-deploy-manual-{0}-{1}', inputs.app, inputs.target_environment) }}
+  cancel-in-progress: false
+  queue: max
+
 jobs:
   selection:
     name: Velg frontend-apper for deploy
