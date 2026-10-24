@@ -22,7 +22,7 @@ Monorepo for frontend-appene som følger opp deltakere i arbeidsmarkedstiltak.
 | [`innbyggers-flate`](apps/innbyggers-flate/README.md)                 | Viser deltakelsen til innbyggeren og lenkes til fra aktivitetsplanen. |
 | [`nav-veileders-flate`](apps/nav-veileders-flate/README.md)           | Web component for oppfølging i Modia.                                 |
 | [`tiltakskoordinator-flate`](apps/tiltakskoordinator-flate/README.md) | Web component for deltakerlister i tiltaksadministrasjonen.           |
-| [`tiltaksarrangor-flate`](apps/tiltaksarrangor-flate/README.md)       | Flate for tiltaksarrangørens oppfølging av deltakere.                 |
+| `tiltaksarrangor-flate`                                               | Flate for tiltaksarrangørens oppfølging av deltakere.                 |
 
 ## Kom i gang
 
