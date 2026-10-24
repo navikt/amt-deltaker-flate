@@ -1,6 +1,26 @@
-name: Deploy changed frontend apps
+name: Deploy frontend apps
 
 on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Velg app
+        required: true
+        type: choice
+        options:
+          - nav-veileders-flate
+          - innbyggers-flate
+          - tiltakskoordinator-flate
+          - tiltaksarrangor-flate
+          - Alle apper
+      target_environment:
+        description: Velg miljø
+        required: true
+        type: choice
+        options:
+          - dev
+          - demo
+          - prod
   push:
     branches:
       - main
@@ -31,22 +51,38 @@ permissions:
   contents: read
 
 jobs:
-  changes:
-    name: Find frontend apps to deploy
+  selection:
+    name: Select frontend apps to deploy
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       innbyggers: ${{ steps.filter.outputs['innbyggers-flate'] }}
-      nav-veileders: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+      nav_veileders: ${{ steps.filter.outputs['nav-veileders-flate'] }}
       tiltakskoordinator: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
       tiltaksarrangor: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
       shared: ${{ steps.filter.outputs.shared }}
       cdn: ${{ steps.filter.outputs.cdn }}
       gcs: ${{ steps.filter.outputs.gcs }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Reject invalid app and environment selection
+        if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'demo' && (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')
+        run: |
+          echo "::error::Tiltaksarrangørflaten har ikke demo-deploy. Velg en annen app eller et annet miljø."
+          exit 1
 
-      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+      - name: Require main for demo and production deploys
+        if: github.event_name == 'workflow_dispatch' && inputs.target_environment != 'dev' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Demo- og produksjonsdeploy må startes fra main."
+          exit 1
+
+      - name: Checkout
+        if: github.event_name == 'push'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Find changed frontend apps
+        if: github.event_name == 'push'
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
         id: filter
         with:
           filters: |
@@ -87,55 +123,76 @@ jobs:
 
   deploy-innbyggers-flate:
     name: Deploy innbyggers-flate
-    if: needs.changes.outputs.innbyggers == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true' || needs.changes.outputs.gcs == 'true'
-    needs: changes
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'innbyggers-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.innbyggers == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true' ||
+      needs.selection.outputs.gcs == 'true'
+    needs: selection
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/innbyggers-flate-deploy.yaml
     with:
-      target_environment: dev
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-nav-veileders-flate:
     name: Deploy nav-veileders-flate
-    if: needs.changes.outputs.nav-veileders == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true'
-    needs: changes
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'nav-veileders-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.nav_veileders == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true'
+    needs: selection
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/nav-veileders-flate-deploy.yaml
     with:
-      target_environment: dev
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-tiltakskoordinator-flate:
     name: Deploy tiltakskoordinator-flate
-    if: needs.changes.outputs.tiltakskoordinator == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true'
-    needs: changes
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'tiltakskoordinator-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.tiltakskoordinator == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.cdn == 'true'
+    needs: selection
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/tiltakskoordinator-flate-deploy.yaml
     with:
-      target_environment: dev
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-tiltaksarrangor-flate:
     name: Deploy tiltaksarrangor-flate
-    if: needs.changes.outputs.tiltaksarrangor == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.gcs == 'true'
-    needs: changes
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')) ||
+      needs.selection.outputs.tiltaksarrangor == 'true' ||
+      needs.selection.outputs.shared == 'true' ||
+      needs.selection.outputs.gcs == 'true'
+    needs: selection
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/tiltaksarrangor-flate-deploy.yaml
     with:
-      target_environment: dev
+      target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
