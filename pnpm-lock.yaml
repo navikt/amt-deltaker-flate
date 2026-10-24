@@ -590,9 +590,6 @@ importers:
       msw:
         specifier: 'catalog:'
         version: 3.0.3(@types/node@26.6.5)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)(sass@1.105.2)(yaml@2.9.1))
-      prettier:
-        specifier: 'catalog:'
-        version: 3.9.10
       sass:
         specifier: ^1.105.2
         version: 1.105.2

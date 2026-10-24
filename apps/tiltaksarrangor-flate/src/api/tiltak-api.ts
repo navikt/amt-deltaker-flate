@@ -24,7 +24,6 @@ import { axiosInstance, logAndThrowError, parse } from './utils'
 export const fetchMineRoller = (): AxiosPromise<Rolle[]> => {
   const url = appUrl('/amt-tiltaksarrangor-bff/tiltaksarrangor/meg/roller')
   return axiosInstance.get(url).catch((err) => {
-
     return logAndThrowError(err, url)
   })
 }
@@ -75,7 +74,6 @@ export const fetchDeltakeroversikt = (): AxiosPromise<MineDeltakerlister> => {
     .get(url)
     .then(parse(mineDeltakerlisterSchema))
     .catch((err) => {
-      // Ikke logg 403-feil til sentry
       if ((err as AxiosError).response?.status === 403) {
         throw err
       }
