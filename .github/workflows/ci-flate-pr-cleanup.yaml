@@ -67,27 +67,15 @@ jobs:
       - name: Delete files on GCS
         env:
           APP_NAME: ${{ matrix.app.name }}
-          CLEANUP_PREFIXES: ${{ join(matrix.app.cleanupPrefixes, ' ') }}
           GS_PATH: ${{ matrix.app.previewBucket }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
           # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
           gsutil ls "$GS_PATH" > /dev/null
 
-          destinations=()
-          for prefix in $CLEANUP_PREFIXES; do
-            destinations+=("${GS_PATH}/${prefix}${PR_NUMBER}")
-          done
-
-          existing=()
-          for destination in "${destinations[@]}"; do
-            if gsutil ls "${destination}/**" > /dev/null 2>&1; then
-              existing+=("$destination")
-            fi
-          done
-
-          if [ "${#existing[@]}" -gt 0 ]; then
-            gsutil -m rm -r "${existing[@]}"
+          destination="${GS_PATH}/pr-${PR_NUMBER}"
+          if gsutil ls "${destination}/**" > /dev/null 2>&1; then
+            gsutil -m rm -r "$destination"
           else
             echo "Ingen preview-filer å slette for ${APP_NAME} PR ${PR_NUMBER}"
           fi

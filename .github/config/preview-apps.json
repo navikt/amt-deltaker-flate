@@ -2,8 +2,7 @@
   "innbyggers-flate": {
     "buildBasePrefix": "/arbeidsmarkedstiltak/pr-",
     "previewBucket": "gs://amt-deltaker-innbyggers-flate-dev",
-    "previewUrls": ["https://amt.intern.dev.nav.no/arbeidsmarkedstiltak"],
-    "cleanupPrefixes": ["pr-"]
+    "previewUrls": ["https://amt.intern.dev.nav.no/arbeidsmarkedstiltak"]
   },
   "nav-veileders-flate": {
     "buildBasePrefix": "/pr-",
@@ -11,8 +10,7 @@
     "previewUrls": [
       "https://amt-deltaker-flate.intern.dev.nav.no",
       "https://amt-deltaker-flate.ansatt.dev.nav.no"
-    ],
-    "cleanupPrefixes": ["pr-"]
+    ]
   },
   "tiltakskoordinator-flate": {
     "buildBasePrefix": "/pr-",
@@ -20,8 +18,7 @@
     "previewUrls": [
       "https://amt-tiltakskoordinator-flate.intern.dev.nav.no",
       "https://amt-tiltakskoordinator-flate.ansatt.dev.nav.no"
-    ],
-    "cleanupPrefixes": ["pr-"]
+    ]
   },
   "tiltaksarrangor-flate": {
     "buildBasePrefix": "/deltakeroversikt/pr-",
@@ -29,7 +26,6 @@
     "previewUrls": [
       "https://amt.intern.dev.nav.no/deltakeroversikt",
       "https://amt.ansatt.dev.nav.no/deltakeroversikt"
-    ],
-    "cleanupPrefixes": ["pr-", "pr-deltaker-"]
+    ]
   }
 }
