@@ -19,7 +19,6 @@ import { ErrorPage } from './component/page/error/ErrorPage'
 import StoreProvider from './store/store-provider'
 import env from './utils/environment'
 import { setupNavDekorator } from './utils/nav-dekorator'
-import { initSentry } from './utils/sentry-utils'
 import { enableMocking } from './mock/setupMocks'
 
 dayjs.locale(nb)
@@ -31,10 +30,6 @@ dayjs.extend(customParseFormat)
 dayjs.tz.setDefault('Europe/Oslo')
 
 await setupNavDekorator()
-
-if (env.isPreprod || env.isProd) {
-  initSentry()
-}
 
 const renderAsReactRoot = () => {
   const container = document.getElementById('root')

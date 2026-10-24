@@ -1,9 +1,8 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import dayjs from 'dayjs'
 import { z, ZodType } from 'zod'
 
 import { APP_NAME } from '../utils/constants'
-import { captureError } from '../utils/sentry-utils'
 
 export const axiosInstance = axios.create({
   withCredentials: true,
@@ -27,11 +26,6 @@ export function parse<T>(
 
 export function logAndThrowError<E = Error>(err: E, url: string): E {
   console.error(`Request to ${url} failed: ${JSON.stringify(err)}`)
-
-  // Ikke logg 401 feil til sentry
-  if ((err as AxiosError).response?.status !== 401) {
-    captureError(err)
-  }
 
   throw err
 }
