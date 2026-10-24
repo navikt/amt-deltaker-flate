@@ -18,6 +18,7 @@ on:
       - turbo.json
       - tsconfig.json
       - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-pr-cleanup.yaml
       - .github/workflows/ci-flate-pr-deploy.yaml
       - .github/workflows/reusable-detect-pr-frontend-changes.yaml
     types:
@@ -34,7 +35,11 @@ jobs:
 
   cleanup-pr-flate:
     needs: changes
-    name: Rydd applikasjon for PR
+    if: >-
+      needs.changes.outputs.has-changes == 'true' &&
+      github.event.pull_request.head.repo.fork != true &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    name: Rydd ${{ matrix.app }} for PR
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -43,58 +48,51 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app:
-          - name: innbyggers-flate
-            gs-path: 'gs://amt-deltaker-innbyggers-flate-dev'
-          - name: nav-veileders-flate
-            gs-path: 'gs://amt-deltaker-flate-dev-v2'
-          - name: tiltakskoordinator-flate
-            gs-path: 'gs://amt-tiltakskoordinator-flate-dev-pr'
-          - name: tiltaksarrangor-flate
-            gs-path: 'gs://amt-tiltaksarrangor-flate-dev'
+        app: ${{ fromJSON(needs.changes.outputs.apps) }}
     concurrency:
-      group: ${{ matrix.app.name }}-preview-${{ github.event.number }}
+      group: ${{ matrix.app }}-preview-${{ github.event.number }}
       cancel-in-progress: true
 
     steps:
-      # Rydd bare for appendringer i PR-er fra repoet, ikke for fork-PR-er eller Dependabot.
-      - name: Set SHOULD_RUN environment variable
-        env:
-          CHANGES_OUTPUT: ${{ needs.changes.outputs[matrix.app.name] }}
-          IS_FORK: ${{ github.event.pull_request.head.repo.fork }}
-          PR_USER: ${{ github.event.pull_request.user.login }}
-        run: |
-          echo "SHOULD_RUN=false" >> $GITHUB_ENV
-          if [ "$CHANGES_OUTPUT" = "true" ] && \
-             [ "$IS_FORK" != "true" ] && \
-             [ "$PR_USER" != "dependabot[bot]" ]; then
-            echo "SHOULD_RUN=true" >> $GITHUB_ENV
-          fi
-
       - name: Authenticate to Google Cloud
-        if: env.SHOULD_RUN == 'true'
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
 
       - name: Set up Cloud SDK
-        if: env.SHOULD_RUN == 'true'
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
 
       - name: Delete files on GCS
-        if: env.SHOULD_RUN == 'true'
         env:
-          APP_NAME: ${{ matrix.app.name }}
-          GS_PATH: ${{ matrix.app.gs-path }}
+          APP_NAME: ${{ matrix.app }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
-          gsutil ls "$GS_PATH" > /dev/null
+          case "$APP_NAME" in
+            innbyggers-flate)
+              gs_path="gs://amt-deltaker-innbyggers-flate-dev"
+              ;;
+            nav-veileders-flate)
+              gs_path="gs://amt-deltaker-flate-dev-v2"
+              ;;
+            tiltakskoordinator-flate)
+              gs_path="gs://amt-tiltakskoordinator-flate-dev-pr"
+              ;;
+            tiltaksarrangor-flate)
+              gs_path="gs://amt-tiltaksarrangor-flate-dev"
+              ;;
+            *)
+              echo "::error::Ukjent app: $APP_NAME"
+              exit 1
+              ;;
+          esac
 
-          destinations=("${GS_PATH}/pr-${PR_NUMBER}")
+          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
+          gsutil ls "$gs_path" > /dev/null
+
+          destinations=("${gs_path}/pr-${PR_NUMBER}")
           if [ "$APP_NAME" = "tiltaksarrangor-flate" ]; then
-            destinations+=("${GS_PATH}/pr-deltaker-${PR_NUMBER}")
+            destinations+=("${gs_path}/pr-deltaker-${PR_NUMBER}")
           fi
 
           existing=()
