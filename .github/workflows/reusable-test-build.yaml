@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - id: get-version
-        run: echo "version=$(yq -r '.catalog.playwright' pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(yq -r '.catalog."@playwright/test"' pnpm-workspace.yaml)" >> "$GITHUB_OUTPUT"
 
   test-and-build:
     name: Test and build ${{ inputs.package }}
@@ -84,15 +84,6 @@ jobs:
             pnpm test:no-watch
           else
             pnpm test:no-watch --filter="$PACKAGE"
-          fi
-      - name: Install matching Chromium
-        env:
-          PACKAGE: ${{ inputs.package }}
-        run: |
-          if [ "$PACKAGE" = all ]; then
-            pnpm --recursive --filter './apps/*' exec playwright install chromium
-          else
-            pnpm --filter="$PACKAGE" exec playwright install chromium
           fi
       - name: Run playwright tests
         env:
