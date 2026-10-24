@@ -24,6 +24,7 @@ on:
       - .github/actions/setup-frontend/**
       - .github/workflows/nav-veileders-flate-deploy.yaml
       - .github/workflows/reusable-test-build.yaml
+      - .github/workflows/reusable-upload-cdn.yaml
     branches:
       - main
 permissions:
@@ -53,29 +54,17 @@ jobs:
       group: nav-veileders-flate-dev
       cancel-in-progress: false
     name: Deploy nav-veileders-flate to dev
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: assets-nav-veileders-flate-dev
-          path: build
-      - name: Upload files to CDN
-        id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
-        with:
-          team: amt
-          source: build
-          destination: amt-veileder-flate-dev
-          no_cache_paths: amt-veileder-flate-dev/build/asset-manifest.json
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-nav-veileders-flate-dev
+      destination: amt-veileder-flate-dev
+      no_cache_paths: amt-veileder-flate-dev/build/asset-manifest.json
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-demo-nav-veileders-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
@@ -83,26 +72,17 @@ jobs:
       group: nav-veileders-flate-demo
       cancel-in-progress: false
     name: Deploy nav-veileders-flate DEMO
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: assets-nav-veileders-flate-demo
-          path: build
-      - uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
-        with:
-          team: amt
-          source: build
-          source_keep_parent_name: false
-          destination: amt-veileder-flate-demo
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-nav-veileders-flate-demo
+      destination: amt-veileder-flate-demo
+      source_keep_parent_name: false
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-prod-nav-veileders-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
@@ -110,26 +90,14 @@ jobs:
       group: nav-veileders-flate-prod
       cancel-in-progress: false
     name: Deploy nav-veileders-flate to PROD
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: assets-nav-veileders-flate-prod
-          path: build
-      - name: Upload files to CDN
-        id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
-        with:
-          team: amt
-          source: build
-          destination: amt-veileder-flate-prod
-          no_cache_paths: amt-veileder-flate-prod/build/asset-manifest.json
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-nav-veileders-flate-prod
+      destination: amt-veileder-flate-prod
+      no_cache_paths: amt-veileder-flate-prod/build/asset-manifest.json
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

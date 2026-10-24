@@ -22,8 +22,10 @@ on:
       - turbo.json
       - tsconfig.json
       - .github/actions/setup-frontend/**
+      - .github/actions/upload-gcs/**
       - .github/workflows/innbyggers-flate-deploy.yaml
       - .github/workflows/reusable-test-build.yaml
+      - .github/workflows/reusable-upload-cdn.yaml
     branches:
       - main
 permissions:
@@ -53,27 +55,23 @@ jobs:
       group: innbyggers-flate-dev
       cancel-in-progress: false
     name: Deploy innbyggers-flate to DEV
+    needs: test-and-lint
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: read
+      id-token: write
     steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Upload frontend assets to GCS
+        uses: ./.github/actions/upload-gcs
         with:
-          name: assets-innbyggers-flate-dev
-          path: build
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
-        with:
+          artifact_name: assets-innbyggers-flate-dev
+          bucket: gs://amt-deltaker-innbyggers-flate-dev
           workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
-      - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-dev
 
   deploy-demo-innbyggers-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
@@ -81,26 +79,17 @@ jobs:
       group: innbyggers-flate-demo
       cancel-in-progress: false
     name: Deploy innbyggers-flate DEMO
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: assets-innbyggers-flate-demo
-          path: build
-      - uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
-        with:
-          team: amt
-          source: build
-          source_keep_parent_name: false
-          destination: amt-innbygger-flate-demo
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/reusable-upload-cdn.yaml
+    with:
+      artifact_name: assets-innbyggers-flate-demo
+      destination: amt-innbygger-flate-demo
+      source_keep_parent_name: false
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-prod-innbyggers-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
@@ -108,24 +97,20 @@ jobs:
       group: innbyggers-flate-prod
       cancel-in-progress: false
     name: Deploy innbyggers-flate to PROD
+    needs: test-and-lint
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: test-and-lint
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: read
+      id-token: write
     steps:
-      - name: Download frontend assets
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Upload frontend assets to GCS
+        uses: ./.github/actions/upload-gcs
         with:
-          name: assets-innbyggers-flate-prod
-          path: build
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
-        with:
+          artifact_name: assets-innbyggers-flate-prod
+          bucket: gs://amt-deltaker-innbyggers-flate-prod
           workload_identity_provider: projects/337368476147/locations/global/workloadIdentityPools/github/providers/github-action
           service_account: amt-deltaker-flate-gcs@amt-prod-d4dd.iam.gserviceaccount.com
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
-      - name: Upload files to GCS
-        run: gsutil -m rsync -r build gs://amt-deltaker-innbyggers-flate-prod
