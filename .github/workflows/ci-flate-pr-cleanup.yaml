@@ -66,15 +66,33 @@ jobs:
       - name: Delete files on GCS
         env:
           APP_NAME: ${{ matrix.app }}
-          GS_PATH: ${{ matrix.app == 'innbyggers-flate' && 'gs://amt-deltaker-innbyggers-flate-dev' || matrix.app == 'nav-veileders-flate' && 'gs://amt-deltaker-flate-dev-v2' || matrix.app == 'tiltakskoordinator-flate' && 'gs://amt-tiltakskoordinator-flate-dev-pr' || 'gs://amt-tiltaksarrangor-flate-dev' }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
-          gsutil ls "$GS_PATH" > /dev/null
+          case "$APP_NAME" in
+            innbyggers-flate)
+              gs_path="gs://amt-deltaker-innbyggers-flate-dev"
+              ;;
+            nav-veileders-flate)
+              gs_path="gs://amt-deltaker-flate-dev-v2"
+              ;;
+            tiltakskoordinator-flate)
+              gs_path="gs://amt-tiltakskoordinator-flate-dev-pr"
+              ;;
+            tiltaksarrangor-flate)
+              gs_path="gs://amt-tiltaksarrangor-flate-dev"
+              ;;
+            *)
+              echo "::error::Ukjent app: $APP_NAME"
+              exit 1
+              ;;
+          esac
 
-          destinations=("${GS_PATH}/pr-${PR_NUMBER}")
+          # Kontroller bucket-tilgangen før manglende preview-prefikser håndteres.
+          gsutil ls "$gs_path" > /dev/null
+
+          destinations=("${gs_path}/pr-${PR_NUMBER}")
           if [ "$APP_NAME" = "tiltaksarrangor-flate" ]; then
-            destinations+=("${GS_PATH}/pr-deltaker-${PR_NUMBER}")
+            destinations+=("${gs_path}/pr-deltaker-${PR_NUMBER}")
           fi
 
           existing=()
