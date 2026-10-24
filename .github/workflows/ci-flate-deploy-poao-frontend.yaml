@@ -81,7 +81,7 @@ jobs:
     with:
       module_path: ${{ matrix.module_path }}
       prod_deploy_enabled: ${{ matrix.module_path != 'tiltakskoordinator-flate' }}
-      targets: ${{ matrix.module_path == 'nav-veileders-flate' && '["dev","demo","prod"]' || '["dev","prod"]' }}
+      targets: ${{ matrix.module_path == 'tiltaksarrangor-flate' && '["dev","prod"]' || '["dev","demo","prod"]' }}
     concurrency:
       group: poao-frontend-${{ matrix.module_path }}
       cancel-in-progress: false
