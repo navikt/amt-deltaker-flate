@@ -95,5 +95,5 @@ jobs:
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
     permissions:
-      contents: write
+      contents: read
       id-token: write
