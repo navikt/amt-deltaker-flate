@@ -1,0 +1,141 @@
+name: Deploy changed frontend apps
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/innbyggers-flate/**
+      - apps/nav-veileders-flate/**
+      - apps/tiltakskoordinator-flate/**
+      - apps/tiltaksarrangor-flate/**
+      - packages/**
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/ci-flate-deploy.yaml
+      - .github/workflows/innbyggers-flate-deploy.yaml
+      - .github/workflows/nav-veileders-flate-deploy.yaml
+      - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+      - .github/workflows/tiltaksarrangor-flate-deploy.yaml
+      - .github/workflows/reusable-test-build.yaml
+      - .github/workflows/reusable-upload-cdn.yaml
+      - .github/workflows/reusable-upload-gcs.yaml
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    name: Find frontend apps to deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      innbyggers: ${{ steps.filter.outputs['innbyggers-flate'] }}
+      nav-veileders: ${{ steps.filter.outputs['nav-veileders-flate'] }}
+      tiltakskoordinator: ${{ steps.filter.outputs['tiltakskoordinator-flate'] }}
+      tiltaksarrangor: ${{ steps.filter.outputs['tiltaksarrangor-flate'] }}
+      shared: ${{ steps.filter.outputs.shared }}
+      cdn: ${{ steps.filter.outputs.cdn }}
+      gcs: ${{ steps.filter.outputs.gcs }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            innbyggers-flate:
+              - apps/innbyggers-flate/**
+              - .github/workflows/innbyggers-flate-deploy.yaml
+
+            nav-veileders-flate:
+              - apps/nav-veileders-flate/**
+              - .github/workflows/nav-veileders-flate-deploy.yaml
+
+            tiltakskoordinator-flate:
+              - apps/tiltakskoordinator-flate/**
+              - .github/workflows/tiltakskoordinator-flate-deploy.yaml
+
+            tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/**
+              - .github/workflows/tiltaksarrangor-flate-deploy.yaml
+
+            shared:
+              - packages/**
+              - shared-config/**
+              - .npmrc
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - turbo.json
+              - tsconfig.json
+              - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-deploy.yaml
+              - .github/workflows/reusable-test-build.yaml
+
+            cdn:
+              - .github/workflows/reusable-upload-cdn.yaml
+
+            gcs:
+              - .github/workflows/reusable-upload-gcs.yaml
+
+  deploy-innbyggers-flate:
+    name: Deploy innbyggers-flate
+    if: needs.changes.outputs.innbyggers == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true' || needs.changes.outputs.gcs == 'true'
+    needs: changes
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/innbyggers-flate-deploy.yaml
+    with:
+      target_environment: dev
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-nav-veileders-flate:
+    name: Deploy nav-veileders-flate
+    if: needs.changes.outputs.nav-veileders == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true'
+    needs: changes
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/nav-veileders-flate-deploy.yaml
+    with:
+      target_environment: dev
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-tiltakskoordinator-flate:
+    name: Deploy tiltakskoordinator-flate
+    if: needs.changes.outputs.tiltakskoordinator == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.cdn == 'true'
+    needs: changes
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/tiltakskoordinator-flate-deploy.yaml
+    with:
+      target_environment: dev
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+  deploy-tiltaksarrangor-flate:
+    name: Deploy tiltaksarrangor-flate
+    if: needs.changes.outputs.tiltaksarrangor == 'true' || needs.changes.outputs.shared == 'true' || needs.changes.outputs.gcs == 'true'
+    needs: changes
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/tiltaksarrangor-flate-deploy.yaml
+    with:
+      target_environment: dev
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
