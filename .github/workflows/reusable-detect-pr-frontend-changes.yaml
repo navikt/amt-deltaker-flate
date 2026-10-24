@@ -59,6 +59,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-cleanup.yaml
               - .github/workflows/ci-flate-pr-deploy.yaml
               - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
@@ -73,6 +74,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-cleanup.yaml
               - .github/workflows/ci-flate-pr-deploy.yaml
               - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
@@ -87,6 +89,7 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-cleanup.yaml
               - .github/workflows/ci-flate-pr-deploy.yaml
               - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
@@ -101,5 +104,6 @@ jobs:
               - turbo.json
               - tsconfig.json
               - .github/actions/setup-frontend/**
+              - .github/workflows/ci-flate-pr-cleanup.yaml
               - .github/workflows/ci-flate-pr-deploy.yaml
               - .github/workflows/reusable-detect-pr-frontend-changes.yaml
