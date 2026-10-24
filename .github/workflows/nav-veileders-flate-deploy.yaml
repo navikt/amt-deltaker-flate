@@ -10,23 +10,6 @@ on:
         required: true
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
         required: false
-  push:
-    paths:
-      - apps/nav-veileders-flate/**
-      - packages/**
-      - shared-config/**
-      - .npmrc
-      - package.json
-      - pnpm-lock.yaml
-      - pnpm-workspace.yaml
-      - turbo.json
-      - tsconfig.json
-      - .github/actions/setup-frontend/**
-      - .github/workflows/nav-veileders-flate-deploy.yaml
-      - .github/workflows/reusable-test-build.yaml
-      - .github/workflows/reusable-upload-cdn.yaml
-    branches:
-      - main
 permissions:
   contents: read
 env:
