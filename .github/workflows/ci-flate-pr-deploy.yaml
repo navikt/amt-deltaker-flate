@@ -53,17 +53,6 @@ jobs:
     uses: ./.github/workflows/reusable-detect-pr-frontend-changes.yaml
     with:
       app: ${{ inputs.app }}
-  playwright-version:
-    name: Get playwright version
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      # Fjern ^ eller ~ fra pnpm-versjonen før den brukes som Docker-image-tag.
-      - id: get-version
-        run: echo "version=$(yq -r '.catalog.playwright' pnpm-workspace.yaml | sed -e 's/^[\^\~]//')" >> "$GITHUB_OUTPUT"
 
   deploy-pull-request-branch:
     if: >-
@@ -72,9 +61,7 @@ jobs:
       (github.event.pull_request.head.repo.fork != true &&
       github.event.pull_request.user.login != 'dependabot[bot]'))
     name: Deploy Pull Request Branch - ${{ matrix.app }}
-    needs:
-      - changes
-      - playwright-version
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -87,8 +74,6 @@ jobs:
     concurrency:
       group: ${{ matrix.app }}-preview-${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.number }}
       cancel-in-progress: true
-    container:
-      image: mcr.microsoft.com/playwright:v${{ needs.playwright-version.outputs.version }}-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
