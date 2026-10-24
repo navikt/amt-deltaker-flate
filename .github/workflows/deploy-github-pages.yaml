@@ -4,6 +4,35 @@ on:
   push:
     branches:
       - main
+    paths:
+      - apps/*/.env*
+      - apps/*/index.html
+      - apps/*/package.json
+      - apps/*/postcss.config.js
+      - apps/*/public/**
+      - apps/*/src/**
+      - apps/*/tailwind.config.ts
+      - apps/*/tsconfig*.json
+      - apps/*/turbo.json
+      - apps/*/vite*.ts
+      - apps/*/vite*.mts
+      - packages/**
+      - scripts/*.template.html
+      - scripts/build-github-pages.ts
+      - scripts/package.json
+      - shared-config/**
+      - .npmrc
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - tsconfig.json
+      - .github/actions/setup-frontend/**
+      - .github/workflows/deploy-github-pages.yaml
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
 
 env:
   CI: true
@@ -14,6 +43,7 @@ jobs:
   build-and-deploy:
     name: Build and deploy to GitHub Pages
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
