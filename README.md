@@ -10,7 +10,7 @@ Monorepo for frontend-appene som følger opp deltakere i arbeidsmarkedstiltak.
 - [Struktur](#struktur)
 - [Teknologi](#teknologi)
 - [Testmiljøer og deploy](#testmiljøer-og-deploy)
-- [Feilsøking](#feilsøking)
+- [IntelliJ-oppsett](#intellij-oppsett)
 - [Bidra](#bidra)
 - [Team](#team)
 - [Lisens](#lisens)
@@ -120,9 +120,9 @@ I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
 
 Demo-appene bruker mockdata. `poao-frontend` serverer Nais-demoene fra Navs CDN. GitHub Pages-demoene bygges og publiseres separat for alle fire appene.
 
-## Feilsøking
+## IntelliJ-oppsett
 
-### GitHub Actions-schema i IntelliJ
+### GitHub Actions-schema
 
 Hvis IntelliJ viser feilaktige advarsler i `.github/workflows`, kan du overstyre det innebygde GitHub Actions-schemaet:
 
