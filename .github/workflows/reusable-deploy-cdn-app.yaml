@@ -6,6 +6,9 @@ on:
       package:
         required: true
         type: string
+      playwright_version:
+        required: true
+        type: string
       target_environment:
         required: true
         type: string
@@ -36,6 +39,7 @@ jobs:
     with:
       package: ${{ inputs.package }}
       app-version: ${{ github.sha }}
+      playwright-version: ${{ inputs.playwright_version }}
       build-targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
       app-directory: apps/${{ inputs.package }}
     secrets:

@@ -13,8 +13,14 @@ jobs:
     outputs:
       # Ved delt endring settes pakken til «all», så hele frontend-sjekken kjøres én gang.
       packages: ${{ contains(fromJSON(steps.filter.outputs.changes), 'all') && '["all"]' || steps.filter.outputs.changes }}
+      playwright_version: ${{ steps.playwright-version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Get Playwright version
+        id: playwright-version
+        run: |
+          version=$(yq -er '.catalog."@playwright/test"' pnpm-workspace.yaml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
       - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
         id: filter
         with:
@@ -51,6 +57,7 @@ jobs:
     with:
       package: ${{ matrix.package }}
       build: true
+      playwright-version: ${{ needs.changes.outputs.playwright_version }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
