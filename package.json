@@ -23,7 +23,7 @@
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "prettier": "catalog:",
-    "turbo": "^2.11.8"
+    "turbo": "^2.11.9"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
