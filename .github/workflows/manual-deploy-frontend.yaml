@@ -8,10 +8,11 @@ on:
         required: true
         type: choice
         options:
-          - innbyggers-flate
           - nav-veileders-flate
+          - innbyggers-flate
           - tiltakskoordinator-flate
           - tiltaksarrangor-flate
+          - Alle apper
       target_environment:
         description: Velg miljø
         required: true
@@ -24,35 +25,27 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: manual-frontend-deploy-${{ inputs.app }}
-  cancel-in-progress: false
-
 jobs:
   validate:
-    name: Validate deployment selection
+    name: Valider valg av app og miljø
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Reject unsupported app and environment
-        if: inputs.app == 'tiltaksarrangor-flate' && inputs.target_environment == 'demo'
+      - name: Avvis ugyldig valg av app og miljø
+        if: inputs.target_environment == 'demo' && (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')
         run: |
-          echo "::error::tiltaksarrangor-flate has no demo deployment"
+          echo "::error::Tiltaksarrangørflaten har ikke demo-deploy. Velg en annen app eller et annet miljø."
           exit 1
-      - name: Require main branch for demo and production
+
+      - name: Krev main for demo- og produksjonsdeploy
         if: inputs.target_environment != 'dev' && github.ref != 'refs/heads/main'
         run: |
-          echo "::error::Demo and production deployments must be started from main"
-          exit 1
-      - name: Require main branch for tiltaksarrangor-flate
-        if: inputs.app == 'tiltaksarrangor-flate' && github.ref != 'refs/heads/main'
-        run: |
-          echo "::error::tiltaksarrangor-flate deployments must be started from main"
+          echo "::error::Demo- og produksjonsdeploy må startes fra main."
           exit 1
 
   deploy-innbyggers-flate:
     name: Deploy innbyggers-flate
-    if: inputs.app == 'innbyggers-flate'
+    if: inputs.app == 'innbyggers-flate' || inputs.app == 'Alle apper'
     needs: validate
     uses: ./.github/workflows/innbyggers-flate-deploy.yaml
     with:
@@ -66,7 +59,7 @@ jobs:
 
   deploy-nav-veileders-flate:
     name: Deploy nav-veileders-flate
-    if: inputs.app == 'nav-veileders-flate'
+    if: inputs.app == 'nav-veileders-flate' || inputs.app == 'Alle apper'
     needs: validate
     uses: ./.github/workflows/nav-veileders-flate-deploy.yaml
     with:
@@ -80,7 +73,7 @@ jobs:
 
   deploy-tiltakskoordinator-flate:
     name: Deploy tiltakskoordinator-flate
-    if: inputs.app == 'tiltakskoordinator-flate'
+    if: inputs.app == 'tiltakskoordinator-flate' || inputs.app == 'Alle apper'
     needs: validate
     uses: ./.github/workflows/tiltakskoordinator-flate-deploy.yaml
     with:
@@ -94,7 +87,7 @@ jobs:
 
   deploy-tiltaksarrangor-flate:
     name: Deploy tiltaksarrangor-flate
-    if: inputs.app == 'tiltaksarrangor-flate'
+    if: inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper'
     needs: validate
     uses: ./.github/workflows/tiltaksarrangor-flate-deploy.yaml
     with:

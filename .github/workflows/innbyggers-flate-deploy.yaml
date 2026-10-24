@@ -30,7 +30,7 @@ permissions:
   contents: read
 env:
   CI: true
-  TZ: Europe/Amsterdam
+  TZ: Europe/Oslo
   VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
@@ -49,6 +49,9 @@ jobs:
 
   deploy-dev-innbyggers-flate:
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    concurrency:
+      group: innbyggers-flate-dev
+      cancel-in-progress: false
     name: Deploy innbyggers-flate to DEV
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -60,7 +63,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-dev
+          name: assets-innbyggers-flate-dev
           path: build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
@@ -74,6 +77,9 @@ jobs:
 
   deploy-demo-innbyggers-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+    concurrency:
+      group: innbyggers-flate-demo
+      cancel-in-progress: false
     name: Deploy innbyggers-flate DEMO
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -85,7 +91,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-demo
+          name: assets-innbyggers-flate-demo
           path: build
       - uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
@@ -98,6 +104,9 @@ jobs:
 
   deploy-prod-innbyggers-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    concurrency:
+      group: innbyggers-flate-prod
+      cancel-in-progress: false
     name: Deploy innbyggers-flate to PROD
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -109,7 +118,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-prod
+          name: assets-innbyggers-flate-prod
           path: build
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3

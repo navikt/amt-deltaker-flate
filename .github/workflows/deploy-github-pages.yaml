@@ -7,7 +7,7 @@ on:
 
 env:
   CI: true
-  TZ: Europe/Amsterdam
+  TZ: Europe/Oslo
   VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:

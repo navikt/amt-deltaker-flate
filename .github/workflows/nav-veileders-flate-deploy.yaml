@@ -30,7 +30,7 @@ permissions:
   contents: read
 env:
   CI: true
-  TZ: Europe/Amsterdam
+  TZ: Europe/Oslo
   VITE_APP_VERSION: ${{ github.sha }}
 
 jobs:
@@ -49,6 +49,9 @@ jobs:
 
   deploy-dev-nav-veileders-flate:
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    concurrency:
+      group: nav-veileders-flate-dev
+      cancel-in-progress: false
     name: Deploy nav-veileders-flate to dev
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -60,9 +63,10 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-dev
+          name: assets-nav-veileders-flate-dev
           path: build
       - name: Upload files to CDN
+        id: upload
         uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
           team: amt
@@ -75,6 +79,9 @@ jobs:
 
   deploy-demo-nav-veileders-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
+    concurrency:
+      group: nav-veileders-flate-demo
+      cancel-in-progress: false
     name: Deploy nav-veileders-flate DEMO
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -86,7 +93,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-demo
+          name: assets-nav-veileders-flate-demo
           path: build
       - uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
@@ -99,6 +106,9 @@ jobs:
 
   deploy-prod-nav-veileders-flate:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    concurrency:
+      group: nav-veileders-flate-prod
+      cancel-in-progress: false
     name: Deploy nav-veileders-flate to PROD
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -110,9 +120,10 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-prod
+          name: assets-nav-veileders-flate-prod
           path: build
       - name: Upload files to CDN
+        id: upload
         uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
           team: amt

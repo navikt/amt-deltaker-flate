@@ -28,10 +28,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: tiltaksarrangor-flate-deploy
-  cancel-in-progress: false
-
 env:
   CI: true
   TZ: Europe/Oslo
@@ -40,7 +36,6 @@ env:
 jobs:
   test-and-lint:
     name: Test and lint
-    if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
     uses: ./.github/workflows/reusable-test-build.yaml
@@ -54,6 +49,9 @@ jobs:
 
   deploy-dev:
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
+    concurrency:
+      group: tiltaksarrangor-flate-dev
+      cancel-in-progress: false
     needs: test-and-lint
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -64,7 +62,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-dev
+          name: assets-amt-tiltaksarrangor-flate-dev
           path: build
       - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
@@ -82,6 +80,9 @@ jobs:
   deploy-prod:
     needs: test-and-lint
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
+    concurrency:
+      group: tiltaksarrangor-flate-prod
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -91,7 +92,7 @@ jobs:
       - name: Download frontend assets
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: frontend-build-prod
+          name: assets-amt-tiltaksarrangor-flate-prod
           path: build
       - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
