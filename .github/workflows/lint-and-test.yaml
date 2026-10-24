@@ -21,7 +21,7 @@ jobs:
           filters: |
             innbyggers-flate: apps/innbyggers-flate/**
             nav-veileders-flate: apps/nav-veileders-flate/**
-            amt-tiltaksarrangor-flate: apps/tiltaksarrangor-flate/**
+            tiltaksarrangor-flate: apps/tiltaksarrangor-flate/**
             tiltakskoordinator-flate: apps/tiltakskoordinator-flate/**
             # Delte filer påvirker alle appene og utløser lint, tester og bygg for alle.
             all:
