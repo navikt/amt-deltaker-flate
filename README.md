@@ -96,7 +96,7 @@ Nye workspaces må legges til i `pnpm-workspace.yaml`.
 
 ## Testmiljøer og deploy
 
-GitHub Actions finner hvilke apper som er endret. Ved push til `main` testes, bygges og deployes de berørte appene. Workflowen kan også startes manuelt for én app eller alle apper til dev eller produksjon. Manuell demo-deploy støtter én app om gangen og er ikke tilgjengelig for `tiltaksarrangor-flate`.
+GitHub Actions finner hvilke apper som er endret. Ved push til `main` testes, bygges og deployes de berørte appene. Workflowen kan også startes manuelt for én app eller alle apper til dev eller produksjon. Manuell deploy til Nais-demo støtter én app om gangen og er ikke tilgjengelig for `tiltaksarrangor-flate`.
 
 ### Integrasjoner i dev
 
@@ -111,14 +111,14 @@ I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
 
 ### Lagring av frontend-filer
 
-| App                        | Dev                  | Demo              | Produksjon           |
-| -------------------------- | -------------------- | ----------------- | -------------------- |
-| `innbyggers-flate`         | Google Cloud Storage | Navs CDN          | Google Cloud Storage |
-| `nav-veileders-flate`      | Navs CDN             | Navs CDN          | Navs CDN             |
-| `tiltakskoordinator-flate` | Navs CDN             | Navs CDN          | Navs CDN             |
-| `tiltaksarrangor-flate`    | Google Cloud Storage | Ikke tilgjengelig | Google Cloud Storage |
+| App                        | Dev                  | Nais-demo         | GitHub Pages-demo                                                                  | Produksjon           |
+| -------------------------- | -------------------- | ----------------- | ---------------------------------------------------------------------------------- | -------------------- |
+| `innbyggers-flate`         | Google Cloud Storage | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/innbyggers-flate/)         | Google Cloud Storage |
+| `nav-veileders-flate`      | Navs CDN             | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/nav-veileders-flate/)      | Navs CDN             |
+| `tiltakskoordinator-flate` | Navs CDN             | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/tiltakskoordinator-flate/) | Navs CDN             |
+| `tiltaksarrangor-flate`    | Google Cloud Storage | Ikke tilgjengelig | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/tiltaksarrangor-flate/)    | Google Cloud Storage |
 
-Demo-appene bruker mockdata. `poao-frontend` serverer demo-byggene fra Navs CDN fordi repoet ikke har en egen webserver for disse miljøene.
+Demo-appene bruker mockdata. `poao-frontend` serverer Nais-demoene fra Navs CDN. GitHub Pages-demoene bygges og publiseres separat for alle fire appene.
 
 ## Feilsøking
 
