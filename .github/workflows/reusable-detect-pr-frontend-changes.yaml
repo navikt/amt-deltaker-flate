@@ -37,54 +37,17 @@ jobs:
           filters: |
             innbyggers-flate:
               - apps/innbyggers-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/config/preview-apps.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-cleanup.yaml
-              - .github/workflows/ci-flate-pr-deploy.yaml
-              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
             nav-veileders-flate:
               - apps/nav-veileders-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/config/preview-apps.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-cleanup.yaml
-              - .github/workflows/ci-flate-pr-deploy.yaml
-              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
             tiltakskoordinator-flate:
               - apps/tiltakskoordinator-flate/**
-              - packages/**
-              - shared-config/**
-              - .npmrc
-              - package.json
-              - pnpm-lock.yaml
-              - pnpm-workspace.yaml
-              - turbo.json
-              - tsconfig.json
-              - .github/config/preview-apps.json
-              - .github/actions/setup-frontend/**
-              - .github/workflows/ci-flate-pr-cleanup.yaml
-              - .github/workflows/ci-flate-pr-deploy.yaml
-              - .github/workflows/reusable-detect-pr-frontend-changes.yaml
 
             tiltaksarrangor-flate:
               - apps/tiltaksarrangor-flate/**
+
+            shared:
               - packages/**
               - shared-config/**
               - .npmrc
@@ -104,7 +67,11 @@ jobs:
         env:
           SELECTED_APPS: ${{ inputs.app != '' && format('["{0}"]', inputs.app) || steps.filter.outputs.changes }}
         run: |
-          app_configs=$(jq --compact-output --argjson selected "$SELECTED_APPS" '
+          selected_apps=$(jq --compact-output --argjson selected "$SELECTED_APPS" '
+            if $selected | index("shared") then keys_unsorted else $selected end
+          ' .github/config/preview-apps.json)
+
+          app_configs=$(jq --compact-output --argjson selected "$selected_apps" '
             [
               to_entries[]
               | . as $app
@@ -113,7 +80,7 @@ jobs:
             ]
           ' .github/config/preview-apps.json)
 
-          if [ "$(jq 'length' <<< "$app_configs")" -ne "$(jq 'length' <<< "$SELECTED_APPS")" ]; then
+          if [ "$(jq 'length' <<< "$app_configs")" -ne "$(jq 'length' <<< "$selected_apps")" ]; then
             echo "::error::Mangler preview-konfigurasjon for en eller flere apper"
             exit 1
           fi

@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 5
 
     outputs:
-      packages: ${{ steps.filter.outputs.changes }}
+      packages: ${{ contains(fromJSON(steps.filter.outputs.changes), 'shared') && '["innbyggers-flate","nav-veileders-flate","tiltakskoordinator-flate","tiltaksarrangor-flate"]' || steps.filter.outputs.changes }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,24 +40,20 @@ jobs:
         with:
           filters: |
             innbyggers-flate:
-              - .github/workflows/*-deploy-poao-frontend.yaml
-              - .nais/poao-frontend.yaml
               - apps/innbyggers-flate/nais/nais-*.yaml
 
             nav-veileders-flate:
-              - .github/workflows/*-deploy-poao-frontend.yaml
-              - .nais/poao-frontend.yaml
               - apps/nav-veileders-flate/nais/nais-*.yaml
 
             tiltakskoordinator-flate:
-              - .github/workflows/*-deploy-poao-frontend.yaml
-              - .nais/poao-frontend.yaml
               - apps/tiltakskoordinator-flate/nais/nais-*.yaml
 
             tiltaksarrangor-flate:
+              - apps/tiltaksarrangor-flate/nais/nais-*.yaml
+
+            shared:
               - .github/workflows/*-deploy-poao-frontend.yaml
               - .nais/poao-frontend.yaml
-              - apps/tiltaksarrangor-flate/nais/nais-*.yaml
 
   deploy:
     needs: changes
