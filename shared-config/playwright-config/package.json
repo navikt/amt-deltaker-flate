@@ -1,0 +1,12 @@
+{
+  "name": "@amt-deltaker-flate/playwright-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "playwright.config.ts"
+  ],
+  "devDependencies": {
+    "@playwright/test": "catalog:"
+  }
+}
