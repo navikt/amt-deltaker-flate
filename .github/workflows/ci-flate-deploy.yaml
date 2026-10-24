@@ -61,6 +61,7 @@ jobs:
       shared: ${{ steps.filter.outputs.shared }}
       cdn: ${{ steps.filter.outputs.cdn }}
       gcs: ${{ steps.filter.outputs.gcs }}
+      playwright_version: ${{ steps.playwright-version.outputs.version }}
     steps:
       - name: Reject invalid app and environment selection
         if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'demo' && (inputs.app == 'tiltaksarrangor-flate' || inputs.app == 'Alle apper')
@@ -75,8 +76,13 @@ jobs:
           exit 1
 
       - name: Checkout
-        if: github.event_name == 'push'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: |
+          version=$(yq -er '.catalog."@playwright/test"' pnpm-workspace.yaml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Find changed frontend apps
         if: github.event_name == 'push'
@@ -135,6 +141,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
     with:
       package: innbyggers-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_bucket: gs://amt-deltaker-innbyggers-flate-dev
       prod_bucket: gs://amt-deltaker-innbyggers-flate-prod
@@ -158,6 +165,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
     with:
       package: nav-veileders-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_destination: amt-veileder-flate-dev
       demo_destination: amt-veileder-flate-demo
@@ -181,6 +189,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-cdn-app.yaml
     with:
       package: tiltakskoordinator-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_destination: amt-tiltakskoordinator-flate-dev
       demo_destination: amt-tiltakskoordinator-flate-demo
@@ -204,6 +213,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-gcs-app.yaml
     with:
       package: tiltaksarrangor-flate
+      playwright_version: ${{ needs.selection.outputs.playwright_version }}
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_bucket: gs://amt-tiltaksarrangor-flate-dev
       prod_bucket: gs://amt-tiltaksarrangor-flate-prod
