@@ -195,7 +195,7 @@ catalogs:
       specifier: ^4.5.1
       version: 4.5.1
     '@playwright/test':
-      specifier: ^1.64.1
+      specifier: 1.64.1
       version: 1.64.1
     '@tailwindcss/postcss':
       specifier: 4.3.3
