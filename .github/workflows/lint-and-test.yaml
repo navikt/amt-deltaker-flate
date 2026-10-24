@@ -1,4 +1,4 @@
-name: Branch Lint, Test and Build
+name: Lint, test og bygg for branch
 on:
   push:
     branches-ignore:
@@ -13,11 +13,11 @@ jobs:
     outputs:
       # Ved delt endring settes pakken til «all», så hele frontend-sjekken kjøres én gang.
       packages: ${{ contains(fromJSON(steps.filter.outputs.changes), 'all') && '["all"]' || steps.filter.outputs.changes }}
-      playwright_version: ${{ steps.playwright-version.outputs.version }}
+      playwright_version: ${{ steps.playwright_version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Get Playwright version
-        id: playwright-version
+      - name: Hent Playwright-versjon
+        id: playwright_version
         run: |
           version=$(yq -er '.catalog."@playwright/test"' pnpm-workspace.yaml)
           echo "version=$version" >> "$GITHUB_OUTPUT"
@@ -57,19 +57,19 @@ jobs:
     with:
       package: ${{ matrix.package }}
       build: true
-      playwright-version: ${{ needs.changes.outputs.playwright_version }}
+      playwright_version: ${{ needs.changes.outputs.playwright_version }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
   lint-and-test:
     name: Lint, run tests & build
     # Kontroller resultatet også når byggjobben feiler eller blir hoppet over.
-    if: ${{ always() }}
+    if: always()
     needs: [changes, test-and-build]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check results
+      - name: Kontroller resultater
         env:
           CHANGES_RESULT: ${{ needs.changes.result }}
           PACKAGES: ${{ needs.changes.outputs.packages }}
@@ -77,13 +77,13 @@ jobs:
         run: |
           # Endringsdeteksjon må lykkes før resultatet kan vurderes.
           if [ "$CHANGES_RESULT" != success ]; then
-            echo "Change detection failed or was cancelled."
+            echo "Endringsdeteksjonen feilet eller ble avbrutt."
             exit 1
           fi
           # Det er forventet at byggjobben hoppes over når ingen relevante filer er endret.
           if [ "$PACKAGES" = '[]' ] && [ "$TEST_RESULT" = skipped ]; then
-            echo "No frontend changes."
+            echo "Ingen frontend-endringer."
           elif [ "$TEST_RESULT" != success ]; then
-            echo "Tests or builds failed, were cancelled, or were unexpectedly skipped."
+            echo "Tester eller bygg feilet, ble avbrutt eller ble uventet hoppet over."
             exit 1
           fi

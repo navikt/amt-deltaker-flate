@@ -1,4 +1,4 @@
-name: Deploy NAIS poao-frontend
+name: Deploy poao-frontend til Nais
 on:
   workflow_dispatch:
     inputs:

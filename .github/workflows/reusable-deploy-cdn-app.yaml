@@ -1,4 +1,4 @@
-name: Reusable deploy CDN app
+name: Gjenbrukbar deploy av CDN-app
 
 on:
   workflow_call:
@@ -32,21 +32,21 @@ permissions:
 
 jobs:
   test-and-build:
-    name: Test and build ${{ inputs.package }}
+    name: Test og bygg ${{ inputs.package }}
     permissions:
       contents: read
     uses: ./.github/workflows/reusable-test-build.yaml
     with:
       package: ${{ inputs.package }}
-      app-version: ${{ github.sha }}
-      playwright-version: ${{ inputs.playwright_version }}
-      build-targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
-      app-directory: apps/${{ inputs.package }}
+      app_version: ${{ github.sha }}
+      playwright_version: ${{ inputs.playwright_version }}
+      build_targets: ${{ github.event_name == 'push' && '["dev","demo","prod"]' || format('["{0}"]', inputs.target_environment) }}
+      app_directory: apps/${{ inputs.package }}
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
   deploy-dev:
-    name: Deploy ${{ inputs.package }} to DEV
+    name: Deploy ${{ inputs.package }} til dev
     if: github.event_name == 'push' || inputs.target_environment == 'dev'
     needs: test-and-build
     concurrency:
@@ -64,7 +64,7 @@ jobs:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-demo:
-    name: Deploy ${{ inputs.package }} to DEMO
+    name: Deploy ${{ inputs.package }} til demo
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
     needs: test-and-build
     concurrency:
@@ -82,7 +82,7 @@ jobs:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
   deploy-prod:
-    name: Deploy ${{ inputs.package }} to PROD
+    name: Deploy ${{ inputs.package }} til produksjon
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'prod')
     needs: test-and-build
     concurrency:

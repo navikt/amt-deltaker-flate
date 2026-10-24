@@ -1,4 +1,4 @@
-name: Reusable upload frontend assets to CDN
+name: Gjenbrukbar opplasting av frontend-filer til CDN
 
 on:
   workflow_call:
@@ -26,20 +26,20 @@ permissions:
 
 jobs:
   upload:
-    name: Upload ${{ inputs.artifact_name }} to CDN
+    name: Last opp ${{ inputs.artifact_name }} til CDN
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
       id-token: write
     steps:
-      - name: Download frontend assets
+      - name: Last ned frontend-filer
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: ${{ inputs.artifact_name }}
           path: build
 
-      - name: Upload files to CDN
+      - name: Last opp filer til CDN
         uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
         with:
           team: amt
