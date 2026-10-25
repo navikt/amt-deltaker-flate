@@ -39,6 +39,8 @@ jobs:
     timeout-minutes: 30
     container:
       image: mcr.microsoft.com/playwright:v${{ inputs.playwright_version }}-jammy
+    env:
+      APP_DIRECTORY: ${{ inputs.app_directory }}
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -85,11 +87,23 @@ jobs:
           else
             pnpm playwright --filter="$PACKAGE"
           fi
+      - name: Valider app-mappe for miljøbygg
+        if: >-
+          contains(fromJSON(inputs.build_targets), 'dev') ||
+          contains(fromJSON(inputs.build_targets), 'demo') ||
+          contains(fromJSON(inputs.build_targets), 'prod')
+        shell: bash
+        run: |
+          if [[ ! "$APP_DIRECTORY" =~ ^apps/[a-z0-9-]+$ ]]; then
+            echo "::error::Ugyldig app_directory for bygg"
+            exit 1
+          fi
       - name: Bygg dev
         if: contains(fromJSON(inputs.build_targets), 'dev')
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
+          rm -rf -- "$APP_DIRECTORY/build"
           pnpm build:dev --filter="$PACKAGE"
       - name: Last opp dev-filer
         if: contains(fromJSON(inputs.build_targets), 'dev')
@@ -104,6 +118,7 @@ jobs:
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
+          rm -rf -- "$APP_DIRECTORY/build"
           pnpm build:demo --filter="$PACKAGE"
       - name: Last opp demo-filer
         if: contains(fromJSON(inputs.build_targets), 'demo')
@@ -118,6 +133,7 @@ jobs:
         env:
           PACKAGE: ${{ inputs.package }}
         run: |
+          rm -rf -- "$APP_DIRECTORY/build"
           pnpm build --filter="$PACKAGE"
       - name: Last opp produksjonsfiler
         if: contains(fromJSON(inputs.build_targets), 'prod')
