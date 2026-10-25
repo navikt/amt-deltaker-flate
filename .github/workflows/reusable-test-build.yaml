@@ -92,6 +92,7 @@ jobs:
           contains(fromJSON(inputs.build_targets), 'dev') ||
           contains(fromJSON(inputs.build_targets), 'demo') ||
           contains(fromJSON(inputs.build_targets), 'prod')
+        shell: bash
         run: |
           if [[ ! "$APP_DIRECTORY" =~ ^apps/[a-z0-9-]+$ ]]; then
             echo "::error::Ugyldig app_directory for bygg"
