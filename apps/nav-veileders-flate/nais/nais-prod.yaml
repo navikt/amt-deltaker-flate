@@ -44,6 +44,7 @@ spec:
       rules:
         - application: amt-deltaker-bff
   env:
+    # Webkomponenten lastes fra CDN; GCS-bøtta brukes ikke til å levere frontend-filer.
     - name: JSON_CONFIG
       value: >
         {
