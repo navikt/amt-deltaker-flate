@@ -36,8 +36,6 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-        # Proxyen bruker /pr-:id/amt-deltaker-bff, ikke denne stien.
-        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-deltaker-flate-dev-v2 # PR-lenke (dev)

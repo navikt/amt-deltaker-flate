@@ -6,7 +6,7 @@ metadata:
   labels:
     team: amt
 spec:
-  image: {{ poaoFrontendImage }}
+  image: { { poaoFrontendImage } }
   port: 8080
   ingresses:
     - https://amt-tiltakskoordinator-flate.intern.dev.nav.no
@@ -36,8 +36,6 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-        # Proxyen bruker /pr-:id/amt-deltaker-bff, ikke denne stien.
-        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-tiltakskoordinator-flate-dev-pr
