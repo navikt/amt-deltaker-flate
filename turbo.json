@@ -11,18 +11,22 @@
       "inputs": ["$TURBO_DEFAULT$"]
     },
     "build": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:dev": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:pull-request": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:demo": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
