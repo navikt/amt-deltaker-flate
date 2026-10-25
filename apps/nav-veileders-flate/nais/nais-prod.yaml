@@ -39,10 +39,6 @@ spec:
         - /assets/*
         - /asset-manifest.json
         - /amt-deltaker-bff/**
-  gcp:
-    buckets:
-      - name: amt-veileder-flate-prod
-        cascadingDelete: false
   accessPolicy:
     outbound:
       rules:
