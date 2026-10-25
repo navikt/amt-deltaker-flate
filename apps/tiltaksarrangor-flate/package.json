@@ -9,7 +9,7 @@
     "build:dev": "vite build",
     "build:demo": "NODE_ENV=development vite build --mode demo",
     "build:pull-request": "vite build --mode pull-request",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint .",

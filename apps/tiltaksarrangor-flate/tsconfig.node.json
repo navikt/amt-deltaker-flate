@@ -1,10 +1,12 @@
 {
+  "extends": "@amt-deltaker-flate/typescript-config/base.json",
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
+    "noEmit": false,
     "types": ["node"]
   },
   "include": ["vite.config.ts", "playwright.config.ts"]
