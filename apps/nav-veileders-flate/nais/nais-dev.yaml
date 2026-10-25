@@ -36,6 +36,7 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
+        # Proxyen bruker /pr-:id/amt-deltaker-bff, ikke denne stien.
         - /amt-deltaker-bff/**
   gcp:
     buckets:
@@ -79,7 +80,3 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: elastic
-        - id: loki
