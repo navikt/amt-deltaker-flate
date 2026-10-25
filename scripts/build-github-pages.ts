@@ -121,9 +121,9 @@ const appCardTemplate = fs.readFileSync(appCardTemplatePath, 'utf-8')
 
 const appCards = APPS.map((app) =>
   appCardTemplate
-    .replaceAll('{{id}}', app.id)
-    .replaceAll('{{name}}', app.name)
-    .replaceAll('{{desc}}', app.desc)
+    .replace(/\{\{id}}/g, app.id)
+    .replace(/\{\{name}}/g, app.name)
+    .replace(/\{\{desc}}/g, app.desc)
 ).join('\n')
 
 const html = template.replace('<!-- APP_CARDS_PLACEHOLDER -->', appCards)
@@ -160,7 +160,7 @@ const fallback = html
     '<title>404</title>'
   )
   .replace('<h1>AMT Deltaker Flate</h1>', '<h1>404: Fant ikke siden</h1>')
-  .replaceAll('href="./', `href="${SITE_PREFIX}`)
+  .replace(/href="\.\//g, `href="${SITE_PREFIX}`)
   .replace(
     '</head>',
     `<script>${inlineScript(
