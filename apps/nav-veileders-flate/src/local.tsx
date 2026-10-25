@@ -33,7 +33,7 @@ const renderAsReactRoot = () => {
           initialPersonident={params.get('person_ident') || '29418716256'}
           initialEnhetId={params.get('enhet_id') || '0106'}
         >
-          <BrowserRouter>
+          <BrowserRouter basename={import.meta.env.BASE_URL}>
             <QueryClientProvider client={queryClient}>
               <AppRoutes />
             </QueryClientProvider>
