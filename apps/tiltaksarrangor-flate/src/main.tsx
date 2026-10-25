@@ -41,6 +41,7 @@ if (import.meta.env.VITE_FARO_URL) {
     url: import.meta.env.VITE_FARO_URL,
     app: {
       name: 'amt-tiltaksarrangor-flate',
+      namespace: 'amt',
       version: import.meta.env.VITE_APP_VERSION || 'local'
     },
     isolate: true,
