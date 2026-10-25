@@ -82,6 +82,7 @@ jobs:
             tiltaksarrangor-flate:
               - apps/tiltaksarrangor-flate/**
 
+            # Workflow changes are shared and select all configured apps.
             shared:
               - packages/**
               - shared-config/**
