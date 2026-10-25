@@ -38,10 +38,12 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
+        # Ingen BFF-proxy er konfigurert i prod; dette unntaket ser ubrukt ut.
         - /amt-deltaker-bff/**
   accessPolicy:
     outbound:
       rules:
+        # Outbound-regelen trengs hvis poao-frontend proxyer til BFF-en, men finner ingen slik proxy i prod-konfigurasjonen.
         - application: amt-deltaker-bff
   env:
     # Webkomponenten lastes fra CDN; GCS-bøtta brukes ikke til å levere frontend-filer.
@@ -66,7 +68,3 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: elastic
-        - id: loki
