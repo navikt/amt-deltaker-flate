@@ -44,6 +44,8 @@ spec:
         - application: amt-tiltaksarrangor-bff
   env:
     - name: JSON_CONFIG
+      # CSP-en i JSON-konfigurasjonen tillater inline-skript og eval()-bruk.
+      # Behold dem bare hvis appen eller en tredjepart trenger dem.
       value: >
         {
           "contextPath": "/deltakeroversikt",
