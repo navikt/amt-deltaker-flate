@@ -1,5 +1,4 @@
 import { ConfirmationPanel } from '@navikt/ds-react'
-import React from 'react'
 
 import styles from './EndreOppstartModal.module.scss'
 

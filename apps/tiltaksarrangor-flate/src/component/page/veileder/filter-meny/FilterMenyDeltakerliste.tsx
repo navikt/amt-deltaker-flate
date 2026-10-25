@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { VeiledersDeltaker } from '../../../../api/data/deltaker'
 import { FiltermenyDataEntry } from '../../../felles/table-filter/filtermeny-data-entry'
 import {

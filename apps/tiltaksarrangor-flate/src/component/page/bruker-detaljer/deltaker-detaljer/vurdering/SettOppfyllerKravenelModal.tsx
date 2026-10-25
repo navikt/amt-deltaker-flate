@@ -1,4 +1,3 @@
-import React from 'react'
 import { BodyShort, Button, Modal } from '@navikt/ds-react'
 import styles from './SettVurderingModal.module.scss'
 import { postDeltakerVurderingOppfyllerKravene } from '../../../../../api/tiltak-api'

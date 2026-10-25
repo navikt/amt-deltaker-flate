@@ -1,5 +1,4 @@
 import { BodyLong, Button } from '@navikt/ds-react'
-import React from 'react'
 import { BaseModal } from '../../../../felles/base-modal/BaseModal'
 
 import styles from './FjernDeltakerModal.module.scss'

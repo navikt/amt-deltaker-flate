@@ -1,6 +1,6 @@
 import styles from './DeltakerlisterPaEnhet.module.scss'
 import { Heading } from '@navikt/ds-react'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 interface DeltakerlisterForArrangorProps {
   navn: string
