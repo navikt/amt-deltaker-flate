@@ -1,6 +1,6 @@
 import { Modal } from '@navikt/ds-react'
 import classNames from 'classnames'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import styles from './BaseModal.module.scss'
 import { EndringTypeIkon } from '../../page/bruker-detaljer/deltaker-detaljer/EndringTypeIkon'

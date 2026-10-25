@@ -1,6 +1,6 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@navikt/aksel-icons'
 import { BodyLong, Label } from '@navikt/ds-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { EMDASH } from '../../../../utils/constants'
 import { Nullable } from '../../../../utils/types/or-nothing'

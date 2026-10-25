@@ -1,7 +1,7 @@
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import globalStyles from '../../../globals.module.scss'
 import styles from './AdministrerDeltakerlisterPage.module.scss'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   isNotStartedOrPending,
   isRejected,

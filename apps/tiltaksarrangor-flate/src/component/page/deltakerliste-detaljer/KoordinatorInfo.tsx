@@ -1,6 +1,5 @@
 import { PersonIcon } from '@navikt/aksel-icons'
 import { Heading } from '@navikt/ds-react'
-import React from 'react'
 
 import { Koordinator } from '../../../api/data/tiltak'
 import globalStyles from '../../../globals.module.scss'

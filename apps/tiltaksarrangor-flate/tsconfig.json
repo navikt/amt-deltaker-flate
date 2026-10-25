@@ -8,8 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "ignoreDeprecations": "6.0"
   },
   "include": ["src", "tests"],

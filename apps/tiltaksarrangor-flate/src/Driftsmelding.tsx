@@ -1,5 +1,4 @@
 import { Alert } from '@navikt/ds-react'
-import React from 'react'
 
 import styles from './Driftsmelding.module.scss'
 import { useFeatureToggle } from './hooks/useFeatureToggle'

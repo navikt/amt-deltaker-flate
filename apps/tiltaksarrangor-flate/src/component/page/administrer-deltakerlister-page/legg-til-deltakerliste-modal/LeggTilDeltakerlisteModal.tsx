@@ -1,7 +1,6 @@
 import { BaseModal } from '../../../felles/base-modal/BaseModal'
 import { BodyLong, Button } from '@navikt/ds-react'
 import styles from '../../bruker-detaljer/deltaker-detaljer/fjern-deltaker-modal/FjernDeltakerModal.module.scss'
-import React from 'react'
 
 interface LeggTilDeltakerlisteModalProps {
   open: boolean
@@ -13,7 +12,6 @@ interface LeggTilDeltakerlisteModalProps {
 export const LeggTilDeltakerlisteModal = (
   props: LeggTilDeltakerlisteModalProps
 ) => {
-
   return (
     <BaseModal
       tittel="Vil du legge til denne deltakerlisten?"
