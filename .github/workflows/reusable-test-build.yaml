@@ -76,7 +76,7 @@ jobs:
           if [ "$PACKAGE" = all ]; then
             pnpm test:no-watch
           else
-            pnpm test:no-watch --filter="$PACKAGE"
+            pnpm test:no-watch --filter="$PACKAGE..."
           fi
       - name: Kjør Playwright-tester
         env:

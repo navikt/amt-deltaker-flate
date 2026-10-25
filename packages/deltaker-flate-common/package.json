@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "test:no-watch": "vitest run"
   },
   "dependencies": {
     "@navikt/aksel-icons": "catalog:",
