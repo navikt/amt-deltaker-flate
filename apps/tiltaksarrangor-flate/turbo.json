@@ -1,0 +1,11 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "env": ["VITE_FARO_URL", "VITE_APP_VERSION"]
+    },
+    "build:dev": {
+      "env": ["VITE_FARO_URL", "VITE_APP_VERSION"]
+    }
+  }
+}

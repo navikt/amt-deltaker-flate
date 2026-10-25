@@ -21,6 +21,8 @@
     "playwright:codegen": "playwright codegen playwright.dev"
   },
   "dependencies": {
+    "@grafana/faro-react": "catalog:",
+    "@grafana/faro-web-sdk": "catalog:",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
@@ -28,6 +30,7 @@
     "axios": "^1.20.0",
     "classnames": "^2.5.1",
     "dayjs": "catalog:",
+    "deltaker-flate-common": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router-dom": "catalog:",

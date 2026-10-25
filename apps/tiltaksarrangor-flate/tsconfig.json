@@ -7,7 +7,6 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": false,
     "ignoreDeprecations": "6.0"
   },
   "include": ["src", "tests"],
