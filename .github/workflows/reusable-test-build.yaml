@@ -78,6 +78,9 @@ jobs:
           else
             pnpm test:no-watch --filter="$PACKAGE..."
           fi
+      - name: Kjør GitHub Pages-test
+        if: inputs.package == 'all'
+        run: pnpm test:github-pages
       - name: Kjør Playwright-tester
         env:
           PACKAGE: ${{ inputs.package }}

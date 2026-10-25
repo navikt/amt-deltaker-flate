@@ -10,6 +10,7 @@
     "start": "turbo start",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",
+    "test:github-pages": "node scripts/build-github-pages.test.ts .",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
     "format": "prettier -w ./**/*",

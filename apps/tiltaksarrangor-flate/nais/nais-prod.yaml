@@ -74,6 +74,8 @@ spec:
                   "*.psplugin.com",
                   "*.taskanalytics.com",
                   "nav.boost.ai",
+                  # Tillater inline-skript og eval()-bruk. Behold bare hvis appen eller
+                  # en tredjepart trenger det, siden begge svekker CSP-beskyttelsen.
                   "'unsafe-inline'",
                   "'unsafe-eval'",
                   "'self'",
