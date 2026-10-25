@@ -529,6 +529,12 @@ importers:
 
   apps/tiltaksarrangor-flate:
     dependencies:
+      '@grafana/faro-react':
+        specifier: 'catalog:'
+        version: 2.12.1(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
+      '@grafana/faro-web-sdk':
+        specifier: 'catalog:'
+        version: 2.12.1
       '@navikt/aksel-icons':
         specifier: 'catalog:'
         version: 8.19.2
@@ -550,6 +556,9 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.23
+      deltaker-flate-common:
+        specifier: workspace:*
+        version: link:../../packages/deltaker-flate-common
       react:
         specifier: 'catalog:'
         version: 19.3.1
