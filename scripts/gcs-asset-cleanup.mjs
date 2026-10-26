@@ -2,6 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
+import process from 'node:process'
 
 export function findAssetCandidates(
   listing,
@@ -26,7 +27,9 @@ export function findAssetCandidates(
     const name = url.slice(bucket.length + 1)
     if (
       !/^assets\/[a-zA-Z0-9._/-]+$/.test(name) ||
-      name.split('/').some((part) => part === '.' || part === '..' || part === '')
+      name
+        .split('/')
+        .some((part) => part === '.' || part === '..' || part === '')
     ) {
       throw new Error(`Unexpected asset name: ${name}`)
     }
@@ -54,20 +57,25 @@ export function deleteAssetCandidates(candidates, run = spawnSync) {
   })
   if (result.error) throw result.error
   if (result.status !== 0) {
-    throw new Error(`Failed to delete production assets (exit ${result.status})`)
+    throw new Error(`Failed to delete assets (exit ${result.status})`)
   }
 }
 
-export function isAllowedAssetBase(bucket) {
+export function isAllowedAssetBase(bucket, retentionDays) {
+  const cdnPath = (bucket ?? '').match(
+    /^gs:\/\/nais-cdn-nav-amt-[a-f0-9]{4}\/amt\/amt-[a-z0-9-]+-(dev|prod)\/build$/
+  )
+  if (retentionDays === 0) return cdnPath?.[1] === 'dev'
   return (
     /^gs:\/\/[a-z0-9][a-z0-9._-]*$/.test(bucket ?? '') ||
-    /^gs:\/\/nais-cdn-nav-amt-[a-f0-9]{4}\/amt\/amt-[a-z0-9-]+-prod\/build$/.test(
-      bucket ?? ''
-    )
+    cdnPath?.[1] === 'prod'
   )
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   const bucket = process.env.BUCKET
   const retentionDays = Number(process.env.RETENTION_DAYS)
   const deleteAssets = process.argv[2] === '--delete'
@@ -75,9 +83,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     throw new Error('Unexpected cleanup arguments')
   }
   if (
-    !isAllowedAssetBase(bucket) ||
+    !isAllowedAssetBase(bucket, retentionDays) ||
     !Number.isSafeInteger(retentionDays) ||
-    retentionDays <= 0
+    retentionDays < 0
   ) {
     throw new Error('Invalid bucket or retention period')
   }
@@ -92,13 +100,17 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     Date.now(),
     retentionDays
   )
+  const description =
+    retentionDays === 0
+      ? 'CDN dev assets absent from the current build'
+      : `production assets older than ${retentionDays} days`
   if (deleteAssets) {
     deleteAssetCandidates(candidates)
-    console.log(`Deleted ${candidates.length} production assets older than ${retentionDays} days`)
+    process.stdout.write(`Deleted ${candidates.length} ${description}\n`)
   } else {
-    for (const url of candidates) console.log(`Would remove ${url}`)
-    console.log(
-      `${candidates.length} production assets older than ${retentionDays} days are eligible for cleanup (dry run only)`
+    for (const url of candidates) process.stdout.write(`Would remove ${url}\n`)
+    process.stdout.write(
+      `${candidates.length} ${description} are eligible for cleanup (dry run only)\n`
     )
   }
 }

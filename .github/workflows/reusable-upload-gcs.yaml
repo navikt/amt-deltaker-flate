@@ -85,7 +85,7 @@ jobs:
         env:
           BUCKET: ${{ inputs.bucket }}
           RETENTION_DAYS: ${{ inputs.prod_retention_days }}
-        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-prod-asset-candidates.mjs
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs
 
       - name: Last opp filer til GCS
         env:
@@ -103,4 +103,4 @@ jobs:
         env:
           BUCKET: ${{ inputs.bucket }}
           RETENTION_DAYS: ${{ inputs.prod_retention_days }}
-        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-prod-asset-candidates.mjs --delete
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs --delete

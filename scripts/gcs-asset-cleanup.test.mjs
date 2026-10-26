@@ -6,7 +6,7 @@ import {
   deleteAssetCandidates,
   findAssetCandidates,
   isAllowedAssetBase
-} from './gcs-prod-asset-candidates.mjs'
+} from './gcs-asset-cleanup.mjs'
 
 const bucket = 'gs://app-prod'
 const now = Date.parse('2026-10-26T12:00:00Z')
@@ -27,9 +27,21 @@ try {
   const candidates = findAssetCandidates(listing, bucket, build, now, 7)
   assert.deepEqual(candidates, [`${bucket}/assets/old.js`])
   const cdnBase = 'gs://nais-cdn-nav-amt-abcd/amt/amt-veileder-flate-prod/build'
-  assert.equal(isAllowedAssetBase(cdnBase), true)
-  assert.equal(isAllowedAssetBase(`${cdnBase}/assets`), false)
-  assert.equal(isAllowedAssetBase('gs://nais-cdn-nav-amt-abcd/amt'), false)
+  const cdnDev = 'gs://nais-cdn-nav-amt-abcd/amt/amt-veileder-flate-dev/build'
+  assert.equal(isAllowedAssetBase(cdnBase, 7), true)
+  assert.equal(isAllowedAssetBase(cdnBase, 0), false)
+  assert.equal(isAllowedAssetBase(cdnDev, 0), true)
+  assert.equal(isAllowedAssetBase(cdnDev, 7), false)
+  assert.equal(isAllowedAssetBase(bucket, 0), false)
+  assert.equal(isAllowedAssetBase(`${cdnBase}/assets`, 7), false)
+  assert.equal(isAllowedAssetBase('gs://nais-cdn-nav-amt-abcd/amt', 7), false)
+  assert.equal(
+    isAllowedAssetBase(
+      'gs://nais-cdn-nav-amt-abcd/amt/amt-veileder-flate-demo/build',
+      0
+    ),
+    false
+  )
   assert.deepEqual(
     findAssetCandidates(
       `  1  2026-10-01T10:00:00Z  ${cdnBase}/assets/old.js`,
@@ -39,6 +51,19 @@ try {
       7
     ),
     [`${cdnBase}/assets/old.js`]
+  )
+  assert.deepEqual(
+    findAssetCandidates(
+      [
+        `  1  2026-10-25T10:00:00Z  ${cdnDev}/assets/recent.js`,
+        `  1  2026-10-25T10:00:00Z  ${cdnDev}/assets/current.js`
+      ].join('\n'),
+      cdnDev,
+      build,
+      now,
+      0
+    ),
+    [`${cdnDev}/assets/recent.js`]
   )
   assert.throws(
     () =>
@@ -77,7 +102,7 @@ try {
   })
   assert.throws(
     () => deleteAssetCandidates(candidates, () => ({ status: 1 })),
-    /Failed to delete production assets/
+    /Failed to delete assets/
   )
 } finally {
   rmSync(build, { recursive: true, force: true })
