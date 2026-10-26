@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { Tiltakskode } from 'deltaker-flate-common'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, type Resolver } from 'react-hook-form'
 import { vi } from 'vitest'
 import { AppContext } from '../../../../AppContext'
 import { DeltakerResponse } from '../../../../api/data/deltaker'
@@ -39,12 +39,15 @@ export const createDeltaker = (
 
 const FormWrapper = ({
   children,
-  defaultValues
+  defaultValues,
+  resolver
 }: {
   children: React.ReactNode
   defaultValues?: Partial<PameldingEnkeltplassFormValues>
+  resolver?: Resolver<PameldingEnkeltplassFormValues>
 }) => {
   const methods = useForm<PameldingEnkeltplassFormValues>({
+    resolver,
     defaultValues: {
       tiltakskode: Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
       innhold: '',
@@ -61,10 +64,12 @@ export const renderWithProviders = (
   children: React.ReactNode,
   {
     deltaker = createDeltaker(),
-    defaultValues
+    defaultValues,
+    resolver
   }: {
     deltaker?: DeltakerResponse
     defaultValues?: Partial<PameldingEnkeltplassFormValues>
+    resolver?: Resolver<PameldingEnkeltplassFormValues>
   } = {}
 ) => {
   return render(
@@ -92,7 +97,9 @@ export const renderWithProviders = (
               setError: vi.fn()
             }}
           >
-            <FormWrapper defaultValues={defaultValues}>{children}</FormWrapper>
+            <FormWrapper defaultValues={defaultValues} resolver={resolver}>
+              {children}
+            </FormWrapper>
           </PameldingFormContext.Provider>
         </DeltakerContext.Provider>
       </AppContext.Provider>

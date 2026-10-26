@@ -9,9 +9,11 @@ import { z } from 'zod'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
 import {
+  erSluttdatoInnenforEksisterendeMaksUnntak,
   getMaxVarighetDato,
-  VARGIHET_VALG_FEILMELDING
-} from '../utils/varighet.tsx'
+  getSenesteTillatteSluttdato,
+  getVarighetValgFeilmelding
+} from '../utils/varighet.ts'
 import {
   generateKodeverkDefaultValues,
   innholdFormSchema,
@@ -22,6 +24,10 @@ import {
 import { validatePrisinformasjon } from './PrisinformasjonFormValues.ts'
 
 export const DATE_FORMAT = 'DD.MM.YYYY'
+export const STARTDATO_FOR_TIDLIG_FEILMELDING =
+  'Startdato kan ikke være mer enn to måneder tilbake i tid.'
+export const SLUTTDATO_FOR_TIDLIG_FEILMELDING =
+  'Sluttdato kan ikke være mer enn to måneder tilbake i tid.'
 export const MIN_DAGER_PER_UKE = 1
 export const MAX_DAGER_PER_UKE = 7
 export const dagerPerUkeFeilmelding = `Antall dager i uka må være et helt tall fra ${MIN_DAGER_PER_UKE} til ${MAX_DAGER_PER_UKE}.`
@@ -37,79 +43,127 @@ const dateSchema = (feltnavn: string) =>
 export const createPameldingEnkeltplassFormSchema = (
   pamelding: DeltakerResponse,
   kodeverk?: KodeverkResponse
-) =>
-  z
-    .looseObject({
-      tiltakskode: z.enum(Tiltakskode),
-      innhold: innholdFormSchema,
-      arrangorUnderenhet: z
-        .string()
-        .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
-      arrangorNavn: z.string().optional(),
-      startdato: dateSchema('Startdato'),
-      sluttdato: dateSchema('Sluttdato'),
-      pristype: z.enum(PrisinformasjonType).nullable(),
-      prisinformasjon: prisinformasjonSchema.nullable(),
-      kategoriseringValg: kategoriseringValgSchema,
-      sertifiseringValg: sertifiseringValgSchema,
-      dagerPerUke: z
-        .number({
-          error: () => dagerPerUkeFeilmelding
-        })
-        .nullable()
-        .refine(
-          (value) =>
-            value === null ||
-            (Number.isInteger(value) &&
-              value >= MIN_DAGER_PER_UKE &&
-              value <= MAX_DAGER_PER_UKE),
-          { message: dagerPerUkeFeilmelding }
-        )
-    })
-    .refine((schema) => schema.pristype !== null, {
-      message: 'Du må velge et alternativ for Navs kostnader.',
-      path: ['pristype']
-    })
-    .refine(
-      (schema) => {
-        const start = getDayjsFromString(schema.startdato)
-        const slutt = getDayjsFromString(schema.sluttdato)
-        if (start && slutt) {
-          return slutt.isSameOrAfter(start, 'date')
-        }
-        return true
-      },
-      {
-        message: 'Sluttdato må være etter startdato.',
-        path: ['sluttdato']
-      }
-    )
-    .refine(
-      (schema) => {
-        const start = getDayjsFromString(schema.startdato)
-        const slutt = getDayjsFromString(schema.sluttdato)
-        if (start && slutt) {
-          const maxVarighetDato = getMaxVarighetDato(pamelding, start.toDate())
-          return slutt.isSameOrBefore(dayjs(maxVarighetDato), 'date')
-        }
-        return true
-      },
-      {
-        message: VARGIHET_VALG_FEILMELDING,
-        path: ['sluttdato']
-      }
-    )
-    // superRefine bruker ctx (context object) for å pushe "feil" inn i validatoren for flere objekter
-    .superRefine((schema, ctx) => {
-      if (!kodeverk) {
-        return
-      }
+) => {
+  const eksisterendeStartdato = pamelding.startdato
+    ? dayjs(pamelding.startdato).format(DATE_FORMAT)
+    : undefined
+  const eksisterendeSluttdato = pamelding.sluttdato
+    ? dayjs(pamelding.sluttdato).format(DATE_FORMAT)
+    : undefined
+  const tidligsteStartdato = dayjs().subtract(2, 'month')
 
-      validateKodeverkAlternativer(kodeverk.alternativer, schema, ctx)
-    })
-    .superRefine((schema, ctx) => {
-      validatePrisinformasjon(schema, ctx)
-    })
+  return (
+    z
+      .looseObject({
+        tiltakskode: z.enum(Tiltakskode),
+        innhold: innholdFormSchema,
+        arrangorUnderenhet: z
+          .string()
+          .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
+        arrangorNavn: z.string().optional(),
+        startdato: dateSchema('Startdato').refine((date) => {
+          if (date === eksisterendeStartdato) return true
+          return !dayjs(date, DATE_FORMAT, true).isBefore(
+            tidligsteStartdato,
+            'date'
+          )
+        }, STARTDATO_FOR_TIDLIG_FEILMELDING),
+        sluttdato: dateSchema('Sluttdato'),
+        pristype: z.enum(PrisinformasjonType).nullable(),
+        prisinformasjon: prisinformasjonSchema.nullable(),
+        kategoriseringValg: kategoriseringValgSchema,
+        sertifiseringValg: sertifiseringValgSchema,
+        dagerPerUke: z
+          .number({
+            error: () => dagerPerUkeFeilmelding
+          })
+          .nullable()
+          .refine(
+            (value) =>
+              value === null ||
+              (Number.isInteger(value) &&
+                value >= MIN_DAGER_PER_UKE &&
+                value <= MAX_DAGER_PER_UKE),
+            { message: dagerPerUkeFeilmelding }
+          )
+      })
+      .refine((schema) => schema.pristype !== null, {
+        message: 'Du må velge et alternativ for Navs kostnader.',
+        path: ['pristype']
+      })
+      .refine(
+        (schema) => {
+          const start = getDayjsFromString(schema.startdato)
+          const slutt = getDayjsFromString(schema.sluttdato)
+          if (start && slutt) {
+            return slutt.isSameOrAfter(start, 'date')
+          }
+          return true
+        },
+        {
+          message: 'Sluttdato må være etter startdato.',
+          path: ['sluttdato']
+        }
+      )
+      .refine(
+        (schema) => {
+          const start = getDayjsFromString(schema.startdato)
+          const slutt = getDayjsFromString(schema.sluttdato)
+          if (start || !slutt || schema.sluttdato === eksisterendeSluttdato) {
+            return true
+          }
+          return !slutt.isBefore(tidligsteStartdato, 'date')
+        },
+        {
+          message: SLUTTDATO_FOR_TIDLIG_FEILMELDING,
+          path: ['sluttdato']
+        }
+      )
+      .superRefine((schema, ctx) => {
+        const start = getDayjsFromString(schema.startdato)
+        const slutt = getDayjsFromString(schema.sluttdato)
+        if (!start || !slutt) return
+
+        const maxVarighetDato = getMaxVarighetDato(pamelding, start.toDate())
+        const eksisterendeSluttdatoErTillatt =
+          erSluttdatoInnenforEksisterendeMaksUnntak(
+            slutt,
+            pamelding.sluttdato,
+            maxVarighetDato
+          )
+
+        if (
+          !maxVarighetDato ||
+          slutt.isSameOrBefore(maxVarighetDato, 'date') ||
+          eksisterendeSluttdatoErTillatt
+        ) {
+          return
+        }
+
+        ctx.addIssue({
+          code: 'custom',
+          message: getVarighetValgFeilmelding(
+            getSenesteTillatteSluttdato(
+              pamelding.sluttdato,
+              maxVarighetDato.toDate()
+            )
+          ),
+          path: ['sluttdato']
+        })
+      })
+      // superRefine bruker ctx (context object) for å pushe "feil" inn i validatoren for flere objekter
+      .superRefine((schema, ctx) => {
+        if (!kodeverk) {
+          return
+        }
+
+        validateKodeverkAlternativer(kodeverk.alternativer, schema, ctx)
+      })
+      .superRefine((schema, ctx) => {
+        validatePrisinformasjon(schema, ctx)
+      })
+  )
+}
 
 export type PameldingEnkeltplassFormValues = z.infer<
   ReturnType<typeof createPameldingEnkeltplassFormSchema>

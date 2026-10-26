@@ -22,10 +22,10 @@ import {
   finnValgtVarighetForTiltakskode,
   getSisteGyldigeSluttDato,
   getSkalBekrefteVarighet,
-  getSoftMaxVarighetBekreftelseText,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
-} from '../../../utils/varighet.tsx'
+} from '../../../utils/varighet.ts'
+import { SoftMaxVarighetBekreftelse } from '../SoftMaxVarighetBekreftelse.tsx'
 import {
   EndrePrisValg,
   EndrePrisValgType,
@@ -188,7 +188,7 @@ export const ForlengDeltakelseModal = ({
           size="small"
           error={errorVarighetConfirmation}
         >
-          {getSoftMaxVarighetBekreftelseText(tiltakskode)}
+          <SoftMaxVarighetBekreftelse tiltakskode={tiltakskode} />
         </ConfirmationPanel>
       )}
       <BegrunnelseInput

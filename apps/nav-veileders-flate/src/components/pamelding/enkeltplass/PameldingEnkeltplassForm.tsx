@@ -83,7 +83,7 @@ const PameldingEnkeltplassFormInner = ({
     resolver: zodResolver(
       createPameldingEnkeltplassFormSchema(deltaker, kodeverk)
     ),
-    shouldFocusError: false
+    shouldFocusError: true
   })
 
   return (
@@ -101,10 +101,7 @@ const PameldingEnkeltplassFormInner = ({
 
         <InnholdBeskrivelse />
 
-        <PameldingDatoer
-          defaultStartdato={defaultValues.startdato}
-          defaultSluttdato={defaultValues.sluttdato}
-        />
+        <PameldingDatoer />
 
         <ArrangorValg />
         {harDeltakerlisteDeltakelsesmengde(deltaker.deltakerliste) && (
