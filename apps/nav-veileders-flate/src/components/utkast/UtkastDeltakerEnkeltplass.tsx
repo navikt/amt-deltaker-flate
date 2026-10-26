@@ -1,14 +1,14 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeAvsnitt,
+  DeltakelsesmengdeInfo,
   DialogLenke,
   formatDate,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
-import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
@@ -43,14 +43,12 @@ export const UtkastDeltakerEnkeltplass = () => {
         }
       />
 
-      <DeltakelsesmengdeAvsnitt
-        tiltakskode={tiltakskode.kode}
-        erEnkeltplass={true}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
+        erEnkeltplass={true}
         headingLevel="3"
-        headingSize="small"
-        bodyClassName="mt-2"
       />
 
       <PrisOgBetaling

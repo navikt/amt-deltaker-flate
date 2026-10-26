@@ -2,7 +2,7 @@ import { Heading } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
-  DeltakelsesmengdeAvsnitt,
+  DeltakelsesmengdeInfo,
   DeltakerStatusType,
   harBakgrunnsinfo,
   OmKurset,
@@ -13,7 +13,6 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
-  const { erEnkeltplass } = deltaker.deltakerliste
   const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   return (
@@ -49,14 +48,13 @@ export const UtkastDeltaker = () => {
         />
       )}
 
-      <DeltakelsesmengdeAvsnitt
-        tiltakskode={tiltakskode}
-        erEnkeltplass={erEnkeltplass}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         headingLevel="3"
         headingSize="small"
-        bodyClassName="mt-2"
       />
 
       <OmKurset

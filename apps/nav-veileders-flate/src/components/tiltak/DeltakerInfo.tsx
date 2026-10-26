@@ -164,6 +164,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       />
 
       <DeltakelsesmengdeInfo
+        className="mt-8"
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
