@@ -20,6 +20,8 @@ export const fetchDeltakerHistorikk = (
         throw err
       }
 
-      return logAndThrowError(err)
+      return logAndThrowError(err, 'deltakerHistorikk', {
+        deltakerId
+      })
     })
 }
