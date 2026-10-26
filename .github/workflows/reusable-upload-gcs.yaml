@@ -13,6 +13,10 @@ on:
         required: false
         type: boolean
         default: false
+      cleanup_assets:
+        required: false
+        type: boolean
+        default: false
       workload_identity_provider:
         required: true
         type: string
@@ -53,8 +57,11 @@ jobs:
         env:
           BUCKET: ${{ inputs.bucket }}
           PRESERVE_PR_PREVIEWS: ${{ inputs.preserve_pr_previews }}
+          CLEANUP_ASSETS: ${{ inputs.cleanup_assets }}
         run: |
-          if [ "$PRESERVE_PR_PREVIEWS" = true ]; then
+          if [ "$CLEANUP_ASSETS" = true ]; then
+            gsutil -m rsync -r -d -n build/assets "$BUCKET/assets"
+          elif [ "$PRESERVE_PR_PREVIEWS" = true ]; then
             gsutil -m rsync -r -d -n -x '^pr-[0-9]+/' build "$BUCKET"
           else
             gsutil -m rsync -r -d -n build "$BUCKET"
@@ -64,3 +71,9 @@ jobs:
         env:
           BUCKET: ${{ inputs.bucket }}
         run: gsutil -m rsync -r build "$BUCKET"
+
+      - name: Rydd foreldede appfiler under assets
+        if: inputs.cleanup_assets
+        env:
+          BUCKET: ${{ inputs.bucket }}
+        run: gsutil -m rsync -r -d build/assets "$BUCKET/assets"
