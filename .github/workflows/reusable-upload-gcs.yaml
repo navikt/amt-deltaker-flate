@@ -21,6 +21,10 @@ on:
         required: false
         type: number
         default: 0
+      cleanup_prod_assets:
+        required: false
+        type: boolean
+        default: false
       workload_identity_provider:
         required: true
         type: string
@@ -93,3 +97,10 @@ jobs:
         env:
           BUCKET: ${{ inputs.bucket }}
         run: gsutil -m rsync -r -d build/assets "$BUCKET/assets"
+
+      - name: Slett foreldede produksjonsfiler under assets
+        if: inputs.cleanup_prod_assets
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          RETENTION_DAYS: ${{ inputs.prod_retention_days }}
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-prod-asset-candidates.mjs --delete

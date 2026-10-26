@@ -11,6 +11,7 @@
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",
     "test:github-pages": "node scripts/build-github-pages.test.ts .",
+    "test:gcs-prod-assets": "node scripts/gcs-prod-asset-candidates.test.mjs",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
     "format": "prettier -w ./**/*",
