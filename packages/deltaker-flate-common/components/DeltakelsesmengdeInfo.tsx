@@ -53,7 +53,7 @@ export function DeltakelsesmengdeInfo({
       )
     : null
 
-  if (!deltakelsesmengdeText) {
+  if (!deltakelsesmengdeText && !nesteDeltakelsesmengdeText) {
     return null
   }
 
@@ -70,6 +70,7 @@ export function DeltakelsesmengdeInfo({
           <BodyShort size="small">
             {deltakelsesmengdeText || '(ikke satt)'}
           </BodyShort>
+
           <BodyShort size="small" className="mt-2">
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
             ):
