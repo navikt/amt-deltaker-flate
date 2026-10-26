@@ -4,7 +4,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
   deleteAssetCandidates,
-  findAssetCandidates
+  findAssetCandidates,
+  isAllowedAssetBase
 } from './gcs-prod-asset-candidates.mjs'
 
 const bucket = 'gs://app-prod'
@@ -25,6 +26,20 @@ try {
 
   const candidates = findAssetCandidates(listing, bucket, build, now, 7)
   assert.deepEqual(candidates, [`${bucket}/assets/old.js`])
+  const cdnBase = 'gs://nais-cdn-nav-amt-abcd/amt/amt-veileder-flate-prod/build'
+  assert.equal(isAllowedAssetBase(cdnBase), true)
+  assert.equal(isAllowedAssetBase(`${cdnBase}/assets`), false)
+  assert.equal(isAllowedAssetBase('gs://nais-cdn-nav-amt-abcd/amt'), false)
+  assert.deepEqual(
+    findAssetCandidates(
+      `  1  2026-10-01T10:00:00Z  ${cdnBase}/assets/old.js`,
+      cdnBase,
+      build,
+      now,
+      7
+    ),
+    [`${cdnBase}/assets/old.js`]
+  )
   assert.throws(
     () =>
       findAssetCandidates(

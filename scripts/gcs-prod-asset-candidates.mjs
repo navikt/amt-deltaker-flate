@@ -58,6 +58,15 @@ export function deleteAssetCandidates(candidates, run = spawnSync) {
   }
 }
 
+export function isAllowedAssetBase(bucket) {
+  return (
+    /^gs:\/\/[a-z0-9][a-z0-9._-]*$/.test(bucket ?? '') ||
+    /^gs:\/\/nais-cdn-nav-amt-[a-f0-9]{4}\/amt\/amt-[a-z0-9-]+-prod\/build$/.test(
+      bucket ?? ''
+    )
+  )
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const bucket = process.env.BUCKET
   const retentionDays = Number(process.env.RETENTION_DAYS)
@@ -66,7 +75,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     throw new Error('Unexpected cleanup arguments')
   }
   if (
-    !/^gs:\/\/[a-z0-9][a-z0-9._-]*$/.test(bucket ?? '') ||
+    !isAllowedAssetBase(bucket) ||
     !Number.isSafeInteger(retentionDays) ||
     retentionDays <= 0
   ) {
