@@ -21,8 +21,8 @@
     "playwright:codegen": "playwright codegen playwright.dev"
   },
   "dependencies": {
+    "@nais/apm": "catalog:",
     "@grafana/faro-react": "catalog:",
-    "@grafana/faro-web-sdk": "catalog:",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",

@@ -1,4 +1,4 @@
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
@@ -21,7 +21,7 @@ const AppWithErrorBoundary = withFaroErrorBoundary(
 const renderApp = () => {
   // list of parameters and default values: https://github.com/navikt/nav-dekoratoren?tab=readme-ov-file#parametere
   if (import.meta.env.MODE !== 'offline') {
-    injectDecoratorClientSide({
+    void injectDecoratorClientSide({
       env: import.meta.env.MODE === 'production' ? 'prod' : 'dev',
       params: {
         level: 'Level4',
@@ -57,14 +57,12 @@ async function enableMocking() {
 }
 
 if (import.meta.env.VITE_FARO_URL) {
-  initializeFaro({
-    url: import.meta.env.VITE_FARO_URL,
-    app: {
-      name: 'amt-deltaker-innbyggers-flate',
-      namespace: 'amt',
-      version: import.meta.env.VITE_APP_VERSION || 'local'
-    },
-    isolate: true,
+  init({
+    app: 'amt-deltaker-innbyggers-flate',
+    namespace: 'amt',
+    version: import.meta.env.VITE_APP_VERSION || 'local',
+    telemetryUrl: import.meta.env.VITE_FARO_URL,
+    faro: { isolate: true },
     beforeSend: faroBeforeSend
   })
 }

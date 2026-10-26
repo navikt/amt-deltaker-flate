@@ -20,6 +20,6 @@ export const fetchDeltakerHistorikk = (
         throw err
       }
 
-      return logAndThrowError(err, url)
+      return logAndThrowError(err)
     })
 }

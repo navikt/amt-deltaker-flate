@@ -24,8 +24,10 @@ export function parse<T>(
   return (res: AxiosResponse) => ({ ...res, data: schema.parse(res.data) })
 }
 
-export function logAndThrowError<E = Error>(err: E, url: string): E {
-  console.error(`Request to ${url} failed: ${JSON.stringify(err)}`)
+export function logAndThrowError<E = Error>(err: E): E {
+  console.error('Request failed', {
+    httpStatus: axios.isAxiosError(err) ? err.response?.status : undefined
+  })
 
   throw err
 }

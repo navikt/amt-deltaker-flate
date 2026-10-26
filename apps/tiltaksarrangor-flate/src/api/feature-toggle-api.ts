@@ -14,5 +14,5 @@ export const fetchToggles = (): AxiosPromise<FeatureToggles> => {
   return axiosInstance
     .get(url)
     .then(parse(featureToggleSchema))
-    .catch((error) => logAndThrowError(error, url))
+    .catch((error) => logAndThrowError(error))
 }

@@ -26,17 +26,15 @@ function postEndring<T>(
   return axiosInstance
     .post(url, body)
     .then(parse(deltakerSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) => logAndThrowError(err))
 }
 
 export function settSvarFraNavSomLest(
   deltakerId: string,
-  ulestEndringId: string,
+  ulestEndringId: string
 ): AxiosPromise {
   const url = appUrl(
     `/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/${deltakerId}/endring/${ulestEndringId}/marker-som-lest`
   )
-  return axiosInstance
-    .post(url)
-    .catch((err) => logAndThrowError(err, url))
+  return axiosInstance.post(url).catch((err) => logAndThrowError(err))
 }

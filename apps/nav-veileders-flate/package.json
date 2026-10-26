@@ -20,8 +20,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nais/apm": "catalog:",
     "@grafana/faro-react": "catalog:",
-    "@grafana/faro-web-sdk": "catalog:",
     "@hookform/resolvers": "^5.9.2",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
