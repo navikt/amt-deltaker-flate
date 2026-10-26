@@ -62,6 +62,7 @@ if (import.meta.env.VITE_FARO_URL) {
     namespace: 'amt',
     version: import.meta.env.VITE_APP_VERSION || 'local',
     telemetryUrl: import.meta.env.VITE_FARO_URL,
+    faro: { isolate: true },
     beforeSend: faroBeforeSend
   })
 }
