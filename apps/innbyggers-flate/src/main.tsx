@@ -1,4 +1,4 @@
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
@@ -65,6 +65,7 @@ if (import.meta.env.VITE_FARO_URL) {
       version: import.meta.env.VITE_APP_VERSION || 'local'
     },
     isolate: true,
+    instrumentations: [...getWebInstrumentations()],
     beforeSend: faroBeforeSend
   })
 }
