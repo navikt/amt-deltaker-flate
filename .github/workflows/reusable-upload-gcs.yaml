@@ -17,6 +17,10 @@ on:
         required: false
         type: boolean
         default: false
+      prod_retention_days:
+        required: false
+        type: number
+        default: 0
       workload_identity_provider:
         required: true
         type: string
@@ -36,6 +40,10 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Sjekk ut kode for produksjonsopprydding
+        if: inputs.prod_retention_days > 0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - name: Last ned frontend-filer
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
@@ -54,6 +62,7 @@ jobs:
           skip_install: true
 
       - name: Vis kandidater til GCS-opprydding (ingen sletting)
+        if: inputs.prod_retention_days == 0
         env:
           BUCKET: ${{ inputs.bucket }}
           PRESERVE_PR_PREVIEWS: ${{ inputs.preserve_pr_previews }}
@@ -66,6 +75,13 @@ jobs:
           else
             gsutil -m rsync -r -d -n build "$BUCKET"
           fi
+
+      - name: Vis produksjonsfiler som kan slettes etter karantenetid (ingen sletting)
+        if: inputs.prod_retention_days > 0
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          RETENTION_DAYS: ${{ inputs.prod_retention_days }}
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-prod-asset-candidates.mjs
 
       - name: Last opp filer til GCS
         env:
