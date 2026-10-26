@@ -22,6 +22,10 @@ on:
         required: false
         type: string
         default: ''
+      cleanup_dev_assets:
+        required: false
+        type: boolean
+        default: false
     secrets:
       READER_TOKEN:
         required: true
@@ -60,6 +64,8 @@ jobs:
     with:
       artifact_name: assets-${{ inputs.package }}-dev
       bucket: ${{ inputs.dev_bucket }}
+      preserve_pr_previews: true
+      cleanup_assets: ${{ inputs.cleanup_dev_assets }}
       workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
       service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
 
