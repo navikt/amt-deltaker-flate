@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { faroBeforeSend } from 'deltaker-flate-common'
 import dayjs from 'dayjs'
@@ -37,14 +37,11 @@ dayjs.extend(customParseFormat)
 dayjs.tz.setDefault('Europe/Oslo')
 
 if (import.meta.env.VITE_FARO_URL) {
-  initializeFaro({
-    url: import.meta.env.VITE_FARO_URL,
-    app: {
-      name: 'amt-tiltaksarrangor-flate',
-      namespace: 'amt',
-      version: import.meta.env.VITE_APP_VERSION || 'local'
-    },
-    isolate: true,
+  init({
+    app: 'amt-tiltaksarrangor-flate',
+    namespace: 'amt',
+    version: import.meta.env.VITE_APP_VERSION || 'local',
+    telemetryUrl: import.meta.env.VITE_FARO_URL,
     beforeSend: (item) => (item.type === 'log' ? null : faroBeforeSend(item))
   })
 }

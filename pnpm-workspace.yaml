@@ -12,6 +12,7 @@ allowBuilds:
 
 # Sentralisert versjonshåndtering - referer med "catalog:" i package.json
 catalog:
+  '@nais/apm': 0.4.0
   '@axe-core/playwright': ^4.14.0
   '@eslint/js': ^10.0.1
   '@faker-js/faker': ^10.6.0
