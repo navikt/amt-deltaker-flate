@@ -1,6 +1,6 @@
 import './index.scss'
 
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
+import { initializeFaro } from '@grafana/faro-web-sdk'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { faroBeforeSend } from 'deltaker-flate-common'
 import dayjs from 'dayjs'
@@ -45,7 +45,6 @@ if (import.meta.env.VITE_FARO_URL) {
       version: import.meta.env.VITE_APP_VERSION || 'local'
     },
     isolate: true,
-    instrumentations: [...getWebInstrumentations()],
     beforeSend: (item) => (item.type === 'log' ? null : faroBeforeSend(item))
   })
 }
