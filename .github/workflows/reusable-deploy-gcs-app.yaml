@@ -63,6 +63,8 @@ jobs:
       workload_identity_provider: projects/696882554390/locations/global/workloadIdentityPools/github/providers/github-action
       service_account: amt-deltaker-flate-gcs@amt-dev-d98f.iam.gserviceaccount.com
 
+  # Bare innbyggers-flate bruker dette demo-steget i GCS-workflowen; filene lastes opp til CDN.
+  # Demo-steget er duplisert i reusable-deploy-cdn-app.yaml for nav-veileders-flate og tiltakskoordinator-flate.
   deploy-demo:
     name: Deploy ${{ inputs.package }} til demo
     if: inputs.demo_destination != '' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.target_environment == 'demo')
