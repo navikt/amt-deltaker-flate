@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
@@ -72,6 +72,13 @@ export function isAllowedAssetBase(bucket, retentionDays) {
   )
 }
 
+export async function readAssetListing(input) {
+  input.setEncoding('utf8')
+  let listing = ''
+  for await (const chunk of input) listing += chunk
+  return listing
+}
+
 if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -94,7 +101,7 @@ if (
   }
 
   const candidates = findAssetCandidates(
-    readFileSync(0, 'utf8'),
+    await readAssetListing(process.stdin),
     bucket,
     'build',
     Date.now(),

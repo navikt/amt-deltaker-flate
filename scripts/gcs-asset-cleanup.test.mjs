@@ -2,10 +2,13 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { PassThrough } from 'node:stream'
+import { setImmediate } from 'node:timers'
 import {
   deleteAssetCandidates,
   findAssetCandidates,
-  isAllowedAssetBase
+  isAllowedAssetBase,
+  readAssetListing
 } from './gcs-asset-cleanup.mjs'
 
 const bucket = 'gs://app-prod'
@@ -23,6 +26,16 @@ try {
     `  1  2026-10-19T12:00:00Z  ${bucket}/assets/boundary.js`,
     'TOTAL: 4 objects, 4 bytes'
   ].join('\n')
+
+  const delayedInput = new PassThrough()
+  const readResult = readAssetListing(delayedInput)
+  setImmediate(() => delayedInput.end(listing))
+  assert.equal(await readResult, listing)
+
+  const failedInput = new PassThrough()
+  const failedRead = readAssetListing(failedInput)
+  setImmediate(() => failedInput.destroy(new Error('listing failed')))
+  await assert.rejects(failedRead, /listing failed/)
 
   const candidates = findAssetCandidates(listing, bucket, build, now, 7)
   assert.deepEqual(candidates, [`${bucket}/assets/old.js`])
