@@ -9,6 +9,10 @@ on:
       bucket:
         required: true
         type: string
+      preserve_pr_previews:
+        required: false
+        type: boolean
+        default: false
       workload_identity_provider:
         required: true
         type: string
@@ -44,6 +48,17 @@ jobs:
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
         with:
           skip_install: true
+
+      - name: Vis kandidater til GCS-opprydding (ingen sletting)
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          PRESERVE_PR_PREVIEWS: ${{ inputs.preserve_pr_previews }}
+        run: |
+          if [ "$PRESERVE_PR_PREVIEWS" = true ]; then
+            gsutil -m rsync -r -d -n -x '^pr-[0-9]+/' build "$BUCKET"
+          else
+            gsutil -m rsync -r -d -n build "$BUCKET"
+          fi
 
       - name: Last opp filer til GCS
         env:
