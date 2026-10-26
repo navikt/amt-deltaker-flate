@@ -78,15 +78,19 @@ describe('logAndThrowError', () => {
       response: { status: 400, data: 'private response' }
     }
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    let thrownError: unknown
 
-    expect(() =>
+    try {
       logAndThrowError(error, 'tilbakekallForslag', {
         deltakerId,
         forslagId,
         operation: 'forleng'
       })
-    ).toThrow(error)
+    } catch (thrown) {
+      thrownError = thrown
+    }
 
+    expect(thrownError).toBe(error)
     expect(consoleError).toHaveBeenCalledWith('Request failed', {
       endpoint: 'tilbakekallForslag',
       method: 'POST',
@@ -112,8 +116,9 @@ describe('logAndThrowError', () => {
       code: 'private-code'
     }
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    let thrownError: unknown
 
-    expect(() =>
+    try {
       logAndThrowError(error, 'deltakerEndring', {
         deltakerId: 'private-person-id',
         deltakerlisteId: 'private-list-id',
@@ -121,8 +126,11 @@ describe('logAndThrowError', () => {
         ulestEndringId: 'private-endring-id',
         operation: 'private-operation'
       })
-    ).toThrow(error)
+    } catch (thrown) {
+      thrownError = thrown
+    }
 
+    expect(thrownError).toBe(error)
     expect(consoleError).toHaveBeenCalledWith('Request failed', {
       endpoint: 'deltakerEndring',
       method: undefined,
