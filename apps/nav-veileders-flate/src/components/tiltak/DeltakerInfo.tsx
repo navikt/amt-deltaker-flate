@@ -153,6 +153,7 @@ export const DeltakerInfo = ({ className }: Props) => {
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
+        visBegrunnelse={false}
         headinglevel="2"
         className="mt-8"
       />

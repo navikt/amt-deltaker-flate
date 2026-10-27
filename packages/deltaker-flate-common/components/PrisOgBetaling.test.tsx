@@ -20,6 +20,24 @@ describe('PrisOgBetaling', () => {
     expect(text).toContain('Dette tiltaket gir best læringsutbytte.')
   })
 
+  it('skjuler Navs begrunnelse når visBegrunnelse er false', () => {
+    const text = extractText(
+      PrisOgBetaling({
+        prisinformasjon: {
+          type: PrisinformasjonType.Anskaffelse,
+          pris: 5000,
+          begrunnelse: 'Dette tiltaket gir best læringsutbytte.'
+        },
+        headinglevel: '2',
+        visBegrunnelse: false
+      })
+    ).join(' ')
+
+    expect(text).not.toContain('Navs begrunnelse:')
+    expect(text).not.toContain('Dette tiltaket gir best læringsutbytte.')
+    expect(text).toContain('Nav har kjøpt en plass hos opplæringsstedet.')
+  })
+
   it('viser ikke Navs begrunnelse når begrunnelse mangler', () => {
     const text = extractText(
       PrisOgBetaling({
