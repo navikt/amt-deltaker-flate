@@ -68,33 +68,10 @@ describe('faroBeforeSend', () => {
     expect(result?.meta?.page?.url).toBe('https://nav.no/deltaker')
   })
 
-  it('dropper item som inneholder 11-sifret mønster (fødselsnummer)', () => {
+  it('overlater PII-rensing i payloaden til @nais/apm', () => {
     const item = {
       meta: { page: { url: 'https://nav.no/deltaker' } },
       payload: { message: 'Feil for bruker 12345678901' }
-    }
-    const result = faroBeforeSend(item)
-    expect(result).toBeNull()
-  })
-
-  it('dropper item med fødselsnummer i url', () => {
-    const item = {
-      meta: { page: { url: 'https://nav.no/deltaker/12345678901' } }
-    }
-    const result = faroBeforeSend(item)
-    expect(result).toBeNull()
-  })
-
-  it('slipper gjennom Web Vitals-ID med 13-sifrede tekniske verdier', () => {
-    const item = {
-      type: 'measurement',
-      payload: {
-        type: 'web-vitals',
-        context: {
-          id: 'v6-1793107345361-1234567890123'
-        }
-      },
-      meta: {}
     }
     const result = faroBeforeSend(item)
     expect(result).toEqual(item)

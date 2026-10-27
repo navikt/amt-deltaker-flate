@@ -33,7 +33,7 @@ export function resolveFaroEnvironment(
   return config.environment
 }
 
-export function faroBeforeSend<T extends TransportItem>(item: T): T | null {
+export function faroBeforeSend<T extends TransportItem>(item: T): T {
   // Fjern query-parametere og fragmenter fra side-URLer.
   // Kan inneholde tokens, autorisasjonskoder eller andre identifikatorer.
   if (item.meta?.page?.url) {
@@ -45,13 +45,6 @@ export function faroBeforeSend<T extends TransportItem>(item: T): T | null {
     } catch {
       /* ignore malformed URLs */
     }
-  }
-
-  // Dropp hele telemetri-elementet hvis payloaden inneholder nøyaktig
-  // 11 sammenhengende sifre som kan være et fødselsnummer.
-  const payload = JSON.stringify(item)
-  if (/(^|\D)\d{11}(\D|$)/.test(payload)) {
-    return null
   }
 
   return item
