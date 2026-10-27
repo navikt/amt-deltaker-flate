@@ -67,6 +67,18 @@ export const PrisOgBetaling = ({
 
   return (
     <div className="flex flex-col gap-8">
+      {laasPristype && (
+        <ReadMore
+          size="small"
+          header="Hvorfor er valgene låst?"
+          variant="moderate"
+          className="mt-2 -mb-4"
+        >
+          Når anskaffelse eller tilskudd er valgt, kan valget ikke endres. Har
+          du valgt feil, må du endre deltakelsen til «Ikke aktuell» og
+          registrere opplæringen på nytt.
+        </ReadMore>
+      )}
       <Controller
         name="pristype"
         control={control}
@@ -78,8 +90,9 @@ export const PrisOgBetaling = ({
             aria-required
             legend="Pris og betalingsbetingelser"
             description="Navs kostnader for opplæringen"
-            disabled={disabled || laasPristype}
-            aria-disabled={disabled || laasPristype}
+            disabled={disabled}
+            readOnly={laasPristype}
+            aria-disabled={disabled}
             error={errors.pristype?.message}
             value={value}
             onChange={(nextValue) => {
