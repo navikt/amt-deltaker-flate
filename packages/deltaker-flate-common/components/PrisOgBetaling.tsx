@@ -11,6 +11,7 @@ interface Props {
   showHeading?: boolean
   compact?: boolean
   visTilleggsstonaderInfo?: boolean
+  visBegrunnelse?: boolean
   className?: string
 }
 
@@ -20,6 +21,7 @@ export const PrisOgBetaling = ({
   headingsize = 'medium',
   showHeading = true,
   visTilleggsstonaderInfo = true,
+  visBegrunnelse = true,
   compact = false,
   className
 }: Props) => {
@@ -122,7 +124,7 @@ export const PrisOgBetaling = ({
 
       {renderPrisinformasjon()}
 
-      {prisinformasjon.begrunnelse && (
+      {visBegrunnelse && prisinformasjon.begrunnelse && (
         <BodyLong
           size="small"
           className={`${compact ? 'mt-2' : 'mt-4'} whitespace-pre-wrap`}
