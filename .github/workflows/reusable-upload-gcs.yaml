@@ -9,10 +9,6 @@ on:
       bucket:
         required: true
         type: string
-      preserve_pr_previews:
-        required: false
-        type: boolean
-        default: false
       cleanup_assets:
         required: false
         type: boolean
@@ -21,10 +17,6 @@ on:
         required: false
         type: number
         default: 0
-      cleanup_prod_assets:
-        required: false
-        type: boolean
-        default: false
       workload_identity_provider:
         required: true
         type: string
@@ -65,28 +57,6 @@ jobs:
         with:
           skip_install: true
 
-      - name: Vis kandidater til GCS-opprydding (ingen sletting)
-        if: inputs.prod_retention_days == 0
-        env:
-          BUCKET: ${{ inputs.bucket }}
-          PRESERVE_PR_PREVIEWS: ${{ inputs.preserve_pr_previews }}
-          CLEANUP_ASSETS: ${{ inputs.cleanup_assets }}
-        run: |
-          if [ "$CLEANUP_ASSETS" = true ]; then
-            gsutil -m rsync -r -d -n build/assets "$BUCKET/assets"
-          elif [ "$PRESERVE_PR_PREVIEWS" = true ]; then
-            gsutil -m rsync -r -d -n -x '^pr-[0-9]+/' build "$BUCKET"
-          else
-            gsutil -m rsync -r -d -n build "$BUCKET"
-          fi
-
-      - name: Vis produksjonsfiler som kan slettes etter karantenetid (ingen sletting)
-        if: inputs.prod_retention_days > 0
-        env:
-          BUCKET: ${{ inputs.bucket }}
-          RETENTION_DAYS: ${{ inputs.prod_retention_days }}
-        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs
-
       - name: Last opp filer til GCS
         env:
           BUCKET: ${{ inputs.bucket }}
@@ -99,7 +69,7 @@ jobs:
         run: gsutil -m rsync -r -d build/assets "$BUCKET/assets"
 
       - name: Slett foreldede produksjonsfiler under assets
-        if: inputs.cleanup_prod_assets
+        if: inputs.prod_retention_days > 0
         env:
           BUCKET: ${{ inputs.bucket }}
           RETENTION_DAYS: ${{ inputs.prod_retention_days }}
