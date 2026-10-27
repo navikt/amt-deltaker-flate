@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FormErrorSummary } from './FormErrorSummary'
 
@@ -11,9 +12,12 @@ const TestForm = ({
   fieldId: string
   group: boolean
 }) => {
-  const form = useForm({
-    errors: { [errorKey]: { type: 'manual', message: 'Rett feltet' } }
-  })
+  const form = useForm()
+  const { setError } = form
+
+  useEffect(() => {
+    setError(errorKey, { type: 'manual', message: 'Rett feltet' })
+  }, [errorKey, setError])
 
   return (
     <FormProvider {...form}>

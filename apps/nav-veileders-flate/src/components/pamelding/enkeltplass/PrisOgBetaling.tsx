@@ -74,8 +74,8 @@ export const PrisOgBetaling = ({
           variant="moderate"
           className="mt-2 -mb-4"
         >
-          Når anskaffelse eller tilskudd er valgt, kan valget ikke endres. Har
-          du valgt feil, må du endre deltakelsen til «Ikke aktuell» og
+          Valget kan ikke endres etter at det er fattet vedtak om tiltaksplass.
+          Har du valgt feil, må du endre deltakelsen til «Ikke aktuell» og
           registrere opplæringen på nytt.
         </ReadMore>
       )}
