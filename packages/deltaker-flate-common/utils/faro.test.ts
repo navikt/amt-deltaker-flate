@@ -1,10 +1,56 @@
 import { describe, it, expect } from 'vitest'
-import { faroBeforeSend } from './faro'
+import { faroBeforeSend, resolveFaroEnvironment } from './faro'
+
+describe('resolveFaroEnvironment', () => {
+  it('returnerer prod-gcp for production med produksjonscollector', () => {
+    expect(
+      resolveFaroEnvironment('production', 'https://telemetry.nav.no/collect')
+    ).toBe('prod-gcp')
+  })
+
+  it('returnerer dev-gcp for dev med utviklingscollector', () => {
+    expect(
+      resolveFaroEnvironment(
+        'dev',
+        'https://telemetry.ekstern.dev.nav.no/collect'
+      )
+    ).toBe('dev-gcp')
+  })
+
+  it.each(['demo', 'pull-request', 'development', 'offline'])(
+    'deaktiverer Faro for mode %s',
+    (mode) => {
+      expect(
+        resolveFaroEnvironment(
+          mode,
+          'https://telemetry.ekstern.dev.nav.no/collect'
+        )
+      ).toBeUndefined()
+    }
+  )
+
+  it('deaktiverer Faro når collector ikke matcher mode', () => {
+    expect(
+      resolveFaroEnvironment(
+        'production',
+        'https://telemetry.ekstern.dev.nav.no/collect'
+      )
+    ).toBeUndefined()
+  })
+
+  it('deaktiverer Faro når collector mangler', () => {
+    expect(resolveFaroEnvironment('production')).toBeUndefined()
+  })
+})
 
 describe('faroBeforeSend', () => {
-  it('fjerner query-parametere fra meta.page.url', () => {
+  it('fjerner query-parametere og fragment fra meta.page.url', () => {
     const item = {
-      meta: { page: { url: 'https://nav.no/deltaker?user=abc&code=123' } }
+      meta: {
+        page: {
+          url: 'https://nav.no/deltaker?user=abc&code=123#access_token=secret'
+        }
+      }
     }
     const result = faroBeforeSend(item)
     expect(result?.meta?.page?.url).toBe('https://nav.no/deltaker')

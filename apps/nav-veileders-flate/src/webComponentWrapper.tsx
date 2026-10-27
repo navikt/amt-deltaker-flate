@@ -1,6 +1,10 @@
 import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
-import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
+import {
+  faroBeforeSend,
+  ErrorFallback,
+  resolveFaroEnvironment
+} from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import type { ReactNode } from 'react'
@@ -16,11 +20,17 @@ const FaroBoundary = withFaroErrorBoundary(
   { fallback: <ErrorFallback /> }
 )
 
-if (import.meta.env.VITE_FARO_URL) {
+const faroEnvironment = resolveFaroEnvironment(
+  import.meta.env.MODE,
+  import.meta.env.VITE_FARO_URL
+)
+
+if (faroEnvironment) {
   init({
     app: 'amt-deltaker-flate',
     namespace: 'amt',
     version: import.meta.env.VITE_APP_VERSION || 'local',
+    environment: faroEnvironment,
     telemetryUrl: import.meta.env.VITE_FARO_URL,
     faro: { isolate: true },
     beforeSend: faroBeforeSend

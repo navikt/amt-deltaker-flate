@@ -1,6 +1,10 @@
 import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
-import { ErrorFallback, faroBeforeSend } from 'deltaker-flate-common'
+import {
+  ErrorFallback,
+  faroBeforeSend,
+  resolveFaroEnvironment
+} from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -56,11 +60,17 @@ async function enableMocking() {
   })
 }
 
-if (import.meta.env.VITE_FARO_URL) {
+const faroEnvironment = resolveFaroEnvironment(
+  import.meta.env.MODE,
+  import.meta.env.VITE_FARO_URL
+)
+
+if (faroEnvironment) {
   init({
     app: 'amt-deltaker-innbyggers-flate',
     namespace: 'amt',
     version: import.meta.env.VITE_APP_VERSION || 'local',
+    environment: faroEnvironment,
     telemetryUrl: import.meta.env.VITE_FARO_URL,
     faro: { isolate: true },
     beforeSend: faroBeforeSend
