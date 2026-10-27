@@ -42,8 +42,14 @@ interface _FormErrorSummaryProps<T extends FieldValues> {
   schemaFields: Path<T>[]
 }
 
-const focusFieldById = (fieldId: string) => {
-  const element = document.getElementById(fieldId)
+const focusFieldById = (fieldId: string, source: HTMLElement) => {
+  const root = source.getRootNode()
+
+  if (!(root instanceof Document || root instanceof ShadowRoot)) {
+    return false
+  }
+
+  const element = root.getElementById(fieldId)
 
   if (!element) {
     return false
@@ -98,7 +104,7 @@ const _FormErrorSummary = <T extends FieldValues>({
               href={`#${key}`}
               onClick={(event) => {
                 event.preventDefault()
-                if (!focusFieldById(key)) {
+                if (!focusFieldById(key, event.currentTarget)) {
                   setFocus(key as Path<T>)
                 }
               }}
@@ -117,7 +123,7 @@ const _FormErrorSummary = <T extends FieldValues>({
                 href={`#${fieldName}`}
                 onClick={(event) => {
                   event.preventDefault()
-                  if (!focusFieldById(fieldName)) {
+                  if (!focusFieldById(fieldName, event.currentTarget)) {
                     setFocus(fieldName as Path<T>)
                   }
                 }}
@@ -140,7 +146,7 @@ const _FormErrorSummary = <T extends FieldValues>({
                 href={`#${fieldId}`}
                 onClick={(event) => {
                   event.preventDefault()
-                  if (!focusFieldById(fieldId)) {
+                  if (!focusFieldById(fieldId, event.currentTarget)) {
                     setFocus(fieldId as Path<T>)
                   }
                 }}
