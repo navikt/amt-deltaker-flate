@@ -17,6 +17,10 @@ on:
         required: false
         type: boolean
         default: true
+      cleanup_environment:
+        required: false
+        type: string
+        default: ''
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
         required: true
@@ -33,11 +37,29 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Sjekk ut kode for CDN-opprydding
+        if: inputs.cleanup_environment != ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - name: Last ned frontend-filer
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: ${{ inputs.artifact_name }}
           path: build
+
+      - name: Valider CDN-sti for opprydding
+        if: inputs.cleanup_environment != ''
+        env:
+          DESTINATION: ${{ inputs.destination }}
+          CLEANUP_ENVIRONMENT: ${{ inputs.cleanup_environment }}
+          KEEP_PARENT: ${{ inputs.source_keep_parent_name }}
+        run: |
+          if [[ "$KEEP_PARENT" != true ||
+                ! "$DESTINATION" =~ ^amt-[a-z0-9-]+-(dev|prod)$ ||
+                "$CLEANUP_ENVIRONMENT" != "${BASH_REMATCH[1]}" ]]; then
+            echo "::error::Ugyldig CDN-sti for opprydding"
+            exit 1
+          fi
 
       - name: Last opp filer til CDN
         uses: nais/deploy/actions/cdn-upload/v2@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # master
@@ -49,3 +71,27 @@ jobs:
           no_cache_paths: ${{ inputs.no_cache_paths }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Sett opp Google Cloud SDK for opprydding
+        if: inputs.cleanup_environment != ''
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          skip_install: true
+
+      - name: Vis CDN-filer som kan slettes (ingen sletting)
+        if: inputs.cleanup_environment != ''
+        env:
+          DESTINATION: ${{ inputs.destination }}
+          RETENTION_DAYS: ${{ inputs.cleanup_environment == 'prod' && '7' || '0' }}
+        run: |
+          export BUCKET="gs://${BUCKET_NAME}/amt/${DESTINATION}/build"
+          gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs
+
+      - name: Slett foreldede CDN-filer under assets
+        if: inputs.cleanup_environment != ''
+        env:
+          DESTINATION: ${{ inputs.destination }}
+          RETENTION_DAYS: ${{ inputs.cleanup_environment == 'prod' && '7' || '0' }}
+        run: |
+          export BUCKET="gs://${BUCKET_NAME}/amt/${DESTINATION}/build"
+          gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs --delete

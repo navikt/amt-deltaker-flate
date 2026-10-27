@@ -1,5 +1,4 @@
 import { Checkbox, CheckboxGroup, ExpansionCard } from '@navikt/ds-react'
-import React from 'react'
 import styles from './TableFilter.module.scss'
 import { FiltermenyDataEntry } from './filtermeny-data-entry'
 

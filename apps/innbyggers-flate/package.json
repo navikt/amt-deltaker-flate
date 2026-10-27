@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --port 3005",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
     "build:demo": "vite build --base / --mode demo",
     "build:pull-request": "vite build --mode pull-request",
     "build:dev": "vite build --mode dev",
@@ -21,8 +21,8 @@
     "playwright:codegen": "playwright codegen playwright.dev"
   },
   "dependencies": {
+    "@nais/apm": "catalog:",
     "@grafana/faro-react": "catalog:",
-    "@grafana/faro-web-sdk": "catalog:",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",

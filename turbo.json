@@ -1,34 +1,42 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["MODE", "BASE_URL", "PROD", "DEV"],
+  "globalDependencies": [
+    "eslint.config.mjs",
+    "shared-config/eslint-config/**",
+    "shared-config/typescript-config/**"
+  ],
   "tasks": {
     "type-check": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tsconfig.json"]
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "build": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:dev": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:pull-request": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "build:demo": {
+      "env": ["VITE_APP_VERSION"],
       "dependsOn": ["^build", "type-check"],
       "outputs": ["build/**"]
     },
     "test": {
       "dependsOn": ["build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "test:no-watch": {
       "dependsOn": ["build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "lint": {},
     "lint:fix": {},

@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "start": "vite --port 3004",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
     "build:demo": "vite build --mode demo",
     "build:pull-request": "vite build --mode pull-request",
-    "build:dev": "vite build --mode dev --config vite-micro-frontend.config.js",
-    "build": "vite build --mode production --config vite-micro-frontend.config.js",
+    "build:dev": "vite build --mode dev --config vite-micro-frontend.config.ts",
+    "build": "vite build --mode production --config vite-micro-frontend.config.ts",
     "test": "vitest",
     "test:no-watch": "vitest run",
     "lint": "eslint .",
@@ -20,9 +20,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nais/apm": "catalog:",
     "@grafana/faro-react": "catalog:",
-    "@grafana/faro-web-sdk": "catalog:",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^5.9.2",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",

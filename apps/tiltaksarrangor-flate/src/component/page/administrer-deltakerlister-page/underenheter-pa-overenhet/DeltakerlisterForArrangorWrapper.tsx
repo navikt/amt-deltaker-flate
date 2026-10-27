@@ -1,7 +1,6 @@
 import { Arrangor, Deltakerliste } from '../deltakerliste.viewobjects'
 import { DeltakerlisterForArrangor } from './deltakerlister-pa-virksomhet/DeltakerlisterForArrangor'
 import { Heading } from '@navikt/ds-react'
-import React from 'react'
 import globalStyles from '../../../../globals.module.scss'
 import { DeltakerlistePanel } from './deltakerlister-pa-virksomhet/deltakerlister/DeltakerlistePanel'
 

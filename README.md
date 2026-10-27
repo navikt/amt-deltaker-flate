@@ -1,105 +1,156 @@
-# amt-deltaker
+# amt-deltaker-flate
 
-Dett er et monorepo for amt deltaker flater for Nav-veileder og innbygger.
+Monorepo for frontend-appene som følger opp deltakere i arbeidsmarkedstiltak.
 
-## monorepo
+## Innhold
 
-Vi bruker turborepo med pnpm.
-apps har flatene, shared-cinfig har oppsett for typescript og eslint.
+- [Apper](#apper)
+- [Kom i gang](#kom-i-gang)
+- [Kommandoer](#kommandoer)
+- [Struktur](#struktur)
+- [Teknologi](#teknologi)
+- [Testmiljøer og deploy](#testmiljøer-og-deploy)
+- [IntelliJ-oppsett](#intellij-oppsett)
+- [Bidra](#bidra)
+- [Team](#team)
+- [Lisens](#lisens)
 
-- `nav-veileders-falte`: react app som webcomponent.
-- `shared-config`: another [Next.js](https://nextjs.org/) app
-- `@amt-deltaker-flate/eslint-config`: `eslint` config
-- `@amt-deltaker-flate/typescript-config`: `tsconfig.json` delt gjennom hele monorepoet
+## Apper
 
-### Utilities
+| App                                                                   | Bruk                                                                  |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [`innbyggers-flate`](apps/innbyggers-flate/README.md)                 | Viser deltakelsen til innbyggeren og lenkes til fra aktivitetsplanen. |
+| [`nav-veileders-flate`](apps/nav-veileders-flate/README.md)           | Web component for oppfølging i Modia.                                 |
+| [`tiltakskoordinator-flate`](apps/tiltakskoordinator-flate/README.md) | Web component for deltakerlister i tiltaksadministrasjonen.           |
+| `tiltaksarrangor-flate`                                               | Flate for tiltaksarrangørens oppfølging av deltakere.                 |
 
-Turborepo er satt opp med:
+## Kom i gang
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+**Forutsetninger:**
 
-### Oppsett
+- Node.js 26
+- pnpm 12.15.0
+- tilgang til pakkene i `@navikt`-scopet
 
-For å sette opp prosjektet lokalt, må du ha [Node.js](https://nodejs.org/) og [pnpm](https://pnpm.io/) installert.
+Lag et [classic personal access token](https://github.com/settings/tokens) med `read:packages`. Autoriser tokenet for `navikt` med **Configure SSO**, og legg det i `.bashrc` eller `.zshrc`:
 
-### Installere pakker lokalt
-
-For å installere npm pakker med @navikt-scope lokalt må du først lage et PAT(Personal Access Token) i github.
-Token genererer du under [developer settings](https://github.com/settings/tokens).
-
-1. Lag et classic token som har `read:packages` rettigheter.
-2. Autoriser tokenet etter generering med `configure SSO`, velg authorize for `navikt`-organisasjonen.
-3. For å unngå å bruke PAT i klartekst, må du sette det som en environment variabel. Legg til følgende i din `.bashrc` eller `.zshrc` fil:
-   ```bash
-   export NODE_AUTH_TOKEN=<your_personal_access_token>
-   ```
-4. Om du ikke har det fra før lag en `.npmrc`-fil i rot på maskinen din med følgende innhold:
-   ```
-   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-   @navikt:registry=https://npm.pkg.github.com
-   ```
-   evt. bruk .npmrc-filen som ligger i rot av prosjekt.
-5. Etter stegene over er gjort kan du kjøre `pnpm install` for å installere alle avhengigheter.
-
-### Build
-
-Bygg alt ved å stå i rot:
-
-```
-cd amt-deltaker-flate
-pnpm build
+```bash
+export NODE_AUTH_TOKEN=<personal-access-token>
 ```
 
-### Kjør apper lokalt
+Legg følgende i `~/.npmrc` hvis det ikke allerede finnes:
 
+```ini
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+@navikt:registry=https://npm.pkg.github.com
 ```
-cd amt-deltaker-flate
+
+Installer avhengighetene og start appene fra rotmappa:
+
+```bash
+pnpm install
 pnpm start
 ```
 
-## tips
+Start én app med pnpm-filter:
 
-`turbo.json` inneholder oppgaver / tasks som turbo kan kjøre. Når vi i `package.json` har scripts som sier `turbo test` er det test-oppgaven i `turbo.json` som kalles. Nye scripts som skal kjøres fra rot må deifneres der. Oppgavene må ha navn som samsvarer med scripts i de ulike appenes `package.json`
+```bash
+pnpm --filter nav-veileders-flate start
+```
 
-nye workspaces må defineres i `pnpm-workspace.yaml`
+## Kommandoer
 
-# Henvendelser
+| Kommando             | Hva den gjør                                  |
+| -------------------- | --------------------------------------------- |
+| `pnpm start`         | Starter alle appene lokalt.                   |
+| `pnpm build`         | Bygger alle appene for produksjon.            |
+| `pnpm test:no-watch` | Kjører Vitest-testene én gang.                |
+| `pnpm playwright`    | Kjører Playwright-testene.                    |
+| `pnpm type-check`    | Typesjekker alle workspaces.                  |
+| `pnpm lint`          | Kjører ESLint.                                |
+| `pnpm lint:fix`      | Retter ESLint-feil som kan rettes automatisk. |
+| `pnpm format`        | Formaterer filer med Prettier.                |
 
-Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på github.
+Turbo kjører scriptet med samme navn i hvert workspace. Nye rot-scripts må derfor defineres både i rotas `package.json`, i `turbo.json` og i relevante workspaces.
 
-## For Nav-ansatte
+## Struktur
 
-Interne henvendelser kan sendes via Slack i kanalen #team_komet.
+| Mappe                             | Innhold                                                        |
+| --------------------------------- | -------------------------------------------------------------- |
+| `apps/`                           | De fire frontend-appene.                                       |
+| `packages/deltaker-flate-common/` | Delte React-komponenter, typer og hjelpefunksjoner.            |
+| `shared-config/`                  | Felles oppsett for ESLint, TypeScript, Tailwind og Playwright. |
+| `.github/workflows/`              | Test-, preview- og deploy-workflows.                           |
+| `.nais/`                          | Felles konfigurasjon for `poao-frontend`.                      |
 
-## 🤖 KI-assistanse - GitHub Copilot
+Nye workspaces må legges til i `pnpm-workspace.yaml`.
 
-Dette repoet bruker GitHub Copilot for kodeforslag.
+## Teknologi
 
-# Testmiljøer
+- React 19 og TypeScript
+- Vite og Vitest
+- Playwright
+- Aksel og Tailwind CSS
+- pnpm workspaces og Turborepo
+- Nais, Navs CDN og Google Cloud Storage
 
-Vi har to typer testmiljøer: **demo** (isolert med mock-data) og **dev** (integrert mot reelle dev-tjenester).
+## Testmiljøer og deploy
 
-## Demo-apper
+GitHub Actions finner hvilke apper som er endret. Ved push til `main` testes, bygges og deployes de berørte appene. Workflowen kan også startes manuelt for én app eller alle apper til dev eller produksjon. Manuell deploy til Nais-demo støtter én app om gangen og er ikke tilgjengelig for `tiltaksarrangor-flate`.
 
-Demo-appene kjøres som egne Docker-images via `nais-demo.yaml` og brukes til:
-
-- intern testing i teamet
-- opplæring på Nav-kontor og i fylker
-
-Kjennetegn:
-
-- Appene bygges med **mocker**, slik at frontend kan testes helt isolert fra backend.
-- De serveres av [`poao-frontend`](https://github.com/navikt/poao-frontend) som webserver, fordi vi ikke har en egen webserver satt opp i dette repoet.
-- `poao-frontend` henter de statiske filene fra Navs CDN.
-
-## Dev
+### Integrasjoner i dev
 
 I dev er oppsettet forskjellig per app, avhengig av hvor appen er integrert:
 
-| App                        | Hvor den kjører                                  | Hvor statiske filer hentes fra |
-| -------------------------- | ------------------------------------------------ | ------------------------------ |
-| `tiltakskoordinator-flate` | Nav tiltaksadministrasjon                        | Navs CDN                       |
-| `nav-veileders-flate`      | Modia                                            | Navs CDN (i dev)               |
-| `innbyggers-flate`         | Selvstendig app, lenkes til fra aktivitetsplanen | Egen kjørende instans          |
+| App                        | Hvor den brukes                                     | Integrasjonsform                  |
+| -------------------------- | --------------------------------------------------- | --------------------------------- |
+| `tiltakskoordinator-flate` | Tiltaksadministrasjonen                             | Web component                     |
+| `nav-veileders-flate`      | Modia (`veilarbpersonflate`)                        | Web component                     |
+| `innbyggers-flate`         | Selvstendig app som lenkes til fra aktivitetsplanen | Egen Nais-app via `poao-frontend` |
+| `tiltaksarrangor-flate`    | Selvstendig app på `/deltakeroversikt`              | Egen Nais-app via `poao-frontend` |
+
+### Lagring av frontend-filer
+
+| App                        | Dev                  | Nais-demo         | GitHub Pages-demo                                                                  | Produksjon           |
+| -------------------------- | -------------------- | ----------------- | ---------------------------------------------------------------------------------- | -------------------- |
+| `innbyggers-flate`         | Google Cloud Storage | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/innbyggers-flate/)         | Google Cloud Storage |
+| `nav-veileders-flate`      | Navs CDN             | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/nav-veileders-flate/)      | Navs CDN             |
+| `tiltakskoordinator-flate` | Navs CDN             | Navs CDN          | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/tiltakskoordinator-flate/) | Navs CDN             |
+| `tiltaksarrangor-flate`    | Google Cloud Storage | Ikke tilgjengelig | [Åpne demo](https://navikt.github.io/amt-deltaker-flate/tiltaksarrangor-flate/)    | Google Cloud Storage |
+
+Demo-appene bruker mockdata. `poao-frontend` serverer Nais-demoene fra Navs CDN. GitHub Pages-demoene bygges og publiseres separat for alle fire appene.
+
+## IntelliJ-oppsett
+
+### GitHub Actions-schema
+
+Hvis IntelliJ viser feilaktige advarsler i `.github/workflows`, kan du overstyre det innebygde GitHub Actions-schemaet:
+
+1. Åpne **Settings → Languages & Frameworks → Schemas and DTDs → JSON Schema Mappings**.
+2. Legg til et schema med URL-en `https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-workflow.json`.
+3. Velg **JSON Schema version 7** (`Draft-07`).
+4. Knytt schemaet til `.github/workflows/*.yaml` og `.github/workflows/*.yml`.
+5. Åpne workflow-fila og klikk på schema-navnet nederst til høyre i IntelliJ. Kontroller at det egendefinerte schemaet er valgt.
+6. Slå på **Always download the most recent version of schemas** under **Settings → Languages & Frameworks → Schemas and DTDs → JSON Schema**.
+7. Bruk **File → Invalidate Caches… → Invalidate and Restart** hvis IntelliJ fortsatt viser advarsler fra det gamle schemaet.
+
+IntelliJ lagrer egendefinerte schema-mappinger per prosjekt i `.idea/jsonSchemas.xml`. Det finnes ingen global innstilling for slike mappinger.
+
+## Bidra
+
+1. Lag en branch fra `main`.
+2. Gjør endringene i riktig app eller delt pakke.
+3. Kjør relevante tester, typesjekk og lint.
+4. Opprett en pull request.
+
+## Team
+
+Team Komet vedlikeholder repoet. Interne spørsmål kan stilles i Slack-kanalen `#team_komet`. Andre spørsmål kan opprettes som GitHub-issues.
+
+## Lisens
+
+Se [LICENSE](LICENSE).
+
+## KI-assistanse
+
+Repoet bruker GitHub Copilot for kodeforslag.

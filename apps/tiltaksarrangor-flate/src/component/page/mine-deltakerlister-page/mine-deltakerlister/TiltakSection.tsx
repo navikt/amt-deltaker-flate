@@ -1,5 +1,5 @@
 import { Heading } from '@navikt/ds-react'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import globalStyles from '../../../../globals.module.scss'
 import styles from './DeltakerListe.module.scss'

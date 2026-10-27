@@ -115,7 +115,12 @@ export const tilbakekallForslag = (
   const url = appUrl(
     `/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/${deltakerId}/forslag/${forslagId}/tilbakekall`
   )
-  return axiosInstance.post(url).catch((err) => logAndThrowError(err, url))
+  return axiosInstance.post(url).catch((err) =>
+    logAndThrowError(err, 'tilbakekallForslag', {
+      deltakerId,
+      forslagId
+    })
+  )
 }
 
 function postForslag<T>(
@@ -129,5 +134,10 @@ function postForslag<T>(
   return axiosInstance
     .post(url, body)
     .then(parse(aktivtForslagSchema))
-    .catch((err) => logAndThrowError(err, url))
+    .catch((err) =>
+      logAndThrowError(err, 'deltakerForslag', {
+        deltakerId,
+        operation: endepunkt
+      })
+    )
 }

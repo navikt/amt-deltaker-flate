@@ -10,6 +10,8 @@
     "start": "turbo start",
     "test": "turbo test",
     "test:no-watch": "turbo test:no-watch",
+    "test:github-pages": "node scripts/build-github-pages.test.ts .",
+    "test:gcs-assets": "node scripts/gcs-asset-cleanup.test.mjs",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
     "format": "prettier -w ./**/*",
@@ -23,7 +25,7 @@
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "prettier": "catalog:",
-    "turbo": "^2.11.8"
+    "turbo": "^2.11.9"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

@@ -33,6 +33,7 @@ export default [
       'vite.config.ts',
       '/server/server.js',
       'plugin:react/recommended',
+      '**/public/mockServiceWorker.js',
       'node_modules/'
     ]
   },

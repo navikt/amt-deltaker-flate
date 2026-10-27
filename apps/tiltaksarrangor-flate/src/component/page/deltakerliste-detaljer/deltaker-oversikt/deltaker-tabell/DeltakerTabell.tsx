@@ -1,5 +1,4 @@
 import { Table } from '@navikt/ds-react'
-import React from 'react'
 import { TiltakDeltaker } from '../../../../../api/data/deltaker'
 import { Sortering } from '../../../../../utils/sortering-utils'
 import { TabellBody } from './TabellBody'

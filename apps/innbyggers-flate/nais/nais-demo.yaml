@@ -25,10 +25,6 @@ spec:
       memory: 128Mi
     limits:
       memory: 256Mi
-  gcp:
-    buckets:
-      - name: amt-innbygger-flate-demo #demo app
-        cascadingDelete: false
   env:
     - name: JSON_CONFIG
       value: >
@@ -44,7 +40,3 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: elastic
-        - id: loki

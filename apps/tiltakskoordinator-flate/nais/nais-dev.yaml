@@ -36,7 +36,6 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-        - /amt-deltaker-bff/**
   gcp:
     buckets:
       - name: amt-tiltakskoordinator-flate-dev-pr
@@ -58,8 +57,8 @@ spec:
           },
           "cors": {
             "origin": [
-              "https://tiltaksadministrasjon.intern.dev.nav.no/",
-              "https://tiltaksadministrasjon.ansatt.dev.nav.no/"
+              "https://tiltaksadministrasjon.intern.dev.nav.no",
+              "https://tiltaksadministrasjon.ansatt.dev.nav.no"
             ]
           },
           "proxies": [
@@ -79,7 +78,3 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: elastic
-        - id: loki

@@ -36,12 +36,9 @@ spec:
       autoLoginIgnorePaths:
         - /assets/*
         - /asset-manifest.json
-        - /amt-deltaker-bff/**
   gcp:
     buckets:
-      - name: amt-deltaker-flate-dev-v2 #pr lenke dev
-        cascadingDelete: false
-      - name: amt-veileder-flate-dev #vanlig dev
+      - name: amt-deltaker-flate-dev-v2 # PR-lenke (dev)
         cascadingDelete: false
   accessPolicy:
     outbound:
@@ -81,7 +78,3 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: elastic
-        - id: loki

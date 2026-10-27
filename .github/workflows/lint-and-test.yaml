@@ -32,6 +32,7 @@ jobs:
             # Delte filer påvirker alle appene og utløser lint, tester og bygg for alle.
             all:
               - packages/**
+              - scripts/**
               - shared-config/**
               - .npmrc
               - package.json

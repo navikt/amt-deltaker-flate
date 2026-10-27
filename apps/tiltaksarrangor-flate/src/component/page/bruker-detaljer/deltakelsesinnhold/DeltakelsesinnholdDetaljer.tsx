@@ -1,4 +1,3 @@
-import React from 'react'
 import { BodyLong, Label } from '@navikt/ds-react'
 import styles from './DeltakelsesinnholdDetaljer.module.scss'
 import { Tiltakskode } from '../../../../api/data/tiltak'

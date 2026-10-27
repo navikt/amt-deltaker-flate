@@ -1,4 +1,4 @@
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { faroBeforeSend, ErrorFallback } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
@@ -18,13 +18,12 @@ const FaroBoundary = withFaroErrorBoundary(
 )
 
 if (import.meta.env.VITE_FARO_URL) {
-  initializeFaro({
-    url: import.meta.env.VITE_FARO_URL,
-    app: {
-      name: APPLICATION_NAME,
-      version: import.meta.env.VITE_APP_VERSION || 'local'
-    },
-    isolate: true,
+  init({
+    app: APPLICATION_NAME,
+    namespace: 'amt',
+    version: import.meta.env.VITE_APP_VERSION || 'local',
+    telemetryUrl: import.meta.env.VITE_FARO_URL,
+    faro: { isolate: true },
     beforeSend: faroBeforeSend
   })
 }
@@ -47,6 +46,7 @@ export class Deltakerliste extends HTMLElement {
   }
 
   // Invoked each time after the element is attached to the DOM
+  // noinspection JSUnusedGlobalSymbols
   connectedCallback() {
     // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and Javascript code with it,
     const shadowRoot = this.attachShadow({ mode: 'closed' })
@@ -76,12 +76,14 @@ export class Deltakerliste extends HTMLElement {
     )
   }
 
+  // noinspection JSUnusedGlobalSymbols
   disconnectedCallback() {
     this.reactRoot?.unmount()
   }
 
   // Invoked when one of the custom element's attributes is added, removed, or changed.
   // @ts-expect-error no-unused-variable
+  // noinspection JSUnusedGlobalSymbols, JSUnusedLocalSymbols
   attributeChangedCallback(name: string, oldVal: string, newValue: string) {
     if (
       name === Deltakerliste.DELTAKERLISTE_ID_PROP &&
@@ -92,6 +94,7 @@ export class Deltakerliste extends HTMLElement {
   }
 
   // to get the attributeChangedCallback() callback to fire when an attribute changes, you have to observe the attributes
+  // noinspection JSUnusedGlobalSymbols
   static get observedAttributes() {
     return [Deltakerliste.DELTAKERLISTE_ID_PROP]
   }

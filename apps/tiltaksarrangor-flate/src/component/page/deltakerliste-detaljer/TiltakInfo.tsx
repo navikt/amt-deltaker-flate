@@ -1,6 +1,5 @@
 import { Alert, BodyLong, BodyShort, Detail } from '@navikt/ds-react'
 import cls from 'classnames'
-import React from 'react'
 
 import { TiltakGjennomforingStatus } from '../../../api/data/tiltak'
 import { dateStrWithMonthName } from '../../../utils/date-utils'

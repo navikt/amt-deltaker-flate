@@ -1,5 +1,5 @@
 import { Alert, Button } from '@navikt/ds-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { isPending, usePromise } from '../../../../../utils/use-promise'
 
 interface SendTilNavKnappProps {

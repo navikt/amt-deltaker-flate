@@ -150,6 +150,7 @@ jobs:
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_bucket: gs://amt-deltaker-innbyggers-flate-dev
       prod_bucket: gs://amt-deltaker-innbyggers-flate-prod
+      cleanup_dev_assets: true
       demo_destination: amt-innbygger-flate-demo
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
@@ -222,5 +223,6 @@ jobs:
       target_environment: ${{ github.event_name == 'workflow_dispatch' && inputs.target_environment || 'dev' }}
       dev_bucket: gs://amt-tiltaksarrangor-flate-dev
       prod_bucket: gs://amt-tiltaksarrangor-flate-prod
+      cleanup_dev_assets: true
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}

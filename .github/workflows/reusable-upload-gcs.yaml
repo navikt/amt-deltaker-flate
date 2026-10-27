@@ -9,6 +9,22 @@ on:
       bucket:
         required: true
         type: string
+      preserve_pr_previews:
+        required: false
+        type: boolean
+        default: false
+      cleanup_assets:
+        required: false
+        type: boolean
+        default: false
+      prod_retention_days:
+        required: false
+        type: number
+        default: 0
+      cleanup_prod_assets:
+        required: false
+        type: boolean
+        default: false
       workload_identity_provider:
         required: true
         type: string
@@ -28,6 +44,10 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Sjekk ut kode for produksjonsopprydding
+        if: inputs.prod_retention_days > 0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - name: Last ned frontend-filer
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
@@ -42,8 +62,45 @@ jobs:
 
       - name: Sett opp Google Cloud SDK
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          skip_install: true
+
+      - name: Vis kandidater til GCS-opprydding (ingen sletting)
+        if: inputs.prod_retention_days == 0
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          PRESERVE_PR_PREVIEWS: ${{ inputs.preserve_pr_previews }}
+          CLEANUP_ASSETS: ${{ inputs.cleanup_assets }}
+        run: |
+          if [ "$CLEANUP_ASSETS" = true ]; then
+            gsutil -m rsync -r -d -n build/assets "$BUCKET/assets"
+          elif [ "$PRESERVE_PR_PREVIEWS" = true ]; then
+            gsutil -m rsync -r -d -n -x '^pr-[0-9]+/' build "$BUCKET"
+          else
+            gsutil -m rsync -r -d -n build "$BUCKET"
+          fi
+
+      - name: Vis produksjonsfiler som kan slettes etter karantenetid (ingen sletting)
+        if: inputs.prod_retention_days > 0
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          RETENTION_DAYS: ${{ inputs.prod_retention_days }}
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs
 
       - name: Last opp filer til GCS
         env:
           BUCKET: ${{ inputs.bucket }}
         run: gsutil -m rsync -r build "$BUCKET"
+
+      - name: Rydd foreldede appfiler under assets
+        if: inputs.cleanup_assets
+        env:
+          BUCKET: ${{ inputs.bucket }}
+        run: gsutil -m rsync -r -d build/assets "$BUCKET/assets"
+
+      - name: Slett foreldede produksjonsfiler under assets
+        if: inputs.cleanup_prod_assets
+        env:
+          BUCKET: ${{ inputs.bucket }}
+          RETENTION_DAYS: ${{ inputs.prod_retention_days }}
+        run: gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs --delete
