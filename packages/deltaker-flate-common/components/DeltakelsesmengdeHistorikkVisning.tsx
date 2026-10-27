@@ -7,25 +7,21 @@ interface DeltakelsesmengdeProps {
   erEnkeltplass: boolean
   deltakelsesprosent: number | null
   dagerPerUke: number | null
-}
-
-interface DeltakelsesmengdeBodyLongSectionProps extends DeltakelsesmengdeProps {
-  className?: string
-}
-
-interface DeltakelsesmengdeInlineProps extends DeltakelsesmengdeProps {
   className?: string
 }
 
 export const DeltakelsesmengdeBodyLongSection = ({
-  className,
-  ...props
-}: DeltakelsesmengdeBodyLongSectionProps) => {
+  tiltakskode,
+  erEnkeltplass,
+  deltakelsesprosent,
+  dagerPerUke,
+  className
+}: DeltakelsesmengdeProps) => {
   const text = getDeltakelsesmengdeText(
-    props.tiltakskode,
-    props.erEnkeltplass,
-    props.deltakelsesprosent,
-    props.dagerPerUke
+    tiltakskode,
+    erEnkeltplass,
+    deltakelsesprosent,
+    dagerPerUke
   )
 
   return text ? (
@@ -39,19 +35,22 @@ export const DeltakelsesmengdeBodyLongSection = ({
 }
 
 export const DeltakelsesmengdeInline = ({
-  className,
-  ...props
-}: DeltakelsesmengdeInlineProps) => {
+  tiltakskode,
+  erEnkeltplass,
+  deltakelsesprosent,
+  dagerPerUke,
+  className
+}: DeltakelsesmengdeProps) => {
   const text = getDeltakelsesmengdeText(
-    props.tiltakskode,
-    props.erEnkeltplass,
-    props.deltakelsesprosent,
-    props.dagerPerUke
+    tiltakskode,
+    erEnkeltplass,
+    deltakelsesprosent,
+    dagerPerUke
   )
 
   return text ? (
     <BodyLong size="small" className={className}>
-      {`Deltakelsesmengde: ${text}`.trim()}
+      {`Deltakelsesmengde: ${text}`}
     </BodyLong>
   ) : null
 }
