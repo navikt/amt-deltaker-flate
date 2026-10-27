@@ -4,14 +4,8 @@ import { useTilbakelenkeContext } from '../../../store/TilbakelenkeContextProvid
 import { Tilbakelenke } from '../tilbakelenke/Tilbakelenke'
 import styles from './Header.module.scss'
 
-interface HeaderProps {
-  isLoggedIn: boolean
-}
-
-export const Header = (props: HeaderProps): React.ReactElement => {
+export const Header = (): React.ReactElement => {
   const { tilbakeTilUrl } = useTilbakelenkeContext()
-
-  if (!props.isLoggedIn) return <></>
 
   return (
     <nav className={styles.header}>

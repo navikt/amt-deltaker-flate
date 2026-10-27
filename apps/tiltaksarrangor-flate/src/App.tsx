@@ -37,7 +37,7 @@ export const App = (): React.ReactElement => {
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header />
       <main id="maincontent" role="main" tabIndex={-1}>
         {isNotStartedOrPending(fetchMineRollerPromise) && <SpinnerPage />}
         {isRejected(fetchMineRollerPromise) && <ErrorPage />}
