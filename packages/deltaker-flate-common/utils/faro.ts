@@ -47,10 +47,10 @@ export function faroBeforeSend<T extends TransportItem>(item: T): T | null {
     }
   }
 
-  // Dropp hele telemetri-elementet hvis payloaden inneholder et
-  // 11-sifret mønster som kan være et fødselsnummer.
+  // Dropp hele telemetri-elementet hvis payloaden inneholder nøyaktig
+  // 11 sammenhengende sifre som kan være et fødselsnummer.
   const payload = JSON.stringify(item)
-  if (/\d{11}/.test(payload)) {
+  if (/(^|\D)\d{11}(\D|$)/.test(payload)) {
     return null
   }
 

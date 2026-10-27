@@ -85,6 +85,21 @@ describe('faroBeforeSend', () => {
     expect(result).toBeNull()
   })
 
+  it('slipper gjennom Web Vitals-ID med 13-sifrede tekniske verdier', () => {
+    const item = {
+      type: 'measurement',
+      payload: {
+        type: 'web-vitals',
+        context: {
+          id: 'v6-1793107345361-1234567890123'
+        }
+      },
+      meta: {}
+    }
+    const result = faroBeforeSend(item)
+    expect(result).toEqual(item)
+  })
+
   it('slipper gjennom item uten fødselsnummer', () => {
     const item = {
       meta: { page: { url: 'https://nav.no/deltaker' } },
