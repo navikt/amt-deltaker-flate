@@ -24,6 +24,7 @@ export const UtkastDeltakerEnkeltplass = () => {
         tiltaksnavnHosArrangor={
           deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
         }
+        headingLevel="2"
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}
@@ -37,7 +38,7 @@ export const UtkastDeltakerEnkeltplass = () => {
           deltaker.deltakerliste.opplaringKategoriseringValg
         }
         heading={
-          <Heading level="3" size="medium">
+          <Heading level="2" size="medium">
             Dette er innholdet
           </Heading>
         }
@@ -48,12 +49,12 @@ export const UtkastDeltakerEnkeltplass = () => {
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         erEnkeltplass={true}
-        headingLevel="3"
+        headingLevel="2"
       />
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
-        headinglevel="3"
+        headinglevel="2"
       />
 
       <DialogLenke dialogUrl={DIALOG_URL} />
