@@ -78,15 +78,6 @@ jobs:
         with:
           skip_install: true
 
-      - name: Vis CDN-filer som kan slettes (ingen sletting)
-        if: inputs.cleanup_environment != ''
-        env:
-          DESTINATION: ${{ inputs.destination }}
-          RETENTION_DAYS: ${{ inputs.cleanup_environment == 'prod' && '7' || '0' }}
-        run: |
-          export BUCKET="gs://${BUCKET_NAME}/amt/${DESTINATION}/build"
-          gsutil ls -l "${BUCKET}/assets/**" | node scripts/gcs-asset-cleanup.mjs
-
       - name: Slett foreldede CDN-filer under assets
         if: inputs.cleanup_environment != ''
         env:
