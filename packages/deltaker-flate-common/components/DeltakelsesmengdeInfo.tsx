@@ -1,14 +1,30 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { Deltakelsesmengde, Tiltakskode } from '../model/deltaker'
 import { formatDate } from '../utils/utils'
-import { getDeltakelsesmengdeText } from './DeltakelsesmengdeVisning'
+import { deltakerprosentText } from '../utils/displayText'
+import { harDeltakelsesmengde } from '../utils/utils'
 
 interface Props {
   tiltakskode: Tiltakskode
   deltakelsesprosent: number | null
   dagerPerUke: number | null
   erEnkeltplass: boolean
-  nesteDeltakelsesmengde: Deltakelsesmengde | null
+  nesteDeltakelsesmengde?: Deltakelsesmengde | null
+  className?: string
+  headingLevel?: '2' | '3'
+  headingSize?: 'medium' | 'small'
+}
+
+export const getDeltakelsesmengdeText = (
+  tiltakskode: Tiltakskode,
+  erEnkeltplass: boolean,
+  deltakelsesprosent: number | null,
+  dagerPerUke: number | null
+) => {
+  if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
+    return null
+  }
+  return deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)
 }
 
 export function DeltakelsesmengdeInfo({
@@ -16,34 +32,34 @@ export function DeltakelsesmengdeInfo({
   deltakelsesprosent,
   dagerPerUke,
   erEnkeltplass,
-  nesteDeltakelsesmengde
+  nesteDeltakelsesmengde,
+  className,
+  headingLevel = '2',
+  headingSize = 'medium'
 }: Props) {
-  const deltakelsesmengdeText = getDeltakelsesmengdeText({
+  const deltakelsesmengdeText = getDeltakelsesmengdeText(
     tiltakskode,
+    erEnkeltplass,
     deltakelsesprosent,
-    dagerPerUke,
-    erEnkeltplass
-  })
+    dagerPerUke
+  )
 
   const nesteDeltakelsesmengdeText = nesteDeltakelsesmengde
-    ? getDeltakelsesmengdeText({
+    ? getDeltakelsesmengdeText(
         tiltakskode,
-        deltakelsesprosent: nesteDeltakelsesmengde.deltakelsesprosent,
-        dagerPerUke: nesteDeltakelsesmengde.dagerPerUke,
-        erEnkeltplass
-      })
+        erEnkeltplass,
+        nesteDeltakelsesmengde.deltakelsesprosent,
+        nesteDeltakelsesmengde.dagerPerUke
+      )
     : null
 
-  if (deltakelsesmengdeText === null) {
+  if (!deltakelsesmengdeText && !nesteDeltakelsesmengdeText) {
     return null
   }
 
-  if (!nesteDeltakelsesmengde && !deltakelsesmengdeText) {
-    return null
-  }
   return (
-    <>
-      <Heading level="2" size="medium" className="mt-8">
+    <div className={className ?? ''}>
+      <Heading level={headingLevel} size={headingSize}>
         Deltakelsesmengde
       </Heading>
       {nesteDeltakelsesmengde ? (
@@ -54,6 +70,7 @@ export function DeltakelsesmengdeInfo({
           <BodyShort size="small">
             {deltakelsesmengdeText || '(ikke satt)'}
           </BodyShort>
+
           <BodyShort size="small" className="mt-2">
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
             ):
@@ -65,6 +82,6 @@ export function DeltakelsesmengdeInfo({
           {deltakelsesmengdeText}
         </BodyShort>
       )}
-    </>
+    </div>
   )
 }

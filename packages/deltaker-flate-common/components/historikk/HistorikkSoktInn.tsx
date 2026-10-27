@@ -4,7 +4,7 @@ import { Tiltakskode } from '../../model/deltaker.ts'
 import { Innsok } from '../../model/deltakerHistorikk.ts'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils.ts'
 import { DeltakelseInnhold } from '../DeltakelseInnhold.tsx'
-import { DeltakelsesmengdeBodyLongSection } from '../DeltakelsesmengdeVisning.tsx'
+import { DeltakelsesmengdeBodyLongSection } from '../DeltakelsesmengdeHistorikkVisning.tsx'
 import { PrisOgBetaling } from '../PrisOgBetaling.tsx'
 import { HistorikkElement } from './HistorikkElement.tsx'
 
@@ -60,7 +60,7 @@ export const HistorikkSoktInn = ({
         erEnkeltplass={erEnkeltplass}
         deltakelsesprosent={null}
         dagerPerUke={dagerPerUkeVedInnsok}
-        headingClassName="mt-4"
+        className="mt-4"
       />
 
       {prisinformasjonVedInnsok && (

@@ -13,6 +13,8 @@ interface Props {
   tiltakskode: Tiltakskode
   erEnkeltplass: boolean
   tiltaksnavnHosArrangor: string
+  headingLevel?: '2' | '3'
+  headingSize?: 'small' | 'medium'
 }
 
 export const VeilederSnakkeboble = ({
@@ -20,7 +22,9 @@ export const VeilederSnakkeboble = ({
   arrangorNavn,
   tiltakskode,
   erEnkeltplass,
-  tiltaksnavnHosArrangor
+  tiltaksnavnHosArrangor,
+  headingLevel = '3',
+  headingSize = 'small'
 }: Props) => {
   const pameldingTrengerGodkjenning =
     kreverGodkjenningForPamelding(pameldingstype)
@@ -33,7 +37,7 @@ export const VeilederSnakkeboble = ({
 
   return (
     <GuidePanel illustration={svg}>
-      <Heading level="3" size="small">
+      <Heading level={headingLevel} size={headingSize}>
         {`Dette er et utkast til ${pameldingTrengerGodkjenning ? 'søknad' : 'påmelding'} til ${tiltaksnavnHosArrangor}`}
       </Heading>
       {pameldingTrengerGodkjenning ? (

@@ -7,7 +7,7 @@ import {
   getDeltakerStatusDisplayText
 } from '../../utils/displayText'
 import { formatDate, formatDateWithMonthName } from '../../utils/utils'
-import { DeltakelsesmengdeInline } from '../DeltakelsesmengdeVisning'
+import { DeltakelsesmengdeInline } from '../DeltakelsesmengdeHistorikkVisning'
 import { HistorikkElement } from './HistorikkElement'
 
 interface Props {

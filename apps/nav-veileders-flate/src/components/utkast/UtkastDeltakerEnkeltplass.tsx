@@ -1,14 +1,14 @@
 import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   DeltakelseInnhold,
-  DeltakelsesmengdeAvsnitt,
+  DeltakelsesmengdeInfo,
   DialogLenke,
   formatDate,
   PrisOgBetaling,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
-import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
+import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltakerEnkeltplass = () => {
   const { deltaker } = useDeltakerContext()
@@ -24,6 +24,7 @@ export const UtkastDeltakerEnkeltplass = () => {
         tiltaksnavnHosArrangor={
           deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
         }
+        headingLevel="2"
       />
       <BodyLong size="small" className="mt-2 whitespace-pre-wrap">
         <b>Dato:</b> {formatDate(deltaker.startdato)} -{' '}
@@ -37,25 +38,23 @@ export const UtkastDeltakerEnkeltplass = () => {
           deltaker.deltakerliste.opplaringKategoriseringValg
         }
         heading={
-          <Heading level="3" size="medium">
+          <Heading level="2" size="medium">
             Dette er innholdet
           </Heading>
         }
       />
 
-      <DeltakelsesmengdeAvsnitt
-        tiltakskode={tiltakskode.kode}
-        erEnkeltplass={true}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
-        headingLevel="3"
-        headingSize="small"
-        bodyClassName="mt-2"
+        erEnkeltplass={true}
+        headingLevel="2"
       />
 
       <PrisOgBetaling
         prisinformasjon={deltaker.deltakerliste.prisinformasjon}
-        headinglevel="3"
+        headinglevel="2"
       />
 
       <DialogLenke dialogUrl={DIALOG_URL} />

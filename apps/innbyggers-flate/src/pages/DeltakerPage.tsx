@@ -195,6 +195,7 @@ export const DeltakerPage = () => {
           deltaker.deltakelsesmengder.nesteDeltakelsesmengde
         }
         erEnkeltplass={erEnkeltplass}
+        className="mt-8"
       />
 
       <SeEndringer

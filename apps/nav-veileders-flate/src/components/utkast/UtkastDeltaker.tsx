@@ -2,7 +2,7 @@ import { Heading } from '@navikt/ds-react'
 import {
   Bakgrunnsinformasjon,
   DeltakelseInnhold,
-  DeltakelsesmengdeAvsnitt,
+  DeltakelsesmengdeInfo,
   DeltakerStatusType,
   harBakgrunnsinfo,
   OmKurset,
@@ -13,7 +13,6 @@ import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
 
 export const UtkastDeltaker = () => {
   const { deltaker } = useDeltakerContext()
-  const { erEnkeltplass } = deltaker.deltakerliste
   const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
 
   return (
@@ -26,6 +25,7 @@ export const UtkastDeltaker = () => {
         tiltaksnavnHosArrangor={
           deltaker.deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
         }
+        headingLevel="3"
       />
 
       <DeltakelseInnhold
@@ -35,7 +35,7 @@ export const UtkastDeltaker = () => {
           deltaker.deltakerliste.opplaringKategoriseringValg
         }
         heading={
-          <Heading level="3" size="small">
+          <Heading level="2" size="small">
             Dette er innholdet
           </Heading>
         }
@@ -44,19 +44,18 @@ export const UtkastDeltaker = () => {
       {harBakgrunnsinfo(tiltakskode) && (
         <Bakgrunnsinformasjon
           bakgrunnsinformasjon={deltaker.bakgrunnsinformasjon}
-          headinglevel="3"
+          headinglevel="2"
           headingsize="small"
         />
       )}
 
-      <DeltakelsesmengdeAvsnitt
-        tiltakskode={tiltakskode}
-        erEnkeltplass={erEnkeltplass}
+      <DeltakelsesmengdeInfo
+        tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
-        headingLevel="3"
+        erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
+        headingLevel="2"
         headingSize="small"
-        bodyClassName="mt-2"
       />
 
       <OmKurset
@@ -68,6 +67,7 @@ export const UtkastDeltaker = () => {
         startdato={deltaker.deltakerliste.startdato}
         sluttdato={deltaker.deltakerliste.sluttdato}
         size="small"
+        headingLevel={2}
       />
 
       <Oppmotested
