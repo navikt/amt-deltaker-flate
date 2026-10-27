@@ -41,6 +41,10 @@ describe('resolveFaroEnvironment', () => {
   it('deaktiverer Faro når collector mangler', () => {
     expect(resolveFaroEnvironment('production')).toBeUndefined()
   })
+
+  it('deaktiverer Faro når både mode og collector er ukjent', () => {
+    expect(resolveFaroEnvironment('development')).toBeUndefined()
+  })
 })
 
 describe('faroBeforeSend', () => {

@@ -27,7 +27,10 @@ export function resolveFaroEnvironment(
   telemetryUrl?: string
 ): FaroEnvironment | undefined {
   const config = faroConfigByMode[mode]
-  return config?.telemetryUrl === telemetryUrl ? config.environment : undefined
+  if (!config || config.telemetryUrl !== telemetryUrl) {
+    return undefined
+  }
+  return config.environment
 }
 
 export function faroBeforeSend<T extends TransportItem>(item: T): T | null {
