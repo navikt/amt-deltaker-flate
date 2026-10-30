@@ -22,7 +22,7 @@
   "dependencies": {
     "@nais/apm": "catalog:",
     "@grafana/faro-react": "catalog:",
-    "@hookform/resolvers": "^5.9.2",
+    "@hookform/resolvers": "^6.0.0",
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
