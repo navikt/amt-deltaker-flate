@@ -56,7 +56,9 @@ const useCustomVarighetHook = (
   const [valgtVarighet, setVarighetValg] = useState<VarighetValg | undefined>(
     initVarighet
   )
-  const [startdato, setStartdato] = useState(initStartdato)
+  const [startdato, setStartdato] = useState(
+    initStartdato || deltaker.startdato || undefined
+  )
 
   const sluttdatoResultat = useSluttdato({
     deltaker,
@@ -107,7 +109,8 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     const { result } = renderHook(() =>
       useSluttdato({
         deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.TOLV_MANEDER
+        valgtVarighet: VarighetValg.TOLV_MANEDER,
+        startdato: deltakerMedDatoer.startdato || undefined
       })
     )
     expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
@@ -246,23 +249,6 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     rerender()
 
     expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
-  })
-
-  it('beregner sluttdato fra deltakers sluttdato når startdato ikke er gitt', () => {
-    const { result } = renderHook(() =>
-      useSluttdato({
-        deltaker: deltakerMedDatoer,
-        valgtVarighet: VarighetValg.TRE_MANEDER
-      })
-    )
-
-    expect(result.current.sluttdato?.getTime()).toBe(
-      dayjs(deltakerMedDatoer.sluttdato)
-        .subtract(1, 'day')
-        .add(3, 'months')
-        .toDate()
-        .getTime()
-    )
   })
 
   it('beregner sluttdato fra startdato når gitt', () => {

@@ -34,8 +34,6 @@ export function useSluttdato({
   validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
   handleChange: (date: Date | undefined) => void
 } {
-  const opprinneligSluttdato = deltaker.sluttdato
-
   const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
@@ -65,8 +63,6 @@ export function useSluttdato({
       setSluttdato(annet.sluttdato)
     } else if (valgtVarighet && startdato) {
       setSluttdato(kalkulerSluttdatoFra(startdato, valgtVarighet))
-    } else if (valgtVarighet && opprinneligSluttdato) {
-      setSluttdato(kalkulerSluttdatoFra(opprinneligSluttdato, valgtVarighet))
     }
   }, [startdato, valgtVarighet])
 
