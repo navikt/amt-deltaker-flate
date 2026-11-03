@@ -251,6 +251,24 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     expect(result.current.error).toBe(VARGIHET_VALG_FEILMELDING)
   })
 
+  it('beregner sluttdato fra deltakers sluttdato når det er forleng', () => {
+    const { result } = renderHook(() =>
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.TRE_MANEDER,
+        erForleng: true
+      })
+    )
+
+    expect(result.current.sluttdato?.getTime()).toBe(
+      dayjs(deltakerMedDatoer.sluttdato)
+        .subtract(0, 'day') // skal ikke trekke fra når det er forleng
+        .add(3, 'months')
+        .toDate()
+        .getTime()
+    )
+  })
+
   it('beregner sluttdato fra startdato når gitt', () => {
     const startdato = dayjs(deltakerMedDatoer.startdato)
       .add(1, 'month')

@@ -63,8 +63,11 @@ export function useSluttdato({
       setSluttdato(annet.sluttdato)
     } else if (valgtVarighet && startdato) {
       setSluttdato(kalkulerSluttdatoFra(startdato, valgtVarighet))
+    } else if (valgtVarighet && deltaker.sluttdato && erForleng) {
+      // HVis vi forlenger bruker vi deltakerens eksisterende sluttdato som utgangspunkt for kalkulering
+      setSluttdato(kalkulerSluttdatoFra(deltaker.sluttdato, valgtVarighet))
     }
-  }, [startdato, valgtVarighet])
+  }, [startdato, valgtVarighet, erForleng])
 
   useEffect(() => {
     if (sluttdato && valgtVarighet !== VarighetValg.ANNET) {

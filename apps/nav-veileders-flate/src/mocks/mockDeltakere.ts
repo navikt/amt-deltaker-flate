@@ -14,8 +14,8 @@ import {
   Tilskuddstype,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { uuidv4 } from 'zod'
-import { deltakerSchema } from '../api/data/deltaker.ts'
+import { v4 as uuidv4 } from 'uuid'
+import { deltakerSchema, DeltakerResponse } from '../api/data/deltaker.ts'
 import deltakere from './deltakere.json'
 import { lagOpplaringKategoriseringResponse } from './mockKodeverk.ts'
 
@@ -39,7 +39,7 @@ export const mockDeltakere = () => {
   }
 }
 
-const lagDefaultDeltaker = () => {
+const lagDefaultDeltaker = (): DeltakerResponse => {
   const tiltakskode = Tiltakskode.FAG_OG_YRKESOPPLAERING
   const erEnkeltplass = true
   const statusType = DeltakerStatusType.DELTAR
@@ -115,7 +115,7 @@ const lagDefaultDeltaker = () => {
     startdato: dayjs().subtract(40, 'day').toDate(),
     sluttdato: dayjs().add(90, 'day').toDate(),
     dagerPerUke: 4,
-    deltakelsesprosent: null,
+    deltakelsesprosent: 100,
     bakgrunnsinformasjon: mockBakgrunnsinformasjon,
     deltakelsesinnhold: {
       ledetekst: ledetekst,
@@ -146,7 +146,7 @@ const lagDefaultDeltaker = () => {
     deltakelsesmengder: {
       sisteDeltakelsesmengde: {
         gyldigFra: dayjs().subtract(30, 'day').toDate(),
-        deltakelsesprosent: null,
+        deltakelsesprosent: 100,
         dagerPerUke: 4
       },
       nesteDeltakelsesmengde: null

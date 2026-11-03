@@ -58,18 +58,18 @@ import {
 } from './mockKodeverk.ts'
 
 // Sett valgtMockDeltaker til defaultDeltaker før push.
-const valgtMockDeltaker = mockDeltakere().enkeltplassUtenRammeavtale_deltar
+const valgtMockDeltaker = mockDeltakere().defaultDeltaker
 
 export class MockHandler {
-  deltaker: DeltakerResponse = structuredClone(valgtMockDeltaker)
+  deltaker: DeltakerResponse | null = structuredClone(valgtMockDeltaker)
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
 
   get statusType() {
-    return this.deltaker.status.type
+    return this.deltaker!.status.type
   }
 
   get tiltakskode() {
-    return this.deltaker.deltakerliste.tiltakskode.kode
+    return this.deltaker!.deltakerliste.tiltakskode.kode
   }
 
   createPamelding(deltakerlisteId: string) {
@@ -251,6 +251,7 @@ export class MockHandler {
     }
 
     if (this.deltaker?.deltakerId === deltakerId) {
+      this.deltaker = null
       return new HttpResponse(null, { status: 200 })
     }
 
