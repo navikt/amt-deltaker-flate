@@ -64,7 +64,7 @@ export function useSluttdato({
     } else if (valgtVarighet && startdato) {
       setSluttdato(kalkulerSluttdatoFra(startdato, valgtVarighet))
     } else if (valgtVarighet && deltaker.sluttdato && erForleng) {
-      // HVis vi forlenger bruker vi deltakerens eksisterende sluttdato som utgangspunkt for kalkulering
+      // Hvis vi forlenger bruker vi deltakerens eksisterende sluttdato som utgangspunkt for kalkulering
       setSluttdato(kalkulerSluttdatoFra(deltaker.sluttdato, valgtVarighet))
     }
   }, [startdato, valgtVarighet, erForleng])

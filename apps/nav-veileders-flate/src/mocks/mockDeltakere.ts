@@ -68,8 +68,8 @@ const lagDefaultDeltaker = (): DeltakerResponse => {
         navn: mockArrangorenheter[0].navn,
         organisasjonsnummer: mockArrangorenheter[0].organisasjonsnummer
       },
-      startdato: dayjs().subtract(40, 'day').toDate(),
-      sluttdato: dayjs().add(90, 'day').toDate(),
+      startdato: erEnkeltplass ? null : dayjs().subtract(40, 'day').toDate(),
+      sluttdato: erEnkeltplass ? null : dayjs().add(90, 'day').toDate(),
       status: DeltakerlisteStatus.GJENNOMFORES,
       tilgjengeligInnhold: {
         innhold: innhold,
@@ -139,10 +139,10 @@ const lagDefaultDeltaker = (): DeltakerResponse => {
     kanEndres: true,
     digitalBruker: true,
     harAdresse: true,
-    maxVarighet: dayjs.duration(2, 'month').asMilliseconds(),
+    maxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
     softMaxVarighet: erEnkeltplass
       ? null
-      : dayjs.duration(6, 'month').asMilliseconds(),
+      : dayjs.duration(12, 'month').asMilliseconds(),
     forslag: [],
     importertFraArena: null,
     erUnderOppfolging: true,
