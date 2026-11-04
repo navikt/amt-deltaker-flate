@@ -1,0 +1,271 @@
+{
+  "enkeltplassUtenRammeavtale_deltar": {
+    "deltakerId": "227ac97d-8720-40cc-a472-b75da478e498",
+    "fornavn": "Opprett",
+    "mellomnavn": null,
+    "etternavn": "Salamander",
+    "deltakerliste": {
+      "deltakerlisteId": "ea152a4d-fcd5-4902-99fd-776601e693fa",
+      "deltakerlisteNavn": "Studiespesialisering",
+      "tiltakskode": {
+        "kode": "STUDIESPESIALISERING",
+        "visningsnavn": "Studiespesialisering"
+      },
+      "arrangorNavn": "Muligheter AS",
+      "visningsnavn": {
+        "tiltakHosArrangorTittel": "Studiespesialisering hos Muligheter AS",
+        "tiltakHosArrangorIngressTekst": "Studiespesialisering hos Muligheter AS",
+        "kladdTiltakHosArrangorTittel": "Studiespesialisering hos Muligheter AS"
+      },
+      "arrangor": {
+        "navn": "Muligheter AS",
+        "organisasjonsnummer": "927121921"
+      },
+      "oppstartstype": "ENKELTPLASS",
+      "startdato": null,
+      "sluttdato": null,
+      "status": "GJENNOMFORES",
+      "tilgjengeligInnhold": {
+        "ledetekst": null,
+        "innhold": [
+          {
+            "tekst": "Annet",
+            "innholdskode": "annet"
+          }
+        ]
+      },
+      "erEnkeltplass": true,
+      "oppmoteSted": null,
+      "pameldingstype": "TRENGER_GODKJENNING",
+      "opplaringKategoriseringValg": {
+        "valgteKategoriseringer": [],
+        "valgteSertifiseringer": []
+      },
+      "prisinformasjon": {
+        "type": "Anskaffelse",
+        "pris": 100,
+        "begrunnelse": "Litt mindre enn først antatt"
+      },
+      "prisinformasjonTilGodkjenning": {
+        "type": "Anskaffelse",
+        "pris": 150,
+        "begrunnelse": "Oppdatert pris fra studiestedet"
+      }
+    },
+    "status": {
+      "id": "f4140006-1345-4392-a165-7671df8e43e8",
+      "type": "DELTAR",
+      "aarsak": null,
+      "gyldigFra": "2026-10-07T11:13:01.063606",
+      "gyldigTil": null,
+      "opprettet": "2026-10-07T11:13:01.063606"
+    },
+    "startdato": "2026-10-01",
+    "sluttdato": "2030-09-29",
+    "dagerPerUke": 2.0,
+    "deltakelsesprosent": 100.0,
+    "bakgrunnsinformasjon": null,
+    "deltakelsesinnhold": {
+      "ledetekst": null,
+      "innhold": [
+        {
+          "tekst": "Annet",
+          "innholdskode": "annet",
+          "valgt": true,
+          "beskrivelse": "Innhold"
+        }
+      ]
+    },
+    "adresseDelesMedArrangor": false,
+    "kanEndres": true,
+    "digitalBruker": true,
+    "maxVarighet": 126144000000,
+    "softMaxVarighet": null,
+    "forslag": [],
+    "vedtaksinformasjon": {
+      "fattet": "2026-10-07T11:13:01.072068",
+      "fattetAvNav": true,
+      "opprettet": "2026-10-07T11:12:05.142416",
+      "opprettetAv": "Veileder Veiledersen",
+      "sistEndret": "2026-10-07T11:13:01.063606",
+      "sistEndretAv": "Veileder Veiledersen",
+      "sistEndretAvEnhet": "Nav Grünerløkka"
+    },
+    "importertFraArena": null,
+    "harAdresse": false,
+    "deltakelsesmengder": {
+      "nesteDeltakelsesmengde": null,
+      "sisteDeltakelsesmengde": {
+        "deltakelsesprosent": 100.0,
+        "dagerPerUke": 2.0,
+        "gyldigFra": "2026-10-31"
+      }
+    },
+    "erUnderOppfolging": true,
+    "erManueltDeltMedArrangor": false
+  },
+  "AFT_deltar": {
+    "deltakerId": "de294005-b9d6-4da5-94ce-3b10a98ceca5",
+    "fornavn": "Opprett",
+    "mellomnavn": null,
+    "etternavn": "Salamander",
+    "deltakerliste": {
+      "deltakerlisteId": "1813855c-b593-48d7-8450-f7aab6d75971",
+      "deltakerlisteNavn": "test bytte arrangør",
+      "tiltakskode": {
+        "kode": "ARBEIDSFORBEREDENDE_TRENING",
+        "visningsnavn": "Arbeidsforberedende trening"
+      },
+      "arrangorNavn": "Muligheter AS",
+      "visningsnavn": {
+        "tiltakHosArrangorTittel": "Arbeidsforberedende trening hos Muligheter AS",
+        "tiltakHosArrangorIngressTekst": "Arbeidsforberedende trening hos Muligheter AS",
+        "kladdTiltakHosArrangorTittel": "Arbeidsforberedende trening hos Muligheter AS"
+      },
+      "arrangor": {
+        "navn": "Muligheter AS",
+        "organisasjonsnummer": "974548623"
+      },
+      "oppstartstype": "LOPENDE",
+      "startdato": "2025-11-10",
+      "sluttdato": "2027-05-13",
+      "status": "GJENNOMFORES",
+      "tilgjengeligInnhold": {
+        "ledetekst": "Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.",
+        "innhold": [
+          {
+            "tekst": "Arbeidspraksis",
+            "innholdskode": "arbeidspraksis"
+          },
+          {
+            "tekst": "Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen",
+            "innholdskode": "tilpasse-arbeidsoppgaver"
+          },
+          {
+            "tekst": "Karriereveiledning",
+            "innholdskode": "karriereveiledning"
+          },
+          {
+            "tekst": "Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin",
+            "innholdskode": "kartlegge-grunnleggende-ferdigheter"
+          },
+          {
+            "tekst": "Kartlegge hvordan helsen din påvirker muligheten din til å jobbe",
+            "innholdskode": "kartlegge-helse"
+          },
+          {
+            "tekst": "Oppfølging på arbeidsplassen",
+            "innholdskode": "oppfolging-arbeidsplassen"
+          },
+          {
+            "tekst": "Veiledning i sosial mestring",
+            "innholdskode": "veiledning-sosialt"
+          },
+          {
+            "tekst": "Annet",
+            "innholdskode": "annet"
+          }
+        ]
+      },
+      "erEnkeltplass": false,
+      "oppmoteSted": "Fjordgata 1",
+      "pameldingstype": "DIREKTE_VEDTAK",
+      "opplaringKategoriseringValg": null,
+      "prisinformasjon": null,
+      "prisinformasjonTilGodkjenning": null
+    },
+    "status": {
+      "id": "dabeae0b-7a03-46c4-b0d7-644017145625",
+      "type": "DELTAR",
+      "aarsak": null,
+      "gyldigFra": "2026-10-08T12:48:59.189607",
+      "gyldigTil": null,
+      "opprettet": "2026-10-08T12:48:59.189607"
+    },
+    "startdato": "2026-10-05",
+    "sluttdato": "2027-01-04",
+    "dagerPerUke": 4.0,
+    "deltakelsesprosent": 80.0,
+    "bakgrunnsinformasjon": "xx",
+    "deltakelsesinnhold": {
+      "ledetekst": "Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.",
+      "innhold": [
+        {
+          "tekst": "Arbeidspraksis",
+          "innholdskode": "arbeidspraksis",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen",
+          "innholdskode": "tilpasse-arbeidsoppgaver",
+          "valgt": true,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Karriereveiledning",
+          "innholdskode": "karriereveiledning",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Kartlegge grunnleggende ferdigheter som språk og hvordan du leser, skriver, regner og bruker datamaskin",
+          "innholdskode": "kartlegge-grunnleggende-ferdigheter",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Kartlegge hvordan helsen din påvirker muligheten din til å jobbe",
+          "innholdskode": "kartlegge-helse",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Oppfølging på arbeidsplassen",
+          "innholdskode": "oppfolging-arbeidsplassen",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Veiledning i sosial mestring",
+          "innholdskode": "veiledning-sosialt",
+          "valgt": false,
+          "beskrivelse": null
+        },
+        {
+          "tekst": "Annet",
+          "innholdskode": "annet",
+          "valgt": false,
+          "beskrivelse": null
+        }
+      ]
+    },
+    "adresseDelesMedArrangor": true,
+    "kanEndres": true,
+    "digitalBruker": true,
+    "maxVarighet": 94608000000,
+    "softMaxVarighet": 63072000000,
+    "forslag": [],
+    "vedtaksinformasjon": {
+      "fattet": "2026-10-08T12:48:43.374374",
+      "fattetAvNav": true,
+      "opprettet": "2026-10-08T12:48:43.374797",
+      "opprettetAv": "Veileder Veiledersen",
+      "sistEndret": "2026-10-08T12:48:43.374797",
+      "sistEndretAv": "Veileder Veiledersen",
+      "sistEndretAvEnhet": "Nav Grünerløkka"
+    },
+    "importertFraArena": null,
+    "harAdresse": false,
+    "deltakelsesmengder": {
+      "nesteDeltakelsesmengde": null,
+      "sisteDeltakelsesmengde": {
+        "deltakelsesprosent": 80.0,
+        "dagerPerUke": 4.0,
+        "gyldigFra": "2026-10-12"
+      }
+    },
+    "erUnderOppfolging": true,
+    "erManueltDeltMedArrangor": false
+  }
+}

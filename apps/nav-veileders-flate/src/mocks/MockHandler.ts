@@ -1,11 +1,8 @@
 import dayjs from 'dayjs'
 import {
   createHistorikk,
-  Deltakelsesmengde,
-  DeltakerlisteStatus,
   DeltakerStatusAarsakType,
   DeltakerStatusType,
-  erOpplaringstiltak,
   Forslag,
   ForslagEndring,
   ForslagEndringAarsakType,
@@ -24,8 +21,7 @@ import {
   Oppstartstype,
   Pameldingstype,
   PrisinformasjonType,
-  Tiltakskode,
-  Tilskuddstype
+  Tiltakskode
 } from 'deltaker-flate-common'
 import { HttpResponse } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
@@ -45,166 +41,47 @@ import {
   IkkeAktuellRequest
 } from '../api/data/endre-deltakelse-request.ts'
 import { EnkeltplassPameldingRequest } from '../api/data/enkeltplass-pamelding.ts'
+import { EnkeltplassKladdRequest } from '../api/data/kladd-request.ts'
 import { KodeverkResponse } from '../api/data/kodeverk.ts'
 import { PameldingRequest } from '../api/data/send-pamelding.ts'
+import {
+  mockArrangorenheter,
+  mockBakgrunnsinformasjon,
+  mockDelesAdresseMedArrangor,
+  getMockDeltaker,
+  mockHarVedtak
+} from './mockDeltakere.ts'
 import {
   lagOpplaringKategoriseringDeltaljertRespons,
   lagOpplaringKategoriseringResponse,
   mockSertifiseringer
 } from './mockKodeverk.ts'
-import { EnkeltplassKladdRequest } from '../api/data/kladd-request.ts'
-
-const bakgrunnsinformasjon =
-  'Ønsker å bli kontaktet via sms\nKan ikke på onsdager'
-
-const harVedtak = (statusType: DeltakerStatusType) => {
-  return (
-    statusType !== DeltakerStatusType.KLADD &&
-    statusType !== DeltakerStatusType.UTKAST_TIL_PAMELDING &&
-    statusType !== DeltakerStatusType.AVBRUTT_UTKAST
-  )
-}
 
 export class MockHandler {
-  pamelding: DeltakerResponse | null = null
+  deltaker: DeltakerResponse | null = getMockDeltaker()
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
-  statusType = DeltakerStatusType.DELTAR
-  tiltakskode = Tiltakskode.ARBEIDSMARKEDSOPPLAERING
 
-  createDeltaker(
-    deltakerlisteId: string,
-    tiltakskode?: Tiltakskode
-  ): DeltakerResponse {
-    const yesterday = dayjs().subtract(1, 'day')
-    const today = dayjs()
+  get statusType() {
+    return this.deltaker!.status.type
+  }
 
-    if (tiltakskode) this.tiltakskode = tiltakskode
-
-    const _startdato = null
-    const _sluttdato = null
-
-    const ledetekst = getLedetekst(this.tiltakskode)
-    const innhold = getInnholdForTiltakskode(this.tiltakskode)
-
-    const sisteDeltakelsesmengde: Deltakelsesmengde = {
-      gyldigFra: _startdato ?? new Date(),
-      dagerPerUke: null,
-      deltakelsesprosent: 100
-    }
-    const arrangor = mockArrangorenheter[0].underenheter[0]
-    const erEnkeltplass = true
-
-    return {
-      deltakerId: uuidv4(),
-      fornavn: 'Navn',
-      mellomnavn: null,
-      etternavn: 'Naversen',
-      deltakerliste: {
-        deltakerlisteId: deltakerlisteId,
-        deltakerlisteNavn: 'Testliste',
-        tiltakskode: {
-          kode: this.tiltakskode,
-          visningsnavn: mockVisningsnavn(this.tiltakskode)
-        },
-        oppstartstype: Oppstartstype.LOPENDE,
-        arrangorNavn: arrangor.navn,
-        arrangor: {
-          navn: arrangor.navn,
-          organisasjonsnummer: arrangor.organisasjonsnummer
-        },
-        startdato: dayjs('2022-10-28').toDate(),
-        sluttdato: dayjs('2030-02-20').toDate(),
-        status: DeltakerlisteStatus.GJENNOMFORES,
-        tilgjengeligInnhold: {
-          innhold: innhold,
-          ledetekst: ledetekst
-        },
-        erEnkeltplass,
-        pameldingstype: Pameldingstype.TRENGER_GODKJENNING,
-        oppmoteSted:
-          'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',
-        opplaringKategoriseringValg: lagOpplaringKategoriseringResponse(
-          this.tiltakskode,
-          erEnkeltplass
-        ),
-        prisinformasjon: erEnkeltplass
-          ? {
-              type: PrisinformasjonType.IngenKostnader,
-              tilleggsopplysninger: 'Det er gratis.'
-            }
-          : null,
-        prisinformasjonTilGodkjenning: erEnkeltplass
-          ? {
-              type: PrisinformasjonType.Tilskudd,
-              tilskudd: [
-                { type: Tilskuddstype.SEMESTERAVGIFT, pris: 2500 },
-                { type: Tilskuddstype.SKOLEPENGER, pris: 31000 },
-                { type: Tilskuddstype.EKSAMENSGEBYR, pris: 3900 }
-              ],
-              tilleggsopplysninger:
-                '[Fritekst: Etter avtale kan du søke Nav om refusjon for de 2 første årene. Det tredje året skal du dekke selv]'
-            }
-          : null,
-        visningsnavn: {
-          tiltakHosArrangorTittel: 'tittel',
-          tiltakHosArrangorIngressTekst: 'ingress',
-          kladdTiltakHosArrangorTittel: 'kladd-tittel'
-        }
-      },
-      status: {
-        id: '85a05446-7211-4bbc-88ad-970f7ef9fb04',
-        type: this.statusType,
-        aarsak: null,
-        gyldigFra: dayjs().subtract(30, 'day').toDate(),
-        gyldigTil: null,
-        opprettet: dayjs().subtract(30, 'day').toDate()
-      },
-      startdato: _startdato,
-      sluttdato: _sluttdato,
-      dagerPerUke: sisteDeltakelsesmengde.dagerPerUke,
-      deltakelsesprosent: sisteDeltakelsesmengde.deltakelsesprosent,
-      bakgrunnsinformasjon: bakgrunnsinformasjon,
-      deltakelsesinnhold: {
-        ledetekst: ledetekst,
-        innhold: getUtvidetInnhold(innhold)
-      },
-      vedtaksinformasjon: {
-        fattet: harVedtak(this.statusType) ? yesterday.toDate() : null,
-        fattetAvNav: false,
-        opprettet: yesterday.toDate(),
-        opprettetAv: 'Navn Navnesen',
-        sistEndret: today.toDate(),
-        sistEndretAv: 'Navn Navnesen',
-        sistEndretAvEnhet: 'Nav Fredrikstad'
-      },
-      adresseDelesMedArrangor: delesAdresseMedArrangor(this.tiltakskode),
-      kanEndres: true,
-      digitalBruker: true,
-      harAdresse: true,
-      maxVarighet: dayjs.duration(1, 'month').asMilliseconds(),
-      softMaxVarighet: dayjs.duration(6, 'month').asMilliseconds(),
-      forslag: [],
-      importertFraArena: null,
-      erUnderOppfolging: true,
-      deltakelsesmengder: {
-        sisteDeltakelsesmengde,
-        nesteDeltakelsesmengde: null
-      },
-      erManueltDeltMedArrangor: true
-    }
+  get tiltakskode() {
+    return this.deltaker!.deltakerliste.tiltakskode.kode
   }
 
   createPamelding(deltakerlisteId: string) {
-    this.pamelding = this.createDeltaker(deltakerlisteId)
-    return HttpResponse.json(this.pamelding)
+    this.deltaker ??= getMockDeltaker()
+    this.deltaker.deltakerliste.deltakerlisteId = deltakerlisteId
+    return HttpResponse.json(this.deltaker)
   }
 
   createEnkeltplassPamelding(tiltakskode: Tiltakskode) {
-    this.pamelding = this.createDeltaker(
-      'b21654fe-f0e6-4be1-84b5-da72ad6a4c1a',
-      tiltakskode
-    )
-    return HttpResponse.json(this.pamelding)
+    this.deltaker ??= getMockDeltaker()
+    this.deltaker.deltakerliste.tiltakskode = {
+      kode: tiltakskode,
+      visningsnavn: mockVisningsnavn(tiltakskode)
+    }
+    return HttpResponse.json(this.deltaker)
   }
 
   getStartdato(newStatusType?: DeltakerStatusType): Date | null {
@@ -246,14 +123,18 @@ export class MockHandler {
   }
 
   getForslag(): Forslag[] {
+    if (this.deltaker?.deltakerliste.erEnkeltplass) {
+      return []
+    }
+
     const erFellesOppstart =
-      this.pamelding?.deltakerliste.oppstartstype === Oppstartstype.FELLES
+      this.deltaker?.deltakerliste.oppstartstype === Oppstartstype.FELLES
     if (this.statusType === DeltakerStatusType.DELTAR) {
-      const sluttdato = dayjs(this.pamelding?.sluttdato)
+      const sluttdato = dayjs(this.deltaker?.sluttdato)
         .add(3, 'months')
         .toDate()
 
-      const startdato = dayjs(this.pamelding?.startdato).add(1, 'week').toDate()
+      const startdato = dayjs(this.deltaker?.startdato).add(1, 'week').toDate()
 
       const forslag = aktivtForslag({
         begrunnelse:
@@ -344,7 +225,7 @@ export class MockHandler {
       const sluttdatoForslag = aktivtForslag({
         endring: {
           type: ForslagEndringType.Sluttdato,
-          sluttdato: dayjs(this.pamelding?.sluttdato).add(7, 'days').toDate()
+          sluttdato: dayjs(this.deltaker?.sluttdato).add(7, 'days').toDate()
         }
       })
       const sluttarsakForslag = aktivtForslag({
@@ -366,8 +247,8 @@ export class MockHandler {
       return new HttpResponse(null, { status: 400 })
     }
 
-    if (this.pamelding?.deltakerId === deltakerId) {
-      this.pamelding = null
+    if (this.deltaker?.deltakerId === deltakerId) {
+      this.deltaker = null
       return new HttpResponse(null, { status: 200 })
     }
 
@@ -375,14 +256,14 @@ export class MockHandler {
   }
 
   sendInnPameldingEnkeltplass(request: EnkeltplassPameldingRequest) {
-    this.pamelding = {
-      ...this.pamelding,
+    this.deltaker = {
+      ...this.deltaker,
       deltakerliste: {
-        ...this.pamelding?.deltakerliste,
+        ...this.deltaker?.deltakerliste,
         prisinformasjon: request.prisinformasjon
       },
       deltakelsesinnhold: {
-        ...this.pamelding?.deltakelsesinnhold,
+        ...this.deltaker?.deltakelsesinnhold,
         innhold: request.beskrivelse
           ? [
               {
@@ -402,27 +283,27 @@ export class MockHandler {
         : null,
       dagerPerUke: request.dagerPerUke ?? null
     } as DeltakerResponse
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   oppdaterEnkeltplassKladd(request: EnkeltplassKladdRequest) {
-    if (this.pamelding === null) {
+    if (this.deltaker === null) {
       return new HttpResponse(null, { status: 404 })
     }
 
-    this.pamelding.dagerPerUke = request.dagerPerUke ?? null
+    this.deltaker.dagerPerUke = request.dagerPerUke ?? null
     return new HttpResponse(null, { status: 200 })
   }
 
   sendInnPamelding(request: PameldingRequest) {
-    if (this.pamelding === null) return new HttpResponse(null, { status: 404 })
+    if (this.deltaker === null) return new HttpResponse(null, { status: 404 })
 
-    this.pamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null
-    this.pamelding.dagerPerUke = request.dagerPerUke || null
-    this.pamelding.deltakelsesprosent = request.deltakelsesprosent || null
-    if (this.pamelding.deltakelsesinnhold !== null) {
-      this.pamelding.deltakelsesinnhold.innhold =
-        this.pamelding.deltakelsesinnhold.innhold.map((i) => {
+    this.deltaker.bakgrunnsinformasjon = request.bakgrunnsinformasjon || null
+    this.deltaker.dagerPerUke = request.dagerPerUke || null
+    this.deltaker.deltakelsesprosent = request.deltakelsesprosent || null
+    if (this.deltaker.deltakelsesinnhold !== null) {
+      this.deltaker.deltakelsesinnhold.innhold =
+        this.deltaker.deltakelsesinnhold.innhold.map((i) => {
           const valgtInnhold = request.innhold.reduce(
             (acc, innhold) => {
               acc[innhold.innholdskode] = innhold
@@ -440,55 +321,52 @@ export class MockHandler {
           return i
         })
     }
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   setStatus(status: DeltakerStatusType) {
-    this.statusType = status
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.kanEndres =
-        status !== DeltakerStatusType.FEILREGISTRERT
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.kanEndres = status !== DeltakerStatusType.FEILREGISTRERT
 
-      if (harVedtak(status) && oppdatertPamelding.vedtaksinformasjon) {
-        oppdatertPamelding.vedtaksinformasjon.fattet = dayjs()
+      if (mockHarVedtak(status) && oppdatertDeltaker.vedtaksinformasjon) {
+        oppdatertDeltaker.vedtaksinformasjon.fattet = dayjs()
           .subtract(2, 'day')
           .toDate()
-      } else if (oppdatertPamelding.vedtaksinformasjon) {
-        oppdatertPamelding.vedtaksinformasjon.fattet = null
+      } else if (oppdatertDeltaker.vedtaksinformasjon) {
+        oppdatertDeltaker.vedtaksinformasjon.fattet = null
       }
-      oppdatertPamelding.status.type = status
+      oppdatertDeltaker.status.type = status
       if (status === DeltakerStatusType.AVBRUTT_UTKAST) {
-        oppdatertPamelding.status.aarsak = {
+        oppdatertDeltaker.status.aarsak = {
           type: DeltakerStatusAarsakType.SAMARBEIDET_MED_ARRANGOREN_ER_AVBRUTT,
           beskrivelse: null
         }
       } else if (status === DeltakerStatusType.AVBRUTT) {
-        oppdatertPamelding.status.aarsak = {
+        oppdatertDeltaker.status.aarsak = {
           type: DeltakerStatusAarsakType.FATT_JOBB,
           beskrivelse: null
         }
       } else if (status === DeltakerStatusType.IKKE_AKTUELL) {
-        oppdatertPamelding.status.aarsak = {
+        oppdatertDeltaker.status.aarsak = {
           type: DeltakerStatusAarsakType.ANNET,
           beskrivelse: 'Det er en annen grunn'
         }
       } else {
-        oppdatertPamelding.status.aarsak = null
+        oppdatertDeltaker.status.aarsak = null
       }
-      oppdatertPamelding.startdato = this.getStartdato(status)
-      oppdatertPamelding.sluttdato = this.getSluttdato(status)
-      oppdatertPamelding.forslag = this.getForslag()
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      oppdatertDeltaker.startdato = this.getStartdato(status)
+      oppdatertDeltaker.sluttdato = this.getSluttdato(status)
+      oppdatertDeltaker.forslag = this.getForslag()
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   setTiltakskode(tiltakskode: Tiltakskode) {
-    this.tiltakskode = tiltakskode
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
     const erEnkeltplassFraArena =
       tiltakskode === Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING ||
       tiltakskode === Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING ||
@@ -501,28 +379,25 @@ export class MockHandler {
       tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
       tiltakskode === Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.tiltakskode = {
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.tiltakskode = {
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
       }
-      oppdatertPamelding.deltakerliste.opplaringKategoriseringValg =
+      oppdatertDeltaker.deltakerliste.opplaringKategoriseringValg =
         erNyEnkeltplass
-          ? lagOpplaringKategoriseringResponse(
-              this.tiltakskode,
-              erNyEnkeltplass
-            )
+          ? lagOpplaringKategoriseringResponse(tiltakskode, erNyEnkeltplass)
           : null
-      oppdatertPamelding.adresseDelesMedArrangor =
-        delesAdresseMedArrangor(tiltakskode)
+      oppdatertDeltaker.adresseDelesMedArrangor =
+        mockDelesAdresseMedArrangor(tiltakskode)
 
       const ledetekst = getLedetekst(tiltakskode)
       const innhold = getInnholdForTiltakskode(tiltakskode)
-      oppdatertPamelding.deltakerliste.tilgjengeligInnhold = {
+      oppdatertDeltaker.deltakerliste.tilgjengeligInnhold = {
         innhold,
         ledetekst
       }
-      oppdatertPamelding.deltakelsesinnhold = {
+      oppdatertDeltaker.deltakelsesinnhold = {
         innhold: getUtvidetInnhold(innhold),
         ledetekst
       }
@@ -531,161 +406,160 @@ export class MockHandler {
         tiltakskode === Tiltakskode.ARBEIDSFORBEREDENDE_TRENING ||
         tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
       ) {
-        oppdatertPamelding.deltakelsesprosent = 80
-        oppdatertPamelding.dagerPerUke = 4
+        oppdatertDeltaker.deltakelsesprosent = 80
+        oppdatertDeltaker.dagerPerUke = 4
       } else {
-        oppdatertPamelding.deltakelsesprosent = null
-        oppdatertPamelding.dagerPerUke = null
+        oppdatertDeltaker.deltakelsesprosent = null
+        oppdatertDeltaker.dagerPerUke = null
       }
 
       if (harBakgrunnsinfo(tiltakskode)) {
-        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
+        oppdatertDeltaker.bakgrunnsinformasjon = mockBakgrunnsinformasjon
       } else {
-        oppdatertPamelding.bakgrunnsinformasjon = null
+        oppdatertDeltaker.bakgrunnsinformasjon = null
       }
 
       if (erEnkeltplassFraArena) {
-        oppdatertPamelding.deltakerliste.erEnkeltplass = true
-        oppdatertPamelding.forslag = []
-        oppdatertPamelding.importertFraArena = {
+        oppdatertDeltaker.deltakerliste.erEnkeltplass = true
+        oppdatertDeltaker.forslag = []
+        oppdatertDeltaker.importertFraArena = {
           innsoktDato: dayjs().subtract(20, 'day').toDate()
         }
-        oppdatertPamelding.deltakerliste.prisinformasjon = null
+        oppdatertDeltaker.deltakerliste.prisinformasjon = null
       } else if (erNyEnkeltplass) {
-        oppdatertPamelding.deltakerliste.erEnkeltplass = true
-        oppdatertPamelding.importertFraArena = null
-        oppdatertPamelding.deltakerliste.prisinformasjon = {
+        oppdatertDeltaker.deltakerliste.erEnkeltplass = true
+        oppdatertDeltaker.importertFraArena = null
+        oppdatertDeltaker.deltakerliste.prisinformasjon = {
           type: PrisinformasjonType.Anskaffelse,
           pris: 100000
         }
       } else {
-        oppdatertPamelding.importertFraArena = null
-        oppdatertPamelding.deltakerliste.erEnkeltplass = false
-        oppdatertPamelding.deltakerliste.prisinformasjon = null
+        oppdatertDeltaker.importertFraArena = null
+        oppdatertDeltaker.deltakerliste.erEnkeltplass = false
+        oppdatertDeltaker.deltakerliste.prisinformasjon = null
       }
 
-      this.pamelding = oppdatertPamelding
+      this.deltaker = oppdatertDeltaker
     }
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   setOppstartstype(oppstartstype: Oppstartstype) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.oppstartstype = oppstartstype
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.oppstartstype = oppstartstype
+      this.deltaker = oppdatertDeltaker
     }
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   setErEnkeltplass(erEnkeltplass: boolean) {
-    const oppdatertPamelding = this.pamelding
-    if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.erEnkeltplass = erEnkeltplass
+    const oppdatertDeltaker = this.deltaker
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.erEnkeltplass = erEnkeltplass
       if (erEnkeltplass) {
-        oppdatertPamelding.deltakerliste.oppmoteSted = null
-        oppdatertPamelding.startdato = dayjs().subtract(1, 'day').toDate()
-        oppdatertPamelding.sluttdato = dayjs().add(1, 'day').toDate()
-        oppdatertPamelding.bakgrunnsinformasjon = null
-        oppdatertPamelding.deltakerliste.prisinformasjon = {
+        oppdatertDeltaker.deltakerliste.oppmoteSted = null
+        oppdatertDeltaker.startdato = dayjs().subtract(1, 'day').toDate()
+        oppdatertDeltaker.sluttdato = dayjs().add(1, 'day').toDate()
+        oppdatertDeltaker.bakgrunnsinformasjon = null
+        oppdatertDeltaker.deltakerliste.prisinformasjon = {
           type: PrisinformasjonType.Anskaffelse,
           pris: 100000
         }
       } else {
-        oppdatertPamelding.deltakerliste.oppmoteSted =
+        oppdatertDeltaker.deltakerliste.oppmoteSted =
           'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00.'
-        oppdatertPamelding.startdato = this.getStartdato(
-          oppdatertPamelding.status.type
+        oppdatertDeltaker.startdato = this.getStartdato(
+          oppdatertDeltaker.status.type
         )
-        oppdatertPamelding.sluttdato = this.getSluttdato(
-          oppdatertPamelding.status.type
+        oppdatertDeltaker.sluttdato = this.getSluttdato(
+          oppdatertDeltaker.status.type
         )
-        oppdatertPamelding.bakgrunnsinformasjon = bakgrunnsinformasjon
-        oppdatertPamelding.deltakerliste.prisinformasjon = null
+        oppdatertDeltaker.bakgrunnsinformasjon = mockBakgrunnsinformasjon
+        oppdatertDeltaker.deltakerliste.prisinformasjon = null
       }
+      oppdatertDeltaker.forslag = this.getForslag()
+      this.deltaker = oppdatertDeltaker
     }
 
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   setPameldingstype(pameldingstype: Pameldingstype) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.pameldingstype = pameldingstype
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.pameldingstype = pameldingstype
+      this.deltaker = oppdatertDeltaker
     }
-    return HttpResponse.json(this.pamelding)
+    return HttpResponse.json(this.deltaker)
   }
 
   endreDeltakelseIkkeAktuell(request: IkkeAktuellRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
-      oppdatertPamelding.status.aarsak = request.aarsak
-      oppdatertPamelding.startdato = null
-      oppdatertPamelding.sluttdato = null
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.status.type = DeltakerStatusType.IKKE_AKTUELL
+      oppdatertDeltaker.status.aarsak = request.aarsak
+      oppdatertDeltaker.startdato = null
+      oppdatertDeltaker.sluttdato = null
       this.fjernAktivtForslag(request.forslagId)
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseReaktiver() {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
-      oppdatertPamelding.startdato = null
-      oppdatertPamelding.sluttdato = null
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.status.type = DeltakerStatusType.VENTER_PA_OPPSTART
+      oppdatertDeltaker.startdato = null
+      oppdatertDeltaker.sluttdato = null
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseForleng(request: ForlengDeltakelseRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.sluttdato =
-        getDateFromString(request.sluttdato) ?? null
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.sluttdato = getDateFromString(request.sluttdato) ?? null
       this.fjernAktivtForslag(request.forslagId)
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseStartdato(request: EndreStartdatoRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.startdato =
-        getDateFromString(request.startdato) ?? null
-      oppdatertPamelding.sluttdato =
-        getDateFromString(request.sluttdato) ?? null
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.startdato = getDateFromString(request.startdato) ?? null
+      oppdatertDeltaker.sluttdato = getDateFromString(request.sluttdato) ?? null
+      this.deltaker = oppdatertDeltaker
       this.fjernAktivtForslag(request.forslagId)
-      return HttpResponse.json(oppdatertPamelding)
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseBakgrunnsinfo(request: EndreBakgrunnsinfoRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.bakgrunnsinformasjon = request.bakgrunnsinformasjon
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.bakgrunnsinformasjon = request.bakgrunnsinformasjon
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
@@ -694,23 +568,23 @@ export class MockHandler {
   // TODO bruke request og fjerne _
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endreDeltakelsePrisinfo(_request: EndrePrisinfoRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       // TODO lage et forslag for endring av prisinfo
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   tilbakekallPrisendring() {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.deltakerliste.prisinformasjonTilGodkjenning = null
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.deltakerliste.prisinformasjonTilGodkjenning = null
+      this.deltaker = oppdatertDeltaker
       return new HttpResponse(null, { status: 200 })
     }
 
@@ -718,122 +592,120 @@ export class MockHandler {
   }
 
   endreDeltakelseFjernOppstartsdato(request: FjernOppstartsdatoRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.startdato = null
-      oppdatertPamelding.sluttdato = null
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.startdato = null
+      oppdatertDeltaker.sluttdato = null
+      this.deltaker = oppdatertDeltaker
       this.fjernAktivtForslag(request.forslagId)
-      return HttpResponse.json(oppdatertPamelding)
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   avsluttDeltakelse(request: AvsluttDeltakelseRequest) {
-    const oppdatertPamelding = this.pamelding
-    const oppstartstype = oppdatertPamelding?.deltakerliste.oppstartstype
+    const oppdatertDeltaker = this.deltaker
+    const oppstartstype = oppdatertDeltaker?.deltakerliste.oppstartstype
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       if (request.harDeltatt === false) {
-        oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
-        oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.startdato = null
-        oppdatertPamelding.sluttdato = null
+        oppdatertDeltaker.status.type = DeltakerStatusType.IKKE_AKTUELL
+        oppdatertDeltaker.status.aarsak = request.aarsak
+        oppdatertDeltaker.startdato = null
+        oppdatertDeltaker.sluttdato = null
       } else {
         if (oppstartstype === Oppstartstype.FELLES) {
-          oppdatertPamelding.status.type = request.harFullfort
+          oppdatertDeltaker.status.type = request.harFullfort
             ? DeltakerStatusType.FULLFORT
             : DeltakerStatusType.AVBRUTT
         } else {
-          oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
+          oppdatertDeltaker.status.type = DeltakerStatusType.HAR_SLUTTET
         }
-        oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.sluttdato =
+        oppdatertDeltaker.status.aarsak = request.aarsak
+        oppdatertDeltaker.sluttdato =
           getDateFromString(request.sluttdato) ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreAvslutning(request: EndreAvslutningRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       if (request.harDeltatt === false) {
-        oppdatertPamelding.status.type = DeltakerStatusType.IKKE_AKTUELL
-        oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.startdato = null
-        oppdatertPamelding.sluttdato = null
+        oppdatertDeltaker.status.type = DeltakerStatusType.IKKE_AKTUELL
+        oppdatertDeltaker.status.aarsak = request.aarsak
+        oppdatertDeltaker.startdato = null
+        oppdatertDeltaker.sluttdato = null
       } else {
-        oppdatertPamelding.status.type = request.harFullfort
+        oppdatertDeltaker.status.type = request.harFullfort
           ? DeltakerStatusType.FULLFORT
           : DeltakerStatusType.AVBRUTT
-        oppdatertPamelding.status.aarsak = request.aarsak
-        oppdatertPamelding.sluttdato =
+        oppdatertDeltaker.status.aarsak = request.aarsak
+        oppdatertDeltaker.sluttdato =
           getDateFromString(request.sluttdato) ?? null
       }
       this.fjernAktivtForslag(request.forslagId)
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(oppdatertPamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseSluttarsak(request: EndreSluttarsakRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
-      oppdatertPamelding.status.type = DeltakerStatusType.HAR_SLUTTET
-      oppdatertPamelding.status.aarsak = request.aarsak
-      this.pamelding = oppdatertPamelding
+    if (oppdatertDeltaker) {
+      oppdatertDeltaker.status.type = DeltakerStatusType.HAR_SLUTTET
+      oppdatertDeltaker.status.aarsak = request.aarsak
+      this.deltaker = oppdatertDeltaker
       this.fjernAktivtForslag(request.forslagId)
-      return HttpResponse.json(oppdatertPamelding)
+      return HttpResponse.json(oppdatertDeltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelseInnhold(request: EndreInnholdRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       const nyListe: Innhold[] =
-        oppdatertPamelding.deltakerliste.tilgjengeligInnhold.innhold.map(
-          (i) => {
-            const nyInnhold = request.innhold.find(
-              (vi) => vi.innholdskode === i.innholdskode
-            )
-            if (nyInnhold) {
-              return {
-                innholdskode: i.innholdskode,
-                tekst: i.tekst,
-                valgt: true,
-                beskrivelse: nyInnhold.beskrivelse
-              }
-            } else {
-              return {
-                innholdskode: i.innholdskode,
-                tekst: i.tekst,
-                valgt: false,
-                beskrivelse: null
-              }
+        oppdatertDeltaker.deltakerliste.tilgjengeligInnhold.innhold.map((i) => {
+          const nyInnhold = request.innhold.find(
+            (vi) => vi.innholdskode === i.innholdskode
+          )
+          if (nyInnhold) {
+            return {
+              innholdskode: i.innholdskode,
+              tekst: i.tekst,
+              valgt: true,
+              beskrivelse: nyInnhold.beskrivelse
+            }
+          } else {
+            return {
+              innholdskode: i.innholdskode,
+              tekst: i.tekst,
+              valgt: false,
+              beskrivelse: null
             }
           }
-        )
-      oppdatertPamelding.deltakelsesinnhold = {
+        })
+      oppdatertDeltaker.deltakelsesinnhold = {
         ledetekst:
-          oppdatertPamelding.deltakerliste.tilgjengeligInnhold.ledetekst,
+          oppdatertDeltaker.deltakerliste.tilgjengeligInnhold.ledetekst,
         innhold: nyListe
       }
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(this.pamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(this.deltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
@@ -842,9 +714,9 @@ export class MockHandler {
   endreDeltakelseInnholdKodeverk(
     request: EndreInnholdOpplaringKategoriseringRequest
   ) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       const detaljertKodeverk = this.getKodeverk()
       const visningsnavnById = new Map<string, string>()
 
@@ -864,7 +736,7 @@ export class MockHandler {
         }
       })
 
-      oppdatertPamelding.deltakerliste.opplaringKategoriseringValg = {
+      oppdatertDeltaker.deltakerliste.opplaringKategoriseringValg = {
         valgteKategoriseringer: request.opplaringKategoriseringValg.map(
           (valg) => ({
             type: valg.representerer,
@@ -876,7 +748,7 @@ export class MockHandler {
         ),
         valgteSertifiseringer: request.sertifiseringValg
       }
-      oppdatertPamelding.deltakelsesinnhold = {
+      oppdatertDeltaker.deltakelsesinnhold = {
         ledetekst: null,
         innhold: [
           {
@@ -887,73 +759,73 @@ export class MockHandler {
           }
         ]
       }
-      this.pamelding = oppdatertPamelding
-      return HttpResponse.json(this.pamelding)
+      this.deltaker = oppdatertDeltaker
+      return HttpResponse.json(this.deltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   endreDeltakelsesmengde(request: EndreDeltakelsesmengdeRequest) {
-    const oppdatertPamelding = this.pamelding
+    const oppdatertDeltaker = this.deltaker
 
-    if (oppdatertPamelding) {
+    if (oppdatertDeltaker) {
       const nesteDeltakelsesmengde =
-        oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde
+        oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde
       const gyldigFra = dayjs(request.gyldigFra).toDate()
       if (gyldigFra <= new Date()) {
-        oppdatertPamelding.deltakelsesprosent =
+        oppdatertDeltaker.deltakelsesprosent =
           request.deltakelsesprosent || null
-        oppdatertPamelding.dagerPerUke = request.dagerPerUke || null
+        oppdatertDeltaker.dagerPerUke = request.dagerPerUke || null
       } else if (
         nesteDeltakelsesmengde === null ||
         gyldigFra <= nesteDeltakelsesmengde.gyldigFra
       ) {
         if (
-          request.dagerPerUke != oppdatertPamelding.dagerPerUke ||
-          request.deltakelsesprosent != oppdatertPamelding.deltakelsesprosent
+          request.dagerPerUke != oppdatertDeltaker.dagerPerUke ||
+          request.deltakelsesprosent != oppdatertDeltaker.deltakelsesprosent
         ) {
-          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = {
+          oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde = {
             gyldigFra: gyldigFra,
             deltakelsesprosent: request.deltakelsesprosent ?? 100,
             dagerPerUke: request.dagerPerUke ?? null
           }
         } else {
-          oppdatertPamelding.deltakelsesmengder.nesteDeltakelsesmengde = null
+          oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde = null
         }
       }
-      oppdatertPamelding.deltakelsesmengder.sisteDeltakelsesmengde = {
+      oppdatertDeltaker.deltakelsesmengder.sisteDeltakelsesmengde = {
         gyldigFra: gyldigFra,
         deltakelsesprosent: request.deltakelsesprosent ?? 100,
         dagerPerUke: request.dagerPerUke ?? null
       }
-      this.pamelding = oppdatertPamelding
+      this.deltaker = oppdatertDeltaker
       this.fjernAktivtForslag(request.forslagId)
-      return HttpResponse.json(this.pamelding)
+      return HttpResponse.json(this.deltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   avvisForslag(forslagId: string) {
-    if (this.pamelding) {
+    if (this.deltaker) {
       this.fjernAktivtForslag(forslagId)
-      return HttpResponse.json(this.pamelding)
+      return HttpResponse.json(this.deltaker)
     }
 
     return new HttpResponse(null, { status: 404 })
   }
 
   fjernAktivtForslag(id: string | null | undefined) {
-    if (id && this.pamelding) {
-      this.pamelding.forslag = this.pamelding.forslag.filter((f) => f.id !== id)
+    if (id && this.deltaker) {
+      this.deltaker.forslag = this.deltaker.forslag.filter((f) => f.id !== id)
     }
   }
 
   getHistorikk() {
-    const erEnkeltplass = this.pamelding?.deltakerliste.erEnkeltplass
+    const erEnkeltplass = this.deltaker?.deltakerliste.erEnkeltplass
     const erFellesOppstart =
-      this.pamelding?.deltakerliste.oppstartstype === Oppstartstype.FELLES
+      this.deltaker?.deltakerliste.oppstartstype === Oppstartstype.FELLES
     return HttpResponse.json(
       erFellesOppstart || erEnkeltplass
         ? lagHistorikkFellesOppstart()
@@ -1013,59 +885,4 @@ export const sokArrangor = (term: string) => {
   }
 
   return result
-}
-
-const mockArrangorenheter = [
-  {
-    organisasjonsnummer: '123456789',
-    navn: 'Muligheter AS',
-    underenheter: [
-      {
-        organisasjonsnummer: '555555555',
-        navn: 'Muligheter Oslo AS'
-      },
-      {
-        organisasjonsnummer: '666666666',
-        navn: 'Muligheter Bergen AS'
-      }
-    ]
-  },
-  {
-    organisasjonsnummer: '111111111',
-    navn: 'Den Beste Arrangøren AS',
-    underenheter: [
-      {
-        organisasjonsnummer: '777777777',
-        navn: 'Den Beste Arrangøren Oslo AS'
-      },
-      {
-        organisasjonsnummer: '888888888',
-        navn: 'Den Beste Arrangøren Bergen AS'
-      }
-    ]
-  },
-  {
-    organisasjonsnummer: '222222222',
-    navn: 'Arrangør og sånt AS',
-    underenheter: []
-  },
-  {
-    organisasjonsnummer: '333333333',
-    navn: 'Arrangør småfix AS',
-    underenheter: []
-  },
-  {
-    organisasjonsnummer: '444444444',
-    navn: 'Arrangør og Co AS',
-    underenheter: []
-  }
-]
-
-const delesAdresseMedArrangor = (tiltakskode: Tiltakskode) => {
-  return (
-    tiltakskode !== Tiltakskode.JOBBKLUBB &&
-    tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER &&
-    tiltakskode !== Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK &&
-    !erOpplaringstiltak(tiltakskode)
-  )
 }

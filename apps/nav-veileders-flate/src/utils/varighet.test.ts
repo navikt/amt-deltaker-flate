@@ -372,6 +372,29 @@ describe('getSluttDatoFeilmelding', () => {
     expect(feilmelding).toEqual(VARGIHET_VALG_FEILMELDING)
   })
 
+  it('returnerer maksvarighetsfeil når startdato flyttes bakover med uendret sluttdato og uten listesluttdato', () => {
+    const eksisterendeSluttdato = dayjs('2026-07-31').toDate()
+    const deltaker = {
+      ...pamelding,
+      startdato: dayjs('2026-07-01').toDate(),
+      sluttdato: eksisterendeSluttdato,
+      deltakerliste: { ...pamelding.deltakerliste, sluttdato: null },
+      maxVarighet: dayjs.duration(30, 'day').asMilliseconds()
+    }
+
+    expect(getSluttDatoFeilmelding(deltaker, eksisterendeSluttdato)).toEqual(
+      null
+    )
+
+    const feilmelding = getSluttDatoFeilmelding(
+      deltaker,
+      eksisterendeSluttdato,
+      dayjs('2026-06-01').toDate()
+    )
+
+    expect(feilmelding).toEqual(VARGIHET_VALG_FEILMELDING)
+  })
+
   it('returnerer feilmelding for ny sluttdato utenfor tiltakets periode', () => {
     const feilmelding = getSluttDatoFeilmelding(
       {

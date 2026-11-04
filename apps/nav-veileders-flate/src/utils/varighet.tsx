@@ -357,15 +357,15 @@ export const getSkalBekrefteVarighet = (
 }
 
 export const getSluttDatoFeilmelding = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   nySluttDato: Date,
   nyStartdato?: Date,
   erForleng?: boolean
 ) => {
-  const deltakerstartDato = pamelding.startdato
-  const deltakerlisteSluttDato = pamelding.deltakerliste.sluttdato
+  const deltakerstartDato = deltaker.startdato
+  const deltakerlisteSluttDato = deltaker.deltakerliste.sluttdato
 
-  const maxVarighetDato = getMaxVarighetDato(pamelding, nyStartdato)
+  const maxVarighetDato = getMaxVarighetDato(deltaker, nyStartdato)
   const sluttDato = dayjs(nySluttDato)
 
   if (
@@ -377,7 +377,7 @@ export const getSluttDatoFeilmelding = (
     return SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
   }
 
-  const opprinneligSluttdato = pamelding.sluttdato
+  const opprinneligSluttdato = deltaker.sluttdato
   if (
     erForleng &&
     opprinneligSluttdato &&
@@ -395,12 +395,6 @@ export const getSluttDatoFeilmelding = (
   }
 
   if (!deltakerlisteSluttDato && sluttDato.isAfter(maxVarighetDato, 'date')) {
-    if (
-      maxVarighetDato?.isBefore(pamelding.sluttdato, 'date') &&
-      sluttDato.isSameOrBefore(pamelding.sluttdato, 'date')
-    ) {
-      return null
-    }
     return VARGIHET_VALG_FEILMELDING
   }
 
