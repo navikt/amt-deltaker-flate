@@ -61,7 +61,7 @@
       "opprettet": "2026-10-07T11:13:01.063606"
     },
     "startdato": "2026-10-01",
-    "sluttdato": "2030-10-04",
+    "sluttdato": "2030-09-29",
     "dagerPerUke": 2.0,
     "deltakelsesprosent": 100.0,
     "bakgrunnsinformasjon": null,
@@ -168,7 +168,7 @@
         ]
       },
       "erEnkeltplass": false,
-      "oppmoteSted": "wegwgrw",
+      "oppmoteSted": "Fjordgata 1",
       "pameldingstype": "DIREKTE_VEDTAK",
       "opplaringKategoriseringValg": null,
       "prisinformasjon": null,

@@ -48,7 +48,7 @@ import {
   mockArrangorenheter,
   mockBakgrunnsinformasjon,
   mockDelesAdresseMedArrangor,
-  mockDeltakere,
+  getMockDeltaker,
   mockHarVedtak
 } from './mockDeltakere.ts'
 import {
@@ -57,11 +57,8 @@ import {
   mockSertifiseringer
 } from './mockKodeverk.ts'
 
-// Sett valgtMockDeltaker til defaultDeltaker før push.
-const valgtMockDeltaker = mockDeltakere().defaultDeltaker
-
 export class MockHandler {
-  deltaker: DeltakerResponse | null = structuredClone(valgtMockDeltaker)
+  deltaker: DeltakerResponse | null = getMockDeltaker()
   deltakerIdNotAllowedToDelete = 'b21654fe-f0e6-4be1-84b5-da72ad6a4c0c'
 
   get statusType() {
@@ -73,13 +70,13 @@ export class MockHandler {
   }
 
   createPamelding(deltakerlisteId: string) {
-    this.deltaker ??= structuredClone(valgtMockDeltaker)
+    this.deltaker ??= getMockDeltaker()
     this.deltaker.deltakerliste.deltakerlisteId = deltakerlisteId
     return HttpResponse.json(this.deltaker)
   }
 
   createEnkeltplassPamelding(tiltakskode: Tiltakskode) {
-    this.deltaker ??= structuredClone(valgtMockDeltaker)
+    this.deltaker ??= getMockDeltaker()
     this.deltaker.deltakerliste.tiltakskode = {
       kode: tiltakskode,
       visningsnavn: mockVisningsnavn(tiltakskode)
