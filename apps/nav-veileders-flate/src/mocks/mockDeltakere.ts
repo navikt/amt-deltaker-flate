@@ -26,11 +26,11 @@ export const getMockDeltaker = () => mockDeltakere().defaultDeltaker
 
 /* HVORDAN BRUKE JSON MOCK DATA
    Legg til en json test-deltaker fra dev miljø,
-   fjerne den før commit eller overskriv feltene
+   fjerne den før commit eller overskriv feltene (må ikke)
    - arrangorNavn
    - visningsnavn
    - arrangor
-   - ev vedtaksinformasjon veieder endret av
+   - ev vedtaksinformasjon veileder endret av
 */
 const mockDeltakere = () => {
   return {
