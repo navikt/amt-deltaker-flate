@@ -5,9 +5,9 @@ import {
   innholdselementSchema
 } from '../api/data/deltaker.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
+import { bakgrunnsinfoSporsmal } from '../components/pamelding/bakgrunnsinfo-sporsmal.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250
-export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
 export const deltakelsesprosentFeilmelding =
@@ -45,8 +45,8 @@ export const pameldingFormSchema = z
     bakgrunnsinformasjon: z
       .string()
       .max(
-        BAKGRUNNSINFORMASJON_MAKS_TEGN,
-        `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
+        bakgrunnsinfoSporsmal.maksTegn,
+        `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`
       )
       .optional(),
     deltakelsesprosentValg: z.enum(DeltakelsesprosentValg).optional(),

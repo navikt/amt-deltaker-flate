@@ -14,7 +14,6 @@ import {
 import { useEffect, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
-  BAKGRUNNSINFORMASJON_MAKS_TEGN,
   generateFormDefaultValues,
   pameldingFormSchema,
   PameldingFormValues
@@ -27,6 +26,7 @@ import { Deltakelsesprosent } from './Deltakelsesprosent.tsx'
 import { Innhold } from './Innhold.tsx'
 import { InnholdOgBakgrunn } from './InnholdOgBakgrunn.tsx'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { bakgrunnsinfoSporsmal } from '../bakgrunnsinfo-sporsmal.ts'
 
 interface Props {
   className?: string
@@ -95,9 +95,8 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
                 Bakgrunnsinfo
               </Heading>
               <Textarea
-                label="Er det noe mer du ønsker å informere arrangøren om?"
-                description="Skriv en kortfattet oppsummering av relevant historikk og forhold ved personens situasjon
-                og behov som kan påvirke deltakelsen på tiltaket."
+                label={bakgrunnsinfoSporsmal.label}
+                description={bakgrunnsinfoSporsmal.description}
                 {...register('bakgrunnsinformasjon')}
                 value={watch('bakgrunnsinformasjon')}
                 onChange={(e) => {
@@ -109,7 +108,7 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
                 }}
                 error={errors.bakgrunnsinformasjon?.message}
                 disabled={disabled}
-                maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
+                maxLength={bakgrunnsinfoSporsmal.maksTegn}
                 id="bakgrunnsinformasjon"
                 size="small"
               />
