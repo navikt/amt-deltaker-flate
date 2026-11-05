@@ -39,6 +39,11 @@ export const EndreBakgrunnsinfoModal = ({
       return null
     }
 
+    if (!bakgrunnsinformasjon || bakgrunnsinformasjon.trim().length === 0) {
+      setError('Bakgrunnsinfo må fylles ut.')
+      return null
+    }
+
     validerDeltakerKanEndres(deltaker)
     if (bakgrunnsinformasjon === deltaker.bakgrunnsinformasjon) {
       throw new Error(getFeilmeldingIngenEndringTekst(false))
