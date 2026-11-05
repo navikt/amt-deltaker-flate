@@ -44,11 +44,11 @@ export const pameldingFormSchema = z
       .optional(),
     bakgrunnsinformasjon: z
       .string()
+      .nonempty('Bakgrunnsinfo må fylles ut')
       .max(
         bakgrunnsinfoSporsmal.maksTegn,
         `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`
-      )
-      .optional(),
+      ),
     deltakelsesprosentValg: z.enum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
@@ -147,7 +147,7 @@ export const generateFormDefaultValues = (
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(pamelding),
     innholdsTekst: getInnholdAnnetBeskrivelse(pamelding),
-    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
+    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? '',
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,
     dagerPerUke: pamelding.dagerPerUke ?? undefined
