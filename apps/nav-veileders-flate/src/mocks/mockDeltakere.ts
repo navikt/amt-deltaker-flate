@@ -22,7 +22,8 @@ import { lagOpplaringKategoriseringResponse } from './mockKodeverk.ts'
 dayjs.extend(duration)
 
 // Sett mockdeltaker for demo og lokalt
-export const getMockDeltaker = () => mockDeltakere().defaultDeltaker
+export const getMockDeltaker = () =>
+  mockDeltakere().enkeltplassUtenRammeavtale_deltar
 
 /* HVORDAN BRUKE JSON MOCK DATA
    Legg til en json test-deltaker fra dev miljø,
@@ -36,6 +37,9 @@ const mockDeltakere = () => {
   return {
     enkeltplassUtenRammeavtale_deltar: deltakerSchema.parse(
       deltakere.enkeltplassUtenRammeavtale_deltar
+    ),
+    enkeltplassUtenRammeavtale_amo_kladd: deltakerSchema.parse(
+      deltakere.enkeltplassUtenRammeavtale_amo_kladd
     ),
     AFT_deltar: deltakerSchema.parse(deltakere.AFT_deltar),
     defaultDeltaker: lagDefaultDeltaker()

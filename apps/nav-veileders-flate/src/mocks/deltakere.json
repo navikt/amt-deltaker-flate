@@ -104,6 +104,123 @@
     "erUnderOppfolging": true,
     "erManueltDeltMedArrangor": false
   },
+  "enkeltplassUtenRammeavtale_amo_kladd": {
+    "deltakerId": "6cb265bd-8ffc-4408-b85d-39f0db6ffde3",
+    "fornavn": "Opprett",
+    "mellomnavn": null,
+    "etternavn": "Salamander",
+    "deltakerliste": {
+      "deltakerlisteId": "41f74339-c2a5-4dd8-a019-9cc44845a126",
+      "deltakerlisteNavn": "Arbeidsmarkedsopplæring (AMO)",
+      "tiltakskode": {
+        "kode": "ARBEIDSMARKEDSOPPLAERING",
+        "visningsnavn": "Arbeidsmarkedsopplæring"
+      },
+      "arrangorNavn": "Snø AS",
+      "visningsnavn": {
+        "tiltakHosArrangorTittel": "Arbeidsmarkedsopplæring (AMO) hos Snø AS",
+        "tiltakHosArrangorIngressTekst": "Arbeidsmarkedsopplæring (AMO) hos Snø AS",
+        "kladdTiltakHosArrangorTittel": "Arbeidsmarkedsopplæring (AMO) hos Snø AS"
+      },
+      "arrangor": {
+        "navn": "Snø AS",
+        "organisasjonsnummer": "989797565"
+      },
+      "oppstartstype": "ENKELTPLASS",
+      "startdato": null,
+      "sluttdato": null,
+      "status": "KLADD",
+      "tilgjengeligInnhold": {
+        "ledetekst": null,
+        "innhold": [
+          {
+            "tekst": "Annet",
+            "innholdskode": "annet"
+          }
+        ]
+      },
+      "erEnkeltplass": true,
+      "oppmoteSted": null,
+      "pameldingstype": "TRENGER_GODKJENNING",
+      "opplaringKategoriseringValg": {
+        "valgteKategoriseringer": [
+          {
+            "type": "FORERKORT",
+            "valgteElementer": [
+              {
+                "id": "cdbebefc-2cec-48d0-9c8e-bd464e56cfaa",
+                "visningsnavn": "BE - Personbil med tilhenger"
+              },
+              {
+                "id": "5b1e1732-a5e8-45ca-955f-548c65d11065",
+                "visningsnavn": "S - Snøscooter"
+              }
+            ]
+          },
+          {
+            "type": "BRANSJE_ID",
+            "valgteElementer": [
+              {
+                "id": "d04dff0d-fdca-4839-9bdc-44c722af5d6f",
+                "visningsnavn": "Ingeniør- og IKT-fag"
+              }
+            ]
+          }
+        ],
+        "valgteSertifiseringer": [
+          {
+            "id": 42185,
+            "navn": "Dataregistrering"
+          }
+        ]
+      },
+      "prisinformasjon": {
+        "type": "Anskaffelse",
+        "pris": 40000,
+        "begrunnelse": null
+      },
+      "prisinformasjonTilGodkjenning": null
+    },
+    "status": {
+      "id": "7ba5527e-5d5f-4064-8dc4-e2d958400f5a",
+      "type": "KLADD",
+      "aarsak": null,
+      "gyldigFra": "2026-11-04T10:10:14.919724",
+      "gyldigTil": null,
+      "opprettet": "2026-11-04T10:10:14.919724"
+    },
+    "startdato": null,
+    "sluttdato": null,
+    "dagerPerUke": null,
+    "deltakelsesprosent": null,
+    "bakgrunnsinformasjon": null,
+    "deltakelsesinnhold": {
+      "ledetekst": null,
+      "innhold": [
+        {
+          "tekst": "Annet",
+          "innholdskode": "annet",
+          "valgt": true,
+          "beskrivelse": "It med frakt sommer og vinter"
+        }
+      ]
+    },
+    "adresseDelesMedArrangor": false,
+    "kanEndres": true,
+    "digitalBruker": true,
+    "maxVarighet": 94608000000,
+    "softMaxVarighet": null,
+    "forslag": [],
+    "vedtaksinformasjon": null,
+    "importertFraArena": null,
+    "harAdresse": false,
+    "deltakelsesmengder": {
+      "nesteDeltakelsesmengde": null,
+      "sisteDeltakelsesmengde": null
+    },
+    "erUnderOppfolging": true,
+    "erManueltDeltMedArrangor": false
+  },
   "AFT_deltar": {
     "deltakerId": "de294005-b9d6-4da5-94ce-3b10a98ceca5",
     "fornavn": "Opprett",

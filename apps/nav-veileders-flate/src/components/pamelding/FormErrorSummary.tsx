@@ -1,5 +1,5 @@
 import { ErrorSummary } from '@navikt/ds-react'
-import { useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import { FieldValues, Path, useFormContext } from 'react-hook-form'
 import { PameldingEnkeltplassFormValues } from '../../model/PameldingEnkeltplassFormValues'
 import { PameldingFormValues } from '../../model/PameldingFormValues'
@@ -74,14 +74,13 @@ const _FormErrorSummary = <T extends FieldValues>({
     formState: { errors, submitCount }
   } = useFormContext<T>()
 
-  const ref = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (node) node.focus()
-    },
-    [submitCount]
-  )
+  const ref = useRef<HTMLDivElement>(null)
 
-  if (Object.keys(errors).length === 0) {
+  useEffect(() => {
+    if (submitCount > 0) ref.current?.focus()
+  }, [submitCount])
+
+  if (submitCount === 0 || Object.keys(errors).length === 0) {
     return null
   }
 
