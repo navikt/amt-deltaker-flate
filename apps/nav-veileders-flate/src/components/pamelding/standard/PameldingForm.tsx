@@ -91,9 +91,6 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
 
           {harBakgrunnsinfo(tiltakskode) && (
             <section>
-              <Heading size="medium" level="3" className="mb-4">
-                Bakgrunnsinfo
-              </Heading>
               <Textarea
                 label={bakgrunnsinfoSporsmal.label}
                 description={bakgrunnsinfoSporsmal.description}

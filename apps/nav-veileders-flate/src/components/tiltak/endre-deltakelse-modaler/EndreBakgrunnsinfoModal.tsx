@@ -84,9 +84,6 @@ export const EndreBakgrunnsinfoModal = ({
           </Alert>
         )}
 
-        <Heading level="2" size="small" className="mb-4">
-          Bakgrunnsinfo
-        </Heading>
         <Textarea
           onChange={(e) => {
             setError(null)
