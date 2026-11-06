@@ -106,6 +106,41 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     expect(result.current.error).toBe('Du må velge en sluttdato')
   })
 
+  it('gjenoppretter ikke tømt sluttdato når startdato endres', () => {
+    const opprinneligStartdato = dayjs(deltakerMedDatoer.startdato).toDate()
+    const opprinneligSluttdato = dayjs(deltakerMedDatoer.sluttdato).toDate()
+    const { result, rerender } = renderHook(
+      ({ startdato }: { startdato: Date | undefined }) =>
+        useSluttdato({
+          deltaker: deltakerMedDatoer,
+          valgtVarighet: VarighetValg.ANNET,
+          defaultAnnetDato: opprinneligSluttdato,
+          startdato
+        }),
+      { initialProps: { startdato: opprinneligStartdato } }
+    )
+
+    expect(result.current.sluttdato).toEqual(opprinneligSluttdato)
+
+    rerender({ startdato: undefined })
+    act(() => {
+      result.current.handleChange(undefined)
+    })
+    expect(result.current.sluttdato).toBeUndefined()
+
+    rerender({
+      startdato: dayjs(opprinneligStartdato).add(1, 'day').toDate()
+    })
+
+    expect(result.current.sluttdato).toBeUndefined()
+    let erGyldig = true
+    act(() => {
+      erGyldig = result.current.valider()
+    })
+    expect(erGyldig).toBe(false)
+    expect(result.current.annetError).toBe('Du må velge en sluttdato')
+  })
+
   it('har error med varighet over max-varighet', () => {
     const { result } = renderHook(() =>
       useSluttdato({
