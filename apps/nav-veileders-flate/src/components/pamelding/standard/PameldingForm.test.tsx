@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Tiltakskode } from 'deltaker-flate-common'
 import { useFormContext } from 'react-hook-form'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PameldingFormValues } from '../../../model/PameldingFormValues.ts'
@@ -24,17 +25,52 @@ vi.mock('../FormButtons.tsx', () => ({
   }
 }))
 
-const renderForm = (bakgrunnsinformasjon: string | null = null) =>
+const renderForm = (
+  bakgrunnsinformasjon: string | null = null,
+  tiltakskode = Tiltakskode.ARBEIDSFORBEREDENDE_TRENING
+) =>
   renderWithDeltakerContext(
     <PameldingFormContextProvider>
       <PameldingForm />
     </PameldingFormContextProvider>,
-    lagDeltaker({ bakgrunnsinformasjon })
+    lagDeltaker(
+      { bakgrunnsinformasjon },
+      { tiltakskode: { kode: tiltakskode, visningsnavn: 'Testtiltak' } }
+    )
   )
 
 describe('PameldingForm', () => {
   beforeEach(() => {
     onSubmit.mockClear()
+  })
+
+  it.each([
+    Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_UTDANNING,
+    Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
+    Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
+    Tiltakskode.STUDIESPESIALISERING,
+    Tiltakskode.FAG_OG_YRKESOPPLAERING,
+    Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING,
+    Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
+    Tiltakskode.JOBBKLUBB
+  ])('tillater innsending uten bakgrunnsinfo for %s', async (tiltakskode) => {
+    const user = userEvent.setup()
+    renderForm(null, tiltakskode)
+
+    expect(
+      screen.queryByRole('textbox', { name: bakgrunnsinfoSporsmal.label })
+    ).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Fortsett' }))
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
+    expect(
+      screen.queryByText('Bakgrunnsinfo må fylles ut')
+    ).not.toBeInTheDocument()
   })
 
   const tommeVerdier = [null, '', '   ', '\t\n']

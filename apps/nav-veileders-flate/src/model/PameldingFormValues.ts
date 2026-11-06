@@ -1,4 +1,8 @@
-import { INNHOLD_TYPE_ANNET, Tiltakskode } from 'deltaker-flate-common'
+import {
+  harBakgrunnsinfo,
+  INNHOLD_TYPE_ANNET,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 import {
   DeltakerResponse,
@@ -44,7 +48,6 @@ export const pameldingFormSchema = z
       .optional(),
     bakgrunnsinformasjon: z
       .string()
-      .refine((value) => value.trim().length > 0, 'Bakgrunnsinfo må fylles ut')
       .max(
         bakgrunnsinfoSporsmal.maksTegn,
         `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`
@@ -67,6 +70,15 @@ export const pameldingFormSchema = z
       .lte(5, { message: dagerPerUkeFeilmelding })
       .optional()
   })
+  .refine(
+    (schema) =>
+      !harBakgrunnsinfo(schema.tiltakskode) ||
+      schema.bakgrunnsinformasjon.trim().length > 0,
+    {
+      message: 'Bakgrunnsinfo må fylles ut',
+      path: ['bakgrunnsinformasjon']
+    }
+  )
   .refine(
     (schema) => {
       if (
