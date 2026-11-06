@@ -37,7 +37,7 @@ describe('datovalidering for enkeltplass', () => {
           DATO_PAAKREVD_FEILMELDINGER.startdato,
           DATO_PAAKREVD_FEILMELDINGER.sluttdato
         ],
-        ['01/03/2027', UGYLDIG_DATO_FORMAT, UGYLDIG_DATO_FORMAT],
+        ['01_03_2027', UGYLDIG_DATO_FORMAT, UGYLDIG_DATO_FORMAT],
         ['32.01.2027', UGYLDIG_DATO, UGYLDIG_DATO]
       ])('viser også datofeil for %s', (value, startMessage, sluttMessage) => {
         const result = schema.safeParse({
@@ -74,6 +74,10 @@ describe('datovalidering for enkeltplass', () => {
       '1.03.2027',
       '01.3.2027',
       '1.3.27',
+      '01/03/2027',
+      '1/3/27',
+      '01-03-2027',
+      '1-3-27',
       '2027-03-01'
     ])('godtar og normaliserer %s', (value) => {
       expect(schema.parse({ ...gyldigeVerdier, [felt]: value })[felt]).toBe(
@@ -102,7 +106,7 @@ describe('datovalidering for enkeltplass', () => {
     })
 
     it('gir formatfeil for ukjent format', () => {
-      const result = parseDato('01/03/2027')
+      const result = parseDato('01_03_2027')
 
       expect(result.success).toBe(false)
       if (!result.success) {

@@ -154,7 +154,7 @@ export const EndreOppstartsdatoModal = ({
   const validertRequest = () => {
     let hasError = false
     if (!startdato) {
-      setErrorStartDato('Du må velge startdato')
+      setErrorStartDato(errorStartdato ?? 'Du må velge startdato')
       hasError = true
     }
 

@@ -13,7 +13,8 @@ import { getMockDeltaker } from '../../../../mocks/mockDeltakere'
 import {
   SLUTTDATO_ETTER_STARTDATO_FEILMELDING,
   START_DATO_FOER_2000_FEILMELDING,
-  UGYLDIG_DATO
+  UGYLDIG_DATO,
+  UGYLDIG_DATO_FORMAT
 } from '../../../../utils/varighet'
 import { PameldingDatoer } from '../PameldingDatoer'
 import { renderWithProviders } from './test-utils'
@@ -112,11 +113,52 @@ describe('PameldingDatoer', () => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(() => undefined)}>
             <PameldingDatoer />
+            <output aria-label="Startdato i skjema">
+              {methods.watch('startdato')}
+            </output>
+            <output aria-label="Sluttdato i skjema">
+              {methods.watch('sluttdato')}
+            </output>
             <button type="submit">Send inn</button>
           </form>
         </FormProvider>
       )
     }
+
+    it.each([
+      ['Startdato', '01/03/2027'],
+      ['Sluttdato', '01/03/2027'],
+      ['Startdato', '1-3-27'],
+      ['Sluttdato', '1-3-27']
+    ])(
+      'normaliserer %s med %s likt i feltet og skjemaverdien',
+      async (label, value) => {
+        const user = userEvent.setup()
+        renderWithProviders(<DatoerMedValidering />)
+
+        const input = screen.getByLabelText(label)
+        const skjemaverdi = screen.getByLabelText(`${label} i skjema`)
+        await user.type(input, value)
+        await user.tab()
+
+        expect(input).toHaveValue('01.03.2027')
+        expect(skjemaverdi).toHaveTextContent('01.03.2027')
+        expect(screen.queryByText(UGYLDIG_DATO_FORMAT)).not.toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'Send inn' }))
+        await waitFor(() =>
+          expect(
+            screen.getByLabelText(
+              label === 'Startdato' ? 'Sluttdato' : 'Startdato'
+            )
+          ).toHaveAttribute('aria-invalid', 'true')
+        )
+
+        expect(input).toHaveValue('01.03.2027')
+        expect(skjemaverdi).toHaveTextContent('01.03.2027')
+        expect(screen.queryByText(UGYLDIG_DATO_FORMAT)).not.toBeInTheDocument()
+      }
+    )
 
     it.each(['Startdato', 'Sluttdato'])(
       'viser ikke feil for ugyldig %s før innsending',
