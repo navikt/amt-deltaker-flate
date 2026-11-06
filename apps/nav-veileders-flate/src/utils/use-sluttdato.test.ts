@@ -5,7 +5,7 @@ import {
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
   UGYLDIG_DATO,
-  UGYLDIG_DATO_FEILMELDING,
+  UGYLDIG_DATO_FORMAT,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg
 } from './varighet.tsx'
@@ -109,8 +109,11 @@ describe('useSluttdato - deltakerMedDatoer', () => {
   it('gjenoppretter ikke tømt sluttdato når startdato endres', () => {
     const opprinneligStartdato = dayjs(deltakerMedDatoer.startdato).toDate()
     const opprinneligSluttdato = dayjs(deltakerMedDatoer.sluttdato).toDate()
-    const { result, rerender } = renderHook(
-      ({ startdato }: { startdato: Date | undefined }) =>
+    const { result, rerender } = renderHook<
+      ReturnType<typeof useSluttdato>,
+      { startdato: Date | undefined }
+    >(
+      ({ startdato }) =>
         useSluttdato({
           deltaker: deltakerMedDatoer,
           valgtVarighet: VarighetValg.ANNET,
@@ -338,7 +341,7 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.validerDato(dateValidation({ isInvalid: true }))
     })
 
-    expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
+    expect(result.current.error).toBe(UGYLDIG_DATO_FORMAT)
   })
 
   it('validerDato - videresender presis feilmelding fra datovelgeren', () => {
