@@ -3,6 +3,7 @@ import {
   beregnEstimertTotalsum,
   fjernUgyldigeTegn,
   getDayjsFromString,
+  harGyldigDatoformat,
   harDeltakelsesmengde,
   haveSameContents,
   NOK_FORMATTER
@@ -10,7 +11,86 @@ import {
 import { Tiltakskode } from '../model/deltaker'
 import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
 
+describe('harGyldigDatoformat', () => {
+  it.each([
+    '32.01.2027',
+    '31.02.2027',
+    '00.13.2027',
+    '32012027',
+    '320127',
+    '1.3.27',
+    '1.03.2027',
+    '01.3.2027',
+    '32/01/2027',
+    '31-02-2027',
+    '2027-02-31'
+  ])('godtar formatet til %s uavhengig av kalenderdatoen', (value) => {
+    expect(harGyldigDatoformat(value)).toBe(true)
+  })
+
+  it.each([
+    '',
+    '01_03_2027',
+    '1_3_2027',
+    '01.01.200',
+    '001.01.2027',
+    '0103202',
+    'aa.bb.cccc',
+    '01.03.2027tekst',
+    ' 01.03.2027'
+  ])('avviser ukjent format %s', (value) => {
+    expect(harGyldigDatoformat(value)).toBe(false)
+  })
+})
+
 describe('getDayjsFromString', () => {
+  it.each([
+    '1/3/27',
+    '1/03/27',
+    '01/3/27',
+    '01/03/27',
+    '1/3/2027',
+    '1/03/2027',
+    '01/3/2027',
+    '01/03/2027',
+    '1-3-27',
+    '1-03-27',
+    '01-3-27',
+    '01-03-27',
+    '1-3-2027',
+    '1-03-2027',
+    '01-3-2027',
+    '01-03-2027'
+  ])('godtar og parser dato med Aksel-skilletegn %s', (value) => {
+    expect(harGyldigDatoformat(value)).toBe(true)
+    expect(getDayjsFromString(value)?.format('YYYY-MM-DD')).toBe('2027-03-01')
+  })
+
+  it.each(['01032027', '010327'])('parser kompakt dato %s', (value) => {
+    expect(getDayjsFromString(value)?.format('YYYY-MM-DD')).toBe('2027-03-01')
+  })
+
+  it.each([
+    '31.02.2027',
+    '29.02.2027',
+    '31022027',
+    '310227',
+    '2027-02-31',
+    '31/02/2027',
+    '29/02/2027',
+    '31-02-2027',
+    '29-02-27',
+    '01_03_2027'
+  ])('avviser ugyldig dato eller ukjent format %s', (value) => {
+    expect(getDayjsFromString(value)).toBeUndefined()
+  })
+
+  it('godtar skuddårsdag i kompakt format', () => {
+    expect(getDayjsFromString('29022028')?.format('YYYY-MM-DD')).toBe(
+      '2028-02-29'
+    )
+  })
+
   it('returnerer undefined for undefined', () => {
     expect(getDayjsFromString(undefined)).toBeUndefined()
   })

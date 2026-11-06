@@ -23,8 +23,42 @@ const DATO_FORMATS = [
   'D.MM.YYYY',
   'DD.M.YYYY',
   'DD.MM.YYYY',
+  'D/M/YY',
+  'D/MM/YY',
+  'DD/M/YY',
+  'DD/MM/YY',
+  'D/M/YYYY',
+  'D/MM/YYYY',
+  'DD/M/YYYY',
+  'DD/MM/YYYY',
+  'D-M-YY',
+  'D-MM-YY',
+  'DD-M-YY',
+  'DD-MM-YY',
+  'D-M-YYYY',
+  'D-MM-YYYY',
+  'DD-M-YYYY',
+  'DD-MM-YYYY',
+  'DDMMYYYY',
+  'DDMMYY',
   'YYYY-MM-DD'
 ]
+
+/**
+ * Sjekker om value har gyldig format utifra DATO_FORMATS, ikke om datoen finnes: 32.01.2027 har gyldig format.
+ * Kalenderdatoen valideres separat med getDayjsFromString.
+ */
+export const harGyldigDatoformat = (value: string) =>
+  DATO_FORMATS.some(
+    (format) =>
+      value.length === format.length &&
+      // D, M og Y krever et siffer; skilletegn må samsvare nøyaktig.
+      [...format].every((tegn, index) =>
+        'DMY'.includes(tegn)
+          ? value[index] >= '0' && value[index] <= '9'
+          : value[index] === tegn
+      )
+  )
 
 /**
  * Returns true if date is not null or undefined and is a valid date.
@@ -45,7 +79,6 @@ export const getDayjsFromString = (dateString?: string | null) => {
     const date = dayjs(dateString, format, true)
     if (date.isValid()) return date
   }
-  if (dayjs(dateString).isValid()) return dayjs(dateString)
   return undefined
 }
 

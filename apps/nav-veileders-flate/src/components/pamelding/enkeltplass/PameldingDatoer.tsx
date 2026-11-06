@@ -5,10 +5,14 @@ import { usePameldingFormContext } from '../PameldingFormContext'
 import { useDeltakerContext } from '../../tiltak/DeltakerContext'
 import {
   DATE_FORMAT,
-  PameldingEnkeltplassFormValues
+  PameldingEnkeltplassFormValues,
+  parsePameldingDato
 } from '../../../model/PameldingEnkeltplassFormValues'
-import { getMaxVarighetDato } from '../../../utils/varighet'
-import { getDayjsFromString } from 'deltaker-flate-common'
+import {
+  getMaxVarighetDato,
+  MAX_START_DATO,
+  MIN_START_DATO
+} from '../../../utils/varighet'
 
 interface Props {
   defaultStartdato?: string
@@ -21,15 +25,14 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
     setValue,
     watch,
     clearErrors,
-    formState: { errors }
+    trigger,
+    formState: { errors, submitCount }
   } = useFormContext<PameldingEnkeltplassFormValues>()
   const { disabled } = usePameldingFormContext()
   const { deltaker } = useDeltakerContext()
 
   const startdato = watch('startdato')
-  const startdatoDayjs = startdato
-    ? dayjs(startdato, DATE_FORMAT, true)
-    : undefined
+  const startdatoDayjs = startdato ? parsePameldingDato(startdato) : undefined
   const sluttdato = watch('sluttdato')
   const maxSluttdato = startdatoDayjs
     ? getMaxVarighetDato(deltaker, startdatoDayjs?.toDate())?.toDate()
@@ -39,16 +42,18 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
     datepickerProps: datepickerPropsStartdato,
     inputProps: { onBlur: startdatoOnBlur, ...startdatoInputProps }
   } = useDatepicker({
-    fromDate: dayjs().subtract(2, 'month').toDate(),
+    fromDate: MIN_START_DATO,
+    toDate: MAX_START_DATO,
     defaultSelected: defaultStartdato
       ? dayjs(defaultStartdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
+      // Kalles både ved klikk og tekstinput, date er undefined når den er ugyldig
       setValue('startdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
         shouldDirty: true
       })
       clearErrors('startdato')
-      handleStardatoChanged(date)
+      handleStartdatoChanged()
     }
   })
 
@@ -62,6 +67,7 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
       ? dayjs(defaultSluttdato, DATE_FORMAT, true)?.toDate()
       : undefined,
     onDateChange: (date) => {
+      // Kalles både ved klikk og tekstinput, date er undefined når den er ugyldig
       setValue('sluttdato', date ? dayjs(date).format(DATE_FORMAT) : '', {
         shouldDirty: true
       })
@@ -70,34 +76,20 @@ export function PameldingDatoer({ defaultStartdato, defaultSluttdato }: Props) {
   })
 
   const handleBlur = (newDate: string, id: 'startdato' | 'sluttdato') => {
-    const parsed = getDayjsFromString(newDate)
+    const parsed = parsePameldingDato(newDate)
 
-    if (parsed?.isValid()) {
-      setValue(id, parsed.format(DATE_FORMAT), { shouldDirty: true })
-    } else {
-      setValue(id, newDate || '', { shouldDirty: true })
-    }
+    setValue(id, parsed ? parsed.format(DATE_FORMAT) : newDate || '', {
+      shouldDirty: true,
+      shouldValidate: submitCount > 0
+    })
 
-    clearErrors(id)
-
-    if (id === 'startdato' && parsed) {
-      handleStardatoChanged(parsed.toDate())
+    if (id === 'startdato') {
+      handleStartdatoChanged()
     }
   }
 
-  // Hvis startdato endres kan sluttdato bli gyldig:
-  const handleStardatoChanged = (newStart?: Date) => {
-    const sluttdatoDayjs = sluttdato
-      ? dayjs(sluttdato, DATE_FORMAT, true)
-      : undefined
-
-    const sluttdatoErGyldig =
-      newStart &&
-      sluttdatoDayjs &&
-      sluttdatoDayjs.isSameOrAfter(newStart, 'date') &&
-      (!maxSluttdato || sluttdatoDayjs.isSameOrBefore(maxSluttdato, 'date'))
-
-    if (sluttdatoErGyldig) clearErrors('sluttdato')
+  const handleStartdatoChanged = () => {
+    if (submitCount > 0 && sluttdato) void trigger('sluttdato')
   }
 
   return (

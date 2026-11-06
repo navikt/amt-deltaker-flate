@@ -3,6 +3,9 @@ import dayjs from 'dayjs'
 import { Tiltakskode } from 'deltaker-flate-common'
 import { DeltakerResponse } from '../api/data/deltaker'
 
+export const MIN_START_DATO = new Date('2000-01-01')
+export const MAX_START_DATO = dayjs().add(5, 'year').toDate()
+
 export enum VarighetValg {
   ANNET = 'ANNET',
   FIRE_UKER = 'FIRE_UKER',
@@ -205,20 +208,20 @@ export const kalkulerSluttdato = (
 
 /**
  * Returnerer datoen regnet ut av max varighet fra nyStartdato eller deltakerens startdato
- * @param pamelding
+ * @param deltaker
  * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
  */
 export const getMaxVarighetDato = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   nyStartdato?: Date
 ) => {
-  if (!pamelding.maxVarighet) {
+  if (!deltaker.maxVarighet) {
     return null
   } else if (nyStartdato) {
-    return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
+    return dayjs(nyStartdato).add(deltaker.maxVarighet, 'millisecond')
   } else {
-    return pamelding.startdato
-      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
+    return deltaker.startdato
+      ? dayjs(deltaker.startdato).add(deltaker.maxVarighet, 'millisecond')
       : null
   }
 }
@@ -277,6 +280,14 @@ export const getSoftMaxVarighetBekreftelseText = (tiltakskode: Tiltakskode) => {
   return null
 }
 
+export const SLUTTDATO_ETTER_STARTDATO_FEILMELDING =
+  'Sluttdato må være etter startdato.'
+export const START_DATO_FOER_2000_FEILMELDING =
+  'Startdato kan ikke være før år 2000.'
+export const START_DATO_ETTER_5_AAR_FEILMELDING =
+  'Startdato kan ikke være lenger enn 5 år frem i tid.'
+export const UGYLDIG_DATO = 'Ugyldig dato. Kontroller dag, måned og år.'
+export const UGYLDIG_DATO_FORMAT = 'Ugyldig datoformat: Bruk dd.mm.åååå.'
 export const DATO_UTENFOR_TILTAKGJENNOMFORING =
   'Datoen kan ikke velges fordi den er utenfor perioden til tiltaket.'
 export const VARGIHET_VALG_FEILMELDING =

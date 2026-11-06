@@ -35,7 +35,9 @@ import {
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
+  MIN_START_DATO,
+  START_DATO_FOER_2000_FEILMELDING,
+  UGYLDIG_DATO_FORMAT,
   VARIGHET_BEKREFTELSE_FEILMELDING,
   VarighetValg
 } from '../../../utils/varighet.tsx'
@@ -122,12 +124,17 @@ export const EndreOppstartsdatoModal = ({
 
   const validateStartdato = (
     dateValidation: DateValidationT,
-    newDate?: Date
+    newDate?: Date,
+    errorMessage?: string
   ) => {
-    if (dateValidation.isBefore || dateValidation.isAfter) {
+    if (newDate && dayjs(newDate).isBefore(MIN_START_DATO, 'date')) {
+      setErrorStartDato(START_DATO_FOER_2000_FEILMELDING)
+    } else if (dateValidation.isBefore || dateValidation.isAfter) {
       setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
+    } else if (errorMessage) {
+      setErrorStartDato(errorMessage)
     } else if (dateValidation.isInvalid) {
-      setErrorStartDato(UGYLDIG_DATO_FEILMELDING)
+      setErrorStartDato(UGYLDIG_DATO_FORMAT)
     } else if (
       // dateValidation kan ikke vite datoen hvis det er tastaturendringer
       newDate &&
@@ -147,7 +154,7 @@ export const EndreOppstartsdatoModal = ({
   const validertRequest = () => {
     let hasError = false
     if (!startdato) {
-      setErrorStartDato('Du må velge startdato')
+      setErrorStartDato(errorStartdato ?? 'Du må velge startdato')
       hasError = true
     }
 
@@ -222,8 +229,8 @@ export const EndreOppstartsdatoModal = ({
       <SimpleDatePicker
         label="Ny oppstartsdato"
         error={errorStartdato}
-        fromDate={deltaker.deltakerliste.startdato || undefined}
-        toDate={deltaker.deltakerliste.sluttdato || undefined}
+        fromDate={deltaker.deltakerliste.startdato ?? undefined}
+        toDate={deltaker.deltakerliste.sluttdato ?? undefined}
         defaultMonth={dayjs().toDate()}
         defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}
