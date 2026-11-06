@@ -40,6 +40,21 @@ export const MIN_DAGER_PER_UKE = 1
 export const MAX_DAGER_PER_UKE = 7
 export const dagerPerUkeFeilmelding = `Antall dager i uka må være et helt tall fra ${MIN_DAGER_PER_UKE} til ${MAX_DAGER_PER_UKE}.`
 
+const datoSchema = (felt: 'startdato' | 'sluttdato') =>
+  z.string().superRefine((value, ctx) => {
+    let feilmelding: string | undefined
+    if (!value) {
+      feilmelding = DATO_PAAKREVD_FEILMELDINGER[felt]
+    } else if (!harGyldigDatoformat(value)) {
+      feilmelding = UGYLDIG_DATO_FORMAT
+    } else if (!parsePameldingDato(value)) {
+      feilmelding = UGYLDIG_DATO
+    }
+    if (feilmelding) {
+      ctx.addIssue({ code: 'custom', message: feilmelding })
+    }
+  })
+
 export const createPameldingEnkeltplassFormSchema = (
   deltaker: DeltakerResponse,
   kodeverk?: KodeverkResponse
@@ -52,8 +67,8 @@ export const createPameldingEnkeltplassFormSchema = (
         .string()
         .min(1, 'Du må velge en underenhet for tiltaksarrangøren.'),
       arrangorNavn: z.string().optional(),
-      startdato: z.string(),
-      sluttdato: z.string(),
+      startdato: datoSchema('startdato'),
+      sluttdato: datoSchema('sluttdato'),
       pristype: z.enum(PrisinformasjonType).nullable(),
       prisinformasjon: prisinformasjonSchema.nullable(),
       kategoriseringValg: kategoriseringValgSchema,
@@ -131,25 +146,8 @@ const validerDatoer = (
   schema: PameldingEnkeltplassFormValues,
   ctx: z.RefinementCtx
 ) => {
-  const validerDato = (value: string, felt: 'startdato' | 'sluttdato') => {
-    const parsed = parsePameldingDato(value)
-    let message: string | undefined
-    if (!value) {
-      message = DATO_PAAKREVD_FEILMELDINGER[felt]
-    } else if (!harGyldigDatoformat(value)) {
-      message = UGYLDIG_DATO_FORMAT
-    } else if (!parsed) {
-      message = UGYLDIG_DATO
-    }
-    if (message) {
-      ctx.addIssue({ code: 'custom', message, path: [felt] })
-      return undefined
-    }
-    return parsed
-  }
-
-  const start = validerDato(schema.startdato, 'startdato')
-  const slutt = validerDato(schema.sluttdato, 'sluttdato')
+  const start = parsePameldingDato(schema.startdato)
+  const slutt = parsePameldingDato(schema.sluttdato)
 
   if (!start) return
   if (start.isBefore(MIN_START_DATO, 'date')) {
