@@ -100,6 +100,9 @@ export const AvsluttDeltakelseModal = ({
     ? dayjs().subtract(1, 'day').toDate()
     : (deltaker.sluttdato ?? undefined)
 
+  const skalViseSluttDato =
+    harDeltatt && avslutningstype !== Avslutningstype.IKKE_DELTATT
+
   const sluttdato = useSluttdatoInput({
     deltaker: deltaker,
     defaultDato: defaultSluttdato ?? undefined,
@@ -107,7 +110,8 @@ export const AvsluttDeltakelseModal = ({
     toDate: sluttdatoToDate,
     isAfterError: erEndreAvslutning
       ? DATO_ETTER_IDAG_FEILMELDING
-      : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING
+      : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
+    isRequired: !!skalViseSluttDato
   })
 
   const aarsak = useAarsak(
@@ -122,8 +126,6 @@ export const AvsluttDeltakelseModal = ({
       avslutningstype === Avslutningstype.IKKE_DELTATT
     : true
 
-  const skalViseSluttDato =
-    harDeltatt && avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(deltaker, sluttdato.sluttdato)
 

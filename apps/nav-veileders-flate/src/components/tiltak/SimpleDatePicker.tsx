@@ -48,6 +48,7 @@ export function SimpleDatePicker({
     defaultSelected: defaultDate,
     defaultMonth: defaultMonth,
     onValidate: (dateValidation) => {
+      // Denne treffer valg i date picker fra klikk
       onValidate(dateValidation)
     },
     onDateChange: (date) => {
@@ -63,6 +64,12 @@ export function SimpleDatePicker({
   const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Denne treffers hvis vi endrer date-input med tastatur.
     setDateInput(e.target.value)
+
+    if (!e.target.value) {
+      onValidate(dateValidation({ isEmpty: true }))
+      onChange(undefined)
+      return
+    }
 
     const gydligFormat = harGyldigDatoformat(e.target.value)
 
