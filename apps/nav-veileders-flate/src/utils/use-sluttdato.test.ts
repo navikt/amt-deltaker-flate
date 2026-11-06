@@ -4,6 +4,7 @@ import {
   DATO_FOER_SLUTTDATO_FEILMELDING,
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
+  UGYLDIG_DATO,
   UGYLDIG_DATO_FEILMELDING,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg
@@ -11,7 +12,7 @@ import {
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { dateValidation } from '../components/tiltak/VarighetField.tsx'
+import { dateValidation } from './utils.ts'
 import { useSluttdato } from './use-sluttdato.ts'
 
 const createDeltaker = (
@@ -303,6 +304,26 @@ describe('useSluttdato - deltakerMedDatoer', () => {
     })
 
     expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
+  })
+
+  it('validerDato - videresender presis feilmelding fra datovelgeren', () => {
+    const { result } = renderHook(() =>
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET,
+        startdato: dayjs(deltakerMedDatoer.startdato).toDate()
+      })
+    )
+
+    act(() => {
+      result.current.validerDato(
+        dateValidation({ isInvalid: true }),
+        undefined,
+        UGYLDIG_DATO
+      )
+    })
+
+    expect(result.current.annetError).toBe(UGYLDIG_DATO)
   })
 
   it('validerDato - dato er før startdato - setter error', () => {

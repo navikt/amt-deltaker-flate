@@ -31,7 +31,11 @@ export function useSluttdato({
   varighetError: string | null
   annetError: string | null
   valider: () => boolean
-  validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
+  validerDato: (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    errorMessage?: string
+  ) => void
   handleChange: (date: Date | undefined) => void
 } {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
@@ -93,8 +97,12 @@ export function useSluttdato({
     return error === null && annet.error === null
   }
 
-  const validerDato = (dateValidation: DateValidationT, newDate?: Date) => {
-    annet.validate(dateValidation, newDate)
+  const validerDato = (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    errorMessage?: string
+  ) => {
+    annet.validate(dateValidation, newDate, errorMessage)
   }
 
   const handleChange = (date: Date | undefined) => {
@@ -149,9 +157,13 @@ export function useSluttdatoInput({
     }
   }, [startdato])
 
-  const validate = (dateValidation: DateValidationT, newDate?: Date) => {
+  const validate = (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    message?: string
+  ) => {
     if (dateValidation.isInvalid) {
-      setError(UGYLDIG_DATO_FEILMELDING)
+      setError(message ?? UGYLDIG_DATO_FEILMELDING) // TODO få bedre feilmelding
     } else if (dateValidation.isBefore) {
       setError(
         startdato
