@@ -68,11 +68,8 @@ export function SimpleDatePicker({
 
     const date = getDayjsFromString(e.target.value)
     if (date?.isValid()) {
-      const isBefore =
-        (fromDate ?? MIN_START_DATO)
-          ? date.isBefore(fromDate ?? MIN_START_DATO)
-          : false
-      const isAfter = toDate ? date.isAfter(toDate) : false
+      const isBefore = date.isBefore(fromDate ?? MIN_START_DATO, 'date')
+      const isAfter = toDate ? date.isAfter(toDate, 'date') : false
       onChange(date.toDate())
       onValidate(
         dateValidation({ isValidDate: true, isBefore, isAfter }),

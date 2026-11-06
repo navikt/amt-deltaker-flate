@@ -11,6 +11,7 @@ import {
 } from '../utils/varighet'
 import {
   createPameldingEnkeltplassFormSchema,
+  dagerPerUkeFeilmelding,
   DATE_FORMAT,
   DATO_PAAKREVD_FEILMELDINGER,
   generateFormDefaultValues,
@@ -27,6 +28,39 @@ const gyldigeVerdier = {
 }
 
 describe('datovalidering for enkeltplass', () => {
+  describe.each(['x', Number.NaN])(
+    'med ugyldig dagerPerUke=%s',
+    (dagerPerUke) => {
+      it.each([
+        [
+          '',
+          DATO_PAAKREVD_FEILMELDINGER.startdato,
+          DATO_PAAKREVD_FEILMELDINGER.sluttdato
+        ],
+        ['01/03/2027', UGYLDIG_DATO_FORMAT, UGYLDIG_DATO_FORMAT],
+        ['32.01.2027', UGYLDIG_DATO, UGYLDIG_DATO]
+      ])('viser også datofeil for %s', (value, startMessage, sluttMessage) => {
+        const result = schema.safeParse({
+          ...gyldigeVerdier,
+          dagerPerUke,
+          startdato: value,
+          sluttdato: value
+        })
+
+        expect(result.success).toBe(false)
+        if (!result.success) {
+          expect(
+            result.error.issues.map(({ path, message }) => ({ path, message }))
+          ).toEqual([
+            { path: ['startdato'], message: startMessage },
+            { path: ['sluttdato'], message: sluttMessage },
+            { path: ['dagerPerUke'], message: dagerPerUkeFeilmelding }
+          ])
+        }
+      })
+    }
+  )
+
   describe.each(['startdato', 'sluttdato'] as const)('%s', (felt) => {
     const parseDato = (value: string) =>
       schema.safeParse({ ...gyldigeVerdier, [felt]: value })
