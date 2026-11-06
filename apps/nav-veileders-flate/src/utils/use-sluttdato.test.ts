@@ -307,11 +307,12 @@ describe('useSluttdato - deltakerMedDatoer', () => {
   })
 
   it('validerDato - videresender presis feilmelding fra datovelgeren', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato).toDate()
     const { result } = renderHook(() =>
       useSluttdato({
         deltaker: deltakerMedDatoer,
         valgtVarighet: VarighetValg.ANNET,
-        startdato: dayjs(deltakerMedDatoer.startdato).toDate()
+        startdato
       })
     )
 
