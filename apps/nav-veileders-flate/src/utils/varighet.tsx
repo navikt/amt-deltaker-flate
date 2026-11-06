@@ -208,20 +208,20 @@ export const kalkulerSluttdato = (
 
 /**
  * Returnerer datoen regnet ut av max varighet fra nyStartdato eller deltakerens startdato
- * @param pamelding
+ * @param deltaker
  * @param nyStartdato varighet regnes ut fra denne hvis gitt, ellers brukes deltakerens startdato
  */
 export const getMaxVarighetDato = (
-  pamelding: DeltakerResponse,
+  deltaker: DeltakerResponse,
   nyStartdato?: Date
 ) => {
-  if (!pamelding.maxVarighet) {
+  if (!deltaker.maxVarighet) {
     return null
   } else if (nyStartdato) {
-    return dayjs(nyStartdato).add(pamelding.maxVarighet, 'millisecond')
+    return dayjs(nyStartdato).add(deltaker.maxVarighet, 'millisecond')
   } else {
-    return pamelding.startdato
-      ? dayjs(pamelding.startdato).add(pamelding.maxVarighet, 'millisecond')
+    return deltaker.startdato
+      ? dayjs(deltaker.startdato).add(deltaker.maxVarighet, 'millisecond')
       : null
   }
 }
