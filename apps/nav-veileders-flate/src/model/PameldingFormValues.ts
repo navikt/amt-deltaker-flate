@@ -44,7 +44,7 @@ export const pameldingFormSchema = z
       .optional(),
     bakgrunnsinformasjon: z
       .string()
-      .nonempty('Bakgrunnsinfo må fylles ut')
+      .refine((value) => value.trim().length > 0, 'Bakgrunnsinfo må fylles ut')
       .max(
         bakgrunnsinfoSporsmal.maksTegn,
         `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`

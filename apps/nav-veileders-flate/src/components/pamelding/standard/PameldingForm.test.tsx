@@ -37,8 +37,9 @@ describe('PameldingForm', () => {
     onSubmit.mockClear()
   })
 
-  it.each([null, ''])(
-    'prevents submission when background information is %j',
+  const tommeVerdier = [null, '', '   ', '\t\n']
+  it.each(tommeVerdier)(
+    'hindrer innsending når bakgrunnsinfo er %j',
     async (bakgrunnsinformasjon) => {
       const user = userEvent.setup()
       renderForm(bakgrunnsinformasjon)
@@ -55,24 +56,30 @@ describe('PameldingForm', () => {
     }
   )
 
-  it('prevents submission after clearing existing background information', async () => {
-    const user = userEvent.setup()
-    renderForm('Existing background information')
-    const input = screen.getByRole('textbox', {
-      name: bakgrunnsinfoSporsmal.label
-    })
+  it.each(['', '   ', '\t\n'])(
+    'hindrer innsending når eksisterende bakgrunnsinfo erstattes med %j',
+    async (bakgrunnsinformasjon) => {
+      const user = userEvent.setup()
+      renderForm('Eksisterende bakgrunnsinfo')
+      const input = screen.getByRole('textbox', {
+        name: bakgrunnsinfoSporsmal.label
+      })
 
-    await user.clear(input)
-    await user.click(screen.getByRole('button', { name: 'Fortsett' }))
+      await user.clear(input)
+      if (bakgrunnsinformasjon) {
+        await user.type(input, bakgrunnsinformasjon)
+      }
+      await user.click(screen.getByRole('button', { name: 'Fortsett' }))
 
-    expect(
-      await screen.findByRole('link', { name: 'Bakgrunnsinfo må fylles ut' })
-    ).toBeInTheDocument()
-    expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(onSubmit).not.toHaveBeenCalled()
-  })
+      expect(
+        await screen.findByRole('link', { name: 'Bakgrunnsinfo må fylles ut' })
+      ).toBeInTheDocument()
+      expect(input).toHaveAttribute('aria-invalid', 'true')
+      expect(onSubmit).not.toHaveBeenCalled()
+    }
+  )
 
-  it('clears the required-field error and allows submission after entering background information', async () => {
+  it('fjerner feilmeldingen og tillater innsending når bakgrunnsinfo er fylt ut', async () => {
     const user = userEvent.setup()
     renderForm()
     const input = screen.getByRole('textbox', {
@@ -81,13 +88,13 @@ describe('PameldingForm', () => {
 
     await user.click(screen.getByRole('button', { name: 'Fortsett' }))
     await screen.findByRole('link', { name: 'Bakgrunnsinfo må fylles ut' })
-    await user.type(input, 'Needs help finding work')
+    await user.type(input, '  Trenger hjelp til å finne arbeid  ')
     await user.click(screen.getByRole('button', { name: 'Fortsett' }))
 
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
     expect(onSubmit.mock.calls[0][0]).toEqual(
       expect.objectContaining({
-        bakgrunnsinformasjon: 'Needs help finding work'
+        bakgrunnsinformasjon: '  Trenger hjelp til å finne arbeid  '
       })
     )
     expect(input).not.toHaveAttribute('aria-invalid', 'true')
