@@ -1,13 +1,17 @@
-import { INNHOLD_TYPE_ANNET, Tiltakskode } from 'deltaker-flate-common'
+import {
+  harBakgrunnsinfo,
+  INNHOLD_TYPE_ANNET,
+  Tiltakskode
+} from 'deltaker-flate-common'
 import { z } from 'zod'
 import {
   DeltakerResponse,
   innholdselementSchema
 } from '../api/data/deltaker.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
+import { bakgrunnsinfoSporsmal } from '../components/pamelding/bakgrunnsinfo-sporsmal.ts'
 
 export const BESKRIVELSE_MAX_TEGN = 250
-export const BAKGRUNNSINFORMASJON_MAKS_TEGN = 1000
 export const BESKRIVELSE_ANNET_MAX_TEGN = 250
 
 export const deltakelsesprosentFeilmelding =
@@ -45,10 +49,9 @@ export const pameldingFormSchema = z
     bakgrunnsinformasjon: z
       .string()
       .max(
-        BAKGRUNNSINFORMASJON_MAKS_TEGN,
-        `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
-      )
-      .optional(),
+        bakgrunnsinfoSporsmal.maksTegn,
+        `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`
+      ),
     deltakelsesprosentValg: z.enum(DeltakelsesprosentValg).optional(),
     deltakelsesprosent: z
       .number({
@@ -67,6 +70,15 @@ export const pameldingFormSchema = z
       .lte(5, { message: dagerPerUkeFeilmelding })
       .optional()
   })
+  .refine(
+    (schema) =>
+      !harBakgrunnsinfo(schema.tiltakskode) ||
+      schema.bakgrunnsinformasjon.trim().length > 0,
+    {
+      message: 'Bakgrunnsinfo må fylles ut',
+      path: ['bakgrunnsinformasjon']
+    }
+  )
   .refine(
     (schema) => {
       if (
@@ -147,7 +159,7 @@ export const generateFormDefaultValues = (
     valgteInnhold: generateValgtInnholdKoder(pamelding),
     innholdAnnetBeskrivelse: getInnholdAnnetBeskrivelse(pamelding),
     innholdsTekst: getInnholdAnnetBeskrivelse(pamelding),
-    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? undefined,
+    bakgrunnsinformasjon: pamelding.bakgrunnsinformasjon ?? '',
     deltakelsesprosentValg: showProsentValg(),
     deltakelsesprosent: pamelding.deltakelsesprosent ?? undefined,
     dagerPerUke: pamelding.dagerPerUke ?? undefined

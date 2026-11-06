@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { useAppContext } from '../../../AppContext.tsx'
 import { endreDeltakelseBakgrunnsinfo } from '../../../api/api.ts'
 import { DeltakerResponse } from '../../../api/data/deltaker.ts'
-import { BAKGRUNNSINFORMASJON_MAKS_TEGN } from '../../../model/PameldingFormValues.ts'
 import { getFeilmeldingIngenEndringTekst } from '../../../utils/displayText.ts'
 import { Endringsmodal } from '../modal/Endringsmodal.tsx'
 import { validerDeltakerKanEndres } from '../../../utils/endreDeltakelse.ts'
+import { bakgrunnsinfoSporsmal } from '../../pamelding/bakgrunnsinfo-sporsmal.ts'
 
 interface EndreBakgrunnsinfoModalProps {
   deltaker: DeltakerResponse
@@ -31,11 +31,16 @@ export const EndreBakgrunnsinfoModal = ({
   const validertRequest = () => {
     if (
       bakgrunnsinformasjon &&
-      bakgrunnsinformasjon.length > BAKGRUNNSINFORMASJON_MAKS_TEGN
+      bakgrunnsinformasjon.length > bakgrunnsinfoSporsmal.maksTegn
     ) {
       setError(
-        `Bakgrunnsinfo kan ikke være mer enn ${BAKGRUNNSINFORMASJON_MAKS_TEGN} tegn.`
+        `Bakgrunnsinfo kan ikke være mer enn ${bakgrunnsinfoSporsmal.maksTegn} tegn.`
       )
+      return null
+    }
+
+    if (!bakgrunnsinformasjon || bakgrunnsinformasjon.trim().length === 0) {
+      setError('Bakgrunnsinfo må fylles ut.')
       return null
     }
 
@@ -79,22 +84,18 @@ export const EndreBakgrunnsinfoModal = ({
           </Alert>
         )}
 
-        <Heading level="2" size="small" className="mb-4">
-          Bakgrunnsinfo
-        </Heading>
         <Textarea
           onChange={(e) => {
             setError(null)
             setBakgrunnsinformasjon(fjernUgyldigeTegn(e.target.value))
           }}
-          label="Er det noe mer du ønsker å informere arrangøren om?"
-          description="Skriv en kortfattet oppsummering av relevant historikk og forhold ved personens situasjon
-          og behov som kan påvirke deltakelsen på tiltaket."
+          label={bakgrunnsinfoSporsmal.label}
+          description={bakgrunnsinfoSporsmal.description}
           value={bakgrunnsinformasjon ?? ''}
-          maxLength={BAKGRUNNSINFORMASJON_MAKS_TEGN}
+          maxLength={bakgrunnsinfoSporsmal.maksTegn}
           id="bakgrunnsinformasjon"
           size="small"
-          aria-label={'Bagrunnsinfo'}
+          aria-label={'Bakgrunnsinfo'}
           error={error}
           disabled={!deltaker.erUnderOppfolging}
         />
