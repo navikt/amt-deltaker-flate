@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -10,6 +10,11 @@ import {
   PameldingEnkeltplassFormValues
 } from '../../../../model/PameldingEnkeltplassFormValues'
 import { getMockDeltaker } from '../../../../mocks/mockDeltakere'
+import {
+  SLUTTDATO_ETTER_STARTDATO_FEILMELDING,
+  START_DATO_FOER_2000_FEILMELDING,
+  UGYLDIG_DATO
+} from '../../../../utils/varighet'
 import { PameldingDatoer } from '../PameldingDatoer'
 import { renderWithProviders } from './test-utils'
 
@@ -124,17 +129,11 @@ describe('PameldingDatoer', () => {
         await user.tab()
 
         expect(input).toHaveValue('32.01.2027')
-        expect(
-          screen.queryByText('Datoen finnes ikke. Kontroller dag, måned og år.')
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText(UGYLDIG_DATO)).not.toBeInTheDocument()
 
         await user.click(screen.getByRole('button', { name: 'Send inn' }))
 
-        expect(
-          await screen.findByText(
-            'Datoen finnes ikke. Kontroller dag, måned og år.'
-          )
-        ).toBeInTheDocument()
+        expect(await screen.findByText(UGYLDIG_DATO)).toBeInTheDocument()
       }
     )
 
@@ -151,12 +150,12 @@ describe('PameldingDatoer', () => {
       await user.tab()
 
       expect(
-        screen.queryByText('Sluttdato må være etter startdato.')
+        screen.queryByText(SLUTTDATO_ETTER_STARTDATO_FEILMELDING)
       ).not.toBeInTheDocument()
 
       await user.click(screen.getByRole('button', { name: 'Send inn' }))
       expect(
-        await screen.findByText('Sluttdato må være etter startdato.')
+        await screen.findByText(SLUTTDATO_ETTER_STARTDATO_FEILMELDING)
       ).toBeInTheDocument()
 
       await user.clear(startdato)
@@ -164,7 +163,7 @@ describe('PameldingDatoer', () => {
       await user.tab()
 
       expect(
-        screen.queryByText('Sluttdato må være etter startdato.')
+        screen.queryByText(SLUTTDATO_ETTER_STARTDATO_FEILMELDING)
       ).not.toBeInTheDocument()
     })
 
@@ -175,26 +174,25 @@ describe('PameldingDatoer', () => {
         renderWithProviders(<DatoerMedValidering />)
 
         await user.click(screen.getByRole('button', { name: 'Send inn' }))
-        await screen.findByText('Startdato er påkrevd.')
+        await waitFor(() =>
+          expect(screen.getByLabelText('Startdato')).toHaveAttribute(
+            'aria-invalid',
+            'true'
+          )
+        )
 
         const input = screen.getByLabelText(label)
         await user.type(input, '32.01.2027')
         await user.tab()
 
-        expect(
-          await screen.findByText(
-            'Datoen finnes ikke. Kontroller dag, måned og år.'
-          )
-        ).toBeInTheDocument()
+        expect(await screen.findByText(UGYLDIG_DATO)).toBeInTheDocument()
         expect(input).toHaveValue('32.01.2027')
 
         await user.clear(input)
         await user.type(input, '01.03.2027')
         await user.tab()
 
-        expect(
-          screen.queryByText('Datoen finnes ikke. Kontroller dag, måned og år.')
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText(UGYLDIG_DATO)).not.toBeInTheDocument()
       }
     )
 
@@ -203,13 +201,18 @@ describe('PameldingDatoer', () => {
       renderWithProviders(<DatoerMedValidering />)
 
       await user.click(screen.getByRole('button', { name: 'Send inn' }))
-      await screen.findByText('Startdato er påkrevd.')
+      await waitFor(() =>
+        expect(screen.getByLabelText('Startdato')).toHaveAttribute(
+          'aria-invalid',
+          'true'
+        )
+      )
 
       await user.type(screen.getByLabelText('Startdato'), '01.01.0200')
       await user.tab()
 
       expect(
-        await screen.findByText('Startdato kan ikke være før år 2000.')
+        await screen.findByText(START_DATO_FOER_2000_FEILMELDING)
       ).toBeInTheDocument()
     })
   })

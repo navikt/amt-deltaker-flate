@@ -31,6 +31,11 @@ import { validatePrisinformasjon } from './PrisinformasjonFormValues.ts'
 
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
+export const DATO_PAAKREVD_FEILMELDINGER = {
+  startdato: 'Startdato er påkrevd.',
+  sluttdato: 'Sluttdato er påkrevd.'
+}
+
 export const MIN_DAGER_PER_UKE = 1
 export const MAX_DAGER_PER_UKE = 7
 export const dagerPerUkeFeilmelding = `Antall dager i uka må være et helt tall fra ${MIN_DAGER_PER_UKE} til ${MAX_DAGER_PER_UKE}.`
@@ -91,7 +96,7 @@ export const createPameldingEnkeltplassFormSchema = (
       sluttdato: parsePameldingDato(schema.sluttdato)!.format(DATE_FORMAT)
     }))
 
-export type PameldingEnkeltplassFormValues = z.infer<
+export type PameldingEnkeltplassFormValues = z.input<
   ReturnType<typeof createPameldingEnkeltplassFormSchema>
 >
 
@@ -126,15 +131,11 @@ const validerDatoer = (
   schema: PameldingEnkeltplassFormValues,
   ctx: z.RefinementCtx
 ) => {
-  const validerDato = (
-    value: string,
-    felt: 'startdato' | 'sluttdato',
-    feltnavn: string
-  ) => {
+  const validerDato = (value: string, felt: 'startdato' | 'sluttdato') => {
     const parsed = parsePameldingDato(value)
     let message: string | undefined
     if (!value) {
-      message = `${feltnavn} er påkrevd.`
+      message = DATO_PAAKREVD_FEILMELDINGER[felt]
     } else if (!harGyldigDatoformat(value)) {
       message = UGYLDIG_DATO_FORMAT
     } else if (!parsed) {
@@ -147,8 +148,8 @@ const validerDatoer = (
     return parsed
   }
 
-  const start = validerDato(schema.startdato, 'startdato', 'Startdato')
-  const slutt = validerDato(schema.sluttdato, 'sluttdato', 'Sluttdato')
+  const start = validerDato(schema.startdato, 'startdato')
+  const slutt = validerDato(schema.sluttdato, 'sluttdato')
 
   if (!start) return
   if (start.isBefore(MIN_START_DATO, 'date')) {

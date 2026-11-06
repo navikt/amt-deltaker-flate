@@ -1,10 +1,18 @@
 import dayjs from 'dayjs'
 import { describe, expect, it } from 'vitest'
 import { getMockDeltaker } from '../mocks/mockDeltakere'
-import { MAX_START_DATO } from '../utils/varighet'
+import {
+  MAX_START_DATO,
+  SLUTTDATO_ETTER_STARTDATO_FEILMELDING,
+  START_DATO_ETTER_5_AAR_FEILMELDING,
+  START_DATO_FOER_2000_FEILMELDING,
+  UGYLDIG_DATO,
+  UGYLDIG_DATO_FORMAT
+} from '../utils/varighet'
 import {
   createPameldingEnkeltplassFormSchema,
   DATE_FORMAT,
+  DATO_PAAKREVD_FEILMELDINGER,
   generateFormDefaultValues,
   parsePameldingDato
 } from './PameldingEnkeltplassFormValues'
@@ -54,7 +62,7 @@ describe('datovalidering for enkeltplass', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues.map((issue) => issue.message)).toEqual([
-          'Datoen finnes ikke. Kontroller dag, måned og år.'
+          UGYLDIG_DATO
         ])
       }
     })
@@ -64,9 +72,7 @@ describe('datovalidering for enkeltplass', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
-          'Ugyldig datoformat: Bruk dd.mm.åååå'
-        )
+        expect(result.error.issues[0].message).toBe(UGYLDIG_DATO_FORMAT)
       }
     })
 
@@ -76,7 +82,7 @@ describe('datovalidering for enkeltplass', () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error.issues.map((issue) => issue.message)).toEqual([
-          `${felt === 'startdato' ? 'Startdato' : 'Sluttdato'} er påkrevd.`
+          DATO_PAAKREVD_FEILMELDINGER[felt]
         ])
       }
     })
@@ -125,7 +131,7 @@ describe('datovalidering for enkeltplass', () => {
         expect.arrayContaining([
           expect.objectContaining({
             path: ['startdato'],
-            message: 'Startdato kan ikke være før år 2000.'
+            message: START_DATO_FOER_2000_FEILMELDING
           })
         ])
       )
@@ -146,7 +152,7 @@ describe('datovalidering for enkeltplass', () => {
         expect.arrayContaining([
           expect.objectContaining({
             path: ['startdato'],
-            message: 'Startdato kan ikke være lenger enn 5 år frem i tid.'
+            message: START_DATO_ETTER_5_AAR_FEILMELDING
           })
         ])
       )
@@ -167,11 +173,11 @@ describe('datovalidering for enkeltplass', () => {
       ).toEqual([
         {
           path: ['sluttdato'],
-          message: 'Datoen finnes ikke. Kontroller dag, måned og år.'
+          message: UGYLDIG_DATO
         },
         {
           path: ['startdato'],
-          message: 'Startdato kan ikke være før år 2000.'
+          message: START_DATO_FOER_2000_FEILMELDING
         }
       ])
     }
@@ -186,7 +192,7 @@ describe('datovalidering for enkeltplass', () => {
     expect(result.success).toBe(false)
     if (!result.success) {
       expect(result.error.issues.map(({ message }) => message)).toEqual([
-        'Sluttdato må være etter startdato.'
+        SLUTTDATO_ETTER_STARTDATO_FEILMELDING
       ])
     }
   })

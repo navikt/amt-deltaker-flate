@@ -14,7 +14,7 @@ const TestForm = ({
   group: boolean
   erEnkeltplass?: boolean
 }) => {
-  const form = useForm()
+  const form = useForm({ shouldFocusError: false })
   const { setError } = form
 
   useEffect(() => {
@@ -64,7 +64,9 @@ describe.each([true, false])(
       const input = getByRole('textbox', { name: 'Belop' })
       const submit = getByRole('button', { name: 'Send inn' })
 
-      fireEvent.click(submit)
+      await act(async () => {
+        fireEvent.click(submit)
+      })
       expect(
         await findByRole('link', { name: 'Rett feltet' })
       ).toBeInTheDocument()
@@ -88,12 +90,15 @@ describe.each([true, false])(
       expect(queryByRole('link', { name: 'Rett feltet' })).toBeInTheDocument()
       expect(document.activeElement).toBe(input)
 
-      fireEvent.click(submit)
+      await act(async () => {
+        fireEvent.click(submit)
+      })
       expect(
         await findByRole('link', { name: 'Rett feltet' })
       ).toBeInTheDocument()
-      expect(document.activeElement).toBe(
-        getByRole('link', { name: 'Rett feltet' }).closest('[tabindex="-1"]')
+      expect(document.activeElement).toHaveAttribute('tabindex', '-1')
+      expect(document.activeElement).toContainElement(
+        getByRole('link', { name: 'Rett feltet' })
       )
     })
 
