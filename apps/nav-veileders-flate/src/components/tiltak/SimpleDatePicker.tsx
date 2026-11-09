@@ -6,6 +6,10 @@ import {
 } from '../../../../../packages/deltaker-flate-common/utils/utils'
 import { dateValidation, formatDateToInputStr } from '../../utils/utils'
 import { MIN_START_DATO, UGYLDIG_DATO } from '../../utils/varighet'
+import {
+  DATE_FORMAT,
+  parsePameldingDato
+} from '../../model/PameldingEnkeltplassFormValues'
 
 interface Props {
   label: string
@@ -92,6 +96,12 @@ export function SimpleDatePicker({
     }
   }
 
+  const handleBlur = (newDate: string) => {
+    const parsed = parsePameldingDato(newDate)
+
+    setDateInput(parsed ? parsed.format(DATE_FORMAT) : newDate || '')
+  }
+
   return (
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
@@ -103,6 +113,7 @@ export function SimpleDatePicker({
         error={error}
         size="small"
         onChange={handleDateInputChange}
+        onBlur={(e) => handleBlur(e.target.value)}
         disabled={disabled}
       />
     </DatePicker>
