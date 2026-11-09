@@ -1,5 +1,5 @@
 import { TiltakDeltaker } from '../../../../api/data/deltaker'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   FilterType,
   useKoordinatorFilterContext
@@ -18,7 +18,7 @@ interface Props {
   deltakere: TiltakDeltaker[]
 }
 
-export const FilterMenyMedveileder = (props: Props): React.ReactElement => {
+export const FilterMenyMedveileder = (props: Props) => {
   const [deltakerePerMedveileder, setDeltakerePerMedveileder] = useState<
     FiltermenyDataEntry[]
   >([])

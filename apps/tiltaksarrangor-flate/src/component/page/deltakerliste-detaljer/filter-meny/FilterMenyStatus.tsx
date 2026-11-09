@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   KoordinatorsDeltakerliste,
   TiltakDeltaker,
@@ -20,7 +20,7 @@ interface Props {
   deltakerliste: KoordinatorsDeltakerliste
 }
 
-export const FilterMenyStatus = ({ deltakerliste }: Props): React.ReactElement => {
+export const FilterMenyStatus = ({ deltakerliste }: Props) => {
   const [deltakerePerStatus, setDeltakerePerStatus] = useState<
     FiltermenyDataEntry[]
   >([])
@@ -45,7 +45,11 @@ export const FilterMenyStatus = ({ deltakerliste }: Props): React.ReactElement =
   > => {
     const dataMap = new Map<string, FiltermenyDataEntry>()
 
-    const statuser = getFilterStatuser(deltakerliste.oppstartstype, deltakerliste.pameldingstype, deltakerliste.tiltakskode)
+    const statuser = getFilterStatuser(
+      deltakerliste.oppstartstype,
+      deltakerliste.pameldingstype,
+      deltakerliste.tiltakskode
+    )
 
     statuser.forEach((status) => {
       const tekst = mapTiltakDeltakerStatusTilTekst(status)
@@ -53,7 +57,8 @@ export const FilterMenyStatus = ({ deltakerliste }: Props): React.ReactElement =
       // skal ikke "Vurderes" og "Søkt inn" vises i statusfilteret
       if (
         deltakerliste.pameldingstype === Pameldingstype.DIREKTE_VEDTAK &&
-        (status === TiltakDeltakerStatus.VURDERES || status === TiltakDeltakerStatus.SOKT_INN)
+        (status === TiltakDeltakerStatus.VURDERES ||
+          status === TiltakDeltakerStatus.SOKT_INN)
       ) {
         return
       }
@@ -65,23 +70,24 @@ export const FilterMenyStatus = ({ deltakerliste }: Props): React.ReactElement =
       })
     })
     return dataMap
-  }, [ deltakerliste.oppstartstype, deltakerliste.tiltakskode ])
+  }, [deltakerliste.oppstartstype, deltakerliste.tiltakskode])
 
   useEffect(() => {
     const statusMap = createInitialDataMap()
 
-    filtrerDeltakerePaaAltUtenom(FilterType.Status, deltakerliste.deltakere).forEach(
-      (deltaker: TiltakDeltaker) => {
-        const status = deltaker.status.type
-        const entry = statusMap.get(status)
+    filtrerDeltakerePaaAltUtenom(
+      FilterType.Status,
+      deltakerliste.deltakere
+    ).forEach((deltaker: TiltakDeltaker) => {
+      const status = deltaker.status.type
+      const entry = statusMap.get(status)
 
-        statusMap.set(status, {
-          id: status,
-          displayName: entry ? entry.displayName : '',
-          antallDeltakere: entry ? entry.antallDeltakere + 1 : 1
-        })
-      }
-    )
+      statusMap.set(status, {
+        id: status,
+        displayName: entry ? entry.displayName : '',
+        antallDeltakere: entry ? entry.antallDeltakere + 1 : 1
+      })
+    })
 
     setDeltakerePerStatus([...statusMap.values()])
   }, [

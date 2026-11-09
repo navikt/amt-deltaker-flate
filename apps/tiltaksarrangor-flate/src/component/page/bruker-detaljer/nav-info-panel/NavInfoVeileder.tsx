@@ -1,7 +1,5 @@
 import { EnvelopeClosedIcon, PersonIcon, PhoneIcon } from '@navikt/aksel-icons'
 import { Alert, Heading } from '@navikt/ds-react'
-import React from 'react'
-
 import { NavVeileder } from '../../../../api/data/deltaker'
 import globalStyles from '../../../../globals.module.scss'
 import { formaterTelefonnummer } from '../../../../utils/bruker-utils'
@@ -12,7 +10,7 @@ interface Props {
   veileder: NavVeileder | null
 }
 
-export const NavInfoVeileder = (props: Props): React.ReactElement => {
+export const NavInfoVeileder = (props: Props) => {
   const navVeileder = props.veileder
 
   let veileder

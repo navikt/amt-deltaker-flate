@@ -1,5 +1,5 @@
 import { VeiledersDeltaker } from '../../../../api/data/deltaker'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiltermenyDataEntry } from '../../../felles/table-filter/filtermeny-data-entry'
 import {
   FilterType,
@@ -16,7 +16,7 @@ interface Props {
   deltakere: VeiledersDeltaker[]
 }
 
-export const FilterMenyVeilederType = (props: Props): React.ReactElement => {
+export const FilterMenyVeilederType = (props: Props) => {
   const [deltakerePerVeiledertype, setDeltakerePerVeiledertype] = useState<
     FiltermenyDataEntry[]
   >([])

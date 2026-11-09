@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-
 import { Alert } from '@navikt/ds-react'
 import { Tiltakskode } from '../../../../../api/data/tiltak'
 import { leggTilOppstartsdatoFraArrangor } from '../../../../../api/endring-api'
@@ -15,16 +14,18 @@ import { finnValgtVarighet } from './varighet'
 export const LeggTilOppstartModal = ({
   deltaker,
   onClose,
-  onEndringSendt,
+  onEndringSendt
 }: ModalDataProps) => {
-  const [ startdato, setStartdato ] = useState<Nullable<Date>>(null)
+  const [startdato, setStartdato] = useState<Nullable<Date>>(null)
   const sluttdato = useRef<SluttdatoRef>(null)
 
   const skalVelgeSluttdato =
-    deltaker.deltakerliste.tiltakskode !== Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-    && deltaker.deltakerliste.tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
+    deltaker.deltakerliste.tiltakskode !==
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET &&
+    deltaker.deltakerliste.tiltakskode !==
+      Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
 
-    const kanSendeMelding = startdato !== null && sluttdato !== null
+  const kanSendeMelding = startdato !== null && sluttdato !== null
 
   const lagreEndring = () => {
     if (!startdato) {
@@ -51,8 +52,7 @@ export const LeggTilOppstartModal = ({
       onClose={onClose}
       onSend={lagreEndring}
     >
-
-      <Alert variant="info" size="small" >
+      <Alert variant="info" size="small">
         Oppstartsdato avtales med deltaker direkte. Når du lagrer så kan
         Nav-veileder se datoene i arbeidsverktøyet sitt og deltaker kan se
         datoene på nav.no.
@@ -78,10 +78,10 @@ export const LeggTilOppstartModal = ({
           defaultVarighet={
             deltaker.sluttDato
               ? finnValgtVarighet(
-                deltaker.startDato,
-                deltaker.sluttDato,
-                deltaker.deltakerliste.tiltakskode
-              )
+                  deltaker.startDato,
+                  deltaker.sluttDato,
+                  deltaker.deltakerliste.tiltakskode
+                )
               : undefined
           }
         />

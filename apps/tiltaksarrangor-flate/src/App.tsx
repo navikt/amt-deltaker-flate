@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchMineRoller } from './api/tiltak-api'
 import { Header } from './component/felles/header/Header'
 import { AppRoutes } from './Routes'
@@ -15,7 +15,7 @@ import { useKoordinatorsDeltakerlisterContext } from './store/KoordinatorsDeltak
 import { SpinnerPage } from './component/felles/spinner-page/SpinnerPage'
 import { ErrorPage } from './component/page/error/ErrorPage'
 
-export const App = (): React.ReactElement => {
+export const App = () => {
   const fetchMineRollerPromise =
     usePromise<AxiosResponse<Rolle[]>>(fetchMineRoller)
   const { roller, setRoller } = useInnloggetBrukerContext()

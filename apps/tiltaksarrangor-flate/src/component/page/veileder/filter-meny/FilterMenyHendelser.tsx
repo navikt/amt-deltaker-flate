@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import {
-  Hendelser,
-  VeiledersDeltaker
-} from '../../../../api/data/deltaker'
+import { useCallback, useEffect, useState } from 'react'
+import { Hendelser, VeiledersDeltaker } from '../../../../api/data/deltaker'
 import globalStyles from '../../../../globals.module.scss'
 import useLocalStorage from '../../../../hooks/useLocalStorage'
 import { FilterMeny } from '../../../felles/table-filter/FilterMeny'
@@ -17,11 +14,11 @@ interface Props {
   deltakere: VeiledersDeltaker[]
 }
 
-export const FilterMenyHendelser = (props: Props): React.ReactElement => {
-  const [ deltakerePerHendelse, setDeltakerePerHendelse ] = useState<
+export const FilterMenyHendelser = (props: Props) => {
+  const [deltakerePerHendelse, setDeltakerePerHendelse] = useState<
     FiltermenyDataEntry[]
   >([])
-  const [ filterOpen, setFilterOpen ] = useLocalStorage(
+  const [filterOpen, setFilterOpen] = useLocalStorage(
     'filter-veileder-hendelse-mine-deltakere',
     true
   )
@@ -59,7 +56,10 @@ export const FilterMenyHendelser = (props: Props): React.ReactElement => {
 
     filtrerDeltakerePaaAltUtenom(FilterType.Hendelse, props.deltakere).forEach(
       (deltaker: VeiledersDeltaker) => {
-        const hendelseTypes: { key: keyof VeiledersDeltaker, hendelse: Hendelser }[] = [
+        const hendelseTypes: {
+          key: keyof VeiledersDeltaker
+          hendelse: Hendelser
+        }[] = [
           { key: 'aktivEndring', hendelse: Hendelser.VenterPaSvarFraNav },
           { key: 'svarFraNav', hendelse: Hendelser.SvarFraNav },
           { key: 'oppdateringFraNav', hendelse: Hendelser.OppdateringFraNav },
@@ -67,7 +67,7 @@ export const FilterMenyHendelser = (props: Props): React.ReactElement => {
         ]
 
         hendelseTypes.forEach(({ key, hendelse }) => {
-          if (deltaker[ key ]) {
+          if (deltaker[key]) {
             const entry = hendelseMap.get(hendelse)
             hendelseMap.set(hendelse, {
               id: hendelse,
@@ -79,7 +79,7 @@ export const FilterMenyHendelser = (props: Props): React.ReactElement => {
       }
     )
 
-    setDeltakerePerHendelse([ ...hendelseMap.values() ])
+    setDeltakerePerHendelse([...hendelseMap.values()])
   }, [
     props.deltakere,
     statusFilter,

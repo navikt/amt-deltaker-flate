@@ -1,6 +1,5 @@
 import { PlusIcon } from '@navikt/aksel-icons'
-import React, { useEffect } from 'react'
-
+import { useEffect } from 'react'
 import { Alert, BodyShort, Link } from '@navikt/ds-react'
 import globalStyles from '../../../globals.module.scss'
 import { useScrollPosition } from '../../../hooks/use-scroll-position'
@@ -18,7 +17,7 @@ import { MineDeltakerePanel } from './mine-deltakere/MineDeltakerePanel'
 import { DeltakerListe } from './mine-deltakerlister/DeltakerListe'
 import styles from './MineDeltakerlisterPage.module.scss'
 
-export const MineDeltakerlisterPage = (): React.ReactElement => {
+export const MineDeltakerlisterPage = () => {
   const { setTilbakeTilUrl } = useTilbakelenkeContext()
   const { roller } = useInnloggetBrukerContext()
   const { koordinatorsDeltakerlister, fetchMineDeltakerlisterPromise } =
@@ -40,10 +39,7 @@ export const MineDeltakerlisterPage = (): React.ReactElement => {
 
   if (koordinatorsDeltakerlister && koordinatorsDeltakerlister.koordinatorFor) {
     return (
-      <div
-        className={styles.page}
-        data-testid="gjennomforing-oversikt-page"
-      >
+      <div className={styles.page} data-testid="gjennomforing-oversikt-page">
         {isVeileder(roller) && koordinatorsDeltakerlister.veilederFor && (
           <MineDeltakerePanel
             veileder={koordinatorsDeltakerlister.veilederFor}

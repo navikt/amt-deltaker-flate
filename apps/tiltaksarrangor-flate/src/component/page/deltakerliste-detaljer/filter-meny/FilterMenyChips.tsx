@@ -1,8 +1,11 @@
 import { Chips } from '@navikt/ds-react'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import globalStyles from '../../../../globals.module.scss'
 import { useKoordinatorFilterContext } from '../store/KoordinatorFilterContextProvider'
-import { mapHendelseTypeTilTekst, mapTiltakDeltakerStatusTilTekst } from '../../../../utils/text-mappers'
+import {
+  mapHendelseTypeTilTekst,
+  mapTiltakDeltakerStatusTilTekst
+} from '../../../../utils/text-mappers'
 import { TiltakDeltaker } from '../../../../api/data/deltaker'
 import { veilederNavn } from '../../../../utils/veileder-utils'
 
@@ -10,7 +13,7 @@ interface Props {
   deltakere: TiltakDeltaker[]
 }
 
-export const FilterMenyChips: React.FC<Props> = ({ deltakere }) => {
+export const FilterMenyChips = ({ deltakere }: Props) => {
   const veiledere = useMemo(() => {
     return [...new Set(deltakere.map((detaker) => detaker.veiledere).flat())]
   }, [deltakere])

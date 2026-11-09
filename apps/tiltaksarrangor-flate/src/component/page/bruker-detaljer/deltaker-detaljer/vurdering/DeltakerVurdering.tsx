@@ -1,5 +1,5 @@
 import { BodyShort, Label, Tag } from '@navikt/ds-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Deltaker,
   TiltakDeltakerStatus,
@@ -7,7 +7,7 @@ import {
   Vurderingstype
 } from '../../../../../api/data/deltaker'
 import { EMDASH } from '../../../../../utils/constants'
-import { vurderingstypeTeksMapper } from '../../deltaker-detaljer/tekst-mappers'
+import { vurderingstypeTeksMapper } from '../tekst-mappers.ts'
 import styles from './DeltakerVurdering.module.scss'
 import { VurderDeltakelseKnapp } from './VurderDeltakelseKnapp'
 
@@ -24,9 +24,7 @@ const getTagType = (vurderingstype: Vurderingstype | undefined) => {
   }
 }
 
-export const DeltakerVurdering = ({
-  deltaker
-}: DeltakerVurderingProps): React.ReactElement => {
+export const DeltakerVurdering = ({ deltaker }: DeltakerVurderingProps) => {
   const [vurdering, setVurdering] = useState(
     deltaker.gjeldendeVurderingFraArrangor
   )
@@ -56,7 +54,8 @@ export const DeltakerVurdering = ({
           EMDASH
         )}
       </BodyShort>
-      {(deltaker.status.type === TiltakDeltakerStatus.VURDERES || deltaker.status.type === TiltakDeltakerStatus.SOKT_INN) && (
+      {(deltaker.status.type === TiltakDeltakerStatus.VURDERES ||
+        deltaker.status.type === TiltakDeltakerStatus.SOKT_INN) && (
         <VurderDeltakelseKnapp
           deltakerId={deltaker.id}
           updateVurdering={updateVurdering}

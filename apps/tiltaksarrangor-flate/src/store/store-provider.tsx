@@ -1,5 +1,4 @@
-import React from 'react'
-
+import type { ReactNode } from 'react'
 import { TilbakelenkeContextProvider } from './TilbakelenkeContextProvider'
 import { DeltakerSorteringContextProvider } from './DeltakerSorteringContextProvider'
 import { InnloggetBrukerContextProvider } from './InnloggetBrukerContextProvider'
@@ -9,12 +8,10 @@ import { KoordinatorFilterContextProvider } from '../component/page/deltakerlist
 import { VeilederFilterContextProvider } from '../component/page/veileder/store/VeilederFilterContextProvider'
 
 interface StoreProviderProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const StoreProvider = (
-  props: StoreProviderProps
-): React.ReactElement<StoreProviderProps> => {
+const StoreProvider = (props: StoreProviderProps) => {
   return (
     <ScrollPositionContextProvider>
       <DeltakerSorteringContextProvider>

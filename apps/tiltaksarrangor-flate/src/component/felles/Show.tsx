@@ -1,8 +1,8 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 
 interface ShowProps {
   if?: any // eslint-disable-line @typescript-eslint/no-explicit-any
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const Show = (props: ShowProps) =>

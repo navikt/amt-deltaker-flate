@@ -1,12 +1,9 @@
-import React from 'react'
-import { ForslagEndringType, ForslagStatusType } from '../../../../../api/data/forslag'
-
+import type { ReactNode } from 'react'
 import {
-  Box,
-  HGrid,
-  Heading,
-  VStack
-} from '@navikt/ds-react'
+  ForslagEndringType,
+  ForslagStatusType
+} from '../../../../../api/data/forslag'
+import { Box, HGrid, Heading, VStack } from '@navikt/ds-react'
 import { EndringType } from '../../../../../api/data/historikk'
 import { UlestEndringType } from '../../../../../api/data/ulestEndring'
 import { DefaultIcon, EndringTypeIkon } from '../EndringTypeIkon'
@@ -15,8 +12,8 @@ import { ForslagStatusTag } from './ForslagStatusTag'
 import { forslagEndringsTittel } from './forslagUtils'
 
 export interface Props {
-  children: React.ReactNode
-  fjernEndring: React.ReactNode
+  children: ReactNode
+  fjernEndring: ReactNode
   tittel?: string
   forslagStatusType?: ForslagStatusType
   endringType?: EndringType | ForslagEndringType
@@ -35,11 +32,13 @@ export const EndringPanel = ({
   ulestEndringType,
   nyNavVeileder
 }: Props) => {
-  const endringIkon = endringType
-    ? <EndringTypeIkon size="large" type={endringType} />
-    : ulestEndringType
-      ? <EndringTypeIkon size="large" type={ulestEndringType} />
-      : <DefaultIcon size="large" />
+  const endringIkon = endringType ? (
+    <EndringTypeIkon size="large" type={endringType} />
+  ) : ulestEndringType ? (
+    <EndringTypeIkon size="large" type={ulestEndringType} />
+  ) : (
+    <DefaultIcon size="large" />
+  )
 
   return (
     <Box
@@ -54,7 +53,12 @@ export const EndringPanel = ({
         <VStack>
           <div className={styles.tittel}>
             <Heading level="4" size="small" className={styles.tittel_hedaing}>
-              {getEndringsTittel(tittel, endringType, ulestEndringType, nyNavVeileder)}
+              {getEndringsTittel(
+                tittel,
+                endringType,
+                ulestEndringType,
+                nyNavVeileder
+              )}
             </Heading>
             {forslagStatusType && <ForslagStatusTag type={forslagStatusType} />}
             {erAktivtForslag && fjernEndring}
@@ -89,7 +93,7 @@ const getEndringsTittel = (
   } else if (ulestEndringType === UlestEndringType.TildeltPlass) {
     return 'Fått plass'
   } else if (ulestEndringType === UlestEndringType.Avslag) {
-		return 'Søknaden er avslått'
-	}
+    return 'Søknaden er avslått'
+  }
   return 'Oppdatert deltaker'
 }

@@ -21,13 +21,13 @@ import {
 } from '../../../../../utils/text-mappers'
 import styles from './Historikk.module.scss'
 import globalStyles from '../../../../../globals.module.scss'
-import React from 'react'
+import type { ReactNode } from 'react'
 
 interface Props {
   tittel: string
-  icon: React.ReactNode
+  icon: ReactNode
   forslag?: HistorikkForslag | null
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const getForslagStatusTag = (forslagStatusType: ForslagStatusType) => {
@@ -79,23 +79,26 @@ export const ForslagtypeDetaljer = ({
                 {forslag.endring.harDeltatt ? 'Ja' : 'Nei'}
               </BodyLong>
             )}
-            {forslag.endring.harDeltatt && forslag.endring.harFullfort !== null && (
-              <BodyLong size="small">
-                Er kurset fullført?{' '}
-                {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
-              </BodyLong>
-            )}
+            {forslag.endring.harDeltatt &&
+              forslag.endring.harFullfort !== null && (
+                <BodyLong size="small">
+                  Er kurset fullført?{' '}
+                  {forslag.endring.harFullfort ? 'Ja' : 'Nei'}
+                </BodyLong>
+              )}
 
-            {forslag.endring.type === ForslagEndringType.EndreAvslutning && forslag.endring.sluttdato && (
-              <BodyLong size="small">
-                Sluttdato: {formatDate(forslag.endring.sluttdato)}
-              </BodyLong>
-            )}
-            {forslag.endring.type === ForslagEndringType.AvsluttDeltakelse && forslag.endring.sluttdato && (
-              <BodyLong size="small">
-                Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
-              </BodyLong>
-            )}
+            {forslag.endring.type === ForslagEndringType.EndreAvslutning &&
+              forslag.endring.sluttdato && (
+                <BodyLong size="small">
+                  Sluttdato: {formatDate(forslag.endring.sluttdato)}
+                </BodyLong>
+              )}
+            {forslag.endring.type === ForslagEndringType.AvsluttDeltakelse &&
+              forslag.endring.sluttdato && (
+                <BodyLong size="small">
+                  Ny sluttdato: {formatDate(forslag.endring.sluttdato)}
+                </BodyLong>
+              )}
           </>
         )
       case ForslagEndringType.ForlengDeltakelse:

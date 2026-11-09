@@ -4,10 +4,11 @@ import {
   PlusCircleFillIcon
 } from '@navikt/aksel-icons'
 import { Button, Dropdown } from '@navikt/ds-react'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import type { MouseEventHandler } from 'react'
 import { Vurdering, Vurderingstype } from '../../../../../api/data/deltaker'
 import styles from './VurderDeltakelseKnapp.module.scss'
-import { vurderingstypeTeksMapper } from '../../deltaker-detaljer/tekst-mappers'
+import { vurderingstypeTeksMapper } from '../tekst-mappers.ts'
 import { SettOppfyllerIkkeKravenelModal } from './SettOppfyllerIkkeKravenelModal'
 import { SettOppfyllerKravenelModal } from './SettOppfyllerKravenelModal'
 import { fetchDeltaker } from '../../../../../api/tiltak-api'
@@ -19,7 +20,7 @@ interface EndreDeltakelseKnappProps {
 
 const vurderingDropDownItem = (
   vurderingstype: Vurderingstype,
-  onClick: React.MouseEventHandler<HTMLElement>
+  onClick: MouseEventHandler<HTMLElement>
 ) => {
   const icon =
     vurderingstype === Vurderingstype.OPPFYLLER_IKKE_KRAVENE ? (

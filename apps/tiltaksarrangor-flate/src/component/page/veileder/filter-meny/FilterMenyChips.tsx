@@ -1,5 +1,4 @@
 import { Chips } from '@navikt/ds-react'
-import React from 'react'
 import globalStyles from '../../../../globals.module.scss'
 import { useVeilederFilterContext } from '../store/VeilederFilterContextProvider'
 import {
@@ -8,7 +7,7 @@ import {
   mapVeilderTypeTilTekst
 } from '../../../../utils/text-mappers'
 
-export const FilterMenyChips = (): React.ReactElement => {
+export const FilterMenyChips = () => {
   const {
     statusFilter,
     hendelseFilter,

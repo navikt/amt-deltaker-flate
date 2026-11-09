@@ -1,11 +1,9 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Alert, BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
-import React from 'react'
-
 import globalStyles from '../../../globals.module.scss'
 import styles from './IngenRollePage.module.scss'
 
-export const IngenRollePage = (): React.ReactElement => {
+export const IngenRollePage = () => {
   return (
     <div className={styles.page}>
       <Alert className={globalStyles.blokkS} variant="warning">

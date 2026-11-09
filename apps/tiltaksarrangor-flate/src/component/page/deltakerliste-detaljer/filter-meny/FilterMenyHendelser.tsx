@@ -1,8 +1,5 @@
-import {
-  Hendelser,
-  TiltakDeltaker
-} from '../../../../api/data/deltaker'
-import React, { useCallback, useEffect, useState } from 'react'
+import { Hendelser, TiltakDeltaker } from '../../../../api/data/deltaker'
+import { useCallback, useEffect, useState } from 'react'
 import {
   FilterType,
   useKoordinatorFilterContext
@@ -17,11 +14,11 @@ interface Props {
   deltakere: TiltakDeltaker[]
 }
 
-export const FilterMenyHendelser = ({ deltakere }: Props): React.ReactElement => {
-  const [ deltakerePerHendelse, setDeltakerePerHendelse ] = useState<
+export const FilterMenyHendelser = ({ deltakere }: Props) => {
+  const [deltakerePerHendelse, setDeltakerePerHendelse] = useState<
     FiltermenyDataEntry[]
   >([])
-  const [ filterOpen, setFilterOpen ] = useLocalStorage(
+  const [filterOpen, setFilterOpen] = useLocalStorage(
     'filter-deltakerliste-hendelse',
     true
   )
@@ -60,7 +57,10 @@ export const FilterMenyHendelser = ({ deltakere }: Props): React.ReactElement =>
 
     filtrerDeltakerePaaAltUtenom(FilterType.Hendelse, deltakere).forEach(
       (deltaker: TiltakDeltaker) => {
-        const hendelseTypes: { key: keyof TiltakDeltaker, hendelse: Hendelser }[] = [
+        const hendelseTypes: {
+          key: keyof TiltakDeltaker
+          hendelse: Hendelser
+        }[] = [
           { key: 'aktivEndring', hendelse: Hendelser.VenterPaSvarFraNav },
           { key: 'svarFraNav', hendelse: Hendelser.SvarFraNav },
           { key: 'oppdateringFraNav', hendelse: Hendelser.OppdateringFraNav },
@@ -68,7 +68,7 @@ export const FilterMenyHendelser = ({ deltakere }: Props): React.ReactElement =>
         ]
 
         hendelseTypes.forEach(({ key, hendelse }) => {
-          if (deltaker[ key ]) {
+          if (deltaker[key]) {
             const entry = hendelseMap.get(hendelse)
             hendelseMap.set(hendelse, {
               id: hendelse,
@@ -80,7 +80,7 @@ export const FilterMenyHendelser = ({ deltakere }: Props): React.ReactElement =>
       }
     )
 
-    setDeltakerePerHendelse([ ...hendelseMap.values() ])
+    setDeltakerePerHendelse([...hendelseMap.values()])
   }, [
     deltakere,
     statusFilter,

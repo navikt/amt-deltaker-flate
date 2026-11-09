@@ -1,6 +1,4 @@
-import React from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-
 import { DeltakerDetaljerPage } from './component/page/bruker-detaljer/DeltakerDetaljerPage'
 import { DeltakerlisteDetaljerPage } from './component/page/deltakerliste-detaljer/DeltakerlisteDetaljerPage'
 import { MineDeltakerlisterPage } from './component/page/mine-deltakerlister-page/MineDeltakerlisterPage'
@@ -38,7 +36,7 @@ export const AppRoutes = ({ roller }: AppRoutesProps) => {
   return <></>
 }
 
-const KoordinatorRoutes = (): React.ReactElement => {
+const KoordinatorRoutes = () => {
   return (
     <>
       <Driftsmelding />
@@ -78,7 +76,7 @@ const KoordinatorRoutes = (): React.ReactElement => {
   )
 }
 
-const VeilederRoutes = (): React.ReactElement => {
+const VeilederRoutes = () => {
   return (
     <>
       <Driftsmelding />
@@ -100,7 +98,7 @@ const VeilederRoutes = (): React.ReactElement => {
   )
 }
 
-const VeilederOgKoordinatorRoutes = (): React.ReactElement => {
+const VeilederOgKoordinatorRoutes = () => {
   return (
     <>
       <Driftsmelding />
@@ -144,7 +142,7 @@ const VeilederOgKoordinatorRoutes = (): React.ReactElement => {
   )
 }
 
-const IngenRolleRoutes = (): React.ReactElement => {
+const IngenRolleRoutes = () => {
   return (
     <Routes>
       <Route path={INGEN_ROLLE_PAGE_ROUTE} element={<IngenRollePage />} />

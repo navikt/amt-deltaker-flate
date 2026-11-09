@@ -1,6 +1,6 @@
 import { HouseIcon } from '@navikt/aksel-icons'
 import { BodyShort, Label } from '@navikt/ds-react'
-import React, { useId } from 'react'
+import { useId } from 'react'
 import styles from './DeltakerDetaljerHeader.module.scss'
 import { Adresse } from '../../../api/data/deltaker'
 import { mapAdresseTypeTilTekst } from '../../../utils/text-mappers'
@@ -11,9 +11,7 @@ interface DeltakerAdresseProps {
   adresse?: Adresse | null
 }
 
-export const DeltakerAdresse = ({
-  adresse
-}: DeltakerAdresseProps): React.ReactElement => {
+export const DeltakerAdresse = ({ adresse }: DeltakerAdresseProps) => {
   const adresseId = useId()
 
   return (

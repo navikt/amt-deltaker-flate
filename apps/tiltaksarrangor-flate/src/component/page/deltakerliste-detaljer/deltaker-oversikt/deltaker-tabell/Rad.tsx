@@ -1,6 +1,6 @@
 import { Table } from '@navikt/ds-react'
 import cls from 'classnames'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   TiltakDeltaker,
@@ -13,13 +13,12 @@ import { EMDASH } from '../../../../../utils/constants'
 import { formatDate } from '../../../../../utils/date-utils'
 import { Fnr } from '../../../../felles/fnr/Fnr'
 import { StatusMerkelapp } from '../../../../felles/status-merkelapp/StatusMerkelapp'
-
 import {
   CheckmarkCircleFillIcon,
   PlusCircleFillIcon
 } from '@navikt/aksel-icons'
 import { Veiledertype } from '../../../../../api/data/veileder'
-import { AdressebeskyttetModal } from '../../../veileder/AdressebeskyttetModal.tsx'
+import { AdressebeskyttetModal } from '../../../veileder/AdressebeskyttetModal'
 import { useScrollPositionContext } from '../../../../../store/ScrollPositionContextProvider'
 import styles from './Rad.module.scss'
 
@@ -28,7 +27,7 @@ interface RadProps {
   deltaker: TiltakDeltaker
 }
 
-export const Rad = (props: RadProps): React.ReactElement<RadProps> => {
+export const Rad = (props: RadProps) => {
   const {
     fodselsnummer,
     fornavn,
@@ -119,7 +118,8 @@ export const Rad = (props: RadProps): React.ReactElement<RadProps> => {
       <Table.DataCell className={cls(styles.smallText)}>
         <div className={cls(styles.statusCelle)}>
           <StatusMerkelapp status={status} erDeltakerlisteVisning />
-          {(status.type === TiltakDeltakerStatus.VURDERES || status.type == TiltakDeltakerStatus.SOKT_INN) &&
+          {(status.type === TiltakDeltakerStatus.VURDERES ||
+            status.type == TiltakDeltakerStatus.SOKT_INN) &&
             gjeldendeVurderingFraArrangor &&
             vurderingIkon}
         </div>

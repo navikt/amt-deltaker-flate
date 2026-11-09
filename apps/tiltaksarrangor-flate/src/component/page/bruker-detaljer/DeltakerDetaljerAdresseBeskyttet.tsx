@@ -1,5 +1,5 @@
 import { Heading } from '@navikt/ds-react'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Deltaker } from '../../../api/data/deltaker'
 import { formatDate } from '../../../utils/date-utils'
 import {
@@ -27,7 +27,7 @@ interface Props {
 export const DeltakerDetaljerAdresseBeskyttet = ({
   deltaker,
   visTildeling
-}: Props): React.ReactElement => {
+}: Props) => {
   const { soktInnPa, soktInnDato, tiltakskode, deltakerliste } = deltaker
   const { setTilbakeTilUrl } = useTilbakelenkeContext()
   const { roller } = useInnloggetBrukerContext()

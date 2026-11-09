@@ -1,8 +1,7 @@
 import { Heading } from '@navikt/ds-react'
 import { AxiosResponse } from 'axios'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-
 import { fetchKoordinatorsDeltakerliste } from '../../../api/tiltak-api'
 import globalStyles from '../../../globals.module.scss'
 import { useScrollPosition } from '../../../hooks/use-scroll-position'
@@ -25,7 +24,7 @@ import { TiltakInfo } from './TiltakInfo'
 import { KoordinatorsDeltakerliste } from '../../../api/data/deltaker'
 import { FilterMenyDeltakerListeDetaljer } from './filter-meny/FilterMenyDeltakerListeDetaljer'
 
-export const DeltakerlisteDetaljerPage = (): React.ReactElement => {
+export const DeltakerlisteDetaljerPage = () => {
   const { setTilbakeTilUrl } = useTilbakelenkeContext()
   const params = useParams<{ deltakerlisteId: string }>()
   const deltakerlisteId = params.deltakerlisteId || ''
@@ -55,7 +54,12 @@ export const DeltakerlisteDetaljerPage = (): React.ReactElement => {
     }
 
     if (isForbidden(fetchKoordinatorsDeltakerlistePromise)) {
-      return <AlertPage variant="error" tekst="Du har ikke tilgang til denne deltakerlisten" />
+      return (
+        <AlertPage
+          variant="error"
+          tekst="Du har ikke tilgang til denne deltakerlisten"
+        />
+      )
     }
 
     return <AlertPage variant="error" tekst="Noe gikk galt" />
@@ -79,7 +83,10 @@ export const DeltakerlisteDetaljerPage = (): React.ReactElement => {
         <KoordinatorInfo koordinatorer={deltakerliste.koordinatorer} />
         <FilterMenyDeltakerListeDetaljer deltakerliste={deltakerliste} />
       </section>
-      <DeltakerOversiktTabell deltakere={deltakerliste.deltakere} tiltakskode={deltakerliste.tiltakskode}/>
+      <DeltakerOversiktTabell
+        deltakere={deltakerliste.deltakere}
+        tiltakskode={deltakerliste.tiltakskode}
+      />
     </div>
   )
 }

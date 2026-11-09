@@ -1,5 +1,4 @@
 import './index.scss'
-
 import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
 import { faroBeforeSend, resolveFaroEnvironment } from 'deltaker-flate-common'
@@ -10,11 +9,10 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-
-import React from 'react'
+import { StrictMode } from 'react'
+import type { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-
 import { App } from './App'
 import { DemoBanner } from './component/felles/demo-banner/DemoBanner'
 import { ErrorPage } from './component/page/error/ErrorPage'
@@ -24,7 +22,7 @@ import { setupNavDekorator } from './utils/nav-dekorator'
 import { enableMocking } from './mock/setupMocks'
 
 const FaroBoundary = withFaroErrorBoundary(
-  ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  ({ children }: { children: ReactNode }) => <>{children}</>,
   { fallback: <ErrorPage /> }
 )
 
@@ -60,7 +58,7 @@ const renderAsReactRoot = () => {
   const root = createRoot(container!)
 
   root.render(
-    <React.StrictMode>
+    <StrictMode>
       <FaroBoundary>
         <StoreProvider>
           {env.isDemo && <DemoBanner />}
@@ -69,7 +67,7 @@ const renderAsReactRoot = () => {
           </BrowserRouter>
         </StoreProvider>
       </FaroBoundary>
-    </React.StrictMode>
+    </StrictMode>
   )
 }
 

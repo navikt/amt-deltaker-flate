@@ -1,8 +1,14 @@
-import { Alert, Button, Detail, Modal, ReadMore, UNSAFE_Combobox } from '@navikt/ds-react'
-import React, { useEffect, useState } from 'react'
+import {
+  Alert,
+  Button,
+  Detail,
+  Modal,
+  ReadMore,
+  UNSAFE_Combobox
+} from '@navikt/ds-react'
+import { useEffect, useState } from 'react'
 import { TilgjengeligVeileder, Veileder } from '../../../../api/data/veileder'
 import { lagBrukerNavn } from '../../../../utils/bruker-utils'
-
 import { AxiosResponse } from 'axios'
 import { Deltaker } from '../../../../api/data/deltaker'
 import {
@@ -32,15 +38,15 @@ interface Props {
 
 const maksMedveiledere = 3
 
-export const TildelVeilederModal = (props: Props): React.ReactElement => {
-  const [ tilgjengeligeVeiledere, setTilgjengeligeVeiledere ] = useState<
+export const TildelVeilederModal = (props: Props) => {
+  const [tilgjengeligeVeiledere, setTilgjengeligeVeiledere] = useState<
     TilgjengeligVeileder[]
   >([])
 
-  const [ muligeVeiledervalg, setMuligeVeiledervalg ] = useState<SelectOption[]>()
-  const [ veileder, setVeileder ] = useState<TilgjengeligVeileder | undefined>()
-  const [ medveiledere, setMedveiledere ] = useState<TilgjengeligVeileder[]>([])
-  const [ tildelingFeiletError, setTildelingFeiletError ] = useState(false)
+  const [muligeVeiledervalg, setMuligeVeiledervalg] = useState<SelectOption[]>()
+  const [veileder, setVeileder] = useState<TilgjengeligVeileder | undefined>()
+  const [medveiledere, setMedveiledere] = useState<TilgjengeligVeileder[]>([])
+  const [tildelingFeiletError, setTildelingFeiletError] = useState(false)
 
   const tildelVeilederePromise = usePromise<void>()
   const tilgjengeligeVeilederePromise = usePromise<
@@ -51,7 +57,7 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
     if (isResolved(tilgjengeligeVeilederePromise)) {
       setTilgjengeligeVeiledere(tilgjengeligeVeilederePromise.result.data)
     }
-  }, [ tilgjengeligeVeilederePromise.result ])
+  }, [tilgjengeligeVeilederePromise.result])
 
   useEffect(() => {
     if (props.veileder) {
@@ -60,7 +66,7 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
     if (props.medveiledere) {
       setMedveiledere(props.medveiledere)
     }
-  }, [ props.veileder, props.medveiledere ])
+  }, [props.veileder, props.medveiledere])
 
   useEffect(() => {
     const medveilederIder = medveiledere.map((v) => v.ansattId)
@@ -71,20 +77,35 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
     )
 
     setMuligeVeiledervalg(muligeValg.map(veilederToOption))
-  }, [ veileder, medveiledere, tilgjengeligeVeiledere ])
+  }, [veileder, medveiledere, tilgjengeligeVeiledere])
 
   const handleVeilederChange = (valgtAnsattId: string, isSelected: boolean) => {
     if (isSelected) {
-      setVeileder(tilgjengeligeVeiledere?.find((v) => v.ansattId === valgtAnsattId))
-    } else { setVeileder(undefined) }
+      setVeileder(
+        tilgjengeligeVeiledere?.find((v) => v.ansattId === valgtAnsattId)
+      )
+    } else {
+      setVeileder(undefined)
+    }
   }
 
-  const handleMedveilederChange = (valgtAnsattId: string, isSelected: boolean) => {
-    const valgteMedveiledere = tilgjengeligeVeiledere?.find((tv) => tv.ansattId === valgtAnsattId)
-    if (isSelected && valgteMedveiledere) setMedveiledere([ ...medveiledere, valgteMedveiledere as TilgjengeligVeileder ])
+  const handleMedveilederChange = (
+    valgtAnsattId: string,
+    isSelected: boolean
+  ) => {
+    const valgteMedveiledere = tilgjengeligeVeiledere?.find(
+      (tv) => tv.ansattId === valgtAnsattId
+    )
+    if (isSelected && valgteMedveiledere)
+      setMedveiledere([
+        ...medveiledere,
+        valgteMedveiledere as TilgjengeligVeileder
+      ])
 
     if (!isSelected) {
-      setMedveiledere(medveiledere.filter(mv => mv.ansattId !== valgtAnsattId))
+      setMedveiledere(
+        medveiledere.filter((mv) => mv.ansattId !== valgtAnsattId)
+      )
     }
   }
 
@@ -99,7 +120,7 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
     if (medveiledere.length > maksMedveiledere) return
 
     const veiledere: Veileder[] = veileder
-      ? [ { ...veileder, deltakerId: props.deltaker.id, erMedveileder: false } ]
+      ? [{ ...veileder, deltakerId: props.deltaker.id, erMedveileder: false }]
       : []
     medveiledere.forEach((v) =>
       veiledere.push({
@@ -144,7 +165,7 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
             maxSelected={1}
             className={styles.select}
             options={muligeVeiledervalg ?? []}
-            selectedOptions={veileder ? [ veilederToOption(veileder) ] : []}
+            selectedOptions={veileder ? [veilederToOption(veileder)] : []}
             onToggleSelected={(option, isSelected) => {
               handleVeilederChange(option, isSelected)
             }}
@@ -154,15 +175,17 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
             size="small"
             className={styles.select}
             options={muligeVeiledervalg ?? []}
-            selectedOptions={medveiledere.map(m => veilederToOption(m))}
-            onToggleSelected={(option, isSelected) => handleMedveilederChange(option, isSelected)}
+            selectedOptions={medveiledere.map((m) => veilederToOption(m))}
+            onToggleSelected={(option, isSelected) =>
+              handleMedveilederChange(option, isSelected)
+            }
             isMultiSelect
             maxSelected={3}
           />
           <ReadMore header="Finner du ikke riktig veileder?">
             <p>
-              Veilederen må først få riktig rettighet i Altinn, og deretter logge
-              inn i Deltakeroversikten. Først da kan koordinatoren finne
+              Veilederen må først få riktig rettighet i Altinn, og deretter
+              logge inn i Deltakeroversikten. Først da kan koordinatoren finne
               veilederen.
             </p>
             <p>
@@ -180,7 +203,8 @@ export const TildelVeilederModal = (props: Props): React.ReactElement => {
 
           {tildelingFeiletError && (
             <Alert variant="error" size="small">
-              Kunne ikke tildele veiledere. Prøv igjen eller kontakt brukerstøtte{' '}
+              Kunne ikke tildele veiledere. Prøv igjen eller kontakt
+              brukerstøtte{' '}
             </Alert>
           )}
         </Modal.Body>

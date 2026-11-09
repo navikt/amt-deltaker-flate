@@ -1,6 +1,4 @@
 import { BodyShort, Label } from '@navikt/ds-react'
-import React from 'react'
-
 import { Pameldingstype, Tiltakskode } from '../../../api/data/tiltak'
 import { formatDate } from '../../../utils/date-utils'
 import { erOpplaringstiltak } from '../../../utils/deltakerliste-utils'
@@ -14,9 +12,7 @@ import styles from './DeltakerDetaljer.module.scss'
 import { NavInfoPanel } from './nav-info-panel/NavInfoPanel'
 import { VeilederPanel } from './veileder-panel/VeilederPanel'
 
-export const DeltakerDetaljer = (props: {
-  visTildeling: boolean
-}): React.ReactElement => {
+export const DeltakerDetaljer = (props: { visTildeling: boolean }) => {
   const { deltaker } = useDeltakerContext()
   const {
     navInformasjon,
@@ -27,7 +23,9 @@ export const DeltakerDetaljer = (props: {
     innhold
   } = deltaker
 
-  const visDeltakerVurdering = deltaker.deltakerliste.pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
+  const visDeltakerVurdering =
+    deltaker.deltakerliste.pameldingstype ===
+      Pameldingstype.TRENGER_GODKJENNING &&
     erOpplaringstiltak(deltaker.deltakerliste.tiltakskode)
 
   return (
@@ -35,9 +33,7 @@ export const DeltakerDetaljer = (props: {
       <section className={styles.section}>
         <DeltakelseInfo deltaker={deltaker} />
 
-        {visDeltakerVurdering && (
-          <DeltakerVurdering deltaker={deltaker} />
-        )}
+        {visDeltakerVurdering && <DeltakerVurdering deltaker={deltaker} />}
 
         <div className={styles.innsokt}>
           <BodyShort size="small">
@@ -55,14 +51,14 @@ export const DeltakerDetaljer = (props: {
         </div>
 
         {innhold && (
-          <DeltakelsesinnholdDetaljer innhold={innhold} tiltakskode={tiltakskode} />
+          <DeltakelsesinnholdDetaljer
+            innhold={innhold}
+            tiltakskode={tiltakskode}
+          />
         )}
 
         <Show if={harBakgrunnsinfo(tiltakskode)}>
-          <Bakgrunnsinfo
-            tekst={bestillingTekst}
-            label="Bakgrunnsinfo"
-          />
+          <Bakgrunnsinfo tekst={bestillingTekst} label="Bakgrunnsinfo" />
         </Show>
       </section>
 

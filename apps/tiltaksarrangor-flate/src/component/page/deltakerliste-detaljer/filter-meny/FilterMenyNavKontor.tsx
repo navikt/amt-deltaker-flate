@@ -1,5 +1,5 @@
 import { TiltakDeltaker } from '../../../../api/data/deltaker'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiltermenyDataEntry } from '../../../felles/table-filter/filtermeny-data-entry'
 import {
   FilterType,
@@ -13,7 +13,7 @@ interface Props {
   deltakere: TiltakDeltaker[]
 }
 
-export const FilterMenyNavKontor = (props: Props): React.ReactElement => {
+export const FilterMenyNavKontor = (props: Props) => {
   const [deltakerePerNavKontor, setDeltakerePerNavKontor] = useState<
     FiltermenyDataEntry[]
   >([])

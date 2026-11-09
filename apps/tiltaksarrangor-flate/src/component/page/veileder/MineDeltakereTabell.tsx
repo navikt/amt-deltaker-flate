@@ -1,6 +1,5 @@
 import { Table } from '@navikt/ds-react'
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import { useDeltakerSorteringContext } from '../../../store/DeltakerSorteringContextProvider'
 import { finnNesteSortering } from '../../../utils/sortering-utils'
 import globalStyles from '../../../globals.module.scss'
@@ -17,9 +16,7 @@ interface MineDeltakereTabellProps {
   mineDeltakere: VeiledersDeltaker[]
 }
 
-export const MineDeltakereTabell = (
-  props: MineDeltakereTabellProps
-): React.ReactElement<MineDeltakereTabellProps> => {
+export const MineDeltakereTabell = (props: MineDeltakereTabellProps) => {
   const { mineDeltakere } = props
   const { deltakerSortering, setDeltakerSortering } =
     useDeltakerSorteringContext()

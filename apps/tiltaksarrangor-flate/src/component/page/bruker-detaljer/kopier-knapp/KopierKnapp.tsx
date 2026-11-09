@@ -1,21 +1,19 @@
 import { Button } from '@navikt/ds-react'
 import cls from 'classnames'
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 import styles from './KopierKnapp.module.scss'
 
 interface KopierKnappProps {
   kopierTekst: string
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   ariaLabel?: string
 }
 
 const COPY_TOOLTIP_DURATION_MS = 1000
 
-export const KopierKnapp = (
-  props: KopierKnappProps
-): React.ReactElement<KopierKnappProps> => {
+export const KopierKnapp = (props: KopierKnappProps) => {
   const [copySuccess, setCopySuccess] = useState<boolean>(false)
 
   const handleOnClick = () => {

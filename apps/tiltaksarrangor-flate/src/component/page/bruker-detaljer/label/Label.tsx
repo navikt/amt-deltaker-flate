@@ -1,7 +1,5 @@
 import { BodyShort } from '@navikt/ds-react'
 import cls from 'classnames'
-import React from 'react'
-
 import { EMDASH } from '../../../../utils/constants'
 import styles from './Label.module.scss'
 
@@ -11,7 +9,7 @@ interface LabelProps {
   className?: string
 }
 
-export const Label = (props: LabelProps): React.ReactElement<LabelProps> => {
+export const Label = (props: LabelProps) => {
   const { title, value, className } = props
   return (
     <div className={cls(styles.label, className)}>

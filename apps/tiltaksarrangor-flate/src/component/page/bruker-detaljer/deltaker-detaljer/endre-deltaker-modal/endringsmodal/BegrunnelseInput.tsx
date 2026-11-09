@@ -1,6 +1,10 @@
 import { Textarea } from '@navikt/ds-react'
-import React, { useState } from 'react'
-import { BEGRUNNELSE_MAKS_TEGN, fjernUgyldigeTegn } from '../../../../../../utils/endre-deltaker-utils'
+import { useState } from 'react'
+import type { ChangeEvent } from 'react'
+import {
+  BEGRUNNELSE_MAKS_TEGN,
+  fjernUgyldigeTegn
+} from '../../../../../../utils/endre-deltaker-utils'
 
 type BegrunnelseLabel = {
   label: string
@@ -28,7 +32,7 @@ interface BegrunnelseInputProps {
 export function BegrunnelseInput({ type, onChange }: BegrunnelseInputProps) {
   const [begrunnelse, setBegrunnelse] = useState<string>('')
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const nyBegrunnelse = fjernUgyldigeTegn(e.target.value)
     setBegrunnelse(nyBegrunnelse)
     onChange(nyBegrunnelse)

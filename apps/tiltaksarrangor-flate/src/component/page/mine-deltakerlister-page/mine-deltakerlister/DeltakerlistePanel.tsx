@@ -1,6 +1,4 @@
 import { Detail, LinkCard } from '@navikt/ds-react'
-import React from 'react'
-
 import { Oppstartstype } from '../../../../api/data/historikk'
 import globalStyles from '../../../../globals.module.scss'
 import { deltakerlisteDetaljerPageUrl } from '../../../../navigation'
@@ -18,9 +16,7 @@ interface DeltakerlistePanelProps {
   oppstartstype: Oppstartstype
 }
 
-export const DeltakerlistePanel = (
-  props: DeltakerlistePanelProps
-): React.ReactElement<DeltakerlistePanelProps> => {
+export const DeltakerlistePanel = (props: DeltakerlistePanelProps) => {
   const { id, navn, startdato, sluttdato, oppstartstype } = props
   const { saveActiveScrollPosition } = useScrollPositionContext()
 

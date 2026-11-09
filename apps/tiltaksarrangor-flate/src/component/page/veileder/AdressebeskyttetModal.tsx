@@ -1,6 +1,6 @@
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, ConfirmationPanel, Modal } from '@navikt/ds-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface Props {
   open: boolean
@@ -12,7 +12,7 @@ export const AdressebeskyttetModal = ({
   open,
   handleCloseModal,
   handleConfrimed
-}: Props): React.ReactElement<Props> => {
+}: Props) => {
   const [confirmed, setConfirmed] = useState(false)
   const [confirmedError, setConfirmedError] = useState(false)
 
