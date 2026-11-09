@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface Props {
   condition: boolean
@@ -6,7 +6,7 @@ interface Props {
   conditionFalseElement: ReactNode
 }
 
-export const IfElse = (props: Props): React.ReactElement => {
+export const IfElse = (props: Props) => {
   const element = props.condition
     ? props.conditionTrueElement
     : props.conditionFalseElement

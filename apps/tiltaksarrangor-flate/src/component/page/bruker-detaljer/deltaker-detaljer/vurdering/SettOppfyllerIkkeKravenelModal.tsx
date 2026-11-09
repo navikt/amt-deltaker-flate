@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-
-import {Alert, BodyShort, Button, Modal, Textarea} from '@navikt/ds-react'
+import { useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { Alert, BodyShort, Button, Modal, Textarea } from '@navikt/ds-react'
 import styles from './SettVurderingModal.module.scss'
 import { Nullable } from '../../../../../utils/types/or-nothing'
 import { postDeltakerVurderingOppfyllerIkkeKravene } from '../../../../../api/tiltak-api'
-import { BESKRIVELSE_MAKS_TEGN, fjernUgyldigeTegn } from '../../../../../utils/endre-deltaker-utils'
+import {
+  BESKRIVELSE_MAKS_TEGN,
+  fjernUgyldigeTegn
+} from '../../../../../utils/endre-deltaker-utils'
 
 export interface OppfyllerIkkeKravenelModalProps {
   isOpen: boolean
@@ -35,9 +38,7 @@ export const SettOppfyllerIkkeKravenelModal = ({
       .then(onVurderingSendt)
   }
 
-  const handleChangeDescription = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const nyBeskrivelse = fjernUgyldigeTegn(e.target.value)
     settBeskrivelse(nyBeskrivelse)
   }
@@ -54,23 +55,24 @@ export const SettOppfyllerIkkeKravenelModal = ({
     >
       <Modal.Body className={styles.content}>
         <Alert variant="info" size="small">
-          Vurderingen sendes til Nav. Deltaker kan se innholdet i begrunnelsen på nav.no.
+          Vurderingen sendes til Nav. Deltaker kan se innholdet i begrunnelsen
+          på nav.no.
         </Alert>
         <div>
-        <BodyShort size="small" spacing>
-          Personen oppfyller ikke kravene for å delta på dette
-          arbeidsmarkedstiltaket.
-        </BodyShort>
+          <BodyShort size="small" spacing>
+            Personen oppfyller ikke kravene for å delta på dette
+            arbeidsmarkedstiltaket.
+          </BodyShort>
           <Textarea
-              label="Forklar hvorfor:"
-              value={beskrivelse ?? ''}
-              onChange={handleChangeDescription}
-              maxLength={BESKRIVELSE_MAKS_TEGN}
-              minRows={1}
-              rows={1}
-              size="small"
+            label="Forklar hvorfor:"
+            value={beskrivelse ?? ''}
+            onChange={handleChangeDescription}
+            maxLength={BESKRIVELSE_MAKS_TEGN}
+            minRows={1}
+            rows={1}
+            size="small"
           />
-          </div>
+        </div>
         <Button
           type="button"
           onClick={sendVurdering}

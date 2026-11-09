@@ -1,8 +1,6 @@
 import { Buildings3Icon } from '@navikt/aksel-icons'
 import { Heading, Panel } from '@navikt/ds-react'
 import cls from 'classnames'
-import React from 'react'
-
 import { NavVeileder } from '../../../../api/data/deltaker'
 import globalStyles from '../../../../globals.module.scss'
 import { IconLabel } from '../icon-label/IconLabel'
@@ -12,7 +10,7 @@ import { NavInfoVeileder } from './NavInfoVeileder'
 export function NavInfoPanel(props: {
   navkontor: string | null
   navVeileder: NavVeileder | null
-}): React.ReactElement {
+}) {
   const { navkontor, navVeileder } = props
 
   return (

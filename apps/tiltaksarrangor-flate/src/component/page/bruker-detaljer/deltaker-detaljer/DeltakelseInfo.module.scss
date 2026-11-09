@@ -5,10 +5,11 @@
   > * {
     margin-bottom: 1rem;
   }
+
   @media (min-width: 600px) {
-      > :last-child {
-          margin-bottom: 0;
-      }
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 
 }
@@ -19,8 +20,8 @@
   flex-direction: column;
 
   @media (min-width: 600px) {
-      flex-direction: row;
-      justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
@@ -30,7 +31,7 @@
   padding: 1rem 0;
 
   @media (min-width: 600px) {
-      padding: 0 0 1rem 0;
+    padding: 0 0 1rem 0;
   }
 }
 

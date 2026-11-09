@@ -1,11 +1,11 @@
 import styles from './DeltakerlisterPaEnhet.module.scss'
 import { Heading } from '@navikt/ds-react'
-import { ReactElement } from 'react'
+import type { ReactNode } from 'react'
 
 interface DeltakerlisterForArrangorProps {
   navn: string
   orgNr: string
-  children: ReactElement[]
+  children: ReactNode[]
 }
 
 export const DeltakerlisterForArrangor = (

@@ -1,5 +1,5 @@
 import { Heading } from '@navikt/ds-react'
-import React, { useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import globalStyles from '../../../../globals.module.scss'
 import { KoordinatorsDeltakerliste } from '../../../../api/data/deltaker'
 import { FilterMenyVeiledere } from './FilterMenyVeiledere'
@@ -14,9 +14,7 @@ interface Props {
   deltakerliste: KoordinatorsDeltakerliste
 }
 
-export const FilterMenyDeltakerListeDetaljer: React.FC<Props> = ({
-  deltakerliste
-}) => {
+export const FilterMenyDeltakerListeDetaljer = ({ deltakerliste }: Props) => {
   const { fjernUgyldigeFilter } = useKoordinatorFilterContext()
 
   useLayoutEffect(() => {
@@ -30,9 +28,7 @@ export const FilterMenyDeltakerListeDetaljer: React.FC<Props> = ({
       </Heading>
       <FilterMenyChips deltakere={deltakerliste.deltakere} />
 
-      <FilterMenyStatus
-        deltakerliste={deltakerliste}
-      />
+      <FilterMenyStatus deltakerliste={deltakerliste} />
       <FilterMenyHendelser deltakere={deltakerliste.deltakere} />
       <FilterMenyVeiledere deltakere={deltakerliste.deltakere} />
       <FilterMenyMedveileder deltakere={deltakerliste.deltakere} />

@@ -1,7 +1,7 @@
 import { PersonPlusIcon, PersonIcon } from '@navikt/aksel-icons'
 import { Button, Heading, Panel } from '@navikt/ds-react'
 import cls from 'classnames'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Deltaker } from '../../../../api/data/deltaker'
 import {
   Veileder,
@@ -22,10 +22,7 @@ interface Props {
   visTildeling: boolean
 }
 
-export const VeilederPanel = ({
-  deltaker,
-  visTildeling
-}: Props): React.ReactElement => {
+export const VeilederPanel = ({ deltaker, visTildeling }: Props) => {
   const [veileder, setVeileder] = useState<Veileder>()
   const [medveiledere, setMedveiledere] = useState<Veileder[]>([])
   const [openModal, setOpenModal] = useState(false)

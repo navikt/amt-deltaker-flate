@@ -1,18 +1,14 @@
 import { BodyShort, Label } from '@navikt/ds-react'
-import React from 'react'
+import type { ReactNode } from 'react'
 import styles from './LabelValue.module.scss'
 
 interface Props {
   textColor?: 'subtle' | 'default'
   title: string
-  children: React.ReactElement | string
+  children: ReactNode
 }
 
-export const LabelValue = ({
-  textColor,
-  title,
-  children
-}: Props): React.ReactElement => (
+export const LabelValue = ({ textColor, title, children }: Props) => (
   <BodyShort size="small" className={styles.wrapper}>
     <Label
       className={styles.label}

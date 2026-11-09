@@ -1,20 +1,19 @@
 import { BodyShort } from '@navikt/ds-react'
 import cls from 'classnames'
-import React from 'react'
-
+import type { ReactNode } from 'react'
 import styles from './ElementPanel.module.scss'
 
 interface ElementPanelProps {
   tittel: string
   className?: string
-  children: React.ReactElement
+  children: ReactNode
 }
 
 export const ElementPanel = ({
   tittel,
   children,
   className
-}: ElementPanelProps): React.ReactElement => {
+}: ElementPanelProps) => {
   return (
     <div className={cls(styles.wrapper, className)}>
       <BodyShort size="small">

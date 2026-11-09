@@ -1,6 +1,5 @@
 import { Alert } from '@navikt/ds-react'
-import React, { useMemo } from 'react'
-
+import { useMemo } from 'react'
 import globalStyles from '../../../../globals.module.scss'
 import { sortAlphabeticAsc } from '../../../../utils/sortering-utils'
 import styles from './DeltakerListe.module.scss'
@@ -16,9 +15,7 @@ interface DeltakerListeProps {
   deltakerliste: KoordinatorForDeltakerliste[]
 }
 
-export const DeltakerListe = (
-  props: DeltakerListeProps
-): React.ReactElement<DeltakerListeProps> => {
+export const DeltakerListe = (props: DeltakerListeProps) => {
   const unikeTiltakskoder = useMemo<string[]>(() => {
     return finnUnikeTiltakskoder(props.deltakerliste)
   }, [props.deltakerliste])

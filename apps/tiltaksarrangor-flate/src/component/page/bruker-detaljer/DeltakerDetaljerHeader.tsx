@@ -6,8 +6,7 @@ import {
 } from '@navikt/aksel-icons'
 import { Button, Heading } from '@navikt/ds-react'
 import cls from 'classnames'
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import { Adresse } from '../../../api/data/deltaker'
 import { Tiltakskode } from '../../../api/data/tiltak'
 import {
@@ -42,9 +41,7 @@ interface BrukerPaaTiltakHeaderProps {
   adressebeskyttet: boolean
 }
 
-export const DeltakerDetaljerHeader = (
-  props: BrukerPaaTiltakHeaderProps
-): React.ReactElement => {
+export const DeltakerDetaljerHeader = (props: BrukerPaaTiltakHeaderProps) => {
   const {
     deltakerlisteId,
     fornavn,

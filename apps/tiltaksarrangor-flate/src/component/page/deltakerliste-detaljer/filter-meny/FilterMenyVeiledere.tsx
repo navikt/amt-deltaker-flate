@@ -1,7 +1,7 @@
 import { TiltakDeltaker } from '../../../../api/data/deltaker'
 import globalStyles from '../../../../globals.module.scss'
 import { FilterMeny } from '../../../felles/table-filter/FilterMeny'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   FilterType,
   useKoordinatorFilterContext
@@ -18,7 +18,7 @@ interface Props {
   deltakere: TiltakDeltaker[]
 }
 
-export const FilterMenyVeiledere = (props: Props): React.ReactElement => {
+export const FilterMenyVeiledere = (props: Props) => {
   const [deltakerePerVeileder, setDeltakerePerVeileder] = useState<
     FiltermenyDataEntry[]
   >([])

@@ -1,7 +1,5 @@
 import { AxiosResponse } from 'axios'
-import React from 'react'
 import { useParams } from 'react-router-dom'
-
 import { Deltaker } from '../../../api/data/deltaker'
 import { fetchDeltaker } from '../../../api/tiltak-api'
 import globalStyles from '../../../globals.module.scss'
@@ -21,7 +19,7 @@ import { DeltakerDetaljerAdresseBeskyttet } from './DeltakerDetaljerAdresseBesky
 import { DeltakerDetaljerHeader } from './DeltakerDetaljerHeader'
 import { DeltakerContextProvider } from './deltaker-detaljer/DeltakerContext'
 
-export const DeltakerDetaljerPage = (): React.ReactElement => {
+export const DeltakerDetaljerPage = () => {
   const params = useParams<{ brukerId: string }>()
   const { koordinatorsDeltakerlister } = useKoordinatorsDeltakerlisterContext()
 

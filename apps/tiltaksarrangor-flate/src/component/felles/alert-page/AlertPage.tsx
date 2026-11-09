@@ -1,6 +1,4 @@
 import { Alert } from '@navikt/ds-react'
-import React from 'react'
-
 import styles from './AlertPage.module.scss'
 
 interface AlertPageProps {
@@ -8,9 +6,7 @@ interface AlertPageProps {
   tekst: string
 }
 
-export const AlertPage = (
-  props: AlertPageProps
-): React.ReactElement<AlertPageProps> => {
+export const AlertPage = (props: AlertPageProps) => {
   return (
     <Alert variant={props.variant} size="medium" className={styles.page}>
       {props.tekst}

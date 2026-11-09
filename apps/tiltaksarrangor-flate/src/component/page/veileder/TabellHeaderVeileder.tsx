@@ -1,13 +1,13 @@
 import { Table } from '@navikt/ds-react'
-import React, { JSX } from 'react'
+import type { CSSProperties, JSX } from 'react'
 import styles from './Table.module.scss'
 import { DeltakerKolonne } from './sortering'
 
-function dynamicWidth(minPixels: number): React.CSSProperties {
+function dynamicWidth(minPixels: number): CSSProperties {
   return { minWidth: minPixels + 'px' }
 }
 
-function fixedWidth(pixels: number): React.CSSProperties {
+function fixedWidth(pixels: number): CSSProperties {
   const width = pixels + 'px'
   return { width: width, minWidth: width }
 }

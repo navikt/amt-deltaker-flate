@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import { DateValidationT } from '@navikt/ds-react'
 import { formatDate } from '../../utils/date-utils'
 import { Nullable } from '../../utils/types/or-nothing'
@@ -24,7 +23,7 @@ export const DateField = ({
   error,
   onDateChanged,
   onValidate
-}: Props): React.ReactElement => {
+}: Props) => {
   const [errorMsg, setErrorMsg] = useState<string | undefined>()
 
   useEffect(() => {

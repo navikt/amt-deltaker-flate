@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VeiledersDeltaker } from '../../../../api/data/deltaker'
 import { FiltermenyDataEntry } from '../../../felles/table-filter/filtermeny-data-entry'
 import {
@@ -13,7 +13,7 @@ interface Props {
   deltakere: VeiledersDeltaker[]
 }
 
-export const FilterMenyDeltakerliste = (props: Props): ReactElement => {
+export const FilterMenyDeltakerliste = (props: Props) => {
   const [deltakerlister, setDeltakerlister] = useState<FiltermenyDataEntry[]>(
     []
   )

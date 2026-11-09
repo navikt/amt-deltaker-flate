@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AvsluttDeltakelseModal } from './endre-deltaker-modal/AvsluttDeltakelseModal'
 import { EndreOppstartModal } from './endre-deltaker-modal/EndreOppstartModal'
 import { EndreProsentDeltakelseModal } from './endre-deltaker-modal/EndreProsentDeltakelseModal'
@@ -23,7 +21,7 @@ export interface ModalDataProps {
 
 export const ModalController = (props: {
   modalData: ModalData | undefined
-}): React.ReactElement | null => {
+}) => {
   const { modalData } = props
 
   switch (modalData?.type) {
@@ -37,10 +35,20 @@ export const ModalController = (props: {
       return <SettIkkeAktuellModal {...modalData.props} />
     case ModalType.EndreAvslutning:
     case ModalType.AvsluttDeltaker:
-      return <AvsluttDeltakelseModal {...modalData.props} endringstype={modalData?.type} />
+      return (
+        <AvsluttDeltakelseModal
+          {...modalData.props}
+          endringstype={modalData?.type}
+        />
+      )
     case ModalType.EndreAvslutningKurs:
     case ModalType.AvsluttKursDeltaker:
-      return <AvsluttKursDeltakelseModal {...modalData.props} endringstype={modalData?.type} />
+      return (
+        <AvsluttKursDeltakelseModal
+          {...modalData.props}
+          endringstype={modalData?.type}
+        />
+      )
     case ModalType.EndreProsentDeltakelse:
       return <EndreProsentDeltakelseModal {...modalData.props} />
     case ModalType.EndreSluttaarsak:

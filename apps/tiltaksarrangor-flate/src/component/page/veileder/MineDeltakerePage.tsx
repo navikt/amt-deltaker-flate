@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useScrollPosition } from '../../../hooks/use-scroll-position'
 import { useTabTitle } from '../../../hooks/use-tab-title'
 import { fetchMineDeltakere } from '../../../api/tiltak-api'
@@ -26,7 +26,7 @@ import { FilterMenyDeltakerliste } from './filter-meny/FilterMenyDeltakerliste'
 import { FilterMenyChips } from './filter-meny/FilterMenyChips'
 import { FilterMenyHendelser } from './filter-meny/FilterMenyHendelser'
 
-export const MineDeltakerePage = (): React.ReactElement => {
+export const MineDeltakerePage = () => {
   const { setTilbakeTilUrl } = useTilbakelenkeContext()
   const { roller } = useInnloggetBrukerContext()
 

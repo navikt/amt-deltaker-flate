@@ -1,17 +1,16 @@
 import { BodyShort } from '@navikt/ds-react'
 import cls from 'classnames'
-import React from 'react'
-
+import type { ReactNode } from 'react'
 import { EMDASH } from '../../../../utils/constants'
 import styles from './IconLabel.module.scss'
 
 interface IconLabelProps {
   labelValue: string | undefined | null
-  icon: React.ReactElement
+  icon: ReactNode
   iconWrapperClassName?: string
 }
 
-export function IconLabel(props: IconLabelProps): React.ReactElement {
+export function IconLabel(props: IconLabelProps) {
   return (
     <div className={styles.iconWrapper}>
       <div

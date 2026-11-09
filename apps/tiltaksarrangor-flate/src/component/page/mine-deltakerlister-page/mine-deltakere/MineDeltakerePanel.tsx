@@ -1,6 +1,4 @@
 import { LinkCard } from '@navikt/ds-react'
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 import { VeilederFor } from '../../../../api/data/deltaker'
 import { MINE_DELTAKERE_PAGE_ROUTE } from '../../../../navigation'
@@ -12,9 +10,7 @@ interface MineDeltakerePanelProps {
   veileder: VeilederFor
 }
 
-export const MineDeltakerePanel = (
-  props: MineDeltakerePanelProps
-): React.ReactElement<MineDeltakerePanelProps> => {
+export const MineDeltakerePanel = (props: MineDeltakerePanelProps) => {
   const { saveActiveScrollPosition } = useScrollPositionContext()
 
   return (
@@ -24,7 +20,7 @@ export const MineDeltakerePanel = (
           <img src={clipboard} alt="" className={styles.clipboardimage} />
         </LinkCard.Icon>
         <LinkCard.Title>
-          <LinkCard.Anchor asChild >
+          <LinkCard.Anchor asChild>
             <Link
               to={MINE_DELTAKERE_PAGE_ROUTE}
               onClick={saveActiveScrollPosition}

@@ -2,7 +2,7 @@ import {
   TiltakDeltakerStatus,
   VeiledersDeltaker
 } from '../../../../api/data/deltaker'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiltermenyDataEntry } from '../../../felles/table-filter/filtermeny-data-entry'
 import { mapTiltakDeltakerStatusTilTekst } from '../../../../utils/text-mappers'
 import { FilterMeny } from '../../../felles/table-filter/FilterMeny'
@@ -17,7 +17,7 @@ interface Props {
   deltakere: VeiledersDeltaker[]
 }
 
-export const FilterMenyStatus = (props: Props): React.ReactElement => {
+export const FilterMenyStatus = (props: Props) => {
   const [deltakerePerStatus, setDeltakerePerStatus] = useState<
     FiltermenyDataEntry[]
   >([])
