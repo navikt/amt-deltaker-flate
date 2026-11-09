@@ -92,7 +92,7 @@ const _FormErrorSummary = <T extends FieldValues>({
   )
 
   return (
-    <div ref={ref} tabIndex={-1} className="mb-8">
+    <div ref={ref} tabIndex={-1}>
       <ErrorSummary heading="For å gå videre må du rette opp følgende:">
         {kodeverkErrors &&
           kodeverkErrors.length > 0 &&

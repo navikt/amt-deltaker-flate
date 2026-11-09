@@ -95,8 +95,6 @@ const PameldingEnkeltplassFormInner = ({
       aria-label="Skjema for påmelding"
     >
       <FormProvider {...methods}>
-        <FormErrorSummary erEnkeltplass={true} />
-
         <OpplaringKategoriseringValg kodeverk={kodeverk} />
 
         <InnholdBeskrivelse />
@@ -111,6 +109,8 @@ const PameldingEnkeltplassFormInner = ({
           <DeltakelsesmengdeValg />
         )}
         <PrisOgBetaling />
+
+        <FormErrorSummary erEnkeltplass={true} />
 
         <PameldingFormButtons />
       </FormProvider>
