@@ -96,7 +96,7 @@ export const AvsluttDeltakelseModal = ({
 
   const erEndreAvslutning =
     endreDeltakelseType === EndreDeltakelseType.ENDRE_AVSLUTNING
-  const sluttdatoToDate = erEndreAvslutning
+  const sluttdatoMaksDato = erEndreAvslutning
     ? dayjs().subtract(1, 'day').toDate()
     : (deltaker.sluttdato ?? undefined)
 
@@ -107,7 +107,7 @@ export const AvsluttDeltakelseModal = ({
     deltaker: deltaker,
     defaultDato: defaultSluttdato ?? undefined,
     startdato: deltaker.startdato ?? undefined,
-    toDate: sluttdatoToDate,
+    toDate: sluttdatoMaksDato,
     isAfterError: erEndreAvslutning
       ? DATO_ETTER_IDAG_FEILMELDING
       : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
@@ -350,7 +350,7 @@ export const AvsluttDeltakelseModal = ({
             disabled={false}
             error={sluttdato.error}
             fromDate={deltaker.startdato ?? undefined}
-            toDate={sluttdatoToDate}
+            toDate={sluttdatoMaksDato}
             defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}

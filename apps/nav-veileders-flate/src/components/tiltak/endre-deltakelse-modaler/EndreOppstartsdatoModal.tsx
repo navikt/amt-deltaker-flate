@@ -35,7 +35,9 @@ import {
   getSkalBekrefteVarighet,
   getSoftMaxVarighetBekreftelseText,
   LEGG_TIL_STARTDATO_BEKREFTELSE_FEILMELDING,
+  MAX_START_DATO,
   MIN_START_DATO,
+  START_DATO_ETTER_5_AAR_FEILMELDING,
   START_DATO_FOER_2000_FEILMELDING,
   UGYLDIG_DATO_FORMAT,
   VARIGHET_BEKREFTELSE_FEILMELDING,
@@ -68,6 +70,7 @@ export const EndreOppstartsdatoModal = ({
   const { enhetId } = useAppContext()
   const defaultDatoer = getDatoer(deltaker, forslag)
   const endrePrisValg = useEndrePrisValg()
+  const erEnkeltplass = erEnkeltPlass(deltaker)
 
   const tiltakskode = deltaker.deltakerliste.tiltakskode.kode
   const [valgtVarighet, setValgtVarighet] = useState<VarighetValg | undefined>(
@@ -129,6 +132,8 @@ export const EndreOppstartsdatoModal = ({
   ) => {
     if (newDate && dayjs(newDate).isBefore(MIN_START_DATO, 'date')) {
       setErrorStartDato(START_DATO_FOER_2000_FEILMELDING)
+    } else if (erEnkeltplass && dateValidation.isAfter) {
+      setErrorStartDato(START_DATO_ETTER_5_AAR_FEILMELDING)
     } else if (dateValidation.isBefore || dateValidation.isAfter) {
       setErrorStartDato(DATO_UTENFOR_TILTAKGJENNOMFORING)
     } else if (errorMessage) {
@@ -178,7 +183,7 @@ export const EndreOppstartsdatoModal = ({
       hasError = true
     }
 
-    if (erEnkeltPlass(deltaker) && !endrePrisValg.valider()) {
+    if (erEnkeltplass && !endrePrisValg.valider()) {
       hasError = true
     }
 
@@ -206,7 +211,7 @@ export const EndreOppstartsdatoModal = ({
             : null,
           begrunnelse: begrunnelse.begrunnelse,
           forslagId: forslag?.id,
-          pavirkerPris: erEnkeltPlass(deltaker)
+          pavirkerPris: erEnkeltplass
             ? endrePrisValg.endrePrisValg === EndrePrisValgType.JA
             : false
         }
@@ -230,7 +235,11 @@ export const EndreOppstartsdatoModal = ({
         label="Ny oppstartsdato"
         error={errorStartdato}
         fromDate={deltaker.deltakerliste.startdato ?? undefined}
-        toDate={deltaker.deltakerliste.sluttdato ?? undefined}
+        toDate={
+          erEnkeltPlass(deltaker)
+            ? MAX_START_DATO
+            : (deltaker.deltakerliste.sluttdato ?? undefined)
+        }
         defaultMonth={dayjs().toDate()}
         defaultDate={defaultDatoer.startdato}
         onValidate={validateStartdato}

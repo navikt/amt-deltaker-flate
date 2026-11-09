@@ -1,15 +1,11 @@
 import { DatePicker, DateValidationT, useDatepicker } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import {
   getDayjsFromString,
   harGyldigDatoformat
 } from '../../../../../packages/deltaker-flate-common/utils/utils'
-import { dateValidation, formatDateToInputStr } from '../../utils/utils'
+import { dateValidation } from '../../utils/utils'
 import { MIN_START_DATO, UGYLDIG_DATO } from '../../utils/varighet'
-import {
-  DATE_FORMAT,
-  parsePameldingDato
-} from '../../model/PameldingEnkeltplassFormValues'
 
 interface Props {
   label: string
@@ -42,42 +38,34 @@ export function SimpleDatePicker({
   onChange,
   className
 }: Props) {
-  const [dateInput, setDateInput] = useState<string>(
-    defaultDate ? formatDateToInputStr(defaultDate) : ''
-  )
   const datePickerRef = useRef<HTMLInputElement>(null)
-  const { datepickerProps } = useDatepicker({
+
+  const {
+    datepickerProps,
+    inputProps: { onBlur: datoInputOnBlur, ...datoInputProps }
+  } = useDatepicker({
     fromDate: fromDate ?? MIN_START_DATO,
     toDate: toDate,
     defaultSelected: defaultDate,
     defaultMonth: defaultMonth,
-    onValidate: (dateValidation) => {
-      // Denne treffer valg i date picker fra klikk
-      onValidate(dateValidation)
-    },
     onDateChange: (date) => {
-      // Denne treffer valg i date picker fra klikk
-      // den vil alltid velge gyldige datoer definert av datepicker.
-      if (date) {
-        setDateInput(formatDateToInputStr(date))
-      }
+      // Denne treffer valg i date picker fra klikk og tastatur
       onChange(date)
     }
   })
 
-  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Denne treffers hvis vi endrer date-input med tastatur.
-    setDateInput(e.target.value)
-
-    if (!e.target.value) {
+  const handleBlur = (newDate: string) => {
+    // Kalles kun ved å frlate inputfeltet.
+    // Datovelger med klikk velger gyldig dato så lenge vi setter riktige grenseverdier for fromDate og toDate
+    if (!newDate) {
       onValidate(dateValidation({ isEmpty: true }))
       onChange(undefined)
       return
     }
 
-    const gydligFormat = harGyldigDatoformat(e.target.value)
+    const harGydligFormat = harGyldigDatoformat(newDate)
 
-    const date = getDayjsFromString(e.target.value)
+    const date = getDayjsFromString(newDate)
     if (date?.isValid()) {
       const isBefore = date.isBefore(fromDate ?? MIN_START_DATO, 'date')
       const isAfter = toDate ? date.isAfter(toDate, 'date') : false
@@ -86,8 +74,7 @@ export function SimpleDatePicker({
         dateValidation({ isValidDate: true, isBefore, isAfter }),
         date.toDate()
       )
-    } else if (gydligFormat) {
-      // Vil helst gi en feilmelding her om at datoen er i riktig format, men ikke gyldig
+    } else if (harGydligFormat) {
       onValidate(dateValidation({ isInvalid: true }), undefined, UGYLDIG_DATO)
       onChange(undefined)
     } else {
@@ -96,24 +83,20 @@ export function SimpleDatePicker({
     }
   }
 
-  const handleBlur = (newDate: string) => {
-    const parsed = parsePameldingDato(newDate)
-
-    setDateInput(parsed ? parsed.format(DATE_FORMAT) : newDate || '')
-  }
-
   return (
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
         className={className ?? ''}
-        value={dateInput}
         ref={datePickerRef}
         label={label}
         hideLabel={hideLabel}
         error={error}
         size="small"
-        onChange={handleDateInputChange}
-        onBlur={(e) => handleBlur(e.target.value)}
+        {...datoInputProps}
+        onBlur={(e) => {
+          datoInputOnBlur?.(e)
+          handleBlur(e.target.value)
+        }}
         disabled={disabled}
       />
     </DatePicker>
