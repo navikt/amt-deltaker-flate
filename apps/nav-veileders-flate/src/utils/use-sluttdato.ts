@@ -90,7 +90,7 @@ export function useSluttdato({
       return false
     }
     if (!sluttdato) {
-      if (valgtVarighet === VarighetValg.ANNET) {
+      if (valgtVarighet === VarighetValg.ANNET && annet.error === null) {
         annet.setError('Du må velge en sluttdato')
       }
       return false
