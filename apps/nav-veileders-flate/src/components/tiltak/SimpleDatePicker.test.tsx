@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/vitest'
+import { Button } from '@navikt/ds-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { type ComponentProps, useState } from 'react'
@@ -620,52 +621,63 @@ describe('SimpleDatePicker', () => {
     it.each([
       { value: '02.01.2028', message: VARGIHET_VALG_FEILMELDING },
       { value: '02.01.2030', message: DATO_UTENFOR_TILTAKGJENNOMFORING }
-    ])('viser riktig feil ved blur for $value', async ({ value, message }) => {
-      const user = userEvent.setup()
-      const defaultDate = new Date(2027, 5, 1)
-      const deltaker = {
-        startdato: new Date(2027, 0, 1),
-        sluttdato: defaultDate,
-        maxVarighet: 365 * 24 * 60 * 60 * 1000,
-        deltakerliste: { sluttdato: new Date(2030, 0, 1) }
-      } as DeltakerResponse
-      const DatePickerMedSluttdato = () => {
-        const sluttdato = useSluttdato({
-          deltaker,
-          valgtVarighet: VarighetValg.ANNET,
-          defaultAnnetDato: defaultDate,
-          erForleng: true
-        })
+    ])(
+      'beholder riktig feil etter blur og Lagre for $value',
+      async ({ value, message }) => {
+        const user = userEvent.setup()
+        const defaultDate = new Date(2027, 5, 1)
+        const deltaker = {
+          startdato: new Date(2027, 0, 1),
+          sluttdato: defaultDate,
+          maxVarighet: 365 * 24 * 60 * 60 * 1000,
+          deltakerliste: { sluttdato: new Date(2030, 0, 1) }
+        } as DeltakerResponse
+        const DatePickerMedSluttdato = () => {
+          const sluttdato = useSluttdato({
+            deltaker,
+            valgtVarighet: VarighetValg.ANNET,
+            defaultAnnetDato: defaultDate,
+            erForleng: true
+          })
 
-        return (
-          <SimpleDatePicker
-            label="Sluttdato"
-            error={sluttdato.annetError}
-            fromDate={defaultDate}
-            toDate={getSisteGyldigeSluttDato(deltaker)}
-            defaultDate={defaultDate}
-            onChange={sluttdato.handleChange}
-            onValidate={sluttdato.validerDato}
-          />
-        )
+          return (
+            <>
+              <SimpleDatePicker
+                label="Sluttdato"
+                error={sluttdato.annetError}
+                fromDate={defaultDate}
+                toDate={getSisteGyldigeSluttDato(deltaker)}
+                defaultDate={defaultDate}
+                onChange={sluttdato.handleChange}
+                onValidate={sluttdato.validerDato}
+              />
+              <Button onClick={() => sluttdato.valider()}>Lagre</Button>
+            </>
+          )
+        }
+        render(<DatePickerMedSluttdato />)
+        const input = screen.getByRole('textbox', { name: 'Sluttdato' })
+
+        await user.clear(input)
+        await user.type(input, value)
+        expect(screen.queryByText(message)).not.toBeInTheDocument()
+
+        await user.tab()
+
+        expect(screen.getByText(message)).toBeVisible()
+        expect(input).toBeInvalid()
+
+        await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+        expect(screen.getByText(message)).toBeVisible()
+        expect(input).toHaveValue(value)
+
+        await user.clear(input)
+        await user.type(input, '20.06.2027')
+
+        expect(screen.queryByText(message)).not.toBeInTheDocument()
+        expect(input).not.toBeInvalid()
       }
-      render(<DatePickerMedSluttdato />)
-      const input = screen.getByRole('textbox', { name: 'Sluttdato' })
-
-      await user.clear(input)
-      await user.type(input, value)
-      expect(screen.queryByText(message)).not.toBeInTheDocument()
-
-      await user.tab()
-
-      expect(screen.getByText(message)).toBeVisible()
-      expect(input).toBeInvalid()
-
-      await user.clear(input)
-      await user.type(input, '20.06.2027')
-
-      expect(screen.queryByText(message)).not.toBeInTheDocument()
-      expect(input).not.toBeInvalid()
-    })
+    )
   })
 })

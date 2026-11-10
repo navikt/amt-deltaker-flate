@@ -168,7 +168,7 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (skalViseSluttDato && !sluttdato.sluttdato) {
-      sluttdato.setError('Du må velge en sluttdato.')
+      sluttdato.setError(sluttdato.error ?? 'Du må velge en sluttdato.')
       hasError = true
     }
 
