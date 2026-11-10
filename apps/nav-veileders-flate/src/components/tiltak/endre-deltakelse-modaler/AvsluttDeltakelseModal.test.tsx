@@ -16,7 +16,10 @@ import { avsluttDeltakelse, endreAvslutning } from '../../../api/api'
 import { getMockDeltaker } from '../../../mocks/mockDeltakere'
 import {
   DATO_ETTER_IDAG_FEILMELDING,
-  DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING
+  DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
+  SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
+  UGYLDIG_DATO,
+  UGYLDIG_DATO_FORMAT
 } from '../../../utils/varighet'
 import { AvsluttDeltakelseModal } from './AvsluttDeltakelseModal'
 
@@ -108,9 +111,21 @@ describe('AvsluttDeltakelseModal', () => {
       endreDeltakelseType: EndreDeltakelseType.ENDRE_AVSLUTNING,
       value: dayjs().add(1, 'day').format('DD.MM.YYYY'),
       message: DATO_ETTER_IDAG_FEILMELDING
-    }
+    },
+    ...[
+      EndreDeltakelseType.AVSLUTT_DELTAKELSE,
+      EndreDeltakelseType.ENDRE_AVSLUTNING
+    ].flatMap((endreDeltakelseType) => [
+      {
+        endreDeltakelseType,
+        value: '31.12.2019',
+        message: SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
+      },
+      { endreDeltakelseType, value: '32.2.26', message: UGYLDIG_DATO },
+      { endreDeltakelseType, value: 'ukjent', message: UGYLDIG_DATO_FORMAT }
+    ])
   ])(
-    'beholder grensefeilen etter blur og Lagre ved $endreDeltakelseType',
+    'beholder feilen for $value etter blur og Lagre ved $endreDeltakelseType',
     async ({ endreDeltakelseType, value, message }) => {
       const user = userEvent.setup()
       renderModal(endreDeltakelseType)

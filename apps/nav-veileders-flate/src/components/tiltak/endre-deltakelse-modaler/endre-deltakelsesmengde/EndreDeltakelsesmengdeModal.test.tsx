@@ -6,6 +6,10 @@ import { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppContext } from '../../../../AppContext.tsx'
 import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
+import {
+  UGYLDIG_DATO,
+  UGYLDIG_DATO_FORMAT
+} from '../../../../utils/varighet.tsx'
 import { EndreDeltakelsesmengdeModal } from './EndreDeltakelsesmengdeModal.tsx'
 
 const endreDeltakelsesmengdeMock = vi.fn().mockResolvedValue(null)
@@ -37,7 +41,7 @@ vi.mock('deltaker-flate-common', async () => {
 
 type MockRequest = { deltakerId: string; enhetId: string; body: unknown }
 
-vi.mock('../modal/Endringsmodal.tsx', () => ({
+vi.mock('../../modal/Endringsmodal.tsx', () => ({
   Endringsmodal: ({
     children,
     validertRequest,
@@ -170,6 +174,53 @@ describe('EndreDeltakelsesmengdeModal', () => {
       await user.type(prosentInput, '100')
       expect(screen.queryByLabelText(gruppeDagerLabel)).not.toBeInTheDocument()
     })
+  })
+
+  describe.each([
+    { navn: 'gruppe', erEnkeltplass: false },
+    { navn: 'enkeltplass', erEnkeltplass: true }
+  ])('datovalidering for $navn', ({ erEnkeltplass }) => {
+    it.each([
+      {
+        value: '31.12.2025',
+        message: 'Datoen kan ikke velges fordi den er før deltakers startsdato'
+      },
+      {
+        value: '01.01.2027',
+        message: 'Datoen kan ikke velges fordi den er etter deltakers sluttdato'
+      },
+      { value: '32.2.26', message: UGYLDIG_DATO },
+      { value: 'ukjent', message: UGYLDIG_DATO_FORMAT },
+      {
+        value: '',
+        message:
+          'Du må velge en dato for når deltakelsesmengden skal gjelde fra'
+      }
+    ])(
+      'beholder feilen for $value etter blur og Lagre',
+      async ({ value, message }) => {
+        const user = userEvent.setup()
+        renderModal(lagDeltaker(erEnkeltplass))
+        if (erEnkeltplass) {
+          await user.click(screen.getByRole('radio', { name: 'Nei' }))
+        }
+        const input = screen.getByRole('textbox', {
+          name: 'Fra når gjelder ny deltakelsesmengde?'
+        })
+
+        await user.clear(input)
+        if (value) await user.type(input, value)
+        await user.tab()
+
+        expect(screen.getByText(message)).toBeVisible()
+
+        await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+        expect(screen.getByText(message)).toBeVisible()
+        expect(input).toHaveValue(value)
+        expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+      }
+    )
   })
 
   it.each([
