@@ -84,7 +84,21 @@ export function SimpleDatePicker({
   }
 
   return (
-    <DatePicker {...datepickerProps}>
+    <DatePicker
+      {...datepickerProps}
+      onDayClick={(dato, modifiers, event) => {
+        // Kalles når en dag blir klikket i date picker
+        datepickerProps.onDayClick?.(dato, modifiers, event)
+
+        // Sjekk om datoen som ble klikket allerede var valgt (toggle)
+        const varDatoValgt = modifiers.selected
+
+        onValidate(
+          dateValidation({ isEmpty: varDatoValgt, isValidDate: !varDatoValgt }),
+          varDatoValgt ? undefined : dato
+        )
+      }}
+    >
       <DatePicker.Input
         className={className ?? ''}
         ref={datePickerRef}
