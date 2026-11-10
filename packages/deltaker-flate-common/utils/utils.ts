@@ -14,7 +14,7 @@ import { EMDASH } from './constants'
 dayjs.locale(nb)
 dayjs.extend(customParseFormat)
 
-const DATO_FORMATS = [
+export const DATO_FORMATS = [
   'D.M.YY',
   'D.MM.YY',
   'DD.M.YY',
@@ -40,8 +40,7 @@ const DATO_FORMATS = [
   'DD-M-YYYY',
   'DD-MM-YYYY',
   'DDMMYYYY',
-  'DDMMYY',
-  'YYYY-MM-DD'
+  'DDMMYY'
 ]
 
 /**
