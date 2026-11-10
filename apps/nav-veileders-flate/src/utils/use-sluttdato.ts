@@ -5,7 +5,7 @@ import { DeltakerResponse } from '../api/data/deltaker'
 import {
   DATO_FOER_SLUTTDATO_FEILMELDING,
   SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
+  UGYLDIG_DATO_FORMAT,
   VarighetValg,
   getSluttDatoFeilmelding,
   getVarighet
@@ -31,7 +31,11 @@ export function useSluttdato({
   varighetError: string | null
   annetError: string | null
   valider: () => boolean
-  validerDato: (dateValidation: DateValidationT, newDate?: Date) => void
+  validerDato: (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    errorMessage?: string
+  ) => void
   handleChange: (date: Date | undefined) => void
 } {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(undefined)
@@ -47,7 +51,8 @@ export function useSluttdato({
     defaultDato: defaultAnnetDato,
     startdato,
     erSkjult: valgtVarighet !== VarighetValg.ANNET,
-    erForleng
+    erForleng,
+    isRequired: valgtVarighet === VarighetValg.ANNET
   })
 
   const kalkulerSluttdatoFra = (date: Date, varighetValg: VarighetValg) => {
@@ -85,7 +90,7 @@ export function useSluttdato({
       return false
     }
     if (!sluttdato) {
-      if (valgtVarighet === VarighetValg.ANNET) {
+      if (valgtVarighet === VarighetValg.ANNET && annet.error === null) {
         annet.setError('Du må velge en sluttdato')
       }
       return false
@@ -93,8 +98,12 @@ export function useSluttdato({
     return error === null && annet.error === null
   }
 
-  const validerDato = (dateValidation: DateValidationT, newDate?: Date) => {
-    annet.validate(dateValidation, newDate)
+  const validerDato = (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    errorMessage?: string
+  ) => {
+    annet.validate(dateValidation, newDate, errorMessage)
   }
 
   const handleChange = (date: Date | undefined) => {
@@ -121,6 +130,7 @@ interface SluttdatoInputOpts {
   onChange?: (date: Date | undefined) => void
   defaultDato: Date | undefined
   startdato?: Date
+  isRequired?: boolean
   erSkjult?: boolean
   erForleng?: boolean
   isAfterError?: string
@@ -130,11 +140,12 @@ export function useSluttdatoInput({
   deltaker,
   onChange,
   defaultDato,
+  toDate,
   startdato,
   erSkjult,
   erForleng,
   isAfterError,
-  toDate
+  isRequired
 }: SluttdatoInputOpts) {
   const [sluttdato, setSluttdato] = useState<Date | undefined>(defaultDato)
   const [error, setError] = useState<string | null>(null)
@@ -149,10 +160,13 @@ export function useSluttdatoInput({
     }
   }, [startdato])
 
-  const validate = (dateValidation: DateValidationT, newDate?: Date) => {
-    if (dateValidation.isInvalid) {
-      setError(UGYLDIG_DATO_FEILMELDING)
-    } else if (dateValidation.isBefore) {
+  // Kan sees i sammenheng med SimpleDatePicker handleDateInputChange, som sender disse verdiene.
+  const validate = (
+    dateValidation: DateValidationT,
+    newDate?: Date,
+    message?: string
+  ) => {
+    if (dateValidation.isBefore) {
       setError(
         startdato
           ? SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING
@@ -160,14 +174,20 @@ export function useSluttdatoInput({
       )
     } else if (dateValidation.isAfter && isAfterError) {
       setError(isAfterError)
+    } else if (message) {
+      setError(message)
+    } else if (isRequired && dateValidation.isEmpty) {
+      setError('Du må velge en sluttdato')
+    } else if (dateValidation.isInvalid) {
+      setError(UGYLDIG_DATO_FORMAT)
     } else if (newDate) {
       setError(getSluttDatoFeilmelding(deltaker, newDate, startdato, erForleng))
     }
   }
 
   const handleChange = (date: Date | undefined) => {
+    setSluttdato(date)
     if (date) {
-      setSluttdato(date)
       if (toDate && isAfterError && dayjs(date).isAfter(toDate)) {
         setError(isAfterError)
       } else {

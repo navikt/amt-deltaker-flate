@@ -1,6 +1,7 @@
 import { NumberTextField } from '../../../NumberTextField.tsx'
 import { SimpleDatePicker } from '../../SimpleDatePicker.tsx'
 import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
+import { UGYLDIG_DATO_FORMAT } from '../../../../utils/varighet'
 
 interface DagerPerUkeFieldProps {
   label: string
@@ -54,7 +55,7 @@ export const GyldigFraField = ({
         fromDate={deltaker.startdato ?? undefined}
         toDate={deltaker.sluttdato ?? undefined}
         error={gyldigFraError ?? null}
-        onValidate={(validation) => {
+        onValidate={(validation, _newDate, errorMessage) => {
           if (validation.isBefore) {
             onValidate(
               'Datoen kan ikke velges fordi den er før deltakers startsdato'
@@ -63,8 +64,14 @@ export const GyldigFraField = ({
             onValidate(
               'Datoen kan ikke velges fordi den er etter deltakers sluttdato'
             )
+          } else if (validation.isEmpty) {
+            onValidate(
+              'Du må velge en dato for når deltakelsesmengden skal gjelde fra'
+            )
+          } else if (errorMessage) {
+            onValidate(errorMessage)
           } else if (validation.isInvalid) {
-            onValidate('Ugyldig dato')
+            onValidate(UGYLDIG_DATO_FORMAT)
           } else {
             onValidate(undefined)
           }

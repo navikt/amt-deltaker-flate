@@ -1,5 +1,22 @@
+import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { EMDASH } from 'deltaker-flate-common'
+
+// TODO fjerne denne?
+export function dateValidation(
+  overrides: Partial<DateValidationT> = {}
+): DateValidationT {
+  return {
+    isDisabled: false,
+    isWeekend: false,
+    isEmpty: false,
+    isInvalid: false,
+    isValidDate: false,
+    isBefore: false,
+    isAfter: false,
+    ...overrides
+  }
+}
 
 /**
  * Formaterer date til string: YYYY-MM-DD. Format slik backend vil ha.

@@ -75,8 +75,6 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
     >
       <FormProvider {...methods}>
         <div className="flex flex-col gap-8 mb-4">
-          <FormErrorSummary erEnkeltplass={false} />
-
           <Innhold pamelding={deltaker} isDisabled={disabled} />
 
           <OmKurset
@@ -143,6 +141,8 @@ export const PameldingForm = ({ className, focusOnOpen }: Props) => {
               </InfoCard.Content>
             </InfoCard>
           )}
+
+          <FormErrorSummary erEnkeltplass={false} />
 
           <PameldingFormButtons />
         </div>

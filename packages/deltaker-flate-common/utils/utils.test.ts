@@ -1,8 +1,11 @@
+import dayjs from 'dayjs'
 import { describe, expect, it } from 'vitest'
 import {
   beregnEstimertTotalsum,
+  DATO_FORMATS,
   fjernUgyldigeTegn,
   getDayjsFromString,
+  harGyldigDatoformat,
   harDeltakelsesmengde,
   haveSameContents,
   NOK_FORMATTER
@@ -10,7 +13,67 @@ import {
 import { Tiltakskode } from '../model/deltaker'
 import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
 
+describe('harGyldigDatoformat', () => {
+  it.each([
+    '32.01.2027',
+    '31.02.2027',
+    '00.13.2027',
+    '32012027',
+    '320127',
+    '32/01/2027',
+    '31-02-2027'
+  ])('godtar formatet til %s uavhengig av kalenderdatoen', (value) => {
+    expect(harGyldigDatoformat(value)).toBe(true)
+  })
+
+  it.each([
+    '',
+    '2026-03-01',
+    '2027-02-31',
+    '01_03_2027',
+    '1_3_2027',
+    '01.01.200',
+    '001.01.2027',
+    '0103202',
+    'aa.bb.cccc',
+    '01.03.2027tekst',
+    ' 01.03.2027'
+  ])('avviser ukjent format %s', (value) => {
+    expect(harGyldigDatoformat(value)).toBe(false)
+  })
+})
+
 describe('getDayjsFromString', () => {
+  it.each(DATO_FORMATS)('godtar og parser datoformatet %s', (format) => {
+    const expectedDate = dayjs(new Date(2027, 2, 1))
+    const value = expectedDate.format(format)
+
+    expect(harGyldigDatoformat(value)).toBe(true)
+    expect(getDayjsFromString(value)?.toDate()).toEqual(expectedDate.toDate())
+  })
+
+  it.each([
+    '31.02.2027',
+    '29.02.2027',
+    '31022027',
+    '310227',
+    '2026-03-01',
+    '2027-02-31',
+    '31/02/2027',
+    '29/02/2027',
+    '31-02-2027',
+    '29-02-27',
+    '01_03_2027'
+  ])('avviser ugyldig dato eller ukjent format %s', (value) => {
+    expect(getDayjsFromString(value)).toBeUndefined()
+  })
+
+  it('godtar skuddårsdag i kompakt format', () => {
+    expect(getDayjsFromString('29022028')?.format('YYYY-MM-DD')).toBe(
+      '2028-02-29'
+    )
+  })
+
   it('returnerer undefined for undefined', () => {
     expect(getDayjsFromString(undefined)).toBeUndefined()
   })
@@ -29,44 +92,6 @@ describe('getDayjsFromString', () => {
 
   it('returnerer undefined for 32.01.2026', () => {
     expect(getDayjsFromString('32.01.2026')).toBeUndefined()
-  })
-
-  it('parser DD.MM.YYYY - 01.03.2026', () => {
-    const result = getDayjsFromString('01.03.2026')
-    expect(result?.isValid()).toBeTruthy()
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser D.M.YYYY - 1.3.2026', () => {
-    const result = getDayjsFromString('1.3.2026')
-    expect(result?.isValid()).toBeTruthy()
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser D.MM.YYYY - 1.03.2026', () => {
-    const result = getDayjsFromString('1.03.2026')
-    expect(result?.isValid()).toBeTruthy()
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser DD.M.YYYY - 01.3.2026', () => {
-    const result = getDayjsFromString('01.3.2026')
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser D.M.YY - 1.3.26', () => {
-    const result = getDayjsFromString('1.3.26')
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser DD.MM.YY - 01.03.26', () => {
-    const result = getDayjsFromString('01.03.26')
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
-  })
-
-  it('parser YYYY-MM-DD - 2026-03-01', () => {
-    const result = getDayjsFromString('2026-03-01')
-    expect(result?.format('YYYY-MM-DD')).toBe('2026-03-01')
   })
 
   it('parser 01.12.2025', () => {

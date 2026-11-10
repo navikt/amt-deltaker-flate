@@ -96,18 +96,22 @@ export const AvsluttDeltakelseModal = ({
 
   const erEndreAvslutning =
     endreDeltakelseType === EndreDeltakelseType.ENDRE_AVSLUTNING
-  const sluttdatoToDate = erEndreAvslutning
+  const sluttdatoMaksDato = erEndreAvslutning
     ? dayjs().subtract(1, 'day').toDate()
     : (deltaker.sluttdato ?? undefined)
+
+  const skalViseSluttDato =
+    harDeltatt && avslutningstype !== Avslutningstype.IKKE_DELTATT
 
   const sluttdato = useSluttdatoInput({
     deltaker: deltaker,
     defaultDato: defaultSluttdato ?? undefined,
     startdato: deltaker.startdato ?? undefined,
-    toDate: sluttdatoToDate,
+    toDate: sluttdatoMaksDato,
     isAfterError: erEndreAvslutning
       ? DATO_ETTER_IDAG_FEILMELDING
-      : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING
+      : DATO_ETTER_NAAVAERENDE_SLUTTDATO_FEILMELDING,
+    isRequired: !!skalViseSluttDato
   })
 
   const aarsak = useAarsak(
@@ -122,8 +126,6 @@ export const AvsluttDeltakelseModal = ({
       avslutningstype === Avslutningstype.IKKE_DELTATT
     : true
 
-  const skalViseSluttDato =
-    harDeltatt && avslutningstype !== Avslutningstype.IKKE_DELTATT
   const skalBekrefteVarighet =
     skalViseSluttDato && getSkalBekrefteVarighet(deltaker, sluttdato.sluttdato)
 
@@ -166,7 +168,7 @@ export const AvsluttDeltakelseModal = ({
     }
 
     if (skalViseSluttDato && !sluttdato.sluttdato) {
-      sluttdato.setError('Du må velge en sluttdato.')
+      sluttdato.setError(sluttdato.error ?? 'Du må velge en sluttdato.')
       hasError = true
     }
 
@@ -348,7 +350,7 @@ export const AvsluttDeltakelseModal = ({
             disabled={false}
             error={sluttdato.error}
             fromDate={deltaker.startdato ?? undefined}
-            toDate={sluttdatoToDate}
+            toDate={sluttdatoMaksDato}
             defaultDate={defaultSluttdato ?? undefined}
             onValidate={sluttdato.validate}
             onChange={sluttdato.onChange}

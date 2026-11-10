@@ -1,24 +1,32 @@
 import { DatePicker, DateValidationT, useDatepicker } from '@navikt/ds-react'
-import dayjs from 'dayjs'
-import { useRef, useState } from 'react'
-import { formatDateToInputStr } from '../../utils/utils'
-import { dateValidation } from './VarighetField'
+import { type FocusEvent, useRef } from 'react'
+import {
+  getDayjsFromString,
+  harGyldigDatoformat
+} from '../../../../../packages/deltaker-flate-common/utils/utils'
+import { MIN_START_DATO, UGYLDIG_DATO } from '../../utils/varighet'
 
 interface Props {
   label: string
+  hideLabel?: boolean
   error: string | null
   fromDate?: Date
   toDate?: Date
   defaultDate?: Date
   defaultMonth?: Date
   disabled?: boolean
-  onValidate: (validation: DateValidationT, newDate?: Date) => void
+  onValidate: (
+    validation: DateValidationT,
+    newDate?: Date,
+    errorMessage?: string
+  ) => void
   onChange: (date: Date | undefined) => void
   className?: string
 }
 
 export function SimpleDatePicker({
   label,
+  hideLabel,
   error,
   fromDate,
   toDate,
@@ -29,57 +37,57 @@ export function SimpleDatePicker({
   onChange,
   className
 }: Props) {
-  const [dateInput, setDateInput] = useState<string>(
-    defaultDate ? formatDateToInputStr(defaultDate) : ''
-  )
-  const datePickerRef = useRef<HTMLInputElement>(null)
-  const { datepickerProps } = useDatepicker({
-    fromDate: fromDate,
-    toDate: toDate,
+  const valgtDato = useRef<Date | undefined>(defaultDate)
+  const validering = useRef<DateValidationT | null>(null)
+
+  const { datepickerProps, inputProps } = useDatepicker({
+    fromDate: fromDate ?? MIN_START_DATO,
+    toDate,
     defaultSelected: defaultDate,
-    defaultMonth: defaultMonth,
-    onValidate: (dateValidation) => {
-      onValidate(dateValidation)
-    },
+    defaultMonth,
     onDateChange: (date) => {
-      // Denne treffer valg i date picker fra klikk
-      // den vil alltid velge gyldige datoer definert av datepicker.
-      if (date) {
-        setDateInput(formatDateToInputStr(date))
-      }
+      valgtDato.current = date
       onChange(date)
+    },
+    onValidate: (validation) => {
+      validering.current = validation
+      if (validation.isValidDate) {
+        onValidate(validation, valgtDato.current)
+      }
     }
   })
 
-  const handleDateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Denne treffers hvis vi endrer date-input med tastatur.
-    setDateInput(e.target.value)
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    // Aksel oppdaterer dato (onDateChange) og valideringsresultat (onValidate) under skriving i inputfeltet og etter klikk.
+    // Ved blur fra inputfeltet videreformidles resultatet, også når datoen er ugyldig.
 
-    const date = dayjs(e.target.value, 'DD.MM.YYYY', true)
-    if (date.isValid()) {
-      const isBefore = fromDate ? date.isBefore(fromDate) : false
-      const isAfter = toDate ? date.isAfter(toDate) : false
-      onChange(date.toDate())
+    inputProps.onBlur?.(event)
+    if (
+      validering.current?.isInvalid &&
+      harGyldigDatoformat(event.currentTarget.value) &&
+      !getDayjsFromString(event.currentTarget.value)?.isValid()
+    ) {
+      onValidate(validering.current, valgtDato.current, UGYLDIG_DATO)
+    } else if (validering.current?.isBefore || validering.current?.isAfter) {
       onValidate(
-        dateValidation({ isValidDate: true, isBefore, isAfter }),
-        date.toDate()
+        validering.current,
+        getDayjsFromString(event.currentTarget.value)?.toDate()
       )
-    } else {
-      onValidate(dateValidation({ isInvalid: true }))
-      onChange(undefined)
+    } else if (validering.current) {
+      onValidate(validering.current, valgtDato.current)
     }
   }
 
   return (
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
+        {...inputProps}
+        onBlur={handleBlur}
         className={className ?? ''}
-        value={dateInput}
-        ref={datePickerRef}
         label={label}
+        hideLabel={hideLabel}
         error={error}
         size="small"
-        onChange={handleDateInputChange}
         disabled={disabled}
       />
     </DatePicker>

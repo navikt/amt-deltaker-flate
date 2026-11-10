@@ -4,14 +4,15 @@ import {
   DATO_FOER_SLUTTDATO_FEILMELDING,
   DATO_UTENFOR_TILTAKGJENNOMFORING,
   SLUTTDATO_FOER_OPPSTARTSDATO_FEILMELDING,
-  UGYLDIG_DATO_FEILMELDING,
+  UGYLDIG_DATO,
+  UGYLDIG_DATO_FORMAT,
   VARGIHET_VALG_FEILMELDING,
   VarighetValg
 } from './varighet.tsx'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { DeltakerResponse } from '../api/data/deltaker.ts'
-import { dateValidation } from '../components/tiltak/VarighetField.tsx'
+import { dateValidation } from './utils.ts'
 import { useSluttdato } from './use-sluttdato.ts'
 
 const createDeltaker = (
@@ -103,6 +104,110 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.valider()
     })
     expect(result.current.error).toBe('Du må velge en sluttdato')
+  })
+
+  it.each([
+    {
+      validation: { isAfter: true },
+      newDate: new Date(2031, 0, 1),
+      expectedError: DATO_UTENFOR_TILTAKGJENNOMFORING
+    },
+    {
+      validation: { isAfter: true },
+      newDate: new Date(2029, 0, 1),
+      expectedError: VARGIHET_VALG_FEILMELDING
+    },
+    {
+      validation: { isBefore: true },
+      newDate: new Date(2024, 6, 19),
+      expectedError: DATO_FOER_SLUTTDATO_FEILMELDING
+    },
+    {
+      validation: { isInvalid: true },
+      expectedError: UGYLDIG_DATO_FORMAT
+    },
+    {
+      validation: { isInvalid: true },
+      message: UGYLDIG_DATO,
+      expectedError: UGYLDIG_DATO
+    }
+  ])(
+    'beholder $expectedError ved innsending av ugyldig forlengelsesdato',
+    ({ validation, newDate, message, expectedError }) => {
+      const defaultAnnetDato = dayjs(deltakerMedDatoer.sluttdato).toDate()
+      const { result } = renderHook(() =>
+        useSluttdato({
+          deltaker: deltakerMedDatoer,
+          valgtVarighet: VarighetValg.ANNET,
+          defaultAnnetDato,
+          erForleng: true
+        })
+      )
+
+      act(() => {
+        result.current.handleChange(undefined)
+        result.current.validerDato(dateValidation(validation), newDate, message)
+      })
+
+      expect(result.current.sluttdato).toBeUndefined()
+      expect(result.current.annetError).toBe(expectedError)
+
+      let erGyldig = true
+      act(() => {
+        erGyldig = result.current.valider()
+      })
+
+      expect(erGyldig).toBe(false)
+      expect(result.current.annetError).toBe(expectedError)
+
+      act(() => {
+        result.current.handleChange(new Date(2024, 7, 1))
+      })
+      act(() => {
+        erGyldig = result.current.valider()
+      })
+
+      expect(erGyldig).toBe(true)
+      expect(result.current.annetError).toBeNull()
+    }
+  )
+
+  it('gjenoppretter ikke tømt sluttdato når startdato endres', () => {
+    const opprinneligStartdato = dayjs(deltakerMedDatoer.startdato).toDate()
+    const opprinneligSluttdato = dayjs(deltakerMedDatoer.sluttdato).toDate()
+    const { result, rerender } = renderHook<
+      ReturnType<typeof useSluttdato>,
+      { startdato: Date | undefined }
+    >(
+      ({ startdato }) =>
+        useSluttdato({
+          deltaker: deltakerMedDatoer,
+          valgtVarighet: VarighetValg.ANNET,
+          defaultAnnetDato: opprinneligSluttdato,
+          startdato
+        }),
+      { initialProps: { startdato: opprinneligStartdato } }
+    )
+
+    expect(result.current.sluttdato).toEqual(opprinneligSluttdato)
+
+    rerender({ startdato: undefined })
+    act(() => {
+      result.current.handleChange(undefined)
+    })
+    expect(result.current.sluttdato).toBeUndefined()
+
+    rerender({
+      startdato: dayjs(opprinneligStartdato).add(1, 'day').toDate()
+    })
+
+    expect(result.current.sluttdato).toBeUndefined()
+    let erGyldig = true
+    act(() => {
+      erGyldig = result.current.valider()
+    })
+    expect(erGyldig).toBe(false)
+    expect(result.current.annetError).toBe('Du må velge en sluttdato')
   })
 
   it('har error med varighet over max-varighet', () => {
@@ -302,7 +407,28 @@ describe('useSluttdato - deltakerMedDatoer', () => {
       result.current.validerDato(dateValidation({ isInvalid: true }))
     })
 
-    expect(result.current.error).toBe(UGYLDIG_DATO_FEILMELDING)
+    expect(result.current.error).toBe(UGYLDIG_DATO_FORMAT)
+  })
+
+  it('validerDato - videresender presis feilmelding fra datovelgeren', () => {
+    const startdato = dayjs(deltakerMedDatoer.startdato).toDate()
+    const { result } = renderHook(() =>
+      useSluttdato({
+        deltaker: deltakerMedDatoer,
+        valgtVarighet: VarighetValg.ANNET,
+        startdato
+      })
+    )
+
+    act(() => {
+      result.current.validerDato(
+        dateValidation({ isInvalid: true }),
+        undefined,
+        UGYLDIG_DATO
+      )
+    })
+
+    expect(result.current.annetError).toBe(UGYLDIG_DATO)
   })
 
   it('validerDato - dato er før startdato - setter error', () => {
