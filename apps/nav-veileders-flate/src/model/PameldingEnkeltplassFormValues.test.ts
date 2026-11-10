@@ -77,8 +77,7 @@ describe('datovalidering for enkeltplass', () => {
       '01/03/2027',
       '1/3/27',
       '01-03-2027',
-      '1-3-27',
-      '2027-03-01'
+      '1-3-27'
     ])('godtar og normaliserer %s', (value) => {
       expect(schema.parse({ ...gyldigeVerdier, [felt]: value })[felt]).toBe(
         '01.03.2027'
@@ -105,14 +104,17 @@ describe('datovalidering for enkeltplass', () => {
       }
     })
 
-    it('gir formatfeil for ukjent format', () => {
-      const result = parseDato('01_03_2027')
+    it.each(['01_03_2027', '2027-03-01'])(
+      'gir formatfeil for ukjent format %s',
+      (value) => {
+        const result = parseDato(value)
 
-      expect(result.success).toBe(false)
-      if (!result.success) {
-        expect(result.error.issues[0].message).toBe(UGYLDIG_DATO_FORMAT)
+        expect(result.success).toBe(false)
+        if (!result.success) {
+          expect(result.error.issues[0].message).toBe(UGYLDIG_DATO_FORMAT)
+        }
       }
-    })
+    )
 
     it('gir kun påkrevd-feil for tom verdi', () => {
       const result = parseDato('')
