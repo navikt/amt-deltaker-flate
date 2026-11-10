@@ -2,6 +2,7 @@ import { DateValidationT } from '@navikt/ds-react'
 import dayjs from 'dayjs'
 import { EMDASH } from 'deltaker-flate-common'
 
+// TODO fjerne denne?
 export function dateValidation(
   overrides: Partial<DateValidationT> = {}
 ): DateValidationT {

@@ -1,10 +1,9 @@
 import { DatePicker, DateValidationT, useDatepicker } from '@navikt/ds-react'
-import { useRef } from 'react'
+import { type FocusEvent, useRef } from 'react'
 import {
   getDayjsFromString,
   harGyldigDatoformat
 } from '../../../../../packages/deltaker-flate-common/utils/utils'
-import { dateValidation } from '../../utils/utils'
 import { MIN_START_DATO, UGYLDIG_DATO } from '../../utils/varighet'
 
 interface Props {
@@ -38,79 +37,57 @@ export function SimpleDatePicker({
   onChange,
   className
 }: Props) {
-  const datePickerRef = useRef<HTMLInputElement>(null)
+  const valgtDato = useRef<Date | undefined>(defaultDate)
+  const validering = useRef<DateValidationT | null>(null)
 
-  const {
-    datepickerProps,
-    inputProps: { onBlur: datoInputOnBlur, ...datoInputProps }
-  } = useDatepicker({
+  const { datepickerProps, inputProps } = useDatepicker({
     fromDate: fromDate ?? MIN_START_DATO,
-    toDate: toDate,
+    toDate,
     defaultSelected: defaultDate,
-    defaultMonth: defaultMonth,
+    defaultMonth,
     onDateChange: (date) => {
-      // Denne treffer valg i date picker fra klikk og tastatur
+      valgtDato.current = date
       onChange(date)
+    },
+    onValidate: (validation) => {
+      validering.current = validation
+      if (validation.isValidDate) {
+        onValidate(validation, valgtDato.current)
+      }
     }
   })
 
-  const handleBlur = (newDate: string) => {
-    // Kalles kun ved å frlate inputfeltet.
-    // Datovelger med klikk velger gyldig dato så lenge vi setter riktige grenseverdier for fromDate og toDate
-    if (!newDate) {
-      onValidate(dateValidation({ isEmpty: true }))
-      onChange(undefined)
-      return
-    }
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    // Aksel oppdaterer dato (onDateChange) og valideringsresultat (onValidate) under skriving i inputfeltet og etter klikk.
+    // Ved blur fra inputfeltet videreformidles resultatet, også når datoen er ugyldig.
 
-    const harGydligFormat = harGyldigDatoformat(newDate)
-
-    const date = getDayjsFromString(newDate)
-    if (date?.isValid()) {
-      const isBefore = date.isBefore(fromDate ?? MIN_START_DATO, 'date')
-      const isAfter = toDate ? date.isAfter(toDate, 'date') : false
-      onChange(date.toDate())
+    inputProps.onBlur?.(event)
+    if (
+      validering.current?.isInvalid &&
+      harGyldigDatoformat(event.currentTarget.value) &&
+      !getDayjsFromString(event.currentTarget.value)?.isValid()
+    ) {
+      onValidate(validering.current, valgtDato.current, UGYLDIG_DATO)
+    } else if (validering.current?.isBefore || validering.current?.isAfter) {
       onValidate(
-        dateValidation({ isValidDate: true, isBefore, isAfter }),
-        date.toDate()
+        validering.current,
+        getDayjsFromString(event.currentTarget.value)?.toDate()
       )
-    } else if (harGydligFormat) {
-      onValidate(dateValidation({ isInvalid: true }), undefined, UGYLDIG_DATO)
-      onChange(undefined)
-    } else {
-      onValidate(dateValidation({ isInvalid: true }))
-      onChange(undefined)
+    } else if (validering.current) {
+      onValidate(validering.current, valgtDato.current)
     }
   }
 
   return (
-    <DatePicker
-      {...datepickerProps}
-      onDayClick={(dato, modifiers, event) => {
-        // Kalles når en dag blir klikket i date picker
-        datepickerProps.onDayClick?.(dato, modifiers, event)
-
-        // Sjekk om datoen som ble klikket allerede var valgt (toggle)
-        const varDatoValgt = modifiers.selected
-
-        onValidate(
-          dateValidation({ isEmpty: varDatoValgt, isValidDate: !varDatoValgt }),
-          varDatoValgt ? undefined : dato
-        )
-      }}
-    >
+    <DatePicker {...datepickerProps}>
       <DatePicker.Input
+        {...inputProps}
+        onBlur={handleBlur}
         className={className ?? ''}
-        ref={datePickerRef}
         label={label}
         hideLabel={hideLabel}
         error={error}
         size="small"
-        {...datoInputProps}
-        onBlur={(e) => {
-          datoInputOnBlur?.(e)
-          handleBlur(e.target.value)
-        }}
         disabled={disabled}
       />
     </DatePicker>

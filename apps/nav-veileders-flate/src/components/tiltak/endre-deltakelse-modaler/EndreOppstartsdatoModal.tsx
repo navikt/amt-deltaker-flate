@@ -130,7 +130,9 @@ export const EndreOppstartsdatoModal = ({
     newDate?: Date,
     errorMessage?: string
   ) => {
-    if (newDate && dayjs(newDate).isBefore(MIN_START_DATO, 'date')) {
+    if (dateValidation.isEmpty) {
+      setErrorStartDato('Du må velge startdato')
+    } else if (newDate && dayjs(newDate).isBefore(MIN_START_DATO, 'date')) {
       setErrorStartDato(START_DATO_FOER_2000_FEILMELDING)
     } else if (erEnkeltplass && dateValidation.isAfter) {
       setErrorStartDato(START_DATO_ETTER_5_AAR_FEILMELDING)
@@ -246,6 +248,7 @@ export const EndreOppstartsdatoModal = ({
         onChange={(date) => setStartdato(date)}
         disabled={!deltaker.erUnderOppfolging}
       />
+
       {skalVelgeVarighet && (
         <>
           <VarighetField
@@ -318,7 +321,6 @@ export const EndreOppstartsdatoModal = ({
           disabled={!deltaker.erUnderOppfolging}
         />
       )}
-
       {erEnkeltPlass(deltaker) && (
         <EndrePrisValg
           value={endrePrisValg.endrePrisValg}
