@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { configDefaults, defineConfig } from 'vitest/config'
 
 // https://vitejs.dev/config/
@@ -33,6 +34,6 @@ export default defineConfig(async ({ mode }: { mode: string }) => {
         : undefined
     },
     base: '/deltakeroversikt/',
-    plugins: [react()]
+    plugins: [react(), tailwindcss()]
   }
 })

@@ -1,5 +1,5 @@
 import styles from './EndringTypeIkon.module.scss'
-import {EndringType} from './types'
+import { EndringType } from './types'
 import {
   CaretRightCircleFillIcon,
   ChevronRightCircleFillIcon,
@@ -10,12 +10,20 @@ import {
   PieChartFillIcon,
   PlusCircleFillIcon
 } from '@navikt/aksel-icons'
-import {EndringType as HistorikkEndringType, TiltakskoordinatorEndringsType} from '../../../../api/data/historikk'
-import {ForslagEndringType} from '../../../../api/data/forslag'
-import {UlestEndringType} from '../../../../api/data/ulestEndring'
+import {
+  EndringType as HistorikkEndringType,
+  ForslagEndringType,
+  TiltakskoordinatorEndringsType
+} from 'deltaker-flate-common'
+import { UlestEndringType } from '../../../../api/data/ulestEndring'
 
 interface EndringTypeIkonProps {
-  type: EndringType | HistorikkEndringType | ForslagEndringType | TiltakskoordinatorEndringsType | UlestEndringType
+  type:
+    | EndringType
+    | HistorikkEndringType
+    | ForslagEndringType
+    | TiltakskoordinatorEndringsType
+    | UlestEndringType
   size?: 'medium' | 'large' | 'small'
 }
 
@@ -30,7 +38,6 @@ const sizeName = (size?: 'small' | 'medium' | 'large') => {
 }
 
 export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
-
   switch (type) {
     case HistorikkEndringType.EndreStartdato:
     case ForslagEndringType.Startdato:
@@ -71,8 +78,8 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
           color="var(--ax-text-neutral-decoration)"
         />
       )
-		case UlestEndringType.Avslag:
-		case TiltakskoordinatorEndringsType.Avslag:
+    case UlestEndringType.Avslag:
+    case TiltakskoordinatorEndringsType.Avslag:
     case HistorikkEndringType.IkkeAktuell:
     case ForslagEndringType.IkkeAktuell:
     case EndringType.DELTAKER_IKKE_AKTUELL:
@@ -100,9 +107,7 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
     case HistorikkEndringType.EndreInnhold:
     case TiltakskoordinatorEndringsType.DelMedArrangor:
     case TiltakskoordinatorEndringsType.SettPaaVenteliste:
-      return (
-        < DefaultIcon size={size} />
-      )
+      return <DefaultIcon size={size} />
     case HistorikkEndringType.EndreDeltakelsesmengde:
     case ForslagEndringType.Deltakelsesmengde:
     case EndringType.ENDRE_DELTAKELSE_PROSENT:
@@ -124,7 +129,6 @@ export const EndringTypeIkon = ({ type, size }: EndringTypeIkonProps) => {
     default:
       return <DefaultIcon size={size} />
   }
-
 }
 
 interface DefaultIconProps {

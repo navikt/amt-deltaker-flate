@@ -25,7 +25,7 @@ import { useTilbakelenkeContext } from '../../../store/TilbakelenkeContextProvid
 import { MINE_DELTAKERLISTER_PAGE_ROUTE } from '../../../navigation'
 import { useTabTitle } from '../../../hooks/use-tab-title'
 import { useKoordinatorsDeltakerlisterContext } from '../../../store/KoordinatorsDeltakerlisterContextProvider'
-import { Oppstartstype } from '../../../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 export const AdministrerDeltakerlisterPage = () => {
   const { setTilbakeTilUrl } = useTilbakelenkeContext()

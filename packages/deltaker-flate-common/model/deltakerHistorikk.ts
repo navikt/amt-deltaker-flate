@@ -69,7 +69,7 @@ export const endreDeltakelsesmengdeSchema = z.object({
 
 export const endreStartdatoSchema = z.object({
   type: z.literal(EndringType.EndreStartdato),
-  startdato: dateSchema,
+  startdato: dateSchema, // TODO kanskje gjøre nullable?
   sluttdato: nullableDateSchema,
   begrunnelse: z.string().nullable(),
   pavirkerPris: z.boolean()
@@ -198,12 +198,12 @@ export const soktInnSchema = z.object({
   innsokt: nullableDateSchema,
   innsoktAv: z.string(),
   innsoktAvEnhet: z.string(),
-  startdato: nullableDateSchema,
-  sluttdato: nullableDateSchema,
+  startdato: nullableDateSchema, // TODO nullish
+  sluttdato: nullableDateSchema, // TODO nullish
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
-  dagerPerUkeVedInnsok: z.number().nullable(),
-  prisinformasjonVedInnsok: prisinformasjonSchema.nullable(),
-  opplaringKategorisering: opplaringKategoriseringSchema.nullable(),
+  dagerPerUkeVedInnsok: z.number().nullable(), // TODO nullish
+  prisinformasjonVedInnsok: prisinformasjonSchema.nullable(), // TODO nullish
+  opplaringKategorisering: opplaringKategoriseringSchema.nullable(), // TODO nullish
   utkastDelt: nullableDateSchema,
   utkastGodkjentAvNav: z.boolean()
 })
