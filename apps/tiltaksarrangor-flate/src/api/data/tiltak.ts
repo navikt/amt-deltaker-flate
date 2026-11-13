@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { nullableDateSchema } from '../utils'
-import { Oppstartstype } from './historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 export enum Pameldingstype {
   DIREKTE_VEDTAK = 'DIREKTE_VEDTAK',

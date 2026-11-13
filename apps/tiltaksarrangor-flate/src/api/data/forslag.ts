@@ -1,80 +1,19 @@
 import { z } from 'zod'
+import {
+  ForslagEndringType,
+  ForslagStatusType,
+  HistorikkType,
+  fjernOppstartsdatoForslagSchema,
+  forlengDeltakelseForslagSchema,
+  forslagSchema,
+  ikkeAktuellForslagSchema,
+  sluttdatoForslagSchema,
+  sluttarsakForslagSchema
+} from 'deltaker-flate-common'
 
 import { dateSchema, nullableDateSchema } from '../utils'
 
-export enum HistorikkType {
-  Vedtak = 'Vedtak',
-  // TODO skal renames?
-  InnsokPaaFellesOppstart = 'InnsokPaaFellesOppstart',
-  Endring = 'Endring',
-  Forslag = 'Forslag',
-  EndringFraArrangor = 'EndringFraArrangor',
-  ImportertFraArena = 'ImportertFraArena',
-  VurderingFraArrangor = 'VurderingFraArrangor',
-  EndringFraTiltakskoordinator = 'EndringFraTiltakskoordinator'
-}
-
-export enum ForslagStatusType {
-  VenterPaSvar = 'VenterPaSvar',
-  Avvist = 'Avvist',
-  Godkjent = 'Godkjent',
-
-  Tilbakekalt = 'Tilbakekalt',
-  Erstattet = 'Erstattet'
-}
-
-export enum ForslagEndringType {
-  ForlengDeltakelse = 'ForlengDeltakelse',
-  IkkeAktuell = 'IkkeAktuell',
-  AvsluttDeltakelse = 'AvsluttDeltakelse',
-  Deltakelsesmengde = 'Deltakelsesmengde',
-  Sluttdato = 'Sluttdato',
-  Startdato = 'Startdato',
-  Sluttarsak = 'Sluttarsak',
-  FjernOppstartsdato = 'FjernOppstartsdato',
-  EndreAvslutning = 'EndreAvslutning'
-}
-
-export enum ForslagEndringAarsakType {
-  Syk = 'Syk',
-  FattJobb = 'FattJobb',
-  TrengerAnnenStotte = 'TrengerAnnenStotte',
-  Utdanning = 'Utdanning',
-  IkkeMott = 'IkkeMott',
-  Annet = 'Annet'
-}
-
-const Syk = z.object({ type: z.literal(ForslagEndringAarsakType.Syk) })
-const FattJobb = z.object({
-  type: z.literal(ForslagEndringAarsakType.FattJobb)
-})
-const TrengerAnnenStotte = z.object({
-  type: z.literal(ForslagEndringAarsakType.TrengerAnnenStotte)
-})
-const Utdanning = z.object({
-  type: z.literal(ForslagEndringAarsakType.Utdanning)
-})
-const IkkeMott = z.object({
-  type: z.literal(ForslagEndringAarsakType.IkkeMott)
-})
-const Annet = z.object({
-  type: z.literal(ForslagEndringAarsakType.Annet),
-  beskrivelse: z.string()
-})
-
-const endringAarsakSchema = z.discriminatedUnion('type', [
-  Syk,
-  FattJobb,
-  TrengerAnnenStotte,
-  Utdanning,
-  IkkeMott,
-  Annet
-])
-
-const forlengDeltakelseSchema = z.object({
-  type: z.literal(ForslagEndringType.ForlengDeltakelse),
-  sluttdato: dateSchema
-})
+const endringAarsakSchema = ikkeAktuellForslagSchema.shape.aarsak
 
 const avsluttDeltakelseSchema = z.object({
   type: z.literal(ForslagEndringType.AvsluttDeltakelse),
@@ -92,21 +31,11 @@ export const endreAvslutningForslagSchema = z.object({
   sluttdato: nullableDateSchema
 })
 
-const ikkeAktuellSchema = z.object({
-  type: z.literal(ForslagEndringType.IkkeAktuell),
-  aarsak: endringAarsakSchema
-})
-
 const deltakelsesmengdeSchema = z.object({
   type: z.literal(ForslagEndringType.Deltakelsesmengde),
   deltakelsesprosent: z.number(),
   dagerPerUke: z.number().nullable(),
   gyldigFra: dateSchema.nullable()
-})
-
-const sluttdatoSchema = z.object({
-  type: z.literal(ForslagEndringType.Sluttdato),
-  sluttdato: dateSchema
 })
 
 const startdatoSchema = z.object({
@@ -115,57 +44,19 @@ const startdatoSchema = z.object({
   sluttdato: dateSchema.nullable()
 })
 
-const sluttarsakSchema = z.object({
-  type: z.literal(ForslagEndringType.Sluttarsak),
-  aarsak: endringAarsakSchema
-})
-
-const fjernOppstartsdatoSchema = z.object({
-  type: z.literal(ForslagEndringType.FjernOppstartsdato)
-})
-
 const endringSchema = z.discriminatedUnion('type', [
-  forlengDeltakelseSchema,
-  ikkeAktuellSchema,
+  forlengDeltakelseForslagSchema,
+  ikkeAktuellForslagSchema,
   avsluttDeltakelseSchema,
   endreAvslutningForslagSchema,
   deltakelsesmengdeSchema,
-  sluttdatoSchema,
+  sluttdatoForslagSchema,
   startdatoSchema,
-  sluttarsakSchema,
-  fjernOppstartsdatoSchema
+  sluttarsakForslagSchema,
+  fjernOppstartsdatoForslagSchema
 ])
 
-const venterPaSvarSchema = z.object({
-  type: z.literal(ForslagStatusType.VenterPaSvar)
-})
-const godkjentSchema = z.object({
-  type: z.literal(ForslagStatusType.Godkjent),
-  godkjent: dateSchema
-})
-const avvistSchema = z.object({
-  type: z.literal(ForslagStatusType.Avvist),
-  avvistAv: z.string(),
-  avvistAvEnhet: z.string(),
-  avvist: dateSchema,
-  begrunnelseFraNav: z.string()
-})
-const tilbakekaltSchema = z.object({
-  type: z.literal(ForslagStatusType.Tilbakekalt),
-  tilbakekalt: dateSchema
-})
-const erstattetSchema = z.object({
-  type: z.literal(ForslagStatusType.Erstattet),
-  erstattet: dateSchema
-})
-
-const statusSchema = z.discriminatedUnion('type', [
-  venterPaSvarSchema,
-  godkjentSchema,
-  avvistSchema,
-  tilbakekaltSchema,
-  erstattetSchema
-])
+const statusSchema = forslagSchema.shape.status
 
 export const aktivtForslagSchema = z.object({
   id: z.uuid(),

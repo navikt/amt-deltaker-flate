@@ -1,3 +1,4 @@
+import './tailwind.css'
 import './index.scss'
 import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'

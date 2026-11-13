@@ -1,5 +1,5 @@
 import { Detail, LinkCard } from '@navikt/ds-react'
-import { Oppstartstype } from '../../../../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 import globalStyles from '../../../../globals.module.scss'
 import { deltakerlisteDetaljerPageUrl } from '../../../../navigation'
 import { formatDate } from '../../../../utils/date-utils'

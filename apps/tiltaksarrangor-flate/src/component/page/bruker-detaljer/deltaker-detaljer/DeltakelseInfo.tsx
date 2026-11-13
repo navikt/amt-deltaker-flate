@@ -23,8 +23,9 @@ import { ElementPanel } from './ElementPanel'
 import { EndreDeltakelseKnapp } from './EndreDeltakelseKnapp'
 import { FjernDeltakerModal } from './fjern-deltaker-modal/FjernDeltakerModal'
 import { UbehandledeEndringer } from './forslag/UbehandledeEndringer'
-import { SeEndringer } from './historikk/SeEndringer'
 import { getDeltakerStatusAarsakText } from './tekst-mappers'
+import { fetchDeltakerHistorikk } from '../../../../api/historikk-api'
+import { SeEndringer } from 'deltaker-flate-common'
 
 interface DeltakelseInfoProps {
   deltaker: Deltaker
@@ -153,9 +154,13 @@ export const DeltakelseInfo = ({ deltaker }: DeltakelseInfoProps) => {
         />
 
         <SeEndringer
-          className={styles.seEndringerKnapp}
+          className="mt-8"
           tiltakskode={deltaker.deltakerliste.tiltakskode}
+          erEnkeltplass={false}
           deltakerId={deltaker.id}
+          fetchHistorikk={(deltakerId) =>
+            fetchDeltakerHistorikk(deltakerId).then((response) => response.data)
+          }
         />
 
         {kanFjerneDeltaker && isNotStarted(skjulDeltakerPromise) && (

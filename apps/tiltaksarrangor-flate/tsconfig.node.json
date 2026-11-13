@@ -6,7 +6,6 @@
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "noEmit": false,
     "types": ["node"]
   },
   "include": ["vite.config.ts", "playwright.config.ts"]

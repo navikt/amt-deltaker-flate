@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { deltakerEndringSchema } from './historikk'
+import { deltakerEndringSchema } from 'deltaker-flate-common'
 import { historikkForslagSchema } from './forslag'
 import { dateSchema } from '../utils'
 import { deltakerStatusAarsakSchema } from './deltakerStatusArsak'
@@ -12,7 +12,7 @@ export enum UlestEndringType {
   NyDeltaker = 'NyDeltaker',
   TildeltPlass = 'TildeltPlass',
   DeltMedArrangor = 'DeltMedArrangor',
-	Avslag = 'Avslag'
+  Avslag = 'Avslag'
 }
 
 const ulestEndrinDeltakelsesEndringSchema = z.object({
@@ -26,20 +26,20 @@ const ulestEndringForslagSchema = z.object({
 })
 
 const ulestEndringNavBrukerSchema = z.object({
-    type: z.literal(UlestEndringType.NavBrukerEndring),
-    telefonnummer: z.string().nullable(),
-    epost: z.string().nullable(),
-    oppdatert: dateSchema
+  type: z.literal(UlestEndringType.NavBrukerEndring),
+  telefonnummer: z.string().nullable(),
+  epost: z.string().nullable(),
+  oppdatert: dateSchema
 })
 
 const ulestEndringNavSchema = z.object({
-    type: z.literal(UlestEndringType.NavEndring),
-    nyNavVeileder: z.boolean().nullable(),
-    navVeilederNavn: z.string().nullable(),
-    navEnhet: z.string().nullable(),
-    navVeilederTelefonnummer: z.string().nullable(),
-    navVeilederEpost: z.string().nullable(),
-    oppdatert: dateSchema
+  type: z.literal(UlestEndringType.NavEndring),
+  nyNavVeileder: z.boolean().nullable(),
+  navVeilederNavn: z.string().nullable(),
+  navEnhet: z.string().nullable(),
+  navVeilederTelefonnummer: z.string().nullable(),
+  navVeilederEpost: z.string().nullable(),
+  oppdatert: dateSchema
 })
 
 const nyDeltakerSchema = z.object({
@@ -65,12 +65,12 @@ const tildeltPlassSchema = z.object({
 })
 
 const avslagSchema = z.object({
-	type: z.literal(UlestEndringType.Avslag),
-	endret: dateSchema,
-	endretAv: z.string(),
-	endretAvEnhet: z.string(),
-	aarsak: deltakerStatusAarsakSchema,
-	begrunnelse: z.string().nullable(),
+  type: z.literal(UlestEndringType.Avslag),
+  endret: dateSchema,
+  endretAv: z.string(),
+  endretAvEnhet: z.string(),
+  aarsak: deltakerStatusAarsakSchema,
+  begrunnelse: z.string().nullable()
 })
 
 export const ulestEndringSchema = z.object({
@@ -84,15 +84,20 @@ export const ulestEndringSchema = z.object({
     nyDeltakerSchema,
     deltMedArrangorSchema,
     tildeltPlassSchema,
-		avslagSchema
+    avslagSchema
   ])
 })
 
 export type UlestEndring = z.infer<typeof ulestEndringSchema>
-export type UlestEndringOppdateringNavBruker = z.infer<typeof ulestEndringNavBrukerSchema>
+export type UlestEndringOppdateringNavBruker = z.infer<
+  typeof ulestEndringNavBrukerSchema
+>
 export type UlestEndringOppdateringNav = z.infer<typeof ulestEndringNavSchema>
 export type UlestEndringOppdateringNyDeltaker = z.infer<typeof nyDeltakerSchema>
-export type UlestEndringOppdateringDeltMedArrangor = z.infer<typeof deltMedArrangorSchema>
-export type UlestEndringOppdateringTildeltPlass = z.infer<typeof tildeltPlassSchema>
+export type UlestEndringOppdateringDeltMedArrangor = z.infer<
+  typeof deltMedArrangorSchema
+>
+export type UlestEndringOppdateringTildeltPlass = z.infer<
+  typeof tildeltPlassSchema
+>
 export type UlestEndringOppdateringAvslag = z.infer<typeof avslagSchema>
-

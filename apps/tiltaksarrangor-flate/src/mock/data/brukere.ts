@@ -12,16 +12,31 @@ import {
   Vurderingstype
 } from '../../api/data/deltaker'
 import { DeltakerStatusAarsakType } from '../../api/data/deltakerStatusArsak'
-import { AktivtForslag, ForslagEndringType, ForslagStatusType, HistorikkForslag, HistorikkType } from '../../api/data/forslag'
-import { DeltakerEndring } from '../../api/data/historikk'
+import { AktivtForslag, HistorikkForslag } from '../../api/data/forslag'
+import {
+  createHistorikk,
+  DeltakerEndring,
+  ForslagEndringType,
+  ForslagStatusType,
+  HistorikkType,
+  lagHistorikkFellesOppstart
+} from 'deltaker-flate-common'
 import { Deltakelsesinnhold } from '../../api/data/innhold'
 import { Gjennomforing, Tiltakskode } from '../../api/data/tiltak'
 import { UlestEndring, UlestEndringType } from '../../api/data/ulestEndring'
 import { VeilederMedType } from '../../api/data/veileder'
-import { ulestEndringErNyeDeltaker, ulestEndringErOppdateringFraNav, ulestEndringErSvarFraNav } from '../../component/page/bruker-detaljer/deltaker-detaljer/forslag/forslagUtils'
+import {
+  ulestEndringErNyeDeltaker,
+  ulestEndringErOppdateringFraNav,
+  ulestEndringErSvarFraNav
+} from '../../component/page/bruker-detaljer/deltaker-detaljer/forslag/forslagUtils'
 import { erOpplaringstiltak } from '../../utils/deltakerliste-utils'
-import { randBetween, randomBoolean, randomFnr, randomUuid } from '../utils/faker'
-import { mockDeltakerHistorikk } from './historikk'
+import {
+  randBetween,
+  randomBoolean,
+  randomFnr,
+  randomUuid
+} from '../utils/faker'
 import { deltakerId } from './id'
 import { lagMockAktiveForslag } from './mock-forslag'
 import { deltakerlisteErKurs, MockGjennomforing } from './tiltak'
@@ -76,11 +91,11 @@ export interface MockTiltakDeltaker {
   adressebeskyttet: boolean
   erVeilederForDeltaker: boolean
   deltakelsesmengder: Deltakelsesmengder | null
-  aktivEndring?: AktivEndringForDeltaker | null,
-  svarFraNav: boolean,
-  oppdateringFraNav: boolean,
-  nyDeltaker: boolean,
-	erUnderOppfolging: boolean,
+  aktivEndring?: AktivEndringForDeltaker | null
+  svarFraNav: boolean
+  oppdateringFraNav: boolean
+  nyDeltaker: boolean
+  erUnderOppfolging: boolean
 }
 
 const navEnheter: MockNavEnhet[] = [
@@ -109,7 +124,9 @@ export const lagMockTiltakDeltagereForGjennomforing = (
   const deltakere: MockTiltakDeltaker[] = []
 
   for (let i = 0; i < antallDeltakere; i++) {
-    deltakere.push(lagMockTiltakDeltagerForGjennomforing(gjennomforing, harFellesOppstart))
+    deltakere.push(
+      lagMockTiltakDeltagerForGjennomforing(gjennomforing, harFellesOppstart)
+    )
   }
 
   return deltakere
@@ -139,7 +156,11 @@ const getStatus = (
 ): TiltakDeltakerStatus => {
   const i = randBetween(0, 10)
 
-  if (erKurs && (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING || tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING)) {
+  if (
+    erKurs &&
+    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
+      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING)
+  ) {
     if (i < 1) return TiltakDeltakerStatus.SOKT_INN
     if (i < 2) return TiltakDeltakerStatus.VURDERES
     if (i < 4) return TiltakDeltakerStatus.DELTAR
@@ -189,9 +210,13 @@ const finnSluttdato = (
     deltakerstatus === TiltakDeltakerStatus.HAR_SLUTTET ||
     deltakerstatus === TiltakDeltakerStatus.FULLFORT
 
-  if (gjennomforing.tiltak.tiltakskode === Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
-    || gjennomforing.tiltak.tiltakskode === Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
-  ) return null
+  if (
+    gjennomforing.tiltak.tiltakskode ===
+      Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET ||
+    gjennomforing.tiltak.tiltakskode ===
+      Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
+  )
+    return null
 
   if (erKurs && erAvbrutt) {
     return startDato && gjennomforing.sluttDato
@@ -204,9 +229,9 @@ const finnSluttdato = (
       ? deltakerstatus === TiltakDeltakerStatus.HAR_SLUTTET
         ? faker.date.between({ from: startDato, to: new Date() })
         : faker.date.between({
-          from: startDato,
-          to: gjennomforing.sluttDato ?? new Date()
-        })
+            from: startDato,
+            to: gjennomforing.sluttDato ?? new Date()
+          })
       : null
   }
 }
@@ -229,7 +254,7 @@ const lagVurdering = (erHistorisk: boolean): MockVurdering => {
     gyldigFra,
     gyldigTil: erHistorisk
       ? historiskGyldigTilDato
-      : faker.helpers.arrayElement([ faker.date.future(), null ])
+      : faker.helpers.arrayElement([faker.date.future(), null])
   }
 }
 
@@ -237,7 +262,8 @@ const lagMockTiltakDeltagerForGjennomforing = (
   gjennomforing: Gjennomforing,
   harFellesOppstart?: boolean
 ): MockTiltakDeltaker => {
-  const erKurs = harFellesOppstart || deltakerlisteErKurs(gjennomforing.tiltak.tiltakskode)
+  const erKurs =
+    harFellesOppstart || deltakerlisteErKurs(gjennomforing.tiltak.tiltakskode)
   const status = getStatus(erKurs, gjennomforing.tiltak.tiltakskode)
   const gender = faker.person.sexType()
   const brukerFornavn = faker.person.firstName(gender)
@@ -249,32 +275,36 @@ const lagMockTiltakDeltagerForGjennomforing = (
   const veilederNavn = faker.person.firstName() + ' ' + faker.person.lastName()
 
   const skalHaDatoer = () => {
-		if (status === TiltakDeltakerStatus.SOKT_INN || status === TiltakDeltakerStatus.VURDERES) return false
+    if (
+      status === TiltakDeltakerStatus.SOKT_INN ||
+      status === TiltakDeltakerStatus.VURDERES
+    )
+      return false
 
-		// 80% av deltakere med status VENTER_PA_OPPSTART, IKKE_AKTUELL skal ikke ha datoer
-		return [
-			TiltakDeltakerStatus.VENTER_PA_OPPSTART,
-			TiltakDeltakerStatus.IKKE_AKTUELL
-		].includes(status)
-			? randomBoolean(20)
-			: true
-	}
+    // 80% av deltakere med status VENTER_PA_OPPSTART, IKKE_AKTUELL skal ikke ha datoer
+    return [
+      TiltakDeltakerStatus.VENTER_PA_OPPSTART,
+      TiltakDeltakerStatus.IKKE_AKTUELL
+    ].includes(status)
+      ? randomBoolean(20)
+      : true
+  }
 
   const startDato = finnStartdato(erKurs, gjennomforing, skalHaDatoer(), status)
   const sluttDato = finnSluttdato(erKurs, gjennomforing, startDato, status)
 
   const fjernesDato =
     status === TiltakDeltakerStatus.IKKE_AKTUELL ||
-      status === TiltakDeltakerStatus.HAR_SLUTTET
+    status === TiltakDeltakerStatus.HAR_SLUTTET
       ? faker.date.future()
       : null
 
   const veileder = randomBoolean(90)
     ? {
-      epost: lagMailFraNavn(veilederNavn, 'nav.no'),
-      navn: veilederNavn,
-      telefon: lagTelefonnummer()
-    }
+        epost: lagMailFraNavn(veilederNavn, 'nav.no'),
+        navn: veilederNavn,
+        telefon: lagTelefonnummer()
+      }
     : null
 
   const gjeldendeVurderingFraArrangor = lagVurdering(false)
@@ -287,37 +317,46 @@ const lagMockTiltakDeltagerForGjennomforing = (
   let aktivEndring: AktivEndringForDeltaker | null = null
 
   if (aktiveForslag.length > 0) {
-    const forslag = aktiveForslag[ 0 ]
+    const forslag = aktiveForslag[0]
     aktivEndring = {
       sendt: faker.date.recent(),
       endingsType: mapForlsagTypeTilAktivEndring(forslag.endring.type)
     }
   }
 
-  const historikk = mockDeltakerHistorikk()
+  const historikk = erKurs ? lagHistorikkFellesOppstart() : createHistorikk()
   const ulestHistorikk: UlestEndring[] = randomBoolean(30)
-    ? historikk.filter(h => h.type === HistorikkType.Endring ||
-      (h.type === HistorikkType.Forslag && h.status.type === ForslagStatusType.Avvist))
-      .map(h => {
-        return h.type === HistorikkType.Endring ? {
-          id: randomUuid(),
-          deltakerId: id,
-          oppdatering: {
-            type: UlestEndringType.DeltakelsesEndring,
-            endring: h as DeltakerEndring
-          },
-        } : {
-          id: randomUuid(),
-          deltakerId: id,
-          oppdatering: {
-            type: UlestEndringType.AvvistForslag,
-            forslag: h as HistorikkForslag
-          },
-        }
-      })
+    ? historikk
+        .filter(
+          (h) =>
+            h.type === HistorikkType.Endring ||
+            (h.type === HistorikkType.Forslag &&
+              h.status.type === ForslagStatusType.Avvist)
+        )
+        .map((h) => {
+          return h.type === HistorikkType.Endring
+            ? {
+                id: randomUuid(),
+                deltakerId: id,
+                oppdatering: {
+                  type: UlestEndringType.DeltakelsesEndring,
+                  endring: h as DeltakerEndring
+                }
+              }
+            : {
+                id: randomUuid(),
+                deltakerId: id,
+                oppdatering: {
+                  type: UlestEndringType.AvvistForslag,
+                  forslag: h as HistorikkForslag
+                }
+              }
+        })
     : []
 
-  const ulesteEndringer: UlestEndring[] = ulestHistorikk[ 0 ] ? [ ulestHistorikk[ 0 ] ] : []
+  const ulesteEndringer: UlestEndring[] = ulestHistorikk[0]
+    ? [ulestHistorikk[0]]
+    : []
   const telefonnummer = lagTelefonnummer()
 
   const randomNumber = randBetween(0, 12)
@@ -361,28 +400,35 @@ const lagMockTiltakDeltagerForGjennomforing = (
       }
     })
   } else if (randomNumber < 8) {
-    ulesteEndringer.push(erKurs ? {
-      id: randomUuid(),
-      deltakerId: id,
-      oppdatering: {
-        type: UlestEndringType.TildeltPlass,
-        tildeltPlass: faker.date.recent(),
-        tildeltPlassAvEnhet: null,
-        tildeltPlassAvNavn: null,
-        erNyDeltaker: true
-      }
-    } : {
-      id: randomUuid(),
-      deltakerId: id,
-      oppdatering: {
-        type: UlestEndringType.NyDeltaker,
-        opprettet: faker.date.recent(), //  "2025-02-24"
-        opprettetAvNavn: null,
-        opprettetAvEnhet: null
-      }
-    },
+    ulesteEndringer.push(
+      erKurs
+        ? {
+            id: randomUuid(),
+            deltakerId: id,
+            oppdatering: {
+              type: UlestEndringType.TildeltPlass,
+              tildeltPlass: faker.date.recent(),
+              tildeltPlassAvEnhet: null,
+              tildeltPlassAvNavn: null,
+              erNyDeltaker: true
+            }
+          }
+        : {
+            id: randomUuid(),
+            deltakerId: id,
+            oppdatering: {
+              type: UlestEndringType.NyDeltaker,
+              opprettet: faker.date.recent(), //  "2025-02-24"
+              opprettetAvNavn: null,
+              opprettetAvEnhet: null
+            }
+          }
     )
-  } else if (randomNumber < 11 && erKurs && status === TiltakDeltakerStatus.VENTER_PA_OPPSTART) {
+  } else if (
+    randomNumber < 11 &&
+    erKurs &&
+    status === TiltakDeltakerStatus.VENTER_PA_OPPSTART
+  ) {
     ulesteEndringer.push({
       id: randomUuid(),
       deltakerId: id,
@@ -393,9 +439,12 @@ const lagMockTiltakDeltagerForGjennomforing = (
         tildeltPlassAvNavn: null,
         erNyDeltaker: false
       }
-    },
-    )
-  } else if (randomNumber < 12 && erKurs && status === TiltakDeltakerStatus.SOKT_INN) {
+    })
+  } else if (
+    randomNumber < 12 &&
+    erKurs &&
+    status === TiltakDeltakerStatus.SOKT_INN
+  ) {
     ulesteEndringer.push({
       id: randomUuid(),
       deltakerId: id,
@@ -408,24 +457,27 @@ const lagMockTiltakDeltagerForGjennomforing = (
       }
     })
   }
-	if (erKurs) {
-		ulesteEndringer.push({
-			id: randomUuid(),
-			deltakerId: id,
-			oppdatering: {
-				type: UlestEndringType.Avslag,
-				endretAvEnhet: navEnheter[0].navn,
-				endretAv: veilederNavn,
-				endret: faker.date.recent(),
-				aarsak: {
-					type: DeltakerStatusAarsakType.KURS_FULLT,
-					beskrivelse: null,
-				},
-				begrunnelse: 'Fordi at det...',
-			}
-		})
-	}
-	const erUnderOppfolging = status === TiltakDeltakerStatus.HAR_SLUTTET && randomNumber > 11 ? false : true
+  if (erKurs) {
+    ulesteEndringer.push({
+      id: randomUuid(),
+      deltakerId: id,
+      oppdatering: {
+        type: UlestEndringType.Avslag,
+        endretAvEnhet: navEnheter[0].navn,
+        endretAv: veilederNavn,
+        endret: faker.date.recent(),
+        aarsak: {
+          type: DeltakerStatusAarsakType.KURS_FULLT,
+          beskrivelse: null
+        },
+        begrunnelse: 'Fordi at det...'
+      }
+    })
+  }
+  const erUnderOppfolging =
+    status === TiltakDeltakerStatus.HAR_SLUTTET && randomNumber > 11
+      ? false
+      : true
 
   return {
     id: id,
@@ -444,12 +496,12 @@ const lagMockTiltakDeltagerForGjennomforing = (
       endretDato: faker.date.recent(),
       aarsak:
         status === TiltakDeltakerStatus.IKKE_AKTUELL ||
-          status === TiltakDeltakerStatus.AVBRUTT ||
-          status === TiltakDeltakerStatus.HAR_SLUTTET
+        status === TiltakDeltakerStatus.AVBRUTT ||
+        status === TiltakDeltakerStatus.HAR_SLUTTET
           ? {
-            type: DeltakerStatusAarsakType.ANNET,
-            beskrivelse: 'TEST'
-          }
+              type: DeltakerStatusAarsakType.ANNET,
+              beskrivelse: 'TEST'
+            }
           : null
     },
     navEnhet:
@@ -469,25 +521,27 @@ const lagMockTiltakDeltagerForGjennomforing = (
     deltakelsesmengder: {
       nesteDeltakelsesmengde: deltakelseProsent
         ? {
-          dagerPerUke: null,
-          deltakelsesprosent: 42,
-          gyldigFra: dayjs().add(7, 'days').toDate()
-        }
+            dagerPerUke: null,
+            deltakelsesprosent: 42,
+            gyldigFra: dayjs().add(7, 'days').toDate()
+          }
         : null,
       sisteDeltakelsesmengde: deltakelseProsent
         ? {
-          dagerPerUke: null,
-          deltakelsesprosent: 42,
-          gyldigFra: dayjs().add(7, 'days').toDate()
-        }
+            dagerPerUke: null,
+            deltakelsesprosent: 42,
+            gyldigFra: dayjs().add(7, 'days').toDate()
+          }
         : null
     },
     aktivEndring,
     ulesteEndringer,
     svarFraNav: ulesteEndringer.find(ulestEndringErSvarFraNav) ? true : false,
-    oppdateringFraNav: ulesteEndringer.find(ulestEndringErOppdateringFraNav) ? true : false,
+    oppdateringFraNav: ulesteEndringer.find(ulestEndringErOppdateringFraNav)
+      ? true
+      : false,
     nyDeltaker: ulesteEndringer.find(ulestEndringErNyeDeltaker) ? true : false,
-		erUnderOppfolging: erUnderOppfolging
+    erUnderOppfolging: erUnderOppfolging
   }
 }
 
@@ -554,11 +608,13 @@ function mockInnhold(tiltakskode: Tiltakskode): Deltakelsesinnhold | null {
   if (erOpplaringstiltak(tiltakskode)) {
     return {
       ledetekst: null,
-      innhold: [ {
-        tekst: 'Annet',
-        innholdskode: 'annet',
-        beskrivelse: 'Ønsker å kartlegge \nTeste ulike verktøy'
-      } ]
+      innhold: [
+        {
+          tekst: 'Annet',
+          innholdskode: 'annet',
+          beskrivelse: 'Ønsker å kartlegge \nTeste ulike verktøy'
+        }
+      ]
     }
   } else if (tiltakskode !== Tiltakskode.ARBEIDSFORBEREDENDE_TRENING) {
     return null
@@ -607,4 +663,3 @@ const mapForlsagTypeTilAktivEndring = (endringsType: ForslagEndringType) => {
       return AktivEndring.EndreAvslutning
   }
 }
-

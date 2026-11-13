@@ -1,9 +1,12 @@
 import { Box, Heading } from '@navikt/ds-react'
 import { AktivtForslag } from '../../../../../api/data/forslag'
 import { Tiltakskode } from '../../../../../api/data/tiltak'
-import { UlestEndring, UlestEndringType } from '../../../../../api/data/ulestEndring'
+import {
+  UlestEndring,
+  UlestEndringType
+} from '../../../../../api/data/ulestEndring'
 import { dateStrWithMonthName } from '../../../../../utils/date-utils'
-import { getEndringsTittel } from '../../../../../utils/text-mappers'
+import { getEndringsTittel } from 'deltaker-flate-common'
 import { EndringPanel } from './EndringPanel'
 import { FjernEndring } from './FjernEndring'
 import { FjernForslag } from './FjernForslag'
@@ -43,7 +46,9 @@ export const UbehandledeEndringer = ({
   }
 
   const ulesteSvarFraNav = ulesteEndringer.filter(ulestEndringErSvarFraNav)
-  const ulesteOppdateringerFraNav = ulesteEndringer.filter((it) => !ulestEndringErSvarFraNav(it))
+  const ulesteOppdateringerFraNav = ulesteEndringer.filter(
+    (it) => !ulestEndringErSvarFraNav(it)
+  )
 
   return (
     <Box
@@ -52,20 +57,34 @@ export const UbehandledeEndringer = ({
       borderRadius="4"
       className={styles.ulesteEndringerContainer}
     >
-      {(forslag.length > 0 || ulesteSvarFraNav.length > 0) && (<>
-        <Heading level="3" size="small" className={styles.aktiveForslagTitle}>
-          Forslag sendt til Nav:
-        </Heading>
-        {getSendteForslag(forslag, deltakerId, onTilbakekalt)}
-        {getEndringsDetaljer(ulesteSvarFraNav, deltakerId, tiltakskode, onMarkertSomLest)}
-      </>)}
+      {(forslag.length > 0 || ulesteSvarFraNav.length > 0) && (
+        <>
+          <Heading level="3" size="small" className={styles.aktiveForslagTitle}>
+            Forslag sendt til Nav:
+          </Heading>
+          {getSendteForslag(forslag, deltakerId, onTilbakekalt)}
+          {getEndringsDetaljer(
+            ulesteSvarFraNav,
+            deltakerId,
+            tiltakskode,
+            onMarkertSomLest
+          )}
+        </>
+      )}
 
-      {ulesteOppdateringerFraNav.length > 0 && (<>
-        <Heading level="3" size="small" className={styles.aktiveForslagTitle}>
-          Oppdatering fra Nav:
-        </Heading>
-        {getEndringsDetaljer(ulesteOppdateringerFraNav, deltakerId, tiltakskode, onMarkertSomLest)}
-      </>)}
+      {ulesteOppdateringerFraNav.length > 0 && (
+        <>
+          <Heading level="3" size="small" className={styles.aktiveForslagTitle}>
+            Oppdatering fra Nav:
+          </Heading>
+          {getEndringsDetaljer(
+            ulesteOppdateringerFraNav,
+            deltakerId,
+            tiltakskode,
+            onMarkertSomLest
+          )}
+        </>
+      )}
     </Box>
   )
 }
@@ -73,7 +92,8 @@ export const UbehandledeEndringer = ({
 const getSendteForslag = (
   forslag: AktivtForslag[],
   deltakerId: string,
-  onTilbakekalt: (forslagId: string) => void) => {
+  onTilbakekalt: (forslagId: string) => void
+) => {
   return forslag.map((it) => {
     return (
       <EndringPanel
@@ -82,7 +102,11 @@ const getSendteForslag = (
         endringType={it.endring.type}
         forslagStatusType={it.status.type}
         fjernEndring={
-          <FjernForslag forslagId={it.id} deltakerId={deltakerId} onTilbakekalt={onTilbakekalt} />
+          <FjernForslag
+            forslagId={it.id}
+            deltakerId={deltakerId}
+            onTilbakekalt={onTilbakekalt}
+          />
         }
         nyNavVeileder={false}
       >
@@ -100,7 +124,8 @@ const getEndringsDetaljer = (
   ulesteEndringer: UlestEndring[],
   deltakerId: string,
   tiltakskode: Tiltakskode,
-  onMarkertSomLest: (endringId: string) => void) => {
+  onMarkertSomLest: (endringId: string) => void
+) => {
   return ulesteEndringer.map((it, i) => (
     <EndringPanel
       key={`${it.id}${i}`}
@@ -108,18 +133,27 @@ const getEndringsDetaljer = (
       ulestEndringType={it.oppdatering.type}
       endringType={getEndringsType(it)}
       forslagStatusType={getForslagStatusType(it)}
-      fjernEndring={<FjernEndring endringId={it.id} deltakerId={deltakerId} onMarkertSomLest={onMarkertSomLest} />}
-      nyNavVeileder={it.oppdatering.type === UlestEndringType.NavEndring && !!it.oppdatering.nyNavVeileder}
+      fjernEndring={
+        <FjernEndring
+          endringId={it.id}
+          deltakerId={deltakerId}
+          onMarkertSomLest={onMarkertSomLest}
+        />
+      }
+      nyNavVeileder={
+        it.oppdatering.type === UlestEndringType.NavEndring &&
+        !!it.oppdatering.nyNavVeileder
+      }
     >
-      {it.oppdatering.type === UlestEndringType.DeltakelsesEndring &&
+      {it.oppdatering.type === UlestEndringType.DeltakelsesEndring && (
         <Endringsdetaljer
           deltakerEndring={it.oppdatering.endring}
           tiltakskode={tiltakskode}
         />
-      }
-      {it.oppdatering.type === UlestEndringType.AvvistForslag
-        && <AvvistForslagDetaljer forslag={it.oppdatering.forslag} />
-      }
+      )}
+      {it.oppdatering.type === UlestEndringType.AvvistForslag && (
+        <AvvistForslagDetaljer forslag={it.oppdatering.forslag} />
+      )}
       {it.oppdatering.type === UlestEndringType.NavBrukerEndring && (
         <NavBrukerDetaljer oppdatering={it.oppdatering} />
       )}
@@ -135,43 +169,56 @@ const getEndringsDetaljer = (
       {it.oppdatering.type === UlestEndringType.TildeltPlass && (
         <TildeltPlassDetaljer oppdatering={it.oppdatering} />
       )}
-			{it.oppdatering.type === UlestEndringType.Avslag && (
-				<UlestAvslagDetaljer oppdatering={it.oppdatering} />
-			)}
+      {it.oppdatering.type === UlestEndringType.Avslag && (
+        <UlestAvslagDetaljer oppdatering={it.oppdatering} />
+      )}
     </EndringPanel>
   ))
 }
 
 const getEndringsType = (ulesteEndringer: UlestEndring) => {
-  if (ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring) {
+  if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring
+  ) {
     return ulesteEndringer.oppdatering.endring.endring.type
-  } else if (ulesteEndringer.oppdatering.type === UlestEndringType.AvvistForslag) {
+  } else if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.AvvistForslag
+  ) {
     return ulesteEndringer.oppdatering.forslag.endring.type
   }
   return undefined
-
 }
 
 const getForslagStatusType = (ulesteEndringer: UlestEndring) => {
-  if (ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring) {
+  if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring
+  ) {
     return ulesteEndringer.oppdatering.endring.forslag?.status.type
-  } else if (ulesteEndringer.oppdatering.type === UlestEndringType.AvvistForslag) {
+  } else if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.AvvistForslag
+  ) {
     return ulesteEndringer.oppdatering.forslag.status.type
   }
   return undefined
 }
 
 const getUlestOppdateringTittel = (ulesteEndringer: UlestEndring) => {
-  if (ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring) {
-    return getEndringsTittel(ulesteEndringer.oppdatering.endring.endring)
+  if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring
+  ) {
+    return getEndringsTittel(ulesteEndringer.oppdatering.endring.endring, false)
   } else if (ulesteEndringer.oppdatering.type === UlestEndringType.NyDeltaker) {
     return `Påmelding ${dateStrWithMonthName(ulesteEndringer.oppdatering.opprettet)}`
-  } else if (ulesteEndringer.oppdatering.type === UlestEndringType.DeltMedArrangor) {
+  } else if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.DeltMedArrangor
+  ) {
     return 'Informasjon sendt til arrangør'
-  } else if (ulesteEndringer.oppdatering.type === UlestEndringType.TildeltPlass) {
+  } else if (
+    ulesteEndringer.oppdatering.type === UlestEndringType.TildeltPlass
+  ) {
     return 'Fått plass'
   } else if (ulesteEndringer.oppdatering.type === UlestEndringType.Avslag) {
-		return 'Søknaden er avslått'
-	}
+    return 'Søknaden er avslått'
+  }
   return undefined
 }

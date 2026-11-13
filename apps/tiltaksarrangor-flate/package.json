@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@amt-deltaker-flate/playwright-config": "workspace:*",
+    "@amt-deltaker-flate/tailwind-config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
     "@faker-js/faker": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "@axe-core/playwright": "catalog:",
@@ -47,6 +49,7 @@
     "@types/react-dom": "catalog:",
     "msw": "catalog:",
     "sass": "^1.105.2",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"

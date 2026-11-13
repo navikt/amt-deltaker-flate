@@ -1,8 +1,6 @@
 import { BodyLong, Detail } from '@navikt/ds-react'
-import {
-  ForslagEndring,
-  ForslagEndringType
-} from '../../../../../api/data/forslag'
+import { ForslagEndringType } from 'deltaker-flate-common'
+import { ForslagEndring } from '../../../../../api/data/forslag'
 import globalStyles from '../../../../../globals.module.scss'
 import { assertNever } from '../../../../../utils/assert-never'
 import { formatDate } from '../../../../../utils/date-utils'
@@ -75,16 +73,18 @@ function EndringsDetaljer({ endring }: { readonly endring: ForslagEndring }) {
             </BodyLong>
           )}
 
-          {endring.type === ForslagEndringType.EndreAvslutning && endring.sluttdato && (
-            <BodyLong size="small">
-              Sluttdato: {formatDate(endring.sluttdato)}
-            </BodyLong>
-          )}
-          {endring.type === ForslagEndringType.AvsluttDeltakelse && endring.sluttdato && (
-            <BodyLong size="small">
-              Ny sluttdato: {formatDate(endring.sluttdato)}
-            </BodyLong>
-          )}
+          {endring.type === ForslagEndringType.EndreAvslutning &&
+            endring.sluttdato && (
+              <BodyLong size="small">
+                Sluttdato: {formatDate(endring.sluttdato)}
+              </BodyLong>
+            )}
+          {endring.type === ForslagEndringType.AvsluttDeltakelse &&
+            endring.sluttdato && (
+              <BodyLong size="small">
+                Ny sluttdato: {formatDate(endring.sluttdato)}
+              </BodyLong>
+            )}
         </>
       )
     }

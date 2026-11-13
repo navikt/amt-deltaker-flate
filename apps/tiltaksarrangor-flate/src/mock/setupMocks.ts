@@ -4,13 +4,14 @@ import { setupWorker } from 'msw/browser'
 import { Deltaker, TiltakDeltaker, Vurderingstype } from '../api/data/deltaker'
 import { EndringFraArrangor, EndringFraArrangorType } from '../api/data/endring'
 import { VIS_DRIFTSMELDING_TOGGLE_NAVN } from '../api/data/feature-toggle'
+import { AktivtForslag, ForslagEndring } from '../api/data/forslag'
 import {
-  AktivtForslag,
-  ForslagEndring,
+  createHistorikk,
   ForslagEndringType,
-  ForslagStatusType
-} from '../api/data/forslag'
-import { Oppstartstype } from '../api/data/historikk'
+  ForslagStatusType,
+  lagHistorikkFellesOppstart,
+  Oppstartstype
+} from 'deltaker-flate-common'
 import { AdminDeltakerliste, Pameldingstype } from '../api/data/tiltak'
 import { Veileder, VeilederMedType, Veiledertype } from '../api/data/veileder'
 import {
@@ -29,7 +30,6 @@ import {
 } from './data'
 import { mockMineRoller } from './data/ansatt'
 import { MockTiltakDeltaker } from './data/brukere'
-import { mockDeltakerHistorikk } from './data/historikk'
 import { deltakerlisteErKurs, MockGjennomforing } from './data/tiltak'
 import { mockTilgjengeligeVeiledere } from './data/veileder'
 import { randomUuid } from './utils/faker'
@@ -202,9 +202,21 @@ export const worker = setupWorker(
     appUrl(
       '/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/:deltakerId/historikk'
     ),
-    async () => {
+    async ({ params }) => {
       await delay(500)
-      return HttpResponse.json(mockDeltakerHistorikk())
+      const deltaker = mockTiltakDeltakere.find(
+        (d) => d.id === params.deltakerId
+      )
+      if (!deltaker) {
+        return new HttpResponse(null, { status: 404 })
+      }
+
+      const historikk = deltakerlisteErKurs(
+        deltaker.gjennomforing.tiltak.tiltakskode
+      )
+        ? lagHistorikkFellesOppstart()
+        : createHistorikk()
+      return HttpResponse.json(historikk)
     }
   ),
   http.post(
