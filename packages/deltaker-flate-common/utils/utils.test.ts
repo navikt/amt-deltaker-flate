@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   beregnEstimertTotalsum,
   DATO_FORMATS,
@@ -8,10 +8,40 @@ import {
   harGyldigDatoformat,
   harDeltakelsesmengde,
   haveSameContents,
+  logServerError,
   NOK_FORMATTER
 } from './utils'
 import { Tiltakskode } from '../model/deltaker'
 import { PrisinformasjonType, Tilskuddstype } from '../model/prisinformasjon'
+
+afterEach(() => vi.restoreAllMocks())
+
+describe('logServerError', () => {
+  it.each([400, 401, 403, 404, 409])(
+    'does not log client response status %s',
+    (status) => {
+      const consoleError = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
+
+      logServerError('Request failed', status)
+
+      expect(consoleError).not.toHaveBeenCalled()
+    }
+  )
+
+  it('logs server response status', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const deltakerlisteId = '04aba3db-2085-4af1-b707-06e842193d83'
+    logServerError('Request failed', 503, { deltakerlisteId })
+
+    expect(consoleError).toHaveBeenCalledWith('AMT_LOGS: Request failed', [
+      503,
+      { deltakerlisteId }
+    ])
+  })
+})
 
 describe('harGyldigDatoformat', () => {
   it.each([

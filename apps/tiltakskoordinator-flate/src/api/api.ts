@@ -2,7 +2,8 @@ import {
   DeltakerHistorikkListe,
   deltakerHistorikkListeSchema,
   DeltakerStatusAarsak,
-  logError
+  logError,
+  logServerError
 } from 'deltaker-flate-common'
 import { API_URL } from '../utils/environment-utils'
 import { DeltakerDetaljer, deltakerDetaljerSchema } from './data/deltaker.ts'
@@ -40,7 +41,7 @@ export const getDeltakerlisteDetaljer = async (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Detaljer om gjennomføringen kunne ikke hentes.'
-        handleError(message, deltakerlisteId, response.status, null)
+        handleError(message, response.status, deltakerlisteId)
       }
       return response.json()
     })
@@ -92,7 +93,7 @@ export const getDeltakere = async (
     }
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke hentes.'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
     try {
       return deltakereSchema.parse(await response.json())
@@ -130,7 +131,7 @@ export const getDeltakerStatusCounts = async (
     }
     if (response.status !== 200) {
       const message = 'Status-tellinger kunne ikke hentes.'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
 
     try {
@@ -172,7 +173,7 @@ export const getDeltaker = async (
       }
       if (response.status !== 200) {
         const message = 'Deltaker detaljer kunne ikke hentes.'
-        handleError(message, null, response.status, deltakerId)
+        handleError(message, response.status)
       }
       return response.json()
     })
@@ -214,7 +215,7 @@ export const getDeltakerHistorikk = async (
     .then((response) => {
       if (response.status !== 200) {
         const message = 'Deltaker historikk kunne ikke hentes.'
-        handleError(message, null, response.status, deltakerId)
+        handleError(message, response.status)
       }
       return response.json()
     })
@@ -246,7 +247,7 @@ export async function leggTilTilgang(deltakerlisteId: string) {
 
   if (response.status !== 200) {
     const message = 'Tilgang kunne ikke legges til'
-    handleError(message, deltakerlisteId, response.status, null)
+    handleError(message, response.status, deltakerlisteId)
   }
 }
 
@@ -263,7 +264,7 @@ export async function fjernTilgang(deltakerlisteId: string) {
 
   if (response.status !== 200) {
     const message = 'Tilgang kunne ikke fjernes'
-    handleError(message, deltakerlisteId, response.status, null)
+    handleError(message, response.status, deltakerlisteId)
   }
 }
 
@@ -283,7 +284,7 @@ export async function delDeltakereMedArrangor(
   }).then(async (response) => {
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke deles med arrangør'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
     try {
       return deltakereSchema.parse(await response.json())
@@ -320,7 +321,7 @@ export async function tildelPlass(
   }).then(async (response) => {
     if (response.status !== 200) {
       const message = 'Deltakere kunne tildeles plass'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
     try {
       return deltakereSchema.parse(await response.json())
@@ -357,7 +358,7 @@ export async function settDeltakerePaVenteliste(
   }).then(async (response) => {
     if (response.status !== 200) {
       const message = 'Deltakere kunne ikke settes på venteliste'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
     try {
       return deltakereSchema.parse(await response.json())
@@ -400,7 +401,7 @@ export async function giAvslag(
   }).then(async (response) => {
     if (response.status !== 200) {
       const message = 'Kunne ikke gi avslag til deltaker'
-      handleError(message, deltakerlisteId, response.status, null)
+      handleError(message, response.status, deltakerlisteId)
     }
     try {
       return deltakerSchema.parse(await response.json())
@@ -435,8 +436,8 @@ export async function markerSomLest(ulestHendelseId: string): Promise<void> {
     }
   ).then(async (response) => {
     if (response.status !== 204) {
-      const message = `Kunne ikke markere ulest hendelse som lest: ${ulestHendelseId}`
-      logError(message)
+      const message = 'Kunne ikke markere ulest hendelse som lest.'
+      logServerError(message, response.status)
       throw new Error(message)
     }
     return Promise.resolve()
@@ -462,21 +463,13 @@ const handleTilgangsfeil = (response: Response): TilgangsFeil => {
 
 const handleError = (
   message: string,
-  deltakerlisteId: string | null,
   responseStatus: number,
-  deltakerId: string | null
+  deltakerlisteId: string | null = null
 ) => {
-  // Ignorerer 401 da det er brukersesjonfeil
-  if (responseStatus !== 401) {
-    const deltakerlisteIdString = deltakerlisteId
-      ? `DeltakerlisteId: ${deltakerlisteId}`
-      : ''
-    const deltakerIdString = deltakerId ? `deltakerId ${deltakerId}` : ''
-    logError(
-      `${message} ${deltakerlisteIdString} ${deltakerIdString}`,
-      responseStatus
-    )
-  }
-
+  logServerError(
+    message,
+    responseStatus,
+    deltakerlisteId ? { deltakerlisteId } : undefined
+  )
   throw new Error(`${message} Prøv igjen senere.`)
 }

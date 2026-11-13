@@ -4,7 +4,9 @@ import { logAndThrowError } from './utils'
 afterEach(() => vi.restoreAllMocks())
 
 describe('logAndThrowError', () => {
-  it('logs a safe endpoint and request details without logging the URL or body', () => {
+  it('logs a safe endpoint and list ID without person IDs, URL or body', () => {
+    const deltakerId = '04aba3db-2085-4af1-b707-06e842193d83'
+    const deltakerlisteId = '752dba59-655c-47fa-9127-47e19a0e6d26'
     const error = {
       isAxiosError: true,
       config: {
@@ -19,7 +21,10 @@ describe('logAndThrowError', () => {
     let thrownError: unknown
 
     try {
-      logAndThrowError(error, 'deltakerVurdering')
+      logAndThrowError(error, 'deltakerVurdering', {
+        deltakerId,
+        deltakerlisteId
+      })
     } catch (thrown) {
       thrownError = thrown
     }
@@ -29,7 +34,8 @@ describe('logAndThrowError', () => {
       endpoint: 'deltakerVurdering',
       method: 'POST',
       httpStatus: 500,
-      errorCode: 'ERR_NETWORK'
+      errorCode: 'ERR_NETWORK',
+      deltakerlisteId
     })
     expect(JSON.stringify(consoleError.mock.calls)).not.toContain(
       'sensitive free-text justification'
@@ -65,7 +71,7 @@ describe('logAndThrowError', () => {
     expect(JSON.stringify(consoleError.mock.calls)).not.toContain('private-id')
   })
 
-  it('logs valid team IDs and allowlisted operations without logging the request', () => {
+  it('does not log client response errors', () => {
     const deltakerId = '04aba3db-2085-4af1-b707-06e842193d83'
     const forslagId = '752dba59-655c-47fa-9127-47e19a0e6d26'
     const error = {
@@ -91,22 +97,7 @@ describe('logAndThrowError', () => {
     }
 
     expect(thrownError).toBe(error)
-    expect(consoleError).toHaveBeenCalledWith('Request failed', {
-      endpoint: 'tilbakekallForslag',
-      method: 'POST',
-      httpStatus: 400,
-      errorCode: undefined,
-      deltakerId,
-      forslagId,
-      operation: 'forleng'
-    })
-    expect(JSON.stringify(consoleError.mock.calls)).not.toContain('secret')
-    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(
-      'private justification'
-    )
-    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(
-      'private response'
-    )
+    expect(consoleError).not.toHaveBeenCalled()
   })
 
   it('omits untrusted ID, operation and method values', () => {

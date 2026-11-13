@@ -1,7 +1,8 @@
 import {
   DeltakerHistorikkListe,
   deltakerHistorikkListeSchema,
-  logError
+  logError,
+  logServerError
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils'
@@ -101,13 +102,9 @@ const parseDeltakelse = (json: string): DeltakerResponse => {
 
 const handleError = (
   message: string,
-  deltakerId: string,
+  _deltakerId: string,
   responseStatus: number
 ) => {
-  if (responseStatus !== 401) {
-    // Ignorerer 401 da det er brukersesjonfeil
-    logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
-  }
-
+  logServerError(message, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
 }

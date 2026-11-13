@@ -1,4 +1,4 @@
-import { logError } from 'deltaker-flate-common'
+import { logError, logServerError } from 'deltaker-flate-common'
 import { DeltakerResponse, deltakerSchema } from './data/deltaker'
 
 export const DELTAKER_FOR_UNG_ERROR = 'DELTAKER_FOR_UNG'
@@ -16,9 +16,9 @@ export const parsePamelding = (json: string): DeltakerResponse => {
 
 export const handleError = (
   message: string,
-  deltakerId: string,
+  _deltakerId: string,
   responseStatus: number
 ) => {
-  logError(`${message} DeltakerId: ${deltakerId}`, responseStatus)
+  logServerError(message, responseStatus)
   throw new Error(`${message} Prøv igjen senere.`)
 }
