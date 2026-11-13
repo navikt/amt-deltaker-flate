@@ -55,17 +55,17 @@ export const opprettKladd = async (
   })
     .then(async (response) => {
       if (response.status !== 200) {
+        logServerError(
+          'Deltakelse kunne ikke hentes eller opprettes.',
+          response.status,
+          { deltakerlisteId }
+        )
         const data = await response.text()
         if (data.includes(DELTAKER_FOR_UNG_ERROR)) {
           throw new Error(
             'Brukeren har ikke fylt 19 år når tiltaket starter, og kan derfor ikke delta.'
           )
         } else {
-          logServerError(
-            'Deltakelse kunne ikke hentes eller opprettes.',
-            response.status,
-            { deltakerlisteId }
-          )
           throw new Error(
             'Kunne ikke opprette kladd for påmelding. Prøv igjen senere'
           )
