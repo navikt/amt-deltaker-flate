@@ -1,7 +1,8 @@
 import {
   DeltakerHistorikkListe,
   deltakerHistorikkListeSchema,
-  logError
+  logError,
+  logServerError
 } from 'deltaker-flate-common'
 import { ZodError } from 'zod'
 import { API_URL } from '../utils/environment-utils.ts'
@@ -54,11 +55,11 @@ export const opprettKladd = async (
   })
     .then(async (response) => {
       if (response.status !== 200) {
-        logError(
-          `Deltakelse kunne ikke hentes / opprettes for deltakerlisteId: ${deltakerlisteId}`,
-          response.status
+        logServerError(
+          'Deltakelse kunne ikke hentes eller opprettes.',
+          response.status,
+          { deltakerlisteId }
         )
-
         const data = await response.text()
         if (data.includes(DELTAKER_FOR_UNG_ERROR)) {
           throw new Error(
@@ -109,7 +110,6 @@ export const getDeltaker = async (
   })
     .then((response) => {
       if (response.status === 400) {
-        logError(`Deltakelse ${deltakerId} kunne ikke hentes.`, response.status)
         throw new Error(ERROR_PERSONIDENT)
       }
       if (response.status !== 200) {
@@ -519,10 +519,7 @@ export const avvisForslag = (
   })
     .then((response) => {
       if (response.status !== 200) {
-        logError(
-          `Kunne ikke avvise forslaget. ForslagId: ${forslagId}`,
-          response.status
-        )
+        logServerError('Kunne ikke avvise forslaget.', response.status)
         throw new Error('Kunne ikke avvise forslaget. Prøv igjen senere.')
       }
       return response.json()

@@ -93,28 +93,22 @@ export function logAndThrowError<E = Error>(
     isAxiosError && err.code && SAFE_AXIOS_ERROR_CODES.has(err.code)
       ? err.code
       : undefined
+  const httpStatus = isAxiosError ? err.response?.status : undefined
 
-  console.error('Request failed', {
-    endpoint,
-    method: method && SAFE_METHODS.has(method) ? method : undefined,
-    httpStatus: isAxiosError ? err.response?.status : undefined,
-    errorCode,
-    ...(context.deltakerId && UUID_PATTERN.test(context.deltakerId)
-      ? { deltakerId: context.deltakerId }
-      : {}),
-    ...(context.deltakerlisteId && UUID_PATTERN.test(context.deltakerlisteId)
-      ? { deltakerlisteId: context.deltakerlisteId }
-      : {}),
-    ...(context.forslagId && UUID_PATTERN.test(context.forslagId)
-      ? { forslagId: context.forslagId }
-      : {}),
-    ...(context.ulestEndringId && UUID_PATTERN.test(context.ulestEndringId)
-      ? { ulestEndringId: context.ulestEndringId }
-      : {}),
-    ...(context.operation && SAFE_OPERATIONS.has(context.operation)
-      ? { operation: context.operation }
-      : {})
-  })
+  if (httpStatus === undefined || httpStatus >= 500) {
+    console.error('Request failed', {
+      endpoint,
+      method: method && SAFE_METHODS.has(method) ? method : undefined,
+      httpStatus,
+      errorCode,
+      ...(context.deltakerlisteId && UUID_PATTERN.test(context.deltakerlisteId)
+        ? { deltakerlisteId: context.deltakerlisteId }
+        : {}),
+      ...(context.operation && SAFE_OPERATIONS.has(context.operation)
+        ? { operation: context.operation }
+        : {})
+    })
+  }
 
   throw err
 }

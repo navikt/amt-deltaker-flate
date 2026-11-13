@@ -70,8 +70,10 @@ export const GiAvslagModal = ({ open, onClose, onSend }: Props) => {
         setHandlingUtfortText(`${lagDeltakerNavn(deltaker)} fikk avslag.`)
         onSend()
       })
-      .catch((e) => {
-        console.error(e)
+      .catch((error: unknown) => {
+        if (error instanceof TypeError) {
+          console.error('Request failed', { endpoint: 'giAvslag' })
+        }
         setError('Kunne ikke gi avslag. Vennligst prøv igjen.')
       })
   }

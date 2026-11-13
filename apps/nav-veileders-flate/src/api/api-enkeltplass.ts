@@ -1,4 +1,4 @@
-import { logError, Tiltakskode } from 'deltaker-flate-common'
+import { logError, logServerError, Tiltakskode } from 'deltaker-flate-common'
 import { API_URL } from '../utils/environment-utils'
 import { EnkeltplassPameldingRequest } from './data/enkeltplass-pamelding'
 import {
@@ -40,17 +40,16 @@ export const opprettEnkeltplassKladd = async (
   })
     .then(async (response) => {
       if (response.status !== 200) {
-        logError(
-          `Deltakelse kunne ikke hentes / opprettes for tiltakskode: ${tiltakskode}`,
-          response.status
-        )
-
         const data = await response.text()
         if (data.includes(DELTAKER_FOR_UNG_ERROR)) {
           throw new Error(
             'Brukeren har ikke fylt 19 år når tiltaket starter, og kan derfor ikke delta.'
           )
         } else {
+          logServerError(
+            'Deltakelse kunne ikke hentes eller opprettes.',
+            response.status
+          )
           throw new Error(
             'Kunne ikke opprette kladd for påmelding. Prøv igjen senere'
           )
@@ -208,10 +207,7 @@ export const sokUnderenhet = async (
   )
     .then(async (response) => {
       if (response.status !== 200) {
-        logError(
-          `Søking etter underenhet feilet for søkestreng: ${term}`,
-          response.status
-        )
+        logServerError('Søking etter underenhet feilet.', response.status)
 
         throw new Error('Søking etter underenhet feilet. Prøv igjen senere.')
       }
@@ -266,7 +262,7 @@ export const sokSertifiseringer = async (
   )
     .then(async (response) => {
       if (response.status !== 200) {
-        logError(
+        logServerError(
           `Søking etter sertifiseringer feilet for søkestreng: ${term}`,
           response.status
         )
@@ -280,12 +276,8 @@ export const sokSertifiseringer = async (
     .then((json) => {
       try {
         return kodeverkSertifiseringResponseSchema.parse(json)
-      } catch (error) {
-        logError(
-          'Kunne ikke parse kodeverkSertifiseringResponseSchema:',
-          error,
-          json
-        )
+      } catch {
+        logError('Kunne ikke parse kodeverkSertifiseringResponseSchema')
         throw new Error(
           'Kunne ikke laste inn sertifiseringer. Prøv igjen senere.'
         )

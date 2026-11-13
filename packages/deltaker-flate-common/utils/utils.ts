@@ -187,6 +187,22 @@ export const logError = (message: string, ...args: unknown[]) => {
   console.error(`AMT_LOGS: ${message}`, args)
 }
 
+export const logServerError = (
+  message: string,
+  responseStatus: number,
+  context?: { deltakerlisteId?: string }
+) => {
+  if (responseStatus >= 500) {
+    if (context?.deltakerlisteId) {
+      logError(message, responseStatus, {
+        deltakerlisteId: context.deltakerlisteId
+      })
+    } else {
+      logError(message, responseStatus)
+    }
+  }
+}
+
 export const NOK_FORMATTER = new Intl.NumberFormat('nb-NO')
 
 export const beregnEstimertTotalsum = (
