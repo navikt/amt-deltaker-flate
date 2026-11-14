@@ -1,7 +1,10 @@
-import { ForslagEndringType } from '../../../../../api/data/forslag'
-import { EndringType } from '../../../../../api/data/historikk'
-import { UlestEndring, UlestEndringType } from '../../../../../api/data/ulestEndring'
+import { EndringType, ForslagEndringType } from 'deltaker-flate-common'
+import {
+  UlestEndring,
+  UlestEndringType
+} from '../../../../../api/data/ulestEndring'
 
+// TODO kan denne hentes fra common?
 export function forslagEndringsTittel(type: ForslagEndringType | EndringType) {
   switch (type) {
     case ForslagEndringType.ForlengDeltakelse:
@@ -29,7 +32,10 @@ export function forslagEndringsTittel(type: ForslagEndringType | EndringType) {
     case EndringType.FjernOppstartsdato:
       return 'Fjern oppstartsdato'
     case EndringType.EndreInnhold:
+    case EndringType.EndreOpplaringKategorisering:
       return 'Endre innhold'
+    case EndringType.EndrePrisinfo:
+      return 'Endre pris og betalingsbetingelser'
     case EndringType.EndreBakgrunnsinformasjon:
       return 'Endre bakgrunnsinformasjon'
     case EndringType.ReaktiverDeltakelse:
@@ -51,9 +57,11 @@ export const ulestEndringErSvarFraNav = (ulestEndring: UlestEndring) => {
 }
 
 export const ulestEndringErOppdateringFraNav = (ulestEndring: UlestEndring) =>
-  !ulestEndringErSvarFraNav(ulestEndring) && !ulestEndringErNyeDeltaker(ulestEndring)
+  !ulestEndringErSvarFraNav(ulestEndring) &&
+  !ulestEndringErNyeDeltaker(ulestEndring)
 
 export const ulestEndringErNyeDeltaker = (ulestEndring: UlestEndring) =>
   ulestEndring.oppdatering.type === UlestEndringType.NyDeltaker ||
   ulestEndring.oppdatering.type === UlestEndringType.DeltMedArrangor ||
-  (ulestEndring.oppdatering.type === UlestEndringType.TildeltPlass && ulestEndring.oppdatering.erNyDeltaker)
+  (ulestEndring.oppdatering.type === UlestEndringType.TildeltPlass &&
+    ulestEndring.oppdatering.erNyDeltaker)

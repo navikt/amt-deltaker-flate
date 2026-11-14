@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
+import { Box, HGrid, Heading, VStack } from '@navikt/ds-react'
 import {
+  EndringType,
   ForslagEndringType,
   ForslagStatusType
-} from '../../../../../api/data/forslag'
-import { Box, HGrid, Heading, VStack } from '@navikt/ds-react'
-import { EndringType } from '../../../../../api/data/historikk'
+} from 'deltaker-flate-common'
 import { UlestEndringType } from '../../../../../api/data/ulestEndring'
 import { DefaultIcon, EndringTypeIkon } from '../EndringTypeIkon'
 import styles from './AktivtForslagPanel.module.scss'

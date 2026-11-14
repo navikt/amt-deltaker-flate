@@ -1,5 +1,8 @@
 import { Koordinator, Pameldingstype } from '../../api/data/tiltak'
-import { lagMockTiltakDeltagereForGjennomforing, MockTiltakDeltaker } from './brukere'
+import {
+  lagMockTiltakDeltagereForGjennomforing,
+  MockTiltakDeltaker
+} from './brukere'
 import {
   deltakerlisteErKurs,
   gjennomforingInfoListe,
@@ -9,9 +12,13 @@ import {
   lagMockMineDeltakerlister,
   MockGjennomforing
 } from './tiltak'
-import { KoordinatorsDeltakerliste, MineDeltakerlister, VeiledersDeltaker } from '../../api/data/deltaker'
+import {
+  KoordinatorsDeltakerliste,
+  MineDeltakerlister,
+  VeiledersDeltaker
+} from '../../api/data/deltaker'
 import { mapToDeltakerListView } from '../setupMocks'
-import { Oppstartstype } from '../../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 export const mockKoordinatorer: Koordinator[] = lagMockKoordinatorer()
 

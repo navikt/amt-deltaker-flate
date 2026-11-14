@@ -4,7 +4,7 @@ import { axiosInstance, logAndThrowError, parse } from './utils'
 import {
   DeltakerHistorikkListe,
   deltakerHistorikkListeSchema
-} from './data/historikk'
+} from 'deltaker-flate-common'
 
 export const fetchDeltakerHistorikk = (
   deltakerId: string

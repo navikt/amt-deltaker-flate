@@ -1,4 +1,4 @@
-import { Oppstartstype } from '../../../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 export interface ArrangorOverenhet {
   navn: string

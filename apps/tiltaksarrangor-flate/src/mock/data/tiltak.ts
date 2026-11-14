@@ -18,7 +18,7 @@ import { randBetween } from '../utils/faker'
 import { arrangorForGjennomforing } from './arrangor'
 import { MockTiltakDeltaker } from './brukere'
 import { gjennomforingId } from './id'
-import { Oppstartstype } from '../../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 
 export type MockGjennomforing = Gjennomforing
 

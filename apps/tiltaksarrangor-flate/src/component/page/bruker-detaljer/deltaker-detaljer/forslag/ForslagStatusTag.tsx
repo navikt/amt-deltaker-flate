@@ -1,5 +1,5 @@
 import { Tag } from '@navikt/ds-react'
-import { ForslagStatusType } from '../../../../../api/data/forslag'
+import { ForslagStatusType } from 'deltaker-flate-common'
 
 export function ForslagStatusTag({
   type,
@@ -15,7 +15,9 @@ export function ForslagStatusTag({
           data-color="info"
           variant="outline"
           size="small"
-          className={className ?? ''}>Venter på svar fra Nav
+          className={className ?? ''}
+        >
+          Venter på svar fra Nav
         </Tag>
       )
     }
@@ -25,7 +27,9 @@ export function ForslagStatusTag({
           data-color="success"
           variant="outline"
           size="small"
-          className={className ?? ''}>Godkjent av Nav
+          className={className ?? ''}
+        >
+          Godkjent av Nav
         </Tag>
       )
     }
@@ -35,7 +39,9 @@ export function ForslagStatusTag({
           data-color="danger"
           variant="outline"
           size="small"
-          className={className ?? ''}>Avvist av Nav
+          className={className ?? ''}
+        >
+          Avvist av Nav
         </Tag>
       )
     }

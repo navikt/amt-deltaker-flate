@@ -1,10 +1,21 @@
-import { Adressetype, Hendelser, TiltakDeltakerStatus } from '../api/data/deltaker'
-import { DeltakerStatusAarsak, DeltakerStatusAarsakType } from '../api/data/deltakerStatusArsak'
-import { EndringAarsak, ForslagEndringAarsakType, ForslagEndringType, ForslagStatusType } from '../api/data/forslag'
-import { DeltakerHistorikkStatus, Endring, EndringType, TiltakskoordinatorEndringsType } from '../api/data/historikk'
+import {
+  Adressetype,
+  Hendelser,
+  TiltakDeltakerStatus
+} from '../api/data/deltaker'
+import {
+  DeltakerStatusAarsak,
+  DeltakerStatusAarsakType
+} from '../api/data/deltakerStatusArsak'
+import { EndringAarsak } from '../api/data/forslag'
+import {
+  DeltakerStatusType as DeltakerHistorikkStatus,
+  ForslagEndringAarsakType,
+  ForslagEndringType,
+  ForslagStatusType,
+  TiltakskoordinatorEndringsType
+} from 'deltaker-flate-common'
 import { Veiledertype } from '../api/data/veileder'
-import { dateStrWithMonthName } from './date-utils'
-import { getDeltakelsesmengdetekst } from './deltaker-utils'
 
 export const mapTiltakDeltakerStatusTilTekst = (
   tiltakDeltakerStatus: TiltakDeltakerStatus | string
@@ -18,8 +29,8 @@ export const mapTiltakDeltakerStatusTilTekst = (
       return 'Har sluttet'
     case TiltakDeltakerStatus.IKKE_AKTUELL:
       return 'Ikke aktuell'
-		case TiltakDeltakerStatus.SOKT_INN:
-			return 'Søkt inn'
+    case TiltakDeltakerStatus.SOKT_INN:
+      return 'Søkt inn'
     case TiltakDeltakerStatus.VURDERES:
       return 'Vurderes'
     case TiltakDeltakerStatus.FULLFORT:
@@ -95,35 +106,7 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
     case DeltakerStatusAarsakType.AVLYST_KONTRAKT:
       return 'Kontrakten med arrangør er avlyst'
     default:
-			return `Ukjent årsak ${aarsak.type}`
-  }
-}
-
-export const getEndringsTittel = (endring: Endring) => {
-  switch (endring.type) {
-    case EndringType.IkkeAktuell:
-      return 'Deltakelsen er ikke aktuell'
-    case EndringType.ForlengDeltakelse:
-      return `Deltakelsen er forlenget til ${dateStrWithMonthName(endring.sluttdato)}`
-    case EndringType.AvsluttDeltakelse:
-    case EndringType.EndreSluttdato:
-      return `Ny sluttdato er ${dateStrWithMonthName(endring.sluttdato)}`
-    case EndringType.EndreBakgrunnsinformasjon:
-      return 'Bakgrunnsinfo er endret'
-    case EndringType.EndreDeltakelsesmengde:
-      return `Deltakelsen er endret til ${getDeltakelsesmengdetekst(endring.deltakelsesprosent, endring.dagerPerUke)}`
-    case EndringType.EndreInnhold:
-      return 'Innholdet er endret'
-    case EndringType.ReaktiverDeltakelse:
-      return 'Deltakelsen er endret til å være aktiv'
-    case EndringType.EndreSluttarsak:
-      return `Sluttårsak er endret til: ${getDeltakerStatusAarsakText(endring.aarsak)}`
-    case EndringType.EndreStartdato:
-      return `Oppstartsdato er endret til ${dateStrWithMonthName(endring.startdato)}`
-    case EndringType.FjernOppstartsdato:
-      return 'Oppstartsdato er fjernet'
-    case EndringType.EndreAvslutning:
-      return 'Avslutning endret'
+      return `Ukjent årsak ${aarsak.type}`
   }
 }
 
@@ -160,8 +143,8 @@ export const getTiltakskoordinatorEndringsTittel = (
       return 'Venteliste'
     case TiltakskoordinatorEndringsType.TildelPlass:
       return 'Fått plass'
-		case TiltakskoordinatorEndringsType.Avslag:
-			return 'Søknaden er avslått'
+    case TiltakskoordinatorEndringsType.Avslag:
+      return 'Søknaden er avslått'
   }
 }
 
