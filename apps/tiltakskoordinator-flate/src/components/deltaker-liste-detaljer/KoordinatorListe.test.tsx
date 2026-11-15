@@ -1,32 +1,26 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useNavigate } from 'react-router-dom'
+import { gaTilGjennomforingerMulighetsrommet } from '../../utils/utils.ts'
 import { KoordinatorListe } from './KoordinatorListe'
 
 const { fjernTilgangMock } = vi.hoisted(() => ({
   fjernTilgangMock: vi.fn()
 }))
 
-interface ProcessWithUnhandledRejection {
-  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-}
-
-const nodeProcess = (
-  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
-).process
-
 vi.mock('../../api/api.ts', () => ({
   fjernTilgang: fjernTilgangMock
 }))
 
 vi.mock('react-router-dom', () => ({
-  useNavigate: () => vi.fn()
+  useNavigate: vi.fn()
 }))
 
 vi.mock('../../utils/environment-utils.ts', () => ({
-  isEnvLocalDemoOrPr: () => false
+  isEnvLocalDemoOrPr: false
 }))
 
 vi.mock('../../utils/utils.ts', () => ({
@@ -36,15 +30,12 @@ vi.mock('../../utils/utils.ts', () => ({
 describe('KoordinatorListe', () => {
   beforeEach(() => {
     fjernTilgangMock.mockReset()
+    vi.mocked(useNavigate).mockReturnValue(vi.fn())
   })
 
   it('viser feilmelding uten global feilrapportering ved feil under fjerning av tilgang', async () => {
     fjernTilgangMock.mockRejectedValue(new Error('Request failed'))
-    const unhandledRejections: unknown[] = []
-    const handleUnhandledRejection = (reason: unknown) => {
-      unhandledRejections.push(reason)
-    }
-    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+    const unhandledRejections = trackUnhandledRejections()
 
     try {
       const user = userEvent.setup()
@@ -74,11 +65,12 @@ describe('KoordinatorListe', () => {
           'Kunne ikke fjerne tilgang for koordinator. Prøv igjen senere.'
         )
       ).toBeInTheDocument()
+      expect(gaTilGjennomforingerMulighetsrommet).not.toHaveBeenCalled()
       await new Promise((resolve) => setTimeout(resolve, 0))
 
-      expect(unhandledRejections).toEqual([])
+      expect(unhandledRejections.rejections).toEqual([])
     } finally {
-      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+      unhandledRejections.stop()
     }
   })
 })

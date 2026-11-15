@@ -2,21 +2,13 @@ import '@testing-library/jest-dom/vitest'
 import { act, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useFormContext } from 'react-hook-form'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { KladdLagring } from '../../KladdLagring'
 import { renderWithProviders } from './test-utils'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
 import { EnkeltplassKladdRequest } from '../../../../api/data/kladd-request'
 import { OpplaringRepresenterer } from 'deltaker-flate-common'
 import { formToEnkeltplassKladdRequest } from '../../../../utils/pamelding-enkeltplass'
-
-interface ProcessWithUnhandledRejection {
-  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-}
-
-const nodeProcess = (
-  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
-).process
 
 const formToKladdRequest = (
   data: PameldingEnkeltplassFormValues
@@ -73,7 +65,7 @@ describe('KladdLagring - auto-lagring', () => {
     vi.useRealTimers()
   })
 
-  it('auto-lagrer ikke ved montering hvis ingenting er endret', async () => {
+  it('auto-lagrer ikke ved mount når ingenting er endret', async () => {
     const { oppdaterKladd, advanceDebounce } = setupKladdLagring({
       innhold: 'eksisterende'
     })
@@ -83,7 +75,7 @@ describe('KladdLagring - auto-lagring', () => {
     expect(oppdaterKladd).not.toHaveBeenCalled()
   })
 
-  it('auto-lagrer ved endring i et skjemafelt', async () => {
+  it('auto-lagrer når et form-felt endres', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       innhold: ''
     })
@@ -99,7 +91,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('auto-lagrer ved endring av valg fra kodeverket', async () => {
+  it('auto-lagrer når kodeverkValg endres via setValue', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       kategoriseringValg: []
     })
@@ -126,7 +118,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('auto-lagrer ved endring av sertifisering', async () => {
+  it('auto-lagrer når sertifiseringValg endres via setValue', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       sertifiseringValg: []
     })
@@ -144,7 +136,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('samler flere endringer til ett lagringskall', async () => {
+  it('debouncer flere endringer til ett kall', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       innhold: ''
     })
@@ -178,11 +170,7 @@ describe('KladdLagring - auto-lagring', () => {
       innhold: ''
     })
     oppdaterKladd.mockRejectedValueOnce(new Error('Request failed'))
-    const unhandledRejections: unknown[] = []
-    const handleUnhandledRejection = (reason: unknown) => {
-      unhandledRejections.push(reason)
-    }
-    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+    const unhandledRejections = trackUnhandledRejections()
 
     try {
       change('innhold', 'ny tekst')
@@ -191,13 +179,13 @@ describe('KladdLagring - auto-lagring', () => {
       expect(screen.getByText('Lagring feilet')).toBeInTheDocument()
       await new Promise((resolve) => setTimeout(resolve, 0))
 
-      expect(unhandledRejections).toEqual([])
+      expect(unhandledRejections.rejections).toEqual([])
     } finally {
-      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+      unhandledRejections.stop()
     }
   })
 
-  it('avbryter ventende lagring ved avmontering og lagrer endringer ved ny montering', async () => {
+  it('canceler pending lagring ved unmount og auto-lagrer fersk på remount', async () => {
     // Forste montering: endre et felt, men avmonter for lagringen starter.
     const firstMount = setupKladdLagring({ innhold: '' })
     firstMount.change('innhold', 'forkastet')

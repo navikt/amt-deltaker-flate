@@ -1,72 +1,86 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { Kontaktinformasjon } from '../components/Kontaktinformasjon.tsx'
+import { DeltakerDetaljer } from '../components/deltaker-detaljer/DeltakerDetaljer.tsx'
+import { DeltakerDetaljerHeader } from '../components/deltaker-detaljer/DeltakerDetaljerHeader.tsx'
+import { Tilbakelenke } from '../components/deltaker-detaljer/Tilbakelenke.tsx'
 import { DeltakerPage } from './DeltakerPage'
 
-const { getDeltakerMock } = vi.hoisted(() => ({
-  getDeltakerMock: vi.fn()
+const {
+  getDeltakerMock,
+  useNavigateMock,
+  useParamsMock,
+  useAppContextMock,
+  useFocusPageLoadMock,
+  handterTilgangsFeilMock,
+  isTilgangsFeilMock
+} = vi.hoisted(() => ({
+  getDeltakerMock: vi.fn(),
+  useNavigateMock: vi.fn(),
+  useParamsMock: vi.fn(),
+  useAppContextMock: vi.fn(),
+  useFocusPageLoadMock: vi.fn(),
+  handterTilgangsFeilMock: vi.fn(),
+  isTilgangsFeilMock: vi.fn()
 }))
-
-interface ProcessWithUnhandledRejection {
-  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-}
-
-// JSDOM sender ikke alltid avvisninger videre til window.unhandledrejection.
-const nodeProcess = (
-  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
-).process
 
 vi.mock('../api/api.ts', () => ({
   getDeltaker: getDeltakerMock
 }))
 
 vi.mock('react-router-dom', () => ({
-  useNavigate: () => vi.fn(),
-  useParams: () => ({ deltakerId: 'deltaker-1' })
+  useNavigate: useNavigateMock,
+  useParams: useParamsMock
 }))
 
 vi.mock('../context-providers/AppContext.tsx', () => ({
-  useAppContext: () => ({ deltakerlisteId: 'liste-1' })
+  useAppContext: useAppContextMock
 }))
 
 vi.mock('../hooks/useFocusPageLoad.tsx', () => ({
-  useFocusPageLoad: () => ({ ref: null })
+  useFocusPageLoad: useFocusPageLoadMock
 }))
 
 vi.mock('../utils/tilgangsFeil.ts', () => ({
-  handterTilgangsFeil: vi.fn(),
-  isTilgangsFeil: () => false
+  handterTilgangsFeil: handterTilgangsFeilMock,
+  isTilgangsFeil: isTilgangsFeilMock
 }))
 
 vi.mock('../components/deltaker-detaljer/DeltakerDetaljer.tsx', () => ({
-  DeltakerDetaljer: () => null
+  DeltakerDetaljer: vi.fn()
 }))
 
 vi.mock('../components/deltaker-detaljer/DeltakerDetaljerHeader.tsx', () => ({
-  DeltakerDetaljerHeader: () => null
+  DeltakerDetaljerHeader: vi.fn()
 }))
 
 vi.mock('../components/deltaker-detaljer/Tilbakelenke.tsx', () => ({
-  Tilbakelenke: () => null
+  Tilbakelenke: vi.fn()
 }))
 
 vi.mock('../components/Kontaktinformasjon.tsx', () => ({
-  Kontaktinformasjon: () => null
+  Kontaktinformasjon: vi.fn()
 }))
 
 describe('DeltakerPage', () => {
   beforeEach(() => {
     getDeltakerMock.mockReset()
+    useNavigateMock.mockReturnValue(vi.fn())
+    useParamsMock.mockReturnValue({ deltakerId: 'deltaker-1' })
+    useAppContextMock.mockReturnValue({ deltakerlisteId: 'liste-1' })
+    useFocusPageLoadMock.mockReturnValue({ ref: null })
+    isTilgangsFeilMock.mockReturnValue(false)
+    vi.mocked(DeltakerDetaljer).mockImplementation(() => null)
+    vi.mocked(DeltakerDetaljerHeader).mockImplementation(() => null)
+    vi.mocked(Tilbakelenke).mockImplementation(() => null)
+    vi.mocked(Kontaktinformasjon).mockImplementation(() => null)
   })
 
   it('viser feilmelding uten global feilrapportering ved feil under deltakerhenting', async () => {
     getDeltakerMock.mockRejectedValue(new Error('Request failed'))
-    const unhandledRejections: unknown[] = []
-    const handleUnhandledRejection = (reason: unknown) => {
-      unhandledRejections.push(reason)
-    }
-    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+    const unhandledRejections = trackUnhandledRejections()
 
     try {
       render(<DeltakerPage />)
@@ -78,9 +92,9 @@ describe('DeltakerPage', () => {
       ).toBeInTheDocument()
       await new Promise((resolve) => setTimeout(resolve, 0))
 
-      expect(unhandledRejections).toEqual([])
+      expect(unhandledRejections.rejections).toEqual([])
     } finally {
-      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+      unhandledRejections.stop()
     }
   })
 })
