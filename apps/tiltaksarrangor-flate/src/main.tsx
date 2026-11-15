@@ -1,7 +1,12 @@
 import './index.scss'
 import { init } from '@nais/apm'
 import { withFaroErrorBoundary } from '@grafana/faro-react'
-import { faroBeforeSend, resolveFaroEnvironment } from 'deltaker-flate-common'
+import {
+  faroBeforeSend,
+  resolveFaroEnvironment,
+  resolveVersionManifestUrl,
+  Versjonsvarsel
+} from 'deltaker-flate-common'
 import dayjs from 'dayjs'
 import nb from 'dayjs/locale/nb'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -60,6 +65,10 @@ const renderAsReactRoot = () => {
   root.render(
     <StrictMode>
       <FaroBoundary>
+        <Versjonsvarsel
+          currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
+          manifestUrl={resolveVersionManifestUrl(import.meta.url)}
+        />
         <StoreProvider>
           {env.isDemo && <DemoBanner />}
           <BrowserRouter>

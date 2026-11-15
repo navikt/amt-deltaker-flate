@@ -3,7 +3,9 @@ import { withFaroErrorBoundary } from '@grafana/faro-react'
 import {
   faroBeforeSend,
   ErrorFallback,
-  resolveFaroEnvironment
+  resolveFaroEnvironment,
+  resolveVersionManifestUrl,
+  Versjonsvarsel
 } from 'deltaker-flate-common'
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -60,7 +62,7 @@ export class Deltaker extends HTMLElement {
   // Invoked each time after the element is attached to the DOM
   // noinspection JSUnusedGlobalSymbols
   connectedCallback() {
-    // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and Javascript code with it,
+    // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and JavaScript code with it,
     const shadowRoot = this.attachShadow({ mode: 'closed' })
     shadowRoot.appendChild(this.root)
 
@@ -76,18 +78,24 @@ export class Deltaker extends HTMLElement {
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
       <FaroBoundary>
-        <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
-          <AppContextProvider
-            initialPersonident={initialPersonident}
-            initialEnhetId={initialEnhetId}
-          >
-            <BrowserRouter>
-              <QueryClientProvider client={queryClient}>
-                <AppRoutes />
-              </QueryClientProvider>
-            </BrowserRouter>
-          </AppContextProvider>
-        </div>
+        <>
+          <Versjonsvarsel
+            currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
+            manifestUrl={resolveVersionManifestUrl(import.meta.url)}
+          />
+          <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
+            <AppContextProvider
+              initialPersonident={initialPersonident}
+              initialEnhetId={initialEnhetId}
+            >
+              <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
+                  <AppRoutes />
+                </QueryClientProvider>
+              </BrowserRouter>
+            </AppContextProvider>
+          </div>
+        </>
       </FaroBoundary>
     )
   }

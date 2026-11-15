@@ -8,6 +8,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './Routes.tsx'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './queryClient.ts'
+import {
+  resolveVersionManifestUrl,
+  Versjonsvarsel
+} from 'deltaker-flate-common'
 
 export async function enableMocking() {
   if (useMock) {
@@ -28,18 +32,24 @@ const renderAsReactRoot = () => {
 
   root.render(
     <React.StrictMode>
-      <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
-        <AppContextProvider
-          initialPersonident={params.get('person_ident') || '29418716256'}
-          initialEnhetId={params.get('enhet_id') || '0106'}
-        >
-          <BrowserRouter basename={import.meta.env.BASE_URL}>
-            <QueryClientProvider client={queryClient}>
-              <AppRoutes />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </AppContextProvider>
-      </div>
+      <>
+        <Versjonsvarsel
+          currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
+          manifestUrl={resolveVersionManifestUrl(import.meta.url)}
+        />
+        <div className="m-auto pt-4 min-h-screen deltakelse-wrapper">
+          <AppContextProvider
+            initialPersonident={params.get('person_ident') || '29418716256'}
+            initialEnhetId={params.get('enhet_id') || '0106'}
+          >
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
+              <QueryClientProvider client={queryClient}>
+                <AppRoutes />
+              </QueryClientProvider>
+            </BrowserRouter>
+          </AppContextProvider>
+        </div>
+      </>
     </React.StrictMode>
   )
 
