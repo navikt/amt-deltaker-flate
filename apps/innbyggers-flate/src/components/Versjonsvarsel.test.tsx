@@ -84,14 +84,18 @@ describe('Versjonsvarsel', () => {
 
   it('oppdager ny versjon ved neste femminutterskontroll', async () => {
     let pollCallback: (() => void) | undefined
+    // Behold ekte setInterval før spying, slik at mocken oppretter en gyldig timer.
+    const setInterval = globalThis.setInterval.bind(globalThis)
     const setIntervalSpy = vi
       .spyOn(globalThis, 'setInterval')
-      .mockImplementation((handler) => {
+      .mockImplementation((handler, timeout, ...args) => {
         if (typeof handler === 'function') {
+          // Fang poll-callbacken så testen slipper å vente fem minutter.
           pollCallback = () => handler()
         }
-        return 123
+        return setInterval(handler, timeout, ...args)
       })
+    // Første svar matcher appen; neste svar simulerer at en ny versjon er publisert.
     fetchMock
       .mockResolvedValueOnce(versjonssvar('versjon-1'))
       .mockResolvedValueOnce(versjonssvar('versjon-2'))
@@ -99,14 +103,17 @@ describe('Versjonsvarsel', () => {
     renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
 
+    // Første kontroll er ferdig, og polling er satt opp med fem minutters intervall.
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(setIntervalSpy).toHaveBeenCalledWith(
       expect.any(Function),
       5 * 60 * 1000
     )
 
+    // Kjør neste polling-kontroll manuelt.
     await act(async () => pollCallback?.())
 
+    // Ny versjon skal vise reload-varselet etter det andre fetch-kallet.
     expect(
       await screen.findByRole('button', { name: 'Last inn på nytt' })
     ).toBeInTheDocument()
