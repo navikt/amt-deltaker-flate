@@ -30,7 +30,10 @@ export const App = () => {
 
   useEffect(() => {
     if (deltakerId) {
-      doFetchDeltakelse(deltakerId)
+      // Hooken lagrer feilen i state, som App bruker til å vise feilmeldingen.
+      // Promise-en avvises likevel, så den håndteres her for å unngå at samme feil
+      // også rapporteres som en uhåndtert Promise-avvisning i Faro.
+      void doFetchDeltakelse(deltakerId).catch(() => undefined)
     }
   }, [deltakerId])
 
