@@ -47,12 +47,16 @@ export const UtkastPage = () => {
     if (!godatt) {
       setGodTattError(true)
     } else if (deltakerId) {
-      doFetchGodkjennUtkast(deltakerId).then((oppdatertDeltaker) => {
-        if (oppdatertDeltaker) {
-          setDeltaker(oppdatertDeltaker)
-          setShowSuccessMessage(true)
-        }
-      })
+      // Hooken oppdaterer feiltilstanden som vises i UI-et; håndter avvisningen her.
+      void doFetchGodkjennUtkast(deltakerId).then(
+        (oppdatertDeltaker) => {
+          if (oppdatertDeltaker) {
+            setDeltaker(oppdatertDeltaker)
+            setShowSuccessMessage(true)
+          }
+        },
+        () => undefined
+      )
     }
   }
 

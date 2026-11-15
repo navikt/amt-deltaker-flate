@@ -1,14 +1,31 @@
 import '@testing-library/jest-dom/vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
 import { UtkastEnkeltplassPage } from './UtkastEnkeltplassPage'
 import { DeltakerContext } from '../DeltakerContext'
 import { DeltakerResponse } from '../api/data/deltaker'
+import { godkjennUtkast } from '../api/api'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
+// Testene kjører i Node, men appens TypeScript-oppsett eksponerer ikke Node-typene.
+// Dette begrensede grensesnittet dekker bare eventene testen trenger.
+interface ProcessWithUnhandledRejection {
+  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+}
+
+// Node-prosessens unhandledRejection-hendelse fanger avvisninger JSDOM ikke alltid sender til window.
+const nodeProcess = (
+  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
+).process
+
 dayjs.extend(duration)
+
+vi.mock('../api/api', () => ({
+  godkjennUtkast: vi.fn()
+}))
 
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ deltakerId: 'deltaker-123' })
@@ -151,5 +168,33 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
 
     expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
     expect(screen.queryByText(/dag(er)? i uka/)).not.toBeInTheDocument()
+  })
+})
+
+describe('UtkastEnkeltplassPage - godkjenning', () => {
+  it('viser feilmelding uten uhåndtert avvisning når godkjenning feiler', async () => {
+    vi.mocked(godkjennUtkast).mockRejectedValue(new Error('Request failed'))
+    const unhandledRejections: unknown[] = []
+    const handleUnhandledRejection = (reason: unknown) => {
+      unhandledRejections.push(reason)
+    }
+    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+
+    try {
+      renderWithDeltaker(lagDeltaker())
+
+      fireEvent.click(screen.getByTestId('godkjenn_utkast'))
+
+      expect(
+        await screen.findByText(
+          'Det skjedde en feil ved godkjenning av utkastet. Prøv igjen senere.'
+        )
+      ).toBeInTheDocument()
+      await new Promise((resolve) => setTimeout(resolve, 0))
+
+      expect(unhandledRejections).toEqual([])
+    } finally {
+      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+    }
   })
 })

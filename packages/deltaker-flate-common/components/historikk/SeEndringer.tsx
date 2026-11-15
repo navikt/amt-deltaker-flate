@@ -38,7 +38,11 @@ export const SeEndringer = ({
   } = useDeferredFetch(fetchHistorikk)
 
   const hentEndringer = () => {
-    doFetchHistorikk(deltakerId).then(() => setHistorikkModalOpen(true))
+    // Hooken oppdaterer feiltilstanden som vises i alerten; håndter avvisningen her.
+    void doFetchHistorikk(deltakerId).then(
+      () => setHistorikkModalOpen(true),
+      () => undefined
+    )
   }
 
   useEffect(() => {

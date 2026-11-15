@@ -1,16 +1,33 @@
 import '@testing-library/jest-dom/vitest'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   DeltakerStatusType,
   PrisinformasjonType,
   Tiltakskode
 } from 'deltaker-flate-common'
+import { getHistorikk } from '../api/api'
 import { DeltakerPage } from './DeltakerPage'
 import {
   lagInnbyggerDeltaker,
   renderWithInnbyggerDeltakerContext
 } from './test-utils'
+
+// Testene kjører i Node, men appens TypeScript-oppsett eksponerer ikke Node-typene.
+// Dette begrensede grensesnittet dekker bare eventene testen trenger.
+interface ProcessWithUnhandledRejection {
+  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+}
+
+// Node-prosessens unhandledRejection-hendelse fanger avvisninger JSDOM ikke alltid sender til window.
+const nodeProcess = (
+  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
+).process
+
+vi.mock('../api/api.ts', () => ({
+  getHistorikk: vi.fn()
+}))
 
 vi.mock('react-router-dom', () => ({
   useSearchParams: () => [new URLSearchParams(), vi.fn()]
@@ -87,5 +104,49 @@ describe('DeltakerPage - prisinformasjon til godkjenning', () => {
     expect(
       screen.queryByRole('heading', { name: 'Endring sendt til godkjenning:' })
     ).not.toBeInTheDocument()
+  })
+})
+
+describe('DeltakerPage - historikk', () => {
+  beforeEach(() => {
+    window.scrollTo = vi.fn()
+  })
+
+  it('viser feilmelding uten uhåndtert avvisning når historikk ikke kan hentes', async () => {
+    vi.mocked(getHistorikk).mockRejectedValue(new Error('Request failed'))
+    const unhandledRejections: unknown[] = []
+    const handleUnhandledRejection = (reason: unknown) => {
+      unhandledRejections.push(reason)
+    }
+    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+
+    try {
+      renderWithInnbyggerDeltakerContext(
+        <DeltakerPage />,
+        lagInnbyggerDeltaker({
+          status: {
+            id: 's1',
+            type: DeltakerStatusType.VENTER_PA_OPPSTART,
+            aarsak: null,
+            gyldigFra: new Date(),
+            gyldigTil: null,
+            opprettet: new Date()
+          }
+        })
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: 'Se endringer' }))
+
+      expect(
+        await screen.findByText(
+          'Beklager, vi kunne ikke hente historiske endringer på tiltaket.'
+        )
+      ).toBeInTheDocument()
+      await new Promise((resolve) => setTimeout(resolve, 0))
+
+      expect(unhandledRejections).toEqual([])
+    } finally {
+      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+    }
   })
 })
