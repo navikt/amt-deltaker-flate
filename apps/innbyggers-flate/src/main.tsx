@@ -14,6 +14,8 @@ import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './queryClient.ts'
 
 const AppWithErrorBoundary = withFaroErrorBoundary(
   () => (
@@ -48,7 +50,9 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <AppWithErrorBoundary />
+      <QueryClientProvider client={queryClient}>
+        <AppWithErrorBoundary />
+      </QueryClientProvider>
     </React.StrictMode>
   )
 }

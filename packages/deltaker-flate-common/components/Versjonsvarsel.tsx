@@ -1,5 +1,6 @@
 import { Button, GlobalAlert } from '@navikt/ds-react'
-import { useEffect, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
 import { logError } from '../utils/utils'
 
 interface Props {
@@ -24,69 +25,39 @@ const isVersionManifest = (value: unknown): value is VersionManifest =>
   value.version.length > 0
 
 export const Versjonsvarsel = ({ currentVersion, manifestUrl }: Props) => {
-  const [nyVersjonTilgjengelig, setNyVersjonTilgjengelig] = useState(false)
   const harLoggetFeil = useRef(false)
+  const { data: manifest, error } = useQuery({
+    queryKey: ['frontend-version', manifestUrl, currentVersion],
+    queryFn: async () => {
+      const response = await fetch(manifestUrl, { cache: 'no-store' })
+      if (!response.ok) {
+        throw new Error(`Versjonssjekk feilet med HTTP ${response.status}`)
+      }
+
+      const manifest: unknown = await response.json()
+      if (!isVersionManifest(manifest)) {
+        throw new Error('Versjonsmanifestet har ugyldig format')
+      }
+
+      return manifest
+    },
+    enabled: Boolean(currentVersion) && currentVersion !== 'local',
+    refetchInterval: VERSION_CHECK_INTERVAL_MS,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+    // Feilen logges lokalt én gang og kastes ikke videre til error boundary.
+    retry: false,
+    throwOnError: false
+  })
 
   useEffect(() => {
-    if (!currentVersion || currentVersion === 'local') return
-
-    let active = true
-    let requestInProgress = false
-
-    const logVersjonssjekkFeil = (reason: unknown) => {
-      if (harLoggetFeil.current) return
-      logError('Kunne ikke sjekke frontend-versjon', reason)
+    if (error && !harLoggetFeil.current) {
+      logError('Kunne ikke sjekke frontend-versjon', error)
       harLoggetFeil.current = true
     }
+  }, [error])
 
-    const sjekkVersjon = async () => {
-      if (!active || requestInProgress) return
-      requestInProgress = true
-
-      try {
-        const response = await fetch(manifestUrl, { cache: 'no-store' })
-        if (!response.ok) {
-          logVersjonssjekkFeil(
-            `Versjonssjekk feilet med HTTP ${response.status}`
-          )
-          return
-        }
-
-        const manifest: unknown = await response.json()
-        if (!isVersionManifest(manifest)) {
-          logVersjonssjekkFeil('Versjonsmanifestet har ugyldig format')
-          return
-        }
-
-        if (active && manifest.version !== currentVersion) {
-          setNyVersjonTilgjengelig(true)
-        }
-      } catch (error) {
-        logVersjonssjekkFeil(error)
-      } finally {
-        requestInProgress = false
-      }
-    }
-
-    void sjekkVersjon()
-    const intervalId = window.setInterval(
-      () => void sjekkVersjon(),
-      VERSION_CHECK_INTERVAL_MS
-    )
-    const sjekkVedSynligFane = () => {
-      if (document.visibilityState === 'visible') {
-        void sjekkVersjon()
-      }
-    }
-
-    document.addEventListener('visibilitychange', sjekkVedSynligFane)
-
-    return () => {
-      active = false
-      window.clearInterval(intervalId)
-      document.removeEventListener('visibilitychange', sjekkVedSynligFane)
-    }
-  }, [currentVersion, manifestUrl])
+  const nyVersjonTilgjengelig = manifest && manifest.version !== currentVersion
 
   if (!nyVersjonTilgjengelig) return null
 

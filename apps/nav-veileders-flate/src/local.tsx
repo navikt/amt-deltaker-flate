@@ -32,7 +32,7 @@ const renderAsReactRoot = () => {
 
   root.render(
     <React.StrictMode>
-      <>
+      <QueryClientProvider client={queryClient}>
         <Versjonsvarsel
           currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
           manifestUrl={resolveVersionManifestUrl(import.meta.url)}
@@ -43,13 +43,11 @@ const renderAsReactRoot = () => {
             initialEnhetId={params.get('enhet_id') || '0106'}
           >
             <BrowserRouter basename={import.meta.env.BASE_URL}>
-              <QueryClientProvider client={queryClient}>
-                <AppRoutes />
-              </QueryClientProvider>
+              <AppRoutes />
             </BrowserRouter>
           </AppContextProvider>
         </div>
-      </>
+      </QueryClientProvider>
     </React.StrictMode>
   )
 

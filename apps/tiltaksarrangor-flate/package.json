@@ -27,6 +27,7 @@
     "@navikt/ds-css": "catalog:",
     "@navikt/ds-react": "catalog:",
     "@navikt/nav-dekoratoren-moduler": "catalog:",
+    "@tanstack/react-query": "catalog:",
     "axios": "^1.20.0",
     "classnames": "^2.5.1",
     "dayjs": "catalog:",

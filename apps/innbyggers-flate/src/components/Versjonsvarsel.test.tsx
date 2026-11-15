@@ -1,4 +1,5 @@
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   resolveVersionManifestUrl,
@@ -18,6 +19,23 @@ const ventTilVersjonssjekkErFerdig = () =>
 
 describe('Versjonsvarsel', () => {
   const fetchMock = vi.fn()
+  const queryClients: QueryClient[] = []
+
+  const renderVersjonsvarsel = (currentVersion = 'versjon-1') => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { gcTime: Infinity } }
+    })
+    queryClients.push(queryClient)
+
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <Versjonsvarsel
+          currentVersion={currentVersion}
+          manifestUrl="/assets/version.json"
+        />
+      </QueryClientProvider>
+    )
+  }
 
   it('finner manifestet ved siden av appens bundle', () => {
     expect(
@@ -34,6 +52,8 @@ describe('Versjonsvarsel', () => {
 
   afterEach(() => {
     cleanup()
+    queryClients.forEach((queryClient) => queryClient.clear())
+    queryClients.length = 0
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
     fetchMock.mockReset()
@@ -42,12 +62,7 @@ describe('Versjonsvarsel', () => {
   it('viser ingen varsel når versjonen er den samme', async () => {
     fetchMock.mockResolvedValue(versjonssvar('versjon-1'))
 
-    render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    renderVersjonsvarsel()
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith('/assets/version.json', {
@@ -60,12 +75,7 @@ describe('Versjonsvarsel', () => {
   it('viser varsel med knapp når en nyere versjon er tilgjengelig', async () => {
     fetchMock.mockResolvedValue(versjonssvar('versjon-2'))
 
-    render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    renderVersjonsvarsel()
 
     expect(
       await screen.findByRole('button', { name: 'Last inn på nytt' })
@@ -86,12 +96,7 @@ describe('Versjonsvarsel', () => {
       .mockResolvedValueOnce(versjonssvar('versjon-1'))
       .mockResolvedValueOnce(versjonssvar('versjon-2'))
 
-    render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -114,12 +119,7 @@ describe('Versjonsvarsel', () => {
       .mockResolvedValueOnce(versjonssvar('versjon-1'))
       .mockResolvedValueOnce(versjonssvar('versjon-2'))
 
-    render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
 
     await act(async () => {
@@ -144,12 +144,7 @@ describe('Versjonsvarsel', () => {
     const clearIntervalSpy = vi.spyOn(window, 'clearInterval')
     fetchMock.mockResolvedValue(versjonssvar('versjon-1'))
 
-    const { unmount } = render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    const { unmount } = renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
 
     unmount()
@@ -162,12 +157,7 @@ describe('Versjonsvarsel', () => {
   it('logger feil når versjonssjekken ikke kan fullføres', async () => {
     fetchMock.mockRejectedValue(new Error('Nettverksfeil'))
 
-    render(
-      <Versjonsvarsel
-        currentVersion="versjon-1"
-        manifestUrl="/assets/version.json"
-      />
-    )
+    renderVersjonsvarsel()
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith(

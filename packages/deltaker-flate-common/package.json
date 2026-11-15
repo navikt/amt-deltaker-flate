@@ -17,6 +17,7 @@
   "dependencies": {
     "@navikt/aksel-icons": "catalog:",
     "@navikt/ds-react": "catalog:",
+    "@tanstack/react-query": "catalog:",
     "dayjs": "catalog:",
     "react": "catalog:",
     "uuid": "catalog:",

@@ -78,7 +78,7 @@ export class Deltaker extends HTMLElement {
     this.reactRoot = createRoot(this.root)
     this.reactRoot.render(
       <FaroBoundary>
-        <>
+        <QueryClientProvider client={queryClient}>
           <Versjonsvarsel
             currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
             manifestUrl={resolveVersionManifestUrl(import.meta.url)}
@@ -89,13 +89,11 @@ export class Deltaker extends HTMLElement {
               initialEnhetId={initialEnhetId}
             >
               <BrowserRouter>
-                <QueryClientProvider client={queryClient}>
-                  <AppRoutes />
-                </QueryClientProvider>
+                <AppRoutes />
               </BrowserRouter>
             </AppContextProvider>
           </div>
-        </>
+        </QueryClientProvider>
       </FaroBoundary>
     )
   }

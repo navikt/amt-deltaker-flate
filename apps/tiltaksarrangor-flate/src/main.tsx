@@ -18,7 +18,9 @@ import { StrictMode } from 'react'
 import type { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { App } from './App'
+import { queryClient } from './queryClient'
 import { DemoBanner } from './component/felles/demo-banner/DemoBanner'
 import { ErrorPage } from './component/page/error/ErrorPage'
 import StoreProvider from './store/store-provider'
@@ -65,16 +67,18 @@ const renderAsReactRoot = () => {
   root.render(
     <StrictMode>
       <FaroBoundary>
-        <Versjonsvarsel
-          currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
-          manifestUrl={resolveVersionManifestUrl(import.meta.url)}
-        />
-        <StoreProvider>
-          {env.isDemo && <DemoBanner />}
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </StoreProvider>
+        <QueryClientProvider client={queryClient}>
+          <Versjonsvarsel
+            currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
+            manifestUrl={resolveVersionManifestUrl(import.meta.url)}
+          />
+          <StoreProvider>
+            {env.isDemo && <DemoBanner />}
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </StoreProvider>
+        </QueryClientProvider>
       </FaroBoundary>
     </StrictMode>
   )
