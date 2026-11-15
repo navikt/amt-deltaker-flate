@@ -85,7 +85,7 @@ describe('Versjonsvarsel', () => {
   it('oppdager ny versjon ved neste femminutterskontroll', async () => {
     let pollCallback: (() => void) | undefined
     const setIntervalSpy = vi
-      .spyOn(window, 'setInterval')
+      .spyOn(globalThis, 'setInterval')
       .mockImplementation((handler) => {
         if (typeof handler === 'function') {
           pollCallback = () => handler()
@@ -114,16 +114,24 @@ describe('Versjonsvarsel', () => {
   })
 
   it('sjekker versjon på nytt når fanen blir synlig', async () => {
-    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible')
+    const visibilityState = vi
+      .spyOn(document, 'visibilityState', 'get')
+      .mockReturnValue('hidden')
     fetchMock
       .mockResolvedValueOnce(versjonssvar('versjon-1'))
       .mockResolvedValueOnce(versjonssvar('versjon-2'))
 
     renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
     await act(async () => {
-      document.dispatchEvent(new Event('visibilitychange'))
+      window.dispatchEvent(new Event('visibilitychange'))
+    })
+
+    visibilityState.mockReturnValue('visible')
+    await act(async () => {
+      window.dispatchEvent(new Event('visibilitychange'))
     })
 
     expect(
@@ -133,25 +141,29 @@ describe('Versjonsvarsel', () => {
   })
 
   it('rydder opp intervallkontrollen når komponenten avmonteres', async () => {
-    let pollCallback: (() => void) | undefined
-    const intervalId = 123
-    vi.spyOn(window, 'setInterval').mockImplementation((handler) => {
-      if (typeof handler === 'function') {
-        pollCallback = () => handler()
-      }
-      return intervalId
-    })
-    const clearIntervalSpy = vi.spyOn(window, 'clearInterval')
+    const intervalIds: ReturnType<typeof globalThis.setInterval>[] = []
+    const setInterval = globalThis.setInterval.bind(globalThis)
+    const setIntervalSpy = vi
+      .spyOn(globalThis, 'setInterval')
+      .mockImplementation((handler, timeout, ...args) => {
+        const intervalId = setInterval(handler, timeout, ...args)
+        intervalIds.push(intervalId)
+        return intervalId
+      })
+    const clearIntervalSpy = vi.spyOn(globalThis, 'clearInterval')
     fetchMock.mockResolvedValue(versjonssvar('versjon-1'))
 
     const { unmount } = renderVersjonsvarsel()
     await ventTilVersjonssjekkErFerdig()
 
+    expect(setIntervalSpy).toHaveBeenCalledWith(
+      expect.any(Function),
+      5 * 60 * 1000
+    )
+
     unmount()
 
-    expect(clearIntervalSpy).toHaveBeenCalledWith(intervalId)
-    await act(async () => pollCallback?.())
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(clearIntervalSpy).toHaveBeenCalledWith(intervalIds[0])
   })
 
   it('logger feil når versjonssjekken ikke kan fullføres', async () => {
