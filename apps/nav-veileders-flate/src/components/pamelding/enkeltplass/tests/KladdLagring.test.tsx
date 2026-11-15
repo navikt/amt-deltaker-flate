@@ -9,6 +9,15 @@ import { EnkeltplassKladdRequest } from '../../../../api/data/kladd-request'
 import { OpplaringRepresenterer } from 'deltaker-flate-common'
 import { formToEnkeltplassKladdRequest } from '../../../../utils/pamelding-enkeltplass'
 
+interface ProcessWithUnhandledRejection {
+  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
+}
+
+const nodeProcess = (
+  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
+).process
+
 const formToKladdRequest = (
   data: PameldingEnkeltplassFormValues
 ): EnkeltplassKladdRequest => formToEnkeltplassKladdRequest(data)
@@ -64,7 +73,7 @@ describe('KladdLagring - auto-lagring', () => {
     vi.useRealTimers()
   })
 
-  it('auto-lagrer ikke ved mount når ingenting er endret', async () => {
+  it('auto-lagrer ikke ved montering hvis ingenting er endret', async () => {
     const { oppdaterKladd, advanceDebounce } = setupKladdLagring({
       innhold: 'eksisterende'
     })
@@ -74,7 +83,7 @@ describe('KladdLagring - auto-lagring', () => {
     expect(oppdaterKladd).not.toHaveBeenCalled()
   })
 
-  it('auto-lagrer når et form-felt endres', async () => {
+  it('auto-lagrer ved endring i et skjemafelt', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       innhold: ''
     })
@@ -90,7 +99,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('auto-lagrer når kodeverkValg endres via setValue', async () => {
+  it('auto-lagrer ved endring av valg fra kodeverket', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       kategoriseringValg: []
     })
@@ -117,7 +126,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('auto-lagrer når sertifiseringValg endres via setValue', async () => {
+  it('auto-lagrer ved endring av sertifisering', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       sertifiseringValg: []
     })
@@ -135,7 +144,7 @@ describe('KladdLagring - auto-lagring', () => {
     )
   })
 
-  it('debouncer flere endringer til ett kall', async () => {
+  it('samler flere endringer til ett lagringskall', async () => {
     const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
       innhold: ''
     })
@@ -164,24 +173,48 @@ describe('KladdLagring - auto-lagring', () => {
     expect(screen.getByText('Kladd lagret')).toBeInTheDocument()
   })
 
-  it('canceler pending lagring ved unmount og auto-lagrer fersk på remount', async () => {
-    // Første mount: gjør en endring, men unmount før debouncen fyrer
-    const første = setupKladdLagring({ innhold: '' })
-    første.change('innhold', 'forkastet')
-    await første.advanceDebounce(500)
-    første.unmount()
+  it('viser lagringsfeil uten global feilrapportering', async () => {
+    const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
+      innhold: ''
+    })
+    oppdaterKladd.mockRejectedValueOnce(new Error('Request failed'))
+    const unhandledRejections: unknown[] = []
+    const handleUnhandledRejection = (reason: unknown) => {
+      unhandledRejections.push(reason)
+    }
+    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
 
-    // Hengende timer skal ikke trigge etter unmount
-    await første.advanceDebounce(3000)
-    expect(første.oppdaterKladd).not.toHaveBeenCalled()
+    try {
+      change('innhold', 'ny tekst')
+      await advanceDebounce()
 
-    // Andre mount: ny endring skal lagres normalt
-    const andre = setupKladdLagring({ innhold: '' })
-    andre.change('innhold', 'lagret')
-    await andre.advanceDebounce()
+      expect(screen.getByText('Lagring feilet')).toBeInTheDocument()
+      await new Promise((resolve) => setTimeout(resolve, 0))
 
-    expect(andre.oppdaterKladd).toHaveBeenCalledTimes(1)
-    expect(andre.oppdaterKladd).toHaveBeenCalledWith(
+      expect(unhandledRejections).toEqual([])
+    } finally {
+      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+    }
+  })
+
+  it('avbryter ventende lagring ved avmontering og lagrer endringer ved ny montering', async () => {
+    // Forste montering: endre et felt, men avmonter for lagringen starter.
+    const firstMount = setupKladdLagring({ innhold: '' })
+    firstMount.change('innhold', 'forkastet')
+    await firstMount.advanceDebounce(500)
+    firstMount.unmount()
+
+    // Timeren skal ikke starte lagring etter avmontering.
+    await firstMount.advanceDebounce(3000)
+    expect(firstMount.oppdaterKladd).not.toHaveBeenCalled()
+
+    // Ny montering: nye endringer skal lagres som vanlig.
+    const secondMount = setupKladdLagring({ innhold: '' })
+    secondMount.change('innhold', 'lagret')
+    await secondMount.advanceDebounce()
+
+    expect(secondMount.oppdaterKladd).toHaveBeenCalledTimes(1)
+    expect(secondMount.oppdaterKladd).toHaveBeenCalledWith(
       '1',
       '0101',
       expect.objectContaining({ beskrivelse: 'lagret' })

@@ -35,9 +35,9 @@ export default function AvvisningsmodalBody({
 
   const avvis = () => {
     if (begrunnelse.valider()) {
-      doFetch(forslag.id, enhetId, {
+      void doFetch(forslag.id, enhetId, {
         begrunnelse: begrunnelse.begrunnelse
-      }).then(onSend)
+      }).then(onSend, () => undefined)
     }
   }
 

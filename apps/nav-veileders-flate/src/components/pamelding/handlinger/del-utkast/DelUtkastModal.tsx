@@ -91,11 +91,14 @@ export const DelUtkastModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            doFetchSendSomForslag(
+            void doFetchSendSomForslag(
               deltaker.deltakerId,
               enhetId,
               generatePameldingRequestFromForm(deltaker, getValues())
-            ).then(() => onClose())
+            ).then(
+              () => onClose(),
+              () => undefined
+            )
           }}
           disabled={fetchState === DeferredFetchState.LOADING}
           loading={fetchState === DeferredFetchState.LOADING}

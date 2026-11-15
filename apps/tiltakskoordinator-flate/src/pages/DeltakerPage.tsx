@@ -27,7 +27,8 @@ export const DeltakerPage = () => {
 
   useEffect(() => {
     if (deltakerId) {
-      fetchDeltaker(deltakerId)
+      // useDeferredFetch lagrer feilen i state, som siden viser.
+      void fetchDeltaker(deltakerId).catch(() => undefined)
     }
   }, [deltakerId])
 

@@ -39,7 +39,10 @@ export const KladdLagring = <TFormValues extends FieldValues, TKladdRequest>({
       const newKladd = formToKladdRequest(getValues())
       if (JSON.stringify(storedKladd) !== JSON.stringify(newKladd)) {
         setStoredKladd(newKladd)
-        void fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd)
+        // Hooken viser feilen via saveKladdState i denne komponenten.
+        void fetchSaveKladd(deltaker.deltakerId, enhetId, newKladd).catch(
+          () => undefined
+        )
       }
     }, 2000)
 

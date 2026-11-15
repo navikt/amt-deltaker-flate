@@ -62,9 +62,10 @@ export const AvbrytUtkastDeltMedBrukerModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            fetchAvbrytUtkast(deltaker.deltakerId, enhetId).then(() => {
-              onClose()
-            })
+            void fetchAvbrytUtkast(deltaker.deltakerId, enhetId).then(
+              () => onClose(),
+              () => undefined
+            )
           }}
           disabled={disabled}
           loading={avbrytUtkastState === DeferredFetchState.LOADING}

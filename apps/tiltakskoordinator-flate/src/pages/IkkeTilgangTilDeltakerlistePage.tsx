@@ -33,7 +33,8 @@ export function IkkeTilgangTilDeltakerlistePage() {
     if (!confirmation) {
       setConfirmationError('Du må bekrefte ditt behov')
     } else {
-      doFetch(deltakerlisteId)
+      // useDeferredFetch lagrer feilen i state, som bekreftelsespanelet viser.
+      void doFetch(deltakerlisteId).catch(() => undefined)
     }
   }
 

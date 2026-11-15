@@ -32,11 +32,6 @@ export interface MeldPaDirekteModalProps {
   onClose: () => void
 }
 
-export enum DokumentertValg {
-  SAMTALEREFERAT = 'SAMTALEREFERAT',
-  DIALOGMELDING = 'DIALOGMELDING'
-}
-
 export const MeldPaDirekteModal = ({
   open,
   onClose
@@ -124,7 +119,7 @@ export const MeldPaDirekteModal = ({
             if (!confirmed) {
               setConfirmError('Du må bekrefte før du kan fortsette.')
             } else {
-              doFetchMeldPaDirekte(
+              void doFetchMeldPaDirekte(
                 deltaker.deltakerId,
                 enhetId,
                 formContext
@@ -133,7 +128,10 @@ export const MeldPaDirekteModal = ({
                       formContext.getValues()
                     )
                   : generatePameldingRequest(deltaker)
-              ).then(() => onClose())
+              ).then(
+                () => onClose(),
+                () => undefined
+              )
             }
           }}
           disabled={fetchState === DeferredFetchState.LOADING}
