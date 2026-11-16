@@ -1,4 +1,4 @@
-import { Box, Detail, Heading } from '@navikt/ds-react'
+import { Detail, Heading } from '@navikt/ds-react'
 import { AktivtForslag } from '../../../../../api/data/forslag'
 import { Tiltakskode } from '../../../../../api/data/tiltak'
 import {
@@ -9,7 +9,11 @@ import {
   dateStrWithMonthName,
   formatDate
 } from '../../../../../utils/date-utils'
-import { ForslagtypeDetaljer, getEndringsTittel } from 'deltaker-flate-common'
+import {
+  EndringerWrapper,
+  ForslagtypeDetaljer,
+  getEndringsTittel
+} from 'deltaker-flate-common'
 import { EndringPanel } from './EndringPanel'
 import { FjernEndring } from './FjernEndring'
 import { FjernForslag } from './FjernForslag'
@@ -53,12 +57,7 @@ export const UbehandledeEndringer = ({
   )
 
   return (
-    <Box
-      background="sunken"
-      padding={{ xs: 'space-8', md: 'space-16' }}
-      borderRadius="4"
-      className={styles.ulesteEndringerContainer}
-    >
+    <EndringerWrapper className={styles.ulesteEndringerContainer}>
       {(forslag.length > 0 || ulesteSvarFraNav.length > 0) && (
         <>
           <Heading level="3" size="small" className={styles.aktiveForslagTitle}>
@@ -87,7 +86,7 @@ export const UbehandledeEndringer = ({
           )}
         </>
       )}
-    </Box>
+    </EndringerWrapper>
   )
 }
 
