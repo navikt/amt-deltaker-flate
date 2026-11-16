@@ -4,9 +4,10 @@ import { setupWorker } from 'msw/browser'
 import { Deltaker, TiltakDeltaker, Vurderingstype } from '../api/data/deltaker'
 import { EndringFraArrangor, EndringFraArrangorType } from '../api/data/endring'
 import { VIS_DRIFTSMELDING_TOGGLE_NAVN } from '../api/data/feature-toggle'
-import { AktivtForslag, ForslagEndring } from '../api/data/forslag'
+import { AktivtForslag } from '../api/data/forslag'
 import {
   createHistorikk,
+  ForslagEndring,
   ForslagEndringType,
   ForslagStatusType,
   lagHistorikkFellesOppstart,

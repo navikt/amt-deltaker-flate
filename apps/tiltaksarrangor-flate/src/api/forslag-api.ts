@@ -2,7 +2,8 @@ import { AxiosPromise } from 'axios'
 import { appUrl } from '../utils/url-utils'
 import { axiosInstance, logAndThrowError, parse } from './utils'
 import { formatDateToDateInputStr } from '../utils/date-utils'
-import { EndringAarsak, aktivtForslagSchema } from './data/forslag'
+import { ForslagEndringAarsak as EndringAarsak } from 'deltaker-flate-common'
+import { aktivtForslagSchema } from './data/forslag'
 
 export const forlengDeltakelseForslag = (
   deltakerId: string,

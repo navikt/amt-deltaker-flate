@@ -1,8 +1,11 @@
 import { Vurderingstype } from '../../../../api/data/deltaker'
-import { EndringAarsak } from '../../../../api/data/forslag'
+import { ForslagEndringAarsak as EndringAarsak } from 'deltaker-flate-common'
 import { EndringType } from './types'
 import { AvslutningsType } from './endre-deltaker-modal/AvsluttKursDeltakelseModal'
-import { DeltakerStatusAarsak, DeltakerStatusAarsakType } from '../../../../api/data/deltakerStatusArsak'
+import {
+  DeltakerStatusAarsak,
+  DeltakerStatusAarsakType
+} from '../../../../api/data/deltakerStatusArsak'
 
 export const aarsakTekstMapper = (aarsakType: DeltakerStatusAarsakType) => {
   switch (aarsakType) {
@@ -46,7 +49,9 @@ export const avslutningsTypeTekstMapper = (kategoriType: AvslutningsType) => {
   }
 }
 
-export const avslutningsBeskrivelseTekstMapper = (kategoriType: AvslutningsType) => {
+export const avslutningsBeskrivelseTekstMapper = (
+  kategoriType: AvslutningsType
+) => {
   switch (kategoriType) {
     case AvslutningsType.FULLFORT:
       return 'Med fullført menes at kurset er gjennomført, og/eller at ønsket mål, sertifisering el. er oppnådd'

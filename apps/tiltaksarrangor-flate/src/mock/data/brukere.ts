@@ -12,10 +12,11 @@ import {
   Vurderingstype
 } from '../../api/data/deltaker'
 import { DeltakerStatusAarsakType } from '../../api/data/deltakerStatusArsak'
-import { AktivtForslag, HistorikkForslag } from '../../api/data/forslag'
+import { AktivtForslag } from '../../api/data/forslag'
 import {
   createHistorikk,
   DeltakerEndring,
+  Forslag as HistorikkForslag,
   ForslagEndringType,
   ForslagStatusType,
   HistorikkType,

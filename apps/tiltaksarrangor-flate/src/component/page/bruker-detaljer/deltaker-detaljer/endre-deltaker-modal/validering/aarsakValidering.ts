@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { ForslagEndringAarsakType } from 'deltaker-flate-common'
-import { EndringAarsak } from '../../../../../../api/data/forslag'
+import {
+  ForslagEndringAarsak as EndringAarsak,
+  ForslagEndringAarsakType
+} from 'deltaker-flate-common'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../../../../utils/endre-deltaker-utils'
 import { aarsakTekstMapper } from '../../tekst-mappers'
 import { DeltakerStatusAarsakType } from '../../../../../../api/data/deltakerStatusArsak'

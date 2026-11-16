@@ -1,17 +1,19 @@
-import { Box, Heading } from '@navikt/ds-react'
+import { Box, Detail, Heading } from '@navikt/ds-react'
 import { AktivtForslag } from '../../../../../api/data/forslag'
 import { Tiltakskode } from '../../../../../api/data/tiltak'
 import {
   UlestEndring,
   UlestEndringType
 } from '../../../../../api/data/ulestEndring'
-import { dateStrWithMonthName } from '../../../../../utils/date-utils'
-import { getEndringsTittel } from 'deltaker-flate-common'
+import {
+  dateStrWithMonthName,
+  formatDate
+} from '../../../../../utils/date-utils'
+import { ForslagtypeDetaljer, getEndringsTittel } from 'deltaker-flate-common'
 import { EndringPanel } from './EndringPanel'
 import { FjernEndring } from './FjernEndring'
 import { FjernForslag } from './FjernForslag'
 import styles from './Forslag.module.scss'
-import { ForslagEndringsdetaljer } from './ForslagEndringsdetaljer'
 import { ulestEndringErSvarFraNav } from './forslagUtils'
 import {
   AvvistForslagDetaljer,
@@ -110,11 +112,13 @@ const getSendteForslag = (
         }
         nyNavVeileder={false}
       >
-        <ForslagEndringsdetaljer
-          endring={it.endring}
+        <ForslagtypeDetaljer
+          forslagEndring={it.endring}
           begrunnelse={it.begrunnelse}
-          sendt={it.opprettet}
         />
+        <Detail className={styles.forslag_detail_sendt}>
+          Forslag sendt fra arrangør: {formatDate(it.opprettet)}
+        </Detail>
       </EndringPanel>
     )
   })

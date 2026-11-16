@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { deltakerEndringSchema } from 'deltaker-flate-common'
-import { historikkForslagSchema } from './forslag'
+import { deltakerEndringSchema, forslagSchema } from 'deltaker-flate-common'
 import { dateSchema } from '../utils'
 import { deltakerStatusAarsakSchema } from './deltakerStatusArsak'
 
@@ -22,7 +21,7 @@ const ulestEndrinDeltakelsesEndringSchema = z.object({
 
 const ulestEndringForslagSchema = z.object({
   type: z.literal(UlestEndringType.AvvistForslag),
-  forslag: historikkForslagSchema
+  forslag: forslagSchema
 })
 
 const ulestEndringNavBrukerSchema = z.object({

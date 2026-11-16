@@ -7,9 +7,9 @@ import {
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType
 } from '../api/data/deltakerStatusArsak'
-import { EndringAarsak } from '../api/data/forslag'
 import {
   DeltakerStatusType as DeltakerHistorikkStatus,
+  ForslagEndringAarsak as EndringAarsak,
   ForslagEndringAarsakType,
   ForslagEndringType,
   ForslagStatusType,

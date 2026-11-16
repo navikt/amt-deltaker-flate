@@ -154,7 +154,7 @@ export const DeltakelseInfo = ({ deltaker }: DeltakelseInfoProps) => {
         />
 
         <SeEndringer
-          className="mt-8"
+          className="mt-2 mb-2 w-fit"
           tiltakskode={deltaker.deltakerliste.tiltakskode}
           erEnkeltplass={false}
           deltakerId={deltaker.id}
