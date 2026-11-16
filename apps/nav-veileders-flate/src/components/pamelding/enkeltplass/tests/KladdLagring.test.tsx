@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { act, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useFormContext } from 'react-hook-form'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { KladdLagring } from '../../KladdLagring'
 import { renderWithProviders } from './test-utils'
 import { PameldingEnkeltplassFormValues } from '../../../../model/PameldingEnkeltplassFormValues'
@@ -164,24 +165,44 @@ describe('KladdLagring - auto-lagring', () => {
     expect(screen.getByText('Kladd lagret')).toBeInTheDocument()
   })
 
+  it('viser lagringsfeil uten global feilrapportering', async () => {
+    const { oppdaterKladd, change, advanceDebounce } = setupKladdLagring({
+      innhold: ''
+    })
+    oppdaterKladd.mockRejectedValueOnce(new Error('Request failed'))
+    const unhandledRejections = trackUnhandledRejections()
+
+    try {
+      change('innhold', 'ny tekst')
+      await advanceDebounce()
+
+      expect(screen.getByText('Lagring feilet')).toBeInTheDocument()
+      await new Promise((resolve) => setTimeout(resolve, 0))
+
+      expect(unhandledRejections.rejections).toEqual([])
+    } finally {
+      unhandledRejections.stop()
+    }
+  })
+
   it('canceler pending lagring ved unmount og auto-lagrer fersk på remount', async () => {
-    // Første mount: gjør en endring, men unmount før debouncen fyrer
-    const første = setupKladdLagring({ innhold: '' })
-    første.change('innhold', 'forkastet')
-    await første.advanceDebounce(500)
-    første.unmount()
+    // Forste montering: endre et felt, men avmonter for lagringen starter.
+    const firstMount = setupKladdLagring({ innhold: '' })
+    firstMount.change('innhold', 'forkastet')
+    await firstMount.advanceDebounce(500)
+    firstMount.unmount()
 
-    // Hengende timer skal ikke trigge etter unmount
-    await første.advanceDebounce(3000)
-    expect(første.oppdaterKladd).not.toHaveBeenCalled()
+    // Timeren skal ikke starte lagring etter avmontering.
+    await firstMount.advanceDebounce(3000)
+    expect(firstMount.oppdaterKladd).not.toHaveBeenCalled()
 
-    // Andre mount: ny endring skal lagres normalt
-    const andre = setupKladdLagring({ innhold: '' })
-    andre.change('innhold', 'lagret')
-    await andre.advanceDebounce()
+    // Ny montering: nye endringer skal lagres som vanlig.
+    const secondMount = setupKladdLagring({ innhold: '' })
+    secondMount.change('innhold', 'lagret')
+    await secondMount.advanceDebounce()
 
-    expect(andre.oppdaterKladd).toHaveBeenCalledTimes(1)
-    expect(andre.oppdaterKladd).toHaveBeenCalledWith(
+    expect(secondMount.oppdaterKladd).toHaveBeenCalledTimes(1)
+    expect(secondMount.oppdaterKladd).toHaveBeenCalledWith(
       '1',
       '0101',
       expect.objectContaining({ beskrivelse: 'lagret' })

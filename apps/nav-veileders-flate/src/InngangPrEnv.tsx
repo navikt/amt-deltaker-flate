@@ -60,10 +60,17 @@ const InngangPrEnv = () => {
           onSubmit={(e) => {
             e.preventDefault()
             if (lagNyPamelding && personident && deltakerlisteId) {
-              doCreatePamelding(personident, deltakerlisteId, '0315')
+              void doCreatePamelding(
+                personident,
+                deltakerlisteId,
+                '0315'
+              ).catch(() => undefined)
             }
+
             if (!lagNyPamelding && deltakerId && personident) {
-              doFetchPamelding(deltakerId, personident, '0315')
+              void doFetchPamelding(deltakerId, personident, '0315').catch(
+                () => undefined
+              )
             }
           }}
         >

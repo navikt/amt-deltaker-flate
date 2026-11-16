@@ -62,11 +62,14 @@ export const LagreUtkastButton = () => {
   return (
     <Button
       onClick={handleSubmit(() => {
-        doFetchDelUtkast(deltaker.deltakerId, enhetId).then((newDeltaker) => {
-          if (newDeltaker) setDeltaker(newDeltaker)
-          setRedigerUtkastModus(false)
-          setError(null)
-        })
+        void doFetchDelUtkast(deltaker.deltakerId, enhetId).then(
+          (newDeltaker) => {
+            if (newDeltaker) setDeltaker(newDeltaker)
+            setRedigerUtkastModus(false)
+            setError(null)
+          },
+          () => undefined
+        )
       })}
       size="small"
       disabled={disabled}

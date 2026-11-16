@@ -54,9 +54,10 @@ export const SlettKladdModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            doFetchSlettKladd(deltaker.deltakerId).then(() => {
-              onClose()
-            })
+            void doFetchSlettKladd(deltaker.deltakerId).then(
+              () => onClose(),
+              () => undefined
+            )
           }}
           disabled={slettKladdState === DeferredFetchState.LOADING}
           loading={slettKladdState === DeferredFetchState.LOADING}

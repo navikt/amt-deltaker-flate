@@ -2,24 +2,13 @@ import '@testing-library/jest-dom/vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { UtkastEnkeltplassPage } from './UtkastEnkeltplassPage'
 import { DeltakerContext } from '../DeltakerContext'
 import { DeltakerResponse } from '../api/data/deltaker'
 import { godkjennUtkast } from '../api/api'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-
-// Testene kjører i Node, men appens TypeScript-oppsett eksponerer ikke Node-typene.
-// Dette begrensede grensesnittet dekker bare eventene testen trenger.
-interface ProcessWithUnhandledRejection {
-  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-}
-
-// Node-prosessens unhandledRejection-hendelse fanger avvisninger JSDOM ikke alltid sender til window.
-const nodeProcess = (
-  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
-).process
 
 dayjs.extend(duration)
 
@@ -174,11 +163,7 @@ describe('UtkastEnkeltplassPage - Deltakelsesmengde', () => {
 describe('UtkastEnkeltplassPage - godkjenning', () => {
   it('viser feilmelding uten uhåndtert avvisning når godkjenning feiler', async () => {
     vi.mocked(godkjennUtkast).mockRejectedValue(new Error('Request failed'))
-    const unhandledRejections: unknown[] = []
-    const handleUnhandledRejection = (reason: unknown) => {
-      unhandledRejections.push(reason)
-    }
-    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+    const unhandledRejections = trackUnhandledRejections()
 
     try {
       renderWithDeltaker(lagDeltaker())
@@ -192,9 +177,9 @@ describe('UtkastEnkeltplassPage - godkjenning', () => {
       ).toBeInTheDocument()
       await new Promise((resolve) => setTimeout(resolve, 0))
 
-      expect(unhandledRejections).toEqual([])
+      expect(unhandledRejections.rejections).toEqual([])
     } finally {
-      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+      unhandledRejections.stop()
     }
   })
 })

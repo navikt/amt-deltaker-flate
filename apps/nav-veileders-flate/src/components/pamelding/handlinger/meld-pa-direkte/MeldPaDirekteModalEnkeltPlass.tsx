@@ -110,13 +110,16 @@ export const MeldPaDirekteModalEnkeltPlass = ({ open, onClose }: Props) => {
             if (!confirmed) {
               setConfirmError('Du må bekrefte før du kan fortsette')
             } else {
-              doFetchMeldPaDirekteEnkeltplass(
+              void doFetchMeldPaDirekteEnkeltplass(
                 deltaker.deltakerId,
                 enhetId,
                 formContext
                   ? formToEnkeltplassRequest(formContext.getValues())
                   : generateEnkeltplassPameldingRequest(deltaker)
-              ).then(() => onClose())
+              ).then(
+                () => onClose(),
+                () => undefined
+              )
             }
           }}
           disabled={fetchState === DeferredFetchState.LOADING}

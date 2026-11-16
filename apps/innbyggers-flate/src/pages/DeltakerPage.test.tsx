@@ -6,6 +6,8 @@ import {
   PrisinformasjonType,
   Tiltakskode
 } from 'deltaker-flate-common'
+import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
+import { useSearchParams } from 'react-router-dom'
 import { getHistorikk } from '../api/api'
 import { DeltakerPage } from './DeltakerPage'
 import {
@@ -13,25 +15,18 @@ import {
   renderWithInnbyggerDeltakerContext
 } from './test-utils'
 
-// Testene kjører i Node, men appens TypeScript-oppsett eksponerer ikke Node-typene.
-// Dette begrensede grensesnittet dekker bare eventene testen trenger.
-interface ProcessWithUnhandledRejection {
-  on(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-  off(event: 'unhandledRejection', listener: (reason: unknown) => void): void
-}
-
-// Node-prosessens unhandledRejection-hendelse fanger avvisninger JSDOM ikke alltid sender til window.
-const nodeProcess = (
-  globalThis as typeof globalThis & { process: ProcessWithUnhandledRejection }
-).process
-
 vi.mock('../api/api.ts', () => ({
   getHistorikk: vi.fn()
 }))
 
 vi.mock('react-router-dom', () => ({
-  useSearchParams: () => [new URLSearchParams(), vi.fn()]
+  useSearchParams: vi.fn()
 }))
+
+beforeEach(() => {
+  window.scrollTo = vi.fn()
+  vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), vi.fn()])
+})
 
 describe('DeltakerPage - Deltakelsesmengde', () => {
   const baseStatus = {
@@ -55,11 +50,6 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
       }
     }
   }
-
-  beforeEach(() => {
-    window.scrollTo = vi.fn()
-  })
-
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     renderWithInnbyggerDeltakerContext(<DeltakerPage />, stottetTiltakDeltaker)
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
@@ -75,10 +65,6 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
 })
 
 describe('DeltakerPage - prisinformasjon til godkjenning', () => {
-  beforeEach(() => {
-    window.scrollTo = vi.fn()
-  })
-
   it('viser prisinformasjon til godkjenning når forslaget finnes', () => {
     const deltaker = lagInnbyggerDeltaker(
       {},
@@ -108,17 +94,9 @@ describe('DeltakerPage - prisinformasjon til godkjenning', () => {
 })
 
 describe('DeltakerPage - historikk', () => {
-  beforeEach(() => {
-    window.scrollTo = vi.fn()
-  })
-
   it('viser feilmelding uten uhåndtert avvisning når historikk ikke kan hentes', async () => {
     vi.mocked(getHistorikk).mockRejectedValue(new Error('Request failed'))
-    const unhandledRejections: unknown[] = []
-    const handleUnhandledRejection = (reason: unknown) => {
-      unhandledRejections.push(reason)
-    }
-    nodeProcess.on('unhandledRejection', handleUnhandledRejection)
+    const unhandledRejections = trackUnhandledRejections()
 
     try {
       renderWithInnbyggerDeltakerContext(
@@ -144,9 +122,9 @@ describe('DeltakerPage - historikk', () => {
       ).toBeInTheDocument()
       await new Promise((resolve) => setTimeout(resolve, 0))
 
-      expect(unhandledRejections).toEqual([])
+      expect(unhandledRejections.rejections).toEqual([])
     } finally {
-      nodeProcess.off('unhandledRejection', handleUnhandledRejection)
+      unhandledRejections.stop()
     }
   })
 })

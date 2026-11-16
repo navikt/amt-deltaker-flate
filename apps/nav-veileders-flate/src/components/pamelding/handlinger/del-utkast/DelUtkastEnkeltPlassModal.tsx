@@ -84,11 +84,14 @@ export const DelUtkastEnkeltPlassModal = ({ open, onClose }: Props) => {
           type="button"
           size="small"
           onClick={() => {
-            doFetchDelUtkastEnkeltplass(
+            void doFetchDelUtkastEnkeltplass(
               deltaker.deltakerId,
               enhetId,
               formToEnkeltplassRequest(getValues())
-            ).then(() => onClose())
+            ).then(
+              () => onClose(),
+              () => undefined
+            )
           }}
           disabled={fetchState === DeferredFetchState.LOADING}
           loading={fetchState === DeferredFetchState.LOADING}

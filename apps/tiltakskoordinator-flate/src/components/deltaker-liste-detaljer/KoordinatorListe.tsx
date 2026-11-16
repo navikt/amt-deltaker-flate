@@ -33,15 +33,17 @@ export const KoordinatorListe = ({
   } = useDeferredFetch(fjernTilgang)
 
   const fjernKoordinator = () => {
-    postFjernTilgang(deltakerlisteId)
-      .then(() => setVisFjernKoordinatorModal(false))
-      .then(() => {
+    void postFjernTilgang(deltakerlisteId).then(
+      () => {
+        setVisFjernKoordinatorModal(false)
         if (isEnvLocalDemoOrPr) {
           navigate(getIkkeTilgangTilDeltakerlisteUrl(deltakerlisteId))
         } else {
           gaTilGjennomforingerMulighetsrommet()
         }
-      })
+      },
+      () => undefined
+    )
   }
 
   const tidligereKoordinatorer = koordinatorer.filter(

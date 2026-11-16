@@ -95,8 +95,9 @@ function EndringsmodalBody<T extends EndringRequest>({
     try {
       const request = await validertRequest()
       if (request) {
-        doFetch(request.deltakerId, request.enhetId, request.body).then(
-          (data) => onSend(data)
+        void doFetch(request.deltakerId, request.enhetId, request.body).then(
+          (data) => onSend(data),
+          () => undefined
         )
       }
       setValideringsError(undefined)
