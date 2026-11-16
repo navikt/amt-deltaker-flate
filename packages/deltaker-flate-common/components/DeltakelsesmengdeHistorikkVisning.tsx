@@ -6,7 +6,7 @@ interface DeltakelsesmengdeProps {
   tiltakskode: Tiltakskode
   erEnkeltplass: boolean
   deltakelsesprosent: number | null
-  dagerPerUke: number | null
+  dagerPerUke?: number | null
   className?: string
 }
 

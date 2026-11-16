@@ -4,7 +4,6 @@ import {
   UlestEndringType
 } from '../../../../../api/data/ulestEndring'
 
-// TODO kan denne hentes fra common?
 export function forslagEndringsTittel(type: ForslagEndringType | EndringType) {
   switch (type) {
     case ForslagEndringType.ForlengDeltakelse:

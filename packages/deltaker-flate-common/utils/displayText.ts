@@ -25,7 +25,7 @@ import { formatDateWithMonthName } from './utils.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null,
+  dagerPerUke: number | null | undefined,
   erEnkeltplass: boolean
 ) => {
   const dagerIUkaText = dagerPerUke

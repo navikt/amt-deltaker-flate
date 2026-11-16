@@ -1,3 +1,4 @@
+import { ForslagEndringType } from 'deltaker-flate-common'
 import {
   Adressetype,
   Hendelser,
@@ -7,14 +8,6 @@ import {
   DeltakerStatusAarsak,
   DeltakerStatusAarsakType
 } from '../api/data/deltakerStatusArsak'
-import {
-  DeltakerStatusType as DeltakerHistorikkStatus,
-  ForslagEndringAarsak as EndringAarsak,
-  ForslagEndringAarsakType,
-  ForslagEndringType,
-  ForslagStatusType,
-  TiltakskoordinatorEndringsType
-} from 'deltaker-flate-common'
 import { Veiledertype } from '../api/data/veileder'
 
 export const mapTiltakDeltakerStatusTilTekst = (
@@ -130,87 +123,5 @@ export const getForslagTittel = (endringstype: ForslagEndringType) => {
       return 'Fjern oppstartsdato'
     case ForslagEndringType.EndreAvslutning:
       return 'Endre avslutning'
-  }
-}
-
-export const getTiltakskoordinatorEndringsTittel = (
-  endring: TiltakskoordinatorEndringsType
-) => {
-  switch (endring) {
-    case TiltakskoordinatorEndringsType.DelMedArrangor:
-      return 'Informasjon sendt til arrangør'
-    case TiltakskoordinatorEndringsType.SettPaaVenteliste:
-      return 'Venteliste'
-    case TiltakskoordinatorEndringsType.TildelPlass:
-      return 'Fått plass'
-    case TiltakskoordinatorEndringsType.Avslag:
-      return 'Søknaden er avslått'
-  }
-}
-
-export const getForslagStatusTypeText = (type: ForslagStatusType) => {
-  switch (type) {
-    case ForslagStatusType.VenterPaSvar:
-      return 'Venter på svar fra Nav'
-    case ForslagStatusType.Avvist:
-      return 'Forslaget er avvist'
-    case ForslagStatusType.Erstattet:
-      return 'Forslaget er erstattet'
-    case ForslagStatusType.Godkjent:
-      return 'Forslaget er godkjent'
-    case ForslagStatusType.Tilbakekalt:
-      return 'Forslaget er tilbakekalt'
-  }
-}
-
-export const getForslagEndringAarsakText = (aarsak: EndringAarsak) => {
-  switch (aarsak.type) {
-    case ForslagEndringAarsakType.Annet:
-      return `Annet - ${aarsak.beskrivelse}`
-    case ForslagEndringAarsakType.FattJobb:
-      return 'Fått jobb'
-    case ForslagEndringAarsakType.IkkeMott:
-      return 'Møter ikke opp'
-    case ForslagEndringAarsakType.Syk:
-      return 'Syk'
-    case ForslagEndringAarsakType.TrengerAnnenStotte:
-      return 'Trenger annen hjelp og støtte'
-    case ForslagEndringAarsakType.Utdanning:
-      return 'Utdanning'
-  }
-}
-
-export const getDeltakerHistorikkStatusDisplayText = (
-  type: DeltakerHistorikkStatus
-): string => {
-  switch (type) {
-    case DeltakerHistorikkStatus.KLADD:
-      return 'Kladd'
-    case DeltakerHistorikkStatus.UTKAST_TIL_PAMELDING:
-      return 'Utkast til påmelding'
-    case DeltakerHistorikkStatus.VENTER_PA_OPPSTART:
-      return 'Venter på oppstart'
-    case DeltakerHistorikkStatus.DELTAR:
-      return 'Deltar'
-    case DeltakerHistorikkStatus.HAR_SLUTTET:
-      return 'Har sluttet'
-    case DeltakerHistorikkStatus.IKKE_AKTUELL:
-      return 'Ikke aktuell'
-    case DeltakerHistorikkStatus.FEILREGISTRERT:
-      return 'Feilregistrert'
-    case DeltakerHistorikkStatus.SOKT_INN:
-      return 'Søkt inn'
-    case DeltakerHistorikkStatus.VURDERES:
-      return 'Vurderes'
-    case DeltakerHistorikkStatus.VENTELISTE:
-      return 'Venteliste'
-    case DeltakerHistorikkStatus.AVBRUTT:
-      return 'Avbrutt'
-    case DeltakerHistorikkStatus.FULLFORT:
-      return 'Fullført'
-    case DeltakerHistorikkStatus.PABEGYNT_REGISTRERING:
-      return 'Påbegynt Registrering'
-    case DeltakerHistorikkStatus.AVBRUTT_UTKAST:
-      return 'Avbrutt utkast'
   }
 }

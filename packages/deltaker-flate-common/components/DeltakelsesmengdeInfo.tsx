@@ -19,7 +19,7 @@ export const getDeltakelsesmengdeText = (
   tiltakskode: Tiltakskode,
   erEnkeltplass: boolean,
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null
+  dagerPerUke: number | null | undefined
 ) => {
   if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
     return null

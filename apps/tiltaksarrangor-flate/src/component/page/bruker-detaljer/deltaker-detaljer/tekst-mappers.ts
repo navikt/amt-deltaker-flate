@@ -1,5 +1,4 @@
 import { Vurderingstype } from '../../../../api/data/deltaker'
-import { ForslagEndringAarsak as EndringAarsak } from 'deltaker-flate-common'
 import { EndringType } from './types'
 import { AvslutningsType } from './endre-deltaker-modal/AvsluttKursDeltakelseModal'
 import {
@@ -89,23 +88,6 @@ export const getDeltakerStatusAarsakText = (aarsak: DeltakerStatusAarsak) => {
       return 'Kontrakten med arrangør er avlyst'
     case DeltakerStatusAarsakType.FIKK_IKKE_PLASS:
       return 'Fikk ikke plass'
-  }
-}
-
-export const endringAarsakTekstMapper = (aarsak: EndringAarsak) => {
-  switch (aarsak.type) {
-    case 'Syk':
-      return 'Syk'
-    case 'FattJobb':
-      return 'Fått jobb'
-    case 'TrengerAnnenStotte':
-      return 'Trenger annen hjelp og støtte'
-    case 'Utdanning':
-      return 'Utdanning'
-    case 'IkkeMott':
-      return 'Møter ikke opp'
-    case 'Annet':
-      return aarsak.beskrivelse
   }
 }
 

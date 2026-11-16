@@ -2,7 +2,7 @@ import { AxiosPromise } from 'axios'
 import { appUrl } from '../utils/url-utils'
 import { axiosInstance, logAndThrowError, parse } from './utils'
 import { formatDateToDateInputStr } from '../utils/date-utils'
-import { ForslagEndringAarsak as EndringAarsak } from 'deltaker-flate-common'
+import { ForslagEndringAarsak } from 'deltaker-flate-common'
 import { aktivtForslagSchema } from './data/forslag'
 
 export const forlengDeltakelseForslag = (
@@ -18,7 +18,7 @@ export const forlengDeltakelseForslag = (
 
 export const ikkeAktuellForslag = (
   deltakerId: string,
-  aarsak: EndringAarsak,
+  aarsak: ForslagEndringAarsak,
   begrunnelse?: string
 ): AxiosPromise => {
   return postForslag(deltakerId, 'ikke-aktuell', {
@@ -31,7 +31,7 @@ export const postAvsluttDeltakelse = (
   deltakerId: string,
   harFullfort: boolean | null,
   harDeltatt: boolean | null,
-  aarsak: EndringAarsak | null,
+  aarsak: ForslagEndringAarsak | null,
   sluttdato?: Date | null,
   begrunnelse?: string
 ): AxiosPromise => {
@@ -48,7 +48,7 @@ export const postEndreAvslutning = (
   deltakerId: string,
   harFullfort: boolean | null,
   harDeltatt: boolean | null,
-  aarsak: EndringAarsak | null,
+  aarsak: ForslagEndringAarsak | null,
   sluttDato?: Date | null,
   begrunnelse?: string
 ): AxiosPromise => {
@@ -91,7 +91,7 @@ export const endreStartdatoForslag = (
 
 export const endreSluttarsakForslag = (
   deltakerId: string,
-  aarsak: EndringAarsak,
+  aarsak: ForslagEndringAarsak,
   begrunnelse?: string
 ): AxiosPromise => {
   return postForslag(deltakerId, 'sluttarsak', {
