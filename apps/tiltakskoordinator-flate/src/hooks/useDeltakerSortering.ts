@@ -21,6 +21,9 @@ const DEFAULT_SORT: ScopedSortState = {
   direction: 'descending'
 }
 
+// Sorterer norske navn uten å skille mellom store og små bokstaver.
+const navnCollator = new Intl.Collator('nb', { sensitivity: 'accent' })
+
 /**
  * Sorterer deltakere basert på brukerens valg.
  * Sorterings-staten eies av SorteringContext – denne hooken er ren (ingen intern state).
@@ -72,6 +75,12 @@ export const sorterDeltakere = (
   sort?: ScopedSortState
 ) =>
   deltakere.slice().sort((a, b) => {
+    if (sort?.orderBy === SortKey.NAVN) {
+      return sort.direction === 'ascending'
+        ? navnCollator.compare(a.etternavn, b.etternavn)
+        : navnCollator.compare(b.etternavn, a.etternavn)
+    }
+
     if (sort?.orderBy === SortKey.STATUS) {
       return sort.direction === 'ascending'
         ? comparator(b.status, a.status, 'type')

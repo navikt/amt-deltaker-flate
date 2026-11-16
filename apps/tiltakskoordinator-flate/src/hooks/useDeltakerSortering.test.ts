@@ -4,8 +4,10 @@ import { lagMockDeltaker } from '../mocks/mockData'
 import {
   ScopedSortState,
   SortKey,
+  sorterDeltakere,
   useDeltakerSortering
 } from './useDeltakerSortering'
+import { lagTestDeltaker } from '../test-utils/lagTestDeltaker'
 
 const DEFAULT_SORT: ScopedSortState = {
   orderBy: SortKey.SOKT_INN_DATO,
@@ -63,6 +65,29 @@ describe('useDeltakerSortering', () => {
     expect(onSortChanged).toHaveBeenCalledWith({
       orderBy: SortKey.SOKT_INN_DATO,
       direction: 'descending'
+    })
+  })
+
+  describe('sorterDeltakere', () => {
+    it('sorterer etternavn uavhengig av store og små bokstaver', () => {
+      const deltakere = [
+        lagTestDeltaker({ id: '1', etternavn: 'Zebra' }),
+        lagTestDeltaker({ id: '2', etternavn: 'apple' })
+      ]
+
+      const sorterteDeltakere = sorterDeltakere(deltakere, NAVN_ASC)
+
+      expect(sorterteDeltakere.map(({ etternavn }) => etternavn)).toEqual([
+        'apple',
+        'Zebra'
+      ])
+
+      expect(
+        sorterDeltakere(deltakere, {
+          ...NAVN_ASC,
+          direction: 'descending'
+        }).map(({ etternavn }) => etternavn)
+      ).toEqual(['Zebra', 'apple'])
     })
   })
 
