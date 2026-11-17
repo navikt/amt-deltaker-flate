@@ -1,0 +1,264 @@
+{
+  "id": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+  "deltakerliste": {
+    "id": "d29cb67c-8e68-4ece-90dc-ff21c498aa3f",
+    "startDato": "2025-01-02",
+    "sluttDato": null,
+    "oppstartstype": "LOPENDE",
+    "tiltakskode": "ARBEIDSFORBEREDENDE_TRENING",
+    "pameldingstype": "DIREKTE_VEDTAK"
+  },
+  "fornavn": "Subjektiv",
+  "mellomnavn": null,
+  "etternavn": "Bestefar",
+  "fodselsnummer": "02498541421",
+  "telefonnummer": "+4755555555",
+  "epost": "test.testesen@nav.no",
+  "status": {
+    "type": "VENTER_PA_OPPSTART",
+    "endretDato": "2026-06-03T14:08:57.348336",
+    "aarsak": null
+  },
+  "startDato": null,
+  "sluttDato": null,
+  "deltakelseProsent": 50,
+  "dagerPerUke": 2.0,
+  "soktInnPa": "AFT - Arbeidsforberedende trening - Team tiltakspenger - 3",
+  "soktInnDato": "2026-06-03T00:00:00",
+  "tiltakskode": "ARBEIDSFORBEREDENDE_TRENING",
+  "bestillingTekst": "test",
+  "innhold": {
+    "ledetekst": "Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.",
+    "innhold": [
+      {
+        "tekst": "Veiledning i sosial mestring",
+        "innholdskode": "veiledning-sosialt",
+        "valgt": true,
+        "beskrivelse": null,
+        "erFritekstInnholdsElement": false
+      },
+      {
+        "tekst": "Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen",
+        "innholdskode": "tilpasse-arbeidsoppgaver",
+        "valgt": true,
+        "beskrivelse": null,
+        "erFritekstInnholdsElement": false
+      }
+    ]
+  },
+  "fjernesDato": null,
+  "navInformasjon": {
+    "navkontor": "Nav Østensjø",
+    "navVeileder": null
+  },
+  "veiledere": [
+    {
+      "ansattId": "fff9a665-cbde-4dbc-9ef9-deb8681a0d6f",
+      "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+      "veiledertype": "VEILEDER",
+      "fornavn": "Plutselig",
+      "mellomnavn": null,
+      "etternavn": "Lagsport"
+    },
+    {
+      "ansattId": "8cfdb592-dc54-4339-9209-3e7400024c14",
+      "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+      "veiledertype": "MEDVEILEDER",
+      "fornavn": "Rektangulær",
+      "mellomnavn": null,
+      "etternavn": "Panter"
+    }
+  ],
+  "aktiveForslag": [],
+  "aktiveEndringsmeldinger": [],
+  "historiskeEndringsmeldinger": [],
+  "adresse": {
+    "adressetype": "BOSTEDSADRESSE",
+    "postnummer": "0694",
+    "poststed": "OSLO",
+    "tilleggsnavn": null,
+    "adressenavn": "Skullerudveien 36B"
+  },
+  "gjeldendeVurderingFraArrangor": null,
+  "adressebeskyttet": false,
+  "kilde": "KOMET",
+  "historikk": [
+    {
+      "type": "Endring",
+      "endring": {
+        "id": "3838c138-c7b5-4f52-8f9c-65e1b11c4ff6",
+        "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+        "endring": {
+          "type": "EndreDeltakelsesmengde",
+          "deltakelsesprosent": 50.0,
+          "dagerPerUke": 2.0,
+          "gyldigFra": "2026-09-16",
+          "begrunnelse": "",
+          "pavirkerPris": false
+        },
+        "endretAv": "3e9bb00b-e620-4f29-a29b-93407b482908",
+        "endretAvEnhet": "c814d76c-cccf-4fb3-ab17-fd0d451e681b",
+        "endret": "2026-09-16T09:34:32.460724",
+        "forslag": {
+          "type": "Forslag",
+          "id": "eeef47de-bee3-4ca1-b2c5-a976edbc411c",
+          "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+          "opprettetAvArrangorAnsattId": "fff9a665-cbde-4dbc-9ef9-deb8681a0d6f",
+          "opprettet": "2026-09-16T09:33:26.023884",
+          "begrunnelse": "fordi",
+          "endring": {
+            "type": "Deltakelsesmengde",
+            "deltakelsesprosent": 50,
+            "dagerPerUke": 2,
+            "gyldigFra": "2026-09-16"
+          },
+          "status": {
+            "type": "Godkjent",
+            "godkjentAv": {
+              "id": "3e9bb00b-e620-4f29-a29b-93407b482908",
+              "enhetId": "c814d76c-cccf-4fb3-ab17-fd0d451e681b"
+            },
+            "godkjent": "2026-09-16T09:34:32.447176946"
+          },
+          "navAnsatt": {
+            "id": "3e9bb00b-e620-4f29-a29b-93407b482908",
+            "enhetId": "c814d76c-cccf-4fb3-ab17-fd0d451e681b"
+          },
+          "sistEndret": "2026-09-16T09:34:32.447176946"
+        }
+      },
+      "sistEndret": "2026-09-16T09:34:32.460724",
+      "sorteringsDato": "2026-09-16T09:34:32.460724"
+    },
+    {
+      "type": "Forslag",
+      "forslag": {
+        "type": "Forslag",
+        "id": "8980cc8e-8240-4560-b3f3-49c7afbebbd5",
+        "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+        "opprettetAvArrangorAnsattId": "fff9a665-cbde-4dbc-9ef9-deb8681a0d6f",
+        "opprettet": "2026-08-06T14:15:24.526708",
+        "begrunnelse": null,
+        "endring": {
+          "type": "IkkeAktuell",
+          "aarsak": {
+            "type": "Syk"
+          }
+        },
+        "status": {
+          "type": "Tilbakekalt",
+          "tilbakekaltAvArrangorAnsattId": "fff9a665-cbde-4dbc-9ef9-deb8681a0d6f",
+          "tilbakekalt": "2026-08-06T14:15:27.42024245"
+        },
+        "navAnsatt": null,
+        "sistEndret": "2026-08-06T14:15:27.42024245"
+      },
+      "sistEndret": "2026-08-06T14:15:27.42024245",
+      "sorteringsDato": "2026-08-06T14:15:27.42024245"
+    },
+    {
+      "type": "Vedtak",
+      "vedtak": {
+        "id": "2067ff7e-b27a-46ce-949c-678a92bc8775",
+        "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+        "fattet": "2026-06-03T14:08:57.347578",
+        "gyldigTil": null,
+        "deltakerVedVedtak": {
+          "id": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+          "startdato": null,
+          "sluttdato": null,
+          "dagerPerUke": null,
+          "deltakelsesprosent": 100.0,
+          "bakgrunnsinformasjon": "test",
+          "deltakelsesinnhold": {
+            "ledetekst": "Arbeidsforberedende trening er et tilbud for deg som først ønsker å jobbe i et tilrettelagt arbeidsmiljø. Du får veiledning og støtte av en veileder. Sammen kartlegger dere hvordan din kompetanse, interesser og ferdigheter påvirker muligheten din til å jobbe.",
+            "innhold": [
+              {
+                "tekst": "Veiledning i sosial mestring",
+                "innholdskode": "veiledning-sosialt",
+                "valgt": true,
+                "beskrivelse": null,
+                "erFritekstInnholdsElement": false
+              },
+              {
+                "tekst": "Hjelp til å tilpasse arbeidsoppgaver og arbeidsplassen",
+                "innholdskode": "tilpasse-arbeidsoppgaver",
+                "valgt": true,
+                "beskrivelse": null,
+                "erFritekstInnholdsElement": false
+              }
+            ]
+          },
+          "opplaringKategorisering": null,
+          "status": {
+            "id": "104d1b37-02e5-4d97-bb90-421b96e1526e",
+            "type": "VENTER_PA_OPPSTART",
+            "aarsak": null,
+            "gyldigFra": "2026-06-03T14:08:57.332687823",
+            "gyldigTil": null,
+            "opprettet": "2026-06-03T14:08:57.332735853"
+          }
+        },
+        "fattetAvNav": true,
+        "opprettet": "2026-06-03T14:08:57.348336",
+        "opprettetAv": "d42b25b6-806b-4cd9-aaf2-bba7c30de904",
+        "opprettetAvEnhet": "c814d76c-cccf-4fb3-ab17-fd0d451e681b",
+        "sistEndret": "2026-06-03T14:08:57.348336",
+        "sistEndretAv": "d42b25b6-806b-4cd9-aaf2-bba7c30de904",
+        "sistEndretAvEnhet": "c814d76c-cccf-4fb3-ab17-fd0d451e681b"
+      },
+      "sistEndret": "2026-06-03T14:08:57.348336",
+      "sorteringsDato": "2026-06-03T14:08:57.348336"
+    }
+  ],
+  "deltakelsesmengder": {
+    "nesteDeltakelsesmengde": null,
+    "sisteDeltakelsesmengde": {
+      "deltakelsesprosent": 50.0,
+      "dagerPerUke": 2.0,
+      "gyldigFra": "2026-09-16"
+    }
+  },
+  "ulesteEndringer": [
+    {
+      "id": "3838c138-c7b5-4f52-8f9c-65e1b11c4ff6",
+      "deltakerId": "28d9cfe1-984b-45f2-981b-f75ccf5af58b",
+      "oppdatering": {
+        "type": "DeltakelsesEndring",
+        "endring": {
+          "type": "Endring",
+          "endring": {
+            "type": "EndreDeltakelsesmengde",
+            "deltakelsesprosent": 50.0,
+            "dagerPerUke": 2.0,
+            "gyldigFra": "2026-09-16",
+            "begrunnelse": "",
+            "pavirkerPris": false
+          },
+          "endretAv": "F_Z994350 E_Z994350",
+          "endretAvEnhet": "Nav Grünerløkka",
+          "endret": "2026-09-16T09:34:32.460724",
+          "forslag": {
+            "type": "Forslag",
+            "id": "eeef47de-bee3-4ca1-b2c5-a976edbc411c",
+            "opprettet": "2026-09-16T09:33:26.023884",
+            "begrunnelse": "fordi",
+            "arrangorNavn": "Barneverns- og Helsenemnda",
+            "endring": {
+              "type": "Deltakelsesmengde",
+              "deltakelsesprosent": 50,
+              "dagerPerUke": 2,
+              "gyldigFra": "2026-09-16"
+            },
+            "status": {
+              "type": "Godkjent",
+              "godkjent": "2026-09-16T09:34:32.447176946"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "erManueltDeltMedArrangor": false,
+  "erUnderOppfolging": true
+}

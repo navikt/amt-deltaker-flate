@@ -30,7 +30,6 @@ export function DeltakelsesinnholdDetaljer({ innhold, tiltakskode }: Props) {
       <DeltakelseInnholdListe
         tiltakskode={tiltakskode}
         deltakelsesinnhold={innhold}
-        listClassName={styles.innhold_liste}
       />
     </div>
   )

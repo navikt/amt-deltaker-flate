@@ -98,6 +98,15 @@ export function logAndThrowError<E = Error>(
   if (httpStatus === undefined || httpStatus >= 500) {
     console.error('Request failed', {
       endpoint,
+      ...(import.meta.env.DEV && err instanceof z.ZodError
+        ? {
+            validationErrors: err.issues.map(({ path, code, message }) => ({
+              path: path.join('.'),
+              code,
+              message
+            }))
+          }
+        : {}),
       method: method && SAFE_METHODS.has(method) ? method : undefined,
       httpStatus,
       errorCode,

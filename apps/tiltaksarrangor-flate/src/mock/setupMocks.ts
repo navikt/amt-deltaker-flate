@@ -31,9 +31,12 @@ import {
 } from './data'
 import { mockMineRoller } from './data/ansatt'
 import { MockTiltakDeltaker } from './data/brukere'
+import egenDeltakerJson from './data/egen-deltaker.json'
 import { deltakerlisteErKurs, MockGjennomforing } from './data/tiltak'
 import { mockTilgjengeligeVeiledere } from './data/veileder'
 import { randomUuid } from './utils/faker'
+
+const brukEgenDeltakerJson = false
 
 export async function enableMocking() {
   if (useMock) {
@@ -92,6 +95,10 @@ export const worker = setupWorker(
     appUrl('/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/:deltakerId'),
     async ({ params, request }) => {
       await delay(500)
+      if (brukEgenDeltakerJson) {
+        return HttpResponse.json(egenDeltakerJson)
+      }
+
       const deltakerId = params['deltakerId']
       const deltaker = mockTiltakDeltakere.find((d) => d.id === deltakerId)!
 
