@@ -36,7 +36,11 @@ export const EndrePrisinfoModal = ({
 }: Props) => {
   const { enhetId } = useAppContext()
   const begrunnelse = useBegrunnelse(false)
-  const laasPristype = deltaker.status.type !== DeltakerStatusType.SOKT_INN
+
+  const harPrisinformasjon = !!deltaker.deltakerliste.prisinformasjon
+  const laasPristype = harPrisinformasjon
+    ? deltaker.status.type !== DeltakerStatusType.SOKT_INN
+    : false
 
   const defaultValues = generatePrisinformasjonDefaultValues(deltaker)
   const formMethods = useForm<PrisinformasjonFormValues>({
