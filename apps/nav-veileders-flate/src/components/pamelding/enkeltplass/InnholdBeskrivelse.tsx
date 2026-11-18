@@ -20,6 +20,7 @@ export const InnholdBeskrivelse = ({ className }: { className?: string }) => {
     <Textarea
       className={className ?? ''}
       label="Dette er innholdet"
+      description="Beskriv innholdet i opplæringen og begrunn hvorfor den er nødvendig og hensiktsmessig."
       {...register('innhold')}
       value={watch('innhold')}
       onChange={(e) => {
