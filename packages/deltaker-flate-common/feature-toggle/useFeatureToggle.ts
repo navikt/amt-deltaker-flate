@@ -12,6 +12,7 @@ const alltidMasterForTiltakskoder = [
   Tiltakskode.ARBEIDSRETTET_REHABILITERING,
   Tiltakskode.DIGITALT_OPPFOLGINGSTILTAK,
   Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+  Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER,
   Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING,
   Tiltakskode.JOBBKLUBB,
   Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING,
@@ -20,9 +21,13 @@ const alltidMasterForTiltakskoder = [
   Tiltakskode.STUDIESPESIALISERING,
   Tiltakskode.FAG_OG_YRKESOPPLAERING,
   Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING
-  // Denne eksisterer fra før i Arena: Tiltakskode.HOYERE_UTDANNING,
 ]
-const nyeTiltakskoder: unknown[] = [Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER]
+
+const nyeTiltakskoder: unknown[] = [
+  Tiltakskode.ENKELTPLASS_FAG_OG_YRKESOPPLAERING,
+  Tiltakskode.ENKELTPLASS_ARBEIDSMARKEDSOPPLAERING,
+  Tiltakskode.HOYERE_UTDANNING
+]
 
 export const useFeatureToggle = (baseUrl: string) => {
   const [toggles, setToggles] = useState<FeatureToggles>()
