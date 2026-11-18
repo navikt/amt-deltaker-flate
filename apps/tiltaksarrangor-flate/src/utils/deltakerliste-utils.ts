@@ -2,7 +2,7 @@ import {
   Deltakerliste,
   KoordinatorForDeltakerliste
 } from '../api/data/deltaker'
-import { Oppstartstype } from '../api/data/historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 import { Tiltakskode } from '../api/data/tiltak'
 import { Veiledertype } from '../api/data/veileder'
 

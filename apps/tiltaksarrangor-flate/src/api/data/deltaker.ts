@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { dateSchema, nullableDateSchema } from '../utils'
 import { deltakerStatusAarsakSchema } from './deltakerStatusArsak'
 import { aktivtForslagSchema } from './forslag'
-import { Oppstartstype } from './historikk'
+import { Oppstartstype } from 'deltaker-flate-common'
 import { deltakelsesinnholdSchema } from './innhold'
 import {
   koordinatorListSchema,

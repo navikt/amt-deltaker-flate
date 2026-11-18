@@ -4,13 +4,15 @@ import { setupWorker } from 'msw/browser'
 import { Deltaker, TiltakDeltaker, Vurderingstype } from '../api/data/deltaker'
 import { EndringFraArrangor, EndringFraArrangorType } from '../api/data/endring'
 import { VIS_DRIFTSMELDING_TOGGLE_NAVN } from '../api/data/feature-toggle'
+import { AktivtForslag } from '../api/data/forslag'
 import {
-  AktivtForslag,
+  createHistorikk,
   ForslagEndring,
   ForslagEndringType,
-  ForslagStatusType
-} from '../api/data/forslag'
-import { Oppstartstype } from '../api/data/historikk'
+  ForslagStatusType,
+  lagHistorikkFellesOppstart,
+  Oppstartstype
+} from 'deltaker-flate-common'
 import { AdminDeltakerliste, Pameldingstype } from '../api/data/tiltak'
 import { Veileder, VeilederMedType, Veiledertype } from '../api/data/veileder'
 import {
@@ -29,10 +31,12 @@ import {
 } from './data'
 import { mockMineRoller } from './data/ansatt'
 import { MockTiltakDeltaker } from './data/brukere'
-import { mockDeltakerHistorikk } from './data/historikk'
+import egenDeltakerJson from './data/egen-deltaker.json'
 import { deltakerlisteErKurs, MockGjennomforing } from './data/tiltak'
 import { mockTilgjengeligeVeiledere } from './data/veileder'
 import { randomUuid } from './utils/faker'
+
+const brukEgenDeltakerJson = false
 
 export async function enableMocking() {
   if (useMock) {
@@ -91,6 +95,10 @@ export const worker = setupWorker(
     appUrl('/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/:deltakerId'),
     async ({ params, request }) => {
       await delay(500)
+      if (brukEgenDeltakerJson) {
+        return HttpResponse.json(egenDeltakerJson)
+      }
+
       const deltakerId = params['deltakerId']
       const deltaker = mockTiltakDeltakere.find((d) => d.id === deltakerId)!
 
@@ -202,9 +210,21 @@ export const worker = setupWorker(
     appUrl(
       '/amt-tiltaksarrangor-bff/tiltaksarrangor/deltaker/:deltakerId/historikk'
     ),
-    async () => {
+    async ({ params }) => {
       await delay(500)
-      return HttpResponse.json(mockDeltakerHistorikk())
+      const deltaker = mockTiltakDeltakere.find(
+        (d) => d.id === params.deltakerId
+      )
+      if (!deltaker) {
+        return new HttpResponse(null, { status: 404 })
+      }
+
+      const historikk = deltakerlisteErKurs(
+        deltaker.gjennomforing.tiltak.tiltakskode
+      )
+        ? lagHistorikkFellesOppstart()
+        : createHistorikk()
+      return HttpResponse.json(historikk)
     }
   ),
   http.post(

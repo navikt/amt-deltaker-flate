@@ -61,7 +61,10 @@ const mapEndringsType = (endringType: EndringType) => {
   }
 }
 
-const getEndringsDetaljer = (endring: Endring, tiltakskode: Tiltakskode) => {
+export const getEndringsDetaljer = (
+  endring: Endring,
+  tiltakskode: Tiltakskode
+) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell: {
       return (

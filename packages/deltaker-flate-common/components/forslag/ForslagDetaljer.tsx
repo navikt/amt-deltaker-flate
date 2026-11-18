@@ -102,14 +102,15 @@ const detaljer = (endring: ForslagEndring) => {
               Har personen deltatt? {endring.harDeltatt ? 'Ja' : 'Nei'}
             </BodyLong>
           )}
-          {endring.harDeltatt && endring.harFullfort !== null && (
+          {/* Kun vis fullført dersom harFullfort er satt, ikke vis for null eller undefined */}
+          {endring.harDeltatt && typeof endring.harFullfort === 'boolean' && (
             <BodyLong size="small">
               Er kurset fullført? {endring.harFullfort ? 'Ja' : 'Nei'}
             </BodyLong>
           )}
 
           {endring.type == ForslagEndringType.EndreAvslutning &&
-            endring.sluttdato !== null && (
+            endring.sluttdato && (
               <BodyLong size="small">
                 Sluttdato: {formatDate(endring.sluttdato)}
               </BodyLong>

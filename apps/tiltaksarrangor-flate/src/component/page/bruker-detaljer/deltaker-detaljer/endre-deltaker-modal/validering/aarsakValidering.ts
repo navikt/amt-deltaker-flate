@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import {EndringAarsak, ForslagEndringAarsakType} from '../../../../../../api/data/forslag'
+import {
+  ForslagEndringAarsak,
+  ForslagEndringAarsakType
+} from 'deltaker-flate-common'
 import { BEGRUNNELSE_MAKS_TEGN } from '../../../../../../utils/endre-deltaker-utils'
 import { aarsakTekstMapper } from '../../tekst-mappers'
 import { DeltakerStatusAarsakType } from '../../../../../../api/data/deltakerStatusArsak'
 
 type ValidertAarsakForm = {
   forslag: {
-    aarsak: EndringAarsak
+    aarsak: ForslagEndringAarsak
     begrunnelse: string | undefined
   }
 }
@@ -82,7 +85,7 @@ export function useAarsakValidering(
 export function toEndringAarsakType(
   aarsak?: DeltakerStatusAarsakType,
   beskrivelse?: string | null
-): EndringAarsak | null {
+): ForslagEndringAarsak | null {
   switch (aarsak) {
     case DeltakerStatusAarsakType.SYK:
       return { type: ForslagEndringAarsakType.Syk }
@@ -100,6 +103,7 @@ export function toEndringAarsakType(
       }
       return { type: ForslagEndringAarsakType.Annet, beskrivelse: beskrivelse }
     }
-    default: return null
+    default:
+      return null
   }
 }

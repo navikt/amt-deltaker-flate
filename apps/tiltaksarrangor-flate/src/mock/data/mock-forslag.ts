@@ -1,11 +1,8 @@
 import { faker } from '@faker-js/faker/locale/nb_NO'
 
 import { TiltakDeltakerStatus } from '../../api/data/deltaker'
-import {
-  AktivtForslag,
-  ForslagEndringType,
-  ForslagStatusType
-} from '../../api/data/forslag'
+import { AktivtForslag } from '../../api/data/forslag'
+import { ForslagEndringType, ForslagStatusType } from 'deltaker-flate-common'
 import { randBetween, randomUuid } from '../utils/faker'
 
 export function lagMockAktiveForslag(
