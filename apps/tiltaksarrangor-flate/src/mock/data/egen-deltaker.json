@@ -23,7 +23,7 @@
   "sluttDato": null,
   "deltakelseProsent": 50,
   "dagerPerUke": 2.0,
-  "soktInnPa": "AFT - Arbeidsforberedende trening - Team tiltakspenger - 3",
+  "soktInnPa": "AFT - Arbeidsforberedende trening - Komet",
   "soktInnDato": "2026-06-03T00:00:00",
   "tiltakskode": "ARBEIDSFORBEREDENDE_TRENING",
   "bestillingTekst": "test",
@@ -48,7 +48,7 @@
   },
   "fjernesDato": null,
   "navInformasjon": {
-    "navkontor": "Nav Østensjø",
+    "navkontor": "Nav Oslo",
     "navVeileder": null
   },
   "veiledere": [
@@ -77,7 +77,7 @@
     "postnummer": "0694",
     "poststed": "OSLO",
     "tilleggsnavn": null,
-    "adressenavn": "Skullerudveien 36B"
+    "adressenavn": "Skullerudveien 0B"
   },
   "gjeldendeVurderingFraArrangor": null,
   "adressebeskyttet": false,
