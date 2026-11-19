@@ -76,7 +76,7 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
         className="mt-2"
         header={
           erForsteGodkjenning
-            ? 'Detaljer i vedtaket'
+            ? 'Søknaden som ble godkjent'
             : 'Endringen som ble godkjent'
         }
       >
