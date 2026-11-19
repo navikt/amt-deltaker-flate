@@ -91,9 +91,6 @@ const EnkeltplassVedtaksdetaljer = ({
   return (
     <>
       <BodyLong size="small" className="mb-2">
-        Vedtak fattet {formatDate(vedtak.fattet)}.
-      </BodyLong>
-      <BodyLong size="small" className="mb-2">
         <span className="font-semibold">Dato:</span>{' '}
         {formatDate(vedtak.startdato)} – {formatDate(vedtak.sluttdato)}
       </BodyLong>
