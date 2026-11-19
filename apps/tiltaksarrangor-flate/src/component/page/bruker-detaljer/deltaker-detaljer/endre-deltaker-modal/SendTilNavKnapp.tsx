@@ -29,35 +29,34 @@ export const SendTilNavKnapp = ({
   endringFraArrangor,
   className
 }: SendTilNavKnappProps) => {
-  const [showError, setShowError] = useState<boolean>()
-  const [errorMessage, setErrorMessage] = useState<string | null>()
+  const [errorMessage, setErrorMessage] = useState<string>()
   const opprettEndringPromise = usePromise<void>()
-  const inFlightRef = useRef(false)
+  const senderEndringRef = useRef(false)
 
   const tekst = getTekst(endringFraArrangor, forslag)
 
+  const sendOgOppdater = async () => {
+    try {
+      await sendEndring()
+    } catch (error: unknown) {
+      setErrorMessage(
+        typeof error === 'string' && error ? error : 'Noe gikk galt'
+      )
+      return
+    }
+
+    onEndringSendt()
+  }
+
   const onClick = () => {
-    if (inFlightRef.current) return
-    inFlightRef.current = true
-    setShowError(false)
-    setErrorMessage(null)
+    if (senderEndringRef.current) return
+    senderEndringRef.current = true
+    setErrorMessage(undefined)
 
     opprettEndringPromise.setPromise(
-      new Promise<void>((resolve) => resolve(sendEndring()))
-        .then(
-          () => true,
-          (error: unknown) => {
-            setErrorMessage(typeof error === 'string' ? error : null)
-            setShowError(true)
-            return false
-          }
-        )
-        .then((success) => {
-          if (success) onEndringSendt()
-        })
-        .finally(() => {
-          inFlightRef.current = false
-        })
+      sendOgOppdater().finally(() => {
+        senderEndringRef.current = false
+      })
     )
   }
 
@@ -74,9 +73,9 @@ export const SendTilNavKnapp = ({
       >
         {tekst}
       </Button>
-      {showError && (
+      {errorMessage && (
         <Alert variant="error" role="alert">
-          {errorMessage || 'Noe gikk galt'}
+          {errorMessage}
         </Alert>
       )}
     </>

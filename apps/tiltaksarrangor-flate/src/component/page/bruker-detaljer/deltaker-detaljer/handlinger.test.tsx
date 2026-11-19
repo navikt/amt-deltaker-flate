@@ -31,13 +31,13 @@ beforeEach(() => {
 })
 
 afterEach(async () => {
-  await act(() => root.unmount())
+  await act(async () => root.unmount())
   container.remove()
   vi.unstubAllGlobals()
 })
 
 const render = async (element: ReactNode) => {
-  await act(() => root.render(element))
+  await act(async () => root.render(element))
 }
 
 const click = () => {
@@ -53,7 +53,7 @@ describe('Sending til Nav', () => {
       <SendTilNavKnapp sendEndring={send} onEndringSendt={vi.fn()} />
     )
 
-    await act(() => {
+    await act(async () => {
       click()
       click()
     })
@@ -62,7 +62,13 @@ describe('Sending til Nav', () => {
     expect(container.querySelector('button')?.disabled).toBe(true)
   })
 
-  it.each([new Error('private error details'), { message: 'private' }])(
+  it.each([
+    new Error('private error details'),
+    { message: 'private' },
+    null,
+    undefined,
+    ''
+  ])(
     'viser en generell API-feilmelding og tillater nytt forsøk',
     async (error) => {
       const send = vi
@@ -74,14 +80,14 @@ describe('Sending til Nav', () => {
         <SendTilNavKnapp sendEndring={send} onEndringSendt={onSendt} />
       )
 
-      await act(click)
+      await act(async () => click())
       expect(container.querySelector('[role="alert"]')?.textContent).toContain(
         'Noe gikk galt'
       )
       expect(container.textContent).not.toContain('private')
       expect(onSendt).not.toHaveBeenCalled()
 
-      await act(click)
+      await act(async () => click())
       expect(send).toHaveBeenCalledTimes(2)
       expect(onSendt).toHaveBeenCalledTimes(1)
       expect(container.querySelector('[role="alert"]')).toBeNull()
@@ -100,13 +106,65 @@ describe('Sending til Nav', () => {
       <SendTilNavKnapp sendEndring={send} onEndringSendt={onSendt} />
     )
 
-    await act(click)
+    await act(async () => click())
     expect(container.querySelector('[role="alert"]')?.textContent).toContain(
       'Begrunnelse mangler'
     )
 
-    await act(click)
+    await act(async () => click())
     expect(onSendt).toHaveBeenCalledTimes(1)
+  })
+
+  it('viser avviste valideringsmeldinger som tekst', async () => {
+    const send = vi.fn().mockRejectedValue('Begrunnelse mangler')
+    const onSendt = vi.fn()
+    await render(
+      <SendTilNavKnapp sendEndring={send} onEndringSendt={onSendt} />
+    )
+
+    await act(async () => click())
+
+    expect(container.querySelector('[role="alert"]')?.textContent).toContain(
+      'Begrunnelse mangler'
+    )
+    expect(onSendt).not.toHaveBeenCalled()
+  })
+
+  it('fjerner gammel feilmelding når et nytt forsøk starter', async () => {
+    const send = vi
+      .fn<() => Promise<void>>()
+      .mockRejectedValueOnce(new Error('Request failed'))
+      .mockImplementationOnce(() => new Promise(() => {}))
+    await render(
+      <SendTilNavKnapp sendEndring={send} onEndringSendt={vi.fn()} />
+    )
+
+    await act(async () => click())
+    expect(container.querySelector('[role="alert"]')).not.toBeNull()
+
+    await act(async () => click())
+    expect(container.querySelector('[role="alert"]')).toBeNull()
+    expect(container.querySelector('button')?.disabled).toBe(true)
+  })
+
+  it('viser ikke feil etter vellykket sending som sendefeil og frigjør låsen', async () => {
+    const send = vi.fn<() => Promise<void>>().mockResolvedValue()
+    const onSendt = vi.fn().mockImplementationOnce(() => {
+      throw new Error('Could not update the view')
+    })
+    await render(
+      <SendTilNavKnapp sendEndring={send} onEndringSendt={onSendt} />
+    )
+
+    await act(async () => click())
+    expect(send).toHaveBeenCalledTimes(1)
+    expect(onSendt).toHaveBeenCalledTimes(1)
+    expect(container.querySelector('[role="alert"]')).toBeNull()
+    expect(container.querySelector('button')?.disabled).toBe(false)
+
+    await act(async () => click())
+    expect(send).toHaveBeenCalledTimes(2)
+    expect(onSendt).toHaveBeenCalledTimes(2)
   })
 })
 
@@ -140,7 +198,7 @@ describe.each([
     request.mockImplementation(() => new Promise(() => {}))
     await render(element(vi.fn()))
 
-    await act(() => {
+    await act(async () => {
       click()
       click()
     })
@@ -156,13 +214,13 @@ describe.each([
     const onSuccess = vi.fn()
     await render(element(onSuccess))
 
-    await act(click)
+    await act(async () => click())
     expect(container.querySelector('[role="alert"]')?.textContent).toContain(
       errorMessage
     )
     expect(onSuccess).not.toHaveBeenCalled()
 
-    await act(click)
+    await act(async () => click())
     expect(request).toHaveBeenCalledTimes(2)
     expect(onSuccess).toHaveBeenCalledTimes(1)
     expect(container.querySelector('[role="alert"]')).toBeNull()
@@ -187,10 +245,10 @@ it('fjerner historikkfeilen etter et vellykket nytt forsøk', async () => {
   }
   await render(<History />)
 
-  await act(click)
+  await act(async () => click())
   expect(container.textContent).toContain('Could not fetch history')
 
-  await act(click)
+  await act(async () => click())
   expect(container.textContent).toContain('History loaded')
   expect(container.textContent).not.toContain('Could not fetch history')
 })

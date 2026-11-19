@@ -22,18 +22,19 @@ export const FjernForslag = ({
   onTilbakekalt
 }: Props) => {
   const tilbakekallPromise = usePromise<void>()
-  const inFlightRef = useRef(false)
+  const tilbakekallingUnderveisRef = useRef(false)
 
   const handleClick = () => {
-    if (inFlightRef.current || isResolved(tilbakekallPromise)) return
-    inFlightRef.current = true
+    if (tilbakekallingUnderveisRef.current || isResolved(tilbakekallPromise))
+      return
+    tilbakekallingUnderveisRef.current = true
     tilbakekallPromise.reset()
 
     tilbakekallPromise.setPromise(
       tilbakekallForslag(deltakerId, forslagId)
         .then(() => onTilbakekalt(forslagId))
         .finally(() => {
-          inFlightRef.current = false
+          tilbakekallingUnderveisRef.current = false
         })
     )
   }

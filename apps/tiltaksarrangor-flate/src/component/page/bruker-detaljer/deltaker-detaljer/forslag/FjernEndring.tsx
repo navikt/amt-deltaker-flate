@@ -20,18 +20,18 @@ export const FjernEndring = ({
   onMarkertSomLest
 }: Props) => {
   const markerSomLestPromise = usePromise<void>()
-  const inFlightRef = useRef(false)
+  const markererSomLestRef = useRef(false)
 
   const handleLestForslag = () => {
-    if (inFlightRef.current) return
-    inFlightRef.current = true
+    if (markererSomLestRef.current) return
+    markererSomLestRef.current = true
     markerSomLestPromise.reset()
 
     markerSomLestPromise.setPromise(
       settSvarFraNavSomLest(deltakerId, endringId)
         .then(() => onMarkertSomLest(endringId))
         .finally(() => {
-          inFlightRef.current = false
+          markererSomLestRef.current = false
         })
     )
   }

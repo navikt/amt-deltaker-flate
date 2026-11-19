@@ -2,7 +2,7 @@ import { BEGRUNNELSE_MAKS_TEGN } from '../../../../../../utils/endre-deltaker-ut
 
 export function validerObligatoriskBegrunnelse(begrunnelse: string) {
   return new Promise((resolve, reject) => {
-    if (begrunnelse === '') {
+    if (begrunnelse.trim() === '') {
       return reject('Begrunnelse mangler')
     }
     if (begrunnelse.length > BEGRUNNELSE_MAKS_TEGN) {
@@ -15,5 +15,7 @@ export function validerObligatoriskBegrunnelse(begrunnelse: string) {
 }
 
 export function gyldigObligatoriskBegrunnelse(begrunnelse: string) {
-  return begrunnelse !== '' && begrunnelse.length <= BEGRUNNELSE_MAKS_TEGN
+  return (
+    begrunnelse.trim() !== '' && begrunnelse.length <= BEGRUNNELSE_MAKS_TEGN
+  )
 }

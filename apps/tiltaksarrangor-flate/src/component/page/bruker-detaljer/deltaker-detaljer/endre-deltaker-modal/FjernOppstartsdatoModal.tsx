@@ -4,7 +4,10 @@ import { Endringsmodal } from './endringsmodal/Endringsmodal'
 import { fjernOppstartsdatoForslag } from '../../../../../api/forslag-api'
 import { TiltakDeltakerStatus } from '../../../../../api/data/deltaker'
 import { EndringType } from '../types'
-import { validerObligatoriskBegrunnelse } from './validering/begrunnelseValidering'
+import {
+  gyldigObligatoriskBegrunnelse,
+  validerObligatoriskBegrunnelse
+} from './validering/begrunnelseValidering'
 import { BodyLong } from '@navikt/ds-react'
 import { ModalDataProps } from '../ModalController'
 
@@ -35,7 +38,9 @@ export const FjernOppstartsdatoModal = ({
       tittel="Fjerne oppstartsdato"
       endringstype={EndringType.FJERN_OPPSTARTSDATO}
       erForslag={true}
-      erSendKnappDisabled={!kanSendeForslag}
+      erSendKnappDisabled={
+        !(kanSendeForslag && gyldigObligatoriskBegrunnelse(begrunnelse))
+      }
       begrunnelseType="obligatorisk"
       onClose={onClose}
       onSend={sendForslag}
