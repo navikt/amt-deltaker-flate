@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
-import { Box, HGrid, Heading, VStack } from '@navikt/ds-react'
+import { HGrid, Heading, VStack } from '@navikt/ds-react'
 import {
+  EndringerBox,
   EndringType,
   ForslagEndringType,
   ForslagStatusType
@@ -41,13 +42,7 @@ export const EndringPanel = ({
   )
 
   return (
-    <Box
-      background="raised"
-      borderColor="neutral"
-      borderWidth="1"
-      borderRadius="4"
-      className={styles.panel}
-    >
+    <EndringerBox className={styles.panel}>
       <HGrid columns="2rem auto" className={styles.grid}>
         {endringIkon}
         <VStack>
@@ -68,7 +63,7 @@ export const EndringPanel = ({
       </HGrid>
 
       {!erAktivtForslag && fjernEndring}
-    </Box>
+    </EndringerBox>
   )
 }
 
