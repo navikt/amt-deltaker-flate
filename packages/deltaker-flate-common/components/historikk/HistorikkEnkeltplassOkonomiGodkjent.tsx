@@ -23,48 +23,40 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
   endringsHistorikk,
   tiltakskode
 }: Props) => {
-  const {
-    endretAv,
-    endretAvEnhet,
-    endret,
-    erForsteGodkjenning,
-    prisinformasjon,
-    vedtaksdetaljer
-  } = endringsHistorikk
+  if (endringsHistorikk.erForsteGodkjenning) {
+    return (
+      <HistorikkOpplaringGodkjent
+        endringsHistorikk={endringsHistorikk}
+        tiltakskode={tiltakskode}
+      />
+    )
+  }
+
+  return (
+    <HistorikkPrisOgBetalingGodkjent endringsHistorikk={endringsHistorikk} />
+  )
+}
+
+const HistorikkOpplaringGodkjent = ({
+  endringsHistorikk,
+  tiltakskode
+}: Props) => {
+  const { endretAv, endretAvEnhet, endret, prisinformasjon, vedtaksdetaljer } =
+    endringsHistorikk
 
   return (
     <HistorikkElement
-      tittel={
-        erForsteGodkjenning
-          ? 'Opplæring godkjent'
-          : 'Godkjent: Endre pris og betalingsbetingelser'
-      }
+      tittel="Opplæring godkjent"
       icon={
-        erForsteGodkjenning ? (
-          <ChevronRightCircleFillIcon
-            aria-hidden
-            color="var(--ax-text-accent-decoration)"
-          />
-        ) : (
-          <MenuElipsisHorizontalCircleFillIcon
-            aria-hidden
-            color="var(--ax-text-info-decoration)"
-          />
-        )
-      }
-      badge={
-        !erForsteGodkjenning ? (
-          <Tag variant="outline" data-color="success" size="small">
-            Godkjent
-          </Tag>
-        ) : undefined
+        <ChevronRightCircleFillIcon
+          aria-hidden
+          color="var(--ax-text-accent-decoration)"
+        />
       }
     >
-      {erForsteGodkjenning && (
-        <BodyShort size="small" className="mb-2">
-          Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
-        </BodyShort>
-      )}
+      <BodyShort size="small" className="mb-2">
+        Pris og betalingsbetingelser er godkjent, og vedtak er fattet.
+      </BodyShort>
 
       <Detail textColor="subtle">
         {`Endret ${formatDate(endret)}${endretAv ? ` av ${endretAv}` : ''}${endretAvEnhet ? ` ${endretAvEnhet}` : ''}.`}
@@ -74,36 +66,69 @@ export const HistorikkEnkeltplassOkonomiGodkjent = ({
         variant="moderate"
         size="small"
         className="mt-2"
-        header={
-          erForsteGodkjenning
-            ? 'Søknaden som ble godkjent'
-            : 'Endringen som ble godkjent'
-        }
+        header="Søknaden som ble godkjent"
       >
-        {erForsteGodkjenning && (
-          <>
-            {vedtaksdetaljer ? (
-              <EnkeltplassVedtaksdetaljer
-                vedtak={vedtaksdetaljer}
-                tiltakskode={tiltakskode}
-              />
-            ) : (
-              <BodyLong size="small">
-                Detaljene i vedtaket er ikke tilgjengelige for denne
-                godkjenningen.
-              </BodyLong>
-            )}
-            <BodyLong size="small" weight="semibold" className="mt-2">
-              Pris og betalingsbetingelser
-            </BodyLong>
-            {!prisinformasjon && (
-              <BodyLong size="small">
-                Historisk prisinformasjon er ikke tilgjengelig for denne
-                godkjenningen.
-              </BodyLong>
-            )}
-          </>
+        {vedtaksdetaljer ? (
+          <EnkeltplassVedtaksdetaljer
+            vedtak={vedtaksdetaljer}
+            tiltakskode={tiltakskode}
+          />
+        ) : (
+          <BodyLong size="small">
+            Detaljene i vedtaket er ikke tilgjengelige for denne godkjenningen.
+          </BodyLong>
         )}
+        <BodyLong size="small" weight="semibold" className="mt-2">
+          Pris og betalingsbetingelser
+        </BodyLong>
+        {!prisinformasjon && (
+          <BodyLong size="small">
+            Historisk prisinformasjon er ikke tilgjengelig for denne
+            godkjenningen.
+          </BodyLong>
+        )}
+        <PrisOgBetaling
+          prisinformasjon={prisinformasjon}
+          headinglevel="3"
+          showHeading={false}
+          compact
+          visTilleggsstonaderInfo={false}
+        />
+      </ReadMore>
+    </HistorikkElement>
+  )
+}
+
+const HistorikkPrisOgBetalingGodkjent = ({
+  endringsHistorikk
+}: Pick<Props, 'endringsHistorikk'>) => {
+  const { endretAv, endretAvEnhet, endret, prisinformasjon } = endringsHistorikk
+
+  return (
+    <HistorikkElement
+      tittel="Godkjent: Endre pris og betalingsbetingelser"
+      icon={
+        <MenuElipsisHorizontalCircleFillIcon
+          aria-hidden
+          color="var(--ax-text-info-decoration)"
+        />
+      }
+      badge={
+        <Tag variant="outline" data-color="success" size="small">
+          Godkjent
+        </Tag>
+      }
+    >
+      <Detail textColor="subtle">
+        {`Endret ${formatDate(endret)}${endretAv ? ` av ${endretAv}` : ''}${endretAvEnhet ? ` ${endretAvEnhet}` : ''}.`}
+      </Detail>
+
+      <ReadMore
+        variant="moderate"
+        size="small"
+        className="mt-2"
+        header="Endringen som ble godkjent"
+      >
         <PrisOgBetaling
           prisinformasjon={prisinformasjon}
           headinglevel="3"

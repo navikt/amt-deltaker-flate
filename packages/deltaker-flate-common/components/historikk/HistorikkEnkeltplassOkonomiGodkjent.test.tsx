@@ -89,6 +89,9 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
 
     expect(text).toContain('Opplæring godkjent')
     expect(text).toContain('Pris og betalingsbetingelser er godkjent')
+    expect(text).toContain('Søknaden som ble godkjent')
+    expect(text).not.toContain('Endringen som ble godkjent')
+    expect(text).not.toContain('Godkjent')
   })
 
   it('viser prisinformasjonen ved senere godkjenning', () => {
@@ -109,44 +112,58 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
     expect(text).toContain('Godkjent: Endre pris og betalingsbetingelser')
     expect((text.match(/Godkjent/g) ?? []).length).toBe(2)
     expect(text).not.toContain('vedtak er fattet')
+    expect(text).toContain('Endringen som ble godkjent')
+    expect(text).not.toContain('Søknaden som ble godkjent')
     expect(text).toContain('Nav har kjøpt en plass hos opplæringsstedet')
     expect(text).toContain('Totalkostnaden er')
   })
 
-  it('viser når og av hvem økonomien ble godkjent', () => {
-    const text = extractText(
-      HistorikkEnkeltplassOkonomiGodkjent({
-        tiltakskode: Tiltakskode.HOYERE_UTDANNING,
-        endringsHistorikk: lagEnkeltplassOkonomiGodkjent()
-      })
-    ).join(' ')
+  it.each([true, false])(
+    'viser når og av hvem økonomien ble godkjent (første godkjenning: %s)',
+    (erForsteGodkjenning) => {
+      const text = visHistorikk(
+        lagEnkeltplassOkonomiGodkjent({
+          erForsteGodkjenning
+        })
+      )
 
-    expect(text).toContain('Bernt Besluttersen')
-    expect(text).toContain('Nav Tiltak Oslo')
-  })
+      expect(text).toContain('15.10.2026')
+      expect(text).toContain('Bernt Besluttersen')
+      expect(text).toContain('Nav Tiltak Oslo')
+    }
+  )
 
-  it('viser bare dato når endretAv og endretAvEnhetmangler', () => {
-    const historikk = {
-      ...lagEnkeltplassOkonomiGodkjent(),
-      endretAv: null,
-      endretAvEnhet: null
-    } satisfies Extract<
-      DeltakerHistorikk,
-      { type: HistorikkType.EnkeltplassOkonomiGodkjent }
-    >
+  it.each([
+    { erForsteGodkjenning: true, tittel: 'Opplæring godkjent' },
+    {
+      erForsteGodkjenning: false,
+      tittel: 'Godkjent: Endre pris og betalingsbetingelser'
+    }
+  ])(
+    'viser bare dato uten navn og enhet ($tittel)',
+    ({ erForsteGodkjenning, tittel }) => {
+      const historikk = {
+        ...lagEnkeltplassOkonomiGodkjent({ erForsteGodkjenning }),
+        endretAv: null,
+        endretAvEnhet: null
+      } satisfies Extract<
+        DeltakerHistorikk,
+        { type: HistorikkType.EnkeltplassOkonomiGodkjent }
+      >
 
-    const text = extractText(
-      HistorikkEnkeltplassOkonomiGodkjent({
-        tiltakskode: Tiltakskode.HOYERE_UTDANNING,
-        endringsHistorikk: historikk
-      })
-    ).join(' ')
+      const text = extractText(
+        HistorikkEnkeltplassOkonomiGodkjent({
+          tiltakskode: Tiltakskode.HOYERE_UTDANNING,
+          endringsHistorikk: historikk
+        })
+      ).join(' ')
 
-    expect(text).toContain('Opplæring godkjent')
-    expect(text).toContain('Pris og betalingsbetingelser er godkjent')
-    expect(text).toContain('Endret')
-    expect(text).not.toContain('Bernt Besluttersen')
-  })
+      expect(text).toContain(tittel)
+      expect(text).toContain('Endret 15.10.2026.')
+      expect(text).not.toContain('Bernt Besluttersen')
+      expect(text).not.toContain('Nav Tiltak Oslo')
+    }
+  )
 
   it('viser detaljene og prisen fra vedtakstidspunktet ved første godkjenning', () => {
     const text = visHistorikk(
@@ -160,7 +177,7 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
       })
     )
 
-    expect(text).toContain('Detaljer i vedtaket')
+    expect(text).toContain('Søknaden som ble godkjent')
     expect(text).toContain('15.10.2026')
     expect(text).toContain('01.11.2026')
     expect(text).toContain('30.06.2027')
@@ -187,8 +204,21 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
 
     expect(text).toContain('Endringen som ble godkjent')
     expect(text.replaceAll('\u00a0', ' ')).toContain('35 000')
-    expect(text).not.toContain('Detaljer i vedtaket')
+    expect(text).not.toContain('Søknaden som ble godkjent')
+    expect(text).not.toContain('Opplæring ved vedtak')
+    expect(text).not.toContain('Utdanningsprogram ved vedtak')
     expect(text).not.toContain('Bakgrunn ved vedtak')
+  })
+
+  it('viser ikke førstegangsmeldinger ved senere godkjenning uten historiske detaljer', () => {
+    const text = visHistorikk(
+      lagEnkeltplassOkonomiGodkjent({ erForsteGodkjenning: false })
+    )
+
+    expect(text).toContain('Godkjent: Endre pris og betalingsbetingelser')
+    expect(text).toContain('Endringen som ble godkjent')
+    expect(text).not.toContain('vedtak er fattet')
+    expect(text).not.toContain('ikke tilgjengelig')
   })
 
   it('forklarer manglende vedtaksgrunnlag og viser tilgjengelig historisk pris', () => {
