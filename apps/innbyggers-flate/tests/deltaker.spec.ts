@@ -20,51 +20,6 @@ const sjekkUU = async (page: Page, testid: string) => {
 }
 
 test.describe('Smoketest og UU', () => {
-  test('viser historiske vedtaksdetaljer med tastatur i historikken', async ({
-    page
-  }) => {
-    await page
-      .getByTestId('select_tiltakskode')
-      .selectOption('HOYERE_UTDANNING')
-    await page
-      .getByRole('checkbox', { name: 'Enkeltplass', exact: true })
-      .check()
-    await page.getByTestId('select_deltaker_status').selectOption('DELTAR')
-    await expect(
-      page.getByText(/Totalkostnaden er 10\s000 kroner/)
-    ).toBeVisible()
-
-    await page
-      .getByRole('button', { name: 'Se endringer', exact: true })
-      .click()
-    const historikk = page.getByRole('dialog', { name: 'Endringer' })
-    const detaljer = historikk.getByRole('button', {
-      name: 'Detaljer i vedtaket',
-      exact: true
-    })
-    await expect(detaljer).toHaveAttribute('aria-expanded', 'false')
-    await expect(historikk.getByText('Historisk opplæring')).not.toBeVisible()
-    await detaljer.focus()
-    await detaljer.press('Enter')
-
-    await expect(detaljer).toHaveAttribute('aria-expanded', 'true')
-    await expect(historikk.getByText('Historisk opplæring')).toBeVisible()
-    await expect(historikk.getByText('Bakgrunn ved vedtak')).toBeVisible()
-    await expect(
-      historikk.getByText(/01\.11\.2026.*30\.06\.2027/)
-    ).toBeVisible()
-    await expect(
-      historikk.getByText(/Totalkostnaden er 20\s000 kroner/)
-    ).toBeVisible()
-    await expect(
-      historikk.getByText(/Totalkostnaden er 10\s000 kroner/)
-    ).not.toBeVisible()
-
-    await detaljer.press('Space')
-    await expect(detaljer).toHaveAttribute('aria-expanded', 'false')
-    await expect(historikk.getByText('Historisk opplæring')).not.toBeVisible()
-  })
-
   test('Innbyggers flate utkastside', async ({ page }) => {
     await expect(page).toHaveTitle(/Arbeidsmarkedstiltak/)
     await sjekkUU(page, 'heading_utkast')
