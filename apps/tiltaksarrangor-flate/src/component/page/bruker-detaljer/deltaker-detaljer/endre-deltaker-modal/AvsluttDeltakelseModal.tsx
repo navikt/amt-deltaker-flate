@@ -71,7 +71,7 @@ export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
     }
 
     if (EndringType.AVSLUTT_DELTAKELSE === endringstype) {
-      const res = await postAvsluttDeltakelse(
+      const respons = await postAvsluttDeltakelse(
         deltaker.id,
         null,
         harDeltatt,
@@ -79,9 +79,9 @@ export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
         harDeltatt === false ? null : sluttDato,
         begrunnelse
       )
-      return onForslagSendt(res.data)
+      return onForslagSendt(respons.data)
     } else {
-      const res_1 = await postEndreAvslutning(
+      const respons = await postEndreAvslutning(
         deltaker.id,
         null,
         harDeltatt,
@@ -89,7 +89,7 @@ export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
         harDeltatt === false ? null : sluttDato,
         begrunnelse
       )
-      return onForslagSendt(res_1.data)
+      return onForslagSendt(respons.data)
     }
   }
 
