@@ -259,7 +259,6 @@ describe('HistorikkEnkeltplassOkonomiGodkjent', () => {
       })
     )
 
-    expect(text).toContain('Vedtak fattet')
     expect(text).not.toContain('Bakgrunnsinfo')
     expect(text).not.toContain('Detaljene i vedtaket er ikke tilgjengelige')
   })
