@@ -436,6 +436,43 @@ export const lagHistorikkFellesOppstart = (): DeltakerHistorikkListe => {
       }
     },
     {
+      type: HistorikkType.EnkeltplassOkonomiGodkjent,
+      endretAv: 'Bernt Besluttersen',
+      endretAvEnhet: 'Nav Tiltak Oslo',
+      endret: new Date('2026-10-15T11:59:59'),
+      erForsteGodkjenning: true,
+      prisinformasjon: {
+        type: PrisinformasjonType.Anskaffelse,
+        pris: 20000,
+        begrunnelse: 'Begrunnelse ved vedtak'
+      },
+      vedtaksdetaljer: {
+        type: HistorikkType.Vedtak,
+        fattet: new Date('2026-10-15T12:00:00'),
+        fattetAvNav: true,
+        opprettetAv: 'Bernt Besluttersen',
+        opprettetAvEnhet: 'Nav Tiltak Oslo',
+        opprettet: new Date('2026-10-15T11:00:00'),
+        startdato: new Date('2026-11-01'),
+        sluttdato: new Date('2027-06-30'),
+        deltakelsesinnhold: {
+          ledetekst: null,
+          innhold: [
+            {
+              tekst: 'Annet',
+              innholdskode: INNHOLD_TYPE_ANNET,
+              valgt: true,
+              beskrivelse: 'Historisk opplæring'
+            }
+          ]
+        },
+        opplaringKategorisering: lagOpplaringKategoriseringMockRespons(),
+        dagerPerUke: 3,
+        deltakelsesprosent: 60,
+        bakgrunnsinformasjon: 'Bakgrunn ved vedtak'
+      }
+    },
+    {
       type: HistorikkType.Endring,
       endring: {
         type: EndringType.EndrePrisinfo,

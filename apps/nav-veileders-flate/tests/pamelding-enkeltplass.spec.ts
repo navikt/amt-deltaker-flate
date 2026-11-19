@@ -30,6 +30,55 @@ test.describe('Enkeltplass påmelding', () => {
     ).toBeVisible()
   })
 
+  test('viser historiske vedtaksdetaljer med tastatur i historikken', async ({
+    page
+  }) => {
+    await page
+      .getByTestId('select_tiltakskode')
+      .selectOption('ARBEIDSMARKEDSOPPLAERING')
+    await page.getByTestId('select_status').selectOption('DELTAR')
+    await expect(
+      page.getByText(/Totalkostnaden er 100\s000 kroner/)
+    ).toBeVisible()
+
+    await page
+      .getByRole('button', { name: 'Se endringer', exact: true })
+      .click()
+    const historikk = page.getByRole('dialog', { name: 'Endringer' })
+    const detaljer = historikk.getByRole('button', {
+      name: 'Detaljer i vedtaket',
+      exact: true
+    })
+    await expect(detaljer).toHaveAttribute('aria-expanded', 'false')
+    await expect(historikk.getByText('Historisk opplæring')).not.toBeVisible()
+    await detaljer.focus()
+    await detaljer.press('Enter')
+
+    await expect(detaljer).toHaveAttribute('aria-expanded', 'true')
+    await expect(historikk.getByText('Historisk opplæring')).toBeVisible()
+    await expect(historikk.getByText('Bakgrunn ved vedtak')).toBeVisible()
+    await expect(
+      historikk.getByText(/01\.11\.2026.*30\.06\.2027/)
+    ).toBeVisible()
+    await expect(
+      historikk.getByText(/Totalkostnaden er 20\s000 kroner/)
+    ).toBeVisible()
+    await expect(
+      historikk.getByText(/Totalkostnaden er 100\s000 kroner/)
+    ).not.toBeVisible()
+
+    await detaljer.press('Space')
+    await expect(detaljer).toHaveAttribute('aria-expanded', 'false')
+    await expect(historikk.getByText('Historisk opplæring')).not.toBeVisible()
+
+    const senereGodkjenning = historikk.getByRole('button', {
+      name: 'Endringen som ble godkjent',
+      exact: true
+    })
+    await senereGodkjenning.click()
+    await expect(senereGodkjenning).toHaveAttribute('aria-expanded', 'true')
+  })
+
   test('UU - enkeltplass kladd', async ({ page }) => {
     await sjekkUU(page)
   })

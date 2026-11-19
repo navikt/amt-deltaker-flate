@@ -215,10 +215,13 @@ export const vedtakSchema = z.object({
   dagerPerUke: z.number().nullable(),
   deltakelsesprosent: z.number().nullable(),
   fattetAvNav: z.boolean(),
-  deltakelsesinnhold: deltakelsesinnholdSchema,
+  deltakelsesinnhold: deltakelsesinnholdSchema.nullable(),
   opprettetAv: z.string(),
   opprettetAvEnhet: z.string(),
-  opprettet: dateSchema
+  opprettet: dateSchema,
+  startdato: nullableDateSchema.optional(),
+  sluttdato: nullableDateSchema.optional(),
+  opplaringKategorisering: opplaringKategoriseringSchema.nullish()
 })
 
 export const deltakerEndringSchema = z.object({
@@ -270,7 +273,8 @@ export const enkeltplassOkonomiGodkjentSchema = z.object({
   endretAvEnhet: z.string().nullable(),
   endret: dateSchema,
   erForsteGodkjenning: z.boolean().default(false),
-  prisinformasjon: prisinformasjonSchema.nullish()
+  prisinformasjon: prisinformasjonSchema.nullish(),
+  vedtaksdetaljer: vedtakSchema.nullish()
 })
 
 export const deltakerHistorikkSchema = z.discriminatedUnion('type', [
