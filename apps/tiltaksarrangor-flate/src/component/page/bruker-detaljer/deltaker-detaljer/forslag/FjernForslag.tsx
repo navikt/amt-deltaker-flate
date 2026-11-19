@@ -22,6 +22,8 @@ export const FjernForslag = ({
   onTilbakekalt
 }: Props) => {
   const tilbakekallPromise = usePromise<void>()
+  // Ref-en låser handlingen umiddelbart, før React rekker å vise loading.
+  // Låsen frigjøres i finally, slik at brukeren kan prøve igjen etter feil.
   const tilbakekallingUnderveisRef = useRef(false)
 
   const handleClick = () => {

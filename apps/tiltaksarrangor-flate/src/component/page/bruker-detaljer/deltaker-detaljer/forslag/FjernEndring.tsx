@@ -20,6 +20,8 @@ export const FjernEndring = ({
   onMarkertSomLest
 }: Props) => {
   const markerSomLestPromise = usePromise<void>()
+  // Ref-en låser handlingen umiddelbart, før React rekker å vise loading.
+  // Låsen frigjøres i finally, slik at brukeren kan prøve igjen etter feil.
   const markererSomLestRef = useRef(false)
 
   const handleLestForslag = () => {

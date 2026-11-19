@@ -31,6 +31,8 @@ export const SendTilNavKnapp = ({
 }: SendTilNavKnappProps) => {
   const [errorMessage, setErrorMessage] = useState<string>()
   const opprettEndringPromise = usePromise<void>()
+  // Ref-en låser handlingen umiddelbart, før React rekker å vise loading.
+  // Låsen frigjøres i finally, slik at brukeren kan prøve igjen etter feil.
   const senderEndringRef = useRef(false)
 
   const tekst = getTekst(endringFraArrangor, forslag)
