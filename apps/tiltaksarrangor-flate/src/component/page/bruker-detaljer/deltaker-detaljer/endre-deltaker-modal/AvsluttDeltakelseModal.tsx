@@ -2,7 +2,10 @@ import { useState } from 'react'
 
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { DeltakerStatusAarsakType } from '../../../../../api/data/deltakerStatusArsak'
-import { postAvsluttDeltakelse, postEndreAvslutning } from '../../../../../api/forslag-api'
+import {
+  postAvsluttDeltakelse,
+  postEndreAvslutning
+} from '../../../../../api/forslag-api'
 import { maxDate } from '../../../../../utils/date-utils'
 import { harDeltattMindreEnnFemtenDager } from '../../../../../utils/deltaker-utils'
 import { DateField } from '../../../../felles/DateField'
@@ -19,17 +22,26 @@ import {
 } from './validering/aarsakValidering'
 
 export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
-  const {
-    onClose,
-    deltaker,
-    onForslagSendt,
-  } = props
-  const endringstype = props.endringstype === ModalType.EndreAvslutning ? EndringType.ENDRE_AVSLUTNING : EndringType.AVSLUTT_DELTAKELSE
-  const [ sluttDato, settSluttDato ] = useState<Date | undefined>(deltaker.sluttDato ?? undefined)
-  const [ aarsak, settAarsak ] = useState<DeltakerStatusAarsakType | undefined>(deltaker.status.aarsak?.type ?? undefined)
-  const [ beskrivelse, settBeskrivelse ] = useState<string | undefined>(deltaker.status.aarsak?.beskrivelse ?? undefined)
-  const [ begrunnelse, setBegrunnelse ] = useState<string>()
-  const [ harDeltatt, setHarDeltatt ] = useState<boolean | null>(harDeltattMindreEnnFemtenDager(deltaker) ? null : true)
+  const { onClose, deltaker, onForslagSendt } = props
+  const endringstype =
+    props.endringstype === ModalType.EndreAvslutning
+      ? EndringType.ENDRE_AVSLUTNING
+      : EndringType.AVSLUTT_DELTAKELSE
+  const [sluttDato, settSluttDato] = useState<Date | undefined>(
+    deltaker.sluttDato ?? undefined
+  )
+  const [aarsak, settAarsak] = useState<DeltakerStatusAarsakType | undefined>(
+    deltaker.status.aarsak?.type ?? undefined
+  )
+  const [beskrivelse, settBeskrivelse] = useState<string | undefined>(
+    deltaker.status.aarsak?.beskrivelse ?? undefined
+  )
+  const [begrunnelse, setBegrunnelse] = useState<string>()
+  const [harDeltatt, setHarDeltatt] = useState<boolean | null>(
+    deltaker.startDato === null || harDeltattMindreEnnFemtenDager(deltaker)
+      ? null
+      : true
+  )
 
   const { validering } = useAarsakValidering(aarsak, beskrivelse, begrunnelse)
 
@@ -38,46 +50,59 @@ export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
       return { isSuccess: false, feilmelding: validering.feilmelding }
     }
     if (harDeltatt === null) {
-      return { isSuccess: false, feilmelding: 'Valget om deltakeren har deltatt er påkrevd for å sende forslaget' }
+      return {
+        isSuccess: false,
+        feilmelding:
+          'Valget om deltakeren har deltatt er påkrevd for å sende forslaget'
+      }
     }
     if (harDeltatt && !sluttDato) {
-      return { isSuccess: false, feilmelding: 'Sluttdato er påkrevd for å sende forslaget' }
+      return {
+        isSuccess: false,
+        feilmelding: 'Sluttdato er påkrevd for å sende forslaget'
+      }
     }
     return { isSuccess: true, feilmelding: null }
   }
 
-  const sendForslag = () => {
+  const sendForslag = async () => {
     if (!valider().isSuccess) {
       return Promise.reject(validering.feilmelding)
     }
 
     if (EndringType.AVSLUTT_DELTAKELSE === endringstype) {
-      return postAvsluttDeltakelse(
+      const res = await postAvsluttDeltakelse(
         deltaker.id,
         null,
         harDeltatt,
         toEndringAarsakType(aarsak, beskrivelse),
         harDeltatt === false ? null : sluttDato,
         begrunnelse
-      ).then((res) => onForslagSendt(res.data))
+      )
+      return onForslagSendt(res.data)
     } else {
-      return postEndreAvslutning(
+      const res_1 = await postEndreAvslutning(
         deltaker.id,
         null,
         harDeltatt,
         toEndringAarsakType(aarsak, beskrivelse),
         harDeltatt === false ? null : sluttDato,
         begrunnelse
-      ).then((res) => onForslagSendt(res.data))
+      )
+      return onForslagSendt(res_1.data)
     }
   }
 
   return (
     <Endringsmodal
-      tittel={endringstype == EndringType.AVSLUTT_DELTAKELSE ? 'Avslutt deltakelse' : 'Endre avslutning'}
+      tittel={
+        endringstype == EndringType.AVSLUTT_DELTAKELSE
+          ? 'Avslutt deltakelse'
+          : 'Endre avslutning'
+      }
       endringstype={endringstype}
       erForslag={true}
-      erSendKnappDisabled={valider().isSuccess === false}
+      erSendKnappDisabled={!valider().isSuccess}
       begrunnelseType="valgfri"
       onClose={onClose}
       onSend={sendForslag}
@@ -89,13 +114,13 @@ export const AvsluttDeltakelseModal = (props: ModalDataProps) => {
         legend="Hva er årsaken til avslutning?"
         aarsak={aarsak}
         beskrivelse={beskrivelse}
-        onChange={(
-          nyAarsak: DeltakerStatusAarsakType
-        ) => {
+        onChange={(nyAarsak: DeltakerStatusAarsakType) => {
           settAarsak(nyAarsak)
           settBeskrivelse(undefined)
         }}
-        onBeskrivelse={(nyBeskrivelse) => settBeskrivelse(nyBeskrivelse ?? undefined)}
+        onBeskrivelse={(nyBeskrivelse) =>
+          settBeskrivelse(nyBeskrivelse ?? undefined)
+        }
       />
 
       <section className={styles.radiogruppe}>

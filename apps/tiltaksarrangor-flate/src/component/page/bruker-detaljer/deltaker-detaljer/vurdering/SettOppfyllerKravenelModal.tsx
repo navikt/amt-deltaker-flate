@@ -1,4 +1,5 @@
-import { BodyShort, Button, Modal } from '@navikt/ds-react'
+import { BodyShort, Modal } from '@navikt/ds-react'
+import { SendTilNavKnapp } from '../endre-deltaker-modal/SendTilNavKnapp'
 import styles from './SettVurderingModal.module.scss'
 import { postDeltakerVurderingOppfyllerKravene } from '../../../../../api/tiltak-api'
 
@@ -16,9 +17,14 @@ export const SettOppfyllerKravenelModal = ({
   onVurderingSendt
 }: OppfyllerKravenelModalProps) => {
   const sendVurdering = () => {
-    return postDeltakerVurderingOppfyllerKravene(deltakerId)
-      .then(onClose)
-      .then(onVurderingSendt)
+    return postDeltakerVurderingOppfyllerKravene(deltakerId).then(
+      () => undefined
+    )
+  }
+
+  const onSendt = () => {
+    onClose()
+    onVurderingSendt()
   }
 
   return (
@@ -33,14 +39,11 @@ export const SettOppfyllerKravenelModal = ({
           Personen oppfyller kravene for å delta på dette
           arbeidsmarkedstiltaket.
         </BodyShort>
-        <Button
-          type="button"
-          onClick={sendVurdering}
+        <SendTilNavKnapp
+          sendEndring={sendVurdering}
+          onEndringSendt={onSendt}
           className={styles.modalKnapp}
-          size="small"
-        >
-          Send til Nav
-        </Button>
+        />
       </Modal.Body>
     </Modal>
   )

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
-import { Alert, BodyShort, Button, Modal, Textarea } from '@navikt/ds-react'
+import { Alert, BodyShort, Modal, Textarea } from '@navikt/ds-react'
+import { SendTilNavKnapp } from '../endre-deltaker-modal/SendTilNavKnapp'
 import styles from './SettVurderingModal.module.scss'
 import { Nullable } from '../../../../../utils/types/or-nothing'
 import { postDeltakerVurderingOppfyllerIkkeKravene } from '../../../../../api/tiltak-api'
@@ -33,9 +34,15 @@ export const SettOppfyllerIkkeKravenelModal = ({
     if (beskrivelse?.length > 40) {
       return Promise.reject('Beskrivelse kan ikke være mer enn 40 tegn')
     }
-    return postDeltakerVurderingOppfyllerIkkeKravene(deltakerId, beskrivelse)
-      .then(onClose)
-      .then(onVurderingSendt)
+    return postDeltakerVurderingOppfyllerIkkeKravene(
+      deltakerId,
+      beskrivelse
+    ).then(() => undefined)
+  }
+
+  const onSendt = () => {
+    onClose()
+    onVurderingSendt()
   }
 
   const handleChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -73,15 +80,12 @@ export const SettOppfyllerIkkeKravenelModal = ({
             size="small"
           />
         </div>
-        <Button
-          type="button"
-          onClick={sendVurdering}
+        <SendTilNavKnapp
+          sendEndring={sendVurdering}
+          onEndringSendt={onSendt}
           className={styles.modalKnapp}
           disabled={!kanSendeVurdering}
-          size="small"
-        >
-          Send til Nav
-        </Button>
+        />
       </Modal.Body>
     </Modal>
   )
