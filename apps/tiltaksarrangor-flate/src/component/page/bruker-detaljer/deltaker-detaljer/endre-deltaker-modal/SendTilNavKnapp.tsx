@@ -1,5 +1,5 @@
 import { Alert, Button } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { isPending, usePromise } from '../../../../../utils/use-promise'
 
 interface SendTilNavKnappProps {
@@ -8,6 +8,7 @@ interface SendTilNavKnappProps {
   disabled?: boolean
   forslag?: boolean
   endringFraArrangor?: boolean
+  className?: string
 }
 
 const getTekst = (endringFraArrangor?: boolean, forslag?: boolean) => {
@@ -25,42 +26,59 @@ export const SendTilNavKnapp = ({
   sendEndring,
   onEndringSendt,
   forslag,
-  endringFraArrangor
+  endringFraArrangor,
+  className
 }: SendTilNavKnappProps) => {
-  const [showError, setShowError] = useState<boolean>()
-  const [errorMessage, setErrorMessage] = useState<string | null>()
+  const [errorMessage, setErrorMessage] = useState<string>()
   const opprettEndringPromise = usePromise<void>()
+  // Ref-en låser handlingen umiddelbart, før React rekker å vise loading.
+  // Låsen frigjøres i finally, slik at brukeren kan prøve igjen etter feil.
+  const senderEndringRef = useRef(false)
 
   const tekst = getTekst(endringFraArrangor, forslag)
 
+  const sendOgOppdater = async () => {
+    try {
+      await sendEndring()
+    } catch (error: unknown) {
+      setErrorMessage(
+        typeof error === 'string' && error ? error : 'Noe gikk galt'
+      )
+      return
+    }
+
+    onEndringSendt()
+  }
+
   const onClick = () => {
+    if (senderEndringRef.current) return
+    senderEndringRef.current = true
+    setErrorMessage(undefined)
+
     opprettEndringPromise.setPromise(
-      sendEndring()
-        .then(() => {
-          onEndringSendt()
-          setShowError(false)
-          setErrorMessage(null)
-        })
-        .catch((message: string | null) => {
-          setErrorMessage(message)
-          setShowError(true)
-        })
+      sendOgOppdater().finally(() => {
+        senderEndringRef.current = false
+      })
     )
   }
 
   return (
     <>
       <Button
+        type="button"
         variant="primary"
         size="small"
         loading={isPending(opprettEndringPromise)}
         onClick={onClick}
         disabled={disabled}
+        className={className}
       >
         {tekst}
       </Button>
-      {showError && (
-        <Alert variant="error">{errorMessage || 'Noe gikk galt'}</Alert>
+      {errorMessage && (
+        <Alert variant="error" role="alert">
+          {errorMessage}
+        </Alert>
       )}
     </>
   )

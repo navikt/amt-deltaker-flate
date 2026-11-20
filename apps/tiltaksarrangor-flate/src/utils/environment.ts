@@ -11,7 +11,7 @@ class Environment {
   }
 
   get isDemo(): boolean {
-    return window.location.hostname.endsWith('github.io')
+    return window.location.hostname === 'navikt.github.io'
   }
 
   get baseUrl(): string {
@@ -33,6 +33,6 @@ class Environment {
 
 const env = new Environment()
 
-export const useMock = [ 'development', 'demo' ].includes(import.meta.env.MODE)
+export const useMock = ['development', 'demo'].includes(import.meta.env.MODE)
 
 export default env

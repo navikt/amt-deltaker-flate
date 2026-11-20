@@ -1,10 +1,9 @@
-
-import {
-  Box,
-  Button
-} from '@navikt/ds-react'
+import { Alert, Box, Button } from '@navikt/ds-react'
+import { useRef } from 'react'
 import { settSvarFraNavSomLest } from '../../../../../api/endring-api'
 import {
+  isPending,
+  isRejected,
   usePromise
 } from '../../../../../utils/use-promise'
 import styles from './AktivtForslagPanel.module.scss'
@@ -21,11 +20,21 @@ export const FjernEndring = ({
   onMarkertSomLest
 }: Props) => {
   const markerSomLestPromise = usePromise<void>()
+  // Ref-en låser handlingen umiddelbart, før React rekker å vise loading.
+  // Låsen frigjøres i finally, slik at brukeren kan prøve igjen etter feil.
+  const markererSomLestRef = useRef(false)
 
   const handleLestForslag = () => {
+    if (markererSomLestRef.current) return
+    markererSomLestRef.current = true
+    markerSomLestPromise.reset()
+
     markerSomLestPromise.setPromise(
       settSvarFraNavSomLest(deltakerId, endringId)
         .then(() => onMarkertSomLest(endringId))
+        .finally(() => {
+          markererSomLestRef.current = false
+        })
     )
   }
 
@@ -36,8 +45,19 @@ export const FjernEndring = ({
       borderRadius="0 0 4 4"
     >
       <div className={styles.marker_som_lest_knapp_wrapper}>
-        <Button size="small" onClick={handleLestForslag}>Marker som lest</Button>
+        <Button
+          size="small"
+          loading={isPending(markerSomLestPromise)}
+          onClick={handleLestForslag}
+        >
+          Marker som lest
+        </Button>
       </div>
+      {isRejected(markerSomLestPromise) && (
+        <Alert variant="error" role="alert">
+          Kunne ikke markere meldingen som lest. Prøv igjen.
+        </Alert>
+      )}
     </Box>
   )
 }

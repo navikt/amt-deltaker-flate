@@ -30,6 +30,7 @@ export const useDeferredFetch = <T, U extends unknown[]>(
     try {
       setState(DeferredFetchState.LOADING)
       const result = await apiFunction(...args)
+      setError(null)
       setData(result)
       setState(DeferredFetchState.RESOLVED)
       if (onResolved) onResolved()

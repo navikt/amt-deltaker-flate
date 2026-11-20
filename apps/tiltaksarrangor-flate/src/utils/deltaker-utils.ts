@@ -1,6 +1,11 @@
 import dayjs from 'dayjs'
-import { Adresse, AktivEndring, AktivEndringForDeltaker, Deltaker } from '../api/data/deltaker'
-import { Pameldingstype, Tiltakskode } from '../api/data/tiltak'
+import {
+  Adresse,
+  AktivEndring,
+  AktivEndringForDeltaker,
+  Deltaker
+} from '../api/data/deltaker'
+import { Tiltakskode } from '../api/data/tiltak'
 import { EndringType } from '../component/page/bruker-detaljer/deltaker-detaljer/types'
 import { erOpplaringstiltak } from './deltakerliste-utils'
 
@@ -19,17 +24,10 @@ export const harAdresse = (tiltakskode: Tiltakskode) =>
   tiltakskode !== Tiltakskode.TILRETTELAGT_ARBEID_ORDINAER
 
 export const skalViseDeltakelsesmengde = (tiltakskode: Tiltakskode) =>
-  [ Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+  [
+    Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
     Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET
   ].includes(tiltakskode)
-
-export const getDagerPerUkeTekst = (dagerPerUke: number): string => {
-  if (dagerPerUke === 1) {
-    return `${dagerPerUke} dag i uka`
-  } else {
-    return `${dagerPerUke} dager i uka`
-  }
-}
 
 export const getDeltakelsesmengdetekst = (
   deltakelsesprosent: number | null,
@@ -71,35 +69,21 @@ export const getAktivEndringTekst = (aktivEndring: AktivEndringForDeltaker) => {
   return `Forslag sendt til Nav: ${typeEndringTekst}`
 }
 
-export const harDeltattMindreEnnFemtenDager = (deltaker: Deltaker, endringstype?: EndringType) => {
+export const harDeltattMindreEnnFemtenDager = (
+  deltaker: Pick<Deltaker, 'startDato' | 'sluttDato'>,
+  endringstype?: EndringType
+) => {
   const startDato = deltaker.startDato
-  if (startDato === null) throw Error('startdato er null')
+  if (startDato === null) return false
 
   if (endringstype === EndringType.ENDRE_AVSLUTNING) {
     return deltaker.sluttDato
       ? dayjs(deltaker.startDato)
-        .add(15, 'days')
-        .isAfter(deltaker.sluttDato, 'day')
+          .add(15, 'days')
+          .isAfter(deltaker.sluttDato, 'day')
       : false
   }
 
   const femtenDagerSiden = dayjs().subtract(15, 'days')
   return dayjs(startDato).isAfter(femtenDagerSiden, 'day')
-}
-
-export const kanDeleDeltakerMedArrangorForVurdering = (
-  pameldingstype: Pameldingstype,
-  tiltakskode: Tiltakskode
-) => {
-  return (
-    pameldingstype === Pameldingstype.TRENGER_GODKJENNING &&
-    (tiltakskode === Tiltakskode.GRUPPE_ARBEIDSMARKEDSOPPLAERING ||
-      tiltakskode === Tiltakskode.GRUPPE_FAG_OG_YRKESOPPLAERING ||
-      tiltakskode === Tiltakskode.ARBEIDSMARKEDSOPPLAERING ||
-      tiltakskode === Tiltakskode.FAG_OG_YRKESOPPLAERING ||
-      tiltakskode ===
-      Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV ||
-      tiltakskode === Tiltakskode.STUDIESPESIALISERING ||
-      tiltakskode === Tiltakskode.HOYERE_YRKESFAGLIG_UTDANNING)
-  )
 }
