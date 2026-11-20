@@ -58,7 +58,7 @@ export class Deltakerliste extends HTMLElement {
   // Invoked each time after the element is attached to the DOM
   // noinspection JSUnusedGlobalSymbols
   connectedCallback() {
-    // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and Javascript code with it,
+    // Shadow DOM allows us to encapsulate parts of the HTML and isolates the CSS and JavaScript code with it,
     const shadowRoot = this.attachShadow({ mode: 'closed' })
     shadowRoot.appendChild(this.root)
 

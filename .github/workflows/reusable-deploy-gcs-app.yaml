@@ -85,6 +85,7 @@ jobs:
       artifact_name: assets-${{ inputs.package }}-demo
       destination: ${{ inputs.demo_destination }}
       source_keep_parent_name: false
+      no_cache_paths: ${{ format('{0}/assets/version.json', inputs.demo_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 

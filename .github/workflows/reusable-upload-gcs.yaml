@@ -68,6 +68,11 @@ jobs:
           BUCKET: ${{ inputs.bucket }}
         run: gsutil -m rsync -r -d build/assets "$BUCKET/assets"
 
+      - name: Sett versjonsmanifest uten cache
+        env:
+          BUCKET: ${{ inputs.bucket }}
+        run: gsutil setmeta -h "Cache-Control:no-store" "$BUCKET/assets/version.json"
+
       - name: Slett foreldede produksjonsfiler under assets
         if: inputs.prod_retention_days > 0
         env:
