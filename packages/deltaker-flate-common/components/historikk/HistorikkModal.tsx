@@ -77,7 +77,10 @@ const getHistorikkItem = (
       )
     case HistorikkType.EnkeltplassOkonomiGodkjent:
       return (
-        <HistorikkEnkeltplassOkonomiGodkjent endringsHistorikk={historikk} />
+        <HistorikkEnkeltplassOkonomiGodkjent
+          endringsHistorikk={historikk}
+          tiltakskode={tiltakskode}
+        />
       )
   }
 }
