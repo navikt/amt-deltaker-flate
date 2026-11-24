@@ -3,7 +3,9 @@ import { withFaroErrorBoundary } from '@grafana/faro-react'
 import {
   ErrorFallback,
   faroBeforeSend,
-  resolveFaroEnvironment
+  resolveFaroEnvironment,
+  resolveVersionManifestUrl,
+  Versjonsvarsel
 } from 'deltaker-flate-common'
 import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
 import React from 'react'
@@ -12,12 +14,20 @@ import { AppRoutes } from './Routes.tsx'
 import './index.css'
 import { useMock } from './utils/environment-utils.ts'
 import { createRoot } from 'react-dom/client'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './queryClient.ts'
 
 const AppWithErrorBoundary = withFaroErrorBoundary(
   () => (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <>
+      <Versjonsvarsel
+        currentVersion={import.meta.env.VITE_APP_VERSION || 'local'}
+        manifestUrl={resolveVersionManifestUrl(import.meta.url)}
+      />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </>
   ),
   { fallback: <ErrorFallback /> }
 )
@@ -40,7 +50,9 @@ const renderApp = () => {
 
   root.render(
     <React.StrictMode>
-      <AppWithErrorBoundary />
+      <QueryClientProvider client={queryClient}>
+        <AppWithErrorBoundary />
+      </QueryClientProvider>
     </React.StrictMode>
   )
 }

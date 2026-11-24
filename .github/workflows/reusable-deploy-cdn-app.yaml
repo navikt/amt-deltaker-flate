@@ -60,7 +60,7 @@ jobs:
       artifact_name: assets-${{ inputs.package }}-dev
       destination: ${{ inputs.dev_destination }}
       cleanup_environment: dev
-      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.dev_destination) }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json,{0}/build/assets/version.json', inputs.dev_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
@@ -79,6 +79,7 @@ jobs:
       artifact_name: assets-${{ inputs.package }}-demo
       destination: ${{ inputs.demo_destination }}
       source_keep_parent_name: false
+      no_cache_paths: ${{ format('{0}/assets/version.json', inputs.demo_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
 
@@ -97,6 +98,6 @@ jobs:
       artifact_name: assets-${{ inputs.package }}-prod
       destination: ${{ inputs.prod_destination }}
       cleanup_environment: prod
-      no_cache_paths: ${{ format('{0}/build/asset-manifest.json', inputs.prod_destination) }}
+      no_cache_paths: ${{ format('{0}/build/asset-manifest.json,{0}/build/assets/version.json', inputs.prod_destination) }}
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

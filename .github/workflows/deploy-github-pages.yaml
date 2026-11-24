@@ -62,6 +62,15 @@ jobs:
           pnpm --filter=tiltakskoordinator-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltakskoordinator-flate/
           NODE_ENV=development pnpm --filter=tiltaksarrangor-flate exec vite build --mode demo --base /amt-deltaker-flate/tiltaksarrangor-flate/
 
+      - name: Skriv versjonsmanifest
+        env:
+          APP_VERSION: ${{ github.sha }}
+        run: |
+          for app in innbyggers-flate nav-veileders-flate tiltakskoordinator-flate tiltaksarrangor-flate; do
+            mkdir -p "apps/$app/build/assets"
+            printf '{"version":"%s"}\n' "$APP_VERSION" > "apps/$app/build/assets/version.json"
+          done
+
       - name: Klargjør innhold for GitHub Pages
         run: |
           mkdir -p github-pages

@@ -108,6 +108,13 @@ jobs:
         run: |
           rm -rf -- "$APP_DIRECTORY/build"
           pnpm build:dev --filter="$PACKAGE"
+      - name: Skriv dev-versjonsmanifest
+        if: contains(fromJSON(inputs.build_targets), 'dev') && inputs.app_version != ''
+        env:
+          APP_VERSION: ${{ inputs.app_version }}
+        run: |
+          mkdir -p "$APP_DIRECTORY/build/assets"
+          printf '{"version":"%s"}\n' "$APP_VERSION" > "$APP_DIRECTORY/build/assets/version.json"
       - name: Last opp dev-filer
         if: contains(fromJSON(inputs.build_targets), 'dev')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -123,6 +130,13 @@ jobs:
         run: |
           rm -rf -- "$APP_DIRECTORY/build"
           pnpm build:demo --filter="$PACKAGE"
+      - name: Skriv demo-versjonsmanifest
+        if: contains(fromJSON(inputs.build_targets), 'demo') && inputs.app_version != ''
+        env:
+          APP_VERSION: ${{ inputs.app_version }}
+        run: |
+          mkdir -p "$APP_DIRECTORY/build/assets"
+          printf '{"version":"%s"}\n' "$APP_VERSION" > "$APP_DIRECTORY/build/assets/version.json"
       - name: Last opp demo-filer
         if: contains(fromJSON(inputs.build_targets), 'demo')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -138,6 +152,13 @@ jobs:
         run: |
           rm -rf -- "$APP_DIRECTORY/build"
           pnpm build --filter="$PACKAGE"
+      - name: Skriv produksjonsversjonsmanifest
+        if: contains(fromJSON(inputs.build_targets), 'prod') && inputs.app_version != ''
+        env:
+          APP_VERSION: ${{ inputs.app_version }}
+        run: |
+          mkdir -p "$APP_DIRECTORY/build/assets"
+          printf '{"version":"%s"}\n' "$APP_VERSION" > "$APP_DIRECTORY/build/assets/version.json"
       - name: Last opp produksjonsfiler
         if: contains(fromJSON(inputs.build_targets), 'prod')
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
