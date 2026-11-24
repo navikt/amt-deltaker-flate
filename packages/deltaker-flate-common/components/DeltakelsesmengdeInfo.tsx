@@ -19,7 +19,7 @@ export const getDeltakelsesmengdeText = (
   tiltakskode: Tiltakskode,
   erEnkeltplass: boolean,
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null | undefined
+  dagerPerUke: number | null
 ) => {
   if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
     return null
@@ -62,7 +62,7 @@ export function DeltakelsesmengdeInfo({
       <Heading level={headingLevel} size={headingSize}>
         Deltakelsesmengde
       </Heading>
-      {nesteDeltakelsesmengde ? (
+      {nesteDeltakelsesmengde && nesteDeltakelsesmengdeText ? (
         <>
           <BodyShort size="small" className="mt-2">
             Nåværende periode:

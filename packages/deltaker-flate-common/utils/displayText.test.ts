@@ -40,11 +40,25 @@ describe('deltakerprosentText', () => {
       expected: '50\u00A0% fordelt på 3 dager i uka'
     },
     {
-      navn: 'gruppe med nullverdi for prosent bruker 100 som fallback',
+      navn: 'gruppe uten prosent viser bare dager',
       deltakelsesprosent: null,
       dagerPerUke: 2,
       erEnkeltplass: false,
-      expected: '100\u00A0% fordelt på 2 dager i uka'
+      expected: '2 dager i uka'
+    },
+    {
+      navn: 'gruppe uten prosent eller dager viser ingen mengde',
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      erEnkeltplass: false,
+      expected: ''
+    },
+    {
+      navn: 'eksplisitt hundre prosent beholdes',
+      deltakelsesprosent: 100,
+      dagerPerUke: null,
+      erEnkeltplass: false,
+      expected: '100\u00A0%'
     }
   ])(
     '$navn',
@@ -63,6 +77,12 @@ describe('deltakerprosentText', () => {
   it('0 dager behandles som manglende dager', () => {
     expect(deltakerprosentText(80, 0, false)).toBe('80\u00A0%')
     expect(deltakerprosentText(null, 0, true)).toBe('')
+  })
+
+  it('bevarer prosent med desimaler uten avrunding', () => {
+    expect(deltakerprosentText(62.5, 3, false)).toBe(
+      '62.5\u00A0% fordelt på 3 dager i uka'
+    )
   })
 })
 

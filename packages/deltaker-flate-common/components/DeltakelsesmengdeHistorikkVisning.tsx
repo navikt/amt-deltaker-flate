@@ -14,7 +14,7 @@ export const DeltakelsesmengdeBodyLongSection = ({
   tiltakskode,
   erEnkeltplass,
   deltakelsesprosent,
-  dagerPerUke,
+  dagerPerUke = null,
   className
 }: DeltakelsesmengdeProps) => {
   const text = getDeltakelsesmengdeText(
@@ -38,7 +38,7 @@ export const DeltakelsesmengdeInline = ({
   tiltakskode,
   erEnkeltplass,
   deltakelsesprosent,
-  dagerPerUke,
+  dagerPerUke = null,
   className
 }: DeltakelsesmengdeProps) => {
   const text = getDeltakelsesmengdeText(

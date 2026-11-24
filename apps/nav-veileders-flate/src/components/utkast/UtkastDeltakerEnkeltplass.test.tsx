@@ -74,10 +74,7 @@ const lagDeltaker = (
     importertFraArena: null,
     harAdresse: false,
     adresseDelesMedArrangor: false,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    }
+    deltakelsesmengder: null
   } as unknown as DeltakerResponse
 }
 

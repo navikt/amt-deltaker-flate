@@ -46,7 +46,7 @@ export const deltakerSchema = z.object({
   adresseDelesMedArrangor: z.boolean(),
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
-  deltakelsesmengder: deltakelsesmengderSchema,
+  deltakelsesmengder: deltakelsesmengderSchema.nullable(),
   erManueltDeltMedArrangor: z.boolean()
 })
 

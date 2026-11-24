@@ -771,8 +771,17 @@ export class MockHandler {
 
     if (oppdatertDeltaker) {
       const nesteDeltakelsesmengde =
-        oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde
+        oppdatertDeltaker.deltakelsesmengder?.nesteDeltakelsesmengde ?? null
       const gyldigFra = dayjs(request.gyldigFra).toDate()
+      const nyMengde = {
+        gyldigFra,
+        deltakelsesprosent: request.deltakelsesprosent ?? null,
+        dagerPerUke: request.dagerPerUke ?? null
+      }
+      oppdatertDeltaker.deltakelsesmengder = {
+        nesteDeltakelsesmengde,
+        sisteDeltakelsesmengde: nyMengde
+      }
       if (gyldigFra <= new Date()) {
         oppdatertDeltaker.deltakelsesprosent =
           request.deltakelsesprosent || null
@@ -785,19 +794,10 @@ export class MockHandler {
           request.dagerPerUke != oppdatertDeltaker.dagerPerUke ||
           request.deltakelsesprosent != oppdatertDeltaker.deltakelsesprosent
         ) {
-          oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde = {
-            gyldigFra: gyldigFra,
-            deltakelsesprosent: request.deltakelsesprosent ?? 100,
-            dagerPerUke: request.dagerPerUke ?? null
-          }
+          oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde = nyMengde
         } else {
           oppdatertDeltaker.deltakelsesmengder.nesteDeltakelsesmengde = null
         }
-      }
-      oppdatertDeltaker.deltakelsesmengder.sisteDeltakelsesmengde = {
-        gyldigFra: gyldigFra,
-        deltakelsesprosent: request.deltakelsesprosent ?? 100,
-        dagerPerUke: request.dagerPerUke ?? null
       }
       this.deltaker = oppdatertDeltaker
       this.fjernAktivtForslag(request.forslagId)

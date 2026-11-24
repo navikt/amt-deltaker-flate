@@ -25,21 +25,21 @@ import { formatDateWithMonthName } from './utils.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null | undefined,
+  dagerPerUke: number | null,
   erEnkeltplass: boolean
 ) => {
   const dagerIUkaText = dagerPerUke
     ? `${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
     : ''
-  if (erEnkeltplass) {
+  if (erEnkeltplass || deltakelsesprosent === null) {
     return dagerIUkaText
   }
   const fordeltPaDagerIUkaText = dagerPerUke
     ? `fordelt på ${dagerIUkaText}`
     : ''
   return fordeltPaDagerIUkaText
-    ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
-    : `${deltakelsesprosent ?? 100}\u00A0%`
+    ? `${deltakelsesprosent}\u00A0% ${fordeltPaDagerIUkaText}`
+    : `${deltakelsesprosent}\u00A0%`
 }
 
 export const getDeltakerStatusDisplayText = (

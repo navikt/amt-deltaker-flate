@@ -6,6 +6,7 @@ import { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppContext } from '../../../../AppContext.tsx'
 import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
+import { lagDeltaker as lagDeltakerResponse } from '../../../test-utils/deltaker-context-test-utils.tsx'
 import {
   UGYLDIG_DATO,
   UGYLDIG_DATO_FORMAT
@@ -69,32 +70,29 @@ vi.mock('../../modal/Endringsmodal.tsx', () => ({
 
 const lagDeltaker = (
   erEnkeltplass: boolean,
-  deltakelsesprosent = 60
+  deltakelsesprosent: number | null = 60
 ): DeltakerResponse =>
-  ({
-    deltakerId: 'deltaker-1',
-    deltakelsesprosent,
-    dagerPerUke: 3,
-    status: {
-      id: 'status-1',
-      type: DeltakerStatusType.DELTAR,
-      aarsak: null,
-      gyldigFra: new Date('2026-01-01'),
-      gyldigTil: null,
-      opprettet: new Date('2026-01-01')
+  lagDeltakerResponse(
+    {
+      deltakerId: 'deltaker-1',
+      deltakelsesprosent,
+      dagerPerUke: 3,
+      status: {
+        id: 'status-1',
+        type: DeltakerStatusType.DELTAR,
+        aarsak: null,
+        gyldigFra: new Date('2026-01-01'),
+        gyldigTil: null,
+        opprettet: new Date('2026-01-01')
+      },
+      kanEndres: true,
+      startdato: new Date('2026-01-01'),
+      sluttdato: new Date('2026-12-31'),
+      erUnderOppfolging: true,
+      deltakelsesmengder: null
     },
-    kanEndres: true,
-    startdato: new Date('2026-01-01'),
-    sluttdato: new Date('2026-12-31'),
-    erUnderOppfolging: true,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
-    deltakerliste: {
-      erEnkeltplass
-    }
-  }) as unknown as DeltakerResponse
+    { erEnkeltplass }
+  )
 
 const renderModal = (deltaker: DeltakerResponse) =>
   render(
@@ -141,6 +139,39 @@ describe('EndreDeltakelsesmengdeModal', () => {
   })
 
   describe('EndreDeltakelsesmengdeModal UI', () => {
+    it('forhåndsutfyller ikke manglende prosent med hundre prosent', () => {
+      renderModal(lagDeltaker(false, null))
+
+      expect(screen.getByLabelText(prosentLabel)).toHaveValue('')
+      expect(screen.getByLabelText(prosentLabel)).toBeRequired()
+    })
+
+    it('krever fortsatt et eksplisitt prosentvalg for gruppe', async () => {
+      const user = userEvent.setup()
+      renderModal(lagDeltaker(false, null))
+
+      await user.click(screen.getByRole('button', { name: 'Lagre' }))
+
+      expect(endreDeltakelsesmengdeMock).not.toHaveBeenCalled()
+      expect(
+        screen.getByText('Tallet må være et helt tall fra 1 til 100')
+      ).toBeInTheDocument()
+    })
+
+    it('sender valgt prosent når deltakeren ikke har en mengdetidslinje', async () => {
+      const user = userEvent.setup()
+      renderModal(lagDeltaker(false, null))
+
+      await user.type(screen.getByLabelText(prosentLabel), '80')
+      await klikkLagre()
+
+      expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(
+        'deltaker-1',
+        '0101',
+        expect.objectContaining({ deltakelsesprosent: 80, dagerPerUke: 3 })
+      )
+    })
+
     it('Gruppe-variant viser gruppe-felter og skjuler enkeltplass-tekst', () => {
       renderModal(lagDeltaker(false))
 
@@ -264,6 +295,38 @@ describe('EndreDeltakelsesmengdeModal', () => {
         deltakelsesprosent: undefined,
         dagerPerUke: 7,
         pavirkerPris: false
+      })
+    )
+  })
+
+  it('enkeltplass bevarer manglende prosent ved endring av dager', async () => {
+    renderModal(lagDeltaker(true, null))
+    await settDagerPerUke(enkeltplassDagerLabel, '4')
+    await klikkLagre()
+
+    expect(screen.queryByLabelText(prosentLabel)).not.toBeInTheDocument()
+    expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(
+      'deltaker-1',
+      '0101',
+      expect.objectContaining({
+        deltakelsesprosent: undefined,
+        dagerPerUke: 4
+      })
+    )
+  })
+
+  it('enkeltplass kan fortsatt tømme registrerte dager uten å sette prosent', async () => {
+    const user = userEvent.setup()
+    renderModal(lagDeltaker(true, null))
+    await user.clear(screen.getByLabelText(enkeltplassDagerLabel))
+    await klikkLagre()
+
+    expect(endreDeltakelsesmengdeMock).toHaveBeenCalledWith(
+      'deltaker-1',
+      '0101',
+      expect.objectContaining({
+        deltakelsesprosent: undefined,
+        dagerPerUke: undefined
       })
     )
   })

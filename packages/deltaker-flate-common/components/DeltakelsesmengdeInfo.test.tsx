@@ -42,7 +42,7 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(extractText(result)).toEqual(['Deltakelsesmengde', '80\u00a0%'])
   })
 
-  it('viser 100 prosent når deltakelsesprosent ikke er satt', () => {
+  it('skjuler seksjonen når prosent og dager ikke er satt', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
@@ -50,7 +50,73 @@ describe('DeltakelsesmengdeInfo', () => {
       dagerPerUke: null
     })
 
-    expect(extractText(result)).toEqual(['Deltakelsesmengde', '100\u00a0%'])
+    expect(result).toBeNull()
+  })
+
+  it('viser bare dager når prosent ikke er satt', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      erEnkeltplass: false,
+      deltakelsesprosent: null,
+      dagerPerUke: 3
+    })
+
+    expect(extractText(result)).toEqual(['Deltakelsesmengde', '3 dager i uka'])
+  })
+
+  it('skjuler en tom neste periode uten å skjule nåværende mengde', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      erEnkeltplass: false,
+      deltakelsesprosent: 80,
+      dagerPerUke: 3,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: null,
+        dagerPerUke: null,
+        gyldigFra: dayjs().add(1, 'day').toDate()
+      }
+    })
+
+    expect(extractText(result)).toEqual([
+      'Deltakelsesmengde',
+      '80\u00a0% fordelt på 3 dager i uka'
+    ])
+  })
+
+  it('skjuler hele seksjonen når både nåværende og neste mengde er tom', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      erEnkeltplass: false,
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: null,
+        dagerPerUke: null,
+        gyldigFra: dayjs().add(1, 'day').toDate()
+      }
+    })
+
+    expect(result).toBeNull()
+  })
+
+  it('viser neste periode med bare dager uten å fylle inn prosent', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+      erEnkeltplass: false,
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: null,
+        dagerPerUke: 2,
+        gyldigFra: dayjs().add(1, 'day').toDate()
+      }
+    })
+    const text = extractText(result).join(' ')
+
+    expect(text).toContain('(ikke satt)')
+    expect(text).toContain('Neste periode')
+    expect(text).toContain('2 dager i uka')
+    expect(text).not.toContain('%')
   })
 
   it('viser bare dager per uke for enkeltplass', () => {

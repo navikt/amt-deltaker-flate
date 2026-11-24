@@ -19,6 +19,56 @@ const lagVedtak = (): Vedtak =>
   }) as unknown as Vedtak
 
 describe('HistorikkVedtak - Deltakelsesmengde', () => {
+  it.each([
+    { dagerPerUke: 3, forventet: '3 dager i uka' },
+    { dagerPerUke: null, forventet: null }
+  ])(
+    'viser bare registrert mengde i Nav med $dagerPerUke dager og uten prosent',
+    ({ dagerPerUke, forventet }) => {
+      const text = extractText(
+        HistorikkVedtak({
+          endringsVedtak: {
+            ...lagVedtak(),
+            deltakelsesprosent: null,
+            dagerPerUke
+          },
+          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          erEnkeltplass: false
+        })
+      ).join(' ')
+
+      expect(text).not.toContain('%')
+      if (forventet) {
+        expect(text).toContain(`Deltakelsesmengde ${forventet}`)
+      } else {
+        expect(text).not.toContain('Deltakelsesmengde')
+      }
+      expect(text).toContain('Meldt på av Navn Enhet 01.01.2026.')
+    }
+  )
+
+  it.each([
+    { dagerPerUke: 3, forventet: '100\u00a0% fordelt på 3 dager i uka' },
+    { dagerPerUke: null, forventet: '100\u00a0%' }
+  ])(
+    'viser registrert hundre prosent med $dagerPerUke dager per uke',
+    ({ dagerPerUke, forventet }) => {
+      const text = extractText(
+        HistorikkVedtak({
+          endringsVedtak: {
+            ...lagVedtak(),
+            deltakelsesprosent: 100,
+            dagerPerUke
+          },
+          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          erEnkeltplass: false
+        })
+      ).join(' ')
+
+      expect(text).toContain(`Deltakelsesmengde ${forventet}`)
+    }
+  )
+
   it('konfigurerer visning når tiltak støtter deltakelsesmengde', () => {
     const text = extractText(
       HistorikkVedtak({

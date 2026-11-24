@@ -74,6 +74,10 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
   }
 
   const validertRequest = () => {
+    const erMengdeGyldig = validerDeltakelsesMengde(
+      deltakelsesprosent,
+      dagerPerUke
+    )
     if (!deltakelsesprosent) {
       return null
     }
@@ -82,7 +86,7 @@ export const EndreDeltakelsesmengdeGruppeModal = ({
       deltakelsesprosentError ||
       dagerPerUkeError ||
       gyldigFraError ||
-      !validerDeltakelsesMengde(deltakelsesprosent, dagerPerUke)
+      !erMengdeGyldig
     ) {
       return null
     }

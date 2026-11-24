@@ -55,6 +55,39 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
   })
 
+  it('viser nåværende mengde fra toppnivåfeltene når tidslinjen er null', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesmengder: null
+    })
+
+    expect(
+      screen.getByText(/80\s% fordelt på 3 dager i uka/)
+    ).toBeInTheDocument()
+  })
+
+  it('viser bare dager når prosent og tidslinje mangler', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesprosent: null,
+      deltakelsesmengder: null
+    })
+
+    expect(screen.getByText('3 dager i uka')).toBeInTheDocument()
+    expect(screen.queryByText(/100.*%/)).not.toBeInTheDocument()
+  })
+
+  it('skjuler mengdeseksjonen når ingen mengde er registrert', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      deltakelsesmengder: null
+    })
+
+    expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
+  })
+
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
     renderWithInnbyggerDeltakerContext(
       <DeltakerPage />,

@@ -26,6 +26,7 @@ export const HistorikkSoktInn = ({
     startdato,
     sluttdato,
     deltakelsesinnholdVedInnsok,
+    deltakelsesprosent,
     dagerPerUkeVedInnsok,
     prisinformasjonVedInnsok,
     opplaringKategorisering,
@@ -58,7 +59,7 @@ export const HistorikkSoktInn = ({
       <DeltakelsesmengdeBodyLongSection
         tiltakskode={tiltakskode}
         erEnkeltplass={erEnkeltplass}
-        deltakelsesprosent={null}
+        deltakelsesprosent={deltakelsesprosent ?? null}
         dagerPerUke={dagerPerUkeVedInnsok}
         className="mt-4"
       />

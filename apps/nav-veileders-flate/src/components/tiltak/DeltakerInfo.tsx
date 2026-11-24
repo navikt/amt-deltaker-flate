@@ -171,7 +171,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         dagerPerUke={deltaker.dagerPerUke}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         nesteDeltakelsesmengde={
-          deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+          deltaker.deltakelsesmengder?.nesteDeltakelsesmengde
         }
       />
 

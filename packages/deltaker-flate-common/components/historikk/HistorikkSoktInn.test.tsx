@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Tiltakskode } from '../../model/deltaker'
-import { Innsok } from '../../model/deltakerHistorikk'
+import { Innsok, soktInnSchema } from '../../model/deltakerHistorikk'
 import { PrisinformasjonType } from '../../model/prisinformasjon'
 import { HistorikkSoktInn } from './HistorikkSoktInn'
 import { extractText } from '../test-utils'
@@ -25,6 +25,68 @@ const lagInnsok = (
   }) as Innsok
 
 describe('HistorikkSoktInn - Deltakelsesmengde', () => {
+  describe.each([undefined, null])(
+    'uten prosent (%s)',
+    (deltakelsesprosent) => {
+      it.each([
+        { dagerPerUke: 3, forventet: '3 dager i uka' },
+        { dagerPerUke: null, forventet: null }
+      ])(
+        'viser bare registrert mengde med $dagerPerUke dager',
+        ({ dagerPerUke, forventet }) => {
+          const text = extractText(
+            HistorikkSoktInn({
+              soktInnHistorikk: soktInnSchema.parse(
+                JSON.parse(
+                  JSON.stringify({
+                    ...lagInnsok(dagerPerUke),
+                    deltakelsesprosent
+                  })
+                )
+              ),
+              tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+              erEnkeltplass: false
+            })
+          ).join(' ')
+
+          expect(text).not.toContain('%')
+          if (forventet) {
+            expect(text).toContain(`Deltakelsesmengde ${forventet}`)
+          } else {
+            expect(text).not.toContain('Deltakelsesmengde')
+          }
+          expect(text).toContain('01.01.2026 – 01.06.2026')
+          expect(text).toContain('Søkt inn av Navn Enhet 01.01.2026.')
+        }
+      )
+    }
+  )
+
+  it.each([
+    { dagerPerUke: 3, forventet: '100\u00a0% fordelt på 3 dager i uka' },
+    { dagerPerUke: null, forventet: '100\u00a0%' }
+  ])(
+    'viser mottatt hundre prosent med $dagerPerUke dager per uke',
+    ({ dagerPerUke, forventet }) => {
+      const text = extractText(
+        HistorikkSoktInn({
+          soktInnHistorikk: soktInnSchema.parse(
+            JSON.parse(
+              JSON.stringify({
+                ...lagInnsok(dagerPerUke),
+                deltakelsesprosent: 100
+              })
+            )
+          ),
+          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          erEnkeltplass: false
+        })
+      ).join(' ')
+
+      expect(text).toContain(`Deltakelsesmengde ${forventet}`)
+    }
+  )
+
   it('viser deltakelsesmengde når tiltak støtter det', () => {
     const text = extractText(
       HistorikkSoktInn({
