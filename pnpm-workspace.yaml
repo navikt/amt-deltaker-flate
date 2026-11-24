@@ -16,45 +16,45 @@ catalog:
   '@axe-core/playwright': ^4.14.0
   '@eslint/js': ^10.0.1
   '@faker-js/faker': ^10.6.0
-  '@grafana/faro-react': ^2.12.1
-  '@grafana/faro-web-sdk': ^2.12.1
-  '@navikt/aksel-icons': ^8.19.2
-  '@navikt/ds-css': ^8.19.2
-  '@navikt/ds-react': ^8.19.2
-  '@navikt/ds-tailwind': ^8.19.2
-  '@navikt/nav-dekoratoren-moduler': ^4.5.1
+  '@grafana/faro-react': ^2.14.0
+  '@grafana/faro-web-sdk': ^2.14.0
+  '@navikt/aksel-icons': ^8.22.1
+  '@navikt/ds-css': ^8.22.1
+  '@navikt/ds-react': ^8.22.1
+  '@navikt/ds-tailwind': ^8.22.1
+  '@navikt/nav-dekoratoren-moduler': ^4.6.0
   # Eksakt versjon må samsvare med Playwright-imaget i reusable-test-build.yaml.
-  '@playwright/test': 1.64.1
-  '@tailwindcss/postcss': 4.3.3
-  '@tailwindcss/vite': ^4.3.3
-  '@tanstack/react-query': ^5.104.5
+  '@playwright/test': 1.65.1
+  '@tailwindcss/postcss': 4.3.5
+  '@tailwindcss/vite': ^4.3.5
+  '@tanstack/react-query': ^5.107.1
   '@testing-library/jest-dom': ^7.0.1
   '@testing-library/react': ^16.3.3
-  '@testing-library/user-event': ^14.6.8
-  '@types/node': ^26.6.5
+  '@testing-library/user-event': ^14.6.12
+  '@types/node': ^26.6.6
   '@types/react': ^19.3.0
   '@types/react-dom': ^19.3.0
-  '@vitejs/plugin-react': ^6.1.2
+  '@vitejs/plugin-react': ^6.3.0
   '@vitejs/plugin-react-swc': ^4.3.3
   dayjs: ^1.11.23
-  eslint: ^10.13.0
+  eslint: ^10.15.0
   eslint-config-prettier: ^10.1.8
   eslint-plugin-jsx-a11y: ^6.10.2
-  globals: ^17.13.0
+  globals: ^17.14.0
   husky: ^9.1.7
-  jsdom: ^31.0.0
-  lint-staged: ^17.6.0
-  msw: ^3.0.3
-  prettier: ^3.9.10
+  jsdom: ^31.0.1
+  lint-staged: ^17.6.1
+  msw: ^3.0.6
+  prettier: ^3.10.1
   react: ^19.3.1
   react-dom: ^19.3.1
-  react-router-dom: ^7.18.4
-  tailwindcss: ^4.3.3
+  react-router-dom: ^7.18.5
+  tailwindcss: ^4.3.5
   typescript: ^6.0.3
-  typescript-eslint: ^8.72.0
+  typescript-eslint: ^8.72.2
   uuid: ^14.0.3
-  vite: ^8.3.4
-  vitest: ^5.0.5
+  vite: ^8.3.8
+  vitest: ^5.1.0
   zod: ^4.6.7
 
 overrides:
