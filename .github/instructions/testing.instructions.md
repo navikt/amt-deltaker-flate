@@ -1,12 +1,12 @@
 ---
 name: Testing Standards
-description: 'Felles testprinsipper for Nav. Språkspesifikke eksempler finnes i egne instruksjoner for Kotlin og TypeScript.'
-applyTo: '**/*.test.{ts,tsx,kt,kts}'
+description: 'Felles testprinsipper for frontend med Vitest og Playwright.'
+applyTo: '**/*.{test,spec}.{ts,tsx}'
 ---
 
 # Testing Standards
 
-Common testing principles for Nav. Language-specific examples can be found in separate instructions for [Kotlin](testing-kotlin.instructions.md) and [TypeScript](testing-typescript.instructions.md).
+Frontend testing principles for this Vite/React monorepo. Use the existing Vitest and Playwright setup. See [TypeScript testing](testing-typescript.instructions.md) for mocking and component examples.
 
 ## Test Coverage
 
@@ -14,79 +14,49 @@ Common testing principles for Nav. Language-specific examples can be found in se
 
 - **Utilities in `lib/`**: 80%+ coverage required
 - **Business logic**: 70%+ coverage required
-- **API routes**: Test happy path + error cases
-- **Repositories**: Test CRUD operations
-- **Event handlers**: Test event processing + publishing
+- **API clients**: Test success and error responses
+- **Components**: Test user interactions and loading, empty and error states
+- **User workflows**: Test critical journeys and accessibility
 
 ## Test Naming
 
-```kotlin
-// ✅ Good - describes behavior
-`should create user when valid data provided`
-`should throw exception when email is invalid`
-`should publish event after successful processing`
-
-// ❌ Bad - not descriptive
-`test1`
-`createUserTest`
-`testValidation`
-```
+Use Norwegian names that describe observable behavior, such as `viser feilmelding når henting feiler`.
+Avoid generic names such as `test1` or `testValidation`.
 
 ## Test Strategy
 
 Choose test type based on what you're verifying:
 
-| What to test            | Test type        | Tools                              |
-| ----------------------- | ---------------- | ---------------------------------- |
-| Pure functions, utils   | Unit test        | Kotest / Vitest                    |
-| Controller + validation | Slice test       | `@WebMvcTest` + MockkBean          |
-| Repository + SQL        | Slice test       | `@DataJpaTest` + Testcontainers    |
-| Full API flow           | Integration test | `@SpringBootTest` + Testcontainers |
-| User workflows          | E2E test         | Playwright                         |
-| Accessibility           | E2E test         | Playwright + axe-core              |
+| What to test            | Test type        | Tools                          |
+| ----------------------- | ---------------- | ------------------------------ |
+| Pure functions, utils   | Unit test        | Vitest                         |
+| Components and hooks    | Component test   | Vitest + React Testing Library |
+| API client interactions | Integration test | Vitest + existing MSW handlers |
+| User workflows          | E2E test         | Playwright                     |
+| Accessibility           | E2E test         | Playwright + axe-core          |
 
 ### When to use what
 
 - **Unit**: Business logic, data transformations, formatting
-- **Slice** (`@WebMvcTest`, `@DataJpaTest`): Faster than full integration, tests one layer
-- **Integration** (`@SpringBootTest`): Auth flow, multi-layer, real DB
+- **Component**: Rendered behavior, interactions and component states
+- **Integration**: Components and API clients together, with existing MSW handlers
 - **E2E** (Playwright): Critical user journeys, form submission, navigation
 
 ## Playwright E2E Tests
 
-```typescript
-import { test, expect } from '@playwright/test'
-
-test.describe('Oversikt', () => {
-  test('should display vedtak list', async ({ page }) => {
-    await page.goto('/oversikt')
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-    await expect(page.getByRole('table')).toBeVisible()
-  })
-
-  test('should filter by status', async ({ page }) => {
-    await page.goto('/oversikt')
-    await page.getByRole('combobox', { name: /status/i }).selectOption('aktiv')
-    await expect(page.getByRole('row')).toHaveCount(
-      await page.getByRole('row').count()
-    )
-  })
-})
-```
+Follow the [Playwright skill](../skills/playwright-testing/SKILL.md) and the affected app's existing fixtures.
+Use role-based locators and assert the expected user-visible result after each interaction.
+Never derive the expected result from the same current value being asserted.
 
 ### Accessibility in E2E
 
-```typescript
-import AxeBuilder from '@axe-core/playwright'
+Use the existing Playwright and axe-core setup where available. Cover keyboard navigation,
+focus behavior and accessible names as well as automated checks.
 
-test('should have no a11y violations', async ({ page }) => {
-  await page.goto('/oversikt')
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa'])
-    .analyze()
-  expect(results.violations).toEqual([])
-})
-```
+## Commands
+
+Run `pnpm --filter <workspace> test:no-watch` for affected Vitest tests, with narrower selectors when available.
+Use the affected app's existing Playwright script for E2E tests. Include affected consumers when shared packages change.
 
 ## Boundaries
 
