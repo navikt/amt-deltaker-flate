@@ -92,7 +92,7 @@ Bruk verb, ikke substantiv laget av verb. De gjør teksten tung. Eksempel: ing +
 
 ## KI-markører
 
-Ordlistene over KI-markører (svulstige ord, åpnings- og avslutningsfraser, retoriske mønstre og strukturelle tegn) ligger i `klarsprak`-skillen. Last den før du vasker en tekst. Listene er skrevet på norsk, men markørene er de samme på engelsk. `instructions/output-style.instructions.md` har bare fire raske tells og tegnsettingsreglene, og de gjelder alltid. Her står bare det som er spesifikt for norsk.
+Bruk `klarsprak`-skillen for KI-markører hvis den er installert. Ellers følger du [repoets tekstregler](../instructions/norwegian-text.instructions.md) og reglene under. Bruk også `output-style.instructions.md` hvis den er tilgjengelig. KI-markørene gjelder både norsk og engelsk.
 
 ### Engelske KI-ord som siver inn i norsk
 
@@ -110,7 +110,7 @@ Noen engelske ord brukes mye oftere i KI-generert tekst enn i vanlig norsk. Vær
 
 ## Fagtermer
 
-Ordlista over termer som alltid står på engelsk, og over de som er greie på norsk, står i `klarsprak`-skillen. Den er fasit, og lista bor bare der.
+Bruk ordlista i `klarsprak`-skillen hvis den er installert. Ellers bruker du lista i [repoets tekstregler](../instructions/norwegian-text.instructions.md).
 
 ### Sammensatte ord med engelske termer
 

@@ -7,7 +7,7 @@ applyTo: '**/*.md'
 
 Regler for norsk tekst i markdown-filer: agenter, instruksjoner, skills, dokumentasjon og README-er. Dette er minimumsreglene som gjelder automatisk ved redigering og code review.
 
-Språknøytrale skriveregler (lengde, tetthet, tegnsetting) står i `output-style.instructions.md`. Ordlistene over KI-markører ligger sammen med klarspråk-prinsipper, anglisismer, fagtermer, teksttyper og full språkvask i `klarsprak`-skillen. Bruk den når du skriver eller redigerer norsk tekst av noe omfang. For dypere tekstredaksjon, bruk `@forfatter`-agenten.
+Bruk `output-style.instructions.md` og `klarsprak`-skillen hvis de er installert. Ellers gjelder minimumsreglene under. For dypere tekstredaksjon, bruk `@forfatter`-agenten.
 
 ## Nav, ikke NAV
 
@@ -15,11 +15,11 @@ Språknøytrale skriveregler (lengde, tetthet, tegnsetting) står i `output-styl
 
 ## Sammensatte ord
 
-Bindestrek ved engelsk+norsk. Særskriving er feil.
+Skriv sammensatte ord i ett ord. Bruk bindestrek bare ved forkortelser, tall og egennavn, eller når ordet ellers blir uleselig. Særskriving er feil.
 
 ```
-✅ image-bygg, CI-pipeline, deploy-steg, Postgres-operatoren, Kafka-topicet, GitHub-repoet, PR-er
-❌ Postgres operatoren, Kafka topicet, GitHub repoet
+✅ imagebygg, deploysteg, CLI-brukere, CI-pipeline, Postgres-operatoren, Kafka-topicet, GitHub-repoet, PR-er
+❌ image-bygg, deploy-steg, Postgres operatoren, Kafka topicet, GitHub repoet
 ```
 
 ## Behold engelsk fagspråk
@@ -30,7 +30,7 @@ Ikke oversett: image, cluster, node, container, release, pod, namespace, secret,
 
 Skriv «host» og «hosts», ikke «vert», «verter» eller «vertsnavn». Det gjelder enhver teknisk betydning, maskinen like mye som endepunktet: «vert» sier ikke hvilken av dem det er. Skriv «skill», ikke «ferdighet». «Ferdighet» om menneskelig kompetanse er en annen betydning og er riktig norsk.
 
-Lista her er et utdrag. Hele lista, med hva hver term ikke skal oversettes til, står i `klarsprak`-skillen, og den er fasit.
+Hvis `klarsprak`-skillen er installert, har den en utvidet liste med forklaringer.
 
 ## Overskrifter
 

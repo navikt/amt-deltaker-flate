@@ -13,6 +13,13 @@ Gå fra en vag idé til en konkret, Nav-kompatibel arkitekturplan. Bruker beslut
 
 ## Workflow
 
+### Repository scope
+
+For `amt-deltaker-flate`, plan within the existing pnpm/Turbo monorepo: Vite/React applications in `apps/` and shared packages in `packages/`.
+Use existing BFF integrations, Aksel components and GCS/CDN or `poao-frontend` deployment workflows.
+The generic backend and Next.js examples below are not defaults for this repository. Do not introduce those stacks, database migrations, Kafka or Docker builds unless explicitly requested.
+Select only applicable deliverables. Use existing pnpm scripts and Vitest/Playwright for validation, scoped to affected workspaces.
+
 1. **Velg arketype** — hva slags ting bygges
 2. **Gå gjennom beslutningstrær** — auth, kommunikasjon, data, observerbarhet
 3. **Velg teststrategi** — riktig testnivå per komponent og endringstype
@@ -27,7 +34,7 @@ Gå fra en vag idé til en konkret, Nav-kompatibel arkitekturplan. Bruker beslut
 | Backend API                | Kotlin/Ktor eller Spring Boot    | Application |
 | Hendelsekonsument          | Kotlin + Kafka + Rapids & Rivers | Application |
 | Frontend (innbygger)       | Next.js + ID-porten + Wonderwall | Application |
-| Frontend (saksbehandler)   | Next.js + Azure AD + Wonderwall  | Application |
+| Frontend (saksbehandler)   | Next.js + Entra ID + Wonderwall  | Application |
 | Batchjobb                  | Kotlin + scheduled               | Naisjob     |
 | BFF (Backend-for-Frontend) | Next.js API routes               | Application |
 
@@ -59,7 +66,7 @@ Hvem kaller tjenesten?
 │       JVM: token-support
 │
 ├── Saksbehandler via nettleser
-│   └── Azure AD + Wonderwall
+│   └── Entra ID + Wonderwall
 │       azure.application.enabled: true
 │       Nais-sidecar: Wonderwall
 │       Node.js: @navikt/oasis
@@ -72,7 +79,7 @@ Hvem kaller tjenesten?
 │       Mottaker: valider TokenX-token
 │
 ├── Annen Nav-tjeneste (uten brukerkontext / batch)
-│   └── Azure AD client_credentials
+│   └── Entra ID client_credentials
 │       azure.application.enabled: true
 │       Kaller: getClientCredentialsToken(scope)
 │       ⚠️ Kun når brukerkontext ikke er tilgjengelig!
@@ -116,7 +123,7 @@ Hva slags kommunikasjon?
 Trenger du persistent lagring?
 ├── Ja, relasjonell data
 │   └── PostgreSQL via Nais (Cloud SQL)
-│       gcp.sqlInstances[].type: POSTGRES_15
+│       gcp.sqlInstances[].type: POSTGRES_18
 │       Flyway for migrasjoner
 │       HikariCP pool: 3-5 (containere!)
 │
@@ -340,7 +347,7 @@ Verifiser at valgene henger sammen:
 - [ ] `accessPolicy.inbound` lister alle kallere
 - [ ] `accessPolicy.outbound` lister alle avhengigheter
 - [ ] Ressurser er riktige for forventet last
-- [ ] Health-endepunkter er implementert (/isalive, /isready, /metrics)
+- [ ] Health-endpoints er implementert (/isalive, /isready, /metrics)
 - [ ] Database-pooling er tilpasset containere (3-5, ikke 10)
 - [ ] PII er identifisert og beskyttet (ikke logget, tilgangsstyrt)
 - [ ] Observerbarhet dekker forretningsmetrikker, ikke bare tekniske
