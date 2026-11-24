@@ -62,7 +62,7 @@ jobs:
           fi
 
       - name: Last opp filer til CDN
-        uses: nais/deploy/actions/cdn-upload/v2@7b60caaded00332e9aa117a8342daa0876851dfe # master
+        uses: nais/deploy/actions/cdn-upload/v2@6fe576e10c7a325643bad96566bd6cb180a2f782 # master
         with:
           team: amt
           source: build
