@@ -77,6 +77,30 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
     expect(screen.queryByText(/100.*%/)).not.toBeInTheDocument()
   })
 
+  it('viser dato og ikke satt ved planlagt tømming av deltakelsesmengde', () => {
+    const tomPeriode = {
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      gyldigFra: new Date(2027, 0, 15)
+    }
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesmengder: {
+        nesteDeltakelsesmengde: tomPeriode,
+        sisteDeltakelsesmengde: tomPeriode
+      }
+    })
+
+    expect(screen.getByText('Nåværende periode:')).toBeInTheDocument()
+    expect(
+      screen.getByText(/80\s% fordelt på 3 dager i uka/)
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Neste periode \(fom\./)).toHaveTextContent(
+      'Neste periode (fom. 15.01.2027):'
+    )
+    expect(screen.getByText('(ikke satt)')).toBeInTheDocument()
+  })
+
   it('skjuler mengdeseksjonen når ingen mengde er registrert', () => {
     renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
       ...stottetTiltakDeltaker,

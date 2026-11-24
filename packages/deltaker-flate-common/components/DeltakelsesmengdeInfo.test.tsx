@@ -64,26 +64,47 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(extractText(result)).toEqual(['Deltakelsesmengde', '3 dager i uka'])
   })
 
-  it('skjuler en tom neste periode uten å skjule nåværende mengde', () => {
-    const result = DeltakelsesmengdeInfo({
+  it.each([
+    {
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
       deltakelsesprosent: 80,
-      dagerPerUke: 3,
-      nesteDeltakelsesmengde: {
-        deltakelsesprosent: null,
-        dagerPerUke: null,
-        gyldigFra: dayjs().add(1, 'day').toDate()
-      }
-    })
+      forventetMengde: '80\u00a0% fordelt på 3 dager i uka'
+    },
+    {
+      tiltakskode: Tiltakskode.HOYERE_UTDANNING,
+      erEnkeltplass: true,
+      deltakelsesprosent: null,
+      forventetMengde: '3 dager i uka'
+    }
+  ])(
+    'viser planlagt tømming for $tiltakskode',
+    ({ tiltakskode, erEnkeltplass, deltakelsesprosent, forventetMengde }) => {
+      const gyldigFra = dayjs().add(1, 'day')
+      const result = DeltakelsesmengdeInfo({
+        tiltakskode,
+        erEnkeltplass,
+        deltakelsesprosent,
+        dagerPerUke: 3,
+        nesteDeltakelsesmengde: {
+          deltakelsesprosent: null,
+          dagerPerUke: null,
+          gyldigFra: gyldigFra.toDate()
+        }
+      })
+      const text = extractText(result).join(' ')
 
-    expect(extractText(result)).toEqual([
-      'Deltakelsesmengde',
-      '80\u00a0% fordelt på 3 dager i uka'
-    ])
-  })
+      expect(text).toContain('Nåværende periode:')
+      expect(text).toContain(forventetMengde)
+      expect(text).toContain('Neste periode (fom.')
+      expect(text).toContain(gyldigFra.format('DD.MM.YYYY'))
+      expect(text).toContain('(ikke satt)')
+      expect(text).not.toContain('100\u00a0%')
+    }
+  )
 
-  it('skjuler hele seksjonen når både nåværende og neste mengde er tom', () => {
+  it('viser dato for en tom neste periode selv om nåværende mengde også er tom', () => {
+    const gyldigFra = dayjs().add(1, 'day')
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       erEnkeltplass: false,
@@ -92,11 +113,16 @@ describe('DeltakelsesmengdeInfo', () => {
       nesteDeltakelsesmengde: {
         deltakelsesprosent: null,
         dagerPerUke: null,
-        gyldigFra: dayjs().add(1, 'day').toDate()
+        gyldigFra: gyldigFra.toDate()
       }
     })
+    const text = extractText(result).join(' ')
 
-    expect(result).toBeNull()
+    expect(text).toContain('Nåværende periode:')
+    expect(text).toContain('Neste periode (fom.')
+    expect(text).toContain(gyldigFra.format('DD.MM.YYYY'))
+    expect(text.match(/\(ikke satt\)/g)).toHaveLength(2)
+    expect(text).not.toContain('%')
   })
 
   it('viser neste periode med bare dager uten å fylle inn prosent', () => {
@@ -136,6 +162,22 @@ describe('DeltakelsesmengdeInfo', () => {
       erEnkeltplass: false,
       deltakelsesprosent: 80,
       dagerPerUke: 3
+    })
+
+    expect(result).toBeNull()
+  })
+
+  it('skjuler også planlagt tømming for tiltak uten mengdevisning', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.OPPFOLGING,
+      erEnkeltplass: false,
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: null,
+        dagerPerUke: null,
+        gyldigFra: dayjs().add(1, 'day').toDate()
+      }
     })
 
     expect(result).toBeNull()
