@@ -71,14 +71,16 @@ describe.each([
     }
   )
 
-  it('viser bare dager per uke for enkeltplass', () => {
+  it('viser prosent og dager per uke for enkeltplass', () => {
     const result = komponent({
       ...props,
       tiltakskode: Tiltakskode.HOYERE_UTDANNING,
       erEnkeltplass: true
     })
 
-    expect(extractText(result).join(' ')).toBe(`${prefiks}3 dager i uka`)
+    expect(extractText(result).join(' ')).toBe(
+      `${prefiks}80\u00a0% fordelt på 3 dager i uka`
+    )
   })
 
   it('returnerer null når tiltaket ikke har deltakelsesmengde', () => {
@@ -91,9 +93,14 @@ describe.each([
   })
 
   it.each([null, 0])(
-    'returnerer null for enkeltplass med %s dager per uke',
+    'returnerer null for enkeltplass uten prosent med %s dager per uke',
     (dagerPerUke) => {
-      const result = komponent({ ...props, erEnkeltplass: true, dagerPerUke })
+      const result = komponent({
+        ...props,
+        erEnkeltplass: true,
+        deltakelsesprosent: null,
+        dagerPerUke
+      })
 
       expect(result).toBeNull()
     }

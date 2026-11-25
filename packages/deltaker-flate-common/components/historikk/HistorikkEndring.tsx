@@ -297,7 +297,7 @@ export const HistorikkEndring = ({
 
   return (
     <HistorikkElement
-      tittel={getEndringsTittel(deltakerEndring.endring, erEnkeltplass)}
+      tittel={getEndringsTittel(deltakerEndring.endring)}
       icon={icon}
       forslag={deltakerEndring.forslag}
     >

@@ -121,7 +121,7 @@ describe('HistorikkEndring', () => {
     }
   )
 
-  it('viser bare dager for enkeltplass selv med registrert prosent', () => {
+  it('viser registrert prosent og dager for enkeltplass', () => {
     const result = HistorikkEndring({
       deltakerEndring: lagDeltakerEndring({
         type: EndringType.EndreDeltakelsesmengde,
@@ -135,8 +135,10 @@ describe('HistorikkEndring', () => {
       erEnkeltplass: true
     })
 
-    expect(result.props.tittel).toBe('Deltakelsen er endret til 3 dager i uka')
-    expect(extractText(result).join(' ')).not.toContain('%')
+    const tittel =
+      'Deltakelsen er endret til 100\u00a0% fordelt på 3 dager i uka'
+    expect(result.props.tittel).toBe(tittel)
+    expect(extractText(result).join(' ')).toContain(tittel)
   })
 
   it.each(lagEndringer(true))(

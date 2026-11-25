@@ -145,7 +145,7 @@ describe('DeltakelsesmengdeInfo', () => {
     expect(text).not.toContain('%')
   })
 
-  it('viser bare dager per uke for enkeltplass', () => {
+  it('viser prosent og dager per uke for enkeltplass', () => {
     const result = DeltakelsesmengdeInfo({
       tiltakskode: Tiltakskode.HOYERE_UTDANNING,
       erEnkeltplass: true,
@@ -153,7 +153,39 @@ describe('DeltakelsesmengdeInfo', () => {
       dagerPerUke: 1
     })
 
-    expect(extractText(result)).toEqual(['Deltakelsesmengde', '1 dag i uka'])
+    expect(extractText(result)).toEqual([
+      'Deltakelsesmengde',
+      '60\u00a0% fordelt på 1 dag i uka'
+    ])
+  })
+
+  it('viser registrert prosent i nåværende og neste periode for enkeltplass', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.HOYERE_UTDANNING,
+      erEnkeltplass: true,
+      deltakelsesprosent: 100,
+      dagerPerUke: 5,
+      nesteDeltakelsesmengde: {
+        deltakelsesprosent: 60,
+        dagerPerUke: 3,
+        gyldigFra: dayjs().add(1, 'month').toDate()
+      }
+    })
+    const text = extractText(result).join(' ')
+
+    expect(text).toContain('100\u00a0% fordelt på 5 dager i uka')
+    expect(text).toContain('60\u00a0% fordelt på 3 dager i uka')
+  })
+
+  it('viser prosent for enkeltplass uten dager per uke', () => {
+    const result = DeltakelsesmengdeInfo({
+      tiltakskode: Tiltakskode.HOYERE_UTDANNING,
+      erEnkeltplass: true,
+      deltakelsesprosent: 100,
+      dagerPerUke: null
+    })
+
+    expect(extractText(result)).toEqual(['Deltakelsesmengde', '100\u00a0%'])
   })
 
   it('skjuler deltakelsesmengde for tiltak som ikke støtter det', () => {

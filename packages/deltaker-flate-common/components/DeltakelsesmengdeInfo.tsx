@@ -24,7 +24,7 @@ export const getDeltakelsesmengdeText = (
   if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
     return null
   }
-  return deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)
+  return deltakerprosentText(deltakelsesprosent, dagerPerUke)
 }
 
 export function DeltakelsesmengdeInfo({

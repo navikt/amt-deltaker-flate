@@ -209,7 +209,7 @@ const getUlestOppdateringTittel = (ulesteEndringer: UlestEndring) => {
   if (
     ulesteEndringer.oppdatering.type === UlestEndringType.DeltakelsesEndring
   ) {
-    return getEndringsTittel(ulesteEndringer.oppdatering.endring.endring, false)
+    return getEndringsTittel(ulesteEndringer.oppdatering.endring.endring)
   } else if (ulesteEndringer.oppdatering.type === UlestEndringType.NyDeltaker) {
     return `Påmelding ${dateStrWithMonthName(ulesteEndringer.oppdatering.opprettet)}`
   } else if (
