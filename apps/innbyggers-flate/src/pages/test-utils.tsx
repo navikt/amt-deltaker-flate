@@ -16,7 +16,6 @@ export const lagInnbyggerDeltaker = (
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
     },
-    arrangorNavn: 'Arrangør',
     arrangor: { navn: 'Arrangør', organisasjonsnummer: '123456789' },
     erEnkeltplass: false,
     oppstartstype: null,

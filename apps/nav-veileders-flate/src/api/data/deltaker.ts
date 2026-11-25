@@ -1,57 +1,14 @@
 import {
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
-  DeltakerlisteStatus,
+  deltakerlisteSchema,
   forslagSchema,
   importertDeltakerFraArenaSchema,
   nullableDateSchema,
-  Oppstartstype,
   pameldingStatusSchema,
-  Pameldingstype,
-  prisinformasjonSchema,
-  tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema,
-  visningsnavnSchema
+  vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import { opplaringKategoriseringSchema } from './kodeverk.ts'
-
-export const deltakerlisteStatusSchema = z.enum(DeltakerlisteStatus)
-
-export const innholdselementSchema = z.object({
-  tekst: z.string(),
-  innholdskode: z.string()
-})
-
-const tilgjengeligInnholdSchema = z.object({
-  ledetekst: z.string().nullable(),
-  innhold: z.array(innholdselementSchema)
-})
-
-export const deltakerlisteSchema = z.object({
-  deltakerlisteId: z.uuid(),
-  deltakerlisteNavn: z.string(),
-  tiltakskode: tiltakskodeResponseSchema,
-  arrangorNavn: z.string(),
-  arrangor: z
-    .object({
-      navn: z.string(),
-      organisasjonsnummer: z.string()
-    })
-    .nullish(),
-  oppstartstype: z.enum(Oppstartstype).nullable(),
-  startdato: nullableDateSchema,
-  sluttdato: nullableDateSchema,
-  status: deltakerlisteStatusSchema.nullable(),
-  tilgjengeligInnhold: tilgjengeligInnholdSchema,
-  erEnkeltplass: z.boolean(),
-  oppmoteSted: z.string().nullable(),
-  pameldingstype: z.enum(Pameldingstype),
-  opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  visningsnavn: visningsnavnSchema,
-  prisinformasjon: prisinformasjonSchema.nullish(),
-  prisinformasjonTilGodkjenning: prisinformasjonSchema.nullish()
-})
 
 export const deltakerSchema = z.object({
   deltakerId: z.uuid(),
@@ -79,7 +36,5 @@ export const deltakerSchema = z.object({
   deltakelsesmengder: deltakelsesmengderSchema,
   erManueltDeltMedArrangor: z.boolean()
 })
-
-export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 
 export type DeltakerResponse = z.infer<typeof deltakerSchema>

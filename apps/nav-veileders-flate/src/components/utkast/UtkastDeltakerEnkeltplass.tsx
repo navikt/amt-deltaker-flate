@@ -5,6 +5,7 @@ import {
   DialogLenke,
   formatDate,
   PrisOgBetaling,
+  UKJENT_ARRANGOR,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { DIALOG_URL } from '../../utils/environment-utils.ts'
@@ -18,7 +19,7 @@ export const UtkastDeltakerEnkeltplass = () => {
     <div className="flex flex-col gap-8">
       <VeilederSnakkeboble
         pameldingstype={deltaker.deltakerliste.pameldingstype}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={deltaker.deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR}
         tiltakskode={tiltakskode.kode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={

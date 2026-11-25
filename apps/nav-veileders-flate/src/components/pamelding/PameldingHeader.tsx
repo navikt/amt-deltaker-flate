@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 import {
+  Deltakerliste,
   DeltakerStatus,
   DeltakerStatusTag,
   DeltakerStatusType,
@@ -8,7 +9,6 @@ import {
   UtkastHeader,
   Vedtaksinformasjon
 } from 'deltaker-flate-common'
-import { Deltakerliste } from '../../api/data/deltaker.ts'
 import { TiltaksgjennomforingLink } from '../TiltaksgjennomforingLink.tsx'
 
 interface Props {

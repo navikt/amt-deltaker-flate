@@ -1,13 +1,11 @@
 import {
   harBakgrunnsinfo,
   INNHOLD_TYPE_ANNET,
+  innholdselementSchema,
   Tiltakskode
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-import {
-  DeltakerResponse,
-  innholdselementSchema
-} from '../api/data/deltaker.ts'
+import { DeltakerResponse } from '../api/data/deltaker.ts'
 import { DeltakelsesprosentValg } from '../utils/utils.ts'
 import { bakgrunnsinfoSporsmal } from '../components/pamelding/bakgrunnsinfo-sporsmal.ts'
 

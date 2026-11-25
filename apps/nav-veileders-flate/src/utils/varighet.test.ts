@@ -38,7 +38,6 @@ const pamelding: DeltakerResponse = {
       kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
       visningsnavn: 'Arbeidsforberedende trening'
     },
-    arrangorNavn: 'Den Beste Arrangøren AS',
     arrangor: {
       navn: 'Den Beste Arrangøren AS',
       organisasjonsnummer: '123456789'

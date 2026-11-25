@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import {
   createHistorikk,
+  DeltakerlisteStatus,
   DeltakerStatusType,
   EMDASH,
   Forslag,
@@ -58,11 +59,19 @@ export const createDeltaker = (
         kode: tiltakskode,
         visningsnavn: mockVisningsnavn(tiltakskode)
       },
-      arrangorNavn: 'Den Beste Arrangøren AS',
+      arrangor: {
+        navn: 'Den Beste Arrangøren AS',
+        organisasjonsnummer: '123456789'
+      },
       oppstartstype: Oppstartstype.LOPENDE,
       pameldingstype: Pameldingstype.DIREKTE_VEDTAK,
       startdato: dayjs('2022-10-28').toDate(),
       sluttdato: dayjs('2027-12-20').toDate(),
+      status: DeltakerlisteStatus.GJENNOMFORES,
+      tilgjengeligInnhold: {
+        ledetekst: getLedetekst(tiltakskode),
+        innhold
+      },
       erEnkeltplass: false,
       oppmoteSted:
         'Fjordgata 7b, 00 Stedet. Inngangsdør rundt svingen. Oppmøte kl. 09:00. ',

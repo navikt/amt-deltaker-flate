@@ -13,7 +13,7 @@ export const InnholdBeskrivelse = ({ className }: { className?: string }) => {
     register,
     setValue,
     watch,
-    formState: { errors }
+    formState: { errors, submitCount }
   } = useFormContext<OpplaringKategoriseringFormValues>()
 
   return (
@@ -25,7 +25,7 @@ export const InnholdBeskrivelse = ({ className }: { className?: string }) => {
       value={watch('innhold')}
       onChange={(e) => {
         setValue('innhold', fjernUgyldigeTegn(e.target.value), {
-          shouldValidate: true
+          shouldValidate: submitCount > 0
         })
       }}
       error={errors.innhold?.message}

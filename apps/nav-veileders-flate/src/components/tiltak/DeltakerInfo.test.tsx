@@ -3,8 +3,11 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import {
   DeltakerStatusType,
+  Oppstartstype,
+  Pameldingstype,
   PrisinformasjonType,
-  Tiltakskode
+  Tiltakskode,
+  UKJENT_ARRANGOR
 } from 'deltaker-flate-common'
 import {
   lagDeltaker,
@@ -14,6 +17,54 @@ import { DeltakerInfo } from './DeltakerInfo'
 import { AppContext } from '../../AppContext.tsx'
 import { DeltakerContext } from './DeltakerContext.tsx'
 import { DeltakerResponse } from '../../api/data/deltaker.ts'
+
+describe('DeltakerInfo - arrangør', () => {
+  it.each([
+    {
+      arrangor: { navn: 'Ny arrangør', organisasjonsnummer: '123456789' },
+      forventetNavn: 'Ny arrangør'
+    },
+    { arrangor: null, forventetNavn: UKJENT_ARRANGOR },
+    { arrangor: undefined, forventetNavn: UKJENT_ARRANGOR }
+  ])(
+    'viser $forventetNavn i status og delingsinformasjon',
+    ({ arrangor, forventetNavn }) => {
+      const deltaker = lagDeltaker(
+        {
+          startdato: null,
+          status: {
+            id: 's1',
+            type: DeltakerStatusType.VENTER_PA_OPPSTART,
+            aarsak: null,
+            gyldigFra: new Date(),
+            gyldigTil: null,
+            opprettet: new Date()
+          }
+        },
+        {
+          arrangor,
+          tiltakskode: {
+            kode: Tiltakskode.VARIG_TILRETTELAGT_ARBEID_SKJERMET,
+            visningsnavn: 'Varig tilrettelagt arbeid i skjermet virksomhet'
+          },
+          oppstartstype: Oppstartstype.LOPENDE,
+          pameldingstype: Pameldingstype.DIREKTE_VEDTAK
+        }
+      )
+
+      renderWithDeltakerContext(<DeltakerInfo className="" />, deltaker)
+
+      expect(
+        screen.getByText(`${forventetNavn} avgjør om du tilbys plass.`, {
+          exact: false
+        })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(`Nav samarbeider med ${forventetNavn}.`)
+      ).toBeInTheDocument()
+    }
+  )
+})
 
 describe('DeltakerInfo - Deltakelsesmengde', () => {
   const baseStatus = {
