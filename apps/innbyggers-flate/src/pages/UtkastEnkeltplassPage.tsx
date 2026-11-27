@@ -6,6 +6,7 @@ import {
   DialogLenke,
   formatDateFromString,
   PrisOgBetaling,
+  UKJENT_ARRANGOR,
   useDeferredFetch,
   UtkastHeader,
   VeilederSnakkeboble
@@ -64,7 +65,7 @@ export const UtkastEnkeltplassPage = () => {
       />
       <VeilederSnakkeboble
         pameldingstype={deltakerliste.pameldingstype}
-        arrangorNavn={deltakerliste.arrangorNavn}
+        arrangorNavn={deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR}
         tiltakskode={deltakerliste.tiltakskode.kode}
         erEnkeltplass={deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={ingressTekst}

@@ -1,36 +1,13 @@
 import {
   deltakelsesinnholdSchema,
   deltakelsesmengderSchema,
+  deltakerlisteSchema,
   forslagSchema,
   importertDeltakerFraArenaSchema,
-  nullableDateSchema,
-  opplaringKategoriseringSchema,
-  Oppstartstype,
   pameldingStatusSchema,
-  Pameldingstype,
-  prisinformasjonSchema,
-  tiltakskodeResponseSchema,
-  vedtaksinformasjonSchema,
-  visningsnavnSchema
+  vedtaksinformasjonSchema
 } from 'deltaker-flate-common'
 import { z } from 'zod'
-
-export const deltakerlisteSchema = z.object({
-  deltakerlisteId: z.uuid(),
-  deltakerlisteNavn: z.string(),
-  tiltakskode: tiltakskodeResponseSchema,
-  arrangorNavn: z.string(),
-  oppstartstype: z.enum(Oppstartstype).nullable(),
-  pameldingstype: z.enum(Pameldingstype),
-  startdato: nullableDateSchema,
-  sluttdato: nullableDateSchema,
-  erEnkeltplass: z.boolean(),
-  oppmoteSted: z.string().nullable(),
-  prisinformasjonTilGodkjenning: prisinformasjonSchema.nullish(),
-  opplaringKategoriseringValg: opplaringKategoriseringSchema.nullable(),
-  prisinformasjon: prisinformasjonSchema.nullish(),
-  visningsnavn: visningsnavnSchema
-})
 
 export const deltakerSchema = z.object({
   deltakerId: z.uuid(),
@@ -50,5 +27,4 @@ export const deltakerSchema = z.object({
   erManueltDeltMedArrangor: z.boolean()
 })
 
-export type Deltakerliste = z.infer<typeof deltakerlisteSchema>
 export type DeltakerResponse = z.infer<typeof deltakerSchema>

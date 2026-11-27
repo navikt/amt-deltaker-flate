@@ -19,6 +19,7 @@ import {
   PrisinformasjonTilGodkjenningForslag,
   PrisOgBetaling,
   SeEndringer,
+  UKJENT_ARRANGOR,
   VedtakOgKlage
 } from 'deltaker-flate-common'
 import { useEffect } from 'react'
@@ -30,6 +31,7 @@ import { DIALOG_URL } from '../utils/environment-utils.ts'
 
 export const DeltakerPage = () => {
   const { deltaker, showSuccessMessage } = useDeltakerContext()
+  const arrangorNavn = deltaker.deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR
   const [searchParams, setSearchParams] = useSearchParams()
   const visEndringer = searchParams.get('vis_endringer') === ''
 
@@ -106,7 +108,7 @@ export const DeltakerPage = () => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={arrangorNavn}
         oppstartsdato={getDateFromString(deltaker.startdato) ?? null}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
@@ -223,7 +225,7 @@ export const DeltakerPage = () => {
       />
 
       <HvaDelesMedArrangor
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
         tiltakskode={deltaker.deltakerliste.tiltakskode.kode}
         statusType={deltaker.status.type}

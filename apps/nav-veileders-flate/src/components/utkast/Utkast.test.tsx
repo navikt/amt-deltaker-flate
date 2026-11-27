@@ -59,7 +59,6 @@ const createDeltaker = (): DeltakerResponse =>
         kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
       },
-      arrangorNavn: 'Kurs AS',
       arrangor: { navn: 'Kurs AS', organisasjonsnummer: '123456789' },
       erEnkeltplass: true,
       oppstartstype: null,

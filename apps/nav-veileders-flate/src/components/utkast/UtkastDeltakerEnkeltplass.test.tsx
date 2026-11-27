@@ -1,7 +1,12 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { DeltakerStatusType, Tiltakskode } from 'deltaker-flate-common'
+import {
+  DeltakerStatusType,
+  Pameldingstype,
+  Tiltakskode,
+  UKJENT_ARRANGOR
+} from 'deltaker-flate-common'
 import { UtkastDeltakerEnkeltplass } from './UtkastDeltakerEnkeltplass'
 import { DeltakerResponse } from '../../api/data/deltaker'
 import { DeltakerContext } from '../tiltak/DeltakerContext'
@@ -36,7 +41,6 @@ const lagDeltaker = (
         kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
         visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'
       },
-      arrangorNavn: 'Språkskolen AS',
       arrangor: { navn: 'Språkskolen AS', organisasjonsnummer: '999888777' },
       erEnkeltplass: true,
       oppstartstype: null,
@@ -89,6 +93,35 @@ const renderWithDeltaker = (deltaker: DeltakerResponse) =>
   )
 
 describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
+  it.each([
+    {
+      arrangor: { navn: 'Ny arrangør', organisasjonsnummer: '123456789' },
+      forventetNavn: 'Ny arrangør'
+    },
+    { arrangor: null, forventetNavn: UKJENT_ARRANGOR },
+    { arrangor: undefined, forventetNavn: UKJENT_ARRANGOR }
+  ])(
+    'viser $forventetNavn når arrangør er $arrangor',
+    ({ arrangor, forventetNavn }) => {
+      const deltaker = lagDeltaker()
+      deltaker.deltakerliste.arrangor = arrangor
+      deltaker.deltakerliste.pameldingstype = Pameldingstype.DIREKTE_VEDTAK
+
+      renderWithDeltaker(deltaker)
+
+      expect(
+        screen.getByText(`Før vi sender dette til ${forventetNavn}`, {
+          exact: false
+        })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(`og ${forventetNavn} mottar informasjon.`, {
+          exact: false
+        })
+      ).toBeInTheDocument()
+    }
+  )
+
   it('renders ingress text from backend visningsnavn', () => {
     const deltaker = lagDeltaker(
       null,

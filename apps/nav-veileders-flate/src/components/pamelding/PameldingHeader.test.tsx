@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import {
   DeltakelseInnhold,
+  Deltakerliste,
   DeltakerStatusType,
   OpplaringRepresenterer,
   Tiltakskode
 } from 'deltaker-flate-common'
-import { Deltakerliste } from '../../api/data/deltaker'
 import { PameldingHeader } from './PameldingHeader.tsx'
 
 const lagDeltakerliste = (
@@ -20,7 +20,6 @@ const lagDeltakerliste = (
       kode: Tiltakskode.NORSKOPPLAERING_GRUNNLEGGENDE_FERDIGHETER_FOV,
       visningsnavn: 'Norskopplæring, grunnleggende ferdigheter og FOV'
     },
-    arrangorNavn: 'A & A Eiendom Ans',
     arrangor: { navn: 'A & A Eiendom Ans', organisasjonsnummer: '123456789' },
     erEnkeltplass: true,
     oppstartstype: null,
@@ -130,7 +129,7 @@ describe('PameldingHeader - FOV heading', () => {
             kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
             visningsnavn: 'Arbeidsmarkedsopplæring'
           },
-          arrangorNavn: 'Kurs AS'
+          arrangor: { navn: 'Kurs AS', organisasjonsnummer: '123456789' }
         })}
         vedtaksinformasjon={null}
       />

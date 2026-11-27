@@ -16,6 +16,7 @@ import {
   Oppmotested,
   PrisOgBetaling,
   SeEndringer,
+  UKJENT_ARRANGOR,
   VedtakOgKlage
 } from 'deltaker-flate-common'
 import { getHistorikk } from '../../api/api.ts'
@@ -30,6 +31,7 @@ interface Props {
 
 export const DeltakerInfo = ({ className }: Props) => {
   const { deltaker } = useDeltakerContext()
+  const arrangorNavn = deltaker.deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR
   const tiltakOgStedTekst =
     deltaker.deltakerliste.visningsnavn.tiltakHosArrangorTittel
 
@@ -82,7 +84,7 @@ export const DeltakerInfo = ({ className }: Props) => {
         tiltakskode={deltaker.deltakerliste.tiltakskode}
         tiltaketsStartDato={deltaker.deltakerliste.startdato}
         statusType={deltaker.status.type}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={arrangorNavn}
         oppstartsdato={deltaker.startdato}
         pameldingstype={deltaker.deltakerliste.pameldingstype}
         oppstartstype={deltaker.deltakerliste.oppstartstype}
@@ -195,7 +197,7 @@ export const DeltakerInfo = ({ className }: Props) => {
       />
 
       <HvaDelesMedArrangor
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={arrangorNavn}
         adresseDelesMedArrangor={deltaker.adresseDelesMedArrangor}
         tiltakskode={tiltakskode.kode}
         statusType={deltaker.status.type}

@@ -27,7 +27,6 @@ const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
         kode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
         visningsnavn: 'Arbeidsforberedende trening'
       },
-      arrangorNavn: 'Arrangøren',
       arrangor: null,
       oppstartstype: Oppstartstype.LOPENDE,
       startdato: null,

@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom/vitest'
 import { fireEvent, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { Tiltakskode } from 'deltaker-flate-common'
+import {
+  Pameldingstype,
+  Tiltakskode,
+  UKJENT_ARRANGOR
+} from 'deltaker-flate-common'
 import { trackUnhandledRejections } from 'deltaker-flate-common/test-utils/unhandled-rejections'
 import { godkjennUtkast } from '../api/api'
 import { UtkastPage } from './UtkastPage'
@@ -17,6 +21,43 @@ vi.mock('../api/api', () => ({
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ deltakerId: 'deltaker-1' })
 }))
+
+describe('UtkastPage - arrangør', () => {
+  it.each([
+    {
+      arrangor: { navn: 'Ny arrangør', organisasjonsnummer: '123456789' },
+      forventetNavn: 'Ny arrangør'
+    },
+    { arrangor: null, forventetNavn: UKJENT_ARRANGOR },
+    { arrangor: undefined, forventetNavn: UKJENT_ARRANGOR }
+  ])(
+    'viser $forventetNavn i informasjon og samtykke',
+    ({ arrangor, forventetNavn }) => {
+      const deltaker = lagInnbyggerDeltaker(
+        {},
+        { arrangor, pameldingstype: Pameldingstype.DIREKTE_VEDTAK }
+      )
+
+      renderWithInnbyggerDeltakerContext(<UtkastPage />, deltaker)
+
+      expect(
+        screen.getByText(`Før vi sender dette til ${forventetNavn}`, {
+          exact: false
+        })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('group', {
+          name: `Kan informasjonen deles til ${forventetNavn}?`
+        })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          `Når du godkjenner utkastet blir du meldt på, vedtaket fattes og ${forventetNavn} mottar informasjonen.`
+        )
+      ).toBeInTheDocument()
+    }
+  )
+})
 
 describe('UtkastPage - Deltakelsesmengde', () => {
   const stottetTiltakDeltaker = lagInnbyggerDeltaker()

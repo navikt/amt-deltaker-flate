@@ -11,7 +11,6 @@
         "kode": "STUDIESPESIALISERING",
         "visningsnavn": "Studiespesialisering"
       },
-      "arrangorNavn": "Muligheter AS",
       "visningsnavn": {
         "tiltakHosArrangorTittel": "Studiespesialisering hos Muligheter AS",
         "tiltakHosArrangorIngressTekst": "Studiespesialisering hos Muligheter AS",
@@ -116,7 +115,6 @@
         "kode": "ARBEIDSMARKEDSOPPLAERING",
         "visningsnavn": "Arbeidsmarkedsopplæring"
       },
-      "arrangorNavn": "Snø AS",
       "visningsnavn": {
         "tiltakHosArrangorTittel": "Arbeidsmarkedsopplæring (AMO) hos Snø AS",
         "tiltakHosArrangorIngressTekst": "Arbeidsmarkedsopplæring (AMO) hos Snø AS",
@@ -233,7 +231,6 @@
         "kode": "ARBEIDSFORBEREDENDE_TRENING",
         "visningsnavn": "Arbeidsforberedende trening"
       },
-      "arrangorNavn": "Muligheter AS",
       "visningsnavn": {
         "tiltakHosArrangorTittel": "Arbeidsforberedende trening hos Muligheter AS",
         "tiltakHosArrangorIngressTekst": "Arbeidsforberedende trening hos Muligheter AS",

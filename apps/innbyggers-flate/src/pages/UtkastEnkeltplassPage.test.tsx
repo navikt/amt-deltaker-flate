@@ -35,7 +35,6 @@ const lagDeltaker = (
         kode: Tiltakskode.ARBEIDSMARKEDSOPPLAERING,
         visningsnavn: 'Arbeidsmarkedsopplæring'
       },
-      arrangorNavn: 'Test AS',
       arrangor: { navn: 'Test AS', organisasjonsnummer: '999888777' },
       erEnkeltplass: true,
       oppstartstype: null,

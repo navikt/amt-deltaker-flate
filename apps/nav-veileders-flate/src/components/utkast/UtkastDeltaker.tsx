@@ -7,6 +7,7 @@ import {
   harBakgrunnsinfo,
   OmKurset,
   Oppmotested,
+  UKJENT_ARRANGOR,
   VeilederSnakkeboble
 } from 'deltaker-flate-common'
 import { useDeltakerContext } from '../tiltak/DeltakerContext.tsx'
@@ -19,7 +20,7 @@ export const UtkastDeltaker = () => {
     <div className="flex flex-col gap-8">
       <VeilederSnakkeboble
         pameldingstype={deltaker.deltakerliste.pameldingstype}
-        arrangorNavn={deltaker.deltakerliste.arrangorNavn}
+        arrangorNavn={deltaker.deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR}
         tiltakskode={tiltakskode}
         erEnkeltplass={deltaker.deltakerliste.erEnkeltplass}
         tiltaksnavnHosArrangor={

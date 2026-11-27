@@ -11,6 +11,7 @@ import {
   kreverGodkjenningForPamelding,
   OmKurset,
   Oppmotested,
+  UKJENT_ARRANGOR,
   useDeferredFetch,
   UtkastHeader,
   VeilederSnakkeboble
@@ -31,7 +32,7 @@ export const UtkastPage = () => {
     deltakerliste.pameldingstype
   )
 
-  const arrangorNavn = deltakerliste.arrangorNavn
+  const arrangorNavn = deltakerliste.arrangor?.navn ?? UKJENT_ARRANGOR
   const navnHosArrangorTekst =
     deltakerliste.visningsnavn.tiltakHosArrangorIngressTekst
   const tiltakOgStedTekst = deltakerliste.visningsnavn.tiltakHosArrangorTittel
