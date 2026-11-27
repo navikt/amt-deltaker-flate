@@ -57,10 +57,7 @@ export const lagDeltaker = (
     deltakelsesinnhold: { ledetekst: null, innhold: [] },
     deltakelsesprosent: 80,
     dagerPerUke: 3,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
+    deltakelsesmengder: null,
     forslag: [],
     vedtaksinformasjon: null,
     importertFraArena: null,

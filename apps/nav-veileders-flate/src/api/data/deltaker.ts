@@ -76,7 +76,7 @@ export const deltakerSchema = z.object({
   forslag: z.array(forslagSchema),
   importertFraArena: importertDeltakerFraArenaSchema.nullable(),
   erUnderOppfolging: z.boolean(),
-  deltakelsesmengder: deltakelsesmengderSchema,
+  deltakelsesmengder: deltakelsesmengderSchema.nullable(),
   erManueltDeltMedArrangor: z.boolean()
 })
 

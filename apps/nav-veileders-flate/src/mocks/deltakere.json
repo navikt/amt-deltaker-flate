@@ -214,10 +214,7 @@
     "vedtaksinformasjon": null,
     "importertFraArena": null,
     "harAdresse": false,
-    "deltakelsesmengder": {
-      "nesteDeltakelsesmengde": null,
-      "sisteDeltakelsesmengde": null
-    },
+    "deltakelsesmengder": null,
     "erUnderOppfolging": true,
     "erManueltDeltMedArrangor": false
   },

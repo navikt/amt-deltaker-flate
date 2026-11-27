@@ -96,10 +96,7 @@ const createDeltaker = (): DeltakerResponse =>
     importertFraArena: null,
     harAdresse: false,
     adresseDelesMedArrangor: false,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    }
+    deltakelsesmengder: null
   }) as unknown as DeltakerResponse
 
 const renderUtkast = (deltaker: DeltakerResponse, queryClient: QueryClient) => {

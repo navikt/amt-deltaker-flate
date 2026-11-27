@@ -193,7 +193,7 @@ export const DeltakerPage = () => {
         deltakelsesprosent={deltaker.deltakelsesprosent}
         dagerPerUke={deltaker.dagerPerUke}
         nesteDeltakelsesmengde={
-          deltaker.deltakelsesmengder.nesteDeltakelsesmengde
+          deltaker.deltakelsesmengder?.nesteDeltakelsesmengde
         }
         erEnkeltplass={erEnkeltplass}
         className="mt-8"

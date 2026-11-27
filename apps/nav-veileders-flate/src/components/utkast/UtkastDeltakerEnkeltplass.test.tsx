@@ -64,6 +64,8 @@ const lagDeltaker = (
     },
     startdato: '2025-04-10',
     sluttdato: '2025-10-09',
+    deltakelsesprosent: null,
+    dagerPerUke: null,
     deltakelsesinnhold: { ledetekst: null, innhold: [] },
     vedtaksinformasjon: null,
     kanEndres: true,
@@ -74,10 +76,7 @@ const lagDeltaker = (
     importertFraArena: null,
     harAdresse: false,
     adresseDelesMedArrangor: false,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    }
+    deltakelsesmengder: null
   } as unknown as DeltakerResponse
 }
 
@@ -121,6 +120,23 @@ describe('UtkastDeltakerEnkeltplass - VeilederSnakkeboble', () => {
 })
 
 describe('UtkastDeltakerEnkeltplass - Deltakelsesmengde', () => {
+  it.each([
+    { dagerPerUke: 5, forventet: '100 % fordelt på 5 dager i uka' },
+    { dagerPerUke: null, forventet: '100 %' }
+  ])(
+    'viser registrert prosent med $dagerPerUke dager per uke',
+    ({ dagerPerUke, forventet }) => {
+      const deltaker = lagDeltaker()
+      deltaker.deltakelsesprosent = 100
+      deltaker.dagerPerUke = dagerPerUke
+
+      renderWithDeltaker(deltaker)
+
+      expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
+      expect(screen.getByText(forventet)).toBeInTheDocument()
+    }
+  )
+
   it('viser deltakelsesmengde når dagerPerUke er satt', () => {
     const deltaker = lagDeltaker()
     deltaker.dagerPerUke = 3

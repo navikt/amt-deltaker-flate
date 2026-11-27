@@ -55,6 +55,63 @@ describe('DeltakerPage - Deltakelsesmengde', () => {
     expect(screen.getByText('Deltakelsesmengde')).toBeInTheDocument()
   })
 
+  it('viser nåværende mengde fra toppnivåfeltene når tidslinjen er null', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesmengder: null
+    })
+
+    expect(
+      screen.getByText(/80\s% fordelt på 3 dager i uka/)
+    ).toBeInTheDocument()
+  })
+
+  it('viser bare dager når prosent og tidslinje mangler', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesprosent: null,
+      deltakelsesmengder: null
+    })
+
+    expect(screen.getByText('3 dager i uka')).toBeInTheDocument()
+    expect(screen.queryByText(/100.*%/)).not.toBeInTheDocument()
+  })
+
+  it('viser dato og ikke satt ved planlagt tømming av deltakelsesmengde', () => {
+    const tomPeriode = {
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      gyldigFra: new Date(2027, 0, 15)
+    }
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesmengder: {
+        nesteDeltakelsesmengde: tomPeriode,
+        sisteDeltakelsesmengde: tomPeriode
+      }
+    })
+
+    expect(screen.getByText('Nåværende periode:')).toBeInTheDocument()
+    expect(
+      screen.getByText(/80\s% fordelt på 3 dager i uka/)
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Neste periode \(fom\./)).toHaveTextContent(
+      'Neste periode (fom. 15.01.2027):'
+    )
+    expect(screen.getByText('(ikke satt)')).toBeInTheDocument()
+  })
+
+  it('skjuler mengdeseksjonen når ingen mengde er registrert', () => {
+    renderWithInnbyggerDeltakerContext(<DeltakerPage />, {
+      ...stottetTiltakDeltaker,
+      deltakelsesprosent: null,
+      dagerPerUke: null,
+      deltakelsesmengder: null
+    })
+
+    expect(screen.queryByText('Deltakelsesmengde')).not.toBeInTheDocument()
+  })
+
   it('skjuler deltakelsesmengde når tiltak ikke støtter det', () => {
     renderWithInnbyggerDeltakerContext(
       <DeltakerPage />,

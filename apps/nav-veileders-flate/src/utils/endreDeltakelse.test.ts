@@ -63,10 +63,7 @@ const lagDeltaker = (overrides: Partial<DeltakerResponse>): DeltakerResponse =>
     forslag: [],
     importertFraArena: null,
     erUnderOppfolging: true,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
+    deltakelsesmengder: null,
     erManueltDeltMedArrangor: false,
     prisinformasjon: null,
     ...overrides

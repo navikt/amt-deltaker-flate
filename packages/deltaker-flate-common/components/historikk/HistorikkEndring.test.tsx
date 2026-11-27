@@ -70,6 +70,77 @@ const hentTekst = (deltakerEndring: DeltakerEndring) =>
   ).join(' ')
 
 describe('HistorikkEndring', () => {
+  it.each([
+    {
+      dagerPerUke: 3,
+      deltakelsesprosent: null,
+      tittel: 'Deltakelsen er endret til 3 dager i uka'
+    },
+    {
+      dagerPerUke: null,
+      deltakelsesprosent: null,
+      tittel: 'Deltakelsesmengde endret'
+    },
+    {
+      dagerPerUke: 3,
+      deltakelsesprosent: 100,
+      tittel: 'Deltakelsen er endret til 100\u00a0% fordelt på 3 dager i uka'
+    },
+    {
+      dagerPerUke: null,
+      deltakelsesprosent: 100,
+      tittel: 'Deltakelsen er endret til 100\u00a0%'
+    }
+  ])(
+    'viser «$tittel» og beholder endringsdetaljer',
+    ({ dagerPerUke, deltakelsesprosent, tittel }) => {
+      const result = HistorikkEndring({
+        deltakerEndring: lagDeltakerEndring({
+          type: EndringType.EndreDeltakelsesmengde,
+          deltakelsesprosent,
+          dagerPerUke,
+          gyldigFra: new Date('2026-02-01'),
+          begrunnelse: 'Deltakelsesmengden må avklares',
+          pavirkerPris: false
+        }),
+        tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+        erEnkeltplass: false
+      })
+      const text = extractText(result).join(' ')
+
+      expect(result.props.tittel).toBe(tittel)
+      expect(text).toContain(tittel)
+      expect(text).toMatch(/Gjelder fra:\s+01\.02\.2026/)
+      expect(text).toMatch(/Navs begrunnelse:\s+Deltakelsesmengden må avklares/)
+      expect(text).toContain(
+        'Endret 01.01.2026 av Navn Navnesen Nav Fredrikstad.'
+      )
+      if (deltakelsesprosent === null) {
+        expect(text).not.toContain('%')
+      }
+    }
+  )
+
+  it('viser registrert prosent og dager for enkeltplass', () => {
+    const result = HistorikkEndring({
+      deltakerEndring: lagDeltakerEndring({
+        type: EndringType.EndreDeltakelsesmengde,
+        deltakelsesprosent: 100,
+        dagerPerUke: 3,
+        gyldigFra: null,
+        begrunnelse: null,
+        pavirkerPris: false
+      }),
+      tiltakskode: Tiltakskode.HOYERE_UTDANNING,
+      erEnkeltplass: true
+    })
+
+    const tittel =
+      'Deltakelsen er endret til 100\u00a0% fordelt på 3 dager i uka'
+    expect(result.props.tittel).toBe(tittel)
+    expect(extractText(result).join(' ')).toContain(tittel)
+  })
+
   it.each(lagEndringer(true))(
     'viser prisvarsel for $navn når endringen påvirker pris',
     ({ deltakerEndring }) => {

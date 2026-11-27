@@ -30,7 +30,7 @@ export function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
       : dayjs().toDate()
   if (forslag === null)
     return {
-      deltakelsesprosent: deltaker.deltakelsesprosent ?? 100,
+      deltakelsesprosent: deltaker.deltakelsesprosent,
       dagerPerUke: deltaker.dagerPerUke,
       gyldigFra: defaultGyldigFra
     }
@@ -48,18 +48,18 @@ export function getMengde(deltaker: DeltakerResponse, forslag: Forslag | null) {
 }
 
 type SisteDeltakelsesmengde = NonNullable<
-  DeltakerResponse['deltakelsesmengder']['sisteDeltakelsesmengde']
->
+  DeltakerResponse['deltakelsesmengder']
+>['sisteDeltakelsesmengde']
 
 export function harEndringSidenSisteDeltakelsesmengde(
   deltaker: DeltakerResponse,
   gyldigFra: Date,
   erMengdeEndret: (siste: SisteDeltakelsesmengde) => boolean
 ) {
-  const siste = deltaker.deltakelsesmengder.sisteDeltakelsesmengde
-  if (siste === null) {
+  if (deltaker.deltakelsesmengder === null) {
     return true
   }
+  const siste = deltaker.deltakelsesmengder.sisteDeltakelsesmengde
 
   if (erMengdeEndret(siste)) {
     return true

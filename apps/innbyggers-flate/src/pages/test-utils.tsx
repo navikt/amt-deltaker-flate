@@ -68,10 +68,7 @@ export const lagInnbyggerDeltaker = (
     importertFraArena: null,
     harAdresse: false,
     adresseDelesMedArrangor: false,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde: null,
-      nesteDeltakelsesmengde: null
-    },
+    deltakelsesmengder: null,
     erUnderOppfolging: true,
     erManueltDeltMedArrangor: false,
     ...rest

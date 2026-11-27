@@ -25,21 +25,20 @@ import { formatDateWithMonthName } from './utils.ts'
 
 export const deltakerprosentText = (
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null | undefined,
-  erEnkeltplass: boolean
+  dagerPerUke: number | null
 ) => {
   const dagerIUkaText = dagerPerUke
     ? `${dagerPerUke} ${dagerPerUke > 1 ? 'dager' : 'dag'} i uka`
     : ''
-  if (erEnkeltplass) {
+  if (deltakelsesprosent === null) {
     return dagerIUkaText
   }
   const fordeltPaDagerIUkaText = dagerPerUke
     ? `fordelt på ${dagerIUkaText}`
     : ''
   return fordeltPaDagerIUkaText
-    ? `${deltakelsesprosent ?? 100}\u00A0% ${fordeltPaDagerIUkaText}`
-    : `${deltakelsesprosent ?? 100}\u00A0%`
+    ? `${deltakelsesprosent}\u00A0% ${fordeltPaDagerIUkaText}`
+    : `${deltakelsesprosent}\u00A0%`
 }
 
 export const getDeltakerStatusDisplayText = (
@@ -262,7 +261,7 @@ export const getForslagTittel = (endringstype: ForslagEndringType) => {
   }
 }
 
-export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
+export const getEndringsTittel = (endring: Endring) => {
   switch (endring.type) {
     case EndringType.IkkeAktuell:
       return 'Deltakelsen er ikke aktuell'
@@ -276,8 +275,7 @@ export const getEndringsTittel = (endring: Endring, erEnkeltplass: boolean) => {
     case EndringType.EndreDeltakelsesmengde: {
       const deltakelsesmengdeText = deltakerprosentText(
         endring.deltakelsesprosent,
-        endring.dagerPerUke,
-        erEnkeltplass
+        endring.dagerPerUke
       )
       return deltakelsesmengdeText
         ? `Deltakelsen er endret til ${deltakelsesmengdeText}`

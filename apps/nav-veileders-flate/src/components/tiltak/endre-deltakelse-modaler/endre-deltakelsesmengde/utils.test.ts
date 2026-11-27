@@ -1,37 +1,22 @@
-import { DeltakerStatusType } from 'deltaker-flate-common'
+import { Deltakelsesmengde } from 'deltaker-flate-common'
 import { describe, expect, it } from 'vitest'
-import { DeltakerResponse } from '../../../../api/data/deltaker.ts'
+import { lagDeltaker as lagDeltakerResponse } from '../../../test-utils/deltaker-context-test-utils.tsx'
 import {
+  getMengde,
   harEndringSidenSisteDeltakelsesmengde,
   lagFellesDeltakelsesmengdeBodyFelter
 } from './utils.ts'
 
-type SisteDeltakelsesmengde =
-  DeltakerResponse['deltakelsesmengder']['sisteDeltakelsesmengde']
-
-const lagDeltaker = (
-  sisteDeltakelsesmengde: SisteDeltakelsesmengde
-): DeltakerResponse =>
-  ({
-    deltakerId: 'deltaker-1',
-    status: {
-      id: 'status-1',
-      type: DeltakerStatusType.DELTAR,
-      aarsak: null,
-      gyldigFra: new Date('2026-01-01'),
-      gyldigTil: null,
-      opprettet: new Date('2026-01-01')
-    },
-    kanEndres: true,
-    deltakelsesmengder: {
-      sisteDeltakelsesmengde,
-      nesteDeltakelsesmengde: null
-    }
-  }) as unknown as DeltakerResponse
+const lagDeltaker = (sisteDeltakelsesmengde: Deltakelsesmengde | null) =>
+  lagDeltakerResponse({
+    deltakelsesmengder: sisteDeltakelsesmengde
+      ? { sisteDeltakelsesmengde, nesteDeltakelsesmengde: null }
+      : null
+  })
 
 describe('EndreDeltakelsesmengdeFelles', () => {
   describe('harEndringSidenSisteDeltakelsesmengde', () => {
-    it('returnerer true når siste deltakelsesmengde mangler', () => {
+    it('returnerer true når deltakelsesmengder er null', () => {
       const harEndring = harEndringSidenSisteDeltakelsesmengde(
         lagDeltaker(null),
         new Date('2026-02-01'),
@@ -47,7 +32,7 @@ describe('EndreDeltakelsesmengdeFelles', () => {
           deltakelsesprosent: 60,
           dagerPerUke: 3,
           gyldigFra: new Date('2026-02-10')
-        } as SisteDeltakelsesmengde),
+        }),
         new Date('2026-02-10'),
         () => true
       )
@@ -61,7 +46,7 @@ describe('EndreDeltakelsesmengdeFelles', () => {
           deltakelsesprosent: 60,
           dagerPerUke: 3,
           gyldigFra: new Date('2026-02-10')
-        } as SisteDeltakelsesmengde),
+        }),
         new Date('2026-02-01'),
         () => false
       )
@@ -75,12 +60,86 @@ describe('EndreDeltakelsesmengdeFelles', () => {
           deltakelsesprosent: 60,
           dagerPerUke: 3,
           gyldigFra: new Date('2026-02-10')
-        } as SisteDeltakelsesmengde),
+        }),
         new Date('2026-02-10'),
         () => false
       )
 
       expect(harEndring).toBe(false)
+    })
+
+    it('sammenligner en periode uten prosent uten å sette inn hundre prosent', () => {
+      const deltaker = lagDeltaker({
+        deltakelsesprosent: null,
+        dagerPerUke: 3,
+        gyldigFra: new Date('2026-02-10')
+      })
+
+      expect(
+        harEndringSidenSisteDeltakelsesmengde(
+          deltaker,
+          new Date('2026-02-10'),
+          (siste) =>
+            siste.deltakelsesprosent !== null || siste.dagerPerUke !== 3
+        )
+      ).toBe(false)
+      expect(
+        harEndringSidenSisteDeltakelsesmengde(
+          deltaker,
+          new Date('2026-02-10'),
+          (siste) => siste.deltakelsesprosent !== 100 || siste.dagerPerUke !== 3
+        )
+      ).toBe(true)
+    })
+
+    it('bruker siste periode også når den ligger frem i tid', () => {
+      const deltaker = lagDeltaker({
+        deltakelsesprosent: null,
+        dagerPerUke: 3,
+        gyldigFra: new Date('2099-02-10')
+      })
+
+      expect(
+        harEndringSidenSisteDeltakelsesmengde(
+          deltaker,
+          new Date('2099-02-10'),
+          (siste) => siste.dagerPerUke !== 3
+        )
+      ).toBe(false)
+      expect(
+        harEndringSidenSisteDeltakelsesmengde(
+          deltaker,
+          new Date('2099-02-01'),
+          (siste) => siste.dagerPerUke !== 3
+        )
+      ).toBe(true)
+    })
+
+    it('avviser uendret tom mengde uten å miste sammenligningsgrunnlaget', () => {
+      const harEndring = harEndringSidenSisteDeltakelsesmengde(
+        lagDeltaker({
+          deltakelsesprosent: null,
+          dagerPerUke: null,
+          gyldigFra: new Date('2026-02-10')
+        }),
+        new Date('2026-02-10'),
+        (siste) => siste.dagerPerUke !== null
+      )
+
+      expect(harEndring).toBe(false)
+    })
+  })
+
+  it('getMengde bevarer manglende prosent ved forhåndsutfylling', () => {
+    const deltaker = lagDeltakerResponse({
+      deltakelsesprosent: null,
+      dagerPerUke: 3,
+      deltakelsesmengder: null
+    })
+
+    expect(getMengde(deltaker, null)).toMatchObject({
+      deltakelsesprosent: null,
+      dagerPerUke: 3
     })
   })
 

@@ -17,7 +17,6 @@ export const erTilbakekaltPrisinfo = (
 
 export const TilbakekaltPrisinfoEndring = ({
   deltakerEndring,
-  erEnkeltplass,
   icon,
   endringsDetaljer
 }: {
@@ -30,7 +29,7 @@ export const TilbakekaltPrisinfoEndring = ({
 
   return (
     <HistorikkElement
-      tittel={getEndringsTittel(endring, erEnkeltplass)}
+      tittel={getEndringsTittel(endring)}
       icon={icon}
       badge={
         <Tag variant="outline" data-color="neutral" size="small">

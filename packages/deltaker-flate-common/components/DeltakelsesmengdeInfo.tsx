@@ -19,12 +19,12 @@ export const getDeltakelsesmengdeText = (
   tiltakskode: Tiltakskode,
   erEnkeltplass: boolean,
   deltakelsesprosent: number | null,
-  dagerPerUke: number | null | undefined
+  dagerPerUke: number | null
 ) => {
   if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
     return null
   }
-  return deltakerprosentText(deltakelsesprosent, dagerPerUke, erEnkeltplass)
+  return deltakerprosentText(deltakelsesprosent, dagerPerUke)
 }
 
 export function DeltakelsesmengdeInfo({
@@ -53,7 +53,12 @@ export function DeltakelsesmengdeInfo({
       )
     : null
 
-  if (!deltakelsesmengdeText && !nesteDeltakelsesmengdeText) {
+  if (!harDeltakelsesmengde({ tiltakskode, erEnkeltplass })) {
+    return null
+  }
+
+  // Skjul seksjonen når verken nåværende mengde eller en fremtidig periode finnes.
+  if (!(deltakelsesmengdeText || nesteDeltakelsesmengde)) {
     return null
   }
 
@@ -75,7 +80,9 @@ export function DeltakelsesmengdeInfo({
             Neste periode (fom. {formatDate(nesteDeltakelsesmengde.gyldigFra)}
             ):
           </BodyShort>
-          <BodyShort size="small">{nesteDeltakelsesmengdeText}</BodyShort>
+          <BodyShort size="small">
+            {nesteDeltakelsesmengdeText || '(ikke satt)'}
+          </BodyShort>
         </>
       ) : (
         <BodyShort size="small" className="mt-2">

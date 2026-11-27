@@ -201,6 +201,7 @@ export const soktInnSchema = z.object({
   startdato: nullableDateSchema.nullish(),
   sluttdato: nullableDateSchema.nullish(),
   deltakelsesinnholdVedInnsok: deltakelsesinnholdSchema.nullable(),
+  deltakelsesprosent: z.number().nullish(),
   dagerPerUkeVedInnsok: z.number().nullish(),
   prisinformasjonVedInnsok: prisinformasjonSchema.nullish(),
   opplaringKategorisering: opplaringKategoriseringSchema.nullish(),

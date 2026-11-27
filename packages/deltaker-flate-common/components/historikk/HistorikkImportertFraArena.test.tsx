@@ -16,6 +16,57 @@ const lagImportertFraArena = (): importertFraArena =>
   }) as unknown as importertFraArena
 
 describe('HistorikkImportertFraArena - Deltakelsesmengde', () => {
+  it.each([
+    { dagerPerUke: 3, forventet: '3 dager i uka' },
+    { dagerPerUke: null, forventet: null }
+  ])(
+    'viser bare registrert mengde i Nav med $dagerPerUke dager og uten prosent',
+    ({ dagerPerUke, forventet }) => {
+      const text = extractText(
+        HistorikkImportertFraArena({
+          deltakelseVedImport: {
+            ...lagImportertFraArena(),
+            deltakelsesprosent: null,
+            dagerPerUke
+          },
+          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          erEnkeltplass: false
+        })
+      ).join(' ')
+
+      expect(text).not.toContain('%')
+      if (forventet) {
+        expect(text).toContain(`Deltakelsesmengde: ${forventet}`)
+      } else {
+        expect(text).not.toContain('Deltakelsesmengde:')
+      }
+      expect(text).toContain('Dato: 10.01.2026 - 10.02.2026')
+      expect(text).toContain('Status:')
+    }
+  )
+
+  it.each([
+    { dagerPerUke: 3, forventet: '100\u00a0% fordelt på 3 dager i uka' },
+    { dagerPerUke: null, forventet: '100\u00a0%' }
+  ])(
+    'viser registrert hundre prosent med $dagerPerUke dager per uke',
+    ({ dagerPerUke, forventet }) => {
+      const text = extractText(
+        HistorikkImportertFraArena({
+          deltakelseVedImport: {
+            ...lagImportertFraArena(),
+            deltakelsesprosent: 100,
+            dagerPerUke
+          },
+          tiltakskode: Tiltakskode.ARBEIDSFORBEREDENDE_TRENING,
+          erEnkeltplass: false
+        })
+      ).join(' ')
+
+      expect(text).toContain(`Deltakelsesmengde: ${forventet}`)
+    }
+  )
+
   it('konfigurerer inline-visning når tiltak støtter deltakelsesmengde', () => {
     const text = extractText(
       HistorikkImportertFraArena({
